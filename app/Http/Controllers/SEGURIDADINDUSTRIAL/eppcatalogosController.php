@@ -1,0 +1,866 @@
+<?php
+
+namespace App\Http\Controllers\SEGURIDADINDUSTRIAL;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Image;
+use Carbon\Carbon;
+use DateTime;
+use DB;
+use Artisan;
+use Exception;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use ZipArchive;
+
+
+/// MODEL 
+
+use App\modelos\eppcatalogo\catregionanatomicaModel;
+use App\modelos\eppcatalogo\catclaveyeppModel;
+use App\modelos\eppcatalogo\catmarcaseppModel;
+use App\modelos\eppcatalogo\catnormasnacionalesModel;
+use App\modelos\eppcatalogo\catnormasinternacionalesModel;
+use App\modelos\eppcatalogo\cattallaseppModel;
+use App\modelos\eppcatalogo\catclasificacionriesgoModel;
+use App\modelos\eppcatalogo\cattipousoModel;
+use App\modelos\eppcatalogo\catepps;
+use App\modelos\eppcatalogo\documentoseppModel;
+use App\modelos\eppcatalogo\catentidadeseppModel;
+use App\modelos\eppcatalogo\catcertificacioneppModel;
+use App\modelos\eppcatalogo\catpartexpuestaeppModel;
+
+
+
+class eppcatalogosController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware('Superusuario,Administrador,Proveedor,Reconocimiento,Proyecto,Compras,Staff,Psicólogo,Ergónomo,CoordinadorPsicosocial,CoordinadorErgonómico,CoordinadorRN,CoordinadorRS,CoordinadorRM,CoordinadorHI,ApoyoTecnico,Reportes,Externo');
+        $this->middleware('roles:Superusuario,Administrador,Coordinador,Operativo HI,Almacén,Compras,Psicólogo,Ergónomo');
+
+        // $this->middleware('asignacionUser:RECSENSORIAL')->only('store');
+
+    }
+
+   
+
+    public function index()
+    {
+
+        $catregionanatomica = catregionanatomicaModel::where('ACTIVO', 1)->get();
+        $catclaveyepp = catclaveyeppModel::where('ACTIVO', 1)->get();
+        $catmarcas = catmarcaseppModel::where('ACTIVO', 1)->get();
+        $catnormasnacionales = catnormasnacionalesModel::where('ACTIVO', 1)->get();
+        $catnormasinternacionales = catnormasinternacionalesModel::where('ACTIVO', 1)->get();
+        $cattallas = cattallaseppModel::where('ACTIVO', 1)->get();
+        $catclasificacion = catclasificacionriesgoModel::where('ACTIVO', 1)->get();
+        $cattipouso = cattipousoModel::where('ACTIVO', 1)->get();
+        $catentidades = catentidadeseppModel::where('ACTIVO', 1)->get();
+        $catcertificaciones = catcertificacioneppModel::where('ACTIVO', 1)->get();
+        $catpartesexpuestas = catpartexpuestaeppModel::where('ACTIVO', 1)->get();
+
+
+        return view('catalogos.seguridad.nom-017.seguridacatalogo',compact('catregionanatomica', 'catclaveyepp', 'catmarcas', 'catnormasnacionales', 'catnormasinternacionales', 'cattallas', 'catclasificacion', 'cattipouso', 'catentidades', 'catcertificaciones', 'catpartesexpuestas'));
+
+    }
+
+
+
+    public function eppconsultacatalogo($num_catalogo)
+    {
+        switch (($num_catalogo + 0)) {
+            case 1:
+                $regiones = catregionanatomicaModel::pluck('NOMBRE_REGION', 'ID_REGION_ANATOMICA')->toArray();
+
+                $claves = catclaveyeppModel::all()->mapWithKeys(function ($item) {
+                    $texto = $item->CLAVE . ') ' . $item->EPP;
+                    return [$item->ID_CLAVE_EPP => $texto];
+                })->toArray();
+
+                $marcas = catmarcaseppModel::pluck('NOMBRE_MARCA', 'ID_MARCAS_EPP')->toArray();
+
+                $clasificaciones = catclasificacionriesgoModel::pluck('CLASIFICACION_RIESGO','ID_CLASIFICACION_RIESGO')->toArray();
+
+                $lista = catepps::all();
+
+                foreach ($lista as $key => $value) {
+                    
+                    $idRegion = $value->REGION_ANATOMICA_EPP;
+
+                    $value['TEXTO_REGION_EPP'] = isset($regiones[$idRegion])
+                        ? $regiones[$idRegion]
+                        : 'SIN REGIÓN';
+
+                    $idClave = $value->CLAVEYEPP_EPP;
+                    $value['TEXTO_CLAVEYEPP_EPP'] = $claves[$idClave] ?? 'SIN CLAVE';
+
+                    $idMarca = $value->MARCA_EPP;
+                    $value['TEXTO_MARCA_EPP'] = $marcas[$idMarca] ?? 'SIN MARCA';
+
+
+                    
+                    $value['TEXTO_CLASIFICIACION_RIESGO'] = 'SIN CLASIFICACIÓN';
+
+                    if (!empty($value->CLASIFICACION_RIESGO_EPP)) {
+
+                        $jsonClasificacion = json_decode($value->CLASIFICACION_RIESGO_EPP, true);
+
+                        if (is_array($jsonClasificacion) && count($jsonClasificacion) > 0) {
+
+                            $listaClasificaciones = [];
+
+                            foreach ($jsonClasificacion as $item) {
+
+                                $idClasificacion = $item['CLASIFICACION_RIESGO_CAT'] ?? null;
+
+                                if ($idClasificacion && isset($clasificaciones[$idClasificacion])) {
+                                    $listaClasificaciones[] = $clasificaciones[$idClasificacion];
+                                }
+                            }
+
+                            if (count($listaClasificaciones) > 0) {
+
+                                $value['TEXTO_CLASIFICIACION_RIESGO'] =
+                                    '<ul style="margin:0; padding-left:18px;">' .
+                                    collect($listaClasificaciones)
+                                    ->unique()
+                                    ->map(fn($c) => "<li>{$c}</li>")
+                                    ->implode('') .
+                                    '</ul>';
+                            }
+                        }
+                    }
+
+
+
+                    $value['ID_CAT_EPP'] = $value->ID_CAT_EPP;
+                    $value['ACTIVO'] = $value->ACTIVO;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_epp();"><i class="fa fa-pencil"></i></button>';
+
+                    $value->FOTO_EPP_TABLA = '<img src="/vereppfoto/' . $value->ID_CAT_EPP . '" alt="" class="img-fluid" width="130">';
+
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_CAT_EPP . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_CAT_EPP . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+
+            case 2:
+                $lista = catregionanatomicaModel::all();
+
+                foreach ($lista as $key => $value) {
+                    $value['ID_REGION_ANATOMICA'] = $value->ID_REGION_ANATOMICA;
+                    $value['NOMBRE_REGION'] = $value->NOMBRE_REGION;
+                    $value['ACTIVO'] = $value->ACTIVO;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_regionanatomica();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_REGION_ANATOMICA . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_REGION_ANATOMICA . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+            case 3:
+                $lista = catclaveyeppModel::all();
+
+                foreach ($lista as $value) {
+
+                    $region = catregionanatomicaModel::find($value->REGION_ANATOMICA_ID);
+
+                    if ($region) {
+                        $value['REGION_ANATOMICA_NOMBRE'] =
+                            $region->ID_REGION_ANATOMICA . ') ' . $region->NOMBRE_REGION;
+                    } else {
+                        $value['REGION_ANATOMICA_NOMBRE'] = 'N/A';
+                    }
+
+                    $value['CLAVE_EPP'] = $value->CLAVE . ' - ' . $value->EPP;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_claveyepp();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_CLAVE_EPP . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_CLAVE_EPP . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+
+            case 4:
+                $lista = catmarcaseppModel::all();
+
+                foreach ($lista as $key => $value) {
+                    $value['ID_MARCAS_EPP'] = $value->ID_MARCAS_EPP;
+                    $value['NOMBRE_MARCA'] = $value->NOMBRE_MARCA;
+                    $value['ACTIVO'] = $value->ACTIVO;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_marcas();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_MARCAS_EPP . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_MARCAS_EPP . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+
+            case 5:
+                $lista = catnormasnacionalesModel::all();
+
+                $entidad = catentidadeseppModel::pluck('NOMBRE_ENTIDAD', 'ID_ENTIDAD_EPP')->toArray();
+
+
+
+                foreach ($lista as $key => $value) {
+
+                    $identidad= $value->ENTIDAD_NACIONALES;
+                    $value['ENTIDAD_TEXTO'] = $entidad[$identidad] ?? 'SIN ENTIDAD';
+
+                    $value['ID_NORMAS_NACIONALES'] = $value->ID_NORMAS_NACIONALES;
+                    $value['NOMBRE_NORMA_NACIONALES'] = $value->NOMBRE_NORMA_NACIONALES;
+                    $value['DESCRIPCION_NORMA_NACIONALES'] = $value->DESCRIPCION_NORMA_NACIONALES;
+                    $value['ACTIVO'] = $value->ACTIVO;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_normasnacionales();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_NORMAS_NACIONALES . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_NORMAS_NACIONALES . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+
+            case 6:
+                $lista = catnormasinternacionalesModel::all();
+
+                $entidad = catentidadeseppModel::pluck('NOMBRE_ENTIDAD', 'ID_ENTIDAD_EPP')->toArray();
+
+                foreach ($lista as $key => $value) {
+
+                    $identidad = $value->ENTIDAD_INTERNACIONALES;
+                    $value['ENTIDAD_TEXTO'] = $entidad[$identidad] ?? 'SIN ENTIDAD';
+
+                    $value['ID_NORMAS_INTERNACIONALES'] = $value->ID_NORMAS_INTERNACIONALES;
+                    $value['NOMBRE_NORMA_INTERNACIONALES'] = $value->NOMBRE_NORMA_INTERNACIONALES;
+                    $value['DESCRIPCION_NORMA_INTERNACIONALES'] = $value->DESCRIPCION_NORMA_INTERNACIONALES;
+                    $value['ACTIVO'] = $value->ACTIVO;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_normasinternacionales();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_NORMAS_INTERNACIONALES . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_NORMAS_INTERNACIONALES . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+            case 7:
+                $lista = cattallaseppModel::all();
+
+                foreach ($lista as $key => $value) {
+                    $value['ID_TALLA'] = $value->ID_TALLA;
+                    $value['NOMBRE_TALLA'] = $value->NOMBRE_TALLA;
+                    $value['ACTIVO'] = $value->ACTIVO;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_tallas();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_TALLA . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_TALLA . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+            case 8:
+                $lista = catclasificacionriesgoModel::all();
+
+                foreach ($lista as $key => $value) {
+                    $value['ID_CLASIFICACION_RIESGO'] = $value->ID_CLASIFICACION_RIESGO;
+                    $value['CLASIFICACION_RIESGO'] = $value->CLASIFICACION_RIESGO;
+                    $value['ACTIVO'] = $value->ACTIVO;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_clasificacionriesgo();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_CLASIFICACION_RIESGO . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_CLASIFICACION_RIESGO . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+            case 9:
+                $lista = cattipousoModel::all();
+
+                foreach ($lista as $key => $value) {
+                    $value['ID_TIPO_USO'] = $value->ID_TIPO_USO;
+                    $value['TIPO_USO'] = $value->TIPO_USO;
+                    $value['ACTIVO'] = $value->ACTIVO;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_tipouso();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_TIPO_USO . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_TIPO_USO . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+            case 11:
+                $lista = catentidadeseppModel::all();
+
+                foreach ($lista as $key => $value) {
+                    $value['ID_ENTIDAD_EPP'] = $value->ID_ENTIDAD_EPP;
+                    $value['NOMBRE_ENTIDAD'] = $value->NOMBRE_ENTIDAD;
+                    $value['ENTIDAD_DESCRIPCION'] = $value->ENTIDAD_DESCRIPCION;
+
+                    $value['ACTIVO'] = $value->ACTIVO;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_entidades();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_ENTIDAD_EPP . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_ENTIDAD_EPP . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+            case 12:
+                $lista = catcertificacioneppModel::all();
+
+                foreach ($lista as $key => $value) {
+                    $value['ID_CERTIFICACIONES_EPP'] = $value->ID_CERTIFICACIONES_EPP;
+                    $value['NOMBRE_CERTIFICACION'] = $value->NOMBRE_CERTIFICACION;
+                    $value['DESCRIPCION_CERTIFICACION'] = $value->DESCRIPCION_CERTIFICACION;
+
+                    $value['ACTIVO'] = $value->ACTIVO;
+
+
+
+                    $value->PICTOGRAMA = '<img src="/verepictograma/' . $value->ID_CERTIFICACIONES_EPP . '" alt="" class="img-fluid" width="130">';
+
+
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_certificaciones();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_CERTIFICACIONES_EPP . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_CERTIFICACIONES_EPP . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+            case 13:
+                $lista = catpartexpuestaeppModel::all();
+
+                foreach ($lista as $key => $value) {
+                    $value['ID_PARTE_EXPUESTO'] = $value->ID_PARTE_EXPUESTO;
+                    $value['NOMBRE_PARTE'] = $value->NOMBRE_PARTE;
+
+                    $value['ACTIVO'] = $value->ACTIVO;
+                    $value['boton_editar'] = '<button type="button" class="btn btn-danger btn-circle" onclick="editar_cat_partesexpuesta();"><i class="fa fa-pencil"></i></button>';
+
+                    if ($value->ACTIVO == 1) {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" checked onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_PARTE_EXPUESTO . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    } else {
+                        $value['CheckboxEstado'] = '<div class="switch"><label><input type="checkbox" onclick="estado_registro(' . $num_catalogo . ', ' . $value->ID_PARTE_EXPUESTO . ', this);"><span class="lever switch-col-light-blue"></span></label></div>';
+                    }
+                }
+                break;
+
+
+        }
+
+        // Respuesta
+        $catalogo['data']  = $lista;
+        return response()->json($catalogo);
+    }
+
+
+    public function vereppfoto($epp_id)
+    {
+        $foto = catepps::findOrFail($epp_id);
+        return Storage::response($foto->FOTO_EPP);
+    }
+
+
+    public function verepictograma($certificacion_id)
+    {
+        $foto = catcertificacioneppModel::findOrFail($certificacion_id);
+        return Storage::response($foto->FOTO_CERTIFICACION);
+    }
+
+
+
+
+    public function eppcatalogodesactiva($catalogo, $registro, $estado)
+    {
+        try {
+            switch (($catalogo + 0)) {
+                case 1:
+                    $tabla = catepps::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 2:
+                    $tabla = catregionanatomicaModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 3:
+                    $tabla = catclaveyeppModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 4:
+                    $tabla = catmarcaseppModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 5:
+                    $tabla = catnormasnacionalesModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 6:
+                    $tabla = catnormasinternacionalesModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 7:
+                    $tabla = cattallaseppModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 8:
+                    $tabla = catclasificacionriesgoModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 9:
+                    $tabla = cattipousoModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 11:
+                    $tabla = catentidadeseppModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 12:
+                    $tabla = catcertificacioneppModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                case 13:
+                    $tabla = catpartexpuestaeppModel::findOrFail($registro);
+                    $tabla->update(['ACTIVO' => $estado]);
+                    break;
+                    
+            }
+
+            if ($estado == 0) {
+                // Mensaje
+                $dato["msj"] = 'Registro desactivado correctamente';
+            } else {
+                // Mensaje
+                $dato["msj"] = 'Registro activado correctamente';
+            }
+
+            // Respuesta
+            return response()->json($dato);
+        } catch (Exception $e) {
+            // Respuesta
+            $dato["msj"] = 'Error al modificar la información ' . $e->getMessage();
+            return response()->json($dato);
+        }
+    }
+
+
+    /////// DOCUMENTOS EPP
+
+
+    public function tablaeppdocumento($epp_id)
+    {
+        try {
+
+            $documentos = documentoseppModel::where('EPP_ID', $epp_id)
+                ->where('ACTIVO', 1)
+                ->get();
+
+            $numero_registro = 0;
+
+            foreach ($documentos  as $key => $value) {
+                $numero_registro += 1;
+                $value->numero_registro = $numero_registro;
+
+                // Valida perfil
+                if (auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador'])) {
+                    $value->perfil = 1;
+                } else {
+                    $value->perfil = 0;
+                }
+
+                if ($value->DOCUMENTO_TIPO == 1) {
+                    $value->TIPO_DOCUMENTO_TEXTO = "Documento";
+                } elseif ($value->DOCUMENTO_TIPO == 2) {
+                    $value->TIPO_DOCUMENTO_TEXTO = "Imagen";
+                } else {
+                    $value->TIPO_DOCUMENTO_TEXTO = "N/A";
+                }
+
+                $value->FOTO_TABLA_DOCUMENTO = '<img src="/vereppfotodocumento/' . $value->ID_EPP_DOCUMENTO . '" alt="" class="img-fluid" width="50" height="60">';
+
+
+                // Botones
+                if (auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador'])) {
+                    $value->accion_activa = 1;
+                    $value->boton_editar = '<button type="button" class="btn btn-warning btn-circle"><i class="fa fa-pencil"></i></button>';
+                    $value->boton_eliminar = '<button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash"></i></button>';
+                } else {
+                    $value->accion_activa = 1;
+                    $value->boton_editar = '<button type="button" class="btn btn-success btn-circle"><i class="fa fa-eye"></i></button>';
+                    $value->boton_eliminar = '<button type="button" class="btn btn-secondary btn-circle"><i class="fa fa-ban"></i></button>';
+                }
+            }
+
+            $listado['data'] = $documentos;
+            return response()->json($listado);
+        } catch (exception $e) {
+            $listado['data'] = 0;
+            return response()->json($listado);
+        }
+    }
+
+
+    public function vereeppdocumentopdf($documento_id)
+    {
+        $documento = documentoseppModel::findOrFail($documento_id);
+        return Storage::response($documento->EPP_PDF);
+    }
+
+
+    public function vereppfotodocumento($epp_id)
+    {
+        $foto = documentoseppModel::findOrFail($epp_id);
+        return Storage::response($foto->FOTO_DOCUMENTO);
+    }
+
+
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
+    public function store(Request $request)
+    {
+        try {
+            switch (($request['catalogo'] + 0)) {
+
+              
+
+                case 1:
+
+                    try {
+
+                      
+                        if ($request['ID_CAT_EPP'] == 0) {
+
+                    
+                            $request['TALLAS_EPP'] = isset($request['TALLAS_EPP']) ? $request['TALLAS_EPP'] : null;
+
+                            $request['PARTE_EXPUESTA_EPP'] = isset($request['PARTE_EXPUESTA_EPP']) ? $request['PARTE_EXPUESTA_EPP'] : null;
+
+                            $catalogo = catepps::create($request->except('FOTO_EPP'));
+
+                         
+                            if ($request->hasFile('FOTO_EPP')) {
+
+                                $file = $request->file('FOTO_EPP');
+
+                                $folder = "cat_epp/{$catalogo->ID_CAT_EPP}/FOTO_EPP";
+                                $filename = "foto_epp." . $file->getClientOriginalExtension();
+
+                                $ruta = $file->storeAs($folder, $filename);
+
+                                $catalogo->FOTO_EPP = $ruta;
+                                $catalogo->save();
+
+                                Log::info("FOTO EPP GUARDADA:", ['ruta' => $ruta]);
+                            }
+                        }
+
+                      
+                        else {
+
+                            $catalogo = catepps::findOrFail($request['ID_CAT_EPP']);
+
+                          
+                            if (!isset($request['TALLAS_EPP']) || empty($request['TALLAS_EPP'])) {
+                                $request['TALLAS_EPP'] = null;
+                            }
+
+                            if (!isset($request['PARTE_EXPUESTA_EPP']) || empty($request['PARTE_EXPUESTA_EPP'])) {
+                                $request['PARTE_EXPUESTA_EPP'] = null;
+                            }
+
+                            if ($request->hasFile('FOTO_EPP')) {
+
+
+                                if ($catalogo->FOTO_EPP && Storage::exists($catalogo->FOTO_EPP)) {
+                                    Storage::delete($catalogo->FOTO_EPP);
+                                }
+
+                                $file = $request->file('FOTO_EPP');
+                                $folder = "cat_epp/{$catalogo->ID_CAT_EPP}/FOTO_EPP";
+                                $filename = "foto_epp." . $file->getClientOriginalExtension();
+
+                                $ruta = $file->storeAs($folder, $filename);
+
+                                $catalogo->FOTO_EPP = $ruta;
+                            }
+
+                            $catalogo->update($request->except('FOTO_EPP'));
+                            $catalogo->save();
+                        }
+
+                      
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Guardado correctamente'
+                        ]);
+                    } catch (\Exception $e) {
+
+                        Log::error("ERROR AL GUARDAR EPP:", [
+                            'error' => $e->getMessage(),
+                            'line'  => $e->getLine(),
+                            'file'  => $e->getFile(),
+                            'trace' => $e->getTraceAsString(),
+                            'request' => $request->all()
+                        ]);
+
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Error al guardar',
+                            'error' => $e->getMessage(),
+                            'line'  => $e->getLine(),
+                            'file'  => $e->getFile()
+                        ], 500);
+                    }
+
+                    break;
+
+
+
+                case 2:
+                    if ($request['ID_REGION_ANATOMICA'] == 0) {
+                        $catalogo = catregionanatomicaModel::create($request->all());
+                    } else {
+                        $catalogo = catregionanatomicaModel::findOrFail($request['ID_REGION_ANATOMICA']);
+                        $catalogo->update($request->all());
+                    }
+                    break;
+                case 3:
+                    if ($request['ID_CLAVE_EPP'] == 0) {
+                        $catalogo = catclaveyeppModel::create($request->all());
+                    } else {
+                        $catalogo = catclaveyeppModel::findOrFail($request['ID_CLAVE_EPP']);
+                        $catalogo->update($request->all());
+                    }
+                    break;
+                case 4:
+                    if ($request['ID_MARCAS_EPP'] == 0) {
+                        $catalogo = catmarcaseppModel::create($request->all());
+                    } else {
+                        $catalogo = catmarcaseppModel::findOrFail($request['ID_MARCAS_EPP']);
+                        $catalogo->update($request->all());
+                    }
+                    break;
+                case 5:
+                    if ($request['ID_NORMAS_NACIONALES'] == 0) {
+                        $catalogo = catnormasnacionalesModel::create($request->all());
+                    } else {
+                        $catalogo = catnormasnacionalesModel::findOrFail($request['ID_NORMAS_NACIONALES']);
+                        $catalogo->update($request->all());
+                    }
+                    break;
+                case 6:
+                    if ($request['ID_NORMAS_INTERNACIONALES'] == 0) {
+                        $catalogo = catnormasinternacionalesModel::create($request->all());
+                    } else {
+                        $catalogo = catnormasinternacionalesModel::findOrFail($request['ID_NORMAS_INTERNACIONALES']);
+                        $catalogo->update($request->all());
+                    }
+                    break;
+                case 7:
+                    if ($request['ID_TALLA'] == 0) {
+                        $catalogo = cattallaseppModel::create($request->all());
+                    } else {
+                        $catalogo = cattallaseppModel::findOrFail($request['ID_TALLA']);
+                        $catalogo->update($request->all());
+                    }
+                    break;
+                case 8:
+                    if ($request['ID_CLASIFICACION_RIESGO'] == 0) {
+                        $catalogo = catclasificacionriesgoModel::create($request->all());
+                    } else {
+                        $catalogo = catclasificacionriesgoModel::findOrFail($request['ID_CLASIFICACION_RIESGO']);
+                        $catalogo->update($request->all());
+                    }
+                    break;
+                case 9:
+                    if ($request['ID_TIPO_USO'] == 0) {
+                        $catalogo = cattipousoModel::create($request->all());
+                    } else {
+                        $catalogo = cattipousoModel::findOrFail($request['ID_TIPO_USO']);
+                        $catalogo->update($request->all());
+                    }
+                    break;
+                case 10:
+
+                    try {
+
+                        if ($request['ID_EPP_DOCUMENTO'] == 0) {
+
+                            $catalogo = documentoseppModel::create($request->except(['EPP_PDF', 'FOTO_DOCUMENTO']));
+                        } else {
+
+                            $catalogo = documentoseppModel::findOrFail($request['ID_EPP_DOCUMENTO']);
+                            $catalogo->update($request->except(['EPP_PDF', 'FOTO_DOCUMENTO']));
+                        }
+
+                        $baseFolder = "cat_epp/{$request->EPP_ID}";
+
+                       
+                        if ($request->DOCUMENTO_TIPO == 1 && $request->hasFile('EPP_PDF')) {
+
+                            if ($catalogo->EPP_PDF && Storage::exists($catalogo->EPP_PDF)) {
+                                Storage::delete($catalogo->EPP_PDF);
+                            }
+
+                            $file = $request->file('EPP_PDF');
+
+                            $folder = "{$baseFolder}/Documento/{$catalogo->ID_EPP_DOCUMENTO}";
+                            $filename = "documento." . $file->getClientOriginalExtension();
+
+                            $ruta = $file->storeAs($folder, $filename);
+
+                            $catalogo->EPP_PDF = $ruta;
+                            $catalogo->save();
+
+                        }
+
+                        if ($request->DOCUMENTO_TIPO == 2 && $request->hasFile('FOTO_DOCUMENTO')) {
+
+                            if ($catalogo->FOTO_DOCUMENTO && Storage::exists($catalogo->FOTO_DOCUMENTO)) {
+                                Storage::delete($catalogo->FOTO_DOCUMENTO);
+                            }
+
+                            $file = $request->file('FOTO_DOCUMENTO');
+
+                            $folder = "{$baseFolder}/Imagen/{$catalogo->ID_EPP_DOCUMENTO}";
+                            $filename = "imagen." . $file->getClientOriginalExtension();
+
+                            $ruta = $file->storeAs($folder, $filename);
+
+                            $catalogo->FOTO_DOCUMENTO = $ruta;
+                            $catalogo->save();
+
+                        }
+                    } catch (\Exception $e) {
+
+                    }
+                    break;
+                case 11:
+                    if ($request['ID_ENTIDAD_EPP'] == 0) {
+                        $catalogo = catentidadeseppModel::create($request->all());
+                    } else {
+                        $catalogo = catentidadeseppModel::findOrFail($request['ID_ENTIDAD_EPP']);
+                        $catalogo->update($request->all());
+                    }
+                    break;
+
+                case 12:
+
+                    try {
+
+
+                        if ($request['ID_CERTIFICACIONES_EPP'] == 0) {
+
+                            $catalogo = catcertificacioneppModel::create($request->except('FOTO_CERTIFICACION'));
+
+
+                            if ($request->hasFile('FOTO_CERTIFICACION')) {
+
+                                $file = $request->file('FOTO_CERTIFICACION');
+
+                                $folder = "cat_certificacionesepp/{$catalogo->ID_CERTIFICACIONES_EPP}/FOTO_CERTIFICACION";
+                                $filename = "foto_pictograma." . $file->getClientOriginalExtension();
+
+                                $ruta = $file->storeAs($folder, $filename);
+
+                                $catalogo->FOTO_CERTIFICACION = $ruta;
+                                $catalogo->save();
+
+                            }
+                        } else {
+
+                            $catalogo = catcertificacioneppModel::findOrFail($request['ID_CERTIFICACIONES_EPP']);
+
+                            if ($request->hasFile('FOTO_CERTIFICACION')) {
+
+
+                                if ($catalogo->FOTO_CERTIFICACION && Storage::exists($catalogo->FOTO_CERTIFICACION)) {
+                                    Storage::delete($catalogo->FOTO_CERTIFICACION);
+                                }
+
+                                $file = $request->file('FOTO_CERTIFICACION');
+                                $folder = "cat_certificacionesepp/{$catalogo->ID_CERTIFICACIONES_EPP}/FOTO_CERTIFICACION";
+                                $filename = "foto_pictograma." . $file->getClientOriginalExtension();
+
+                                $ruta = $file->storeAs($folder, $filename);
+
+                                $catalogo->FOTO_CERTIFICACION = $ruta;
+                            }
+
+                            $catalogo->update($request->except('FOTO_CERTIFICACION'));
+                            $catalogo->save();
+                        }
+
+
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Guardado correctamente'
+                        ]);
+                    } catch (\Exception $e) {
+
+                        Log::error("ERROR AL GUARDAR EPP:", [
+                            'error' => $e->getMessage(),
+                            'line'  => $e->getLine(),
+                            'file'  => $e->getFile(),
+                            'trace' => $e->getTraceAsString(),
+                            'request' => $request->all()
+                        ]);
+
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Error al guardar',
+                            'error' => $e->getMessage(),
+                            'line'  => $e->getLine(),
+                            'file'  => $e->getFile()
+                        ], 500);
+                    }
+
+                    break;
+                case 13:
+                    if ($request['ID_PARTE_EXPUESTO'] == 0) {
+                        $catalogo = catpartexpuestaeppModel::create($request->all());
+                    } else {
+                        $catalogo = catpartexpuestaeppModel::findOrFail($request['ID_PARTE_EXPUESTO']);
+                        $catalogo->update($request->all());
+                    }
+                    break;
+
+
+                }
+
+            $dato["code"] = 1;
+            $dato["msj"] = 'Información guardada correctamente';
+            return response()->json($dato);
+        } catch (Exception $e) {
+            return response()->json('Error al guardar informacion');
+        }
+    }
+}

@@ -1,0 +1,214 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
+@import url(../scss/icons/font-awesome/css/font-awesome.min.css);
+@import url(../scss/icons/simple-line-icons/css/simple-line-icons.css);
+@import url(../scss/icons/weather-icons/css/weather-icons.min.css);
+@import url(../scss/icons/linea-icons/linea.css);
+@import url(../scss/icons/themify-icons/themify-icons.css);
+@import url(../scss/icons/flag-icon-css/flag-icon.min.css);
+@import url(../scss/icons/material-design-iconic-font/css/materialdesignicons.min.css);
+
+body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+  
+}
+
+.user {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.circle-one {
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background-color: #e3f0ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+    padding: 18px;
+    transition: transform 0.3s ease;
+}
+
+
+
+.circle-one:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 17px rgba(255, 255, 255, 0.6);
+
+}
+
+.circle-two {
+    width: 120px;
+    height: 195px;
+    border-radius: 50%;
+    background-color: #e3f0ff;
+    border: 5px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1px;
+    
+}
+
+.logos {
+    width: 140px;
+    height: 105px;
+}
+
+
+.box-logo{
+    position: absolute;
+    margin-left: 45%;
+    margin-top: 20%;
+}
+
+.logo{
+    width: 150px;
+}
+
+.titulos{
+    display: flex;
+    color: #fff;
+    /* font-weight: bold; */
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+a {
+    text-decoration: none !important;
+}
+
+
+
+/* ================== RESPONSIVE ================== */
+
+/* Ajustes generales en móviles */
+@media (max-width: 991.98px) {
+    .col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* Centrar títulos y usuario */
+    #typing-text {
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .user {
+        margin: 0 auto;
+        display: block;
+    }
+
+    /* Ajustar tamaños de círculos en pantallas medianas */
+    .circle-one {
+        width: 180px;
+        height: 180px;
+        padding: 12px;
+    }
+
+    .circle-two {
+        width: 90px;
+        height: 140px;
+    }
+
+    .logos {
+        width: 100px;
+        height: auto;
+    }
+
+    h1.ld-breath {
+        font-size: 120px !important;
+        margin: 20px !important;
+    }
+
+    /* Logo central */
+    .box-logo {
+        position: static;
+        margin: 20px auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .logo {
+        width: 120px;
+    }
+
+    /* Ajustar imágenes decorativas */
+    img[style*="Group 27.png"],
+    img[style*="Group 28.png"] {
+        max-width: 200px !important;
+        margin: 20px auto !important;
+        display: block;
+    }
+
+    /* Textos girados en vertical (Results In Performance) */
+    .col-3[style*="rotate(-90deg)"] {
+        transform: none !important;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}
+
+/* En móviles pequeños (menos de 576px) */
+@media (max-width: 575.98px) {
+    .circle-one {
+        width: 150px;
+        height: 150px;
+        padding: 8px;
+    }
+
+    .circle-two {
+        width: 70px;
+        height: 110px;
+    }
+
+    .logos {
+        width: 80px;
+        height: auto;
+    }
+
+    h1.ld-breath {
+        font-size: 90px !important;
+        margin: 10px !important;
+    }
+
+    .titulos {
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .logo {
+        width: 90px;
+    }
+}
+
+
+
+
+/* ======== Ajuste a pantalla completa sin romper diseño ======== */
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container-fluid {
+    height: 100%;
+}
+
+.container-fluid>.row {
+    height: 100%;
+}
+
+.col-6 {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
