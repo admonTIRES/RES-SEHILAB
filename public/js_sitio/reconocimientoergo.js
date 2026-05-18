@@ -4820,38 +4820,171 @@ function activarLogicaFichas() {
 
 
 
+
+
 function cargarGraficas() {
 
     $.get('/getGraficaErgo/' + recsensorial, function (data) {
+
         generarGraficas(data);
+
     });
 
 }
 
 
 
+
+
 function generarGraficas(data) {
+
+    //------------------------------------------
+    // LIMPIAR
+    //------------------------------------------
 
     $('#contenedorGraficas').empty();
 
+
+
+
+    //------------------------------------------
+    // CONTENEDOR
+    //------------------------------------------
+
+    $('#contenedorGraficas').css({
+
+        width: '100%',
+
+        display: 'flex',
+
+        flexDirection: 'column',
+
+        alignItems: 'center',
+
+        gap: '100px'
+
+    });
+
+
+
+
+    //------------------------------------------
+    // RECORRER
+    //------------------------------------------
+
     data.forEach(function (item, index) {
 
-        let id = 'chart_' + index;
+        let html = `
 
-        $('#contenedorGraficas').append(`
+            <div style="
+                width:100%;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+            ">
 
-            <div style="position:relative; width:500px; height:300px; margin:20px auto;">
+                <!-- FILA -->
+                <div style="
+                    width:100%;
+                    display:flex;
+                    justify-content:center;
+                    align-items:flex-start;
+                    gap:40px;
+                    flex-wrap:nowrap;
+                ">
 
-                <div id="${id}" style="width:100%; height:100%;"></div>
+                    <div 
+                        id="chart_p1_${index}"
+                        style="
+                            width:430px;
+                            height:500px;
+                        ">
+                    </div>
+
+                    <div 
+                        id="chart_p2_${index}"
+                        style="
+                            width:430px;
+                            height:500px;
+                        ">
+                    </div>
+
+                    <div 
+                        id="chart_p3_${index}"
+                        style="
+                            width:430px;
+                            height:500px;
+                        ">
+                    </div>
+
+                </div>
 
             </div>
 
-        `);
+        `;
+
+
+
+
+        //------------------------------------------
+        // INSERTAR HTML
+        //------------------------------------------
+
+        $('#contenedorGraficas').append(html);
+
+
+
+
+        //------------------------------------------
+        // GRAFICA 1
+        //------------------------------------------
 
         crearGrafica(
-            id,
-            item.RESULTADO,
-            item.NOMBRE_CATEGORIA_ERGO
+
+            'chart_p1_' + index,
+
+            item.P1_RESULTADO,
+
+            '1. Durante su jornada laboral\n¿levanta, baja o manipula objetos\nmayores a 3 Kg?'
+
+           
+
+        );
+
+
+
+
+        //------------------------------------------
+        // GRAFICA 2
+        //------------------------------------------
+
+        crearGrafica(
+
+            'chart_p2_' + index,
+
+            item.P2_RESULTADO,
+
+            '2. ¿Realiza actividades manuales de\ncarga más de una vez al día?',
+
+             item.NOMBRE_CATEGORIA_ERGO
+
+        );
+
+
+
+
+        //------------------------------------------
+        // GRAFICA 3
+        //------------------------------------------
+
+        crearGrafica(
+
+            'chart_p3_' + index,
+
+            item.P3_RESULTADO,
+
+            '3. ¿Levanta, transporta, empuja o\nestiba materiales como parte de su\ntrabajo?'
+
         );
 
     });
@@ -4860,20 +4993,52 @@ function generarGraficas(data) {
 
 
 
-function crearGrafica(id, resultado, nombreCategoria) {
+
+
+function crearGrafica(
+    id,
+    resultado,
+    textoPregunta,
+    nombreCategoria = ''
+) {
 
     resultado = resultado.trim().toUpperCase();
+
+
+
+
+    //-----------------------------------
+    // INSTANCIA
+    //-----------------------------------
 
     var chart = echarts.init(
         document.getElementById(id)
     );
 
+
+
+
+    //-----------------------------------
+    // VALOR
+    //-----------------------------------
+
     let valor = resultado === 'SI'
         ? 25
         : 75;
-    
-    
+
+
+
+
+    //-----------------------------------
+    // CONFIGURACION
+    //-----------------------------------
+
     chart.setOption({
+
+        animation: false,
+
+
+
 
         //-----------------------------------
         // TEXTOS SUPERIORES
@@ -4881,48 +5046,109 @@ function crearGrafica(id, resultado, nombreCategoria) {
 
         graphic: [
 
+            //-----------------------------------
+            // CATEGORIA
+            //-----------------------------------
+
+            ...(nombreCategoria ? [
+
+                {
+
+                    type: 'text',
+
+                    left: 'center',
+
+                    top: 10,
+
+                    z: 100,
+
+                    style: {
+
+                        text: nombreCategoria,
+
+                        fill: '#000',
+
+                        fontSize: 22,
+
+                        fontWeight: 'bold',
+
+                        textAlign: 'center'
+
+                    }
+
+                }
+
+            ] : []),
+
+
+
+
+            //-----------------------------------
+            // SI
+            //-----------------------------------
+
             {
+
                 type: 'text',
 
-                left: '22%',
+                left: '17%',
 
-                top: '12%',
+                top: '17%',
+
+                z: 100,
 
                 style: {
 
                     text: 'Sí',
 
-                    fill: '#2C2A29',
+                    fill: '#000',
 
                     fontSize: 18,
 
                     fontWeight: 'bold'
+
                 }
+
             },
 
+
+
+
+            //-----------------------------------
+            // NO
+            //-----------------------------------
+
             {
+
                 type: 'text',
 
-                left: '72%',
+                left: '73%',
 
-                top: '12%',
+                top: '17%',
+
+                z: 100,
 
                 style: {
 
                     text: 'No',
 
-                    fill: '#2C2A29',
+                    fill: '#000',
 
                     fontSize: 18,
 
                     fontWeight: 'bold'
+
                 }
+
             }
 
         ],
 
+
+
+
         //-----------------------------------
-        // GRAFICA
+        // SERIES
         //-----------------------------------
 
         series: [
@@ -4939,28 +5165,49 @@ function crearGrafica(id, resultado, nombreCategoria) {
 
                 max: 100,
 
-                radius: '90%',
 
-                center: ['50%', '65%'],
 
                 //-----------------------------------
-                // COLORES
+                // TAMAÑO
+                //-----------------------------------
+
+                radius: '78%',
+
+
+
+                //-----------------------------------
+                // POSICION
+                //-----------------------------------
+
+                center: ['50%', '62%'],
+
+
+
+
+                //-----------------------------------
+                // LINEA
                 //-----------------------------------
 
                 axisLine: {
 
                     lineStyle: {
 
-                        width: 20,
+                        width: 34,
 
                         color: [
 
-                            [0.5, 'green'],
+                            [0.5, '#dc3545'],
 
-                            [1, 'red']
+                            [1, '#28a745']
+
                         ]
+
                     }
+
                 },
+
+
+
 
                 //-----------------------------------
                 // PUNTERO
@@ -4968,11 +5215,20 @@ function crearGrafica(id, resultado, nombreCategoria) {
 
                 pointer: {
 
+                    width: 8,
+
+                    length: '55%',
+
                     itemStyle: {
 
-                        color: 'black'
+                        color: '#000'
+
                     }
+
                 },
+
+
+
 
                 //-----------------------------------
                 // OCULTAR
@@ -4998,27 +5254,42 @@ function crearGrafica(id, resultado, nombreCategoria) {
                     show: false
                 },
 
+
+
+
                 //-----------------------------------
-                // TEXTO INFERIOR
+                // PREGUNTA
                 //-----------------------------------
 
                 detail: {
 
-                    formatter: nombreCategoria,
+                    formatter: function () {
 
-                    fontSize: 18,
+                        return textoPregunta;
+
+                    },
+
+                    fontSize: 10,
 
                     fontWeight: 'bold',
 
-                    offsetCenter: [0, '60%'],
+                    lineHeight: 17,
+
+                    offsetCenter: [0, '88%'],
 
                     color: '#000',
 
-                    width: 300
+                    width: 280,
+
+                    overflow: 'truncate'
+
                 },
 
+
+
+
                 //-----------------------------------
-                // VALOR
+                // DATA
                 //-----------------------------------
 
                 data: [
@@ -5028,10 +5299,18 @@ function crearGrafica(id, resultado, nombreCategoria) {
                     }
 
                 ]
+
             }
+
         ]
+
     });
+
 }
+
+
+
+
 
 
 
@@ -5202,7 +5481,6 @@ function cargarDatosInformesRecoErgo()
 
 }
 
-
 $("#form_informe_portada").on("submit", function(e)
 {
     e.preventDefault();
@@ -5343,8 +5621,22 @@ function cargarDatosGeneralesInformeReco()
 
 
 
-		$('#INFORME_RESPONSABLE2CARGO')
-			.val(response.INFORME_RESPONSABLE2CARGO);
+		    $('#INFORME_RESPONSABLE2CARGO')
+                .val(response.INFORME_RESPONSABLE2CARGO);
+            
+            
+            $('#INTRODUCCION_GRAFICASNOM036')
+                .val(response.INTRODUCCION_GRAFICASNOM036);
+            
+            
+            $('#CONCLUSION_GRAFICASNOM036')
+                .val(response.CONCLUSION_GRAFICASNOM036);
+            
+            
+            
+            
+            
+            
 					//-----------------------------------
             // IMAGEN UBICACION
             //-----------------------------------
@@ -5677,12 +5969,7 @@ else {
 }
 
 
-
 /////////////// INTRODUCCION  //////////////
-
-
-
-
 
 $('#SELECT_INTRODUCCION').on('change', function () {
 
@@ -5693,8 +5980,6 @@ $('#SELECT_INTRODUCCION').on('change', function () {
     $('#INFORME_INTRODUCCION').val(introduccion);
 
 });
-
-
 
 $("#form_informe_introduccion").on("submit", function(e)
 {
@@ -6295,7 +6580,10 @@ function tablaReporteCategoriasErgo()
 
             columns: [
 
-                
+                {
+                    data: "PT_CATEGORIA",
+                    defaultContent: "-"
+                },
 
                 {
                     data: "NOMBRE_CATEGORIA_ERGO",
@@ -6759,6 +7047,250 @@ $("#form_informe_responsablesinforme").on(
 
 
 
+//////// INTRODUCCION  6.1
+
+
+$("#form_preguntas-nom-036").on(
+    "submit",
+    function(e)
+{
+
+    e.preventDefault();
+
+
+
+    let formData = new FormData(this);
+
+
+
+    formData.append(
+        'RECO_ID',
+        recsensorial
+    );
+
+
+
+    $.ajax({
+
+        url:
+            '/guardarIntroduccionGraficasNom036',
+
+        type: 'POST',
+
+        data: formData,
+
+        cache: false,
+
+        contentType: false,
+
+        processData: false,
+
+
+
+        headers: {
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+        },
+
+
+
+        beforeSend: function()
+        {
+
+            $("#botonguardar_reporte_introduccionnom036")
+                .prop('disabled', true);
+
+
+            $("#botonguardar_reporte_introduccionnom036")
+                .html(
+                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
+                );
+
+        },
+
+
+
+        success: function(response)
+        {
+
+            Swal.fire({
+
+                icon: 'success',
+
+                title: 'Correcto',
+
+                text: response.msj,
+
+                timer: 2000,
+
+                showConfirmButton: false
+
+            });
+
+        },
+
+
+
+        error: function(xhr)
+        {
+
+            Swal.fire({
+
+                icon: 'error',
+
+                title: 'Error',
+
+                text:
+                    xhr.responseJSON.msj
+
+            });
+
+        },
+
+
+
+        complete: function()
+        {
+
+            $("#botonguardar_reporte_introduccionnom036")
+                .prop('disabled', false);
+
+
+            $("#botonguardar_reporte_introduccionnom036")
+                .html(
+                    'Guardar <i class="fa fa-save"></i>'
+                );
+
+        }
+
+    });
+
+    });
+
+
+/////// CONCLUSION 6.1
+
+
+$("#form_preguntas-analisis-036").on(
+    "submit",
+    function(e)
+{
+
+    e.preventDefault();
+
+
+
+    let formData = new FormData(this);
+
+
+
+    formData.append(
+        'RECO_ID',
+        recsensorial
+    );
+
+
+
+    $.ajax({
+
+        url:
+            '/guardarConclusionGraficasNom036',
+
+        type: 'POST',
+
+        data: formData,
+
+        cache: false,
+
+        contentType: false,
+
+        processData: false,
+
+
+
+        headers: {
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+        },
+
+
+
+        beforeSend: function()
+        {
+
+            $("#botonguardar_reporte_conclusionnom036")
+                .prop('disabled', true);
+
+
+            $("#botonguardar_reporte_conclusionnom036")
+                .html(
+                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
+                );
+
+        },
+
+
+
+        success: function(response)
+        {
+
+            Swal.fire({
+
+                icon: 'success',
+
+                title: 'Correcto',
+
+                text: response.msj,
+
+                timer: 2000,
+
+                showConfirmButton: false
+
+            });
+
+        },
+
+
+
+        error: function(xhr)
+        {
+
+            Swal.fire({
+
+                icon: 'error',
+
+                title: 'Error',
+
+                text:
+                    xhr.responseJSON.msj
+
+            });
+
+        },
+
+
+
+        complete: function()
+        {
+
+            $("#botonguardar_reporte_conclusionnom036")
+                .prop('disabled', false);
+
+
+            $("#botonguardar_reporte_conclusionnom036")
+                .html(
+                    'Guardar <i class="fa fa-save"></i>'
+                );
+
+        }
+
+    });
+
+});
+
+
 /////// versiones
 	
 
@@ -7168,20 +7700,145 @@ function validarEdicionRecoErgo()
 }
 
 
+
+
+
 // function descargarRevisionRecoErgo(
 //     RECO_ID
 // ) {
 
-//     window.open(
+//     //---------------------------------------
+//     // ARREGLO GRAFICAS
+//     //---------------------------------------
 
-//         '/descargarRevisionRecoErgo/' +
-//         RECO_ID,
+//     let graficas = [];
 
-//         '_blank'
+
+
+//     //---------------------------------------
+//     // RECORRER GRAFICAS
+//     //---------------------------------------
+
+//     $('#contenedorGraficas > div').each(function () {
+
+//         let chartDiv =
+//             $(this).find('[id^="chart_"]')[0];
+
+
+
+//         if (chartDiv) {
+
+//             let instancia =
+//                 echarts.getInstanceByDom(
+//                     chartDiv
+//                 );
+
+
+
+//             if (instancia) {
+
+//                 graficas.push({
+
+//                     imagen:
+//                         instancia.getDataURL({
+
+//                             type: 'png',
+
+//                             pixelRatio: 2,
+
+//                             backgroundColor: '#FFFFFF'
+
+//                         })
+
+//                 });
+
+//             }
+
+//         }
+
+//     });
+
+
+
+
+//     //---------------------------------------
+//     // FORM TEMPORAL
+//     //---------------------------------------
+
+//     let form = $('<form>', {
+
+//         action:
+//             '/descargarRevisionRecoErgo/' +
+//             RECO_ID,
+
+//         method:
+//             'POST',
+
+//         target:
+//             '_blank'
+
+//     });
+
+
+
+
+//     //---------------------------------------
+//     // TOKEN
+//     //---------------------------------------
+
+//     form.append(
+
+//         $('<input>', {
+
+//             type: 'hidden',
+
+//             name: '_token',
+
+//             value:
+//                 $('meta[name="csrf-token"]')
+//                 .attr('content')
+
+//         })
 
 //     );
 
+
+
+
+//     //---------------------------------------
+//     // GRAFICAS
+//     //---------------------------------------
+
+//     form.append(
+
+//         $('<input>', {
+
+//             type: 'hidden',
+
+//             name: 'GRAFICAS',
+
+//             value:
+//                 JSON.stringify(graficas)
+
+//         })
+
+//     );
+
+
+
+
+//     //---------------------------------------
+//     // ENVIAR
+//     //---------------------------------------
+
+//     $('body').append(form);
+
+//     form.submit();
+
+//     form.remove();
+
 // }
+
 
 
 
@@ -7190,31 +7847,22 @@ function descargarRevisionRecoErgo(
     RECO_ID
 ) {
 
-    //---------------------------------------
-    // ARREGLO GRAFICAS
-    //---------------------------------------
-
     let graficas = [];
 
 
 
-    //---------------------------------------
-    // RECORRER GRAFICAS
-    //---------------------------------------
 
     $('#contenedorGraficas > div').each(function () {
 
-        let chartDiv =
-            $(this).find('[id^="chart_"]')[0];
+        let charts =
+            $(this).find('[id^="chart_"]');
 
 
 
-        if (chartDiv) {
+        charts.each(function () {
 
             let instancia =
-                echarts.getInstanceByDom(
-                    chartDiv
-                );
+                echarts.getInstanceByDom(this);
 
 
 
@@ -7237,16 +7885,11 @@ function descargarRevisionRecoErgo(
 
             }
 
-        }
+        });
 
     });
 
 
-
-
-    //---------------------------------------
-    // FORM TEMPORAL
-    //---------------------------------------
 
     let form = $('<form>', {
 
@@ -7264,11 +7907,6 @@ function descargarRevisionRecoErgo(
 
 
 
-
-    //---------------------------------------
-    // TOKEN
-    //---------------------------------------
-
     form.append(
 
         $('<input>', {
@@ -7285,13 +7923,6 @@ function descargarRevisionRecoErgo(
 
     );
 
-
-
-
-    //---------------------------------------
-    // GRAFICAS
-    //---------------------------------------
-
     form.append(
 
         $('<input>', {
@@ -7307,13 +7938,6 @@ function descargarRevisionRecoErgo(
 
     );
 
-
-
-
-    //---------------------------------------
-    // ENVIAR
-    //---------------------------------------
-
     $('body').append(form);
 
     form.submit();
@@ -7321,7 +7945,4 @@ function descargarRevisionRecoErgo(
     form.remove();
 
 }
-
-
-
 

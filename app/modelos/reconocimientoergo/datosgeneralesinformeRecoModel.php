@@ -28,5 +28,8 @@ class datosgeneralesinformeRecoModel extends Model
         'INFORME_RESPONSABLE2CARGO',
         'INFORME_RESPONSABLE2DOCUMENTO',
 
+
+        'INTRODUCCION_GRAFICASNOM036',
+        'CONCLUSION_GRAFICASNOM036',
     ];
 }

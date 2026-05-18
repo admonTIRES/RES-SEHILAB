@@ -37,8 +37,9 @@ class categoriasergoController extends Controller
         try {
             $ergo = $request->get('ergoid');
 
-            $tabla = recoergocategoriasModel::where('RECO_ID', $ergo)->get();
-
+            $tabla = recoergocategoriasModel::where('RECO_ID', $ergo)
+                ->orderBy('PT_CATEGORIA', 'ASC')
+                ->get();
 
             foreach ($tabla as $value) {
                 if ($value->ACTIVO == 0) {

@@ -42,42 +42,22 @@ use App\modelos\proyecto\proyectoModel;
 use App\modelos\reconocimientoergo\reconocimientoergoModel;
 use App\modelos\recsensorial\catdepartamentoModel;
 use App\modelos\recsensorial\catmovilfijoModel;
-
 use App\modelos\reconocimientoergo\catergo_regimencontractualModel;
 use App\modelos\reconocimientoergo\catergo_jornada;
 use App\modelos\reconocimientoergo\catergo_turnoModel;
-
 use App\modelos\reconocimientoergo\catergo_definicionesModel;
-
-
 use App\modelos\reconocimientoergo\recursosPortadaRecoErgoModel;
-
 use App\modelos\reconocimientoergo\catergo_introduccionModel;
-
-
-use App\modelos\reconocimientoergo\datosgeneralesinformeRecoModel;
-
-
-use App\modelos\reconocimientoergo\definicionesinformeergoModel;
-
-
 use App\modelos\reconocimientoergo\recoergocategoriasModel;
 use App\modelos\reconocimientoergo\recoergoareasModel;
-
+use App\modelos\reconocimientoergo\definicionesinformeergoModel;
 use App\modelos\reconocimientoergo\catergo_conclusionModel;
-
 use App\modelos\reconocimientoergo\catergo_recomendacionesModel;
-
-
 use App\modelos\reconocimientoergo\recomendacionesinformeergoModel;
-
-
-
 use App\modelos\reconocimientoergo\versionesrecoergoModel;
-
-
 use App\modelos\clientes\clientecontratoModel;
 
+use App\modelos\reconocimientoergo\datosgeneralesinformeRecoModel;
 class reconocimientoergoController extends Controller
 {
 
@@ -807,30 +787,85 @@ class reconocimientoergoController extends Controller
     /////// INFORME ERGO /////////
 
 
+
     public function getGraficaErgo($reco_id)
     {
         $datos = DB::table('recoergo_fichastecnicas as f')
-            ->join('recoergocategorias as c', 'f.CATEGORIA_ID_FICHA', '=', 'c.ID_CATEGORIA_ERGO')
-            ->select(
+
+            ->join(
+                'recoergocategorias as c',
                 'f.CATEGORIA_ID_FICHA',
+                '=',
+                'c.ID_CATEGORIA_ERGO'
+            )
+
+            ->select(
+
+                'f.CATEGORIA_ID_FICHA',
+
                 'c.NOMBRE_CATEGORIA_ERGO',
+
                 DB::raw("
                 CASE 
-                    WHEN SUM(CASE WHEN f.P1_CARGA_MAYOR_3KG = 'SI' THEN 1 ELSE 0 END) > 0 
+                    WHEN SUM(
+                        CASE 
+                            WHEN f.P1_CARGA_MAYOR_3KG = 'SI' 
+                            THEN 1 
+                            ELSE 0 
+                        END
+                    ) > 0 
                     THEN 'SI' 
                     ELSE 'NO' 
-                END as RESULTADO
+                END as P1_RESULTADO
+            "),
+
+                DB::raw("
+                CASE 
+                    WHEN SUM(
+                        CASE 
+                            WHEN f.P2_FRECUENCIA_CARGA = 'SI' 
+                            THEN 1 
+                            ELSE 0 
+                        END
+                    ) > 0 
+                    THEN 'SI' 
+                    ELSE 'NO' 
+                END as P2_RESULTADO
+            "),
+
+                DB::raw("
+                CASE 
+                    WHEN SUM(
+                        CASE 
+                            WHEN f.P3_MANIPULACION_CARGA = 'SI' 
+                            THEN 1 
+                            ELSE 0 
+                        END
+                    ) > 0 
+                    THEN 'SI' 
+                    ELSE 'NO' 
+                END as P3_RESULTADO
             ")
+
             )
+
             ->where('f.RECO_ID', $reco_id)
+
             ->where('f.ACTIVO', 1)
-            ->groupBy('f.CATEGORIA_ID_FICHA', 'c.NOMBRE_CATEGORIA_ERGO')
-            ->orderBy('c.NOMBRE_CATEGORIA_ERGO', 'ASC')
+
+            ->groupBy(
+                'f.CATEGORIA_ID_FICHA',
+                'c.NOMBRE_CATEGORIA_ERGO'
+            )
+
+            ->orderBy('c.PT_CATEGORIA', 'ASC')
+
             ->get();
 
         return response()->json($datos);
     }
 
+    
 
 
     public function obtenerDatosInformesRecoergo($ID)
@@ -1611,6 +1646,7 @@ class reconocimientoergoController extends Controller
             $request->ergoid
         )
             ->where('ACTIVO', 1)
+            ->orderBy('PT_CATEGORIA', 'ASC')
             ->get();
 
 
@@ -2065,6 +2101,201 @@ class reconocimientoergoController extends Controller
     }
 
 
+    //// 6.1
+
+
+    public function guardarIntroduccionGraficasNom036(
+        Request $request
+    ) {
+
+        try {
+
+            DB::beginTransaction();
+
+
+
+
+            //-----------------------------------------
+            // BUSCAR REGISTRO
+            //-----------------------------------------
+
+            $dato = datosgeneralesinformeRecoModel::where(
+
+                'RECO_ID',
+
+                $request->RECO_ID
+
+            )->first();
+
+
+
+
+            //-----------------------------------------
+            // CREAR SI NO EXISTE
+            //-----------------------------------------
+
+            if (!$dato) {
+
+                $dato =
+                    new datosgeneralesinformeRecoModel();
+
+                $dato->RECO_ID =
+                    $request->RECO_ID;
+            }
+
+
+
+
+            //-----------------------------------------
+            // GUARDAR
+            //-----------------------------------------
+
+            $dato->INTRODUCCION_GRAFICASNOM036 =
+                $request->INTRODUCCION_GRAFICASNOM036;
+
+
+
+
+            //-----------------------------------------
+            // SAVE
+            //-----------------------------------------
+
+            $dato->save();
+
+
+
+
+            //-----------------------------------------
+            // COMMIT
+            //-----------------------------------------
+
+            DB::commit();
+
+
+
+
+            //-----------------------------------------
+            // RESPUESTA
+            //-----------------------------------------
+
+            return response()->json([
+
+                'msj' =>
+                'Información guardada correctamente'
+
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+
+                'msj' =>
+                'Error: ' .
+                    $e->getMessage()
+
+            ], 500);
+        }
+    }
+
+
+
+
+    public function guardarConclusionGraficasNom036(
+        Request $request
+    ) {
+
+        try {
+
+            DB::beginTransaction();
+
+
+
+
+            //-----------------------------------------
+            // BUSCAR
+            //-----------------------------------------
+
+            $dato =
+                datosgeneralesinformeRecoModel::where(
+
+                    'RECO_ID',
+
+                    $request->RECO_ID
+
+                )->first();
+
+
+
+
+            //-----------------------------------------
+            // CREAR
+            //-----------------------------------------
+
+            if (!$dato) {
+
+                $dato =
+                    new datosgeneralesinformeRecoModel();
+
+                $dato->RECO_ID =
+                    $request->RECO_ID;
+            }
+
+
+
+
+            //-----------------------------------------
+            // GUARDAR
+            //-----------------------------------------
+
+            $dato->CONCLUSION_GRAFICASNOM036 =
+                $request->CONCLUSION_GRAFICASNOM036;
+
+
+
+
+            //-----------------------------------------
+            // SAVE
+            //-----------------------------------------
+
+            $dato->save();
+
+
+
+
+            //-----------------------------------------
+            // COMMIT
+            //-----------------------------------------
+
+            DB::commit();
+
+
+
+
+            //-----------------------------------------
+            // RESPUESTA
+            //-----------------------------------------
+
+            return response()->json([
+
+                'msj' =>
+                'Información guardada correctamente'
+
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+
+                'msj' =>
+                'Error: ' .
+                    $e->getMessage()
+
+            ], 500);
+        }
+    }
+
 
 
     public function validarEdicionRecoErgo($reco_id)
@@ -2154,9 +2385,7 @@ class reconocimientoergoController extends Controller
 
 }
 
-    public function crearRevisionRecoErgo(
-        Request $request
-    ) {
+    public function crearRevisionRecoErgo(Request $request) {
 
         try {
 
@@ -2356,114 +2585,112 @@ class reconocimientoergoController extends Controller
                 ec.empleado_apellidopaterno
             ) AS CANCELADO_NOMBRE
 
-        FROM versionesrecoergo vr
+                FROM versionesrecoergo vr
 
-        LEFT JOIN usuario uf
-            ON uf.id = vr.FINALIZADO_POR
+                LEFT JOIN usuario uf
+                    ON uf.id = vr.FINALIZADO_POR
 
-        LEFT JOIN empleado ef
-            ON ef.id = uf.empleado_id
+                LEFT JOIN empleado ef
+                    ON ef.id = uf.empleado_id
 
-        LEFT JOIN usuario uc
-            ON uc.id = vr.CANCELADO_POR
+                LEFT JOIN usuario uc
+                    ON uc.id = vr.CANCELADO_POR
 
-        LEFT JOIN empleado ec
-            ON ec.id = uc.empleado_id
+                LEFT JOIN empleado ec
+                    ON ec.id = uc.empleado_id
 
-        WHERE vr.RECO_ID = ?
+                WHERE vr.RECO_ID = ?
 
-        ORDER BY vr.NUMERO_REVISION DESC
+                ORDER BY vr.NUMERO_REVISION DESC
 
-    ", [$reco_id]);
-
-
-
-        foreach ($datos as $key => $value) {
+            ", [$reco_id]);
 
 
 
-            //---------------------------------------
-            // ESTADO
-            //---------------------------------------
-
-            if ($value->CANCELADO == 1) {
-
-                $value->ESTADO =
-                    '<span class="badge badge-danger">
-                    Cancelado
-                 </span>';
-            } else {
-
-                $value->ESTADO =
-                    '<span class="badge badge-success">
-                    Finalizado
-                 </span>';
-            }
+                foreach ($datos as $key => $value) {
 
 
 
-            //---------------------------------------
-            // CHECKBOX CANCELADO
-            //---------------------------------------
+                    //---------------------------------------
+                    // ESTADO
+                    //---------------------------------------
 
-            $checked =
-                ($value->CANCELADO == 1)
-                ? 'checked'
-                : '';
+                    if ($value->CANCELADO == 1) {
 
-            $value->CHECKBOX_CANCELADO = '
+                        $value->ESTADO =
+                            '<span class="badge badge-danger">
+                            Cancelado
+                        </span>';
+                    } else {
 
-            <div class="switch">
-
-                <label>
-
-                    <input
-                        type="checkbox"
-
-                        class="checkbox_cancelado_revision"
-
-                        ' . $checked . '
-
-                        onchange="cancelarRevisionRecoErgo(
-                            ' . $value->ID_VERSION_RECO_ERGO . ',
-                            this
-                        )">
-
-                    <span class="lever switch-col-red"></span>
-
-                </label>
-
-            </div>
-
-            ';
+                        $value->ESTADO =
+                            '<span class="badge badge-success">
+                            Finalizado
+                        </span>';
+                    }
 
 
-            //---------------------------------------
-            // BOTON DESCARGA
-            //---------------------------------------
 
-        
+                    //---------------------------------------
+                    // CHECKBOX CANCELADO
+                    //---------------------------------------
 
-            $value->BOTON_DESCARGAR = '
+                    $checked =
+                        ($value->CANCELADO == 1)
+                        ? 'checked'
+                        : '';
 
-    <button
-        type="button"
+                    $value->CHECKBOX_CANCELADO = '
 
-        class="btn btn-success btn-circle"
+                    <div class="switch">
 
-        data-toggle="tooltip"
+                        <label>
 
-        title="Descargar informe"
+                            <input
+                                type="checkbox"
 
-        onclick="descargarRevisionRecoErgo(
-            ' . $value->RECO_ID . '
-        )">
+                                class="checkbox_cancelado_revision"
 
-        <i class="fa fa-download"></i>
+                                ' . $checked . '
 
-    </button>
+                                onchange="cancelarRevisionRecoErgo(
+                                    ' . $value->ID_VERSION_RECO_ERGO . ',
+                                    this
+                                )">
 
-';
+                            <span class="lever switch-col-red"></span>
+
+                        </label>
+
+                    </div>
+
+                    ';
+
+
+                    //---------------------------------------
+                    // BOTON DESCARGA
+                    //---------------------------------------
+
+                
+
+                    $value->BOTON_DESCARGAR = '
+
+            <button
+                type="button"
+
+                class="btn btn-success btn-circle"
+
+                data-toggle="tooltip"
+
+                title="Descargar informe"
+
+                onclick="descargarRevisionRecoErgo(
+                    ' . $value->RECO_ID . '
+                )">
+
+                <i class="fa fa-download"></i>
+
+            </button>';
 
         }
 
@@ -2478,10 +2705,7 @@ class reconocimientoergoController extends Controller
 
 
 
-    public function descargarRevisionRecoErgo(
-        Request $request,
-        $RECO_ID
-    ) {
+    public function descargarRevisionRecoErgo( Request $request, $RECO_ID) {
 
 
         try {
@@ -3309,7 +3533,7 @@ class reconocimientoergoController extends Controller
 
             $plantillaword->setValue(
 
-                'ACTIVIDAD _INSTALACION',
+                'ACTIVIDAD_INSTALACION',
 
                 $datosGenerales->INFORME_ACTIVIDADPRINCIPAL
                     ?? 'No cargado'
@@ -3324,172 +3548,8 @@ class reconocimientoergoController extends Controller
             //================================================================================
 
 
-           
             //---------------------------------------
-// CONSULTAR CATEGORÍAS
-//---------------------------------------
-
-$categorias = recoergocategoriasModel::where(
-    'RECO_ID',
-    $RECO_ID
-)
-->where('ACTIVO', 1)
-->orderBy('NOMBRE_CATEGORIA_ERGO', 'ASC')
-->get();
-
-
-
-
-//---------------------------------------
-// ESTILOS
-//---------------------------------------
-
-$fuente = 'Poppins';
-
-
-
-$encabezado_texto = array(
-    'name' => $fuente,
-    'size' => 11,
-    'bold' => true,
-    'color' => 'FFFFFF'
-);
-
-
-
-$texto = array(
-    'name' => $fuente,
-    'size' => 10,
-    'color' => '000000'
-);
-
-
-
-$centrado = array(
-    'alignment' => 'center',
-    'valign' => 'center'
-);
-
-
-
-
-$encabezado_celda = array(
-    'bgColor' => '0F3D63',
-    'valign' => 'center'
-);
-
-
-
-$celda = array(
-    'valign' => 'center'
-);
-
-
-
-
-//---------------------------------------
-// ANCHO
-//---------------------------------------
-
-$ancho_col_1 = 9200;
-
-
-
-
-//---------------------------------------
-// CREAR TABLA
-//---------------------------------------
-
-$table = new Table(array(
-
-    'name' => $fuente,
-
-    'borderSize' => 1,
-
-    'borderColor' => '000000',
-
-    'cellMargin' => 80,
-
-    'unit' => TblWidth::TWIP
-
-));
-
-
-
-
-//---------------------------------------
-// ENCABEZADO
-//---------------------------------------
-
-$table->addRow(500);
-
-
-
-$table->addCell(
-    $ancho_col_1,
-    $encabezado_celda
-)->addTextRun($centrado)->addText(
-    'Categoría',
-    $encabezado_texto
-);
-
-
-
-
-//---------------------------------------
-// FILAS
-//---------------------------------------
-
-if (count($categorias) > 0) {
-
-    foreach ($categorias as $categoria) {
-
-        $table->addRow();
-
-
-
-        $table->addCell(
-            $ancho_col_1,
-            $celda
-        )->addTextRun($centrado)->addText(
-            $categoria->NOMBRE_CATEGORIA_ERGO,
-            $texto
-        );
-
-    }
-
-} else {
-
-    $table->addRow();
-
-
-
-    $table->addCell(
-        $ancho_col_1,
-        $celda
-    )->addTextRun($centrado)->addText(
-        'No hay categorías registradas',
-        $texto
-    );
-
-}
-
-
-
-
-//---------------------------------------
-// INSERTAR EN WORD
-//---------------------------------------
-
-$plantillaword->setComplexBlock(
-    'TABLA_5_3',
-    $table
-);
-
-
-
-            //---------------------------------------
-            // CONSULTAR ÁREAS Y CATEGORÍAS
+            // CONSULTAR CATEGORÍAS
             //---------------------------------------
 
             $categorias = recoergocategoriasModel::where(
@@ -3497,70 +3557,8 @@ $plantillaword->setComplexBlock(
                 $RECO_ID
             )
                 ->where('ACTIVO', 1)
+                ->orderBy('PT_CATEGORIA', 'ASC')
                 ->get();
-
-
-
-
-            $data = [];
-
-
-
-            foreach ($categorias as $categoria) {
-
-                //---------------------------------------
-                // VALIDAR ÁREAS
-                //---------------------------------------
-
-                if (
-                    $categoria->CATEGORIA_AREAS_ID
-                    &&
-                    is_array($categoria->CATEGORIA_AREAS_ID)
-                ) {
-
-                    foreach (
-                        $categoria->CATEGORIA_AREAS_ID
-                        as $area_id
-                    ) {
-
-                        $area = recoergoareasModel::find(
-                            $area_id
-                        );
-
-
-
-                        if ($area) {
-
-                            $obj = new \stdClass();
-
-                            $obj->AREA =
-                                $area->NOMBRE_AREA_ERGO;
-
-                            $obj->CATEGORIA =
-                                $categoria->NOMBRE_CATEGORIA_ERGO;
-
-
-
-                            $data[] = $obj;
-                        }
-                    }
-                }
-            }
-
-
-
-
-            //---------------------------------------
-            // ORDENAR POR ÁREA
-            //---------------------------------------
-
-            usort($data, function ($a, $b) {
-
-                return strcmp(
-                    $a->AREA,
-                    $b->AREA
-                );
-            });
 
 
 
@@ -3597,6 +3595,7 @@ $plantillaword->setComplexBlock(
 
 
 
+
             $encabezado_celda = array(
                 'bgColor' => '0F3D63',
                 'valign' => 'center'
@@ -3612,12 +3611,12 @@ $plantillaword->setComplexBlock(
 
 
             //---------------------------------------
-            // ANCHOS
+            // ANCHO
             //---------------------------------------
 
-            $ancho_area = 4500;
+            $ancho_col_1 = 2000;
 
-            $ancho_categoria = 4700;
+            $ancho_col_2 = 7200;
 
 
 
@@ -3652,17 +3651,17 @@ $plantillaword->setComplexBlock(
 
 
             $table->addCell(
-                $ancho_area,
+                $ancho_col_1,
                 $encabezado_celda
             )->addTextRun($centrado)->addText(
-                'Área',
+                'PT',
                 $encabezado_texto
             );
 
 
 
             $table->addCell(
-                $ancho_categoria,
+                $ancho_col_2,
                 $encabezado_celda
             )->addTextRun($centrado)->addText(
                 'Categoría',
@@ -3673,94 +3672,34 @@ $plantillaword->setComplexBlock(
 
 
             //---------------------------------------
-            // AGRUPAR ÁREAS
+            // FILAS
             //---------------------------------------
 
-            $areasAgrupadas = [];
+            if (count($categorias) > 0) {
+
+                foreach ($categorias as $categoria) {
+
+                    $table->addRow();
 
 
 
-            foreach ($data as $fila) {
-
-                if (!isset($areasAgrupadas[$fila->AREA])) {
-
-                    $areasAgrupadas[$fila->AREA] = [];
-                }
-
-
-
-                $areasAgrupadas[$fila->AREA][] =
-                    $fila->CATEGORIA;
-            }
+                    $table->addCell(
+                        $ancho_col_1,
+                        $celda
+                    )->addTextRun($centrado)->addText(
+                        $categoria->PT_CATEGORIA,
+                        $texto
+                    );
 
 
 
-
-            //---------------------------------------
-            // FILAS AGRUPADAS
-            //---------------------------------------
-
-            if (count($areasAgrupadas) > 0) {
-
-                foreach ($areasAgrupadas as $area => $categoriasArea) {
-
-                    foreach ($categoriasArea as $index => $categoria) {
-
-                        $table->addRow();
-
-
-
-                        //---------------------------------------
-                        // ÁREA AGRUPADA
-                        //---------------------------------------
-
-                        if ($index == 0) {
-
-                            $table->addCell(
-
-                                $ancho_area,
-
-                                array(
-                                    'vMerge' => 'restart',
-                                    'valign' => 'center'
-                                )
-
-                            )->addTextRun($centrado)->addText(
-                                $area,
-                                $texto
-                            );
-                        } else {
-
-                            //---------------------------------------
-                            // CONTINUAR MERGE
-                            //---------------------------------------
-
-                            $table->addCell(
-
-                                $ancho_area,
-
-                                array(
-                                    'vMerge' => 'continue',
-                                    'valign' => 'center'
-                                )
-
-                            );
-                        }
-
-
-
-                        //---------------------------------------
-                        // CATEGORÍA
-                        //---------------------------------------
-
-                        $table->addCell(
-                            $ancho_categoria,
-                            $celda
-                        )->addTextRun($centrado)->addText(
-                            $categoria,
-                            $texto
-                        );
-                    }
+                    $table->addCell(
+                        $ancho_col_2,
+                        $celda
+                    )->addTextRun($centrado)->addText(
+                        $categoria->NOMBRE_CATEGORIA_ERGO,
+                        $texto
+                    );
                 }
             } else {
 
@@ -3769,13 +3708,10 @@ $plantillaword->setComplexBlock(
 
 
                 $table->addCell(
-                    null,
-                    array(
-                        'gridSpan' => 2,
-                        'valign' => 'center'
-                    )
+                    $ancho_col_1 + $ancho_col_2,
+                    $celda
                 )->addTextRun($centrado)->addText(
-                    'No hay áreas registradas',
+                    'No hay categorías registradas',
                     $texto
                 );
             }
@@ -3783,304 +3719,638 @@ $plantillaword->setComplexBlock(
 
 
 
-            //---------------------------------------
-            // INSERTAR EN WORD
-            //---------------------------------------
-
             $plantillaword->setComplexBlock(
-                'TABLA_5_3_1',
+                'TABLA_5_3',
                 $table
             );
 
 
 
+                    //---------------------------------------
+                    // CONSULTAR ÁREAS Y CATEGORÍAS
+                    //---------------------------------------
 
-            //---------------------------------------
-            // CONCLUSIÓN
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'CONCLUSION',
-
-                $datosGenerales->INFORME_CONCLUSION
-                    ?
-                    htmlspecialchars(
-                    $datosGenerales->INFORME_CONCLUSION
+                    $categorias = recoergocategoriasModel::where(
+                        'RECO_ID',
+                        $RECO_ID
                     )
-                    :
-                    'No cargado'
-
-            );
+                        ->where('ACTIVO', 1)
+                        ->get();
 
 
 
 
-            //---------------------------------------
-            // CONSULTAR RECOMENDACIONES
-            //---------------------------------------
-
-            $recomendaciones = DB::table(
-                'recomendacionesinformeergo as ri'
-            )
-
-                ->join(
-                    'catergo_recomendaciones as cr',
-                    'cr.ID_RECOMENDACIONES',
-                    '=',
-                    'ri.CATALOGO_RECOMENDACIONES_ID'
-                )
-
-                ->where(
-                    'ri.RECO_ID',
-                    $RECO_ID
-                )
-
-                ->select(
-                    'cr.DESCRIPCION_RECOMENDACIONES'
-                )
-
-                ->get();
+                    $data = [];
 
 
 
+                    foreach ($categorias as $categoria) {
 
-            //---------------------------------------
-            // ARMAR TEXTO
-            //---------------------------------------
+                        //---------------------------------------
+                        // VALIDAR ÁREAS
+                        //---------------------------------------
 
-            $texto_recomendaciones = '';
+                        if (
+                            $categoria->CATEGORIA_AREAS_ID
+                            &&
+                            is_array($categoria->CATEGORIA_AREAS_ID)
+                        ) {
+
+                            foreach (
+                                $categoria->CATEGORIA_AREAS_ID
+                                as $area_id
+                            ) {
+
+                                $area = recoergoareasModel::find(
+                                    $area_id
+                                );
 
 
 
-            if (count($recomendaciones) > 0) {
+                                if ($area) {
 
-                foreach ($recomendaciones as $recomendacion) {
+                                    $obj = new \stdClass();
 
-                    $texto_recomendaciones .=
+                                    $obj->AREA =
+                                        $area->NOMBRE_AREA_ERGO;
 
-                        trim(
-                            strip_tags(
-                                $recomendacion->DESCRIPCION_RECOMENDACIONES
+                                    $obj->CATEGORIA =
+                                        $categoria->NOMBRE_CATEGORIA_ERGO;
+
+
+
+                                    $data[] = $obj;
+                                }
+                            }
+                        }
+                    }
+
+
+
+
+                    //---------------------------------------
+                    // ORDENAR POR ÁREA
+                    //---------------------------------------
+
+                    usort($data, function ($a, $b) {
+
+                        return strcmp(
+                            $a->AREA,
+                            $b->AREA
+                        );
+                    });
+
+
+
+
+                    //---------------------------------------
+                    // ESTILOS
+                    //---------------------------------------
+
+                    $fuente = 'Poppins';
+
+
+
+                    $encabezado_texto = array(
+                        'name' => $fuente,
+                        'size' => 11,
+                        'bold' => true,
+                        'color' => 'FFFFFF'
+                    );
+
+
+
+                    $texto = array(
+                        'name' => $fuente,
+                        'size' => 10,
+                        'color' => '000000'
+                    );
+
+
+
+                    $centrado = array(
+                        'alignment' => 'center',
+                        'valign' => 'center'
+                    );
+
+
+
+                    $encabezado_celda = array(
+                        'bgColor' => '0F3D63',
+                        'valign' => 'center'
+                    );
+
+
+
+                    $celda = array(
+                        'valign' => 'center'
+                    );
+
+
+
+
+                    //---------------------------------------
+                    // ANCHOS
+                    //---------------------------------------
+
+                    $ancho_area = 4500;
+
+                    $ancho_categoria = 4700;
+
+
+
+
+                    //---------------------------------------
+                    // CREAR TABLA
+                    //---------------------------------------
+
+                    $table = new Table(array(
+
+                        'name' => $fuente,
+
+                        'borderSize' => 1,
+
+                        'borderColor' => '000000',
+
+                        'cellMargin' => 80,
+
+                        'unit' => TblWidth::TWIP
+
+                    ));
+
+
+
+
+                    //---------------------------------------
+                    // ENCABEZADO
+                    //---------------------------------------
+
+                    $table->addRow(500);
+
+
+
+                    $table->addCell(
+                        $ancho_area,
+                        $encabezado_celda
+                    )->addTextRun($centrado)->addText(
+                        'Área',
+                        $encabezado_texto
+                    );
+
+
+
+                    $table->addCell(
+                        $ancho_categoria,
+                        $encabezado_celda
+                    )->addTextRun($centrado)->addText(
+                        'Categoría',
+                        $encabezado_texto
+                    );
+
+
+
+
+                    //---------------------------------------
+                    // AGRUPAR ÁREAS
+                    //---------------------------------------
+
+                    $areasAgrupadas = [];
+
+
+
+                    foreach ($data as $fila) {
+
+                        if (!isset($areasAgrupadas[$fila->AREA])) {
+
+                            $areasAgrupadas[$fila->AREA] = [];
+                        }
+
+
+
+                        $areasAgrupadas[$fila->AREA][] =
+                            $fila->CATEGORIA;
+                    }
+
+
+
+
+                    //---------------------------------------
+                    // FILAS AGRUPADAS
+                    //---------------------------------------
+
+                    if (count($areasAgrupadas) > 0) {
+
+                        foreach ($areasAgrupadas as $area => $categoriasArea) {
+
+                            foreach ($categoriasArea as $index => $categoria) {
+
+                                $table->addRow();
+
+
+
+                                //---------------------------------------
+                                // ÁREA AGRUPADA
+                                //---------------------------------------
+
+                                if ($index == 0) {
+
+                                    $table->addCell(
+
+                                        $ancho_area,
+
+                                        array(
+                                            'vMerge' => 'restart',
+                                            'valign' => 'center'
+                                        )
+
+                                    )->addTextRun($centrado)->addText(
+                                        $area,
+                                        $texto
+                                    );
+                                } else {
+
+                                    //---------------------------------------
+                                    // CONTINUAR MERGE
+                                    //---------------------------------------
+
+                                    $table->addCell(
+
+                                        $ancho_area,
+
+                                        array(
+                                            'vMerge' => 'continue',
+                                            'valign' => 'center'
+                                        )
+
+                                    );
+                                }
+
+
+
+                                //---------------------------------------
+                                // CATEGORÍA
+                                //---------------------------------------
+
+                                $table->addCell(
+                                    $ancho_categoria,
+                                    $celda
+                                )->addTextRun($centrado)->addText(
+                                    $categoria,
+                                    $texto
+                                );
+                            }
+                        }
+                    } else {
+
+                        $table->addRow();
+
+
+
+                        $table->addCell(
+                            null,
+                            array(
+                                'gridSpan' => 2,
+                                'valign' => 'center'
                             )
-                        )
-
-                        . '</w:t><w:br/><w:br/><w:t>';
-                }
-            } else {
-
-                $texto_recomendaciones =
-                    'No cargado';
-            }
+                        )->addTextRun($centrado)->addText(
+                            'No hay áreas registradas',
+                            $texto
+                        );
+                    }
 
 
 
 
-            //---------------------------------------
-            // INSERTAR EN WORD
-            //---------------------------------------
+                    //---------------------------------------
+                    // INSERTAR EN WORD
+                    //---------------------------------------
 
-            $plantillaword->setValue(
-
-                'RECOMENDACIONES',
-
-                $texto_recomendaciones
-
-            );
-
-
-
-
-            //---------------------------------------
-            // RESPONSABLE 1 - DOCUMENTO
-            //---------------------------------------
-
-            if ($datosGenerales->INFORME_RESPONSABLE1DOCUMENTO) {
-
-                if (
-
-                    file_exists(
-
-                        storage_path(
-                            'app/' .
-                                $datosGenerales->INFORME_RESPONSABLE1DOCUMENTO
-                        )
-
-                    )
-
-                ) {
-
-                    $plantillaword->setImageValue(
-
-                        'REPONSABLE1_DOCUMENTO',
-
-                        array(
-
-                            'path' => storage_path(
-                                'app/' .
-                                    $datosGenerales->INFORME_RESPONSABLE1DOCUMENTO
-                            ),
-
-                            'height' => 300,
-
-                            'width' => 580,
-
-                            'ratio' => true,
-
-                            'borderColor' => '000000'
-
-                        )
-
+                    $plantillaword->setComplexBlock(
+                        'TABLA_5_3_1',
+                        $table
                     );
-                } else {
+
+
+
+
+                    //---------------------------------------
+                    // CONCLUSIÓN
+                    //---------------------------------------
 
                     $plantillaword->setValue(
-                        'REPONSABLE1_DOCUMENTO',
-                        'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-                    );
-                }
-            } else {
 
-                $plantillaword->setValue(
-                    'REPONSABLE1_DOCUMENTO',
-                    'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-                );
-            }
+                        'CONCLUSION',
 
-
-
-
-            //---------------------------------------
-            // RESPONSABLE 1 - NOMBRE Y CARGO
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'REPONSABLE1',
-
-                htmlspecialchars(
-
-                    ($datosGenerales->INFORME_RESPONSABLE1
-                        ?
-                        $datosGenerales->INFORME_RESPONSABLE1
-                        :
-                        'No cargado')
-
-                )
-
-                    .
-
-                    '</w:t><w:br/><w:t>'
-
-                    .
-
-                    htmlspecialchars(
-
-                        ($datosGenerales->INFORME_RESPONSABLE1CARGO
+                        $datosGenerales->INFORME_CONCLUSION
                             ?
-                            $datosGenerales->INFORME_RESPONSABLE1CARGO
+                            htmlspecialchars(
+                            $datosGenerales->INFORME_CONCLUSION
+                            )
                             :
-                            'No cargado')
-
-                    )
-
-            );
-
-
-
-
-            //---------------------------------------
-            // RESPONSABLE 2 - DOCUMENTO
-            //---------------------------------------
-
-            if ($datosGenerales->INFORME_RESPONSABLE2DOCUMENTO) {
-
-                if (
-
-                    file_exists(
-
-                        storage_path(
-                            'app/' .
-                                $datosGenerales->INFORME_RESPONSABLE2DOCUMENTO
-                        )
-
-                    )
-
-                ) {
-
-                    $plantillaword->setImageValue(
-
-                        'REPONSABLE2_DOCUMENTO',
-
-                        array(
-
-                            'path' => storage_path(
-                                'app/' .
-                                    $datosGenerales->INFORME_RESPONSABLE2DOCUMENTO
-                            ),
-
-                            'height' => 300,
-
-                            'width' => 580,
-
-                            'ratio' => true,
-
-                            'borderColor' => '000000'
-
-                        )
+                            'No cargado'
 
                     );
-                } else {
+
+
+
+
+                    //---------------------------------------
+                    // CONSULTAR RECOMENDACIONES
+                    //---------------------------------------
+
+                    $recomendaciones = DB::table(
+                        'recomendacionesinformeergo as ri'
+                    )
+
+                        ->join(
+                            'catergo_recomendaciones as cr',
+                            'cr.ID_RECOMENDACIONES',
+                            '=',
+                            'ri.CATALOGO_RECOMENDACIONES_ID'
+                        )
+
+                        ->where(
+                            'ri.RECO_ID',
+                            $RECO_ID
+                        )
+
+                        ->select(
+                            'cr.DESCRIPCION_RECOMENDACIONES'
+                        )
+
+                        ->get();
+
+
+
+
+                    //---------------------------------------
+                    // ARMAR TEXTO
+                    //---------------------------------------
+
+                    $texto_recomendaciones = '';
+
+
+
+                    if (count($recomendaciones) > 0) {
+
+                        foreach ($recomendaciones as $recomendacion) {
+
+                            $texto_recomendaciones .=
+
+                                trim(
+                                    strip_tags(
+                                        $recomendacion->DESCRIPCION_RECOMENDACIONES
+                                    )
+                                )
+
+                                . '</w:t><w:br/><w:br/><w:t>';
+                        }
+                    } else {
+
+                        $texto_recomendaciones =
+                            'No cargado';
+                    }
+
+
+
+
+                    //---------------------------------------
+                    // INSERTAR EN WORD
+                    //---------------------------------------
 
                     $plantillaword->setValue(
-                        'REPONSABLE2_DOCUMENTO',
-                        'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
+
+                        'RECOMENDACIONES',
+
+                        $texto_recomendaciones
+
                     );
-                }
-            } else {
+
+
+
+
+                    //---------------------------------------
+                    // RESPONSABLE 1 - DOCUMENTO
+                    //---------------------------------------
+
+                    if ($datosGenerales->INFORME_RESPONSABLE1DOCUMENTO) {
+
+                        if (
+
+                            file_exists(
+
+                                storage_path(
+                                    'app/' .
+                                        $datosGenerales->INFORME_RESPONSABLE1DOCUMENTO
+                                )
+
+                            )
+
+                        ) {
+
+                            $plantillaword->setImageValue(
+
+                                'REPONSABLE1_DOCUMENTO',
+
+                                array(
+
+                                    'path' => storage_path(
+                                        'app/' .
+                                            $datosGenerales->INFORME_RESPONSABLE1DOCUMENTO
+                                    ),
+
+                                    'height' => 300,
+
+                                    'width' => 580,
+
+                                    'ratio' => true,
+
+                                    'borderColor' => '000000'
+
+                                )
+
+                            );
+                        } else {
+
+                            $plantillaword->setValue(
+                                'REPONSABLE1_DOCUMENTO',
+                                'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
+                            );
+                        }
+                    } else {
+
+                        $plantillaword->setValue(
+                            'REPONSABLE1_DOCUMENTO',
+                            'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
+                        );
+                    }
+
+
+
+
+                    //---------------------------------------
+                    // RESPONSABLE 1 - NOMBRE Y CARGO
+                    //---------------------------------------
+
+                    $plantillaword->setValue(
+
+                        'REPONSABLE1',
+
+                        htmlspecialchars(
+
+                            ($datosGenerales->INFORME_RESPONSABLE1
+                                ?
+                                $datosGenerales->INFORME_RESPONSABLE1
+                                :
+                                'No cargado')
+
+                        )
+
+                            .
+
+                            '</w:t><w:br/><w:t>'
+
+                            .
+
+                            htmlspecialchars(
+
+                                ($datosGenerales->INFORME_RESPONSABLE1CARGO
+                                    ?
+                                    $datosGenerales->INFORME_RESPONSABLE1CARGO
+                                    :
+                                    'No cargado')
+
+                            )
+
+                    );
+
+
+
+
+                    //---------------------------------------
+                    // RESPONSABLE 2 - DOCUMENTO
+                    //---------------------------------------
+
+                    if ($datosGenerales->INFORME_RESPONSABLE2DOCUMENTO) {
+
+                        if (
+
+                            file_exists(
+
+                                storage_path(
+                                    'app/' .
+                                        $datosGenerales->INFORME_RESPONSABLE2DOCUMENTO
+                                )
+
+                            )
+
+                        ) {
+
+                            $plantillaword->setImageValue(
+
+                                'REPONSABLE2_DOCUMENTO',
+
+                                array(
+
+                                    'path' => storage_path(
+                                        'app/' .
+                                            $datosGenerales->INFORME_RESPONSABLE2DOCUMENTO
+                                    ),
+
+                                    'height' => 300,
+
+                                    'width' => 580,
+
+                                    'ratio' => true,
+
+                                    'borderColor' => '000000'
+
+                                )
+
+                            );
+                        } else {
+
+                            $plantillaword->setValue(
+                                'REPONSABLE2_DOCUMENTO',
+                                'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
+                            );
+                        }
+                    } else {
+
+                        $plantillaword->setValue(
+                            'REPONSABLE2_DOCUMENTO',
+                            'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
+                        );
+                    }
+
+
+
+
+                    //---------------------------------------
+                    // RESPONSABLE 2 - NOMBRE Y CARGO
+                    //---------------------------------------
+
+                    $plantillaword->setValue(
+
+                        'REPONSABLE2',
+
+                        htmlspecialchars(
+
+                            ($datosGenerales->INFORME_RESPONSABLE2
+                                ?
+                                $datosGenerales->INFORME_RESPONSABLE2
+                                :
+                                'No cargado')
+
+                        )
+
+                            .
+
+                            '</w:t><w:br/><w:t>'
+
+                            .
+
+                            htmlspecialchars(
+
+                                ($datosGenerales->INFORME_RESPONSABLE2CARGO
+                                    ?
+                                    $datosGenerales->INFORME_RESPONSABLE2CARGO
+                                    :
+                                    'No cargado')
+
+                            )
+
+                    );
+
+
+
+
+
+                //---------------------------------------
+                // INTRODUCCION 6.1
+                //---------------------------------------
 
                 $plantillaword->setValue(
-                    'REPONSABLE2_DOCUMENTO',
-                    'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-                );
-            }
 
+                    'INTRODUCCION_6_1',
+
+                    $datosGenerales->INTRODUCCION_GRAFICASNOM036
+                        ?? 'No cargado'
+
+                );
 
 
 
             //---------------------------------------
-            // RESPONSABLE 2 - NOMBRE Y CARGO
+            // CONCLUSION 6.1
             //---------------------------------------
 
             $plantillaword->setValue(
 
-                'REPONSABLE2',
+                'CONCLUSION_6_1',
 
-                htmlspecialchars(
-
-                    ($datosGenerales->INFORME_RESPONSABLE2
-                        ?
-                        $datosGenerales->INFORME_RESPONSABLE2
-                        :
-                        'No cargado')
-
-                )
-
-                    .
-
-                    '</w:t><w:br/><w:t>'
-
-                    .
-
-                    htmlspecialchars(
-
-                        ($datosGenerales->INFORME_RESPONSABLE2CARGO
-                            ?
-                            $datosGenerales->INFORME_RESPONSABLE2CARGO
-                            :
-                            'No cargado')
-
-                    )
+                $datosGenerales->CONCLUSION_GRAFICASNOM036
+                    ?? 'No cargado'
 
             );
 
@@ -4089,6 +4359,266 @@ $plantillaword->setComplexBlock(
 
 
 
+
+
+            // //================================================================================
+            // // ${TABLA_6_1} GRAFICAS
+            // //================================================================================
+
+            // if ($request->has('GRAFICAS')) {
+
+            //     //---------------------------------------
+            //     // DECODIFICAR
+            //     //---------------------------------------
+
+            //     $graficas = json_decode(
+            //         $request->GRAFICAS,
+            //         true
+            //     );
+
+
+
+            //     //---------------------------------------
+            //     // VALIDAR
+            //     //---------------------------------------
+
+            //     if ($graficas && count($graficas) > 0) {
+
+            //         //---------------------------------------
+            //         // AGRUPAR 3 GRAFICAS = 1 CATEGORIA
+            //         //---------------------------------------
+
+            //         $categorias = array_chunk(
+            //             $graficas,
+            //             3
+            //         );
+
+
+
+            //         //---------------------------------------
+            //         // CLONAR FILAS
+            //         //---------------------------------------
+
+            //         $plantillaword->cloneRow(
+            //             'GRAFICA',
+            //             count($categorias)
+            //         );
+
+
+
+            //         //---------------------------------------
+            //         // RECORRER CATEGORIAS
+            //         //---------------------------------------
+
+            //         foreach ($categorias as $index => $grupo) {
+
+            //             $numero = $index + 1;
+
+
+
+            //             //---------------------------------------
+            //             // IMAGEN FINAL
+            //             //---------------------------------------
+
+            //             $anchoFinal = 1500;
+            //             $altoFinal  = 520;
+
+            //             $imagenFinal = imagecreatetruecolor(
+            //                 $anchoFinal,
+            //                 $altoFinal
+            //             );
+
+
+
+            //             //---------------------------------------
+            //             // FONDO BLANCO
+            //             //---------------------------------------
+
+            //             $blanco = imagecolorallocate(
+            //                 $imagenFinal,
+            //                 255,
+            //                 255,
+            //                 255
+            //             );
+
+            //             imagefill(
+            //                 $imagenFinal,
+            //                 0,
+            //                 0,
+            //                 $blanco
+            //             );
+
+
+
+            //             //---------------------------------------
+            //             // POSICION X
+            //             //---------------------------------------
+
+            //             $x = 0;
+
+
+
+            //             //---------------------------------------
+            //             // RECORRER GRAFICAS
+            //             //---------------------------------------
+
+            //             foreach ($grupo as $grafica) {
+
+            //                 //---------------------------------------
+            //                 // VALIDAR
+            //                 //---------------------------------------
+
+            //                 if (!isset($grafica['imagen'])) {
+            //                     continue;
+            //                 }
+
+
+
+            //                 //---------------------------------------
+            //                 // LIMPIAR BASE64
+            //                 //---------------------------------------
+
+            //                 $base64 = preg_replace(
+            //                     '#^data:image/\w+;base64,#i',
+            //                     '',
+            //                     $grafica['imagen']
+            //                 );
+
+            //                 $base64 = str_replace(
+            //                     ' ',
+            //                     '+',
+            //                     $base64
+            //                 );
+
+
+
+            //                 //---------------------------------------
+            //                 // DECODIFICAR
+            //                 //---------------------------------------
+
+            //                 $imageData = base64_decode(
+            //                     $base64
+            //                 );
+
+
+
+            //                 //---------------------------------------
+            //                 // TEMPORAL
+            //                 //---------------------------------------
+
+            //                 $rutaTemp = storage_path(
+            //                     'app/temp_' . uniqid() . '.png'
+            //                 );
+
+            //                 file_put_contents(
+            //                     $rutaTemp,
+            //                     $imageData
+            //                 );
+
+
+
+            //                 //---------------------------------------
+            //                 // ABRIR IMAGEN
+            //                 //---------------------------------------
+
+            //                 $img = imagecreatefrompng(
+            //                     $rutaTemp
+            //                 );
+
+
+
+            //                 //---------------------------------------
+            //                 // PEGAR EN LIENZO
+            //                 //---------------------------------------
+
+            //                 imagecopyresampled(
+
+            //                     $imagenFinal,
+            //                     $img,
+
+            //                     $x,
+            //                     0,
+
+            //                     0,
+            //                     0,
+
+            //                     500,
+            //                     500,
+
+            //                     imagesx($img),
+            //                     imagesy($img)
+
+            //                 );
+
+
+
+            //                 //---------------------------------------
+            //                 // SIGUIENTE POSICION
+            //                 //---------------------------------------
+
+            //                 $x += 500;
+
+
+
+            //                 //---------------------------------------
+            //                 // LIBERAR
+            //                 //---------------------------------------
+
+            //                 imagedestroy($img);
+
+            //                 unlink($rutaTemp);
+            //             }
+
+
+
+            //             //---------------------------------------
+            //             // GUARDAR FINAL
+            //             //---------------------------------------
+
+            //             $rutaFinal = storage_path(
+            //                 'app/grafica_final_' .
+            //                     uniqid() .
+            //                     '.png'
+            //             );
+
+            //             imagepng(
+            //                 $imagenFinal,
+            //                 $rutaFinal
+            //             );
+
+            //             imagedestroy($imagenFinal);
+
+
+
+            //             //---------------------------------------
+            //             // INSERTAR WORD
+            //             //---------------------------------------
+
+            //             $plantillaword->setImageValue(
+
+            //                 'GRAFICA#' . $numero,
+
+            //                 [
+            //                     'path'   => $rutaFinal,
+            //                     'width'  => 650,
+            //                     'height' => 220,
+            //                     'ratio'  => true
+            //                 ]
+
+            //             );
+            //         }
+            //     } else {
+
+            //         //---------------------------------------
+            //         // VACIO
+            //         //---------------------------------------
+
+            //         $plantillaword->setValue(
+            //             'GRAFICA',
+            //             'NO HAY GRAFICAS'
+            //         );
+            //     }
+            // }
 
 
 
@@ -4107,6 +4637,8 @@ $plantillaword->setComplexBlock(
                     true
                 );
 
+
+
                 //---------------------------------------
                 // VALIDAR
                 //---------------------------------------
@@ -4114,73 +4646,206 @@ $plantillaword->setComplexBlock(
                 if ($graficas && count($graficas) > 0) {
 
                     //---------------------------------------
+                    // AGRUPAR 3 GRAFICAS = 1 CATEGORIA
+                    //---------------------------------------
+
+                    $categorias = array_chunk(
+                        $graficas,
+                        3
+                    );
+
+
+
+                    //---------------------------------------
                     // CLONAR FILAS
                     //---------------------------------------
 
                     $plantillaword->cloneRow(
                         'GRAFICA',
-                        count($graficas)
+                        count($categorias)
                     );
 
+
+
                     //---------------------------------------
-                    // RECORRER
+                    // RECORRER CATEGORIAS
                     //---------------------------------------
 
-                    foreach ($graficas as $index => $grafica) {
+                    foreach ($categorias as $index => $grupo) {
 
                         $numero = $index + 1;
 
+
+
                         //---------------------------------------
-                        // VALIDAR
+                        // IMAGEN FINAL
                         //---------------------------------------
 
-                        if (!isset($grafica['imagen'])) {
+                        $anchoFinal = 1300;
+                        $altoFinal  = 360;
 
-                            $plantillaword->setValue(
-                                'GRAFICA#' . $numero,
-                                'SIN IMAGEN'
+                        $imagenFinal = imagecreatetruecolor(
+                            $anchoFinal,
+                            $altoFinal
+                        );
+
+
+
+                        //---------------------------------------
+                        // FONDO BLANCO
+                        //---------------------------------------
+
+                        $blanco = imagecolorallocate(
+                            $imagenFinal,
+                            255,
+                            255,
+                            255
+                        );
+
+                        imagefill(
+                            $imagenFinal,
+                            0,
+                            0,
+                            $blanco
+                        );
+
+
+
+                        //---------------------------------------
+                        // POSICION X
+                        //---------------------------------------
+
+                        $x = 0;
+
+
+
+                        //---------------------------------------
+                        // RECORRER GRAFICAS
+                        //---------------------------------------
+
+                        foreach ($grupo as $grafica) {
+
+                            //---------------------------------------
+                            // VALIDAR
+                            //---------------------------------------
+
+                            if (!isset($grafica['imagen'])) {
+                                continue;
+                            }
+
+
+
+                            //---------------------------------------
+                            // LIMPIAR BASE64
+                            //---------------------------------------
+
+                            $base64 = preg_replace(
+                                '#^data:image/\w+;base64,#i',
+                                '',
+                                $grafica['imagen']
                             );
 
-                            continue;
+                            $base64 = str_replace(
+                                ' ',
+                                '+',
+                                $base64
+                            );
+
+
+
+                            //---------------------------------------
+                            // DECODIFICAR
+                            //---------------------------------------
+
+                            $imageData = base64_decode(
+                                $base64
+                            );
+
+
+
+                            //---------------------------------------
+                            // TEMPORAL
+                            //---------------------------------------
+
+                            $rutaTemp = storage_path(
+                                'app/temp_' . uniqid() . '.png'
+                            );
+
+                            file_put_contents(
+                                $rutaTemp,
+                                $imageData
+                            );
+
+
+
+                            //---------------------------------------
+                            // ABRIR IMAGEN
+                            //---------------------------------------
+
+                            $img = imagecreatefrompng(
+                                $rutaTemp
+                            );
+
+
+
+                            //---------------------------------------
+                            // PEGAR EN LIENZO
+                            //---------------------------------------
+
+                            imagecopyresampled(
+                                $imagenFinal,
+                                $img,
+                                $x,
+                                20,
+                                0,
+                                0,
+                                380,
+                                320,
+                                imagesx($img),
+                                imagesy($img)
+                            );
+
+
+
+                            //---------------------------------------
+                            // SIGUIENTE POSICION
+                            //---------------------------------------
+
+                            $x += 430;
+
+
+                            //---------------------------------------
+                            // LIBERAR
+                            //---------------------------------------
+
+                            imagedestroy($img);
+
+                            unlink($rutaTemp);
                         }
 
+
+
                         //---------------------------------------
-                        // LIMPIAR BASE64
+                        // GUARDAR FINAL
                         //---------------------------------------
 
-                        $base64 = preg_replace(
-                            '#^data:image/\w+;base64,#i',
-                            '',
-                            $grafica['imagen']
+                        $rutaFinal = storage_path(
+                            'app/grafica_final_' .
+                                uniqid() .
+                                '.png'
                         );
 
-                        $base64 = str_replace(
-                            ' ',
-                            '+',
-                            $base64
+                        imagepng(
+                            $imagenFinal,
+                            $rutaFinal
                         );
 
-                        //---------------------------------------
-                        // DECODIFICAR
-                        //---------------------------------------
+                        imagedestroy($imagenFinal);
 
-                        $imageData = base64_decode($base64);
+
 
                         //---------------------------------------
-                        // CREAR TEMPORAL
-                        //---------------------------------------
-
-                        $ruta = storage_path(
-                            'app/grafica_' . uniqid() . '.png'
-                        );
-
-                        file_put_contents(
-                            $ruta,
-                            $imageData
-                        );
-
-                        //---------------------------------------
-                        // INSERTAR IMAGEN
+                        // INSERTAR WORD
                         //---------------------------------------
 
                         $plantillaword->setImageValue(
@@ -4188,14 +4853,21 @@ $plantillaword->setComplexBlock(
                             'GRAFICA#' . $numero,
 
                             [
-                                'path' => $ruta,
-                                'width' => 500,
-                                'height' => 300,
-                                'ratio' => true
+                                'path'   => $rutaFinal,
+                                'width'  => 610,
+                                'height' => 230,
+
+
+                                'ratio'  => true
                             ]
+
                         );
                     }
                 } else {
+
+                    //---------------------------------------
+                    // VACIO
+                    //---------------------------------------
 
                     $plantillaword->setValue(
                         'GRAFICA',
@@ -4205,29 +4877,28 @@ $plantillaword->setComplexBlock(
             }
 
 
-            
-            //---------------------------------------
-            // GUARDAR WORD
-            //---------------------------------------
+                    //---------------------------------------
+                    // GUARDAR WORD
+                    //---------------------------------------
 
-            $nombreWord =
-                'Informe_Ergonomia_' .
-                $RECO_ID .
-                '.docx';
-
-
-
-            $rutaWord =
-                storage_path(
-                    'app/temp/' .
-                        $nombreWord
-                );
+                    $nombreWord =
+                        'Informe_Ergonomia_' .
+                        $RECO_ID .
+                        '.docx';
 
 
 
-            $plantillaword->saveAs(
-                $rutaWord
-            );
+                    $rutaWord =
+                        storage_path(
+                            'app/temp/' .
+                                $nombreWord
+                        );
+
+
+
+                    $plantillaword->saveAs(
+                        $rutaWord
+                    );
 
 
 

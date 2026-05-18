@@ -2317,6 +2317,32 @@ Route::get(
 );
 
 
+
+/////   6.1 
+Route::post(
+    'guardarIntroduccionGraficasNom036',
+    [
+        'as' => 'guardarIntroduccionGraficasNom036',
+        'uses' => 'ERGO\reconocimientoergoController@guardarIntroduccionGraficasNom036'
+    ]
+);
+
+/// 6.1 conclusion 
+
+
+
+Route::post(
+    'guardarConclusionGraficasNom036',
+    [
+        'as' => 'guardarConclusionGraficasNom036',
+        'uses' => 'ERGO\reconocimientoergoController@guardarConclusionGraficasNom036'
+    ]
+);
+
+
+
+
+
 ////////   VERSIONES 
 
 

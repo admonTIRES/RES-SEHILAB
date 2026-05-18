@@ -1399,15 +1399,12 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     <form method="post" enctype="multipart/form-data" name="form_reporte_metodologia_4_1" id="form_reporte_metodologia_4_1">
                                         <div class="row">
                                             <div class="col-12">
-                                                <p class="justificado">La metodología utilizada para la identificación del peligro y riesgo ergonómico se basa en el modelo aplicando la ISO 12995 donde se contemplan los aspectos de la ergonomía física: </p>
+                                                <p class="justificado">La metodología utilizada para la identificación del peligro y riesgo ergonómico se basa en el modelo aplicando la ISO 12995-2014 donde se contemplan los aspectos de la ergonomía física: </p>
                                                 <div class="text-center mb-3">
                                                     <img src="{{ asset('assets/images/ergo/metodologiaergo1.png') }}"
                                                         style="max-width: 50%; height: auto;">
                                                 </div>
 
-                                                <p style="font-style: italic;">
-                                                    <strong>Nota:</strong> donde sale la palabra control del es control del riesgo.
-                                                </p>
 
                                                 <ul>
                                                     <li>Ficha 1: levantamiento manual de cargas</li>
@@ -1489,7 +1486,9 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                             <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_categoria">
                                                 <thead>
                                                     <tr>
+                                                        <th>PT</th>
                                                         <th>Categoría</th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
@@ -1506,14 +1505,43 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                         </div>
                                     </div>
                                     <h4 class="card-title mt-2" id="6">6.- Evaluación</h4>
-                                    <h4 class="card-title" id="6_1">6.1.- Preguntas NOM-036-1-STPS-2018</h4>
+                                    <h4 class="card-title" id="6_1">6.1.- Resultados de la evaluación conforme a la NOM-036-1-STPS-2018 sobre factores de riesgo ergonómico.</h4>
                                     <form method="post" enctype="multipart/form-data" name="form_preguntas-nom-036" id="form_preguntas-nom-036">
-                                        <div class="row" style="display:flex; justify-content:center;">
-                                            <div id="contenedorGraficas"></div>
+                                        <div class="form-group">
+                                            <label>Descripción de las siguientes gráficas</label>
+                                            <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="INTRODUCCION_GRAFICASNOM036" name="INTRODUCCION_GRAFICASNOM036" required></textarea>
+                                        </div>
+                                        <div class="col-12" style="text-align: right;">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_introduccionnom036">Guardar<i class="fa fa-save"></i></button>
+                                            </div>
                                         </div>
                                     </form>
+                                    <div class="row justify-content-center">
 
+                                        <div
+                                            id="contenedorGraficas"
+                                            style="
+                                                width:100%;
+                                                display:flex;
+                                                flex-direction:column;
+                                                align-items:center;
+                                                gap:60px;
+                                            ">
+                                                                            </div>
 
+                                    </div>
+                                    <form method="post" enctype="multipart/form-data" name="form_preguntas-analisis-036" id="form_preguntas-analisis-036">
+                                        <div class="form-group">
+                                            <label>Análisis estadístico</label>
+                                            <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="CONCLUSION_GRAFICASNOM036" name="CONCLUSION_GRAFICASNOM036" required></textarea>
+                                        </div>
+                                        <div class="col-12" style="text-align: right;">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_conclusionnom036">Guardar<i class="fa fa-save"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
 
 
                                     <h4 class="card-title" id="8">8.- Conclusiones</h4>
@@ -2117,7 +2145,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                 <div class="card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
                                     onclick="toggleSeccion('contenido1')">
                                     <div class="text-left w-100">
-                                        <b>1.NOM-036-1-STPS-2018</b><br>
+                                        <b>1.NOM-036-1-STPS-2018 (A continuación responda las tres preguntas que permiten identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en el trabajo derivados del manejo manual de cargas, según corresponda con un sí o no, si la respuesta es no en la primera no tendrá que responder los criterios de levantamientos, transporte y empuje y tracción. )</b><br>
                                     </div>
                                 </div>
 
