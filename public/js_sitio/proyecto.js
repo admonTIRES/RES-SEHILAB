@@ -1135,24 +1135,16 @@ $('#tabla_proyectos tbody').on('click', 'td.mostrar', function () {
 	$('#proyectoInternocontrato').val(row.data().proyectoInternocontrato);
 
 
-		if (
-			parseInt(
-				row.data().proyectoInternocontrato
-			) == 1
-		) {
-
-			$('#proyectoInternoContratoCheck')
-				.prop('checked', true)
-				.prop('disabled', true);
-
-		}
-		else {
-
-			$('#proyectoInternoContratoCheck')
-				.prop('checked', false)
-				.prop('disabled', false);
-
-		}
+	if (parseInt(row.data().proyectoInternocontrato) == 1)
+	{
+		$('#proyectoInternoContratoCheck')
+			.prop('checked', true)
+			.prop('disabled', false);
+	}else {
+		$('#proyectoInternoContratoCheck')
+			.prop('checked', false)
+			.prop('disabled', false);
+	}
 	
 	
 	
@@ -1524,24 +1516,16 @@ $('#tabla_proyectos_internos tbody').on('click', 'td.mostrar', function () {
 	$('#proyectoInternocontrato').val(row.data().proyectoInternocontrato);
 
 
-		if (
-			parseInt(
-				row.data().proyectoInternocontrato
-			) == 1
-		) {
-
-			$('#proyectoInternoContratoCheck')
-				.prop('checked', true)
-				.prop('disabled', true);
-
-		}
-		else {
-
-			$('#proyectoInternoContratoCheck')
-				.prop('checked', false)
-				.prop('disabled', false);
-
-		}
+	if (parseInt(row.data().proyectoInternocontrato) == 1)
+	{
+		$('#proyectoInternoContratoCheck')
+			.prop('checked', true)
+			.prop('disabled', false);
+	}else {
+		$('#proyectoInternoContratoCheck')
+			.prop('checked', false)
+			.prop('disabled', false);
+	}
 	
 	proyecto_id = row.data().id;
 	recsensorial_errorvalidacion = 0;

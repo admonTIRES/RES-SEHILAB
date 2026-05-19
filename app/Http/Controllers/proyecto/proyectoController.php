@@ -1552,19 +1552,76 @@ class proyectoController extends Controller
                     $proyecto->update($request->all());
 
                     //VALIDAMOS SI EL PROYECTO TIENE UN RECONOCIMIENTO VINCULADO EN ESE CASO VALIDAMOS LOS DATOS DEL PROYECTO Y LOS EDITAMOS PARA EL RECONOCIMIENTO
+                    // if (!is_null($proyecto->recsensorial_id)) {
+
+
+                    ////// CAMBIO COMENTADO PORQUE NO SERVIA AL MOMENTO DE GUARDAR EL CONTRATO ID 
+                    //     // Reconocimiento seleccionado
+                    //     $recsensorial = recsensorialModel::findOrFail($proyecto->recsensorial_id);
+                    //     $contrato = clientecontratoModel::findOrFail($proyecto->contrato_id);
+                    //     $descripcion_contrato = is_null($contrato->NUMERO_CONTRATO) ? $contrato->DESCRIPCION_CONTRATO : '[ ' . $contrato->NUMERO_CONTRATO . ' ]' . $contrato->DESCRIPCION_CONTRATO;
+
+
+                    //     // Modificar dependiendo si la informacion cargada en el reconocimiento es para el cliente seleccionado o no
+                    //     if ($recsensorial->informe_del_cliente == 1) {
+
+                    //         $recsensorial->update([
+                    //             'cliente_id' => $contrato->CLIENTE_ID,
+                    //             'contrato_id' => $proyecto->contrato_id,
+                    //             'descripcion_contrato' => $descripcion_contrato,
+                    //             'descripcion_cliente' => $proyecto->proyecto_clienterazonsocial,
+                    //             'recsensorial_empresa' => $proyecto->proyecto_clienterazonsocial,
+                    //             'recsensorial_rfc' => $proyecto->proyecto_clienterfc,
+                    //             'recsensorial_instalacion' => $proyecto->proyecto_clienteinstalacion,
+                    //             'recsensorial_direccion' => $proyecto->proyecto_clientedireccionservicio,
+                    //             'recsensorial_representanteseguridad' => $proyecto->proyecto_clientepersonadirigido
+
+                    //         ]);
+                    //     } else {
+
+                    //         $recsensorial->update([
+                    //             'cliente_id' => $contrato->CLIENTE_ID,
+                    //             'contrato_id' => $proyecto->contrato_id,
+                    //             'descripcion_contrato' => $descripcion_contrato,
+                    //             'descripcion_cliente' => $proyecto->proyecto_clienterazonsocial
+                    //         ]);
+                    //     }
+                    // }
+
+                    //////////////////////////////////////////////////////////////////////////////
+
+
+                    ////// CAMBIO COMENTADO PORQUE NO SERVIA AL MOMENTO DE GUARDAR EL CONTRATO ID 
+
+                    
                     if (!is_null($proyecto->recsensorial_id)) {
 
                         // Reconocimiento seleccionado
                         $recsensorial = recsensorialModel::findOrFail($proyecto->recsensorial_id);
-                        $contrato = clientecontratoModel::findOrFail($proyecto->contrato_id);
-                        $descripcion_contrato = is_null($contrato->NUMERO_CONTRATO) ? $contrato->DESCRIPCION_CONTRATO : '[ ' . $contrato->NUMERO_CONTRATO . ' ]' . $contrato->DESCRIPCION_CONTRATO;
+
+
+                        // VALIDAR SI EXISTE CONTRATO
+                        if (!is_null($proyecto->contrato_id)) {
+
+                            $contrato = clientecontratoModel::findOrFail($proyecto->contrato_id);
+
+                            $descripcion_contrato = is_null($contrato->NUMERO_CONTRATO)
+                                ? $contrato->DESCRIPCION_CONTRATO
+                                : '[ ' . $contrato->NUMERO_CONTRATO . ' ]' . $contrato->DESCRIPCION_CONTRATO;
+                        } else {
+
+                            $contrato = null;
+                            $descripcion_contrato = null;
+                        }
 
 
                         // Modificar dependiendo si la informacion cargada en el reconocimiento es para el cliente seleccionado o no
                         if ($recsensorial->informe_del_cliente == 1) {
 
                             $recsensorial->update([
-                                'cliente_id' => $contrato->CLIENTE_ID,
+
+                                'cliente_id' => $proyecto->cliente_id,
+
                                 'contrato_id' => $proyecto->contrato_id,
                                 'descripcion_contrato' => $descripcion_contrato,
                                 'descripcion_cliente' => $proyecto->proyecto_clienterazonsocial,
@@ -1578,10 +1635,11 @@ class proyectoController extends Controller
                         } else {
 
                             $recsensorial->update([
-                                'cliente_id' => $contrato->CLIENTE_ID,
+                                'cliente_id' => $proyecto->cliente_id,
                                 'contrato_id' => $proyecto->contrato_id,
                                 'descripcion_contrato' => $descripcion_contrato,
                                 'descripcion_cliente' => $proyecto->proyecto_clienterazonsocial
+
                             ]);
                         }
                     }

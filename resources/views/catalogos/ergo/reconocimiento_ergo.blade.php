@@ -740,6 +740,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                 <table class="table table-bordered table-hover stylish-table" width="100%" id="Tablarecocategoriasergo">
                                                                     <thead>
                                                                         <tr>
+                                                                            <th>#</th>
                                                                             <th>P.Trabajo</th>
                                                                             <th>Categoría</th>
                                                                             <th>Descripcion</th>
@@ -1528,7 +1529,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                 align-items:center;
                                                 gap:60px;
                                             ">
-                                                                            </div>
+                                        </div>
 
                                     </div>
                                     <form method="post" enctype="multipart/form-data" name="form_preguntas-analisis-036" id="form_preguntas-analisis-036">
