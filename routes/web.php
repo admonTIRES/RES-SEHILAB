@@ -2132,7 +2132,6 @@ Route::get('mostrafotoinstalacionergo/{archivo_opcion}/{recsensorial_id}', ['as'
 Route::get('mostrarmapariesgoergo/{archivo_opcion}/{recsensorial_id}', ['as' => 'mostrarmapa', 'uses' => 'ERGO\reconocimientoergoController@mostrarmapariesgoergo']);
 
 //// INFORME
-
 Route::get('getGraficaErgo/{reco_id}', ['as' => 'getGraficaErgo', 'uses' => 'ERGO\reconocimientoergoController@getGraficaErgo']);
 Route::get('obtenerDatosInformesRecoergo/{ID}', ['as' => 'obtenerDatosInformesRecoergo', 'uses' => 'ERGO\reconocimientoergoController@obtenerDatosInformesRecoergo']);
 
@@ -2141,261 +2140,71 @@ Route::post('guardarPortadaRecoErgo',['as' => 'guardarPortadaRecoErgo','uses' =>
 Route::get('mostrarportadarecoergo/{archivo_opcion}/{reco_id}',['as' => 'mostrarportadarecoergo','uses' => 'ERGO\reconocimientoergoController@mostrarportadarecoergo']);
 
 /// DATOS GENERALES
-
-
-Route::get(
-    'obtenerDatosGeneralesInformeReco/{RECO_ID}',
-    [
-        'as' => 'obtenerDatosGeneralesInformeReco',
-        'uses' => 'ERGO\reconocimientoergoController@obtenerDatosGeneralesInformeReco'
-    ]
-);
-
-
+Route::get('obtenerDatosGeneralesInformeReco/{RECO_ID}',['as' => 'obtenerDatosGeneralesInformeReco','uses' => 'ERGO\reconocimientoergoController@obtenerDatosGeneralesInformeReco']);
 
 /// introducciom
 Route::post('guardarIntroduccionRecoErgo',['as' => 'guardarIntroduccionRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarIntroduccionRecoErgo']);
 
 /// definiciones
-
-
-Route::post(
-    'guardarDefinicionesInformeErgo',
-    [
-        'as' => 'guardarDefinicionesInformeErgo',
-        'uses' => 'ERGO\reconocimientoergoController@guardarDefinicionesInformeErgo'
-    ]
-);
-
-
-
-Route::get(
-    'obtenerDefinicionesInformeErgo/{RECO_ID}',
-    [
-        'as' => 'obtenerDefinicionesInformeErgo',
-        'uses' => 'ERGO\reconocimientoergoController@obtenerDefinicionesInformeErgo'
-    ]
-);
-
+Route::post('guardarDefinicionesInformeErgo',['as' => 'guardarDefinicionesInformeErgo','uses' => 'ERGO\reconocimientoergoController@guardarDefinicionesInformeErgo']);
+Route::get('obtenerDefinicionesInformeErgo/{RECO_ID}',['as' => 'obtenerDefinicionesInformeErgo','uses' => 'ERGO\reconocimientoergoController@obtenerDefinicionesInformeErgo']);
 
 /// objetivos generales y especificos 
-
-Route::post(
-    'guardarObjetivoGeneralRecoErgo',
-    [
-        'as' => 'guardarObjetivoGeneralRecoErgo',
-        'uses' => 'ERGO\reconocimientoergoController@guardarObjetivoGeneralRecoErgo'
-    ]
-);
-
-
-
-Route::post(
-    'guardarObjetivoEspecificoRecoErgo',
-    [
-        'as' => 'guardarObjetivoEspecificoRecoErgo',
-        'uses' => 'ERGO\reconocimientoergoController@guardarObjetivoEspecificoRecoErgo'
-    ]
-);
+Route::post('guardarObjetivoGeneralRecoErgo',['as' => 'guardarObjetivoGeneralRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarObjetivoGeneralRecoErgo']);
+Route::post('guardarObjetivoEspecificoRecoErgo',['as' => 'guardarObjetivoEspecificoRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarObjetivoEspecificoRecoErgo']);
 
 
 //// reconocimiento 
-
-Route::post(
-    'guardarUbicacionRecoErgo',
-    [
-        'as' => 'guardarUbicacionRecoErgo',
-        'uses' => 'ERGO\reconocimientoergoController@guardarUbicacionRecoErgo'
-    ]
-);
-
-
-
-Route::get(
-    'mostrarubicacionrecoergo/{archivo_opcion}/{reco_id}.{extension}',
-    [
-        'as' => 'mostrarubicacionrecoergo',
-        'uses' => 'ERGO\reconocimientoergoController@mostrarubicacionrecoergo'
-    ]
-);
+Route::post('guardarUbicacionRecoErgo',['as' => 'guardarUbicacionRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarUbicacionRecoErgo']);
+Route::get( 'mostrarubicacionrecoergo/{archivo_opcion}/{reco_id}.{extension}',['as' => 'mostrarubicacionrecoergo','uses' => 'ERGO\reconocimientoergoController@mostrarubicacionrecoergo']);
 
 /// Descripción del proceso en la instalación
-
-
-Route::post(
-    'guardarProcesoInstalacionRecoErgo',
-    [
-        'as' => 'guardarProcesoInstalacionRecoErgo',
-        'uses' => 'ERGO\reconocimientoergoController@guardarProcesoInstalacionRecoErgo'
-    ]
-);
-
+Route::post('guardarProcesoInstalacionRecoErgo',['as' => 'guardarProcesoInstalacionRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarProcesoInstalacionRecoErgo']);
 
 /////// puestos de trabajos 
-
-
-
-Route::get(
-    'tablaReporteCategoriasErgo',
-    [
-        'as' => 'tablaReporteCategoriasErgo',
-        'uses' => 'ERGO\reconocimientoergoController@tablaReporteCategoriasErgo'
-    ]
-);
-
-
-
-Route::get(
-    'tablaReporteAreasErgo',
-    [
-        'as' => 'tablaReporteAreasErgo',
-        'uses' => 'ERGO\reconocimientoergoController@tablaReporteAreasErgo'
-    ]
-);
+Route::get('tablaReporteCategoriasErgo',['as' => 'tablaReporteCategoriasErgo','uses' => 'ERGO\reconocimientoergoController@tablaReporteCategoriasErgo']);
+Route::get('tablaReporteAreasErgo',['as' => 'tablaReporteAreasErgo','uses' => 'ERGO\reconocimientoergoController@tablaReporteAreasErgo']);
 
 ///// conclusiones
-
-
-Route::post(
-    'guardarConclusionRecoErgo',
-    [
-        'as' => 'guardarConclusionRecoErgo',
-        'uses' => 'ERGO\reconocimientoergoController@guardarConclusionRecoErgo'
-    ]
-);
+Route::post('guardarConclusionRecoErgo',['as' => 'guardarConclusionRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarConclusionRecoErgo']);
 
 //// recomendaciones 
-
-
-Route::post(
-    'guardarRecomendacionesInformeErgo',
-    [
-        'as' => 'guardarRecomendacionesInformeErgo',
-        'uses' => 'ERGO\reconocimientoergoController@guardarRecomendacionesInformeErgo'
-    ]
-);
-
-
-
-Route::get(
-    'obtenerRecomendacionesInformeErgo/{RECO_ID}',
-    [
-        'as' => 'obtenerRecomendacionesInformeErgo',
-        'uses' => 'ERGO\reconocimientoergoController@obtenerRecomendacionesInformeErgo'
-    ]
-);
-
+Route::post('guardarRecomendacionesInformeErgo',['as' => 'guardarRecomendacionesInformeErgo','uses' => 'ERGO\reconocimientoergoController@guardarRecomendacionesInformeErgo']);
+Route::get('obtenerRecomendacionesInformeErgo/{RECO_ID}',['as' => 'obtenerRecomendacionesInformeErgo','uses' => 'ERGO\reconocimientoergoController@obtenerRecomendacionesInformeErgo']);
 
 ///// responsables 
-
-Route::post(
-    'guardarResponsablesInformeRecoErgo',
-    [
-        'as' => 'guardarResponsablesInformeRecoErgo',
-        'uses' => 'ERGO\reconocimientoergoController@guardarResponsablesInformeRecoErgo'
-    ]
-);
-
-
-
-Route::get(
-    'mostrarresponsable1recoergo/{archivo_opcion}/{reco_id}.{extension}',
-    [
-        'as' => 'mostrarresponsable1recoergo',
-        'uses' => 'ERGO\reconocimientoergoController@mostrarresponsable1recoergo'
-    ]
-);
-
-
-
-Route::get(
-    'mostrarresponsable2recoergo/{archivo_opcion}/{reco_id}.{extension}',
-    [
-        'as' => 'mostrarresponsable2recoergo',
-        'uses' => 'ERGO\reconocimientoergoController@mostrarresponsable2recoergo'
-    ]
-);
-
-
+Route::post('guardarResponsablesInformeRecoErgo',['as' => 'guardarResponsablesInformeRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarResponsablesInformeRecoErgo']);
+Route::get('mostrarresponsable1recoergo/{archivo_opcion}/{reco_id}.{extension}',['as' => 'mostrarresponsable1recoergo','uses' => 'ERGO\reconocimientoergoController@mostrarresponsable1recoergo']);
+Route::get('mostrarresponsable2recoergo/{archivo_opcion}/{reco_id}.{extension}',['as' => 'mostrarresponsable2recoergo','uses' => 'ERGO\reconocimientoergoController@mostrarresponsable2recoergo']);
 
 /////   6.1 
-Route::post(
-    'guardarIntroduccionGraficasNom036',
-    [
-        'as' => 'guardarIntroduccionGraficasNom036',
-        'uses' => 'ERGO\reconocimientoergoController@guardarIntroduccionGraficasNom036'
-    ]
-);
+Route::post('guardarIntroduccionGraficasNom036',['as' => 'guardarIntroduccionGraficasNom036','uses' => 'ERGO\reconocimientoergoController@guardarIntroduccionGraficasNom036']);
 
 /// 6.1 conclusion 
+Route::post('guardarConclusionGraficasNom036',['as' => 'guardarConclusionGraficasNom036','uses' => 'ERGO\reconocimientoergoController@guardarConclusionGraficasNom036']);
 
+/// 7  resultados 
 
-
-Route::post(
-    'guardarConclusionGraficasNom036',
-    [
-        'as' => 'guardarConclusionGraficasNom036',
-        'uses' => 'ERGO\reconocimientoergoController@guardarConclusionGraficasNom036'
-    ]
-);
-
-
+Route::get('getGraficasFichas/{reco_id}',['as' => 'getGraficasFichas','uses' => 'ERGO\reconocimientoergoController@getGraficasFichas']);
 
 
 
 ////////   VERSIONES 
-
-
-
-Route::get(
-    'tablaVersionesRecoErgo/{reco_id}',
-    [
-        'as' => 'tablaVersionesRecoErgo',
-        'uses' =>
-        'ERGO\reconocimientoergoController@tablaVersionesRecoErgo'
-    ]
-);
-
-
-
-Route::post(
-    'crearRevisionRecoErgo',
-    [
-        'as' => 'crearRevisionRecoErgo',
-        'uses' =>
-        'ERGO\reconocimientoergoController@crearRevisionRecoErgo'
-    ]
-);
-
-
-
-Route::post(
-    'cancelarRevisionRecoErgo',
-    [
-        'as' => 'cancelarRevisionRecoErgo',
-        'uses' =>
-        'ERGO\reconocimientoergoController@cancelarRevisionRecoErgo'
-    ]
-);
-
-
-
-Route::get(
-    'validarEdicionRecoErgo/{reco_id}',
-    [
-        'as' => 'validarEdicionRecoErgo',
-        'uses' =>
-        'ERGO\reconocimientoergoController@validarEdicionRecoErgo'
-    ]
-);
+Route::get('tablaVersionesRecoErgo/{reco_id}',['as' => 'tablaVersionesRecoErgo','uses' =>'ERGO\reconocimientoergoController@tablaVersionesRecoErgo']);
+Route::post('crearRevisionRecoErgo',['as' => 'crearRevisionRecoErgo','uses' =>'ERGO\reconocimientoergoController@crearRevisionRecoErgo']);
+Route::post('cancelarRevisionRecoErgo',['as' => 'cancelarRevisionRecoErgo','uses' =>'ERGO\reconocimientoergoController@cancelarRevisionRecoErgo']);
+Route::get('validarEdicionRecoErgo/{reco_id}',['as' => 'validarEdicionRecoErgo','uses' =>'ERGO\reconocimientoergoController@validarEdicionRecoErgo']);
 
 //// descargar 
+Route::post('descargarRevisionRecoErgo/{RECO_ID}','ERGO\reconocimientoergoController@descargarRevisionRecoErgo');
 
 
-Route::post(
-    'descargarRevisionRecoErgo/{RECO_ID}',
-    'ERGO\reconocimientoergoController@descargarRevisionRecoErgo'
-);
+
+//// 7.1 introduccion
+Route::post('guardarIntroduccionGraficasISO12995',['as' => 'guardarIntroduccionGraficasISO12995','uses' =>'ERGO\reconocimientoergoController@guardarIntroduccionGraficasISO12995']);
+
+/// 7.1  conclusion
+Route::post( 'guardarConclusionGraficasISO12995',['as' => 'guardarConclusionGraficasISO12995','uses' =>'ERGO\reconocimientoergoController@guardarConclusionGraficasISO12995']);
 
 /////////// CATEGORIA  ///////////
 Route::resource('recoergocategorias', 'ERGO\categoriasergoController');

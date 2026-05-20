@@ -1489,7 +1489,6 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                     <tr>
                                                         <th>PT</th>
                                                         <th>Categoría</th>
-
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
@@ -1543,6 +1542,47 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                             </div>
                                         </div>
                                     </form>
+
+
+                                    <h4 class="card-title mt-2" id="7">7.- Resultados</h4>
+                                    <h4 class="card-title" id="7_1">7.1.- Resultados de la evaluación conforme a las fichas de la ISO 12995-2014</h4>
+                                    <form method="post" enctype="multipart/form-data" name="form_fichas-iso12995" id="form_fichas-iso12995">
+                                        <div class="form-group">
+                                            <label>Descripción de las siguientes gráficas</label>
+                                            <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="INTRODUCCION_GRAFICASISO12995" name="INTRODUCCION_GRAFICASISO12995" required></textarea>
+                                        </div>
+                                        <div class="col-12" style="text-align: right;">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_introduccioniso12995">Guardar<i class="fa fa-save"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="row justify-content-center">
+
+                                        <div
+                                            id="contenedorGraficasfichas"
+                                            style="
+                                                width:100%;
+                                                display:flex;
+                                                flex-direction:column;
+                                                align-items:center;
+                                                gap:60px;
+                                            ">
+                                        </div>
+
+                                    </div>
+                                    <form method="post" enctype="multipart/form-data" name="form_preguntas-analisis-iso12995" id="form_preguntas-analisis-iso12995">
+                                        <div class="form-group">
+                                            <label>Análisis estadístico</label>
+                                            <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="CONCLUSION_GRAFICASISO12995" name="CONCLUSION_GRAFICASISO12995" required></textarea>
+                                        </div>
+                                        <div class="col-12" style="text-align: right;">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_conclusioniso12995">Guardar<i class="fa fa-save"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+
 
 
                                     <h4 class="card-title" id="8">8.- Conclusiones</h4>

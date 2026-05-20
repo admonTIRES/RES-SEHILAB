@@ -161,11 +161,9 @@ $('.link_menuprincipal').click(function () {
 			tablaReporteCategoriasErgo();
 			tablaReporteAreasErgo();
 			cargarRecomendacionesInformeErgo();
-
-			  tablaVersionesRecoErgo();
-
+			tablaVersionesRecoErgo();
 			validarEdicionRecoErgo();
-			
+            cargarGraficasFichas();
 
 
 		$('#RUTA_IMAGEN_PORTADA').dropify({
@@ -2050,7 +2048,13 @@ function mostrartablarecocategoriasergo() {
 					console.log('error en Tablarecocategoriasergo');
 				}
 			},
-			"columns": [
+            "columns": [
+                {
+					data: null,
+					render: function (data, type, row, meta) {
+						return meta.row + 1;
+					}
+				},
 				{
 					"data": "PT_CATEGORIA",
 					"defaultContent": "-"
@@ -4817,8 +4821,7 @@ function activarLogicaFichas() {
 
 
 
-
-
+////// FICHAS NOM-036
 
 
 
@@ -4831,9 +4834,6 @@ function cargarGraficas() {
     });
 
 }
-
-
-
 
 
 function generarGraficas(data) {
@@ -4990,8 +4990,6 @@ function generarGraficas(data) {
     });
 
 }
-
-
 
 
 
@@ -5310,8 +5308,456 @@ function crearGrafica(
 
 
 
+////// GRAFICAS FICHAS
 
 
+
+
+function cargarGraficasFichas() {
+
+    $.get(
+
+        '/getGraficasFichas/' + recsensorial,
+
+        function (data) {
+
+            generarGraficasFichas(data);
+
+        }
+
+    );
+
+}
+
+function generarGraficasFichas(data) {
+
+    //------------------------------------------
+    // LIMPIAR
+    //------------------------------------------
+
+    $('#contenedorGraficasfichas').empty();
+
+
+
+
+    //------------------------------------------
+    // ORDENAR FICHAS
+    //------------------------------------------
+
+    data.sort(function (a, b) {
+
+        return parseFloat(a.ficha) - parseFloat(b.ficha);
+
+    });
+
+
+
+
+    //------------------------------------------
+    // RECORRER
+    //------------------------------------------
+
+    data.forEach(function (ficha, index) {
+
+
+
+
+        //------------------------------------------
+        // TITULO
+        //------------------------------------------
+
+        let titulo = `
+
+            <div style="
+                width:100%;
+                text-align:center;
+                margin-top:50px;
+                margin-bottom:30px;
+            ">
+
+                <div style="
+                    font-size:28px;
+                    color:#1b3c59;
+                    font-weight:bold;
+                ">
+
+                    ${ficha.titulo}
+
+                </div>
+
+            </div>
+
+        `;
+
+        $('#contenedorGraficasfichas').append(titulo);
+
+
+
+
+        //------------------------------------------
+        // FILA
+        //------------------------------------------
+
+        let fila = `
+
+            <div
+                id="fila_${index}"
+                style="
+                    width:100%;
+                    display:flex;
+                    flex-wrap:wrap;
+                    justify-content:center;
+                    gap:20px;
+                    margin-bottom:30px;
+                ">
+            </div>
+
+        `;
+
+        $('#contenedorGraficasfichas').append(fila);
+
+
+
+
+        //------------------------------------------
+        // PREGUNTAS
+        //------------------------------------------
+
+        Object.entries(ficha.preguntas)
+
+            //------------------------------------------
+            // ORDENAR
+            //------------------------------------------
+
+            .sort(function (a, b) {
+
+                let incisoA = obtenerIncisoReal(
+                    a[1].texto,
+                    a[0]
+                );
+
+                let incisoB = obtenerIncisoReal(
+                    b[1].texto,
+                    b[0]
+                );
+
+                return incisoA.localeCompare(incisoB);
+
+            })
+
+            //------------------------------------------
+            // RECORRER
+            //------------------------------------------
+
+            .forEach(function ([letra, pregunta], i) {
+
+
+
+
+                //------------------------------------------
+                // INCISO
+                //------------------------------------------
+
+                let inciso = obtenerIncisoReal(
+
+                    pregunta.texto,
+
+                    letra
+
+                );
+
+
+
+
+                //------------------------------------------
+                // ID
+                //------------------------------------------
+
+                let idChart = 'chart_' + index + '_' + i;
+
+
+
+
+                //------------------------------------------
+                // CARD
+                //------------------------------------------
+
+                let card = `
+
+                    <div style="
+                        width:180px;
+                        background:#FFF;
+                        border-radius:20px;
+                        box-shadow:0 4px 12px rgba(0,0,0,.10);
+                        padding:15px;
+                        display:flex;
+                        flex-direction:column;
+                        align-items:center;
+                    ">
+
+                        <div style="
+                            font-size:28px;
+                            font-weight:bold;
+                            color:#1b3c59;
+                            margin-bottom:10px;
+                        ">
+
+                            ${inciso}
+
+                        </div>
+
+                        <div
+                            id="${idChart}"
+                            style="
+                                width:100%;
+                            ">
+                        </div>
+
+                    </div>
+
+                `;
+
+                $('#fila_' + index).append(card);
+
+
+
+
+                //------------------------------------------
+                // TERMOMETRO
+                //------------------------------------------
+
+                crearTermometroFicha(
+
+                    idChart,
+
+                    pregunta.SI,
+
+                    pregunta.NO
+
+                );
+
+            });
+
+    });
+
+}
+
+function obtenerIncisoReal(texto, letra) {
+
+    //------------------------------------------
+    // BUSCAR a. b. c.
+    //------------------------------------------
+
+    let match = texto.match(/^([a-z])/i);
+
+
+
+
+    //------------------------------------------
+    // SI EXISTE
+    //------------------------------------------
+
+    if (match) {
+
+        return match[1].toUpperCase();
+
+    }
+
+
+
+
+    //------------------------------------------
+    // LIMPIAR
+    //------------------------------------------
+
+    return letra
+        .replace(/[0-9_]/g, '')
+        .toUpperCase();
+
+}
+
+function crearTermometroFicha(
+
+    id,
+    si,
+    no
+
+) {
+
+    //------------------------------------------
+    // TOTAL
+    //------------------------------------------
+
+    let total = si + no;
+
+
+
+
+    //------------------------------------------
+    // PORCENTAJE SI
+    //------------------------------------------
+
+    let porcentajeSi = total > 0
+        ? ((si / total) * 100)
+        : 0;
+
+
+
+
+    //------------------------------------------
+    // ALTURA TERMOMETRO
+    //------------------------------------------
+
+    let alturaTotal = 180;
+
+
+
+
+    //------------------------------------------
+    // ALTURA VERDE
+    //------------------------------------------
+
+    let alturaVerde = (alturaTotal * porcentajeSi) / 100;
+
+
+
+
+    //------------------------------------------
+    // COLOR BULBO
+    //------------------------------------------
+
+    let colorBulbo = '#dc3545';
+
+    if (no == 0) {
+
+        colorBulbo = '#28a745';
+
+    }
+
+
+
+
+    //------------------------------------------
+    // HTML
+    //------------------------------------------
+
+    let html = `
+
+        <div style="
+            width:100%;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+        ">
+
+
+
+
+            <!-- CONTENEDOR -->
+            <div style="
+                position:relative;
+                width:70px;
+                height:235px;
+            ">
+
+
+
+
+                <!-- TUBO -->
+                <div style="
+                    position:absolute;
+                    left:50%;
+                    transform:translateX(-50%);
+                    top:0;
+                    width:45px;
+                    height:180px;
+                    background:#dc3545;
+                    border:5px solid #b9e5e5;
+                    border-radius:50px;
+                    overflow:hidden;
+                    z-index:2;
+                ">
+
+
+
+
+                    <!-- VERDE -->
+                    <div style="
+                        position:absolute;
+                        top:0;
+                        width:100%;
+                        height:${alturaVerde}px;
+                        background:#28a745;
+                        transition:1s;
+                    ">
+                    </div>
+
+                </div>
+
+
+
+
+                <!-- BULBO -->
+                <div style="
+                    position:absolute;
+                    bottom:0;
+                    left:50%;
+                    transform:translateX(-50%);
+                    width:70px;
+                    height:70px;
+                    border-radius:50%;
+                    background:${colorBulbo};
+                    border:5px solid #b9e5e5;
+                    z-index:1;
+                ">
+                </div>
+
+            </div>
+
+
+
+
+            <!-- SI -->
+            <div style="
+                margin-top:12px;
+                font-size:18px;
+                font-weight:bold;
+                color:#28a745;
+            ">
+
+                SI: ${si}
+
+            </div>
+
+
+
+
+            <!-- NO -->
+            <div style="
+                margin-top:2px;
+                font-size:18px;
+                font-weight:bold;
+                color:#dc3545;
+            ">
+
+                NO: ${no}
+
+            </div>
+
+        </div>
+
+    `;
+
+
+
+
+    //------------------------------------------
+    // INSERTAR
+    //------------------------------------------
+
+    $('#' + id).html(html);
+
+}
 
 
 
@@ -5633,8 +6079,13 @@ function cargarDatosGeneralesInformeReco()
                 .val(response.CONCLUSION_GRAFICASNOM036);
             
             
+            $('#INTRODUCCION_GRAFICASISO12995')
+                .val(response.INTRODUCCION_GRAFICASISO12995);
             
-            
+             
+            $('#CONCLUSION_GRAFICASISO12995')
+                .val(response.CONCLUSION_GRAFICASISO12995);
+                        
             
             
 					//-----------------------------------
@@ -6543,87 +6994,64 @@ $("#form_reporte_procesoinstalacion").on(
 
 
 
-function tablaReporteCategoriasErgo()
-{
 
-    try {
+function tablaReporteCategoriasErgo() {
 
-        let ruta =
-            "/tablaReporteCategoriasErgo";
+    if (tabla_reporte_categoria != null) {
+        tabla_reporte_categoria.destroy();
+        $('#tabla_reporte_categoria tbody').empty();
+    }
 
-
-
-        if(tabla_reporte_categoria != null)
-        {
-            tabla_reporte_categoria.destroy();
-        }
-
-
-
-        tabla_reporte_categoria =
-            $('#tabla_reporte_categoria').DataTable({
-
-            ajax: {
-                url: ruta,
-                type: "get",
-                cache: false,
-                data: {
-                    ergoid: recsensorial
-                },
-                error: function(xhr)
-                {
-                    console.log(xhr.responseText);
-                }
+    tabla_reporte_categoria = $('#tabla_reporte_categoria').DataTable({
+        ajax: {
+            url: '/tablaReporteCategoriasErgo',
+            type: 'GET',
+            data: {
+                ergoid: recsensorial
             },
+            dataSrc: 'data'
+        },
 
-
-
-            columns: [
-
-                {
-                    data: "PT_CATEGORIA",
-                    defaultContent: "-"
-                },
-
-                {
-                    data: "NOMBRE_CATEGORIA_ERGO",
-                    defaultContent: "-"
-                }
-
-            ],
-
-
-
-            lengthMenu: [
-                [20, 50, 100, -1],
-                [20, 50, 100, "Todos"]
-            ],
-
-
-
-            searching: false,
-            paging: false,
-            ordering: false,
-            info: false,
-            responsive: true,
-
-
-
-            language: {
-                emptyTable:
-                    "No hay datos disponibles"
+        columns: [
+            {
+                data: 'ID_CATEGORIA_ERGO',
+                visible: false
+            },
+            {
+                data: 'PT_CATEGORIA',
+                title: 'PT'
+            },
+            {
+                data: 'NOMBRE_CATEGORIA_ERGO',
+                title: 'Categoría'
             }
+        ],
 
-        });
+        order: [[0, 'asc']],
 
-    }
-    catch(exception) {
+        ordering: true,
+        responsive: true,
+        autoWidth: false,
 
-        console.error(exception);
-
-    }
-
+        language: {
+            lengthMenu: "Mostrar _MENU_ registros",
+            zeroRecords: "No se encontraron registros",
+            info: "Página _PAGE_ de _PAGES_",
+            infoEmpty: "No hay registros",
+            infoFiltered: "(Filtrado de _MAX_ registros)",
+            search: "Buscar:",
+            paginate: {
+                first: "Primero",
+                last: "Último",
+                next: "Siguiente",
+                previous: "Anterior"
+            },
+            loadingRecords: "Cargando...",
+            processing: "Procesando..."
+        }
+    });
 }
+
 
 
 
@@ -7946,3 +8374,246 @@ function descargarRevisionRecoErgo(
 
 }
 
+
+
+///// GUARDAR 7.1 INTRODUCCION
+
+
+
+$("#form_fichas-iso12995").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    formData.append(
+        'RECO_ID',
+        recsensorial
+    );
+
+
+
+    $.ajax({
+
+        url:
+            '/guardarIntroduccionGraficasISO12995',
+
+        type:
+            'POST',
+
+        data:
+            formData,
+
+        contentType:
+            false,
+
+        processData:
+            false,
+
+        cache:
+            false,
+
+        headers: {
+
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+
+        },
+
+
+
+        beforeSend: function()
+        {
+
+            $("#botonguardar_reporte_introduccioniso12995")
+                .prop('disabled', true);
+
+            $("#botonguardar_reporte_introduccioniso12995")
+                .html(
+                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
+                );
+
+        },
+
+
+
+        success: function(response)
+        {
+
+            Swal.fire({
+
+                icon: 'success',
+
+                title: 'Correcto',
+
+                text: response.msj,
+
+                timer: 2000,
+
+                showConfirmButton: false
+
+            });
+
+        },
+
+
+
+        error: function(xhr)
+        {
+
+            console.log(
+                xhr.responseText
+            );
+
+            Swal.fire({
+
+                icon: 'error',
+
+                title: 'Error',
+
+                text:
+                    'Ocurrió un error al guardar'
+
+            });
+
+        },
+
+
+
+        complete: function()
+        {
+
+            $("#botonguardar_reporte_introduccioniso12995")
+                .prop('disabled', false);
+
+            $("#botonguardar_reporte_introduccioniso12995")
+                .html(
+                    'Guardar <i class="fa fa-save"></i>'
+                );
+
+        }
+
+    });
+
+});
+
+
+
+$("#form_preguntas-analisis-iso12995").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    formData.append(
+        'RECO_ID',
+        recsensorial
+    );
+
+
+
+    $.ajax({
+
+        url:
+            '/guardarConclusionGraficasISO12995',
+
+        type:
+            'POST',
+
+        data:
+            formData,
+
+        contentType:
+            false,
+
+        processData:
+            false,
+
+        cache:
+            false,
+
+        headers: {
+
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+
+        },
+
+
+
+        beforeSend: function()
+        {
+
+            $("#botonguardar_reporte_conclusioniso12995")
+                .prop('disabled', true);
+
+            $("#botonguardar_reporte_conclusioniso12995")
+                .html(
+                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
+                );
+
+        },
+
+
+
+        success: function(response)
+        {
+
+            Swal.fire({
+
+                icon: 'success',
+
+                title: 'Correcto',
+
+                text: response.msj,
+
+                timer: 2000,
+
+                showConfirmButton: false
+
+            });
+
+        },
+
+
+
+        error: function(xhr)
+        {
+
+            console.log(
+                xhr.responseText
+            );
+
+            Swal.fire({
+
+                icon: 'error',
+
+                title: 'Error',
+
+                text:
+                    'Ocurrió un error al guardar'
+
+            });
+
+        },
+
+
+
+        complete: function()
+        {
+
+            $("#botonguardar_reporte_conclusioniso12995")
+                .prop('disabled', false);
+
+            $("#botonguardar_reporte_conclusioniso12995")
+                .html(
+                    'Guardar <i class="fa fa-save"></i>'
+                );
+
+        }
+
+    });
+
+});

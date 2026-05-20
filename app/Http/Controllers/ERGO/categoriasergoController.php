@@ -38,7 +38,7 @@ class categoriasergoController extends Controller
             $ergo = $request->get('ergoid');
 
             $tabla = recoergocategoriasModel::where('RECO_ID', $ergo)
-                ->orderBy('PT_CATEGORIA', 'ASC')
+                ->orderBy('ID_CATEGORIA_ERGO', 'ASC')
                 ->get();
 
             foreach ($tabla as $value) {

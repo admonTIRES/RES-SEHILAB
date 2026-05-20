@@ -865,8 +865,115 @@ class reconocimientoergoController extends Controller
         return response()->json($datos);
     }
 
-    
 
+    ///// GRAFICA FICHAS
+
+
+
+
+    public function getGraficasFichas($reco_id)
+    {
+        $fichas = DB::table('recoergo_fichastecnicas')
+            ->where('RECO_ID', $reco_id)
+            ->where('ACTIVO', 1)
+            ->get();
+
+        $resultado = [];
+
+        foreach ($fichas as $ficha) {
+
+            $json = json_decode($ficha->JSON_FICHAS, true);
+
+            if (!$json) {
+                continue;
+            }
+
+            foreach ($json as $bloque) {
+
+                $nombreFicha = $bloque['ficha'];
+
+                //------------------------------------------
+                // SOLO LAS 6 FICHAS
+                //------------------------------------------
+
+                $fichasPermitidas = [
+                    '1.1',
+                    '1.2',
+                    '2.1',
+                    '3.1',
+                    '4.1',
+                    '4.2'
+                ];
+
+                if (!in_array($nombreFicha, $fichasPermitidas)) {
+                    continue;
+                }
+
+                //------------------------------------------
+                // TITULOS
+                //------------------------------------------
+
+                $titulos = [
+
+                    '1.1' => 'Levantamiento de cargas',
+                    '1.2' => 'Transporte de cargas',
+                    '2.1' => 'Empuje y tracción de cargas',
+                    '3.1' => 'Movimientos repetitivos',
+                    '4.1' => 'Posturas estáticas forzadas',
+                    '4.2' => 'Posturas dinámicas forzadas'
+                ];
+
+                if (!isset($resultado[$nombreFicha])) {
+
+                    $resultado[$nombreFicha] = [
+
+                        'ficha' => $nombreFicha,
+
+                        'titulo' => $titulos[$nombreFicha],
+
+                        'preguntas' => []
+                    ];
+                }
+
+                //------------------------------------------
+                // RECORRER PREGUNTAS
+                //------------------------------------------
+
+                foreach ($bloque['preguntas'] as $pregunta) {
+
+                    $letra = $pregunta['name'];
+
+                    if (!isset($resultado[$nombreFicha]['preguntas'][$letra])) {
+
+                        $resultado[$nombreFicha]['preguntas'][$letra] = [
+
+                            'texto' => $pregunta['texto'],
+
+                            'SI' => 0,
+
+                            'NO' => 0
+                        ];
+                    }
+
+                    //------------------------------------------
+                    // CONTADORES
+                    //------------------------------------------
+
+                    if (trim($pregunta['respuesta']) == 'SI') {
+
+                        $resultado[$nombreFicha]['preguntas'][$letra]['SI']++;
+                    } else {
+
+                        $resultado[$nombreFicha]['preguntas'][$letra]['NO']++;
+                    }
+                }
+            }
+        }
+
+        return response()->json(array_values($resultado));
+    }
+
+    
 
     public function obtenerDatosInformesRecoergo($ID)
     {
@@ -1449,6 +1556,7 @@ class reconocimientoergoController extends Controller
             ], 500);
         }
     }
+
     public function guardarUbicacionRecoErgo(Request $request)
     {
         try {
@@ -1646,7 +1754,7 @@ class reconocimientoergoController extends Controller
             $request->ergoid
         )
             ->where('ACTIVO', 1)
-            ->orderBy('PT_CATEGORIA', 'ASC')
+            ->orderBy('ID_CATEGORIA_ERGO', 'ASC')
             ->get();
 
 
@@ -2297,25 +2405,230 @@ class reconocimientoergoController extends Controller
     }
 
 
+    public function guardarIntroduccionGraficasISO12995(
+        Request $request
+    ) {
+
+        try {
+
+            DB::beginTransaction();
+
+
+
+            //---------------------------------------
+            // CONSULTAR
+            //---------------------------------------
+
+            $dato =
+                datosgeneralesinformeRecoModel::where(
+
+                    'RECO_ID',
+
+                    $request->RECO_ID
+
+                )->first();
+
+
+
+            //---------------------------------------
+            // CREAR
+            //---------------------------------------
+
+            if (!$dato) {
+
+                $dato =
+                    new datosgeneralesinformeRecoModel();
+
+                $dato->RECO_ID =
+                    $request->RECO_ID;
+            }
+
+
+
+
+            $dato->INTRODUCCION_GRAFICASISO12995 =
+                $request->INTRODUCCION_GRAFICASISO12995;
+
+
+
+            $dato->save();
+
+
+            DB::commit();
+
+
+            return response()->json([
+
+                'msj' =>
+                'Información guardada correctamente'
+
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+
+
+            return response()->json([
+
+                'msj' =>
+                'Error: ' .
+                    $e->getMessage()
+
+            ], 500);
+        }
+    }
+
+
+
+    public function guardarConclusionGraficasISO12995(
+        Request $request
+    ) {
+
+        try {
+
+            DB::beginTransaction();
+
+
+
+            $dato =
+                datosgeneralesinformeRecoModel::where(
+
+                    'RECO_ID',
+
+                    $request->RECO_ID
+
+                )->first();
+
+
+
+
+            if (!$dato) {
+
+                $dato =
+                    new datosgeneralesinformeRecoModel();
+
+                $dato->RECO_ID =
+                    $request->RECO_ID;
+            }
+
+
+
+
+            $dato->CONCLUSION_GRAFICASISO12995 =
+                $request->CONCLUSION_GRAFICASISO12995;
+
+
+
+            $dato->save();
+
+
+
+
+            DB::commit();
+
+
+
+
+            return response()->json([
+
+                'msj' =>
+                'Análisis estadístico guardado correctamente'
+
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+
+
+            return response()->json([
+
+                'msj' =>
+                'Error: ' .
+                    $e->getMessage()
+
+            ], 500);
+        }
+    }
+
+
+
 
     public function validarEdicionRecoErgo($reco_id)
-{
+    {
 
-    $revision =
-        versionesrecoergoModel::where(
-            'RECO_ID',
-            $reco_id
-        )
-        ->orderByDesc('NUMERO_REVISION')
-        ->first();
+        $revision =
+            versionesrecoergoModel::where(
+                'RECO_ID',
+                $reco_id
+            )
+            ->orderByDesc('NUMERO_REVISION')
+            ->first();
 
 
 
-    //---------------------------------------
-    // SI NO EXISTE REVISION
-    //---------------------------------------
+        //---------------------------------------
+        // SI NO EXISTE REVISION
+        //---------------------------------------
 
-    if (!$revision) {
+        if (!$revision) {
+
+            return response()->json([
+
+                'permite_guardar' => 1,
+
+                'finalizado' => 0,
+
+                'cancelado' => 0
+
+            ]);
+        }
+
+
+
+        //---------------------------------------
+        // SI ESTA FINALIZADO
+        //---------------------------------------
+
+        if ($revision->FINALIZADO == 1 &&
+            $revision->CANCELADO == 0) {
+
+            return response()->json([
+
+                'permite_guardar' => 0,
+
+                'finalizado' => 1,
+
+                'cancelado' => 0
+
+            ]);
+        }
+
+
+
+        //---------------------------------------
+        // SI ESTA CANCELADO
+        //---------------------------------------
+
+        if ($revision->CANCELADO == 1) {
+
+            return response()->json([
+
+                'permite_guardar' => 1,
+
+                'finalizado' => 0,
+
+                'cancelado' => 1
+
+            ]);
+        }
+
+
+
+        //---------------------------------------
+        // NORMAL
+        //---------------------------------------
 
         return response()->json([
 
@@ -2326,64 +2639,8 @@ class reconocimientoergoController extends Controller
             'cancelado' => 0
 
         ]);
+
     }
-
-
-
-    //---------------------------------------
-    // SI ESTA FINALIZADO
-    //---------------------------------------
-
-    if ($revision->FINALIZADO == 1 &&
-        $revision->CANCELADO == 0) {
-
-        return response()->json([
-
-            'permite_guardar' => 0,
-
-            'finalizado' => 1,
-
-            'cancelado' => 0
-
-        ]);
-    }
-
-
-
-    //---------------------------------------
-    // SI ESTA CANCELADO
-    //---------------------------------------
-
-    if ($revision->CANCELADO == 1) {
-
-        return response()->json([
-
-            'permite_guardar' => 1,
-
-            'finalizado' => 0,
-
-            'cancelado' => 1
-
-        ]);
-    }
-
-
-
-    //---------------------------------------
-    // NORMAL
-    //---------------------------------------
-
-    return response()->json([
-
-        'permite_guardar' => 1,
-
-        'finalizado' => 0,
-
-        'cancelado' => 0
-
-    ]);
-
-}
 
     public function crearRevisionRecoErgo(Request $request) {
 
@@ -4359,6 +4616,34 @@ class reconocimientoergoController extends Controller
 
 
 
+            //---------------------------------------
+            // INTRODUCCION 7.1
+            //---------------------------------------
+
+            $plantillaword->setValue(
+
+                'INTRODUCCION_7_1',
+
+                $datosGenerales->INTRODUCCION_GRAFICASISO12995
+                    ?? 'No cargado'
+
+            );
+
+
+
+
+            //---------------------------------------
+            // CONCLUSION 7.1
+            //---------------------------------------
+
+            $plantillaword->setValue(
+
+                'CONCLUSION_7_1',
+
+                $datosGenerales->CONCLUSION_GRAFICASISO12995
+                    ?? 'No cargado'
+
+            );
 
 
             // //================================================================================
