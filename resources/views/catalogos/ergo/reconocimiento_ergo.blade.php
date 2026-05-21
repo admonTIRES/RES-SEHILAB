@@ -216,6 +216,15 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="text-center mb-5" style="display: none;" id="BOTON_TRAERHI">
+                                    <button type="button"
+                                        class="btn btn-info"
+                                        id="boton_sincronizar_higiene">
+                                        Importar categorías y áreas desde higiene
+                                    </button>
+                                </div>
+
                                 <!--form panels-->
                                 <div class="row">
                                     <div class="col-12">
@@ -1829,8 +1838,8 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Descripcion categoría*</label>
-                                <textarea class="form-control" name="DESCRIPCION_CATEGORIA_ERGO" id="DESCRIPCION_CATEGORIA_ERGO" rows="4" required></textarea>
+                                <label>Descripcion categoría</label>
+                                <textarea class="form-control" name="DESCRIPCION_CATEGORIA_ERGO" id="DESCRIPCION_CATEGORIA_ERGO" rows="4" ></textarea>
                             </div>
                         </div>
 

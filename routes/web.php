@@ -2184,10 +2184,7 @@ Route::post('guardarIntroduccionGraficasNom036',['as' => 'guardarIntroduccionGra
 Route::post('guardarConclusionGraficasNom036',['as' => 'guardarConclusionGraficasNom036','uses' => 'ERGO\reconocimientoergoController@guardarConclusionGraficasNom036']);
 
 /// 7  resultados 
-
 Route::get('getGraficasFichas/{reco_id}',['as' => 'getGraficasFichas','uses' => 'ERGO\reconocimientoergoController@getGraficasFichas']);
-
-
 
 ////////   VERSIONES 
 Route::get('tablaVersionesRecoErgo/{reco_id}',['as' => 'tablaVersionesRecoErgo','uses' =>'ERGO\reconocimientoergoController@tablaVersionesRecoErgo']);
@@ -2197,8 +2194,6 @@ Route::get('validarEdicionRecoErgo/{reco_id}',['as' => 'validarEdicionRecoErgo',
 
 //// descargar 
 Route::post('descargarRevisionRecoErgo/{RECO_ID}','ERGO\reconocimientoergoController@descargarRevisionRecoErgo');
-
-
 
 //// 7.1 introduccion
 Route::post('guardarIntroduccionGraficasISO12995',['as' => 'guardarIntroduccionGraficasISO12995','uses' =>'ERGO\reconocimientoergoController@guardarIntroduccionGraficasISO12995']);
@@ -2223,6 +2218,11 @@ Route::get('Tablarecoareasergo', ['as' => 'ERGO.Tablarecoareasergo', 'uses' => '
 Route::resource('recoergofichas', 'ERGO\fichasergoController');
 Route::get('getCategoriasErgo', ['as' => 'ERGO.getCategoriasErgo', 'uses' => 'ERGO\fichasergoController@getCategoriasErgo']);
 Route::get('Tablarecofichasergo', ['as' => 'ERGO.Tablarecofichasergo', 'uses' => 'ERGO\fichasergoController@Tablarecofichasergo']);
+
+
+///////////////     COPIAR CATEGORIAS Y AREAS
+
+Route::post('sincronizarHigieneErgo', ['as' => 'sincronizarHigieneErgo', 'uses' => 'ERGO\reconocimientoergoController@sincronizarHigieneErgo']);
 
 
 ////////// CATALOGO ERGO

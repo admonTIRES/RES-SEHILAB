@@ -320,6 +320,194 @@ class reconocimientoergoController extends Controller
 
 
 
+
+    public function sincronizarHigieneErgo(Request $request)
+    {
+        try {
+
+            // =====================================================
+            // OBTENER RECONOCIMIENTO ERGO
+            // =====================================================
+
+            $reconocimientoergo = reconocimientoergoModel::findOrFail(
+                $request->RECO_ID
+            );
+
+            // =====================================================
+            // OBTENER PROYECTO
+            // =====================================================
+
+            $proyecto = proyectoModel::where(
+                'proyecto_folio',
+                $reconocimientoergo->proyecto_folio
+            )->first();
+
+            // =====================================================
+            // VALIDAR SI EXISTE RECONOCIMIENTO DE HIGIENE
+            // =====================================================
+
+            if (
+                !$proyecto ||
+                is_null($proyecto->recsensorial_id)
+            ) {
+
+                return response()->json([
+                    'code' => 0,
+                    'msj' => 'Este proyecto no cuenta con un reconocimiento en Higiene Industrial para poder sincronizar categorías y áreas.'
+                ]);
+            }
+
+            $recsensorial_id = $proyecto->recsensorial_id;
+
+            // =====================================================
+            // OBTENER CATEGORÍAS DE HIGIENE
+            // =====================================================
+
+            $categorias = DB::table('recsensorialcategoria')
+                ->where('recsensorial_id', $recsensorial_id)
+                ->get();
+
+            foreach ($categorias as $categoria) {
+
+                // =====================================================
+                // BUSCAR SI YA EXISTE EN ERGO
+                // =====================================================
+
+                $categoriaErgo = recoergocategoriasModel::where(
+                    'RECO_ID',
+                    $reconocimientoergo->id
+                )
+                    ->where(
+                        'NOMBRE_CATEGORIA_ERGO',
+                        $categoria->recsensorialcategoria_nombrecategoria
+                    )
+                    ->first();
+
+                // =====================================================
+                // SI EXISTE ACTUALIZA
+                // =====================================================
+
+                if ($categoriaErgo) {
+
+                    $categoriaErgo->update([
+
+                        'CAT_DEPARTAMENTO' =>
+                        $categoria->catdepartamento_id,
+
+                        'CAT_TIPOPUESTO' =>
+                        $categoria->catmovilfijo_id,
+
+                        'JSON_TURNOS' =>
+                        $categoria->JSON_TURNOS,
+
+                        'NOMBRE_CATEGORIA_ERGO' =>
+                        $categoria->recsensorialcategoria_nombrecategoria
+                    ]);
+                } else {
+
+                    // =====================================================
+                    // SI NO EXISTE CREAR
+                    // =====================================================
+
+                    recoergocategoriasModel::create([
+
+                        'RECO_ID' => $reconocimientoergo->id,
+
+                        'NOMBRE_CATEGORIA_ERGO' =>
+                        $categoria->recsensorialcategoria_nombrecategoria,
+
+                        'CAT_DEPARTAMENTO' =>
+                        $categoria->catdepartamento_id,
+
+                        'CAT_TIPOPUESTO' =>
+                        $categoria->catmovilfijo_id,
+
+                        'JSON_TURNOS' =>
+                        $categoria->JSON_TURNOS,
+
+                        'ACTIVO' => 1
+                    ]);
+                }
+            }
+
+            // =====================================================
+            // OBTENER ÁREAS DE HIGIENE
+            // =====================================================
+
+            $areas = DB::table('recsensorialarea')
+                ->where('recsensorial_id', $recsensorial_id)
+                ->get();
+
+            foreach ($areas as $area) {
+
+                // =====================================================
+                // BUSCAR SI YA EXISTE EN ERGO
+                // =====================================================
+
+                $areaErgo = recoergoareasModel::where(
+                    'RECO_ID',
+                    $reconocimientoergo->id
+                )
+                    ->where(
+                        'NOMBRE_AREA_ERGO',
+                        $area->recsensorialarea_nombre
+                    )
+                    ->first();
+
+                // =====================================================
+                // SI EXISTE ACTUALIZA
+                // =====================================================
+
+                if ($areaErgo) {
+
+                    $areaErgo->update([
+
+                        'NOMBRE_AREA_ERGO' =>
+                        $area->recsensorialarea_nombre,
+
+                        'DESCRIPCION_AREA_ERGO' =>
+                        $area->RECSENSORIALAREA_PROCESO
+                    ]);
+                } else {
+
+                    // =====================================================
+                    // SI NO EXISTE CREAR
+                    // =====================================================
+
+                    recoergoareasModel::create([
+
+                        'RECO_ID' => $reconocimientoergo->id,
+
+                        'NOMBRE_AREA_ERGO' =>
+                        $area->recsensorialarea_nombre,
+
+                        'DESCRIPCION_AREA_ERGO' =>
+                        $area->RECSENSORIALAREA_PROCESO,
+
+                        'ACTIVO' => 1
+                    ]);
+                }
+            }
+
+            // =====================================================
+            // RESPUESTA
+            // =====================================================
+
+            return response()->json([
+                'code' => 1,
+                'msj' => 'Categorías y áreas sincronizadas correctamente desde Higiene Industrial.'
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'code' => 0,
+                'msj' => $e->getMessage()
+            ]);
+        }
+    }
+    
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -366,36 +554,6 @@ class reconocimientoergoController extends Controller
                     $recsensorial_activo = 1;
 
 
-                    // si envia archivo FOTO ubicacion
-
-                    // if ($request->file('inputfotomapa')) {
-                    //     $extension = $request->file('inputfotomapa')->getClientOriginalExtension();
-                    //     $request['fotoubicacion'] = $request->file('inputfotomapa')->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa', $reconocimientoergo->id . '.' . $extension);
-                    //     $reconocimientoergo->update($request->all());
-                    // } else {
-                    //     $recsensorial_extension = $request['hidden_fotomapa_extension'];
-                    //     $recsensorial_id = $request['hidden_fotomapa'];
-                    //     $rutaOriginal = 'recsensorial/' . $recsensorial_id . '/mapa/' . $recsensorial_id . $recsensorial_extension;
-
-                    //     if (Storage::exists($rutaOriginal)) {
-                    //         // Asegúrate de crear el directorio si no existe
-                    //         $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa/' . $reconocimientoergo->id . '.' . pathinfo($rutaOriginal, PATHINFO_EXTENSION);
-
-                    //         Storage::makeDirectory('reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa');
-
-                    //         // Copiar la imagen a la nueva ubicación
-                    //         Storage::copy($rutaOriginal, $nuevaRuta);
-
-                    //         // Actualiza la base de datos con la nueva ruta
-                    //         $reconocimientoergo->fotoubicacion = $nuevaRuta;
-                    //         $reconocimientoergo->update($request->all());
-                    //     } else {
-                    //         // Manejar caso en el que la imagen original no existe
-                    //         // Puedes lanzar una excepción o asignar un valor predeterminado
-                    //         throw new Exception("La imagen original no existe en la ruta: " . $rutaOriginal);
-                    //     }
-                    // }
-
 
                     if ($request->file('inputfotomapa')) {
 
@@ -427,37 +585,6 @@ class reconocimientoergoController extends Controller
                         }
                     }
 
-
-
-
-                    // si envia archivo FOTO plano
-                    // if ($request->file('inputfotoplano')) {
-                    //     $extension = $request->file('inputfotoplano')->getClientOriginalExtension();
-                    //     $request['fotoplano'] = $request->file('inputfotoplano')->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/plano', $reconocimientoergo->id . '.' . $extension);
-                    //     $reconocimientoergo->update($request->all());
-                    // } else {
-                    //     $recsensorial_extension = $request['hidden_fotoplano_extension'];
-                    //     $recsensorial_id = $request['hidden_fotoplano'];
-                    //     $rutaOriginal = 'recsensorial/' . $recsensorial_id . '/plano/' . $recsensorial_id . $recsensorial_extension;
-
-                    //     if (Storage::exists($rutaOriginal)) {
-                    //         // Asegúrate de crear el directorio si no existe
-                    //         $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/plano/' . $reconocimientoergo->id . '.' . pathinfo($rutaOriginal, PATHINFO_EXTENSION);
-
-                    //         Storage::makeDirectory('reconocimiento_ergo/' . $reconocimientoergo->id . '/plano');
-
-                    //         // Copiar la imagen a la nueva ubicación
-                    //         Storage::copy($rutaOriginal, $nuevaRuta);
-
-                    //         // Actualiza la base de datos con la nueva ruta
-                    //         $reconocimientoergo->fotoplano = $nuevaRuta;
-                    //         $reconocimientoergo->update($request->all());
-                    //     } else {
-                    //         // Manejar caso en el que la imagen original no existe
-                    //         // Puedes lanzar una excepción o asignar un valor predeterminado
-                    //         throw new Exception("La imagen original no existe en la ruta: " . $rutaOriginal);
-                    //     }
-                    // }
 
                     if ($request->file('inputfotoplano')) {
 
@@ -494,34 +621,6 @@ class reconocimientoergoController extends Controller
                     // si envia archivo FOTO instalacion
 
 
-                    // if ($request->file('inputfotoinstalacion')) {
-                    //     $extension = $request->file('inputfotoinstalacion')->getClientOriginalExtension();
-                    //     $request['fotoinstalacion'] = $request->file('inputfotoinstalacion')->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion', $reconocimientoergo->id . '.' . $extension);
-                    //     $reconocimientoergo->update($request->all());
-                    // } else {
-                    //     $recsensorial_extension = $request['hidden_fotoinstalacion_extension'];
-                    //     $recsensorial_id = $request['hidden_fotoinstalacion'];
-                    //     $rutaOriginal = 'recsensorial/' . $recsensorial_id . '/instalacion/' . $recsensorial_id . $recsensorial_extension;
-
-                    //     if (Storage::exists($rutaOriginal)) {
-                    //         // Asegúrate de crear el directorio si no existe
-                    //         $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion/' . $reconocimientoergo->id . '.' . pathinfo($rutaOriginal, PATHINFO_EXTENSION);
-
-                    //         Storage::makeDirectory('reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion');
-
-                    //         // Copiar la imagen a la nueva ubicación
-                    //         Storage::copy($rutaOriginal, $nuevaRuta);
-
-                    //         // Actualiza la base de datos con la nueva ruta
-                    //         $reconocimientoergo->fotoinstalacion = $nuevaRuta;
-                    //         $reconocimientoergo->update($request->all());
-                    //     } else {
-                    //         // Manejar caso en el que la imagen original no existe
-                    //         // Puedes lanzar una excepción o asignar un valor predeterminado
-                    //         throw new Exception("La imagen original no existe en la ruta: " . $rutaOriginal);
-                    //     }
-                    // }
-
 
                     if ($request->file('inputfotoinstalacion')) {
 
@@ -555,34 +654,6 @@ class reconocimientoergoController extends Controller
 
 
                     // // si envia archivo MAPA DE RIESGO
-
-                    // if ($request->file('inputfotomapaderiesgo')) {
-                    //     $extension = $request->file('inputfotomapaderiesgo')->getClientOriginalExtension();
-                    //     $request['fotomapariesgo'] = $request->file('inputfotomapaderiesgo')->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa de riesgo', $reconocimientoergo->id . '.' . $extension);
-                    //     $reconocimientoergo->update($request->all());
-                    // } else {
-                    //     $recsensorial_extension = $request['hidden_fotomapariesgo_extension'];
-                    //     $recsensorial_id = $request['hidden_fotomapariesgo'];
-                    //     $rutaOriginal = 'recsensorial/' . $recsensorial_id . '/mapa de riesgo/' . $recsensorial_id . $recsensorial_extension;
-
-                    //     if (Storage::exists($rutaOriginal)) {
-                    //         // Asegúrate de crear el directorio si no existe
-                    //         $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa de riesgo/' . $reconocimientoergo->id . '.' . pathinfo($rutaOriginal, PATHINFO_EXTENSION);
-
-                    //         Storage::makeDirectory('reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa de riesgo');
-
-                    //         // Copiar la imagen a la nueva ubicación
-                    //         Storage::copy($rutaOriginal, $nuevaRuta);
-
-                    //         // Actualiza la base de datos con la nueva ruta
-                    //         $reconocimientoergo->fotomapariesgo = $nuevaRuta;
-                    //         $reconocimientoergo->update($request->all());
-                    //     } else {
-                    //         // Manejar caso en el que la imagen original no existe
-                    //         // Puedes lanzar una excepción o asignar un valor predeterminado
-                    //         throw new Exception("La imagen original no existe en la ruta: " . $rutaOriginal);
-                    //     }
-                    // }
 
 
                     if ($request->file('inputfotomapaderiesgo')) {
