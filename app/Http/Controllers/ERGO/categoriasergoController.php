@@ -65,20 +65,27 @@ class categoriasergoController extends Controller
     }
 
 
+
     public function obtenerPTCategoria(Request $request)
     {
         $reco_id = $request->reco_id;
 
         $ultimo = DB::table('recoergocategorias')
             ->where('RECO_ID', $reco_id)
+            ->whereNotNull('PT_CATEGORIA')
+            ->where('PT_CATEGORIA', '!=', '')
             ->orderBy('ID_CATEGORIA_ERGO', 'desc')
             ->first();
 
-        if ($ultimo && $ultimo->PT_CATEGORIA) {
+        if ($ultimo) {
 
             preg_match('/\d+/', $ultimo->PT_CATEGORIA, $matches);
-            $numero = isset($matches[0]) ? intval($matches[0]) + 1 : 1;
+
+            $numero = isset($matches[0])
+                ? intval($matches[0]) + 1
+                : 1;
         } else {
+
             $numero = 1;
         }
 
@@ -88,6 +95,7 @@ class categoriasergoController extends Controller
             'pt' => $pt
         ]);
     }
+
 
 
  public function obtenerareasergo(Request $request)

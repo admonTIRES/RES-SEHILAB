@@ -325,26 +325,14 @@ class reconocimientoergoController extends Controller
     {
         try {
 
-            // =====================================================
-            // OBTENER RECONOCIMIENTO ERGO
-            // =====================================================
-
             $reconocimientoergo = reconocimientoergoModel::findOrFail(
                 $request->RECO_ID
             );
-
-            // =====================================================
-            // OBTENER PROYECTO
-            // =====================================================
 
             $proyecto = proyectoModel::where(
                 'proyecto_folio',
                 $reconocimientoergo->proyecto_folio
             )->first();
-
-            // =====================================================
-            // VALIDAR SI EXISTE RECONOCIMIENTO DE HIGIENE
-            // =====================================================
 
             if (
                 !$proyecto ||
@@ -359,19 +347,13 @@ class reconocimientoergoController extends Controller
 
             $recsensorial_id = $proyecto->recsensorial_id;
 
-            // =====================================================
-            // OBTENER CATEGORÍAS DE HIGIENE
-            // =====================================================
-
+       
             $categorias = DB::table('recsensorialcategoria')
                 ->where('recsensorial_id', $recsensorial_id)
                 ->get();
 
             foreach ($categorias as $categoria) {
 
-                // =====================================================
-                // BUSCAR SI YA EXISTE EN ERGO
-                // =====================================================
 
                 $categoriaErgo = recoergocategoriasModel::where(
                     'RECO_ID',
@@ -383,115 +365,59 @@ class reconocimientoergoController extends Controller
                     )
                     ->first();
 
-                // =====================================================
-                // SI EXISTE ACTUALIZA
-                // =====================================================
-
                 if ($categoriaErgo) {
-
                     $categoriaErgo->update([
 
-                        'CAT_DEPARTAMENTO' =>
-                        $categoria->catdepartamento_id,
-
-                        'CAT_TIPOPUESTO' =>
-                        $categoria->catmovilfijo_id,
-
-                        'JSON_TURNOS' =>
-                        $categoria->JSON_TURNOS,
-
-                        'NOMBRE_CATEGORIA_ERGO' =>
-                        $categoria->recsensorialcategoria_nombrecategoria
+                        'CAT_DEPARTAMENTO' => $categoria->catdepartamento_id,
+                        'CAT_TIPOPUESTO' => $categoria->catmovilfijo_id,
+                        'JSON_TURNOS' => $categoria->JSON_TURNOS,
+                        'NOMBRE_CATEGORIA_ERGO' => $categoria->recsensorialcategoria_nombrecategoria
                     ]);
                 } else {
 
-                    // =====================================================
-                    // SI NO EXISTE CREAR
-                    // =====================================================
-
                     recoergocategoriasModel::create([
-
                         'RECO_ID' => $reconocimientoergo->id,
-
-                        'NOMBRE_CATEGORIA_ERGO' =>
-                        $categoria->recsensorialcategoria_nombrecategoria,
-
-                        'CAT_DEPARTAMENTO' =>
-                        $categoria->catdepartamento_id,
-
-                        'CAT_TIPOPUESTO' =>
-                        $categoria->catmovilfijo_id,
-
-                        'JSON_TURNOS' =>
-                        $categoria->JSON_TURNOS,
-
+                        'NOMBRE_CATEGORIA_ERGO' => $categoria->recsensorialcategoria_nombrecategoria,
+                        'CAT_DEPARTAMENTO' => $categoria->catdepartamento_id,
+                        'CAT_TIPOPUESTO' => $categoria->catmovilfijo_id,
+                        'JSON_TURNOS' => $categoria->JSON_TURNOS,
                         'ACTIVO' => 1
                     ]);
                 }
             }
-
-            // =====================================================
-            // OBTENER ÁREAS DE HIGIENE
-            // =====================================================
 
             $areas = DB::table('recsensorialarea')
                 ->where('recsensorial_id', $recsensorial_id)
                 ->get();
 
             foreach ($areas as $area) {
-
-                // =====================================================
-                // BUSCAR SI YA EXISTE EN ERGO
-                // =====================================================
+         
 
                 $areaErgo = recoergoareasModel::where(
-                    'RECO_ID',
-                    $reconocimientoergo->id
+                    'RECO_ID', $reconocimientoergo->id
                 )
                     ->where(
-                        'NOMBRE_AREA_ERGO',
-                        $area->recsensorialarea_nombre
+                        'NOMBRE_AREA_ERGO', $area->recsensorialarea_nombre
                     )
                     ->first();
-
-                // =====================================================
-                // SI EXISTE ACTUALIZA
-                // =====================================================
 
                 if ($areaErgo) {
 
                     $areaErgo->update([
-
-                        'NOMBRE_AREA_ERGO' =>
-                        $area->recsensorialarea_nombre,
-
-                        'DESCRIPCION_AREA_ERGO' =>
-                        $area->RECSENSORIALAREA_PROCESO
+                        'NOMBRE_AREA_ERGO' => $area->recsensorialarea_nombre,
+                        'DESCRIPCION_AREA_ERGO' => $area->RECSENSORIALAREA_PROCESO
                     ]);
                 } else {
-
-                    // =====================================================
-                    // SI NO EXISTE CREAR
-                    // =====================================================
-
                     recoergoareasModel::create([
 
                         'RECO_ID' => $reconocimientoergo->id,
-
-                        'NOMBRE_AREA_ERGO' =>
-                        $area->recsensorialarea_nombre,
-
-                        'DESCRIPCION_AREA_ERGO' =>
-                        $area->RECSENSORIALAREA_PROCESO,
-
+                        'NOMBRE_AREA_ERGO' => $area->recsensorialarea_nombre,
+                        'DESCRIPCION_AREA_ERGO' => $area->RECSENSORIALAREA_PROCESO,
                         'ACTIVO' => 1
                     ]);
                 }
             }
 
-            // =====================================================
-            // RESPUESTA
-            // =====================================================
 
             return response()->json([
                 'code' => 1,
@@ -505,7 +431,7 @@ class reconocimientoergoController extends Controller
             ]);
         }
     }
-    
+
 
 
     /**

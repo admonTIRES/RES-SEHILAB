@@ -2144,6 +2144,31 @@ $('#Tablarecocategoriasergo tbody').on('click', 'td>button.editar', function () 
 
     cargarareaSelect(valoresAreas);
 
+    if (
+        row.data().PT_CATEGORIA === null ||
+        row.data().PT_CATEGORIA === '' ||
+        typeof row.data().PT_CATEGORIA === 'undefined'
+    ) {
+
+        $.ajax({
+            url: 'obtenerPTCategoria',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                reco_id: recsensorial
+            },
+            success: function (resp) {
+                $('#PT_CATEGORIA').val(resp.pt);
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+
+    }
+
 });
 
 function mostrarturnos(row) {
