@@ -10,6 +10,7 @@ class recoergocategoriasModel extends Model
     protected $table = 'recoergocategorias';
     protected $fillable = [
         'RECO_ID',
+        'CATEGORIAS_ID_HI',
         'NOMBRE_CATEGORIA_ERGO',
         'CAT_DEPARTAMENTO',
         'CAT_TIPOPUESTO',

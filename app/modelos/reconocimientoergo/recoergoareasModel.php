@@ -10,6 +10,7 @@ class recoergoareasModel extends Model
     protected $table = 'recoergoareas';
     protected $fillable = [
         'RECO_ID',
+        'AREA_ID_HI',
         'NOMBRE_AREA_ERGO',
         'DESCRIPCION_AREA_ERGO',
         'ACTIVO'

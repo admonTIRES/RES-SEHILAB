@@ -347,40 +347,37 @@ class reconocimientoergoController extends Controller
 
             $recsensorial_id = $proyecto->recsensorial_id;
 
-       
             $categorias = DB::table('recsensorialcategoria')
                 ->where('recsensorial_id', $recsensorial_id)
                 ->get();
 
             foreach ($categorias as $categoria) {
 
-
                 $categoriaErgo = recoergocategoriasModel::where(
-                    'RECO_ID',
-                    $reconocimientoergo->id
+                    'RECO_ID', $reconocimientoergo->id
                 )
                     ->where(
-                        'NOMBRE_CATEGORIA_ERGO',
-                        $categoria->recsensorialcategoria_nombrecategoria
+                        'CATEGORIAS_ID_HI', $categoria->id
                     )
                     ->first();
 
                 if ($categoriaErgo) {
                     $categoriaErgo->update([
-
-                        'CAT_DEPARTAMENTO' => $categoria->catdepartamento_id,
-                        'CAT_TIPOPUESTO' => $categoria->catmovilfijo_id,
-                        'JSON_TURNOS' => $categoria->JSON_TURNOS,
-                        'NOMBRE_CATEGORIA_ERGO' => $categoria->recsensorialcategoria_nombrecategoria
+                        'NOMBRE_CATEGORIA_ERGO' =>$categoria->recsensorialcategoria_nombrecategoria,
+                        'CAT_DEPARTAMENTO' =>$categoria->catdepartamento_id,
+                        'CAT_TIPOPUESTO' =>$categoria->catmovilfijo_id,
+                        'JSON_TURNOS' => $categoria->JSON_TURNOS
                     ]);
                 } else {
 
                     recoergocategoriasModel::create([
                         'RECO_ID' => $reconocimientoergo->id,
-                        'NOMBRE_CATEGORIA_ERGO' => $categoria->recsensorialcategoria_nombrecategoria,
-                        'CAT_DEPARTAMENTO' => $categoria->catdepartamento_id,
-                        'CAT_TIPOPUESTO' => $categoria->catmovilfijo_id,
-                        'JSON_TURNOS' => $categoria->JSON_TURNOS,
+                        'CATEGORIAS_ID_HI' => $categoria->id,
+                        'NOMBRE_CATEGORIA_ERGO' =>$categoria->recsensorialcategoria_nombrecategoria,
+                        'CAT_DEPARTAMENTO' =>$categoria->catdepartamento_id,
+                        'CAT_TIPOPUESTO' =>$categoria->catmovilfijo_id,
+                        'JSON_TURNOS' =>$categoria->JSON_TURNOS,
+
                         'ACTIVO' => 1
                     ]);
                 }
@@ -391,33 +388,34 @@ class reconocimientoergoController extends Controller
                 ->get();
 
             foreach ($areas as $area) {
-         
+
 
                 $areaErgo = recoergoareasModel::where(
                     'RECO_ID', $reconocimientoergo->id
                 )
                     ->where(
-                        'NOMBRE_AREA_ERGO', $area->recsensorialarea_nombre
+                        'AREA_ID_HI',$area->id
                     )
                     ->first();
 
                 if ($areaErgo) {
 
                     $areaErgo->update([
+
                         'NOMBRE_AREA_ERGO' => $area->recsensorialarea_nombre,
                         'DESCRIPCION_AREA_ERGO' => $area->RECSENSORIALAREA_PROCESO
                     ]);
                 } else {
-                    recoergoareasModel::create([
 
+                    recoergoareasModel::create([
                         'RECO_ID' => $reconocimientoergo->id,
+                        'AREA_ID_HI' => $area->id,
                         'NOMBRE_AREA_ERGO' => $area->recsensorialarea_nombre,
                         'DESCRIPCION_AREA_ERGO' => $area->RECSENSORIALAREA_PROCESO,
                         'ACTIVO' => 1
                     ]);
                 }
             }
-
 
             return response()->json([
                 'code' => 1,
@@ -431,7 +429,6 @@ class reconocimientoergoController extends Controller
             ]);
         }
     }
-
 
 
     /**
