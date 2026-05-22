@@ -58,6 +58,7 @@ use App\modelos\reconocimientoergo\versionesrecoergoModel;
 use App\modelos\clientes\clientecontratoModel;
 
 use App\modelos\reconocimientoergo\datosgeneralesinformeRecoModel;
+
 class reconocimientoergoController extends Controller
 {
 
@@ -72,7 +73,7 @@ class reconocimientoergoController extends Controller
     }
 
 
-    
+
     public function index()
     { //vista RECONOCIMIENTO SENSORIAL
 
@@ -93,7 +94,7 @@ class reconocimientoergoController extends Controller
         $catconclusion = catergo_conclusionModel::where('ACTIVO', 1)->get();
 
         $catrecomendaciones = catergo_recomendacionesModel::whereIn('USO_RECOMENDACIONES', ['Reconocimiento', 'Ambos'])->get();
-        
+
         return view('catalogos.ergo.reconocimiento_ergo', compact('catdepartamento', 'catmovilfijo', 'catregimen', 'catjornada', 'caturno', 'catdefiniciones', 'catintroduccion', 'catconclusion', 'catrecomendaciones'));
     }
 
@@ -218,7 +219,7 @@ class reconocimientoergoController extends Controller
     public function tablareconocimientoergo()
     {
         try {
-            $recsensorial = reconocimientoergoModel::all(); 
+            $recsensorial = reconocimientoergoModel::all();
 
             // Formatear las filas
             $numero_registro = 0;
@@ -354,18 +355,20 @@ class reconocimientoergoController extends Controller
             foreach ($categorias as $categoria) {
 
                 $categoriaErgo = recoergocategoriasModel::where(
-                    'RECO_ID', $reconocimientoergo->id
+                    'RECO_ID',
+                    $reconocimientoergo->id
                 )
                     ->where(
-                        'CATEGORIAS_ID_HI', $categoria->id
+                        'CATEGORIAS_ID_HI',
+                        $categoria->id
                     )
                     ->first();
 
                 if ($categoriaErgo) {
                     $categoriaErgo->update([
-                        'NOMBRE_CATEGORIA_ERGO' =>$categoria->recsensorialcategoria_nombrecategoria,
-                        'CAT_DEPARTAMENTO' =>$categoria->catdepartamento_id,
-                        'CAT_TIPOPUESTO' =>$categoria->catmovilfijo_id,
+                        'NOMBRE_CATEGORIA_ERGO' => $categoria->recsensorialcategoria_nombrecategoria,
+                        'CAT_DEPARTAMENTO' => $categoria->catdepartamento_id,
+                        'CAT_TIPOPUESTO' => $categoria->catmovilfijo_id,
                         'JSON_TURNOS' => $categoria->JSON_TURNOS
                     ]);
                 } else {
@@ -373,10 +376,10 @@ class reconocimientoergoController extends Controller
                     recoergocategoriasModel::create([
                         'RECO_ID' => $reconocimientoergo->id,
                         'CATEGORIAS_ID_HI' => $categoria->id,
-                        'NOMBRE_CATEGORIA_ERGO' =>$categoria->recsensorialcategoria_nombrecategoria,
-                        'CAT_DEPARTAMENTO' =>$categoria->catdepartamento_id,
-                        'CAT_TIPOPUESTO' =>$categoria->catmovilfijo_id,
-                        'JSON_TURNOS' =>$categoria->JSON_TURNOS,
+                        'NOMBRE_CATEGORIA_ERGO' => $categoria->recsensorialcategoria_nombrecategoria,
+                        'CAT_DEPARTAMENTO' => $categoria->catdepartamento_id,
+                        'CAT_TIPOPUESTO' => $categoria->catmovilfijo_id,
+                        'JSON_TURNOS' => $categoria->JSON_TURNOS,
 
                         'ACTIVO' => 1
                     ]);
@@ -391,10 +394,12 @@ class reconocimientoergoController extends Controller
 
 
                 $areaErgo = recoergoareasModel::where(
-                    'RECO_ID', $reconocimientoergo->id
+                    'RECO_ID',
+                    $reconocimientoergo->id
                 )
                     ->where(
-                        'AREA_ID_HI',$area->id
+                        'AREA_ID_HI',
+                        $area->id
                     )
                     ->first();
 
@@ -608,9 +613,6 @@ class reconocimientoergoController extends Controller
                             }
                         }
                     }
-
-
-
                 } else { //EDITAR 
 
                     // Obtener registro
@@ -648,7 +650,7 @@ class reconocimientoergoController extends Controller
 
 
 
-                   
+
 
                     function eliminarArchivoAntiguo($id, $folder)
                     {
@@ -713,7 +715,7 @@ class reconocimientoergoController extends Controller
                         $request['fotomapariesgo'] = $request->file('inputfotomapaderiesgo')->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/' . $folder, $reconocimientoergo->id . '.' . $extension);
                         $reconocimientoergo->update($request->all());
                     }
-                    
+
                     // mensaje
                     $dato["msj"] = 'Información modificada correctamente';
                 }
@@ -886,10 +888,6 @@ class reconocimientoergoController extends Controller
 
                 $nombreFicha = $bloque['ficha'];
 
-                //------------------------------------------
-                // SOLO LAS 6 FICHAS
-                //------------------------------------------
-
                 $fichasPermitidas = [
                     '1.1',
                     '1.2',
@@ -902,10 +900,6 @@ class reconocimientoergoController extends Controller
                 if (!in_array($nombreFicha, $fichasPermitidas)) {
                     continue;
                 }
-
-                //------------------------------------------
-                // TITULOS
-                //------------------------------------------
 
                 $titulos = [
 
@@ -929,9 +923,6 @@ class reconocimientoergoController extends Controller
                     ];
                 }
 
-                //------------------------------------------
-                // RECORRER PREGUNTAS
-                //------------------------------------------
 
                 foreach ($bloque['preguntas'] as $pregunta) {
 
@@ -949,10 +940,6 @@ class reconocimientoergoController extends Controller
                         ];
                     }
 
-                    //------------------------------------------
-                    // CONTADORES
-                    //------------------------------------------
-
                     if (trim($pregunta['respuesta']) == 'SI') {
 
                         $resultado[$nombreFicha]['preguntas'][$letra]['SI']++;
@@ -967,7 +954,7 @@ class reconocimientoergoController extends Controller
         return response()->json(array_values($resultado));
     }
 
-    
+
 
     public function obtenerDatosInformesRecoergo($ID)
     {
@@ -1001,105 +988,105 @@ class reconocimientoergoController extends Controller
 
             $niveles = DB::select('
 
-    SELECT 
-        "Instalación" AS ETIQUETA,
-        p.proyecto_clienteinstalacion AS OPCION,
-        0 NIVEL
+                SELECT 
+                    "Instalación" AS ETIQUETA,
+                    p.proyecto_clienteinstalacion AS OPCION,
+                    0 NIVEL
 
-    FROM reconocimientoergo re
+                FROM reconocimientoergo re
 
-    LEFT JOIN proyecto p 
-        ON p.proyecto_folio COLLATE utf8mb3_general_ci =
-           re.proyecto_folio COLLATE utf8mb3_general_ci
+                LEFT JOIN proyecto p 
+                    ON p.proyecto_folio COLLATE utf8mb3_general_ci =
+                    re.proyecto_folio COLLATE utf8mb3_general_ci
 
-    WHERE re.id = ?
+                WHERE re.id = ?
 
-    UNION
+                UNION
 
-    SELECT
+                SELECT
 
-        IFNULL(ce.NOMBRE_ETIQUETA, "NO") AS ETIQUETA,
+                    IFNULL(ce.NOMBRE_ETIQUETA, "NO") AS ETIQUETA,
 
-        IFNULL(co.NOMBRE_OPCIONES, "NO") AS OPCION,
+                    IFNULL(co.NOMBRE_OPCIONES, "NO") AS OPCION,
 
-        IFNULL(ep.NIVEL, 0) NIVEL
+                    IFNULL(ep.NIVEL, 0) NIVEL
 
-    FROM reconocimientoergo re
+                FROM reconocimientoergo re
 
-    LEFT JOIN proyecto p 
-        ON p.proyecto_folio COLLATE utf8mb3_general_ci =
-           re.proyecto_folio COLLATE utf8mb3_general_ci
+                LEFT JOIN proyecto p 
+                    ON p.proyecto_folio COLLATE utf8mb3_general_ci =
+                    re.proyecto_folio COLLATE utf8mb3_general_ci
 
-    LEFT JOIN estructuraProyectos ep 
-        ON p.id = ep.PROYECTO_ID
+                LEFT JOIN estructuraProyectos ep 
+                    ON p.id = ep.PROYECTO_ID
 
-    LEFT JOIN cat_etiquetas ce 
-        ON ep.ETIQUETA_ID = ce.ID_ETIQUETA
+                LEFT JOIN cat_etiquetas ce 
+                    ON ep.ETIQUETA_ID = ce.ID_ETIQUETA
 
-    LEFT JOIN catetiquetas_opciones co 
-        ON ep.OPCION_ID = co.ID_OPCIONES_ETIQUETAS
+                LEFT JOIN catetiquetas_opciones co 
+                    ON ep.OPCION_ID = co.ID_OPCIONES_ETIQUETAS
 
-    WHERE re.id = ?
+                WHERE re.id = ?
 
-    UNION
+                UNION
 
-    SELECT 
-        "Folio" AS ETIQUETA,
+                SELECT 
+                    "Folio" AS ETIQUETA,
 
-        p.proyecto_folio AS OPCION,
+                    p.proyecto_folio AS OPCION,
 
-        0 NIVEL
+                    0 NIVEL
 
-    FROM reconocimientoergo re
+                FROM reconocimientoergo re
 
-    LEFT JOIN proyecto p 
-        ON p.proyecto_folio COLLATE utf8mb3_general_ci =
-           re.proyecto_folio COLLATE utf8mb3_general_ci
+                LEFT JOIN proyecto p 
+                    ON p.proyecto_folio COLLATE utf8mb3_general_ci =
+                    re.proyecto_folio COLLATE utf8mb3_general_ci
 
-    WHERE re.id = ?
+                WHERE re.id = ?
 
-    UNION
+                UNION
 
-    SELECT
+                SELECT
 
-        "Razón social" AS ETIQUETA,
+                    "Razón social" AS ETIQUETA,
 
-        p.proyecto_clienterazonsocial AS OPCION,
+                    p.proyecto_clienterazonsocial AS OPCION,
 
-        0 NIVEL
+                    0 NIVEL
 
-    FROM reconocimientoergo re
+                FROM reconocimientoergo re
 
-    LEFT JOIN proyecto p 
-        ON p.proyecto_folio COLLATE utf8mb3_general_ci =
-           re.proyecto_folio COLLATE utf8mb3_general_ci
+                LEFT JOIN proyecto p 
+                    ON p.proyecto_folio COLLATE utf8mb3_general_ci =
+                    re.proyecto_folio COLLATE utf8mb3_general_ci
 
-    WHERE re.id = ?
+                WHERE re.id = ?
 
-    UNION
+                UNION
 
-    SELECT 
+                SELECT 
 
-        "Nombre comercial" AS ETIQUETA,
+                    "Nombre comercial" AS ETIQUETA,
 
-        c.cliente_NombreComercial AS OPCION,
+                    c.cliente_NombreComercial AS OPCION,
 
-        0 NIVEL
+                    0 NIVEL
 
-    FROM reconocimientoergo re
+                FROM reconocimientoergo re
 
-    LEFT JOIN proyecto p 
-        ON p.proyecto_folio COLLATE utf8mb3_general_ci =
-           re.proyecto_folio COLLATE utf8mb3_general_ci
+                LEFT JOIN proyecto p 
+                    ON p.proyecto_folio COLLATE utf8mb3_general_ci =
+                    re.proyecto_folio COLLATE utf8mb3_general_ci
 
-    LEFT JOIN cliente c 
-        ON p.cliente_id = c.id
+                LEFT JOIN cliente c 
+                    ON p.cliente_id = c.id
 
-    WHERE re.id = ?
+                WHERE re.id = ?
 
-    ORDER BY NIVEL
+                ORDER BY NIVEL
 
-', [$ID, $ID, $ID, $ID, $ID]);
+            ', [$ID, $ID, $ID, $ID, $ID]);
 
 
             foreach ($niveles as $key => $value) {
@@ -1176,35 +1163,16 @@ class reconocimientoergoController extends Controller
             DB::beginTransaction();
 
 
-            //---------------------------------------
-            // BUSCAR REGISTRO
-            //---------------------------------------
-
             $recurso = recursosPortadaRecoErgoModel::where(
                 'RECO_ID',
                 $request->RECO_ID
             )->first();
 
-
-
-            //---------------------------------------
-            // SI NO EXISTE
-            //---------------------------------------
-
             if (!$recurso) {
-
-                $recurso = new recursosPortadaRecoErgoModel ();
-
+                $recurso = new recursosPortadaRecoErgoModel();
                 $recurso->RECO_ID = $request->RECO_ID;
-
                 $recurso->save();
             }
-
-
-
-            //---------------------------------------
-            // DATOS
-            //---------------------------------------
 
             $recurso->NIVEL1 = $request->NIVEL1;
             $recurso->NIVEL2 = $request->NIVEL2;
@@ -1223,50 +1191,20 @@ class reconocimientoergoController extends Controller
             $recurso->INFORME_ANIO = $request->INFORME_ANIO;
 
 
-
-            //---------------------------------------
-            // SI ENVIA IMAGEN
-            //---------------------------------------
-
             if ($request->file('RUTA_IMAGEN_PORTADA')) {
 
-                $extension = $request->file('RUTA_IMAGEN_PORTADA')
-                    ->getClientOriginalExtension();
+                $extension = $request->file('RUTA_IMAGEN_PORTADA')->getClientOriginalExtension();
 
-
-
-                //---------------------------------------
-                // GUARDAR ARCHIVO EN STORAGE
-                //---------------------------------------
 
                 $ruta = $request->file('RUTA_IMAGEN_PORTADA')->storeAs(
-
-                    'reconocimiento_ergo/' .
-                        $request->RECO_ID .
-                        '/foto_portada',
-
+                    'reconocimiento_ergo/' . $request->RECO_ID . '/foto_portada',
                     $request->RECO_ID . '.' . $extension
-
                 );
-
-
-
-                //---------------------------------------
-                // GUARDAR RUTA EN BD
-                //---------------------------------------
 
                 $recurso->RUTA_IMAGEN_PORTADA = $ruta;
             }
 
-
-
-            //---------------------------------------
-            // SAVE
-            //---------------------------------------
-
             $recurso->save();
-
-
 
             DB::commit();
 
@@ -1291,18 +1229,10 @@ class reconocimientoergoController extends Controller
             $reco_id
         )->firstOrFail();
 
-
-
         if (($archivo_opcion + 0) == 0) {
-
-            return Storage::response(
-                $recurso->RUTA_IMAGEN_PORTADA
-            );
+            return Storage::response($recurso->RUTA_IMAGEN_PORTADA);
         } else {
-
-            return Storage::download(
-                $recurso->RUTA_IMAGEN_PORTADA
-            );
+            return Storage::download($recurso->RUTA_IMAGEN_PORTADA);
         }
     }
 
@@ -1315,13 +1245,9 @@ class reconocimientoergoController extends Controller
                 $RECO_ID
             )->first();
 
-
-
             if ($dato) {
-
                 return response()->json($dato);
             } else {
-
                 return response()->json([
                     'msj' => 'No se encontraron datos'
                 ]);
@@ -1340,34 +1266,21 @@ class reconocimientoergoController extends Controller
 
             DB::beginTransaction();
 
-
-
             $dato = datosgeneralesinformeRecoModel::where(
                 'RECO_ID',
                 $request->RECO_ID
             )->first();
-           
             if (!$dato) {
-
                 $dato = new datosgeneralesinformeRecoModel();
-
                 $dato->RECO_ID = $request->RECO_ID;
             }
 
-
-
-    
-            $dato->SELECT_INTRODUCCION =
-                $request->SELECT_INTRODUCCION;
-
-            $dato->INFORME_INTRODUCCION =
-                $request->INFORME_INTRODUCCION;
-
+            $dato->SELECT_INTRODUCCION = $request->SELECT_INTRODUCCION;
+            $dato->INFORME_INTRODUCCION = $request->INFORME_INTRODUCCION;
 
             $dato->save();
 
             DB::commit();
-
 
             return response()->json([
                 'msj' => 'Introducción guardada correctamente'
@@ -1389,40 +1302,21 @@ class reconocimientoergoController extends Controller
             DB::beginTransaction();
 
 
-
-            //---------------------------------------
-            // ELIMINAR ANTERIORES DEL RECO_ID
-            //---------------------------------------
-
             definicionesinformeergoModel::where(
                 'RECO_ID',
                 $request->RECO_ID
             )->delete();
 
-
-
-            //---------------------------------------
-            // SI VIENEN DEFINICIONES
-            //---------------------------------------
-
             if ($request->DEFINICONES_INFORME) {
 
                 foreach ($request->DEFINICONES_INFORME as $definicion) {
-
                     $dato = new definicionesinformeergoModel();
-
                     $dato->RECO_ID = $request->RECO_ID;
-
                     $dato->CATALOGO_DEFINICIONES_ID = $definicion;
-
                     $dato->save();
                 }
             }
-
-
-
             DB::commit();
-
 
 
             return response()->json([
@@ -1440,14 +1334,10 @@ class reconocimientoergoController extends Controller
 
     public function obtenerDefinicionesInformeErgo($RECO_ID)
     {
-
         $datos = definicionesinformeergoModel::where(
             'RECO_ID',
             $RECO_ID
         )->get();
-
-
-
         return response()->json($datos);
     }
 
@@ -1457,35 +1347,19 @@ class reconocimientoergoController extends Controller
 
             DB::beginTransaction();
 
-
-
             $dato = datosgeneralesinformeRecoModel::where(
                 'RECO_ID',
                 $request->RECO_ID
             )->first();
 
-
-
             if (!$dato) {
-
                 $dato = new datosgeneralesinformeRecoModel();
-
                 $dato->RECO_ID = $request->RECO_ID;
             }
 
-
-
-            $dato->INFORME_OBJETIVOGENERALES =
-                $request->INFORME_OBJETIVOGENERALES;
-
-
-
+            $dato->INFORME_OBJETIVOGENERALES = $request->INFORME_OBJETIVOGENERALES;
             $dato->save();
-
-
-
             DB::commit();
-
 
 
             return response()->json([
@@ -1507,36 +1381,21 @@ class reconocimientoergoController extends Controller
 
             DB::beginTransaction();
 
-
-
             $dato = datosgeneralesinformeRecoModel::where(
                 'RECO_ID',
                 $request->RECO_ID
             )->first();
 
 
-
             if (!$dato) {
-
                 $dato = new datosgeneralesinformeRecoModel();
-
                 $dato->RECO_ID = $request->RECO_ID;
             }
 
-
-
-            $dato->INFORME_OBJETIVOSESPECIFICOS =
-                $request->INFORME_OBJETIVOSESPECIFICOS;
-
-
-
+            $dato->INFORME_OBJETIVOSESPECIFICOS = $request->INFORME_OBJETIVOSESPECIFICOS;
             $dato->save();
 
-
-
             DB::commit();
-
-
 
             return response()->json([
                 'msj' => 'Objetivos específicos guardados correctamente'
@@ -1557,88 +1416,36 @@ class reconocimientoergoController extends Controller
 
             DB::beginTransaction();
 
-
-            //---------------------------------------
-            // BUSCAR REGISTRO
-            //---------------------------------------
-
             $dato = datosgeneralesinformeRecoModel::where(
                 'RECO_ID',
                 $request->RECO_ID
             )->first();
 
 
-
-            //---------------------------------------
-            // SI NO EXISTE
-            //---------------------------------------
-
             if (!$dato) {
-
                 $dato = new datosgeneralesinformeRecoModel();
-
                 $dato->RECO_ID = $request->RECO_ID;
-
                 $dato->save();
             }
 
+            $dato->INFORME_UBICACIONINSTALACION = $request->INFORME_UBICACIONINSTALACION;
 
-
-            //---------------------------------------
-            // TEXTO
-            //---------------------------------------
-
-            $dato->INFORME_UBICACIONINSTALACION =
-                $request->INFORME_UBICACIONINSTALACION;
-
-
-
-            //---------------------------------------
-            // SI ENVIA IMAGEN
-            //---------------------------------------
 
             if ($request->file('RUTA_IMAGEN_UBICACION')) {
 
-                $extension = $request->file('RUTA_IMAGEN_UBICACION')
-                    ->getClientOriginalExtension();
-
-
-
-                //---------------------------------------
-                // GUARDAR ARCHIVO EN STORAGE
-                //---------------------------------------
-
+                $extension = $request->file('RUTA_IMAGEN_UBICACION')->getClientOriginalExtension();
                 $ruta = $request->file('RUTA_IMAGEN_UBICACION')->storeAs(
-
-                    'reconocimiento_ergo/' .
-                        $request->RECO_ID .
-                        '/foto_ubicacion',
-
+                    'reconocimiento_ergo/' . $request->RECO_ID . '/foto_ubicacion',
                     $request->RECO_ID . '.' . $extension
 
                 );
-
-
-
-                //---------------------------------------
-                // GUARDAR RUTA EN BD
-                //---------------------------------------
 
                 $dato->RUTA_IMAGEN_UBICACION = $ruta;
             }
 
 
-
-            //---------------------------------------
-            // SAVE
-            //---------------------------------------
-
             $dato->save();
-
-
-
             DB::commit();
-
 
 
             return response()->json([
@@ -1657,29 +1464,18 @@ class reconocimientoergoController extends Controller
 
 
 
-    public function mostrarubicacionrecoergo(
-        $archivo_opcion,
-        $reco_id,
-        $extension
-    ) {
+    public function mostrarubicacionrecoergo($archivo_opcion, $reco_id, $extension)
+    {
 
         $recurso = datosgeneralesinformeRecoModel::where(
             'RECO_ID',
             $reco_id
         )->firstOrFail();
 
-
-
         if (($archivo_opcion + 0) == 0) {
-
-            return Storage::response(
-                $recurso->RUTA_IMAGEN_UBICACION
-            );
+            return Storage::response($recurso->RUTA_IMAGEN_UBICACION);
         } else {
-
-            return Storage::download(
-                $recurso->RUTA_IMAGEN_UBICACION
-            );
+            return Storage::download($recurso->RUTA_IMAGEN_UBICACION);
         }
     }
 
@@ -1699,31 +1495,16 @@ class reconocimientoergoController extends Controller
             )->first();
 
             if (!$dato) {
-
                 $dato = new datosgeneralesinformeRecoModel();
-
                 $dato->RECO_ID = $request->RECO_ID;
-
                 $dato->save();
             }
 
-
-            $dato->INFORME_PROCESOINSTALACION =
-                $request->INFORME_PROCESOINSTALACION;
-
-
-
-            $dato->INFORME_ACTIVIDADPRINCIPAL =
-                $request->INFORME_ACTIVIDADPRINCIPAL;
-
-
+            $dato->INFORME_PROCESOINSTALACION = $request->INFORME_PROCESOINSTALACION;
+            $dato->INFORME_ACTIVIDADPRINCIPAL = $request->INFORME_ACTIVIDADPRINCIPAL;
             $dato->save();
 
-
-
             DB::commit();
-
-
 
             return response()->json([
                 'msj' => 'Proceso de instalación guardado correctamente'
@@ -1750,21 +1531,12 @@ class reconocimientoergoController extends Controller
             ->where('ACTIVO', 1)
             ->orderBy('ID_CATEGORIA_ERGO', 'ASC')
             ->get();
-
-
-
         $numero = 1;
 
-
-
         foreach ($categorias as $categoria) {
-
             $categoria->NUMERO = $numero;
-
             $numero++;
         }
-
-
 
         return response()->json([
             'data' => $categorias
@@ -1772,9 +1544,10 @@ class reconocimientoergoController extends Controller
     }
 
 
+
+
     public function tablaReporteAreasErgo(Request $request)
     {
-
         $categorias = recoergocategoriasModel::where(
             'RECO_ID',
             $request->ergoid
@@ -1782,52 +1555,36 @@ class reconocimientoergoController extends Controller
             ->where('ACTIVO', 1)
             ->get();
 
-
-
         $data = [];
 
         $numero = 1;
 
-
-
         foreach ($categorias as $categoria) {
-
             if ($categoria->CATEGORIA_AREAS_ID) {
-
                 foreach ($categoria->CATEGORIA_AREAS_ID as $area_id) {
-
                     $area = recoergoareasModel::find($area_id);
-
-
-
                     if ($area) {
-
                         $obj = new \stdClass();
-
                         $obj->NUMERO = $numero;
-
-                        $obj->AREA =
-                            $area->NOMBRE_AREA_ERGO;
-
-                        $obj->CATEGORIA =
-                            $categoria->NOMBRE_CATEGORIA_ERGO;
-
-
-
+                        $obj->AREA = trim($area->NOMBRE_AREA_ERGO);
+                        $obj->CATEGORIA =$categoria->NOMBRE_CATEGORIA_ERGO;
                         $data[] = $obj;
-
                         $numero++;
                     }
                 }
             }
         }
 
+        usort($data, function ($a, $b) {
 
+            return strcmp($a->AREA, $b->AREA);
+        });
 
         return response()->json([
             'data' => $data
         ]);
     }
+
 
 
 
@@ -1837,60 +1594,21 @@ class reconocimientoergoController extends Controller
 
             DB::beginTransaction();
 
-
-
-            //---------------------------------------
-            // BUSCAR REGISTRO
-            //---------------------------------------
-
             $dato = datosgeneralesinformeRecoModel::where(
                 'RECO_ID',
                 $request->RECO_ID
             )->first();
 
-
-
-            //---------------------------------------
-            // SI NO EXISTE
-            //---------------------------------------
-
             if (!$dato) {
-
                 $dato = new datosgeneralesinformeRecoModel();
-
                 $dato->RECO_ID = $request->RECO_ID;
-
                 $dato->save();
             }
 
-
-
-            //---------------------------------------
-            // DATOS
-            //---------------------------------------
-
-            $dato->SELECT_CONCLUSION =
-                $request->SELECT_CONCLUSION;
-
-
-
-            $dato->INFORME_CONCLUSION =
-                $request->INFORME_CONCLUSION;
-
-
-
-            //---------------------------------------
-            // SAVE
-            //---------------------------------------
-
+            $dato->SELECT_CONCLUSION = $request->SELECT_CONCLUSION;
+            $dato->INFORME_CONCLUSION = $request->INFORME_CONCLUSION;
             $dato->save();
-
-
-
             DB::commit();
-
-
-
             return response()->json([
                 'msj' => 'Conclusión guardada correctamente'
             ]);
@@ -1914,48 +1632,24 @@ class reconocimientoergoController extends Controller
 
             DB::beginTransaction();
 
-
-
-            //---------------------------------------
-            // ELIMINAR ANTERIORES
-            //---------------------------------------
-
             recomendacionesinformeergoModel::where(
                 'RECO_ID',
                 $request->RECO_ID
             )->delete();
 
-
-
-            //---------------------------------------
-            // SI VIENEN RECOMENDACIONES
-            //---------------------------------------
-
             if ($request->DESCRIPCION_RECOMENDACIONES) {
 
                 foreach (
-                    $request->DESCRIPCION_RECOMENDACIONES
-                    as $recomendacion
+                    $request->DESCRIPCION_RECOMENDACIONES as $recomendacion
                 ) {
-
-                    $dato =
-                        new recomendacionesinformeergoModel();
-
-                    $dato->RECO_ID =
-                        $request->RECO_ID;
-
-                    $dato->CATALOGO_RECOMENDACIONES_ID =
-                        $recomendacion;
-
+                    $dato = new recomendacionesinformeergoModel();
+                    $dato->RECO_ID = $request->RECO_ID;
+                    $dato->CATALOGO_RECOMENDACIONES_ID = $recomendacion;
                     $dato->save();
                 }
             }
 
-
-
             DB::commit();
-
-
 
             return response()->json([
                 'msj' =>
@@ -1974,18 +1668,13 @@ class reconocimientoergoController extends Controller
 
 
 
-    public function obtenerRecomendacionesInformeErgo(
-        $RECO_ID
-    ) {
-
+    public function obtenerRecomendacionesInformeErgo($RECO_ID)
+    {
         $datos =
             recomendacionesinformeergoModel::where(
                 'RECO_ID',
                 $RECO_ID
             )->get();
-
-
-
         return response()->json($datos);
     }
 
@@ -1993,141 +1682,56 @@ class reconocimientoergoController extends Controller
 
 
 
-    public function guardarResponsablesInformeRecoErgo(
-        Request $request
-    ) {
-
+    public function guardarResponsablesInformeRecoErgo(Request $request)
+    {
         try {
 
             DB::beginTransaction();
-
-
-
-            //---------------------------------------
-            // BUSCAR REGISTRO
-            //---------------------------------------
 
             $dato = datosgeneralesinformeRecoModel::where(
                 'RECO_ID',
                 $request->RECO_ID
             )->first();
 
-
-
-            //---------------------------------------
-            // SI NO EXISTE
-            //---------------------------------------
-
             if (!$dato) {
-
                 $dato = new datosgeneralesinformeRecoModel();
-
                 $dato->RECO_ID = $request->RECO_ID;
-
                 $dato->save();
             }
 
-
-
-            //---------------------------------------
-            // DATOS
-            //---------------------------------------
-
-            $dato->INFORME_RESPONSABLE1 =
-                $request->INFORME_RESPONSABLE1;
-
-            $dato->INFORME_RESPONSABLE1CARGO =
-                $request->INFORME_RESPONSABLE1CARGO;
-
-
-
-            $dato->INFORME_RESPONSABLE2 =
-                $request->INFORME_RESPONSABLE2;
-
-            $dato->INFORME_RESPONSABLE2CARGO =
-                $request->INFORME_RESPONSABLE2CARGO;
-
-
-
-            //---------------------------------------
-            // DOCUMENTO RESPONSABLE 1
-            //---------------------------------------
+            $dato->INFORME_RESPONSABLE1 = $request->INFORME_RESPONSABLE1;
+            $dato->INFORME_RESPONSABLE1CARGO = $request->INFORME_RESPONSABLE1CARGO;
+            $dato->INFORME_RESPONSABLE2 = $request->INFORME_RESPONSABLE2;
+            $dato->INFORME_RESPONSABLE2CARGO = $request->INFORME_RESPONSABLE2CARGO;
 
             if ($request->file('INFORME_RESPONSABLE1DOCUMENTO')) {
 
-                $extension =
-                    $request->file(
-                        'INFORME_RESPONSABLE1DOCUMENTO'
-                    )->getClientOriginalExtension();
+                $extension = $request->file('INFORME_RESPONSABLE1DOCUMENTO')->getClientOriginalExtension();
+                $ruta = $request->file(
+                    'INFORME_RESPONSABLE1DOCUMENTO'
+                )->storeAs(
+                    'reconocimiento_ergo/' . $request->RECO_ID . '/responsables_informe',
+                    'responsable1.' . $extension
 
+                );
 
-
-                $ruta =
-                    $request->file(
-                        'INFORME_RESPONSABLE1DOCUMENTO'
-                    )->storeAs(
-
-                        'reconocimiento_ergo/' .
-                            $request->RECO_ID .
-                            '/responsables_informe',
-
-                        'responsable1.' . $extension
-
-                    );
-
-
-
-                $dato->INFORME_RESPONSABLE1DOCUMENTO =
-                    $ruta;
+                $dato->INFORME_RESPONSABLE1DOCUMENTO = $ruta;
             }
-
-
-
-            //---------------------------------------
-            // DOCUMENTO RESPONSABLE 2
-            //---------------------------------------
 
             if ($request->file('INFORME_RESPONSABLE2DOCUMENTO')) {
 
-                $extension =
-                    $request->file(
-                        'INFORME_RESPONSABLE2DOCUMENTO'
-                    )->getClientOriginalExtension();
-
-
-
-                $ruta =
-                    $request->file(
-                        'INFORME_RESPONSABLE2DOCUMENTO'
-                    )->storeAs(
-
-                        'reconocimiento_ergo/' .
-                            $request->RECO_ID .
-                            '/responsables_informe',
-
-                        'responsable2.' . $extension
-
-                    );
-
-
-
-                $dato->INFORME_RESPONSABLE2DOCUMENTO =
-                    $ruta;
+                $extension = $request->file('INFORME_RESPONSABLE2DOCUMENTO')->getClientOriginalExtension();
+                $ruta = $request->file(
+                    'INFORME_RESPONSABLE2DOCUMENTO'
+                )->storeAs(
+                    'reconocimiento_ergo/' . $request->RECO_ID . '/responsables_informe',
+                    'responsable2.' . $extension
+                );
+                $dato->INFORME_RESPONSABLE2DOCUMENTO = $ruta;
             }
 
-
-
-            //---------------------------------------
-            // SAVE
-            //---------------------------------------
-
             $dato->save();
-
-
-
             DB::commit();
-
-
 
             return response()->json([
                 'msj' =>
@@ -2146,11 +1750,8 @@ class reconocimientoergoController extends Controller
 
 
 
-    public function mostrarresponsable1recoergo(
-        $archivo_opcion,
-        $reco_id,
-        $extension
-    ) {
+    public function mostrarresponsable1recoergo($archivo_opcion, $reco_id, $extension)
+    {
 
         $recurso =
             datosgeneralesinformeRecoModel::where(
@@ -2158,47 +1759,27 @@ class reconocimientoergoController extends Controller
                 $reco_id
             )->firstOrFail();
 
-
-
         if (($archivo_opcion + 0) == 0) {
-
-            return Storage::response(
-                $recurso->INFORME_RESPONSABLE1DOCUMENTO
-            );
+            return Storage::response($recurso->INFORME_RESPONSABLE1DOCUMENTO);
         } else {
-
-            return Storage::download(
-                $recurso->INFORME_RESPONSABLE1DOCUMENTO
-            );
+            return Storage::download($recurso->INFORME_RESPONSABLE1DOCUMENTO);
         }
     }
 
 
 
-    public function mostrarresponsable2recoergo(
-        $archivo_opcion,
-        $reco_id,
-        $extension
-    ) {
+    public function mostrarresponsable2recoergo($archivo_opcion, $reco_id, $extension)
+    {
 
         $recurso =
             datosgeneralesinformeRecoModel::where(
                 'RECO_ID',
                 $reco_id
             )->firstOrFail();
-
-
-
         if (($archivo_opcion + 0) == 0) {
-
-            return Storage::response(
-                $recurso->INFORME_RESPONSABLE2DOCUMENTO
-            );
+            return Storage::response($recurso->INFORME_RESPONSABLE2DOCUMENTO);
         } else {
-
-            return Storage::download(
-                $recurso->INFORME_RESPONSABLE2DOCUMENTO
-            );
+            return Storage::download($recurso->INFORME_RESPONSABLE2DOCUMENTO);
         }
     }
 
@@ -2206,82 +1787,27 @@ class reconocimientoergoController extends Controller
     //// 6.1
 
 
-    public function guardarIntroduccionGraficasNom036(
-        Request $request
-    ) {
-
+    public function guardarIntroduccionGraficasNom036(Request $request)
+    {
         try {
 
             DB::beginTransaction();
-
-
-
-
-            //-----------------------------------------
-            // BUSCAR REGISTRO
-            //-----------------------------------------
 
             $dato = datosgeneralesinformeRecoModel::where(
-
                 'RECO_ID',
-
                 $request->RECO_ID
-
             )->first();
 
-
-
-
-            //-----------------------------------------
-            // CREAR SI NO EXISTE
-            //-----------------------------------------
-
             if (!$dato) {
-
-                $dato =
-                    new datosgeneralesinformeRecoModel();
-
-                $dato->RECO_ID =
-                    $request->RECO_ID;
+                $dato = new datosgeneralesinformeRecoModel();
+                $dato->RECO_ID = $request->RECO_ID;
             }
 
-
-
-
-            //-----------------------------------------
-            // GUARDAR
-            //-----------------------------------------
-
-            $dato->INTRODUCCION_GRAFICASNOM036 =
-                $request->INTRODUCCION_GRAFICASNOM036;
-
-
-
-
-            //-----------------------------------------
-            // SAVE
-            //-----------------------------------------
-
+            $dato->INTRODUCCION_GRAFICASNOM036 = $request->INTRODUCCION_GRAFICASNOM036;
             $dato->save();
-
-
-
-
-            //-----------------------------------------
-            // COMMIT
-            //-----------------------------------------
-
             DB::commit();
 
-
-
-
-            //-----------------------------------------
-            // RESPUESTA
-            //-----------------------------------------
-
             return response()->json([
-
                 'msj' =>
                 'Información guardada correctamente'
 
@@ -2303,91 +1829,34 @@ class reconocimientoergoController extends Controller
 
 
 
-    public function guardarConclusionGraficasNom036(
-        Request $request
-    ) {
-
+    public function guardarConclusionGraficasNom036(Request $request)
+    {
         try {
 
             DB::beginTransaction();
 
-
-
-
-            //-----------------------------------------
-            // BUSCAR
-            //-----------------------------------------
-
             $dato =
                 datosgeneralesinformeRecoModel::where(
-
                     'RECO_ID',
-
                     $request->RECO_ID
-
                 )->first();
 
-
-
-
-            //-----------------------------------------
-            // CREAR
-            //-----------------------------------------
-
             if (!$dato) {
-
-                $dato =
-                    new datosgeneralesinformeRecoModel();
-
-                $dato->RECO_ID =
-                    $request->RECO_ID;
+                $dato = new datosgeneralesinformeRecoModel();
+                $dato->RECO_ID = $request->RECO_ID;
             }
 
-
-
-
-            //-----------------------------------------
-            // GUARDAR
-            //-----------------------------------------
-
-            $dato->CONCLUSION_GRAFICASNOM036 =
-                $request->CONCLUSION_GRAFICASNOM036;
-
-
-
-
-            //-----------------------------------------
-            // SAVE
-            //-----------------------------------------
-
+            $dato->CONCLUSION_GRAFICASNOM036 = $request->CONCLUSION_GRAFICASNOM036;
             $dato->save();
-
-
-
-
-            //-----------------------------------------
-            // COMMIT
-            //-----------------------------------------
-
             DB::commit();
 
-
-
-
-            //-----------------------------------------
-            // RESPUESTA
-            //-----------------------------------------
-
             return response()->json([
-
                 'msj' =>
                 'Información guardada correctamente'
 
             ]);
         } catch (Exception $e) {
-
             DB::rollBack();
-
             return response()->json([
 
                 'msj' =>
@@ -2399,57 +1868,28 @@ class reconocimientoergoController extends Controller
     }
 
 
-    public function guardarIntroduccionGraficasISO12995(
-        Request $request
-    ) {
+    public function guardarIntroduccionGraficasISO12995(Request $request)
+    {
 
         try {
 
             DB::beginTransaction();
 
-
-
-            //---------------------------------------
-            // CONSULTAR
-            //---------------------------------------
-
             $dato =
                 datosgeneralesinformeRecoModel::where(
-
                     'RECO_ID',
-
                     $request->RECO_ID
-
                 )->first();
 
-
-
-            //---------------------------------------
-            // CREAR
-            //---------------------------------------
-
             if (!$dato) {
-
-                $dato =
-                    new datosgeneralesinformeRecoModel();
-
-                $dato->RECO_ID =
-                    $request->RECO_ID;
+                $dato = new datosgeneralesinformeRecoModel();
+                $dato->RECO_ID = $request->RECO_ID;
             }
 
-
-
-
-            $dato->INTRODUCCION_GRAFICASISO12995 =
-                $request->INTRODUCCION_GRAFICASISO12995;
-
-
-
+            $dato->INTRODUCCION_GRAFICASISO12995 = $request->INTRODUCCION_GRAFICASISO12995;
             $dato->save();
 
-
             DB::commit();
-
 
             return response()->json([
 
@@ -2460,9 +1900,6 @@ class reconocimientoergoController extends Controller
         } catch (Exception $e) {
 
             DB::rollBack();
-
-
-
             return response()->json([
 
                 'msj' =>
@@ -2475,54 +1912,24 @@ class reconocimientoergoController extends Controller
 
 
 
-    public function guardarConclusionGraficasISO12995(
-        Request $request
-    ) {
-
+    public function guardarConclusionGraficasISO12995(Request $request)
+    {
         try {
 
             DB::beginTransaction();
-
-
-
             $dato =
                 datosgeneralesinformeRecoModel::where(
-
                     'RECO_ID',
-
                     $request->RECO_ID
-
                 )->first();
 
-
-
-
             if (!$dato) {
-
-                $dato =
-                    new datosgeneralesinformeRecoModel();
-
-                $dato->RECO_ID =
-                    $request->RECO_ID;
+                $dato = new datosgeneralesinformeRecoModel();
+                $dato->RECO_ID = $request->RECO_ID;
             }
-
-
-
-
-            $dato->CONCLUSION_GRAFICASISO12995 =
-                $request->CONCLUSION_GRAFICASISO12995;
-
-
-
+            $dato->CONCLUSION_GRAFICASISO12995 = $request->CONCLUSION_GRAFICASISO12995;
             $dato->save();
-
-
-
-
             DB::commit();
-
-
-
 
             return response()->json([
 
@@ -2533,8 +1940,6 @@ class reconocimientoergoController extends Controller
         } catch (Exception $e) {
 
             DB::rollBack();
-
-
 
             return response()->json([
 
@@ -2561,92 +1966,49 @@ class reconocimientoergoController extends Controller
             ->first();
 
 
-
-        //---------------------------------------
-        // SI NO EXISTE REVISION
-        //---------------------------------------
-
         if (!$revision) {
 
             return response()->json([
-
                 'permite_guardar' => 1,
-
                 'finalizado' => 0,
-
                 'cancelado' => 0
-
             ]);
         }
 
-
-
-        //---------------------------------------
-        // SI ESTA FINALIZADO
-        //---------------------------------------
-
-        if ($revision->FINALIZADO == 1 &&
-            $revision->CANCELADO == 0) {
-
+        if (
+            $revision->FINALIZADO == 1 &&
+            $revision->CANCELADO == 0
+        ) {
             return response()->json([
-
                 'permite_guardar' => 0,
-
                 'finalizado' => 1,
-
                 'cancelado' => 0
-
             ]);
         }
 
-
-
-        //---------------------------------------
-        // SI ESTA CANCELADO
-        //---------------------------------------
 
         if ($revision->CANCELADO == 1) {
-
             return response()->json([
-
                 'permite_guardar' => 1,
-
                 'finalizado' => 0,
-
                 'cancelado' => 1
-
             ]);
         }
 
-
-
-        //---------------------------------------
-        // NORMAL
-        //---------------------------------------
-
         return response()->json([
-
             'permite_guardar' => 1,
-
             'finalizado' => 0,
-
             'cancelado' => 0
-
         ]);
-
     }
 
-    public function crearRevisionRecoErgo(Request $request) {
+    public function crearRevisionRecoErgo(Request $request)
+    {
 
         try {
 
             DB::beginTransaction();
 
-
-
-            //---------------------------------------
-            // ULTIMA REVISION
-            //---------------------------------------
 
             $ultima =
                 versionesrecoergoModel::where(
@@ -2655,12 +2017,6 @@ class reconocimientoergoController extends Controller
                 )
                 ->orderByDesc('NUMERO_REVISION')
                 ->first();
-
-
-
-            //---------------------------------------
-            // VALIDAR SI YA ESTA FINALIZADA
-            //---------------------------------------
 
             if (
                 $ultima &&
@@ -2676,63 +2032,17 @@ class reconocimientoergoController extends Controller
                 ], 500);
             }
 
-
-
-            //---------------------------------------
-            // NUMERO REVISION
-            //---------------------------------------
-
-            $numero =
-                $ultima
-                ? $ultima->NUMERO_REVISION + 1
-                : 0;
-
-
-
-            //---------------------------------------
-            // GENERAR WORD
-            //---------------------------------------
-
-            $rutaDocumento =
-                'pendiente.docx';
-
-
-
-            //---------------------------------------
-            // CREAR REGISTRO
-            //---------------------------------------
-
-            $revision =
-                new versionesrecoergoModel();
-
-
-
-            $revision->RECO_ID =
-                $request->RECO_ID;
-
-            $revision->NUMERO_REVISION =
-                $numero;
-
+            $numero = $ultima ? $ultima->NUMERO_REVISION + 1 : 0;
+            $rutaDocumento = 'pendiente.docx';
+            $revision = new versionesrecoergoModel();
+            $revision->RECO_ID = $request->RECO_ID;
+            $revision->NUMERO_REVISION = $numero;
             $revision->FINALIZADO = 1;
-
-            $revision->FINALIZADO_POR =
-                Auth::user()->id;
-
-            $revision->FECHA_FINALIZADO =
-                now();
-
-            $revision->RUTA_DOCUMENTO =
-                $rutaDocumento;
-
-
-
+            $revision->FINALIZADO_POR = Auth::user()->id;
+            $revision->FECHA_FINALIZADO = now();
+            $revision->RUTA_DOCUMENTO = $rutaDocumento;
             $revision->save();
-
-
-
             DB::commit();
-
-
 
             return response()->json([
 
@@ -2756,46 +2066,22 @@ class reconocimientoergoController extends Controller
 
 
 
-    public function cancelarRevisionRecoErgo(
-        Request $request
-    ) {
+    public function cancelarRevisionRecoErgo(Request $request)
+    {
 
         try {
 
             DB::beginTransaction();
 
-
-
-            $revision =
-                versionesrecoergoModel::findOrFail(
-                    $request->ID_VERSION_RECO_ERGO
-                );
-
-
-
+            $revision = versionesrecoergoModel::findOrFail($request->ID_VERSION_RECO_ERGO);
             $revision->CANCELADO = 1;
-
-            $revision->CANCELADO_POR =
-                Auth::user()->id;
-
-            $revision->FECHA_CANCELADO =
-                now();
-
-            $revision->MOTIVO_CANCELACION =
-                $request->MOTIVO_CANCELACION;
-
-
-
+            $revision->CANCELADO_POR = Auth::user()->id;
+            $revision->FECHA_CANCELADO = now();
+            $revision->MOTIVO_CANCELACION = $request->MOTIVO_CANCELACION;
             $revision->save();
-
-
-
             DB::commit();
 
-
-
             return response()->json([
-
                 'msj' =>
                 'Revisión cancelada correctamente'
 
@@ -2820,7 +2106,7 @@ class reconocimientoergoController extends Controller
 
         $datos = DB::select("
 
-        SELECT
+            SELECT
 
             vr.*,
 
@@ -2858,94 +2144,34 @@ class reconocimientoergoController extends Controller
 
 
 
-                foreach ($datos as $key => $value) {
+        foreach ($datos as $key => $value) {
+
+            if ($value->CANCELADO == 1) {
+                $value->ESTADO =
+                    '<span class="badge badge-danger">Cancelado</span>';
+            } else {
+                $value->ESTADO =
+                    '<span class="badge badge-success">Finalizado</span>';
+            }
 
 
+            $checked =
+                ($value->CANCELADO == 1)
+                ? 'checked'
+                : '';
 
-                    //---------------------------------------
-                    // ESTADO
-                    //---------------------------------------
-
-                    if ($value->CANCELADO == 1) {
-
-                        $value->ESTADO =
-                            '<span class="badge badge-danger">
-                            Cancelado
-                        </span>';
-                    } else {
-
-                        $value->ESTADO =
-                            '<span class="badge badge-success">
-                            Finalizado
-                        </span>';
-                    }
-
-
-
-                    //---------------------------------------
-                    // CHECKBOX CANCELADO
-                    //---------------------------------------
-
-                    $checked =
-                        ($value->CANCELADO == 1)
-                        ? 'checked'
-                        : '';
-
-                    $value->CHECKBOX_CANCELADO = '
-
+            $value->CHECKBOX_CANCELADO = '
                     <div class="switch">
-
                         <label>
-
-                            <input
-                                type="checkbox"
-
-                                class="checkbox_cancelado_revision"
-
-                                ' . $checked . '
-
-                                onchange="cancelarRevisionRecoErgo(
-                                    ' . $value->ID_VERSION_RECO_ERGO . ',
-                                    this
-                                )">
-
+                            <input type="checkbox" class="checkbox_cancelado_revision" ' . $checked . ' onchange="cancelarRevisionRecoErgo(' . $value->ID_VERSION_RECO_ERGO . ',this)">
                             <span class="lever switch-col-red"></span>
-
                         </label>
+                    </div>';
 
-                    </div>
-
-                    ';
-
-
-                    //---------------------------------------
-                    // BOTON DESCARGA
-                    //---------------------------------------
-
-                
-
-                    $value->BOTON_DESCARGAR = '
-
-            <button
-                type="button"
-
-                class="btn btn-success btn-circle"
-
-                data-toggle="tooltip"
-
-                title="Descargar informe"
-
-                onclick="descargarRevisionRecoErgo(
-                    ' . $value->RECO_ID . '
-                )">
-
-                <i class="fa fa-download"></i>
-
-            </button>';
-
+            $value->BOTON_DESCARGAR = '
+                    <button type="button" class="btn btn-success btn-circle" data-toggle="tooltip" title="Descargar informe" onclick="descargarRevisionRecoErgo(' . $value->RECO_ID . ')">
+                    <i class="fa fa-download"></i></button>';
         }
-
-
 
         return response()->json([
             'data' => $datos
@@ -2956,577 +2182,198 @@ class reconocimientoergoController extends Controller
 
 
 
-    public function descargarRevisionRecoErgo( Request $request, $RECO_ID) {
+    public function descargarRevisionRecoErgo(Request $request, $RECO_ID)
+    {
 
 
         try {
 
-            //---------------------------------------
-            // CONSULTA RECONOCIMIENTO
-            //---------------------------------------
+            $reco = reconocimientoergoModel::findOrFail($RECO_ID);
+            $proyecto = proyectoModel::where('reconocimiento_ergo_id', $RECO_ID)->first();
+            $contrato = clientecontratoModel::find($proyecto->contrato_id);
 
-            $reco = reconocimientoergoModel::findOrFail(
-                $RECO_ID
-            );
 
+            $recursos = recursosPortadaRecoErgoModel::where('RECO_ID', $RECO_ID)->get();
+            $rutaPlantilla = storage_path('app/plantillas_reportes/plantilla_ergo/Plantilla_informe_ergonomia.docx');
+            $plantillaword = new TemplateProcessor($rutaPlantilla);
 
 
-            //---------------------------------------
-            // CONSULTA PROYECTO
-            //---------------------------------------
+            $numeroContrato = $contrato->NUMERO_CONTRATO ?? 'No cargado';
+            $plantillaword->setValue('proyecto_portada', 'Evaluación del Factor de Riesgo Ergonómico' . $numeroContrato);
+            $plantillaword->setValue('folio_portada', $reco->proyecto_folio ?? 'No cargado');
+            $plantillaword->setValue('razon_social_portada', $proyecto->proyecto_clienterazonsocial ?? 'No cargado');
+            $plantillaword->setValue('instalación_portada', $reco->instalacion ?? 'No cargado');
 
-            $proyecto = proyectoModel::where(
-                'reconocimiento_ergo_id',
-                $RECO_ID
-            )->first();
 
+            $mes = $recursos[0]->INFORME_MES ?? 'No cargado';
+            $anio = $recursos[0]->INFORME_ANIO ?? 'No cargado';
+            $direccion = $reco->direccion ?? 'No cargado';
+            $plantillaword->setValue('lugar_fecha_portada', $direccion . ', ' . $mes . ' del ' . $anio);
 
 
-            $contrato = clientecontratoModel::find(
-                $proyecto->contrato_id
-            );
-
-
-
-            //---------------------------------------
-            // CONSULTA RECURSOS PORTADA
-            //---------------------------------------
-
-            $recursos =
-                recursosPortadaRecoErgoModel::where(
-                    'RECO_ID',
-                    $RECO_ID
-                )
-                ->get();
-
-
-
-            //---------------------------------------
-            // PLANTILLA
-            //---------------------------------------
-
-            $rutaPlantilla =
-                storage_path(
-                    'app/plantillas_reportes/plantilla_ergo/Plantilla_informe_ergonomia.docx'
-                );
-
-
-
-            $plantillaword =
-                new TemplateProcessor(
-                    $rutaPlantilla
-                );
-
-
-
-            //---------------------------------------
-            // ${proyecto_portada}
-            //---------------------------------------
-
-            $numeroContrato =
-                $contrato->NUMERO_CONTRATO
-                ?? 'No cargado';
-
-
-
-            $plantillaword->setValue(
-
-                'proyecto_portada',
-
-                'Evaluación del Factor de Riesgo Ergonómico
-        NOM-036-1-STPS-2018 ' .
-                    $numeroContrato
-
-            );
-
-
-
-            //---------------------------------------
-            // ${folio_portada}
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'folio_portada',
-
-                $reco->proyecto_folio
-                    ?? 'No cargado'
-
-            );
-
-
-
-            //---------------------------------------
-            // ${razon_social_portada}
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'razon_social_portada',
-
-                $proyecto->proyecto_clienterazonsocial
-                    ?? 'No cargado'
-
-            );
-
-
-
-            //---------------------------------------
-            // ${instalación_portada}
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'instalación_portada',
-
-                $reco->instalacion
-                    ?? 'No cargado'
-
-            );
-
-
-
-            //---------------------------------------
-            // ${lugar_fecha_portada}
-            //---------------------------------------
-
-            $mes =
-                $recursos[0]->INFORME_MES
-                ?? 'No cargado';
-
-
-
-            $anio =
-                $recursos[0]->INFORME_ANIO
-                ?? 'No cargado';
-
-
-
-            $direccion =
-                $reco->direccion
-                ?? 'No cargado';
-
-
-
-            $plantillaword->setValue(
-
-                'lugar_fecha_portada',
-
-                $direccion .
-                    ', ' .
-                    $mes .
-                    ' del ' .
-                    $anio
-
-            );
-
-
-
-            //---------------------------------------
-            // ${foto_portada}
-            //---------------------------------------
-
-            if (
-                isset($recursos[0]) &&
-                $recursos[0]->RUTA_IMAGEN_PORTADA
-            ) {
-
+            if (isset($recursos[0]) && $recursos[0]->RUTA_IMAGEN_PORTADA) {
                 if (
-
                     file_exists(
-
-                        storage_path(
-                            'app/' .
-                                $recursos[0]->RUTA_IMAGEN_PORTADA
-                        )
-
+                        storage_path('app/' . $recursos[0]->RUTA_IMAGEN_PORTADA)
                     )
-
                 ) {
-
                     $plantillaword->setImageValue(
-
                         'foto_portada',
-
                         array(
-
-                            'path' => storage_path(
-                                'app/' .
-                                    $recursos[0]->RUTA_IMAGEN_PORTADA
-                            ),
-
+                            'path' => storage_path('app/' . $recursos[0]->RUTA_IMAGEN_PORTADA),
                             'width' => 969,
-
                             'height' => 689,
-
                             'ratio' => true,
-
                             'borderColor' => '000000'
-
                         )
 
                     );
                 } else {
-
-                    $plantillaword->setValue(
-
-                        'foto_portada',
-
-                        'LA IMAGEN NO HA SIDO ENCONTRADA'
-
-                    );
+                    $plantillaword->setValue('foto_portada', 'LA IMAGEN NO HA SIDO ENCONTRADA');
                 }
             } else {
-
-                $plantillaword->setValue(
-
-                    'foto_portada',
-
-                    'LA IMAGEN DE LA PORTADA NO HA SIDO CARGADA'
-
-                );
+                $plantillaword->setValue('foto_portada', 'LA IMAGEN DE LA PORTADA NO HA SIDO CARGADA');
             }
 
 
-
-
-
-            //---------------------------------------
-            // ${LOGO_IZQUIERDO}
-            //---------------------------------------
-
-            if (
-                $contrato &&
-                $contrato->CONTRATO_PLANTILLA_LOGOIZQUIERDO
-            ) {
-
+            if ($contrato && $contrato->CONTRATO_PLANTILLA_LOGOIZQUIERDO) {
                 if (
-
                     file_exists(
-
-                        storage_path(
-                            'app/' .
-                                $contrato->CONTRATO_PLANTILLA_LOGOIZQUIERDO
-                        )
-
+                        storage_path('app/' . $contrato->CONTRATO_PLANTILLA_LOGOIZQUIERDO)
                     )
-
                 ) {
-
                     $plantillaword->setImageValue(
-
                         'LOGO_IZQUIERDO',
-
                         array(
-
-                            'path' => storage_path(
-                                'app/' .
-                                    $contrato->CONTRATO_PLANTILLA_LOGOIZQUIERDO
-                            ),
-
+                            'path' => storage_path('app/' . $contrato->CONTRATO_PLANTILLA_LOGOIZQUIERDO),
                             'width' => 120,
-
                             'height' => 150,
-
                             'ratio' => true,
-
                             'borderColor' => '000000'
-
                         )
-
                     );
                 } else {
-
-                    $plantillaword->setValue(
-
-                        'LOGO_IZQUIERDO',
-
-                        'IMAGEN NO ENCONTRADA'
-
-                    );
+                    $plantillaword->setValue('LOGO_IZQUIERDO', 'IMAGEN NO ENCONTRADA');
                 }
             } else {
-
-                $plantillaword->setValue(
-
-                    'LOGO_IZQUIERDO',
-
-                    'SIN FOTO'
-
-                );
+                $plantillaword->setValue('LOGO_IZQUIERDO', 'SIN FOTO');
             }
 
 
-
-
-
-            //---------------------------------------
-            // ${LOGO_DERECHO}
-            //---------------------------------------
-
-            if (
-                $contrato &&
-                $contrato->CONTRATO_PLANTILLA_LOGODERECHO
-            ) {
-
+            if ($contrato && $contrato->CONTRATO_PLANTILLA_LOGODERECHO) {
                 if (
-
                     file_exists(
-
-                        storage_path(
-                            'app/' .
-                                $contrato->CONTRATO_PLANTILLA_LOGODERECHO
-                        )
-
+                        storage_path('app/' . $contrato->CONTRATO_PLANTILLA_LOGODERECHO)
                     )
-
                 ) {
-
                     $plantillaword->setImageValue(
-
                         'LOGO_DERECHO',
-
                         array(
-
-                            'path' => storage_path(
-                                'app/' .
-                                    $contrato->CONTRATO_PLANTILLA_LOGODERECHO
-                            ),
-
+                            'path' => storage_path('app/' . $contrato->CONTRATO_PLANTILLA_LOGODERECHO),
                             'width' => 120,
-
                             'height' => 150,
-
                             'ratio' => true,
-
                             'borderColor' => '000000'
-
                         )
 
                     );
                 } else {
-
-                    $plantillaword->setValue(
-
-                        'LOGO_DERECHO',
-
-                        'IMAGEN NO ENCONTRADA'
-
-                    );
+                    $plantillaword->setValue('LOGO_DERECHO', 'IMAGEN NO ENCONTRADA');
                 }
             } else {
-
-                $plantillaword->setValue(
-
-                    'LOGO_DERECHO',
-
-                    'SIN FOTO'
-
-                );
+                $plantillaword->setValue('LOGO_DERECHO', 'SIN FOTO');
             }
 
-
-
-
-
-            //---------------------------------------
-            // ${PIE_PAGINA}
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'PIE_PAGINA',
-
-                $contrato->CONTRATO_PLANTILLA_PIEPAGINA
-                    ?? 'SIN PIE DE PAGINA'
-
-            );
-
-
-            //---------------------------------------
-            // ${INSTALACION_NOMBRE}
-            //---------------------------------------
+            $plantillaword->setValue('PIE_PAGINA', $contrato->CONTRATO_PLANTILLA_PIEPAGINA ?? 'SIN PIE DE PAGINA');
 
             $niveles = [];
-
-
-
             if (isset($recursos[0])) {
-
                 if (!empty($recursos[0]->NIVEL1)) {
                     $niveles[] = $recursos[0]->NIVEL1;
                 }
-
                 if (!empty($recursos[0]->NIVEL2)) {
                     $niveles[] = $recursos[0]->NIVEL2;
                 }
-
                 if (!empty($recursos[0]->NIVEL3)) {
                     $niveles[] = $recursos[0]->NIVEL3;
                 }
-
                 if (!empty($recursos[0]->NIVEL4)) {
                     $niveles[] = $recursos[0]->NIVEL4;
                 }
-
                 if (!empty($recursos[0]->NIVEL5)) {
                     $niveles[] = $recursos[0]->NIVEL5;
                 }
             }
 
 
-
-            $textoInstalacion =
-
-                count($niveles)
-
+            $textoInstalacion = count($niveles)
                 ? implode(
                     '</w:t><w:br/><w:t>',
                     $niveles
                 )
-
                 : 'No cargado';
-
-
-
             $plantillaword->setValue(
-
                 'INSTALACION_NOMBRE',
-
                 $textoInstalacion
 
             );
 
-
-
-            //---------------------------------------
-            // CONSULTA DATOS GENERALES
-            //---------------------------------------
-
-            $datosGenerales =
-                datosgeneralesinformeRecoModel::where(
-                    'RECO_ID',
-                    $RECO_ID
-                )
+            $datosGenerales = datosgeneralesinformeRecoModel::where(
+                'RECO_ID',
+                $RECO_ID
+            )
                 ->first();
 
+            //// INTRODUCCION
+            $plantillaword->setValue('INTRODUCCION', $datosGenerales->INFORME_INTRODUCCION ?? 'No cargado');
 
-
-
-            //---------------------------------------
-            // ${INTRODUCCION}
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'INTRODUCCION',
-
-                $datosGenerales->INFORME_INTRODUCCION
-                    ?? 'No cargado'
-
-            );
-
-
-
-
-            //---------------------------------------
-            // DEFINICIONES
-            //---------------------------------------
-
+            //// DEFINICIONES
             $definiciones = DB::table('definicionesinformeergo as di')
-
                 ->join(
                     'catergo_definiciones as cd',
                     'cd.ID_DEFINICIONES',
                     '=',
                     'di.CATALOGO_DEFINICIONES_ID'
                 )
-
                 ->where(
                     'di.RECO_ID',
                     $RECO_ID
                 )
-
                 ->orderBy(
                     'cd.CONCEPTO_DEFINICION',
                     'ASC'
                 )
-
                 ->select(
                     'cd.CONCEPTO_DEFINICION',
                     'cd.DESCRIPCION_DEFINICION',
                     'cd.FUENTE_DEFINICION'
                 )
-
                 ->get();
 
-
-
-
-            //---------------------------------------
-            // TEXO DEFINICIONES
-            //---------------------------------------
-
             $textoDefiniciones = '';
-
-
-
-            //---------------------------------------
-            // FUENTES SIN REPETIR
-            //---------------------------------------
 
             $fuentes = [];
 
 
-
             foreach ($definiciones as $key => $value) {
 
-                //---------------------------------------
-                // DEFINICION
-                //---------------------------------------
-
                 $textoDefiniciones .=
-
                     '<w:p>
-
                         <w:r>
                             <w:rPr>
                                 <w:b/>
                             </w:rPr>
-
                             <w:t>' .
-
-                                htmlspecialchars(
-                                    $value->CONCEPTO_DEFINICION
-                                ) .
-
-                            ':</w:t>
-
+                    htmlspecialchars($value->CONCEPTO_DEFINICION) .
+                    ':</w:t>
                         </w:r>
-
                         <w:r>
-
                             <w:t xml:space="preserve">
-
-                                ' .
-
-                                htmlspecialchars(
-                                    $value->DESCRIPCION_DEFINICION
-                                ) .
-
-                            '
-
+                                ' . htmlspecialchars($value->DESCRIPCION_DEFINICION) . '
                             </w:t>
-
                         </w:r>
-
                     </w:p>';
 
-
-
-                //---------------------------------------
-                // FUENTES
-                //---------------------------------------
 
                 if (
                     $value->FUENTE_DEFINICION
@@ -3536,291 +2383,99 @@ class reconocimientoergoController extends Controller
                         $fuentes
                     )
                 ) {
-
-                    $fuentes[] =
-                        $value->FUENTE_DEFINICION;
+                    $fuentes[] = $value->FUENTE_DEFINICION;
                 }
             }
 
 
-
-
-            //---------------------------------------
-            // SI NO HAY DEFINICIONES
-            //---------------------------------------
-
             if ($textoDefiniciones == '') {
-
-                $textoDefiniciones =
-                    'No cargado';
+                $textoDefiniciones = 'No cargado';
             }
 
-
-
-
-            //---------------------------------------
-            // TEXTO FUENTES
-            //---------------------------------------
-
-            $textoFuentes =
-
-                count($fuentes)
-
+            $textoFuentes = count($fuentes)
                 ? implode(
                     '</w:t><w:br/><w:t>',
                     $fuentes
                 )
-
                 : 'No cargado';
 
 
+            $plantillaword->setValue('DEFINICIONES', $textoDefiniciones);
+            $plantillaword->setValue('DEFINICIONES_FUENTES', $textoFuentes);
 
 
-            //---------------------------------------
-            // MARCADORES WORD
-            //---------------------------------------
+            //// OBEJTIVO GENERAL
+            $plantillaword->setValue('OBJETIVO_GENERAL', $datosGenerales->INFORME_OBJETIVOGENERALES ?? 'No cargado');
 
-            $plantillaword->setValue(
-                'DEFINICIONES',
-                $textoDefiniciones
-            );
+            //// OBEJTIVO ESPECIFICOS
 
-
-
-            $plantillaword->setValue(
-                'DEFINICIONES_FUENTES',
-                $textoFuentes
-            );
-
-
-
-
-            //---------------------------------------
-            // ${OBJETIVO_GENERAL}
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'OBJETIVO_GENERAL',
-
-                $datosGenerales->INFORME_OBJETIVOGENERALES
-                    ?? 'No cargado'
-
-            );
-
-
-
-
-            //---------------------------------------
-            // ${OBJETIVOS_ESPECIFICOS}
-            //---------------------------------------
 
             $textoObjetivos = '';
 
-
-
-            if (
-                !empty($datosGenerales->INFORME_OBJETIVOSESPECIFICOS)
-            ) {
-
-                //---------------------------------------
-                // SEPARAR POR LINEAS
-                //---------------------------------------
-
+            if (!empty($datosGenerales->INFORME_OBJETIVOSESPECIFICOS)) {
                 $objetivos = preg_split(
-
                     "/\r\n|\n|\r/",
-
                     $datosGenerales->INFORME_OBJETIVOSESPECIFICOS
-
                 );
-
-
-
                 foreach ($objetivos as $objetivo) {
-
-                    //---------------------------------------
-                    // LIMPIAR TEXTO
-                    //---------------------------------------
-
                     $objetivo = trim($objetivo);
-
                     $objetivo = ltrim($objetivo, '•- ');
 
-
-
-                    //---------------------------------------
-                    // SI TIENE TEXTO
-                    //---------------------------------------
-
                     if ($objetivo != '') {
-
-                        $textoObjetivos .=
-
-                            '• ' .
-
-                            $objetivo .
-
-                            '</w:t><w:br/><w:t>';
+                        $textoObjetivos .= '• ' . $objetivo . '</w:t><w:br/><w:t>';
                     }
                 }
             } else {
-
                 $textoObjetivos = 'No cargado';
             }
 
 
+            $plantillaword->setValue('OBJETIVOS_ESPECIFICOS', $textoObjetivos);
 
 
-            //---------------------------------------
-            // MARCADOR
-            //---------------------------------------
+            //// UBICACION INSTALACION
+            $plantillaword->setValue('UBICACION_TEXTO', $datosGenerales->INFORME_UBICACIONINSTALACION ?? 'No cargado');
 
-            $plantillaword->setValue(
-
-                'OBJETIVOS_ESPECIFICOS',
-
-                $textoObjetivos
-
-            );
-
-
-
-            //---------------------------------------
-            // ${UBICACION_TEXTO}
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'UBICACION_TEXTO',
-
-                $datosGenerales->INFORME_UBICACIONINSTALACION
-                    ?? 'No cargado'
-
-            );
-
-
-
-
-            //---------------------------------------
-            // ${UBICACION_FOTO}
-            //---------------------------------------
-
+            //// UBICACION INSTALACION FOTO 
             if ($datosGenerales->RUTA_IMAGEN_UBICACION) {
-
                 if (
-                    file_exists(
-                        storage_path(
-                            'app/' .
-                                $datosGenerales->RUTA_IMAGEN_UBICACION
-                        )
-                    )
+                    file_exists(storage_path('app/' . $datosGenerales->RUTA_IMAGEN_UBICACION))
                 ) {
-
                     $plantillaword->setImageValue(
-
                         'UBICACION_FOTO',
-
                         array(
-
-                            'path' => storage_path(
-                                'app/' .
-                                    $datosGenerales->RUTA_IMAGEN_UBICACION
-                            ),
-
+                            'path' => storage_path('app/' . $datosGenerales->RUTA_IMAGEN_UBICACION),
                             'width' => 580,
-
                             'height' => 400,
-
                             'ratio' => true,
-
                             'borderColor' => '000000'
-
                         )
-
                     );
                 } else {
-
-                    $plantillaword->setValue(
-
-                        'UBICACION_FOTO',
-
-                        'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-
-                    );
+                    $plantillaword->setValue('UBICACION_FOTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
                 }
             } else {
-
-                $plantillaword->setValue(
-
-                    'UBICACION_FOTO',
-
-                    'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-
-                );
+                $plantillaword->setValue('UBICACION_FOTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
             }
 
 
-
-            //---------------------------------------
-            // ${PROCESO_INSTALACION}
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'PROCESO_INSTALACION',
-
-                $datosGenerales->INFORME_PROCESOINSTALACION
-                    ?? 'No cargado'
-
-            );
+            //// PROCESO DE LA INSTALACION
+            $plantillaword->setValue('PROCESO_INSTALACION', $datosGenerales->INFORME_PROCESOINSTALACION ?? 'No cargado');
 
 
+            //// ACTIVIDAD PRINCIPAL DE LA INSTALACION 
+            $plantillaword->setValue('ACTIVIDAD_INSTALACION', $datosGenerales->INFORME_ACTIVIDADPRINCIPAL ?? 'No cargado');
 
 
-            //---------------------------------------
-            // ${ACTIVIDAD_INSTALACION}
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'ACTIVIDAD_INSTALACION',
-
-                $datosGenerales->INFORME_ACTIVIDADPRINCIPAL
-                    ?? 'No cargado'
-
-            );
+            //// TABLA DE LAS CATEGORIAS
 
 
-
-
-            //================================================================================
-            // TABLA 5.3 CATEGORÍAS
-            //================================================================================
-
-
-            //---------------------------------------
-            // CONSULTAR CATEGORÍAS
-            //---------------------------------------
-
-            $categorias = recoergocategoriasModel::where(
-                'RECO_ID',
-                $RECO_ID
-            )
+            $categorias = recoergocategoriasModel::where('RECO_ID', $RECO_ID)
                 ->where('ACTIVO', 1)
                 ->orderBy('PT_CATEGORIA', 'ASC')
                 ->get();
 
-
-
-
-            //---------------------------------------
-            // ESTILOS
-            //---------------------------------------
-
             $fuente = 'Poppins';
-
-
 
             $encabezado_texto = array(
                 'name' => $fuente,
@@ -3829,121 +2484,51 @@ class reconocimientoergoController extends Controller
                 'color' => 'FFFFFF'
             );
 
-
-
             $texto = array(
                 'name' => $fuente,
                 'size' => 10,
                 'color' => '000000'
             );
 
-
-
             $centrado = array(
                 'alignment' => 'center',
                 'valign' => 'center'
             );
-
-
-
 
             $encabezado_celda = array(
                 'bgColor' => '0F3D63',
                 'valign' => 'center'
             );
 
-
-
             $celda = array(
                 'valign' => 'center'
             );
 
-
-
-
-            //---------------------------------------
-            // ANCHO
-            //---------------------------------------
-
             $ancho_col_1 = 2000;
-
             $ancho_col_2 = 7200;
 
 
-
-
-            //---------------------------------------
-            // CREAR TABLA
-            //---------------------------------------
-
             $table = new Table(array(
-
                 'name' => $fuente,
-
                 'borderSize' => 1,
-
                 'borderColor' => '000000',
-
                 'cellMargin' => 80,
-
                 'unit' => TblWidth::TWIP
-
             ));
-
-
-
-
-            //---------------------------------------
-            // ENCABEZADO
-            //---------------------------------------
 
             $table->addRow(500);
 
+            $table->addCell($ancho_col_1, $encabezado_celda)->addTextRun($centrado)->addText('PT', $encabezado_texto);
+            $table->addCell($ancho_col_2, $encabezado_celda)->addTextRun($centrado)->addText('Categoría', $encabezado_texto);
 
-
-            $table->addCell(
-                $ancho_col_1,
-                $encabezado_celda
-            )->addTextRun($centrado)->addText(
-                'PT',
-                $encabezado_texto
-            );
-
-
-
-            $table->addCell(
-                $ancho_col_2,
-                $encabezado_celda
-            )->addTextRun($centrado)->addText(
-                'Categoría',
-                $encabezado_texto
-            );
-
-
-
-
-            //---------------------------------------
-            // FILAS
-            //---------------------------------------
 
             if (count($categorias) > 0) {
-
                 foreach ($categorias as $categoria) {
-
                     $table->addRow();
-
-
-
                     $table->addCell(
                         $ancho_col_1,
                         $celda
-                    )->addTextRun($centrado)->addText(
-                        $categoria->PT_CATEGORIA,
-                        $texto
-                    );
-
-
-
+                    )->addTextRun($centrado)->addText($categoria->PT_CATEGORIA, $texto);
                     $table->addCell(
                         $ancho_col_2,
                         $celda
@@ -3953,1070 +2538,284 @@ class reconocimientoergoController extends Controller
                     );
                 }
             } else {
-
                 $table->addRow();
-
-
-
-                $table->addCell(
-                    $ancho_col_1 + $ancho_col_2,
-                    $celda
-                )->addTextRun($centrado)->addText(
-                    'No hay categorías registradas',
-                    $texto
-                );
+                $table->addCell($ancho_col_1 + $ancho_col_2, $celda)->addTextRun($centrado)->addText('No hay categorías registradas', $texto);
             }
 
 
+            $plantillaword->setComplexBlock('TABLA_5_3', $table);
 
 
-            $plantillaword->setComplexBlock(
-                'TABLA_5_3',
-                $table
+            //// AREAS - CATEGORIAS
+
+
+            $categorias = recoergocategoriasModel::where('RECO_ID', $RECO_ID)
+                ->where('ACTIVO', 1)
+                ->get();
+
+            $data = [];
+
+            foreach ($categorias as $categoria) {
+
+
+                if ($categoria->CATEGORIA_AREAS_ID && is_array($categoria->CATEGORIA_AREAS_ID)) {
+                    foreach (
+                        $categoria->CATEGORIA_AREAS_ID as $area_id
+                    ) {
+                        $area = recoergoareasModel::find($area_id);
+                        if ($area) {
+                            $obj = new \stdClass();
+                            $obj->AREA = $area->NOMBRE_AREA_ERGO;
+                            $obj->CATEGORIA = $categoria->NOMBRE_CATEGORIA_ERGO;
+                            $data[] = $obj;
+                        }
+                    }
+                }
+            }
+
+
+            usort($data, function ($a, $b) {
+                return strcmp(
+                    $a->AREA,
+                    $b->AREA
+                );
+            });
+
+            $fuente = 'Poppins';
+            $encabezado_texto = array(
+                'name' => $fuente,
+                'size' => 11,
+                'bold' => true,
+                'color' => 'FFFFFF'
             );
 
+            $texto = array(
+                'name' => $fuente,
+                'size' => 10,
+                'color' => '000000'
+            );
+            $centrado = array('alignment' => 'center', 'valign' => 'center');
+            $encabezado_celda = array('bgColor' => '0F3D63', 'valign' => 'center');
+            $celda = array('valign' => 'center');
 
 
-                    //---------------------------------------
-                    // CONSULTAR ÁREAS Y CATEGORÍAS
-                    //---------------------------------------
+            $ancho_area = 4500;
+            $ancho_categoria = 4700;
 
-                    $categorias = recoergocategoriasModel::where(
-                        'RECO_ID',
-                        $RECO_ID
-                    )
-                        ->where('ACTIVO', 1)
-                        ->get();
+            $table = new Table(array(
+                'name' => $fuente,
+                'borderSize' => 1,
+                'borderColor' => '000000',
+                'cellMargin' => 80,
+                'unit' => TblWidth::TWIP
+            ));
 
+            $table->addRow(500);
+            $table->addCell($ancho_area, $encabezado_celda)->addTextRun($centrado)->addText('Área', $encabezado_texto);
+            $table->addCell($ancho_categoria, $encabezado_celda)->addTextRun($centrado)->addText('Categoría', $encabezado_texto);
 
 
+            $areasAgrupadas = [];
 
-                    $data = [];
 
+            foreach ($data as $fila) {
+                if (!isset($areasAgrupadas[$fila->AREA])) {
+                    $areasAgrupadas[$fila->AREA] = [];
+                }
+                $areasAgrupadas[$fila->AREA][] = $fila->CATEGORIA;
+            }
 
 
-                    foreach ($categorias as $categoria) {
-
-                        //---------------------------------------
-                        // VALIDAR ÁREAS
-                        //---------------------------------------
-
-                        if (
-                            $categoria->CATEGORIA_AREAS_ID
-                            &&
-                            is_array($categoria->CATEGORIA_AREAS_ID)
-                        ) {
-
-                            foreach (
-                                $categoria->CATEGORIA_AREAS_ID
-                                as $area_id
-                            ) {
-
-                                $area = recoergoareasModel::find(
-                                    $area_id
-                                );
-
-
-
-                                if ($area) {
-
-                                    $obj = new \stdClass();
-
-                                    $obj->AREA =
-                                        $area->NOMBRE_AREA_ERGO;
-
-                                    $obj->CATEGORIA =
-                                        $categoria->NOMBRE_CATEGORIA_ERGO;
-
-
-
-                                    $data[] = $obj;
-                                }
-                            }
-                        }
-                    }
-
-
-
-
-                    //---------------------------------------
-                    // ORDENAR POR ÁREA
-                    //---------------------------------------
-
-                    usort($data, function ($a, $b) {
-
-                        return strcmp(
-                            $a->AREA,
-                            $b->AREA
-                        );
-                    });
-
-
-
-
-                    //---------------------------------------
-                    // ESTILOS
-                    //---------------------------------------
-
-                    $fuente = 'Poppins';
-
-
-
-                    $encabezado_texto = array(
-                        'name' => $fuente,
-                        'size' => 11,
-                        'bold' => true,
-                        'color' => 'FFFFFF'
-                    );
-
-
-
-                    $texto = array(
-                        'name' => $fuente,
-                        'size' => 10,
-                        'color' => '000000'
-                    );
-
-
-
-                    $centrado = array(
-                        'alignment' => 'center',
-                        'valign' => 'center'
-                    );
-
-
-
-                    $encabezado_celda = array(
-                        'bgColor' => '0F3D63',
-                        'valign' => 'center'
-                    );
-
-
-
-                    $celda = array(
-                        'valign' => 'center'
-                    );
-
-
-
-
-                    //---------------------------------------
-                    // ANCHOS
-                    //---------------------------------------
-
-                    $ancho_area = 4500;
-
-                    $ancho_categoria = 4700;
-
-
-
-
-                    //---------------------------------------
-                    // CREAR TABLA
-                    //---------------------------------------
-
-                    $table = new Table(array(
-
-                        'name' => $fuente,
-
-                        'borderSize' => 1,
-
-                        'borderColor' => '000000',
-
-                        'cellMargin' => 80,
-
-                        'unit' => TblWidth::TWIP
-
-                    ));
-
-
-
-
-                    //---------------------------------------
-                    // ENCABEZADO
-                    //---------------------------------------
-
-                    $table->addRow(500);
-
-
-
-                    $table->addCell(
-                        $ancho_area,
-                        $encabezado_celda
-                    )->addTextRun($centrado)->addText(
-                        'Área',
-                        $encabezado_texto
-                    );
-
-
-
-                    $table->addCell(
-                        $ancho_categoria,
-                        $encabezado_celda
-                    )->addTextRun($centrado)->addText(
-                        'Categoría',
-                        $encabezado_texto
-                    );
-
-
-
-
-                    //---------------------------------------
-                    // AGRUPAR ÁREAS
-                    //---------------------------------------
-
-                    $areasAgrupadas = [];
-
-
-
-                    foreach ($data as $fila) {
-
-                        if (!isset($areasAgrupadas[$fila->AREA])) {
-
-                            $areasAgrupadas[$fila->AREA] = [];
-                        }
-
-
-
-                        $areasAgrupadas[$fila->AREA][] =
-                            $fila->CATEGORIA;
-                    }
-
-
-
-
-                    //---------------------------------------
-                    // FILAS AGRUPADAS
-                    //---------------------------------------
-
-                    if (count($areasAgrupadas) > 0) {
-
-                        foreach ($areasAgrupadas as $area => $categoriasArea) {
-
-                            foreach ($categoriasArea as $index => $categoria) {
-
-                                $table->addRow();
-
-
-
-                                //---------------------------------------
-                                // ÁREA AGRUPADA
-                                //---------------------------------------
-
-                                if ($index == 0) {
-
-                                    $table->addCell(
-
-                                        $ancho_area,
-
-                                        array(
-                                            'vMerge' => 'restart',
-                                            'valign' => 'center'
-                                        )
-
-                                    )->addTextRun($centrado)->addText(
-                                        $area,
-                                        $texto
-                                    );
-                                } else {
-
-                                    //---------------------------------------
-                                    // CONTINUAR MERGE
-                                    //---------------------------------------
-
-                                    $table->addCell(
-
-                                        $ancho_area,
-
-                                        array(
-                                            'vMerge' => 'continue',
-                                            'valign' => 'center'
-                                        )
-
-                                    );
-                                }
-
-
-
-                                //---------------------------------------
-                                // CATEGORÍA
-                                //---------------------------------------
-
-                                $table->addCell(
-                                    $ancho_categoria,
-                                    $celda
-                                )->addTextRun($centrado)->addText(
-                                    $categoria,
-                                    $texto
-                                );
-                            }
-                        }
-                    } else {
-
+            if (count($areasAgrupadas) > 0) {
+                foreach ($areasAgrupadas as $area => $categoriasArea) {
+                    foreach ($categoriasArea as $index => $categoria) {
                         $table->addRow();
 
+                        if ($index == 0) {
+                            $table->addCell($ancho_area, array('vMerge' => 'restart', 'valign' => 'center'))->addTextRun($centrado)->addText($area, $texto);
+                        } else {
 
-
-                        $table->addCell(
-                            null,
-                            array(
-                                'gridSpan' => 2,
-                                'valign' => 'center'
-                            )
-                        )->addTextRun($centrado)->addText(
-                            'No hay áreas registradas',
-                            $texto
-                        );
+                            $table->addCell(
+                                $ancho_area,
+                                array(
+                                    'vMerge' => 'continue',
+                                    'valign' => 'center'
+                                )
+                            );
+                        }
+                        $table->addCell($ancho_categoria, $celda)->addTextRun($centrado)->addText($categoria, $texto);
                     }
+                }
+            } else {
 
-
-
-
-                    //---------------------------------------
-                    // INSERTAR EN WORD
-                    //---------------------------------------
-
-                    $plantillaword->setComplexBlock(
-                        'TABLA_5_3_1',
-                        $table
-                    );
-
-
-
-
-                    //---------------------------------------
-                    // CONCLUSIÓN
-                    //---------------------------------------
-
-                    $plantillaword->setValue(
-
-                        'CONCLUSION',
-
-                        $datosGenerales->INFORME_CONCLUSION
-                            ?
-                            htmlspecialchars(
-                            $datosGenerales->INFORME_CONCLUSION
-                            )
-                            :
-                            'No cargado'
-
-                    );
-
-
-
-
-                    //---------------------------------------
-                    // CONSULTAR RECOMENDACIONES
-                    //---------------------------------------
-
-                    $recomendaciones = DB::table(
-                        'recomendacionesinformeergo as ri'
+                $table->addRow();
+                $table->addCell(
+                    null,
+                    array(
+                        'gridSpan' => 2,
+                        'valign' => 'center'
                     )
+                )->addTextRun($centrado)->addText('No hay áreas registradas', $texto);
+            }
 
-                        ->join(
-                            'catergo_recomendaciones as cr',
-                            'cr.ID_RECOMENDACIONES',
-                            '=',
-                            'ri.CATALOGO_RECOMENDACIONES_ID'
+
+            $plantillaword->setComplexBlock('TABLA_5_3_1', $table);
+
+
+
+            //// CONCLUSION
+            $plantillaword->setValue('CONCLUSION', $datosGenerales->INFORME_CONCLUSION ? htmlspecialchars($datosGenerales->INFORME_CONCLUSION) : 'No cargado');
+
+
+
+            //// RECOMENDACIONES
+
+            $recomendaciones = DB::table(
+                'recomendacionesinformeergo as ri'
+            )
+                ->join(
+                    'catergo_recomendaciones as cr',
+                    'cr.ID_RECOMENDACIONES',
+                    '=',
+                    'ri.CATALOGO_RECOMENDACIONES_ID'
+                )
+                ->where('ri.RECO_ID',  $RECO_ID)
+                ->select('cr.DESCRIPCION_RECOMENDACIONES')
+                ->get();
+
+
+            $texto_recomendaciones = '';
+
+            if (count($recomendaciones) > 0) {
+                foreach ($recomendaciones as $recomendacion) {
+                    $texto_recomendaciones .=
+                        trim(strip_tags($recomendacion->DESCRIPCION_RECOMENDACIONES)) . '</w:t><w:br/><w:br/><w:t>';
+                }
+            } else {
+                $texto_recomendaciones = 'No cargado';
+            }
+
+            $plantillaword->setValue('RECOMENDACIONES', $texto_recomendaciones);
+
+
+            //// RESPONSABLE 1
+
+            if ($datosGenerales->INFORME_RESPONSABLE1DOCUMENTO) {
+                if (
+                    file_exists(
+                        storage_path('app/' . $datosGenerales->INFORME_RESPONSABLE1DOCUMENTO)
+                    )
+                ) {
+                    $plantillaword->setImageValue(
+                        'REPONSABLE1_DOCUMENTO',
+                        array(
+                            'path' => storage_path('app/' . $datosGenerales->INFORME_RESPONSABLE1DOCUMENTO),
+                            'height' => 300,
+                            'width' => 580,
+                            'ratio' => true,
+                            'borderColor' => '000000'
                         )
-
-                        ->where(
-                            'ri.RECO_ID',
-                            $RECO_ID
-                        )
-
-                        ->select(
-                            'cr.DESCRIPCION_RECOMENDACIONES'
-                        )
-
-                        ->get();
-
-
-
-
-                    //---------------------------------------
-                    // ARMAR TEXTO
-                    //---------------------------------------
-
-                    $texto_recomendaciones = '';
-
-
-
-                    if (count($recomendaciones) > 0) {
-
-                        foreach ($recomendaciones as $recomendacion) {
-
-                            $texto_recomendaciones .=
-
-                                trim(
-                                    strip_tags(
-                                        $recomendacion->DESCRIPCION_RECOMENDACIONES
-                                    )
-                                )
-
-                                . '</w:t><w:br/><w:br/><w:t>';
-                        }
-                    } else {
-
-                        $texto_recomendaciones =
-                            'No cargado';
-                    }
-
-
-
-
-                    //---------------------------------------
-                    // INSERTAR EN WORD
-                    //---------------------------------------
-
-                    $plantillaword->setValue(
-
-                        'RECOMENDACIONES',
-
-                        $texto_recomendaciones
-
                     );
+                } else {
+                    $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                }
+            } else {
+                $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+            }
 
 
+            $plantillaword->setValue(
+                'REPONSABLE1',
+                htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE1 ? $datosGenerales->INFORME_RESPONSABLE1 : 'No cargado'))
+                    .
+                    '</w:t><w:br/><w:t>'
+                    .
+                    htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE1CARGO ? $datosGenerales->INFORME_RESPONSABLE1CARGO : 'No cargado'))
+            );
 
 
-                    //---------------------------------------
-                    // RESPONSABLE 1 - DOCUMENTO
-                    //---------------------------------------
-
-                    if ($datosGenerales->INFORME_RESPONSABLE1DOCUMENTO) {
-
-                        if (
-
-                            file_exists(
-
-                                storage_path(
-                                    'app/' .
-                                        $datosGenerales->INFORME_RESPONSABLE1DOCUMENTO
-                                )
-
-                            )
-
-                        ) {
-
-                            $plantillaword->setImageValue(
-
-                                'REPONSABLE1_DOCUMENTO',
-
-                                array(
-
-                                    'path' => storage_path(
-                                        'app/' .
-                                            $datosGenerales->INFORME_RESPONSABLE1DOCUMENTO
-                                    ),
-
-                                    'height' => 300,
-
-                                    'width' => 580,
-
-                                    'ratio' => true,
-
-                                    'borderColor' => '000000'
-
-                                )
-
-                            );
-                        } else {
-
-                            $plantillaword->setValue(
-                                'REPONSABLE1_DOCUMENTO',
-                                'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-                            );
-                        }
-                    } else {
-
-                        $plantillaword->setValue(
-                            'REPONSABLE1_DOCUMENTO',
-                            'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-                        );
-                    }
+            //// RESPONSABLE 2
 
 
-
-
-                    //---------------------------------------
-                    // RESPONSABLE 1 - NOMBRE Y CARGO
-                    //---------------------------------------
-
-                    $plantillaword->setValue(
-
-                        'REPONSABLE1',
-
-                        htmlspecialchars(
-
-                            ($datosGenerales->INFORME_RESPONSABLE1
-                                ?
-                                $datosGenerales->INFORME_RESPONSABLE1
-                                :
-                                'No cargado')
-
+            if ($datosGenerales->INFORME_RESPONSABLE2DOCUMENTO) {
+                if (
+                    file_exists(
+                        storage_path('app/' . $datosGenerales->INFORME_RESPONSABLE2DOCUMENTO)
+                    )
+                ) {
+                    $plantillaword->setImageValue(
+                        'REPONSABLE2_DOCUMENTO',
+                        array(
+                            'path' => storage_path('app/' . $datosGenerales->INFORME_RESPONSABLE2DOCUMENTO),
+                            'height' => 300,
+                            'width' => 580,
+                            'ratio' => true,
+                            'borderColor' => '000000'
                         )
-
-                            .
-
-                            '</w:t><w:br/><w:t>'
-
-                            .
-
-                            htmlspecialchars(
-
-                                ($datosGenerales->INFORME_RESPONSABLE1CARGO
-                                    ?
-                                    $datosGenerales->INFORME_RESPONSABLE1CARGO
-                                    :
-                                    'No cargado')
-
-                            )
-
                     );
-
-
-
-
-                    //---------------------------------------
-                    // RESPONSABLE 2 - DOCUMENTO
-                    //---------------------------------------
-
-                    if ($datosGenerales->INFORME_RESPONSABLE2DOCUMENTO) {
-
-                        if (
-
-                            file_exists(
-
-                                storage_path(
-                                    'app/' .
-                                        $datosGenerales->INFORME_RESPONSABLE2DOCUMENTO
-                                )
-
-                            )
-
-                        ) {
-
-                            $plantillaword->setImageValue(
-
-                                'REPONSABLE2_DOCUMENTO',
-
-                                array(
-
-                                    'path' => storage_path(
-                                        'app/' .
-                                            $datosGenerales->INFORME_RESPONSABLE2DOCUMENTO
-                                    ),
-
-                                    'height' => 300,
-
-                                    'width' => 580,
-
-                                    'ratio' => true,
-
-                                    'borderColor' => '000000'
-
-                                )
-
-                            );
-                        } else {
-
-                            $plantillaword->setValue(
-                                'REPONSABLE2_DOCUMENTO',
-                                'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-                            );
-                        }
-                    } else {
-
-                        $plantillaword->setValue(
-                            'REPONSABLE2_DOCUMENTO',
-                            'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-                        );
-                    }
-
-
-
-
-                    //---------------------------------------
-                    // RESPONSABLE 2 - NOMBRE Y CARGO
-                    //---------------------------------------
-
-                    $plantillaword->setValue(
-
-                        'REPONSABLE2',
-
-                        htmlspecialchars(
-
-                            ($datosGenerales->INFORME_RESPONSABLE2
-                                ?
-                                $datosGenerales->INFORME_RESPONSABLE2
-                                :
-                                'No cargado')
-
-                        )
-
-                            .
-
-                            '</w:t><w:br/><w:t>'
-
-                            .
-
-                            htmlspecialchars(
-
-                                ($datosGenerales->INFORME_RESPONSABLE2CARGO
-                                    ?
-                                    $datosGenerales->INFORME_RESPONSABLE2CARGO
-                                    :
-                                    'No cargado')
-
-                            )
-
-                    );
-
-
-
-
-
-                //---------------------------------------
-                // INTRODUCCION 6.1
-                //---------------------------------------
-
+                } else {
+                    $plantillaword->setValue('REPONSABLE2_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                }
+            } else {
                 $plantillaword->setValue(
-
-                    'INTRODUCCION_6_1',
-
-                    $datosGenerales->INTRODUCCION_GRAFICASNOM036
-                        ?? 'No cargado'
-
+                    'REPONSABLE2_DOCUMENTO',
+                    'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
                 );
-
-
-
-            //---------------------------------------
-            // CONCLUSION 6.1
-            //---------------------------------------
+            }
 
             $plantillaword->setValue(
-
-                'CONCLUSION_6_1',
-
-                $datosGenerales->CONCLUSION_GRAFICASNOM036
-                    ?? 'No cargado'
-
+                'REPONSABLE2',
+                htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2 ? $datosGenerales->INFORME_RESPONSABLE2 : 'No cargado'))
+                    .
+                    '</w:t><w:br/><w:t>'
+                    .
+                    htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2CARGO ? $datosGenerales->INFORME_RESPONSABLE2CARGO : 'No cargado'))
             );
 
 
 
 
 
+            //// INTRODUCCION GRAFICAS 6.1
+            $plantillaword->setValue('INTRODUCCION_6_1', $datosGenerales->INTRODUCCION_GRAFICASNOM036 ?? 'No cargado');
 
-            //---------------------------------------
-            // INTRODUCCION 7.1
-            //---------------------------------------
 
-            $plantillaword->setValue(
+            //// CONCLUSION GRAFICAS 6.1
+            $plantillaword->setValue('CONCLUSION_6_1', $datosGenerales->CONCLUSION_GRAFICASNOM036 ?? 'No cargado');
 
-                'INTRODUCCION_7_1',
 
-                $datosGenerales->INTRODUCCION_GRAFICASISO12995
-                    ?? 'No cargado'
+            //// INTRODUCCION GRAFICAS 7.1
+            $plantillaword->setValue('INTRODUCCION_7_1', $datosGenerales->INTRODUCCION_GRAFICASISO12995 ?? 'No cargado');
 
-            );
 
+            //// CONCLUSION GRAFICAS 7.1
+            $plantillaword->setValue('CONCLUSION_7_1', $datosGenerales->CONCLUSION_GRAFICASISO12995 ?? 'No cargado');
 
 
-
-            //---------------------------------------
-            // CONCLUSION 7.1
-            //---------------------------------------
-
-            $plantillaword->setValue(
-
-                'CONCLUSION_7_1',
-
-                $datosGenerales->CONCLUSION_GRAFICASISO12995
-                    ?? 'No cargado'
-
-            );
-
-
-            // //================================================================================
-            // // ${TABLA_6_1} GRAFICAS
-            // //================================================================================
-
-            // if ($request->has('GRAFICAS')) {
-
-            //     //---------------------------------------
-            //     // DECODIFICAR
-            //     //---------------------------------------
-
-            //     $graficas = json_decode(
-            //         $request->GRAFICAS,
-            //         true
-            //     );
-
-
-
-            //     //---------------------------------------
-            //     // VALIDAR
-            //     //---------------------------------------
-
-            //     if ($graficas && count($graficas) > 0) {
-
-            //         //---------------------------------------
-            //         // AGRUPAR 3 GRAFICAS = 1 CATEGORIA
-            //         //---------------------------------------
-
-            //         $categorias = array_chunk(
-            //             $graficas,
-            //             3
-            //         );
-
-
-
-            //         //---------------------------------------
-            //         // CLONAR FILAS
-            //         //---------------------------------------
-
-            //         $plantillaword->cloneRow(
-            //             'GRAFICA',
-            //             count($categorias)
-            //         );
-
-
-
-            //         //---------------------------------------
-            //         // RECORRER CATEGORIAS
-            //         //---------------------------------------
-
-            //         foreach ($categorias as $index => $grupo) {
-
-            //             $numero = $index + 1;
-
-
-
-            //             //---------------------------------------
-            //             // IMAGEN FINAL
-            //             //---------------------------------------
-
-            //             $anchoFinal = 1500;
-            //             $altoFinal  = 520;
-
-            //             $imagenFinal = imagecreatetruecolor(
-            //                 $anchoFinal,
-            //                 $altoFinal
-            //             );
-
-
-
-            //             //---------------------------------------
-            //             // FONDO BLANCO
-            //             //---------------------------------------
-
-            //             $blanco = imagecolorallocate(
-            //                 $imagenFinal,
-            //                 255,
-            //                 255,
-            //                 255
-            //             );
-
-            //             imagefill(
-            //                 $imagenFinal,
-            //                 0,
-            //                 0,
-            //                 $blanco
-            //             );
-
-
-
-            //             //---------------------------------------
-            //             // POSICION X
-            //             //---------------------------------------
-
-            //             $x = 0;
-
-
-
-            //             //---------------------------------------
-            //             // RECORRER GRAFICAS
-            //             //---------------------------------------
-
-            //             foreach ($grupo as $grafica) {
-
-            //                 //---------------------------------------
-            //                 // VALIDAR
-            //                 //---------------------------------------
-
-            //                 if (!isset($grafica['imagen'])) {
-            //                     continue;
-            //                 }
-
-
-
-            //                 //---------------------------------------
-            //                 // LIMPIAR BASE64
-            //                 //---------------------------------------
-
-            //                 $base64 = preg_replace(
-            //                     '#^data:image/\w+;base64,#i',
-            //                     '',
-            //                     $grafica['imagen']
-            //                 );
-
-            //                 $base64 = str_replace(
-            //                     ' ',
-            //                     '+',
-            //                     $base64
-            //                 );
-
-
-
-            //                 //---------------------------------------
-            //                 // DECODIFICAR
-            //                 //---------------------------------------
-
-            //                 $imageData = base64_decode(
-            //                     $base64
-            //                 );
-
-
-
-            //                 //---------------------------------------
-            //                 // TEMPORAL
-            //                 //---------------------------------------
-
-            //                 $rutaTemp = storage_path(
-            //                     'app/temp_' . uniqid() . '.png'
-            //                 );
-
-            //                 file_put_contents(
-            //                     $rutaTemp,
-            //                     $imageData
-            //                 );
-
-
-
-            //                 //---------------------------------------
-            //                 // ABRIR IMAGEN
-            //                 //---------------------------------------
-
-            //                 $img = imagecreatefrompng(
-            //                     $rutaTemp
-            //                 );
-
-
-
-            //                 //---------------------------------------
-            //                 // PEGAR EN LIENZO
-            //                 //---------------------------------------
-
-            //                 imagecopyresampled(
-
-            //                     $imagenFinal,
-            //                     $img,
-
-            //                     $x,
-            //                     0,
-
-            //                     0,
-            //                     0,
-
-            //                     500,
-            //                     500,
-
-            //                     imagesx($img),
-            //                     imagesy($img)
-
-            //                 );
-
-
-
-            //                 //---------------------------------------
-            //                 // SIGUIENTE POSICION
-            //                 //---------------------------------------
-
-            //                 $x += 500;
-
-
-
-            //                 //---------------------------------------
-            //                 // LIBERAR
-            //                 //---------------------------------------
-
-            //                 imagedestroy($img);
-
-            //                 unlink($rutaTemp);
-            //             }
-
-
-
-            //             //---------------------------------------
-            //             // GUARDAR FINAL
-            //             //---------------------------------------
-
-            //             $rutaFinal = storage_path(
-            //                 'app/grafica_final_' .
-            //                     uniqid() .
-            //                     '.png'
-            //             );
-
-            //             imagepng(
-            //                 $imagenFinal,
-            //                 $rutaFinal
-            //             );
-
-            //             imagedestroy($imagenFinal);
-
-
-
-            //             //---------------------------------------
-            //             // INSERTAR WORD
-            //             //---------------------------------------
-
-            //             $plantillaword->setImageValue(
-
-            //                 'GRAFICA#' . $numero,
-
-            //                 [
-            //                     'path'   => $rutaFinal,
-            //                     'width'  => 650,
-            //                     'height' => 220,
-            //                     'ratio'  => true
-            //                 ]
-
-            //             );
-            //         }
-            //     } else {
-
-            //         //---------------------------------------
-            //         // VACIO
-            //         //---------------------------------------
-
-            //         $plantillaword->setValue(
-            //             'GRAFICA',
-            //             'NO HAY GRAFICAS'
-            //         );
-            //     }
-            // }
-
-
-
-            //================================================================================
-            // ${TABLA_6_1} GRAFICAS
-            //================================================================================
+            ////  GRAFICAS 6.1
 
             if ($request->has('GRAFICAS')) {
 
-                //---------------------------------------
-                // DECODIFICAR
-                //---------------------------------------
-
-                $graficas = json_decode(
-                    $request->GRAFICAS,
-                    true
-                );
-
-
-
-                //---------------------------------------
-                // VALIDAR
-                //---------------------------------------
-
+                $graficas = json_decode($request->GRAFICAS, true);
                 if ($graficas && count($graficas) > 0) {
-
-                    //---------------------------------------
-                    // AGRUPAR 3 GRAFICAS = 1 CATEGORIA
-                    //---------------------------------------
-
-                    $categorias = array_chunk(
-                        $graficas,
-                        3
-                    );
-
-
-
-                    //---------------------------------------
-                    // CLONAR FILAS
-                    //---------------------------------------
-
-                    $plantillaword->cloneRow(
-                        'GRAFICA',
-                        count($categorias)
-                    );
-
-
-
-                    //---------------------------------------
-                    // RECORRER CATEGORIAS
-                    //---------------------------------------
-
+                    $categorias = array_chunk($graficas, 3);
+                    $plantillaword->cloneRow('GRAFICA', count($categorias));
                     foreach ($categorias as $index => $grupo) {
-
                         $numero = $index + 1;
-
-
-
-                        //---------------------------------------
-                        // IMAGEN FINAL
-                        //---------------------------------------
-
                         $anchoFinal = 1300;
                         $altoFinal  = 360;
-
-                        $imagenFinal = imagecreatetruecolor(
-                            $anchoFinal,
-                            $altoFinal
-                        );
-
-
-
-                        //---------------------------------------
-                        // FONDO BLANCO
-                        //---------------------------------------
-
-                        $blanco = imagecolorallocate(
-                            $imagenFinal,
-                            255,
-                            255,
-                            255
-                        );
-
-                        imagefill(
-                            $imagenFinal,
-                            0,
-                            0,
-                            $blanco
-                        );
-
-
-
-                        //---------------------------------------
-                        // POSICION X
-                        //---------------------------------------
+                        $imagenFinal = imagecreatetruecolor($anchoFinal, $altoFinal);
+                        $blanco = imagecolorallocate($imagenFinal, 255, 255, 255);
+                        imagefill($imagenFinal, 0, 0, $blanco);
 
                         $x = 0;
 
-
-
-                        //---------------------------------------
-                        // RECORRER GRAFICAS
-                        //---------------------------------------
-
                         foreach ($grupo as $grafica) {
-
-                            //---------------------------------------
-                            // VALIDAR
-                            //---------------------------------------
 
                             if (!isset($grafica['imagen'])) {
                                 continue;
                             }
 
-
-
-                            //---------------------------------------
-                            // LIMPIAR BASE64
-                            //---------------------------------------
 
                             $base64 = preg_replace(
                                 '#^data:image/\w+;base64,#i',
@@ -5030,46 +2829,12 @@ class reconocimientoergoController extends Controller
                                 $base64
                             );
 
+                            $imageData = base64_decode($base64);
 
+                            $rutaTemp = storage_path('app/temp_' . uniqid() . '.png');
+                            file_put_contents($rutaTemp, $imageData);
 
-                            //---------------------------------------
-                            // DECODIFICAR
-                            //---------------------------------------
-
-                            $imageData = base64_decode(
-                                $base64
-                            );
-
-
-
-                            //---------------------------------------
-                            // TEMPORAL
-                            //---------------------------------------
-
-                            $rutaTemp = storage_path(
-                                'app/temp_' . uniqid() . '.png'
-                            );
-
-                            file_put_contents(
-                                $rutaTemp,
-                                $imageData
-                            );
-
-
-
-                            //---------------------------------------
-                            // ABRIR IMAGEN
-                            //---------------------------------------
-
-                            $img = imagecreatefrompng(
-                                $rutaTemp
-                            );
-
-
-
-                            //---------------------------------------
-                            // PEGAR EN LIENZO
-                            //---------------------------------------
+                            $img = imagecreatefrompng($rutaTemp);
 
                             imagecopyresampled(
                                 $imagenFinal,
@@ -5085,17 +2850,7 @@ class reconocimientoergoController extends Controller
                             );
 
 
-
-                            //---------------------------------------
-                            // SIGUIENTE POSICION
-                            //---------------------------------------
-
                             $x += 430;
-
-
-                            //---------------------------------------
-                            // LIBERAR
-                            //---------------------------------------
 
                             imagedestroy($img);
 
@@ -5104,86 +2859,33 @@ class reconocimientoergoController extends Controller
 
 
 
-                        //---------------------------------------
-                        // GUARDAR FINAL
-                        //---------------------------------------
-
-                        $rutaFinal = storage_path(
-                            'app/grafica_final_' .
-                                uniqid() .
-                                '.png'
-                        );
-
-                        imagepng(
-                            $imagenFinal,
-                            $rutaFinal
-                        );
-
+                        $rutaFinal = storage_path('app/grafica_final_' . uniqid() . '.png');
+                        imagepng($imagenFinal, $rutaFinal);
                         imagedestroy($imagenFinal);
 
-
-
-                        //---------------------------------------
-                        // INSERTAR WORD
-                        //---------------------------------------
-
                         $plantillaword->setImageValue(
-
                             'GRAFICA#' . $numero,
-
                             [
                                 'path'   => $rutaFinal,
                                 'width'  => 610,
                                 'height' => 230,
-
-
                                 'ratio'  => true
                             ]
-
                         );
                     }
                 } else {
-
-                    //---------------------------------------
-                    // VACIO
-                    //---------------------------------------
-
-                    $plantillaword->setValue(
-                        'GRAFICA',
-                        'NO HAY GRAFICAS'
-                    );
+                    $plantillaword->setValue('GRAFICA', 'NO HAY GRAFICAS');
                 }
             }
 
 
-                    //---------------------------------------
-                    // GUARDAR WORD
-                    //---------------------------------------
-
-                    $nombreWord =
-                        'Informe_Ergonomia_' .
-                        $RECO_ID .
-                        '.docx';
 
 
+            //// DESCARGAR INFORME 
 
-                    $rutaWord =
-                        storage_path(
-                            'app/temp/' .
-                                $nombreWord
-                        );
-
-
-
-                    $plantillaword->saveAs(
-                        $rutaWord
-                    );
-
-
-
-            //---------------------------------------
-            // DESCARGAR
-            //---------------------------------------
+            $nombreWord = 'Informe_Ergonomia_' . $RECO_ID . '.docx';
+            $rutaWord = storage_path('app/temp/' . $nombreWord);
+            $plantillaword->saveAs($rutaWord);
 
             return response()->download(
                 $rutaWord
@@ -5199,13 +2901,4 @@ class reconocimientoergoController extends Controller
             ], 500);
         }
     }
-
-
-    
-
-    }
-
-
-
-
-    
+}

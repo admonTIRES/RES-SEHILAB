@@ -17,8 +17,10 @@ var HIGIENE = 1;
 var Tablarecocategoriasergo = null;
 var Tablarecoareasergo = null;
 var Tablarecofichasergo = null;
+
 var tabla_reporte_categoria = null;
 var tabla_reporte_area = null;
+
 var tabla_reporte_revisiones  = null 
 
 ID_CATEGORIA_ERGO = 0;
@@ -521,15 +523,15 @@ $("#boton_nuevo_reconocimiento").click(function () {
 });
 
 $("#boton_descargarmapaubicacion").click(function () {
-	window.open('/mostrarmapa/1/' + recsensorial);
+	window.open('/mostrarmapaubicacionergo/1/' + recsensorial);
 });
 
 $("#boton_descargarplanoinstalacion").click(function () {
-	window.open('/mostrarplano/1/' + recsensorial);
+	window.open('/mostraplanoergo/1/' + recsensorial);
 });
 
 $("#boton_descargarfotoinstalacion").click(function () {
-	window.open('/mostrarfotoinstalacion/1/' + recsensorial);
+	window.open('/mostrafotoinstalacionergo/1/' + recsensorial);
 });
 
 
@@ -7031,63 +7033,82 @@ $("#form_reporte_procesoinstalacion").on(
 ///////////  Población ocupacionalmente expuesta
 
 
+function tablaReporteCategoriasErgo()
+{
+	try {
 
+		var ruta = "/tablaReporteCategoriasErgo";
 
-function tablaReporteCategoriasErgo() {
+		if ($.fn.DataTable.isDataTable('#tabla_reporte_categoria')) {
 
-    if (tabla_reporte_categoria != null) {
-        tabla_reporte_categoria.destroy();
-        $('#tabla_reporte_categoria tbody').empty();
-    }
+			tabla_reporte_categoria.destroy();
 
-    tabla_reporte_categoria = $('#tabla_reporte_categoria').DataTable({
-        ajax: {
-            url: '/tablaReporteCategoriasErgo',
-            type: 'GET',
-            data: {
-                ergoid: recsensorial
-            },
-            dataSrc: 'data'
-        },
+			$('#tabla_reporte_categoria tbody').empty();
+		}
 
-        columns: [
-            {
-                data: 'ID_CATEGORIA_ERGO',
-                visible: false
-            },
-            {
-                data: 'PT_CATEGORIA',
-                title: 'PT'
-            },
-            {
-                data: 'NOMBRE_CATEGORIA_ERGO',
-                title: 'Categoría'
-            }
-        ],
+		tabla_reporte_categoria = $('#tabla_reporte_categoria').DataTable({
 
-        order: [[0, 'asc']],
+			"ajax": {
+				"url": ruta,
+				"type": "GET",
+				"cache": false,
+				"data": {
+					ergoid: recsensorial
+				},
+				"dataSrc": "data",
+				"error": function (xhr, error, code) {
 
-        ordering: true,
-        responsive: true,
-        autoWidth: false,
+					console.log('Error en tablaReporteCategoriasErgo');
 
-        language: {
-            lengthMenu: "Mostrar _MENU_ registros",
-            zeroRecords: "No se encontraron registros",
-            info: "Página _PAGE_ de _PAGES_",
-            infoEmpty: "No hay registros",
-            infoFiltered: "(Filtrado de _MAX_ registros)",
-            search: "Buscar:",
-            paginate: {
-                first: "Primero",
-                last: "Último",
-                next: "Siguiente",
-                previous: "Anterior"
-            },
-            loadingRecords: "Cargando...",
-            processing: "Procesando..."
-        }
-    });
+				}
+			},
+
+			"columns": [
+				{
+					"data": "PT_CATEGORIA",
+					"defaultContent": "-"
+				},
+				{
+					"data": "NOMBRE_CATEGORIA_ERGO",
+					"defaultContent": "-"
+				}
+
+			],
+
+			"order": [[0, "asc"]],
+			"ordering": true,
+			"responsive": true,
+			"autoWidth": false,
+			"processing": true,
+			"language": {
+				"lengthMenu": "Mostrar _MENU_ registros",
+				"zeroRecords": "No se encontraron registros",
+				"info": "Página _PAGE_ de _PAGES_",
+				"infoEmpty": "No hay registros",
+				"infoFiltered": "(Filtrado de _MAX_ registros)",
+				"emptyTable": "No hay datos disponibles en la tabla",
+				"loadingRecords": "Cargando...",
+				"processing": "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+				"search": "Buscar:",
+				"paginate": {
+					"first": "Primero",
+					"last": "Último",
+					"next": "Siguiente",
+					"previous": "Anterior"
+				}
+			}
+		});
+		tabla_reporte_categoria.on('draw', function () {
+
+			$('[data-toggle="tooltip"]').tooltip();
+
+		});
+	}
+	catch (exception) {
+
+		console.error("Error en tablaReporteCategoriasErgo:", exception);
+
+	}
 }
 
 
@@ -7095,78 +7116,105 @@ function tablaReporteCategoriasErgo() {
 
 function tablaReporteAreasErgo()
 {
+	try {
 
-    try {
+		var ruta = "/tablaReporteAreasErgo";
 
-        let ruta =
-            "/tablaReporteAreasErgo";
+		if ($.fn.DataTable.isDataTable('#tabla_reporte_area')) {
 
+			tabla_reporte_area.clear().destroy();
 
+			$('#tabla_reporte_area tbody').empty();
+		}
 
-        if(tabla_reporte_area != null)
-        {
-            tabla_reporte_area.destroy();
-        }
+		tabla_reporte_area = $('#tabla_reporte_area').DataTable({
 
-
-
-		tabla_reporte_area =
-			$('#tabla_reporte_area').DataTable({
-
-			ajax: {
-				url: ruta,
-				type: "get",
-				cache: false,
-				data: {
+			"ajax": {
+				"url": ruta,
+				"type": "GET",
+				"cache": false,
+				"data": {
 					ergoid: recsensorial
-				}
+				},
+				"dataSrc": "data"
 			},
 
-
-
-			columns: [
-
+			"columns": [
 				{
-					data: "AREA"
+					"data": "AREA",
+					"defaultContent": "-"
 				},
-
 				{
-					data: "CATEGORIA"
+					"data": "CATEGORIA",
+					"defaultContent": "-"
 				}
-
 			],
+			"paging": false,
+			"searching": false,
+			"info": false,
+			"ordering": false,
+			"processing": true,
+			"responsive": true,
+			"autoWidth": false,
+			"drawCallback": function () {
+				var api = this.api();
+				var rows = api.rows({
+					page: 'current'
+				}).nodes();
+				var lastArea = null;
+				var rowspan = 1;
+				var firstRow = null;
+				api.column(0, {
+					page: 'current'
+				}).data().each(function (area, i) {
+					var row = rows[i];
+					var cell = $('td:eq(0)', row);
+					if (lastArea === area) {
+						rowspan++;
+						cell.remove();
+						$('td:eq(0)', firstRow).attr('rowspan', rowspan);
 
+					} else {
+						lastArea = area;
+						rowspan = 1;
+						firstRow = row;
+					}
+				});
+			},
 
+			"language": {
+				"lengthMenu": "Mostrar _MENU_ Registros",
+				"zeroRecords": "No se encontraron registros",
+				"info": "Página _PAGE_ de _PAGES_ (Total _MAX_ registros)",
+				"infoEmpty": "No se encontraron registros",
+				"infoFiltered": "(Filtrado de _MAX_ registros)",
+				"emptyTable": "No hay datos disponibles en la tabla",
+				"loadingRecords": "Cargando datos....",
+				"processing":
+					"Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+				"search": "Buscar",
+				"paginate": {
+					"first": "Primera",
+					"last": "Última",
+					"next": "Siguiente",
+					"previous": "Anterior"
+				}
+			}
+		});
 
-			rowsGroup: [0],
+	}
+	catch (exception) {
 
-			order: [[0, "asc"]],
+		console.error("Error en tablaReporteAreasErgo:", exception);
 
-			ordering: true,
-
-			paging: false,
-
-			searching: false,
-
-			info: false,
-
-			responsive: true
-
-});
-
-    }
-    catch(exception) {
-
-        console.error(exception);
-
-    }
-
+	}
 }
 
+
+
+
+
 //// CONCLUSIONES
-
-
-
 
 $('#SELECT_CONCLUSION').on('change', function () {
 
@@ -7177,8 +7225,6 @@ $('#SELECT_CONCLUSION').on('change', function () {
     $('#INFORME_CONCLUSION').val(conclusion);
 
 });
-
-
 
 $("#form_informe_conclusiones").on(
     "submit",
