@@ -7068,6 +7068,16 @@ function tablaReporteCategoriasErgo()
 					"data": "PT_CATEGORIA",
 					"defaultContent": "-"
 				},
+                            return numero;
+                        }
+
+                        // =====================================
+                        // PARA MOSTRAR
+                        // =====================================
+
+                        return data;
+                    }
+                },
 				{
 					"data": "NOMBRE_CATEGORIA_ERGO",
 					"defaultContent": "-"
@@ -7075,7 +7085,7 @@ function tablaReporteCategoriasErgo()
 
 			],
 
-			"order": [[0, "asc"]],
+			"order": [],
 			"ordering": true,
 			"responsive": true,
 			"autoWidth": false,
@@ -7103,6 +7113,7 @@ function tablaReporteCategoriasErgo()
 			$('[data-toggle="tooltip"]').tooltip();
 
 		});
+
 	}
 	catch (exception) {
 
