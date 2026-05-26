@@ -402,16 +402,13 @@ class reconocimientoergoController extends Controller
                         $area->id
                     )
                     ->first();
-
                 if ($areaErgo) {
-
                     $areaErgo->update([
 
                         'NOMBRE_AREA_ERGO' => $area->recsensorialarea_nombre,
                         'DESCRIPCION_AREA_ERGO' => $area->RECSENSORIALAREA_PROCESO
                     ]);
                 } else {
-
                     recoergoareasModel::create([
                         'RECO_ID' => $reconocimientoergo->id,
                         'AREA_ID_HI' => $area->id,
@@ -2107,37 +2104,27 @@ class reconocimientoergoController extends Controller
         $datos = DB::select("
 
             SELECT
-
             vr.*,
-
             CONCAT(
                 ef.empleado_nombre,
                 ' ',
                 ef.empleado_apellidopaterno
             ) AS FINALIZADO_NOMBRE,
-
             CONCAT(
                 ec.empleado_nombre,
                 ' ',
                 ec.empleado_apellidopaterno
             ) AS CANCELADO_NOMBRE
-
                 FROM versionesrecoergo vr
-
                 LEFT JOIN usuario uf
                     ON uf.id = vr.FINALIZADO_POR
-
                 LEFT JOIN empleado ef
                     ON ef.id = uf.empleado_id
-
                 LEFT JOIN usuario uc
                     ON uc.id = vr.CANCELADO_POR
-
                 LEFT JOIN empleado ec
                     ON ec.id = uc.empleado_id
-
                 WHERE vr.RECO_ID = ?
-
                 ORDER BY vr.NUMERO_REVISION DESC
 
             ", [$reco_id]);
@@ -2472,7 +2459,7 @@ class reconocimientoergoController extends Controller
 
             $categorias = recoergocategoriasModel::where('RECO_ID', $RECO_ID)
                 ->where('ACTIVO', 1)
-                ->orderBy('PT_CATEGORIA', 'ASC')
+                ->orderBy('ID_CATEGORIA_ERGO', 'ASC')
                 ->get();
 
             $fuente = 'Poppins';

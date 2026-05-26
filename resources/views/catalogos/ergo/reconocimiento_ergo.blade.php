@@ -754,6 +754,8 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                             <th>Categoría</th>
                                                                             <th>Descripcion</th>
                                                                             <th style="width: 100px!important;">Editar</th>
+                                                                            <th style="width: 100px!important;">Activo</th>
+
                                                                             <!-- <th style="width: 100px!important;">Eliminar</th> -->
                                                                         </tr>
                                                                     </thead>
@@ -1839,7 +1841,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Descripcion categoría</label>
-                                <textarea class="form-control" name="DESCRIPCION_CATEGORIA_ERGO" id="DESCRIPCION_CATEGORIA_ERGO" rows="4" ></textarea>
+                                <textarea class="form-control" name="DESCRIPCION_CATEGORIA_ERGO" id="DESCRIPCION_CATEGORIA_ERGO" rows="4"></textarea>
                             </div>
                         </div>
 

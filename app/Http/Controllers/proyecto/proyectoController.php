@@ -1759,7 +1759,10 @@ class proyectoController extends Controller
             
 
             // ================== Clonacion de proyectos =================================
-            }elseif($request->api == 3){
+            }
+
+
+            elseif($request->api == 3){
 
                 // acccion
                 $request['proyecto_puntosrealesactivo'] = 1;
@@ -1784,37 +1787,74 @@ class proyectoController extends Controller
                 $proyectoo = proyectoModel::create($request->all());
 
 
-                $ano = (date('y')) + 0;
+                // $ano = (date('y')) + 0;
+
+
+                // $proyecto_folio = "";
+
+
+                $ano = date('y');
+                $anioCompleto = date('Y');
                 $proyecto_folio = "";
 
-                //Buscamos los proyectos 
-                $folio = DB::select('SELECT
-                                (COUNT(proyecto.proyecto_folio)+1) AS nuevo_folio_proyecto
-                            FROM
-                                proyecto
-                            WHERE
-                                proyecto.proyectoInterno = 0
-                                AND DATE_FORMAT(proyecto.created_at, "%Y") = DATE_FORMAT(CURDATE(), "%Y")');
+                $ultimoProyecto = proyectoModel::where('proyectoInterno', 0)
+                    ->whereYear('created_at', $anioCompleto)
+                    ->whereNotNull('proyecto_folio')
+                    ->where('proyecto_folio', 'LIKE', 'SST-CO' . $ano . '-%')
+                    ->orderBy('id', 'DESC')
+                    ->first();
+
+                if ($ultimoProyecto) {
+
+                    $partes = explode('-', $ultimoProyecto->proyecto_folio);
+                    $ultimoNumero = intval(end($partes));
+                    $nuevo_folio_proyecto = $ultimoNumero + 1;
+                } else {
+                    $nuevo_folio_proyecto = 1;
+                }
 
 
-                switch (($folio[0]->nuevo_folio_proyecto + 1)) {
-                    case ($folio[0]->nuevo_folio_proyecto < 10):
-                        $proyecto_folio = "SST-CO" . $ano . "-00" . $folio[0]->nuevo_folio_proyecto;
+                switch (true) {
+                    case ($nuevo_folio_proyecto < 10):
+                        $proyecto_folio = "SST-CO" . $ano . "-00" . $nuevo_folio_proyecto;
                         break;
-                    case ($folio[0]->nuevo_folio_proyecto < 100):
-                        $proyecto_folio = "SST-CO" . $ano . "-0" . $folio[0]->nuevo_folio_proyecto;
+                    case ($nuevo_folio_proyecto < 100):
+                        $proyecto_folio = "SST-CO" . $ano . "-0" . $nuevo_folio_proyecto;
                         break;
                     default:
-                        $proyecto_folio = "SST-CO" . $ano . "-" . $folio[0]->nuevo_folio_proyecto;
+                        $proyecto_folio = "SST-CO" . $ano . "-" . $nuevo_folio_proyecto;
                         break;
                 }
+
+
+
+                // $folio = DB::select('SELECT
+                //                 (COUNT(proyecto.proyecto_folio)+1) AS nuevo_folio_proyecto
+                //             FROM
+                //                 proyecto
+                //             WHERE
+                //                 proyecto.proyectoInterno = 0
+                //                 AND DATE_FORMAT(proyecto.created_at, "%Y") = DATE_FORMAT(CURDATE(), "%Y")');
+
+
+                // switch (($folio[0]->nuevo_folio_proyecto + 1)) {
+                //     case ($folio[0]->nuevo_folio_proyecto < 10):
+                //         $proyecto_folio = "SST-CO" . $ano . "-00" . $folio[0]->nuevo_folio_proyecto;
+                //         break;
+                //     case ($folio[0]->nuevo_folio_proyecto < 100):
+                //         $proyecto_folio = "SST-CO" . $ano . "-0" . $folio[0]->nuevo_folio_proyecto;
+                //         break;
+                //     default:
+                //         $proyecto_folio = "SST-CO" . $ano . "-" . $folio[0]->nuevo_folio_proyecto;
+                //         break;
+                // }
 
                 $proyectoo->update([
                     'proyecto_folio' => $proyecto_folio
                 ]);
 
                 //GUARDAMOS LOS TIPOS DEL
-                if ($request['HI']) {
+                if ($request['HI']) { 
 
                     serviciosProyectoModel::create([
                         'PROYECTO_ID' => $proyectoo->id,

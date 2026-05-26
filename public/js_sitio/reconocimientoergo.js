@@ -2086,6 +2086,10 @@ function mostrartablarecocategoriasergo() {
 					data: 'BTN_EDITAR',
 					orderable: false,
 					searchable: false
+                },
+                {
+					"data": "BTN_ELIMINAR",
+					"defaultContent": "-"
 				},
 			],
 			"lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
@@ -2171,6 +2175,24 @@ $('#Tablarecocategoriasergo tbody').on('click', 'td>button.editar', function () 
 
     }
 
+});
+
+
+
+$('#Tablarecocategoriasergo tbody').on('change', 'input.ELIMINAR', function () {
+
+    var tr = $(this).closest('tr');
+    var row = Tablarecocategoriasergo.row(tr);
+
+    var estado = $(this).is(':checked') ? 1 : 0;
+
+    data = {
+        api: 1,
+        ELIMINAR: estado == 0 ? 1 : 0,
+        ID_CATEGORIA_ERGO: row.data().ID_CATEGORIA_ERGO
+    };
+
+    eliminarDatoTabla(data, [Tablarecocategoriasergo], 'DesactivarCategorias');
 });
 
 function mostrarturnos(row) {
@@ -7065,16 +7087,25 @@ function tablaReporteCategoriasErgo()
 
 			"columns": [
 				{
-					"data": "PT_CATEGORIA",
-					"defaultContent": "-"
-				},
+                    "data": "PT_CATEGORIA",
+                    "defaultContent": "-",
+
+                    "render": function (data, type, row) {
+                        if (!data) {
+
+                            if (type === 'sort' || type === 'type') {
+
+                                return 999999;
+                            }
+                            return '-';
+                        }
+                        let numero = parseInt(
+                            data.toString().replace('PT', '')
+                        );
+                        if (type === 'sort' || type === 'type') {
+
                             return numero;
                         }
-
-                        // =====================================
-                        // PARA MOSTRAR
-                        // =====================================
-
                         return data;
                     }
                 },

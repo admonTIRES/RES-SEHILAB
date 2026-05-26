@@ -43,10 +43,20 @@ class categoriasergoController extends Controller
 
             foreach ($tabla as $value) {
                 if ($value->ACTIVO == 0) {
-                    $value->BTN_EDITAR = '<button type="button" class="btn btn-primary btn-custom rounded-pill EDITAR" ><i class="bi bi-eye"></i></button>';
-                    $value->BTN_VISUALIZAR = '<button type="button" class="btn btn-primary btn-custom rounded-pill VISUALIZAR"><i class="bi bi-eye"></i></button>';
+                    $value->BTN_EDITAR = '<button type="button" class="btn btn-secondary btn-circle " ><i class="fa fa-ban"></i></button>';
+                    $value->BTN_ELIMINAR = 
+                    '<div class="switch"> 
+                        <label>
+                            <input type="checkbox" class="ELIMINAR" data-id="' . $value->ID_CATEGORIA_ERGO . '"><span class="lever switch-col-light-blue"></span>
+                        </label>
+                    </div>';
                 } else {
-
+                    $value->BTN_ELIMINAR = '
+                    <div class="switch">
+                        <label>
+                            <input  type="checkbox" class="ELIMINAR" data-id="' . $value->ID_CATEGORIA_ERGO . '" checked ><span class="lever switch-col-light-blue"></span>
+                        </label>
+                    </div>';
                     $value->BTN_EDITAR = '<button type="button" class="btn btn-warning btn-circle editar"><i class="fa fa-pencil"></i></button>';
                    
                 }

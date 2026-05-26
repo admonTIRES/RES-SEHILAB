@@ -1969,6 +1969,8 @@ Route::get('recopsicoareacategoriaselegidas/{area_id}', ['as' => 'recsensorialar
 
 Route::resource('recopsiconormativa', 'PSICO\recopsiconormativaController');
 Route::get('/datosnormativa/{reconocimientopsico_id}', ['as' => 'recopsiconormativa.recopsiconormativadatos', 'uses' => 'PSICO\recopsiconormativaController@recopsiconormativadatos']);
+
+
 Route::get('recopsicotrabajadorescargados/{reconocimientopsico_id}', ['as' => 'recopsicotrabajadores.recopsicotrabajadoresCargadosTabla', 'uses' => 'PSICO\recopsiconormativaController@recopsicotrabajadoresCargadosTabla']);
 
 
@@ -2206,6 +2208,10 @@ Route::resource('recoergocategorias', 'ERGO\categoriasergoController');
 Route::get('Tablarecocategoriasergo', ['as' => 'ERGO.Tablarecocategoriasergo', 'uses' => 'ERGO\categoriasergoController@Tablarecocategoriasergo']);
 Route::post('obtenerPTCategoria', ['as' => 'ERGO.obtenerPTCategoria', 'uses' => 'ERGO\categoriasergoController@obtenerPTCategoria']);
 Route::get('obtenerareasergo', ['as' => 'ERGO.obtenerareasergo', 'uses' => 'ERGO\categoriasergoController@obtenerareasergo']);
+
+
+Route::get('DesactivarCategorias', ['as' => 'ERGO.DesactivarCategorias', 'uses' => 'ERGO\categoriasergoController@store']);
+
 
 
 /////////// AREAS  ///////////
