@@ -37,6 +37,8 @@ class recoergofichastecnicasModel extends Model
 
     protected $casts = [
         'CAT_AREAS_FICHA' => 'array',
+        'TURNO_EMPLEADO_FICHA' => 'array',
+
         
     ];
 

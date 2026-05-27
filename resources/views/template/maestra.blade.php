@@ -134,6 +134,11 @@ use Illuminate\Support\Str;
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     {{-- Select search filter --}}
     <link href="/assets/plugins/select-search/selectize.css" rel="stylesheet" type="text/css" />
+
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
+
     @endif
 
 
@@ -942,20 +947,30 @@ use Illuminate\Support\Str;
     <script src="js/custom.min.js"></script>
     {{-- Select2 search filter --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
     {{-- Select search filter --}}
     <script src="/assets/plugins/select-search/selectize.js" type="text/javascript"></script>
     <!-- Magnific popup JavaScript -->
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
     {{-- pagina --}}
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-    <script src="/js_sitio/reconocimientoergo.js?v=36"></script>
+    <script src="/js_sitio/reconocimientoergo.js?v=40"></script>
     <script src="/js_sitio/funcionesgeneralesergo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            $('#INFORME_INTRODUCCION').summernote({
+                height: 400
+            });
+
+        });
+    </script>
+
 
     @endif
 

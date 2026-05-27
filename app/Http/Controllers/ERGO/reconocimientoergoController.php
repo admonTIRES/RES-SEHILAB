@@ -59,6 +59,10 @@ use App\modelos\clientes\clientecontratoModel;
 
 use App\modelos\reconocimientoergo\datosgeneralesinformeRecoModel;
 
+use App\modelos\reconocimientoergo\recoergofichastecnicasModel;
+
+
+
 class reconocimientoergoController extends Controller
 {
 
@@ -952,6 +956,109 @@ class reconocimientoergoController extends Controller
     }
 
 
+    //// TABLA MAPA DE RIESGO 
+
+    public function getMapaPeligros($reco_id)
+    {
+
+        $criterios = [
+            '1.1' => 'Levantamiento de cargas',
+            '1.2' => 'Transporte de cargas',
+            '2.1' => 'Empuje y tracción de cargas',
+            '3.1' => 'Movimientos repetitivos',
+            '4.1' => 'Posturas estáticas forzadas',
+            '4.2' => 'Posturas dinámicas forzadas'
+        ];
+
+
+        $categorias_ids = recoergofichastecnicasModel::where(
+            'RECO_ID',
+            $reco_id
+        )
+            ->where('ACTIVO', 1)
+            ->whereNotNull('CATEGORIA_ID_FICHA')
+            ->pluck('CATEGORIA_ID_FICHA')
+            ->unique()
+            ->toArray();
+
+        $categorias = recoergocategoriasModel::whereIn(
+            'ID_CATEGORIA_ERGO',
+            $categorias_ids
+        )
+            ->where('ACTIVO', 1)
+            ->get()
+            ->sortBy(function ($item) {
+
+                return intval(
+                    str_replace(
+                        'PT',
+                        '',
+                        $item->PT_CATEGORIA
+                    )
+                );
+            })
+            ->values();
+
+
+        $fichas = recoergofichastecnicasModel::where(
+            'RECO_ID',
+            $reco_id
+        )
+            ->where('ACTIVO', 1)
+            ->get();
+
+        $respuesta = [];
+
+        foreach ($criterios as $codigo => $titulo) {
+            $fila = [];
+            $fila['codigo'] = $codigo;
+            $fila['titulo'] = $titulo;
+            $fila['resultados'] = [];
+
+            foreach ($categorias as $categoria) {
+          
+                $resultadoFinal = 'VERDE';
+
+                $fichasCategoria = $fichas->where(
+                    'CATEGORIA_ID_FICHA',
+                    $categoria->ID_CATEGORIA_ERGO
+                );
+
+                foreach ($fichasCategoria as $fichaDB) {
+                    $json = json_decode(
+                        $fichaDB->JSON_FICHAS,
+                        true
+                    );
+                    if (!$json) {
+                        continue;
+                    }
+                    foreach ($json as $bloque) {
+                        if (
+                            isset($bloque['ficha']) &&
+                            $bloque['ficha'] == $codigo
+                        ) {
+                            if (
+                                isset($bloque['resultado']) &&
+                                strtoupper($bloque['resultado']) == 'ROJO'
+                            ) {
+                                $resultadoFinal = 'ROJO';
+                                break 2;
+                            }
+                        }
+                    }
+                }
+
+                $fila['resultados'][$categoria->ID_CATEGORIA_ERGO] = $resultadoFinal;
+            }
+
+            $respuesta[] = $fila;
+        }
+        return response()->json([
+            'categorias' => $categorias,
+            'criterios' => $respuesta
+        ]);
+    }
+
 
     public function obtenerDatosInformesRecoergo($ID)
     {
@@ -1272,7 +1379,6 @@ class reconocimientoergoController extends Controller
                 $dato->RECO_ID = $request->RECO_ID;
             }
 
-            $dato->SELECT_INTRODUCCION = $request->SELECT_INTRODUCCION;
             $dato->INFORME_INTRODUCCION = $request->INFORME_INTRODUCCION;
 
             $dato->save();
@@ -2312,7 +2418,14 @@ class reconocimientoergoController extends Controller
                 ->first();
 
             //// INTRODUCCION
-            $plantillaword->setValue('INTRODUCCION', $datosGenerales->INFORME_INTRODUCCION ?? 'No cargado');
+
+            $introduccion = $datosGenerales->INFORME_INTRODUCCION;
+            $introduccion = preg_replace('/<\/p>/i', "¶", $introduccion);
+            $introduccion = strip_tags($introduccion);
+            $introduccion = html_entity_decode($introduccion);
+            $introduccion = str_replace('¶', "\n\n", $introduccion);
+
+            $plantillaword->setValue('INTRODUCCION',$introduccion);
 
             //// DEFINICIONES
             $definiciones = DB::table('definicionesinformeergo as di')
@@ -2686,7 +2799,6 @@ class reconocimientoergoController extends Controller
 
 
             //// RESPONSABLE 1
-
             if ($datosGenerales->INFORME_RESPONSABLE1DOCUMENTO) {
                 if (
                     file_exists(
@@ -2722,8 +2834,6 @@ class reconocimientoergoController extends Controller
 
 
             //// RESPONSABLE 2
-
-
             if ($datosGenerales->INFORME_RESPONSABLE2DOCUMENTO) {
                 if (
                     file_exists(
@@ -2759,57 +2869,60 @@ class reconocimientoergoController extends Controller
                     htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2CARGO ? $datosGenerales->INFORME_RESPONSABLE2CARGO : 'No cargado'))
             );
 
-
-
-
-
             //// INTRODUCCION GRAFICAS 6.1
             $plantillaword->setValue('INTRODUCCION_6_1', $datosGenerales->INTRODUCCION_GRAFICASNOM036 ?? 'No cargado');
-
 
             //// CONCLUSION GRAFICAS 6.1
             $plantillaword->setValue('CONCLUSION_6_1', $datosGenerales->CONCLUSION_GRAFICASNOM036 ?? 'No cargado');
 
-
             //// INTRODUCCION GRAFICAS 7.1
             $plantillaword->setValue('INTRODUCCION_7_1', $datosGenerales->INTRODUCCION_GRAFICASISO12995 ?? 'No cargado');
-
 
             //// CONCLUSION GRAFICAS 7.1
             $plantillaword->setValue('CONCLUSION_7_1', $datosGenerales->CONCLUSION_GRAFICASISO12995 ?? 'No cargado');
 
-
             ////  GRAFICAS 6.1
-
             if ($request->has('GRAFICAS')) {
-
                 $graficas = json_decode($request->GRAFICAS, true);
                 if ($graficas && count($graficas) > 0) {
+                    $imagenesFinales = [];
                     $categorias = array_chunk($graficas, 3);
-                    $plantillaword->cloneRow('GRAFICA', count($categorias));
+                    $plantillaword->cloneRow(
+                        'GRAFICA',
+                        count($categorias)
+                    );
+
                     foreach ($categorias as $index => $grupo) {
                         $numero = $index + 1;
-                        $anchoFinal = 1300;
-                        $altoFinal  = 360;
-                        $imagenFinal = imagecreatetruecolor($anchoFinal, $altoFinal);
-                        $blanco = imagecolorallocate($imagenFinal, 255, 255, 255);
-                        imagefill($imagenFinal, 0, 0, $blanco);
-
+                        $anchoFinal = 1900;
+                        $altoFinal  = 650;
+                        $imagenFinal = imagecreatetruecolor(
+                            $anchoFinal,
+                            $altoFinal
+                        );
+                        $blanco = imagecolorallocate(
+                            $imagenFinal,
+                            255,
+                            255,
+                            255
+                        );
+                        imagefill(
+                            $imagenFinal,
+                            0,
+                            0,
+                            $blanco
+                        );
                         $x = 0;
 
                         foreach ($grupo as $grafica) {
-
                             if (!isset($grafica['imagen'])) {
                                 continue;
                             }
-
-
                             $base64 = preg_replace(
                                 '#^data:image/\w+;base64,#i',
                                 '',
                                 $grafica['imagen']
                             );
-
                             $base64 = str_replace(
                                 ' ',
                                 '+',
@@ -2817,54 +2930,606 @@ class reconocimientoergoController extends Controller
                             );
 
                             $imageData = base64_decode($base64);
-
-                            $rutaTemp = storage_path('app/temp_' . uniqid() . '.png');
-                            file_put_contents($rutaTemp, $imageData);
-
+                            $rutaTemp = storage_path(
+                                'app/temp_' . uniqid() . '.png'
+                            );
+                            file_put_contents(
+                                $rutaTemp,
+                                $imageData
+                            );
                             $img = imagecreatefrompng($rutaTemp);
-
                             imagecopyresampled(
-                                $imagenFinal,
-                                $img,
-                                $x,
-                                20,
-                                0,
-                                0,
-                                380,
-                                320,
+                                $imagenFinal, 
+                                $img, 
+                                $x, 
+                                20, 
+                                0, 
+                                0, 
+                                580, 
+                                560, 
                                 imagesx($img),
                                 imagesy($img)
                             );
 
-
-                            $x += 430;
+                            $x += 620;
 
                             imagedestroy($img);
-
                             unlink($rutaTemp);
                         }
 
+                        $rutaFinal = storage_path(
+                            'app/grafica_final_' . uniqid() . '.png'
+                        );
 
+                        imagepng(
+                            $imagenFinal,
+                            $rutaFinal
+                        );
 
-                        $rutaFinal = storage_path('app/grafica_final_' . uniqid() . '.png');
-                        imagepng($imagenFinal, $rutaFinal);
                         imagedestroy($imagenFinal);
 
+                        $imagenesFinales[] = $rutaFinal;
+
                         $plantillaword->setImageValue(
+
                             'GRAFICA#' . $numero,
+
                             [
-                                'path'   => $rutaFinal,
-                                'width'  => 610,
-                                'height' => 230,
+                                'path' => $rutaFinal,
+                                'width'  => 900,
+                                'height' => 320,
                                 'ratio'  => true
                             ]
                         );
                     }
+                    register_shutdown_function(function () use ($imagenesFinales) {
+                        foreach ($imagenesFinales as $imagen) {
+                            if (file_exists($imagen)) {
+                                unlink($imagen);
+                            }
+                        }
+                    });
                 } else {
-                    $plantillaword->setValue('GRAFICA', 'NO HAY GRAFICAS');
+                    $plantillaword->setValue(
+                        'GRAFICA',
+                        'NO HAY GRAFICAS'
+                    );
                 }
             }
 
+            //// GRAFICA 7.1 
+            if ($request->filled('GRAFICAS_FICHAS')) {
+
+                $graficasFichas = json_decode(
+                    $request->GRAFICAS_FICHAS,
+                    true
+                );
+
+                if (
+                    is_array($graficasFichas) &&
+                    count($graficasFichas) > 0
+                ) {
+
+                    $imagenesFinales = [];
+
+                    $marcadores = [
+
+                        'GRAFICA_7',
+                        'GRAFICA_8',
+                        'GRAFICA_9',
+                        'GRAFICA_10',
+                        'GRAFICA_11',
+                        'GRAFICA_12'
+
+                    ];
+
+                    foreach ($graficasFichas as $index => $grafica) {
+
+                        if (
+                            !isset($grafica['imagen']) ||
+                            empty($grafica['imagen'])
+                        ) {
+                            continue;
+                        }
+
+                        if (!isset($marcadores[$index])) {
+                            continue;
+                        }
+
+                        $base64 = preg_replace(
+                            '#^data:image/\w+;base64,#i',
+                            '',
+                            $grafica['imagen']
+                        );
+
+                        $base64 = str_replace(
+                            ' ',
+                            '+',
+                            $base64
+                        );
+
+                        $imageData =
+                            base64_decode($base64);
+
+                        $rutaFinal = storage_path(
+                            'app/grafica_ficha_' .
+                                uniqid() .
+                                '.png'
+                        );
+
+                        file_put_contents(
+                            $rutaFinal,
+                            $imageData
+                        );
+
+                        $imagenesFinales[] =
+                            $rutaFinal;
+
+                        $plantillaword->setImageValue(
+
+                            $marcadores[$index],
+
+                            [
+
+                                'path' => $rutaFinal,
+                                'width' => 650,
+                                'height' => 720,
+
+                                'ratio' => true
+
+                            ]
+
+                        );
+                    }
+
+                    register_shutdown_function(function () use ($imagenesFinales) {
+
+                        foreach ($imagenesFinales as $imagen) {
+
+                            if (file_exists($imagen)) {
+
+                                unlink($imagen);
+                            }
+                        }
+                    });
+                }
+            }
+
+
+            ////// TABLA 7.2
+
+            $criteriosMapa = [
+
+                '1.1' => 'Levantamiento de cargas',
+                '1.2' => 'Transporte de cargas',
+                '2.1' => 'Empuje y tracción de cargas',
+                '3.1' => 'Movimientos repetitivos',
+                '4.1' => 'Posturas estáticas forzadas',
+                '4.2' => 'Posturas dinámicas forzadas'
+
+            ];
+
+
+
+
+            //------------------------------------------
+            // CATEGORIAS USADAS
+            //------------------------------------------
+
+            $categorias_ids = recoergofichastecnicasModel::where(
+                'RECO_ID',
+                $RECO_ID
+            )
+                ->where('ACTIVO', 1)
+                ->whereNotNull('CATEGORIA_ID_FICHA')
+                ->pluck('CATEGORIA_ID_FICHA')
+                ->unique()
+                ->toArray();
+
+
+
+
+            //------------------------------------------
+            // CATEGORIAS
+            //------------------------------------------
+
+            $categorias = recoergocategoriasModel::whereIn(
+                'ID_CATEGORIA_ERGO',
+                $categorias_ids
+            )
+                ->where('ACTIVO', 1)
+                ->get()
+                ->sortBy(function ($item) {
+
+                    return intval(
+
+                        str_replace(
+                            'PT',
+                            '',
+                            $item->PT_CATEGORIA
+                        )
+
+                    );
+                })
+                ->values();
+
+
+
+
+            //------------------------------------------
+            // FICHAS
+            //------------------------------------------
+
+            $fichas = recoergofichastecnicasModel::where(
+                'RECO_ID',
+                $RECO_ID
+            )
+                ->where('ACTIVO', 1)
+                ->get();
+
+
+
+
+            //------------------------------------------
+            // FUENTES
+            //------------------------------------------
+
+            $fuente = 'Poppins';
+
+            $textoTitulo = [
+
+                'name' => $fuente,
+                'size' => 16,
+                'bold' => true,
+                'color' => '000000'
+
+            ];
+
+            $textoHeader = [
+
+                'name' => $fuente,
+                'size' => 11,
+                'bold' => true,
+                'color' => '000000'
+
+            ];
+
+            $texto = [
+
+                'name' => $fuente,
+                'size' => 10,
+                'color' => '000000'
+
+            ];
+
+
+
+
+            //------------------------------------------
+            // ALINEACIONES
+            //------------------------------------------
+
+            $centrado = [
+
+                'alignment' => 'center',
+                'valign' => 'center'
+
+            ];
+
+            $izquierda = [
+
+                'alignment' => 'left',
+                'valign' => 'center'
+
+            ];
+
+
+
+
+            //------------------------------------------
+            // ANCHOS DINAMICOS
+            //------------------------------------------
+
+            $anchoTitulo = 4500;
+
+
+
+
+            //------------------------------------------
+            // ESPACIO TOTAL PT
+            //------------------------------------------
+
+            $espacioPT = 7000;
+
+
+
+
+            //------------------------------------------
+            // ANCHO POR PT
+            //------------------------------------------
+
+            $anchoPT = intval(
+
+                $espacioPT /
+
+                    max(count($categorias), 1)
+
+            );
+
+
+
+
+            //------------------------------------------
+            // ANCHO TOTAL
+            //------------------------------------------
+
+            $anchoTotal =
+
+                $anchoTitulo +
+
+                ($anchoPT * count($categorias));
+
+
+
+
+            //------------------------------------------
+            // TABLA
+            //------------------------------------------
+
+            $table = new Table([
+
+                'borderSize' => 12,
+                'borderColor' => '0B2C6B',
+                'cellMargin' => 50,
+                'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER
+
+            ]);
+
+
+
+
+            //------------------------------------------
+            // TITULO
+            //------------------------------------------
+
+            $table->addRow(700);
+
+            $table->addCell(
+
+                $anchoTotal,
+
+                [
+
+                    'gridSpan' =>
+                    count($categorias) + 1,
+
+                    'bgColor' =>
+                    'FFFFFF',
+
+                    'valign' =>
+                    'center'
+
+                ]
+
+            )->addTextRun($centrado)->addText(
+
+                'MAPA DE PELIGROS',
+
+                $textoTitulo
+
+            );
+
+
+
+
+            //------------------------------------------
+            // HEADERS
+            //------------------------------------------
+
+            $table->addRow(700);
+
+            $table->addCell(
+
+                $anchoTitulo,
+
+                [
+
+                    'valign' => 'center',
+                    'bgColor' => 'FFFFFF'
+
+                ]
+
+            )->addTextRun($izquierda)->addText(
+
+                'Peligro/puesto de trabajo',
+
+                $textoHeader
+
+            );
+
+
+
+
+            //------------------------------------------
+            // COLUMNAS PT
+            //------------------------------------------
+
+            foreach ($categorias as $categoria) {
+
+                $table->addCell(
+
+                    $anchoPT,
+
+                    [
+
+                        'valign' => 'center',
+                        'bgColor' => 'FFFFFF'
+
+                    ]
+
+                )->addTextRun($centrado)->addText(
+
+                    $categoria->PT_CATEGORIA,
+
+                    $textoHeader
+
+                );
+            }
+
+
+
+
+            //------------------------------------------
+            // FILAS
+            //------------------------------------------
+
+            foreach ($criteriosMapa as $codigo => $titulo) {
+
+                $table->addRow(600);
+
+
+
+
+                //------------------------------------------
+                // TITULO FILA
+                //------------------------------------------
+
+                $table->addCell(
+
+                    $anchoTitulo,
+
+                    [
+
+                        'valign' => 'center'
+
+                    ]
+
+                )->addTextRun($izquierda)->addText(
+
+                    $titulo,
+
+                    $texto
+
+                );
+
+
+
+
+                //------------------------------------------
+                // COLUMNAS
+                //------------------------------------------
+
+                foreach ($categorias as $categoria) {
+
+                    $resultadoFinal = 'VERDE';
+
+
+
+
+                    //------------------------------------------
+                    // FICHAS CATEGORIA
+                    //------------------------------------------
+
+                    $fichasCategoria = $fichas->where(
+
+                        'CATEGORIA_ID_FICHA',
+
+                        $categoria->ID_CATEGORIA_ERGO
+
+                    );
+
+
+
+
+                    //------------------------------------------
+                    // VALIDAR ROJO
+                    //------------------------------------------
+
+                    foreach ($fichasCategoria as $fichaDB) {
+
+                        $json = json_decode(
+                            $fichaDB->JSON_FICHAS,
+                            true
+                        );
+
+                        if (!$json) {
+                            continue;
+                        }
+
+                        foreach ($json as $bloque) {
+
+                            if (
+
+                                isset($bloque['ficha']) &&
+                                $bloque['ficha'] == $codigo
+
+                            ) {
+
+                                if (
+
+                                    isset($bloque['resultado']) &&
+                                    strtoupper($bloque['resultado']) == 'ROJO'
+
+                                ) {
+
+                                    $resultadoFinal = 'ROJO';
+
+                                    break 2;
+                                }
+                            }
+                        }
+                    }
+
+
+
+
+                    //------------------------------------------
+                    // COLOR
+                    //------------------------------------------
+
+                    $colorCelda = 'A9D18E';
+
+                    if ($resultadoFinal == 'ROJO') {
+
+                        $colorCelda = 'FF0000';
+                    }
+
+
+
+
+                    //------------------------------------------
+                    // CELDA
+                    //------------------------------------------
+
+                    $table->addCell(
+
+                        $anchoPT,
+
+                        [
+
+                            'bgColor' => $colorCelda,
+                            'valign' => 'center'
+
+                        ]
+
+                    )->addTextRun($centrado)->addText('');
+                }
+            }
+
+
+
+
+            //------------------------------------------
+            // INSERTAR WORD
+            //------------------------------------------
+
+            $plantillaword->setComplexBlock(
+
+                'TABLA_7_2',
+
+                $table
+
+            );
 
 
 
@@ -2877,6 +3542,8 @@ class reconocimientoergoController extends Controller
             return response()->download(
                 $rutaWord
             )->deleteFileAfterSend(true);
+
+            
         } catch (Exception $e) {
 
             return response()->json([

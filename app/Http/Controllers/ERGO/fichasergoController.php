@@ -114,6 +114,7 @@ class fichasergoController extends Controller
 
                     $camposArray = [
                         'CAT_AREAS_FICHA',
+                        'TURNO_EMPLEADO_FICHA',
                     ];
 
                     foreach ($camposArray as $campo) {

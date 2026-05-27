@@ -2,6 +2,9 @@
 @section('contenido')
 {{-- ========================================================================= --}}
 
+
+
+
 <style type="text/css" media="screen">
     table th {
         font-size: 12px !important;
@@ -1052,6 +1055,8 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     <a href="#6" class="list-group-item">6.- Evaluación</a>
                                     <a href="#6_1" class="list-group-item submenu">6.1.- Preguntas NOM-036-1-STPS-2018 <i class="fa " id="menureporte_6_1"></i></a>
                                     <a href="#7" class="list-group-item">7.- Resultados fichas <i class="fa " id="menureporte_7"></i></a>
+                                    <a href="#7_1" class="list-group-item submenu">7.1.- Resultados de la evaluación conforme a las fichas de la ISO 12995-2014 <i class="fa " id="menureporte_7_1"></i></a>
+                                    <a href="#7_2" class="list-group-item submenu">7.2.- Mapeo de Peligros/Riesgos Ergonómicos<i class="fa " id="menureporte_7_2"></i></a>
                                     <a href="#8" class="list-group-item">8.- Conclusiones <i class="fa" id="menureporte_8"></i></a>
                                     <a href="#9" class="list-group-item">9.- Recomendaciones de control <i class="fa" id="menureporte_9"></i></a>
                                     <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
@@ -1265,31 +1270,22 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                 <div class="form-group">
                                                     {!! csrf_field() !!}
 
-                                                    <div class="form-group">
-                                                        <label>Seleccionar introducción </label>
-                                                        <select class="custom-select form-control"
-                                                            id="SELECT_INTRODUCCION"
-                                                            name="SELECT_INTRODUCCION">
 
-                                                            <option value=""></option>
+                                                    <textarea class="form-control"
+                                                        style="margin-bottom: 0px;"
+                                                        rows="20"
+                                                        id="INFORME_INTRODUCCION"
+                                                        name="INFORME_INTRODUCCION"
+                                                        required><p>Los factores de riesgo ergonómico contribuyen a la aparición de enfermedades de tipo músculo esquelético, según los datos revelados por la Organización Internacional del Trabajo (OIT) estos a nivel mundial representan una de las principales causas de enfermedad laboral, seguido por exposición a material particulado, los gases, los humos, y el ruido (Discroll, 2018). Por otra parte, la OMS indicó que a nivel mundial cerca del 20% de los dolores lumbares y cervicales son atribuibles a exposiciones en el trabajo (2018).</p>
 
-                                                            @foreach($catintroduccion as $dato)
+<p>De acuerdo con el Instituto Mexicano del Seguro Social (IMSS) en 2020, se registraron más de 100.000 casos nuevos de enfermedades laborales, la naturaleza de la lesión indica que hay un número importante de enfermedades que se agrupan como trastornos músculo-esqueléticos (TME), entre ellas, síndrome del túnel carpiano, lesiones de hombro, tenosinovitis del pulgar (“De Quervain”), bursitis, epicondilitis y artrosis; por tal razón los TME representa en la actualidad un importante tipo de enfermedad laboral que afecta a la planta laboral de México.</p>
 
-                                                            <option
-                                                                value="{{$dato->ID_INTRODUCCION}}"
-                                                                data-introduccion="{{ htmlspecialchars($dato->NOMBRE_INTRODUCCION) }}">
+<p>En México el Reglamento Federal de Seguridad y Salud en el trabajo (RFST), publicado en el Diario Oficial de la Federación (DOF) el día 13 de noviembre de 2014, establece en su artículo 42, que las empresas deben contar con un análisis de los Factores de Riesgo Ergonómico de los puestos de trabajo. Además, la NOM-036-1-STPS-2018 establece los elementos para identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en los centros de trabajo derivados del manejo manual de cargas, a efecto de prevenir alteraciones a la salud de los trabajadores, y aplica en los centros de trabajo donde existan trabajadores cuya actividad implique realizar manejo manual de cargas de forma cotidiana (más de una vez al día).
+</p>
 
-                                                                {{$dato->QUIEN_INTRODUCCION}}
+<p>Dentro del medio ambiente laboral existen condiciones de riesgo de tipo ergonómico, que de no encontrarse identificados pueden poner en riesgo la salud y la productividad del trabajador; por lo que la identificación temprana y el establecimiento de estrategias de control son primordiales para mantener una condición de trabajo óptima.</p>
 
-                                                            </option>
-
-                                                            @endforeach
-
-                                                        </select>
-                                                    </div>
-
-
-                                                    <textarea class="form-control" style="margin-bottom: 0px;" rows="20" id="INFORME_INTRODUCCION" name="INFORME_INTRODUCCION" required></textarea>
+<p>En el presente estudio se describen los resultados y evidencias obtenidas durante la evaluación realizada en las áreas de la <font color="#000000" style="background-color: rgb(255, 255, 0);"> "ESCRIBIR INSTALACION (ejemplo: Refinería Olmeca perteneciente a PEMEX, Planta Efluentes), los días del XX al XX de MES de AÑO."</font></p> </textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12" style="text-align: right;">
@@ -1528,9 +1524,8 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                             </div>
                                         </div>
                                     </form>
-                                    <div class="row justify-content-center">
-
-                                        <div
+                                    <div class="row justify-content-center mb-5">
+                                        <div 
                                             id="contenedorGraficas"
                                             style="
                                                 width:100%;
@@ -1540,10 +1535,9 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                 gap:60px;
                                             ">
                                         </div>
-
                                     </div>
                                     <form method="post" enctype="multipart/form-data" name="form_preguntas-analisis-036" id="form_preguntas-analisis-036">
-                                        <div class="form-group">
+                                        <div class="form-group mt-3">
                                             <label>Análisis estadístico</label>
                                             <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="CONCLUSION_GRAFICASNOM036" name="CONCLUSION_GRAFICASNOM036" required></textarea>
                                         </div>
@@ -1570,7 +1564,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     </form>
                                     <div class="row justify-content-center">
 
-                                        <div
+                                        <div 
                                             id="contenedorGraficasfichas"
                                             style="
                                                 width:100%;
@@ -1593,7 +1587,15 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                             </div>
                                         </div>
                                     </form>
-
+                                    <h4 class="card-title" id="7_2">7.2.- Mapeo de Peligros/Riesgos Ergonómicos</h4>
+                                    <div class="form-group">
+                                        <label>A continuación, se presenta el resumen de los criterios referidos en la ISO TR 12295, para identificación de Peligros/Riesgos, mismos que relacionan los 6 criterios de la carga física con los respetivos puestos de trabajo valorados, donde el verde corresponde a un Riesgo Controlado y Rojo a un Riesgo Elevado</label>
+                                    </div>
+                                    <div class="row mb-5">
+                                        <div class="col-12">
+                                            <div id="TABLE_MAPEOPELIGRO"></div>
+                                        </div>
+                                    </div>
 
 
                                     <h4 class="card-title" id="8">8.- Conclusiones</h4>
@@ -2072,7 +2074,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                             <div class="form-group">
                                 <label>Turno </label>
 
-                                <select class="custom-select form-control" id="TURNO_EMPLEADO_FICHA" name="TURNO_EMPLEADO_FICHA">
+                                <select class="custom-select form-control" id="TURNO_EMPLEADO_FICHA" name="TURNO_EMPLEADO_FICHA[]" multiple>
                                     <option value=""></option>
                                     @foreach($caturno as $dato)
                                     <option value="{{$dato->ID_TURNO}}">{{$dato->NOMBRE_TURNO}}</option>
@@ -2607,8 +2609,27 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
 {{-- ========================================================================= --}}
 
 
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+
+        $('#INFORME_INTRODUCCION').summernote({
+            height: 400
+        });
+
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 {{-- Amcharts --}}
 <link href="/assets/plugins/c3-master/c3.min.css" rel="stylesheet">
@@ -2623,9 +2644,6 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
 <script src="/assets/plugins/amChart/amcharts/themes/dark.js" type="text/javascript"></script>
 <script src="/assets/plugins/amChart/amcharts/themes/chalk.js" type="text/javascript"></script>
 <script src="/assets/plugins/amChart/amcharts/themes/patterns.js" type="text/javascript"></script>
-
-
-
 <script src="/js_sitio/html2canvas.js"></script>
 
 @endsection

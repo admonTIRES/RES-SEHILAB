@@ -166,7 +166,7 @@ $('.link_menuprincipal').click(function () {
 			tablaVersionesRecoErgo();
 			validarEdicionRecoErgo();
             cargarGraficasFichas();
-
+            cargarMapaPeligros();
 
 		$('#RUTA_IMAGEN_PORTADA').dropify({
 				messages: {
@@ -186,6 +186,10 @@ $('.link_menuprincipal').click(function () {
 			});
 
 
+            $('#RUTA_IMAGEN_PORTADA').val('');
+	        $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').resetPreview();
+            $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').clearElement();
+            
 
 			$('#RUTA_IMAGEN_UBICACION').dropify({
 				messages: {
@@ -204,7 +208,9 @@ $('.link_menuprincipal').click(function () {
 				}
 			});
 
-
+            $('#RUTA_IMAGEN_UBICACION').val('');
+	        $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').resetPreview();
+            $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').clearElement();
 
 			$('#INFORME_RESPONSABLE1DOCUMENTO').dropify({
 							messages: {
@@ -222,6 +228,12 @@ $('.link_menuprincipal').click(function () {
 								'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
 							}
 			});
+
+
+            $('#INFORME_RESPONSABLE1DOCUMENTO').val('');
+	        $('#INFORME_RESPONSABLE1DOCUMENTO').dropify().data('dropify').resetPreview();
+            $('#INFORME_RESPONSABLE1DOCUMENTO').dropify().data('dropify').clearElement();
+
 
 		$('#INFORME_RESPONSABLE2DOCUMENTO').dropify({
 						messages: {
@@ -242,6 +254,9 @@ $('.link_menuprincipal').click(function () {
 
 
 
+            $('#INFORME_RESPONSABLE2DOCUMENTO').val('');
+	        $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').resetPreview();
+            $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').clearElement();
 
 			
 
@@ -2093,8 +2108,8 @@ function mostrartablarecocategoriasergo() {
 				},
 			],
 			"lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
-			"order": [[0, "DESC"]],
-			"ordering": true,
+			"order": [[0, "ASC"]],
+			"ordering": false,
 			"processing": true,
 			"responsive": true,
 			"language": {
@@ -2462,8 +2477,8 @@ function mostrartablarecoareasergo() {
 				},
 			],
 			"lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
-			"order": [[0, "DESC"]],
-			"ordering": true,
+			"order": [[0, "ASC"]],
+			"ordering": false,
 			"processing": true,
 			"responsive": true,
 			"language": {
@@ -2533,7 +2548,17 @@ $("#boton_nueva_ficha").click(function (e) {
     $('#JSON_ACTIVIDADES').val('')
 
 
-	selectAreasFichas.clear();
+    
+    var selectTurno = $('#TURNO_EMPLEADO_FICHA').selectize({
+        placeholder: 'Seleccione una o varias opciones',
+        allowEmptyOption: true,
+        closeAfterSelect: false,
+    })[0].selectize;
+    
+    selectAreasFichas.clear();
+    selectTurno.clear();
+    
+    
 });
 
 $('#modal_fichas').on('hidden.bs.modal', function (e) {
@@ -2554,9 +2579,7 @@ $('#modal_fichas').on('hidden.bs.modal', function (e) {
 
     $('#JSON_ACTIVIDADES').val('')
 
-
 	selectAreasFichas.clear();
-   
 
 })
 
@@ -4724,6 +4747,32 @@ $('#Tablarecofichasergo tbody').on('click', 'td>button.editar', function () {
         areasGuardadas = [];
     }
 
+
+
+    
+    if (!$('#TURNO_EMPLEADO_FICHA')[0].selectize) {
+        $('#TURNO_EMPLEADO_FICHA').selectize({
+            placeholder: 'Seleccione una o varias opciones',
+            maxItems: null
+        });
+    }
+
+    let selTurno = $('#TURNO_EMPLEADO_FICHA')[0].selectize;
+    selTurno.clear();
+
+    let valoresTurno = row.data().TURNO_EMPLEADO_FICHA;
+
+    if (typeof valoresTurno === "string") {
+        try { valoresTurno = JSON.parse(valoresTurno); } catch (e) { valoresTurno = []; }
+    }
+
+    if (Array.isArray(valoresTurno)) {
+        selTurno.setValue(valoresTurno);
+    }
+
+    
+    
+    
     cargarCategoriasSelect(function () {
 
         $('#CATEGORIA_ID_FICHA')
@@ -4882,9 +4931,7 @@ function activarLogicaFichas() {
 ///////////// INFORME DE RECONOCIMIENTO  /////////////
 
 
-
 ////// FICHAS NOM-036
-
 
 
 function cargarGraficas() {
@@ -4892,487 +4939,181 @@ function cargarGraficas() {
     $.get('/getGraficaErgo/' + recsensorial, function (data) {
 
         generarGraficas(data);
-
     });
 
 }
 
-
 function generarGraficas(data) {
 
-    //------------------------------------------
-    // LIMPIAR
-    //------------------------------------------
-
     $('#contenedorGraficas').empty();
-
-
-
-
-    //------------------------------------------
-    // CONTENEDOR
-    //------------------------------------------
-
     $('#contenedorGraficas').css({
-
         width: '100%',
-
         display: 'flex',
-
         flexDirection: 'column',
-
         alignItems: 'center',
-
         gap: '100px'
-
     });
-
-
-
-
-    //------------------------------------------
-    // RECORRER
-    //------------------------------------------
 
     data.forEach(function (item, index) {
 
         let html = `
-
-            <div style="
-                width:100%;
-                display:flex;
-                flex-direction:column;
-                align-items:center;
-            ">
-
-                <!-- FILA -->
-                <div style="
-                    width:100%;
-                    display:flex;
-                    justify-content:center;
-                    align-items:flex-start;
-                    gap:40px;
-                    flex-wrap:nowrap;
-                ">
-
-                    <div 
-                        id="chart_p1_${index}"
-                        style="
-                            width:430px;
-                            height:500px;
-                        ">
+            <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;display:flex;justify-content:center;align-items:flex-start;gap:40px;flex-wrap:nowrap;">
+                    <div id="chart_p1_${index}"style="width:430px;height:500px;">
                     </div>
-
-                    <div 
-                        id="chart_p2_${index}"
-                        style="
-                            width:430px;
-                            height:500px;
-                        ">
+                    <div id="chart_p2_${index}"style="width:430px;height:500px;">
                     </div>
-
-                    <div 
-                        id="chart_p3_${index}"
-                        style="
-                            width:430px;
-                            height:500px;
-                        ">
+                    <div id="chart_p3_${index}"style="width:430px;height:500px;">
                     </div>
-
                 </div>
-
             </div>
-
         `;
-
-
-
-
-        //------------------------------------------
-        // INSERTAR HTML
-        //------------------------------------------
 
         $('#contenedorGraficas').append(html);
 
-
-
-
-        //------------------------------------------
-        // GRAFICA 1
-        //------------------------------------------
-
         crearGrafica(
-
             'chart_p1_' + index,
-
             item.P1_RESULTADO,
-
-            '1. Durante su jornada laboral\n¿levanta, baja o manipula objetos\nmayores a 3 Kg?'
-
-           
-
+            '1. Durante su jornada laboral\n¿levanta, baja o manipula objetos\nmayores a 3 Kg?',
         );
 
-
-
-
-        //------------------------------------------
-        // GRAFICA 2
-        //------------------------------------------
-
         crearGrafica(
-
             'chart_p2_' + index,
-
             item.P2_RESULTADO,
-
             '2. ¿Realiza actividades manuales de\ncarga más de una vez al día?',
-
-             item.NOMBRE_CATEGORIA_ERGO
-
+            item.NOMBRE_CATEGORIA_ERGO
         );
-
-
-
-
-        //------------------------------------------
-        // GRAFICA 3
-        //------------------------------------------
 
         crearGrafica(
-
             'chart_p3_' + index,
-
             item.P3_RESULTADO,
-
-            '3. ¿Levanta, transporta, empuja o\nestiba materiales como parte de su\ntrabajo?'
-
+            '3. ¿Levanta, transporta, empuja o\nestiba materiales como parte de su\ntrabajo?',
         );
-
     });
-
 }
 
-
-
-function crearGrafica(
-    id,
-    resultado,
-    textoPregunta,
-    nombreCategoria = ''
-) {
+function crearGrafica(id,resultado,textoPregunta,nombreCategoria = '')
+{
 
     resultado = resultado.trim().toUpperCase();
-
-
-
-
-    //-----------------------------------
-    // INSTANCIA
-    //-----------------------------------
 
     var chart = echarts.init(
         document.getElementById(id)
     );
 
-
-
-
-    //-----------------------------------
-    // VALOR
-    //-----------------------------------
-
     let valor = resultado === 'SI'
         ? 25
         : 75;
-
-
-
-
-    //-----------------------------------
-    // CONFIGURACION
-    //-----------------------------------
-
+    
     chart.setOption({
-
         animation: false,
-
-
-
-
-        //-----------------------------------
-        // TEXTOS SUPERIORES
-        //-----------------------------------
-
         graphic: [
-
-            //-----------------------------------
-            // CATEGORIA
-            //-----------------------------------
-
             ...(nombreCategoria ? [
-
                 {
-
                     type: 'text',
-
                     left: 'center',
-
                     top: 10,
-
                     z: 100,
-
                     style: {
-
                         text: nombreCategoria,
-
                         fill: '#000',
-
                         fontSize: 22,
-
                         fontWeight: 'bold',
-
-                        textAlign: 'center'
-
+                        textAlign: 'center',
+                        width: 380,
+                        overflow: 'break',
+                        lineHeight: 28
                     }
-
                 }
-
             ] : []),
-
-
-
-
-            //-----------------------------------
-            // SI
-            //-----------------------------------
-
             {
-
                 type: 'text',
-
                 left: '17%',
-
                 top: '17%',
-
                 z: 100,
-
                 style: {
-
                     text: 'Sí',
-
                     fill: '#000',
-
                     fontSize: 18,
-
                     fontWeight: 'bold'
-
                 }
-
             },
-
-
-
-
-            //-----------------------------------
-            // NO
-            //-----------------------------------
-
             {
-
                 type: 'text',
-
                 left: '73%',
-
                 top: '17%',
-
                 z: 100,
-
                 style: {
-
                     text: 'No',
-
                     fill: '#000',
-
                     fontSize: 18,
-
                     fontWeight: 'bold'
-
                 }
-
             }
-
         ],
-
-
-
-
-        //-----------------------------------
-        // SERIES
-        //-----------------------------------
-
         series: [
-
             {
-
                 type: 'gauge',
-
                 startAngle: 180,
-
                 endAngle: 0,
-
                 min: 0,
-
                 max: 100,
-
-
-
-                //-----------------------------------
-                // TAMAÑO
-                //-----------------------------------
-
                 radius: '78%',
-
-
-
-                //-----------------------------------
-                // POSICION
-                //-----------------------------------
-
                 center: ['50%', '62%'],
-
-
-
-
-                //-----------------------------------
-                // LINEA
-                //-----------------------------------
-
                 axisLine: {
-
                     lineStyle: {
-
                         width: 34,
-
                         color: [
-
                             [0.5, '#dc3545'],
-
                             [1, '#28a745']
-
                         ]
-
                     }
-
                 },
-
-
-
-
-                //-----------------------------------
-                // PUNTERO
-                //-----------------------------------
-
                 pointer: {
-
                     width: 8,
-
                     length: '55%',
-
                     itemStyle: {
-
                         color: '#000'
-
                     }
-
                 },
-
-
-
-
-                //-----------------------------------
-                // OCULTAR
-                //-----------------------------------
-
                 axisTick: {
                     show: false
                 },
-
                 splitLine: {
                     show: false
                 },
-
                 axisLabel: {
                     show: false
                 },
-
                 anchor: {
                     show: false
                 },
-
                 title: {
                     show: false
                 },
-
-
-
-
-                //-----------------------------------
-                // PREGUNTA
-                //-----------------------------------
-
                 detail: {
-
                     formatter: function () {
-
                         return textoPregunta;
-
                     },
-
-                    fontSize: 10,
-
+                    fontSize: 16,
                     fontWeight: 'bold',
-
-                    lineHeight: 17,
-
-                    offsetCenter: [0, '88%'],
-
+                    lineHeight: 28,
+                    offsetCenter: [0, '92%'],
                     color: '#000',
-
-                    width: 280,
-
-                    overflow: 'truncate'
-
+                    width: 360,
+                    overflow: 'break'
                 },
-
-
-
-
-                //-----------------------------------
-                // DATA
-                //-----------------------------------
-
                 data: [
-
                     {
                         value: valor
                     }
-
                 ]
-
             }
-
         ]
-
     });
-
 }
 
-
-
 ////// GRAFICAS FICHAS
-
-
 
 
 function cargarGraficasFichas() {
@@ -5459,22 +5200,22 @@ function generarGraficasFichas(data) {
         //------------------------------------------
         // FILA
         //------------------------------------------
+            let fila = `
 
-        let fila = `
+                <div
+                    id="fila_${index}"
+                    style="
+                        width:100%;
+                        display:flex;
+                        flex-wrap:wrap;
+                        justify-content:center;
+                        gap:20px;
+                        margin-bottom:30px;
+                        background:#FFFFFF;
+                    ">
+                </div>
 
-            <div
-                id="fila_${index}"
-                style="
-                    width:100%;
-                    display:flex;
-                    flex-wrap:wrap;
-                    justify-content:center;
-                    gap:20px;
-                    margin-bottom:30px;
-                ">
-            </div>
-
-        `;
+            `;
 
         $('#contenedorGraficasfichas').append(fila);
 
@@ -5821,7 +5562,117 @@ function crearTermometroFicha(
 
 }
 
+////// MAPA DE RIESGO
 
+
+function cargarMapaPeligros()
+{
+    $.get(
+
+        '/getMapaPeligros/' + recsensorial,
+
+        function (response)
+        {
+            generarTablaMapaPeligros(response);
+        }
+    );
+}
+
+
+
+function generarTablaMapaPeligros(response)
+{
+
+    $('#TABLE_MAPEOPELIGRO').empty();
+
+    let categorias = response.categorias;
+    let criterios = response.criterios;
+
+
+    let html = `
+
+        <div style=" width:100%; overflow-x:auto;">
+            <table style=" width:100%; border-collapse:collapse; text-align:center; font-size:16px;border:3px solid #0B2C6B;">
+                <thead>
+                    <tr>
+                        <th
+                            colspan="${categorias.length + 1}"
+                            style=" background:#FFF;font-size:32px;font-weight:bold;padding:12px;border:3px solid #0B2C6B;">
+                            MAPA DE PELIGROS
+                        </th>
+                    </tr>
+                    <tr>
+                        <th style=" width:450px; text-align:left;padding:10px; font-size:20px;border:2px solid #000;">
+                            Peligro/puesto de trabajo
+                        </th>`;
+
+
+
+
+    //------------------------------------------
+    // COLUMNAS PT
+    //------------------------------------------
+
+    categorias.forEach(function (categoria)
+    {
+        html += `
+                <th style=" width:60px; padding:8px; font-size:20px; font-weight:bold;border:2px solid #000;">
+                    ${categoria.PT_CATEGORIA}
+                </th>
+            `;
+
+    });
+
+    html += `
+                </tr>
+                </thead>
+                <tbody>
+            `;
+
+    criterios.forEach(function (criterio)
+    {
+
+        html += `
+            <tr>
+                <td style=" text-align:left; padding:10px; font-size:18px; border:2px solid #000;">
+                    ${criterio.titulo}
+                </td>
+            `;
+
+
+        categorias.forEach(function (categoria)
+        {
+
+            let resultado =
+                criterio.resultados[categoria.ID_CATEGORIA_ERGO];
+
+            let color = '#A9D18E';
+            if (resultado == 'ROJO')
+            {
+                color = '#FF0000';
+            }
+
+            html += `
+                    <td style=" background:${color}; height:55px; border:2px solid #000;">
+                    </td>
+                `;
+
+        });
+        html += `
+            </tr>
+        `;
+    });
+
+
+    html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    $('#TABLE_MAPEOPELIGRO').html(html);
+
+}
 
 /////////////// PORTADA  //////////////
 
@@ -6085,20 +5936,67 @@ function cargarDatosGeneralesInformeReco()
             }
 
 
+          if (response.INFORME_INTRODUCCION &&
+                response.INFORME_INTRODUCCION.trim() != '') {
 
-            $('#SELECT_INTRODUCCION')
-                .val(response.SELECT_INTRODUCCION)
-                .trigger('change');
+                $('#INFORME_INTRODUCCION').summernote(
+                    'code',
+                    response.INFORME_INTRODUCCION
+                );
 
-            $('#INFORME_INTRODUCCION')
-                .val(response.INFORME_INTRODUCCION);
+            } else {
 
-            $('#INFORME_OBJETIVOGENERALES')
-                .val(response.INFORME_OBJETIVOGENERALES);
+                $('#INFORME_INTRODUCCION').summernote(
+                    'code',
+                    `<p>Los factores de riesgo ergonómico contribuyen a la aparición de enfermedades de tipo músculo esquelético, según los datos revelados por la Organización Internacional del Trabajo (OIT) estos a nivel mundial representan una de las principales causas de enfermedad laboral, seguido por exposición a material particulado, los gases, los humos, y el ruido (Discroll, 2018). Por otra parte, la OMS indicó que a nivel mundial cerca del 20% de los dolores lumbares y cervicales son atribuibles a exposiciones en el trabajo (2018).</p>
 
-            $('#INFORME_OBJETIVOSESPECIFICOS')
-                .val(response.INFORME_OBJETIVOSESPECIFICOS);
+            <p>De acuerdo con el Instituto Mexicano del Seguro Social (IMSS) en 2020, se registraron más de 100.000 casos nuevos de enfermedades laborales, la naturaleza de la lesión indica que hay un número importante de enfermedades que se agrupan como trastornos músculo-esqueléticos (TME), entre ellas, síndrome del túnel carpiano, lesiones de hombro, tenosinovitis del pulgar (“De Quervain”), bursitis, epicondilitis y artrosis; por tal razón los TME representa en la actualidad un importante tipo de enfermedad laboral que afecta a la planta laboral de México.</p>
 
+            <p>En México el Reglamento Federal de Seguridad y Salud en el trabajo (RFST), publicado en el Diario Oficial de la Federación (DOF) el día 13 de noviembre de 2014, establece en su artículo 42, que las empresas deben contar con un análisis de los Factores de Riesgo Ergonómico de los puestos de trabajo.</p>
+
+            <p>Dentro del medio ambiente laboral existen condiciones de riesgo de tipo ergonómico.</p>
+
+            <p>En el presente estudio se describen los resultados y evidencias obtenidas durante la evaluación realizada en las áreas de la <font color="#000000" style="background-color: rgb(255, 255, 0);">"ESCRIBIR INSTALACION (ejemplo: Refinería Olmeca perteneciente a PEMEX, Planta Efluentes), los días del XX al XX de MES de AÑO."</font></p>`
+                );
+
+            }
+
+
+
+          if (response.INFORME_OBJETIVOGENERALES &&
+                response.INFORME_OBJETIVOGENERALES.trim() != '') {
+
+                $('#INFORME_OBJETIVOGENERALES')
+                    .val(response.INFORME_OBJETIVOGENERALES);
+
+            } else {
+
+                $('#INFORME_OBJETIVOGENERALES')
+                    .val(`Evaluar los factores de riesgo ergonómicos de las actividades laborales que impliquen postura, movimientos, manipulación manual de cargas y esfuerzos, mediante la observación y aplicación de métodos de carga física para la prevención de trastornos músculo esqueléticos.`);
+
+            }
+
+
+
+            if (response.INFORME_OBJETIVOSESPECIFICOS &&
+                response.INFORME_OBJETIVOSESPECIFICOS.trim() != '') {
+
+                $('#INFORME_OBJETIVOSESPECIFICOS')
+                    .val(response.INFORME_OBJETIVOSESPECIFICOS);
+
+            } else {
+
+                $('#INFORME_OBJETIVOSESPECIFICOS')
+                    .val(`• Identificar los trabajos prioritarios y tareas con riesgo ergonómico a través de un reconocimiento sensorial y entrevista con los trabajadores.
+
+• Determinar el nivel de riesgo por carga física a la cual se encuentran expuestos los trabajadores.
+
+• Generar recomendaciones derivadas de la identificación de riesgos para mitigar la probabilidad de ocurrencia de Trastornos Músculo Esqueléticos (TME) de origen laboral.`);
+
+            }
+            
+            
+            
             $('#INFORME_UBICACIONINSTALACION')
                 .val(response.INFORME_UBICACIONINSTALACION);
 
@@ -8261,31 +8159,22 @@ function validarEdicionRecoErgo()
 //     RECO_ID
 // ) {
 
-//     //---------------------------------------
-//     // ARREGLO GRAFICAS
-//     //---------------------------------------
-
 //     let graficas = [];
 
 
 
-//     //---------------------------------------
-//     // RECORRER GRAFICAS
-//     //---------------------------------------
 
 //     $('#contenedorGraficas > div').each(function () {
 
-//         let chartDiv =
-//             $(this).find('[id^="chart_"]')[0];
+//         let charts =
+//             $(this).find('[id^="chart_"]');
 
 
 
-//         if (chartDiv) {
+//         charts.each(function () {
 
 //             let instancia =
-//                 echarts.getInstanceByDom(
-//                     chartDiv
-//                 );
+//                 echarts.getInstanceByDom(this);
 
 
 
@@ -8308,16 +8197,11 @@ function validarEdicionRecoErgo()
 
 //             }
 
-//         }
+//         });
 
 //     });
 
 
-
-
-//     //---------------------------------------
-//     // FORM TEMPORAL
-//     //---------------------------------------
 
 //     let form = $('<form>', {
 
@@ -8335,11 +8219,6 @@ function validarEdicionRecoErgo()
 
 
 
-
-//     //---------------------------------------
-//     // TOKEN
-//     //---------------------------------------
-
 //     form.append(
 
 //         $('<input>', {
@@ -8356,13 +8235,6 @@ function validarEdicionRecoErgo()
 
 //     );
 
-
-
-
-//     //---------------------------------------
-//     // GRAFICAS
-//     //---------------------------------------
-
 //     form.append(
 
 //         $('<input>', {
@@ -8378,13 +8250,6 @@ function validarEdicionRecoErgo()
 
 //     );
 
-
-
-
-//     //---------------------------------------
-//     // ENVIAR
-//     //---------------------------------------
-
 //     $('body').append(form);
 
 //     form.submit();
@@ -8396,29 +8261,34 @@ function validarEdicionRecoErgo()
 
 
 
+async function descargarRevisionRecoErgo(RECO_ID)
+{
 
-function descargarRevisionRecoErgo(
-    RECO_ID
-) {
+ 
+
+
 
     let graficas = [];
 
 
 
+    $('#contenedorGraficas > div')
 
-    $('#contenedorGraficas > div').each(function () {
+        .find('[id^="chart_p"]')
 
-        let charts =
-            $(this).find('[id^="chart_"]');
+        .each(function () {
 
+           
+            if (
+                !this.id.includes('chart_p')
+            ) {
+                return;
+            }
 
-
-        charts.each(function () {
+          
 
             let instancia =
                 echarts.getInstanceByDom(this);
-
-
 
             if (instancia) {
 
@@ -8441,9 +8311,90 @@ function descargarRevisionRecoErgo(
 
         });
 
-    });
 
 
+
+
+    let graficasFichas = [];
+
+
+
+    let filas =
+        $('#contenedorGraficasfichas')
+        .find('[id^="fila_"]');
+
+
+
+
+
+
+    for (let i = 0; i < filas.length; i++) {
+
+      
+
+        try {
+
+            let canvas = await html2canvas(
+
+                filas[i],
+
+                {
+
+                    backgroundColor:
+                        '#FFFFFF',
+
+                    scale: 1,
+
+                    logging: false,
+
+                    useCORS: true,
+
+                    allowTaint: false,
+
+                    ignoreElements: function(element) {
+
+                        return (
+
+                            element.tagName === 'IMG'
+
+                        );
+
+                    }
+
+                }
+
+            );
+
+
+            let imagen =
+                canvas.toDataURL(
+                    'image/png'
+                );
+
+
+            graficasFichas.push({
+
+                imagen: imagen
+
+            });
+
+
+
+        }
+        catch (error) {
+
+            console.error(
+                'ERROR FILA:',
+                i,
+                error
+            );
+
+        }
+
+    }
+
+
+  
 
     let form = $('<form>', {
 
@@ -8477,6 +8428,9 @@ function descargarRevisionRecoErgo(
 
     );
 
+
+
+
     form.append(
 
         $('<input>', {
@@ -8486,19 +8440,68 @@ function descargarRevisionRecoErgo(
             name: 'GRAFICAS',
 
             value:
-                JSON.stringify(graficas)
+                JSON.stringify(
+                    graficas
+                )
 
         })
 
     );
 
+
+
+    form.append(
+
+        $('<input>', {
+
+            type: 'hidden',
+
+            name: 'GRAFICAS_FICHAS',
+
+            value:
+                JSON.stringify(
+                    graficasFichas
+                )
+
+        })
+
+    );
+
+
+
+   
+
+
     $('body').append(form);
+
+  
 
     form.submit();
 
-    form.remove();
+
+    setTimeout(function () {
+
+        form.remove();
+
+     
+    }, 1000);
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -2126,8 +2126,6 @@ Route::resource('reconocimientoergo', 'ERGO\reconocimientoergoController');
 Route::get('/folioproyectoergp/{proyecto_folio}', ['as' => 'ERGO.folioproyectoergp', 'uses' => 'ERGO\reconocimientoergoController@folioproyectoergp']);
 Route::get('/estructuraproyectosergo/{FOLIO}', ['as' => 'ERGO.estructuraproyectosergo', 'uses' => 'ERGO\reconocimientoergoController@estructuraproyectosergo']);
 Route::get('tablareconocimientoergo', ['as' => 'ERGO.tablareconocimientoergo', 'uses' => 'ERGO\reconocimientoergoController@tablareconocimientoergo']);
-
-
 Route::get('mostrarmapaubicacionergo/{archivo_opcion}/{recsensorial_id}', ['as' => 'mostrarmapa', 'uses' => 'ERGO\reconocimientoergoController@mostrarmapaubicacionergo']);
 Route::get('mostraplanoergo/{archivo_opcion}/{recsensorial_id}', ['as' => 'mostrarmapa', 'uses' => 'ERGO\reconocimientoergoController@mostraplanoergo']);
 Route::get('mostrafotoinstalacionergo/{archivo_opcion}/{recsensorial_id}', ['as' => 'mostrarmapa', 'uses' => 'ERGO\reconocimientoergoController@mostrafotoinstalacionergo']);
@@ -2144,7 +2142,7 @@ Route::get('mostrarportadarecoergo/{archivo_opcion}/{reco_id}',['as' => 'mostrar
 /// DATOS GENERALES
 Route::get('obtenerDatosGeneralesInformeReco/{RECO_ID}',['as' => 'obtenerDatosGeneralesInformeReco','uses' => 'ERGO\reconocimientoergoController@obtenerDatosGeneralesInformeReco']);
 
-/// introducciom
+/// introducción
 Route::post('guardarIntroduccionRecoErgo',['as' => 'guardarIntroduccionRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarIntroduccionRecoErgo']);
 
 /// definiciones
@@ -2154,7 +2152,6 @@ Route::get('obtenerDefinicionesInformeErgo/{RECO_ID}',['as' => 'obtenerDefinicio
 /// objetivos generales y especificos 
 Route::post('guardarObjetivoGeneralRecoErgo',['as' => 'guardarObjetivoGeneralRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarObjetivoGeneralRecoErgo']);
 Route::post('guardarObjetivoEspecificoRecoErgo',['as' => 'guardarObjetivoEspecificoRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarObjetivoEspecificoRecoErgo']);
-
 
 //// reconocimiento 
 Route::post('guardarUbicacionRecoErgo',['as' => 'guardarUbicacionRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarUbicacionRecoErgo']);
@@ -2185,8 +2182,14 @@ Route::post('guardarIntroduccionGraficasNom036',['as' => 'guardarIntroduccionGra
 /// 6.1 conclusion 
 Route::post('guardarConclusionGraficasNom036',['as' => 'guardarConclusionGraficasNom036','uses' => 'ERGO\reconocimientoergoController@guardarConclusionGraficasNom036']);
 
-/// 7  resultados 
+/// 7.1  resultados 
 Route::get('getGraficasFichas/{reco_id}',['as' => 'getGraficasFichas','uses' => 'ERGO\reconocimientoergoController@getGraficasFichas']);
+
+/// 7.2 MAPA DE RIESGO 
+
+Route::get('getMapaPeligros/{reco_id}', ['as' => 'getMapaPeligros', 'uses' => 'ERGO\reconocimientoergoController@getMapaPeligros']);
+
+
 
 ////////   VERSIONES 
 Route::get('tablaVersionesRecoErgo/{reco_id}',['as' => 'tablaVersionesRecoErgo','uses' =>'ERGO\reconocimientoergoController@tablaVersionesRecoErgo']);
@@ -2208,37 +2211,23 @@ Route::resource('recoergocategorias', 'ERGO\categoriasergoController');
 Route::get('Tablarecocategoriasergo', ['as' => 'ERGO.Tablarecocategoriasergo', 'uses' => 'ERGO\categoriasergoController@Tablarecocategoriasergo']);
 Route::post('obtenerPTCategoria', ['as' => 'ERGO.obtenerPTCategoria', 'uses' => 'ERGO\categoriasergoController@obtenerPTCategoria']);
 Route::get('obtenerareasergo', ['as' => 'ERGO.obtenerareasergo', 'uses' => 'ERGO\categoriasergoController@obtenerareasergo']);
-
-
 Route::get('DesactivarCategorias', ['as' => 'ERGO.DesactivarCategorias', 'uses' => 'ERGO\categoriasergoController@store']);
-
-
 
 /////////// AREAS  ///////////
 Route::resource('recoergoareas', 'ERGO\areasergoController');
 Route::get('Tablarecoareasergo', ['as' => 'ERGO.Tablarecoareasergo', 'uses' => 'ERGO\areasergoController@Tablarecoareasergo']);
 
 /////////// FICHAS TECNICAS  ///////////
-
-
 Route::resource('recoergofichas', 'ERGO\fichasergoController');
 Route::get('getCategoriasErgo', ['as' => 'ERGO.getCategoriasErgo', 'uses' => 'ERGO\fichasergoController@getCategoriasErgo']);
 Route::get('Tablarecofichasergo', ['as' => 'ERGO.Tablarecofichasergo', 'uses' => 'ERGO\fichasergoController@Tablarecofichasergo']);
 
-
-///////////////     COPIAR CATEGORIAS Y AREAS
-
+/////////////// COPIAR CATEGORIAS Y AREAS
 Route::post('sincronizarHigieneErgo', ['as' => 'sincronizarHigieneErgo', 'uses' => 'ERGO\reconocimientoergoController@sincronizarHigieneErgo']);
 
-
 ////////// CATALOGO ERGO
-
-
 Route::resource('recergocatalogo', 'ERGO\catergoController');
-
-
 Route::get('ergoconsultacatalogo/{num_catalogo}', ['as' => 'ERGO.ergoconsultacatalogo', 'uses' => 'ERGO\catergoController@ergoconsultacatalogo']);
-
 Route::get('ergocatalogodesactiva/{catalogo}/{registro}/{estado}', ['as' => 'ERGO.ergocatalogodesactiva', 'uses' => 'ERGO\catergoController@ergocatalogodesactiva']);
 
 
