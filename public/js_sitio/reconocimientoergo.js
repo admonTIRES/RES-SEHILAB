@@ -2621,7 +2621,6 @@ $('#FECHA_NACIMIENTO').on('change blur', function () {
     $('#EDAD_EMPLEADO_FICHA').val(edad);
 });
 
-
 function cargarCategoriasSelect(callback = null) {
 
     let reco_id = $("#recsensorial_id").val(); 
@@ -2680,7 +2679,6 @@ $(document).on('change', '#CATEGORIA_ID_FICHA', function () {
 
     cargarAreasFicha(areas);
 });
-
 
 function cargarAreasFicha(valoresSeleccionados = []) {
 
@@ -2900,7 +2898,6 @@ function toggleSeccion(id) {
         }
     }
 }
-
 
 const fichas = {
 
@@ -4582,8 +4579,8 @@ function mostrarTablarecofichasergo() {
 				},
 			],
 			"lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
-			"order": [[0, "DESC"]],
-			"ordering": true,
+			"order": [[0, "ASC"]],
+			"ordering": false,
 			"processing": true,
 			"responsive": true,
 			"language": {
