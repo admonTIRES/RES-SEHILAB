@@ -80,32 +80,30 @@ class categoriasergoController extends Controller
     {
         $reco_id = $request->reco_id;
 
-        $ultimo = DB::table('recoergocategorias')
+        $categorias = DB::table('recoergocategorias')
             ->where('RECO_ID', $reco_id)
             ->whereNotNull('PT_CATEGORIA')
             ->where('PT_CATEGORIA', '!=', '')
-            ->orderBy('ID_CATEGORIA_ERGO', 'desc')
-            ->first();
+            ->pluck('PT_CATEGORIA');
 
-        if ($ultimo) {
+        $mayor = 0;
 
-            preg_match('/\d+/', $ultimo->PT_CATEGORIA, $matches);
-
-            $numero = isset($matches[0])
-                ? intval($matches[0]) + 1
-                : 1;
-        } else {
-
-            $numero = 1;
+        foreach ($categorias as $pt) {
+            preg_match('/\d+/', $pt, $matches);
+            if (isset($matches[0])) {
+                $numero = intval($matches[0]);
+                if ($numero > $mayor) {
+                    $mayor = $numero;
+                }
+            }
         }
 
-        $pt = 'PT' . $numero;
+        $nuevo = $mayor + 1;
 
         return response()->json([
-            'pt' => $pt
+            'pt' => 'PT' . $nuevo
         ]);
     }
-
 
 
  public function obtenerareasergo(Request $request)

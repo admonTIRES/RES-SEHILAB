@@ -489,23 +489,26 @@ class reconocimientoergoController extends Controller
                         $extension = $request->file('inputfotomapa')->getClientOriginalExtension();
 
                         $request['fotoubicacion'] = $request->file('inputfotomapa')
-                            ->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa', $reconocimientoergo->id . '.' . $extension);
+                            ->storeAs(
+                            'reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa',
+                                $reconocimientoergo->id . '.' . $extension
+                            );
 
                         $reconocimientoergo->update($request->all());
                     } else {
 
-                        if (!empty($request['hidden_fotomapa']) && !empty($request['hidden_fotomapa_extension'])) {
+                        if (!empty($request['hidden_fotomapa_ruta'])) {
 
-                            $recsensorial_id = $request['hidden_fotomapa'];
-                            $recsensorial_extension = $request['hidden_fotomapa_extension'];
-
-                            $rutaOriginal = 'recsensorial/' . $recsensorial_id . '/mapa/' . $recsensorial_id . $recsensorial_extension;
+                            $rutaOriginal = $request['hidden_fotomapa_ruta'];
 
                             if (Storage::exists($rutaOriginal)) {
 
-                                $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa/' . $reconocimientoergo->id . '.' . pathinfo($rutaOriginal, PATHINFO_EXTENSION);
+                                $extension = pathinfo($rutaOriginal, PATHINFO_EXTENSION);
+
+                                $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa/' . $reconocimientoergo->id . '.' . $extension;
 
                                 Storage::makeDirectory('reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa');
+
                                 Storage::copy($rutaOriginal, $nuevaRuta);
 
                                 $reconocimientoergo->fotoubicacion = $nuevaRuta;
@@ -515,28 +518,97 @@ class reconocimientoergoController extends Controller
                     }
 
 
+
+
+
+                    // if ($request->file('inputfotomapa')) {
+
+                    //     $extension = $request->file('inputfotomapa')->getClientOriginalExtension();
+
+                    //     $request['fotoubicacion'] = $request->file('inputfotomapa')
+                    //         ->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa', $reconocimientoergo->id . '.' . $extension);
+
+                    //     $reconocimientoergo->update($request->all());
+                    // } else {
+
+                    //     if (!empty($request['hidden_fotomapa']) && !empty($request['hidden_fotomapa_extension'])) {
+
+                    //         $recsensorial_id = $request['hidden_fotomapa'];
+                    //         $recsensorial_extension = $request['hidden_fotomapa_extension'];
+
+                    //         $rutaOriginal = 'recsensorial/' . $recsensorial_id . '/mapa/' . $recsensorial_id . $recsensorial_extension;
+
+                    //         if (Storage::exists($rutaOriginal)) {
+
+                    //             $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa/' . $reconocimientoergo->id . '.' . pathinfo($rutaOriginal, PATHINFO_EXTENSION);
+
+                    //             Storage::makeDirectory('reconocimiento_ergo/' . $reconocimientoergo->id . '/mapa');
+                    //             Storage::copy($rutaOriginal, $nuevaRuta);
+
+                    //             $reconocimientoergo->fotoubicacion = $nuevaRuta;
+                    //             $reconocimientoergo->save();
+                    //         }
+                    //     }
+                    // }
+
+
+                    // if ($request->file('inputfotoplano')) {
+
+                    //     $extension = $request->file('inputfotoplano')->getClientOriginalExtension();
+
+                    //     $request['fotoplano'] = $request->file('inputfotoplano')
+                    //         ->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/plano', $reconocimientoergo->id . '.' . $extension);
+
+                    //     $reconocimientoergo->update($request->all());
+                    // } else {
+
+                    //     if (!empty($request['hidden_fotoplano']) && !empty($request['hidden_fotoplano_extension'])) {
+
+                    //         $recsensorial_id = $request['hidden_fotoplano'];
+                    //         $recsensorial_extension = $request['hidden_fotoplano_extension'];
+
+                    //         $rutaOriginal = 'recsensorial/' . $recsensorial_id . '/plano/' . $recsensorial_id . $recsensorial_extension;
+
+                    //         if (Storage::exists($rutaOriginal)) {
+
+                    //             $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/plano/' . $reconocimientoergo->id . '.' . pathinfo($rutaOriginal, PATHINFO_EXTENSION);
+
+                    //             Storage::makeDirectory('reconocimiento_ergo/' . $reconocimientoergo->id . '/plano');
+                    //             Storage::copy($rutaOriginal, $nuevaRuta);
+
+                    //             $reconocimientoergo->fotoplano = $nuevaRuta;
+                    //             $reconocimientoergo->save();
+                    //         }
+                    //     }
+                    // }
+
+
+
                     if ($request->file('inputfotoplano')) {
 
                         $extension = $request->file('inputfotoplano')->getClientOriginalExtension();
 
                         $request['fotoplano'] = $request->file('inputfotoplano')
-                            ->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/plano', $reconocimientoergo->id . '.' . $extension);
+                            ->storeAs(
+                            'reconocimiento_ergo/' . $reconocimientoergo->id . '/plano',
+                                $reconocimientoergo->id . '.' . $extension
+                            );
 
                         $reconocimientoergo->update($request->all());
                     } else {
 
-                        if (!empty($request['hidden_fotoplano']) && !empty($request['hidden_fotoplano_extension'])) {
+                        if (!empty($request['hidden_fotoplano_ruta'])) {
 
-                            $recsensorial_id = $request['hidden_fotoplano'];
-                            $recsensorial_extension = $request['hidden_fotoplano_extension'];
-
-                            $rutaOriginal = 'recsensorial/' . $recsensorial_id . '/plano/' . $recsensorial_id . $recsensorial_extension;
+                            $rutaOriginal = $request['hidden_fotoplano_ruta'];
 
                             if (Storage::exists($rutaOriginal)) {
 
-                                $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/plano/' . $reconocimientoergo->id . '.' . pathinfo($rutaOriginal, PATHINFO_EXTENSION);
+                                $extension = pathinfo($rutaOriginal, PATHINFO_EXTENSION);
+
+                                $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/plano/' . $reconocimientoergo->id . '.' . $extension;
 
                                 Storage::makeDirectory('reconocimiento_ergo/' . $reconocimientoergo->id . '/plano');
+
                                 Storage::copy($rutaOriginal, $nuevaRuta);
 
                                 $reconocimientoergo->fotoplano = $nuevaRuta;
@@ -550,29 +622,62 @@ class reconocimientoergoController extends Controller
                     // si envia archivo FOTO instalacion
 
 
+                    // if ($request->file('inputfotoinstalacion')) {
+
+                    //     $extension = $request->file('inputfotoinstalacion')->getClientOriginalExtension();
+
+                    //     $request['fotoinstalacion'] = $request->file('inputfotoinstalacion')
+                    //         ->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion', $reconocimientoergo->id . '.' . $extension);
+
+                    //     $reconocimientoergo->update($request->all());
+                    // } else {
+
+                    //     if (!empty($request['hidden_fotoinstalacion']) && !empty($request['hidden_fotoinstalacion_extension'])) {
+
+                    //         $recsensorial_id = $request['hidden_fotoinstalacion'];
+                    //         $recsensorial_extension = $request['hidden_fotoinstalacion_extension'];
+
+                    //         $rutaOriginal = 'recsensorial/' . $recsensorial_id . '/instalacion/' . $recsensorial_id . $recsensorial_extension;
+
+                    //         if (Storage::exists($rutaOriginal)) {
+
+                    //             $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion/' . $reconocimientoergo->id . '.' . pathinfo($rutaOriginal, PATHINFO_EXTENSION);
+
+                    //             Storage::makeDirectory('reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion');
+                    //             Storage::copy($rutaOriginal, $nuevaRuta);
+
+                    //             $reconocimientoergo->fotoinstalacion = $nuevaRuta;
+                    //             $reconocimientoergo->save();
+                    //         }
+                    //     }
+                    // }
+
 
                     if ($request->file('inputfotoinstalacion')) {
 
                         $extension = $request->file('inputfotoinstalacion')->getClientOriginalExtension();
 
                         $request['fotoinstalacion'] = $request->file('inputfotoinstalacion')
-                            ->storeAs('reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion', $reconocimientoergo->id . '.' . $extension);
+                            ->storeAs(
+                            'reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion',
+                                $reconocimientoergo->id . '.' . $extension
+                            );
 
                         $reconocimientoergo->update($request->all());
                     } else {
 
-                        if (!empty($request['hidden_fotoinstalacion']) && !empty($request['hidden_fotoinstalacion_extension'])) {
+                        if (!empty($request['hidden_fotoinstalacion_ruta'])) {
 
-                            $recsensorial_id = $request['hidden_fotoinstalacion'];
-                            $recsensorial_extension = $request['hidden_fotoinstalacion_extension'];
-
-                            $rutaOriginal = 'recsensorial/' . $recsensorial_id . '/instalacion/' . $recsensorial_id . $recsensorial_extension;
+                            $rutaOriginal = $request['hidden_fotoinstalacion_ruta'];
 
                             if (Storage::exists($rutaOriginal)) {
 
-                                $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion/' . $reconocimientoergo->id . '.' . pathinfo($rutaOriginal, PATHINFO_EXTENSION);
+                                $extension = pathinfo($rutaOriginal, PATHINFO_EXTENSION);
+
+                                $nuevaRuta = 'reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion/' . $reconocimientoergo->id . '.' . $extension;
 
                                 Storage::makeDirectory('reconocimiento_ergo/' . $reconocimientoergo->id . '/instalacion');
+
                                 Storage::copy($rutaOriginal, $nuevaRuta);
 
                                 $reconocimientoergo->fotoinstalacion = $nuevaRuta;
@@ -582,6 +687,7 @@ class reconocimientoergoController extends Controller
                     }
 
 
+                    
                     // // si envia archivo MAPA DE RIESGO
 
 
@@ -3108,14 +3214,6 @@ class reconocimientoergoController extends Controller
                 '4.2' => 'Posturas dinámicas forzadas'
 
             ];
-
-
-
-
-            //------------------------------------------
-            // CATEGORIAS USADAS
-            //------------------------------------------
-
             $categorias_ids = recoergofichastecnicasModel::where(
                 'RECO_ID',
                 $RECO_ID
@@ -3125,13 +3223,6 @@ class reconocimientoergoController extends Controller
                 ->pluck('CATEGORIA_ID_FICHA')
                 ->unique()
                 ->toArray();
-
-
-
-
-            //------------------------------------------
-            // CATEGORIAS
-            //------------------------------------------
 
             $categorias = recoergocategoriasModel::whereIn(
                 'ID_CATEGORIA_ERGO',
@@ -3153,13 +3244,6 @@ class reconocimientoergoController extends Controller
                 })
                 ->values();
 
-
-
-
-            //------------------------------------------
-            // FICHAS
-            //------------------------------------------
-
             $fichas = recoergofichastecnicasModel::where(
                 'RECO_ID',
                 $RECO_ID
@@ -3168,16 +3252,8 @@ class reconocimientoergoController extends Controller
                 ->get();
 
 
-
-
-            //------------------------------------------
-            // FUENTES
-            //------------------------------------------
-
             $fuente = 'Poppins';
-
             $textoTitulo = [
-
                 'name' => $fuente,
                 'size' => 16,
                 'bold' => true,
@@ -3186,7 +3262,6 @@ class reconocimientoergoController extends Controller
             ];
 
             $textoHeader = [
-
                 'name' => $fuente,
                 'size' => 11,
                 'bold' => true,
@@ -3195,7 +3270,6 @@ class reconocimientoergoController extends Controller
             ];
 
             $texto = [
-
                 'name' => $fuente,
                 'size' => 10,
                 'color' => '000000'
@@ -3203,78 +3277,31 @@ class reconocimientoergoController extends Controller
             ];
 
 
-
-
-            //------------------------------------------
-            // ALINEACIONES
-            //------------------------------------------
-
             $centrado = [
-
                 'alignment' => 'center',
                 'valign' => 'center'
 
             ];
 
             $izquierda = [
-
                 'alignment' => 'left',
                 'valign' => 'center'
 
             ];
 
 
-
-
-            //------------------------------------------
-            // ANCHOS DINAMICOS
-            //------------------------------------------
-
             $anchoTitulo = 4500;
-
-
-
-
-            //------------------------------------------
-            // ESPACIO TOTAL PT
-            //------------------------------------------
-
             $espacioPT = 7000;
 
 
-
-
-            //------------------------------------------
-            // ANCHO POR PT
-            //------------------------------------------
-
             $anchoPT = intval(
-
                 $espacioPT /
-
                     max(count($categorias), 1)
-
             );
 
-
-
-
-            //------------------------------------------
-            // ANCHO TOTAL
-            //------------------------------------------
-
             $anchoTotal =
-
                 $anchoTitulo +
-
                 ($anchoPT * count($categorias));
-
-
-
-
-            //------------------------------------------
-            // TABLA
-            //------------------------------------------
 
             $table = new Table([
 
@@ -3286,250 +3313,112 @@ class reconocimientoergoController extends Controller
             ]);
 
 
-
-
-            //------------------------------------------
-            // TITULO
-            //------------------------------------------
-
             $table->addRow(700);
-
             $table->addCell(
-
                 $anchoTotal,
-
                 [
-
                     'gridSpan' =>
                     count($categorias) + 1,
-
                     'bgColor' =>
                     'FFFFFF',
-
                     'valign' =>
                     'center'
-
                 ]
-
             )->addTextRun($centrado)->addText(
-
                 'MAPA DE PELIGROS',
-
                 $textoTitulo
 
             );
 
-
-
-
-            //------------------------------------------
-            // HEADERS
-            //------------------------------------------
-
             $table->addRow(700);
-
             $table->addCell(
-
                 $anchoTitulo,
-
                 [
-
                     'valign' => 'center',
                     'bgColor' => 'FFFFFF'
 
                 ]
-
             )->addTextRun($izquierda)->addText(
-
                 'Peligro/puesto de trabajo',
-
                 $textoHeader
-
             );
 
-
-
-
-            //------------------------------------------
-            // COLUMNAS PT
-            //------------------------------------------
-
             foreach ($categorias as $categoria) {
-
                 $table->addCell(
-
                     $anchoPT,
-
                     [
-
                         'valign' => 'center',
                         'bgColor' => 'FFFFFF'
-
                     ]
-
                 )->addTextRun($centrado)->addText(
-
                     $categoria->PT_CATEGORIA,
-
                     $textoHeader
-
                 );
             }
 
-
-
-
-            //------------------------------------------
-            // FILAS
-            //------------------------------------------
-
             foreach ($criteriosMapa as $codigo => $titulo) {
-
                 $table->addRow(600);
 
-
-
-
-                //------------------------------------------
-                // TITULO FILA
-                //------------------------------------------
-
                 $table->addCell(
-
                     $anchoTitulo,
-
                     [
-
                         'valign' => 'center'
-
                     ]
-
                 )->addTextRun($izquierda)->addText(
-
                     $titulo,
-
                     $texto
-
                 );
 
-
-
-
-                //------------------------------------------
-                // COLUMNAS
-                //------------------------------------------
-
                 foreach ($categorias as $categoria) {
-
                     $resultadoFinal = 'VERDE';
 
-
-
-
-                    //------------------------------------------
-                    // FICHAS CATEGORIA
-                    //------------------------------------------
-
                     $fichasCategoria = $fichas->where(
-
                         'CATEGORIA_ID_FICHA',
-
                         $categoria->ID_CATEGORIA_ERGO
-
                     );
 
-
-
-
-                    //------------------------------------------
-                    // VALIDAR ROJO
-                    //------------------------------------------
-
                     foreach ($fichasCategoria as $fichaDB) {
-
                         $json = json_decode(
                             $fichaDB->JSON_FICHAS,
                             true
                         );
-
                         if (!$json) {
                             continue;
                         }
-
                         foreach ($json as $bloque) {
-
                             if (
-
                                 isset($bloque['ficha']) &&
                                 $bloque['ficha'] == $codigo
-
                             ) {
-
                                 if (
-
                                     isset($bloque['resultado']) &&
                                     strtoupper($bloque['resultado']) == 'ROJO'
-
                                 ) {
-
                                     $resultadoFinal = 'ROJO';
-
                                     break 2;
                                 }
                             }
                         }
                     }
 
-
-
-
-                    //------------------------------------------
-                    // COLOR
-                    //------------------------------------------
-
                     $colorCelda = 'A9D18E';
-
                     if ($resultadoFinal == 'ROJO') {
-
                         $colorCelda = 'FF0000';
                     }
 
 
-
-
-                    //------------------------------------------
-                    // CELDA
-                    //------------------------------------------
-
                     $table->addCell(
-
                         $anchoPT,
-
                         [
-
                             'bgColor' => $colorCelda,
                             'valign' => 'center'
-
                         ]
-
                     )->addTextRun($centrado)->addText('');
                 }
             }
 
 
-
-
-            //------------------------------------------
-            // INSERTAR WORD
-            //------------------------------------------
-
-            $plantillaword->setComplexBlock(
-
-                'TABLA_7_2',
-
-                $table
-
-            );
+            $plantillaword->setComplexBlock('TABLA_7_2',$table);
 
 
 

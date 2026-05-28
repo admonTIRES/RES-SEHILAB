@@ -151,7 +151,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                 <tr>
                                     <th width="60">No.</th>
                                     <th width="130">RFC</th>
-                                    <th width="110">Cliente / Contrato</th>
+                                    <th width="110">C.P</th>
                                     <th>Folio Proyecto</th>
                                     <th>Instalación</th>
                                     <th width="70">Mostrar</th>
@@ -341,7 +341,10 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                             <input type="hidden" name="descripcion_contrato" id="descripcion_contrato">
 
 
-
+                                                                            <input type="hidden" id="hidden_fotomapa_ruta" name="hidden_fotomapa_ruta">
+                                                                            <input type="hidden" id="hidden_fotoplano_ruta" name="hidden_fotoplano_ruta">
+                                                                            <input type="hidden" id="hidden_fotoinstalacion_ruta" name="hidden_fotoinstalacion_ruta">
+                                                                            
                                                                             <!-- Guardamos la data de los clientes para poder usarla en JS -->
                                                                             <script type="text/javascript">
 
@@ -1525,7 +1528,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                         </div>
                                     </form>
                                     <div class="row justify-content-center mb-5">
-                                        <div 
+                                        <div
                                             id="contenedorGraficas"
                                             style="
                                                 width:100%;
@@ -1564,7 +1567,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     </form>
                                     <div class="row justify-content-center">
 
-                                        <div 
+                                        <div
                                             id="contenedorGraficasfichas"
                                             style="
                                                 width:100%;

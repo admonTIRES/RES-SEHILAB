@@ -1938,10 +1938,10 @@ Route::resource('informes', 'HI\informesrecoController');
 
 Route::resource('reconocimientoPsicosocial', 'PSICO\reconocimientoPsicoController');
 
-Route::get('/estructuraPsico/{FOLIO}', ['as' => 'reconocimientoPsico.estructuraproyectos', 'uses' => 'PSICO\reconocimientoPsicoController@estructuraproyectos']);
+Route::get('/estructuraPsico/{FOLIO}', ['as' => 'reconocimientoPsico.estructuraPsico', 'uses' => 'PSICO\reconocimientoPsicoController@estructuraPsico']);
 
 
-Route::get('/folioproyectoPsico/{proyecto_folio}', ['as' => 'reconocimientoPsico.folioproyecto', 'uses' => 'PSICO\reconocimientoPsicoController@folioproyecto']);
+Route::get('/folioproyectoPsico/{proyecto_folio}', ['as' => 'reconocimientoPsico.folioproyectoPsico', 'uses' => 'PSICO\reconocimientoPsicoController@folioproyectoPsico']);
 
 Route::get('mostrarplanopsico/{archivo_opcion}/{reconocimientopsico_id}', ['as' => 'mostrarplanopsico', 'uses' => 'PSICO\reconocimientoPsicoController@mostrarplanopsico']);
 Route::get('mostrarfotoinstalacionpsico/{archivo_opcion}/{reconocimientopsico_id}', ['as' => 'mostrarfotoinstalacionpsico', 'uses' => 'PSICO\reconocimientoPsicoController@mostrarfotoinstalacionpsico']);

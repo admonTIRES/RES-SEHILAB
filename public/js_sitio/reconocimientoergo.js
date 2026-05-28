@@ -1607,138 +1607,339 @@ function obtenerEstructuraProyectos(FOLIO, NUEVO) {
 										<h4 class="mb-2">${response.info[0].NOMBRE_CONTRATO}</h4>`).css('border-style', 'dotted')
 
 				
-				//FOTOS OBTENIDAS DE RECSENSORIAL
-				if (response.info[0].FOTOUBICACION != null) {
-					var archivo = response.info[0].FOTOUBICACION;
-					var extension = archivo.substring(archivo.lastIndexOf("."));
-					var imagenUrl = '/mostrarmapa/0/' + response.info[0].ID + extension;
-		
-					rutaMapa = imagenUrl
-					$("#hidden_fotomapa").val(response.info[0].ID);
-					$("#hidden_fotomapa_extension").val(extension);
-		
-					// INPUT FOTO UBICACION
-					if ($('#inputfotomapa').data('dropify')) {
-						$('#inputfotomapa').dropify().data('dropify').destroy();
-						// $('.dropify-wrapper').css('height', 400);
-						$('#inputfotomapa').dropify().data('dropify').settings.defaultFile = imagenUrl;
-						$('#inputfotomapa').dropify().data('dropify').init();
-					}
-					else {
-						// $('#inputfotomapa').attr('data-height', 400);
-						$('#inputfotomapa').attr('data-default-file', imagenUrl);
-						$('#inputfotomapa').dropify({
-							messages: {
-								'default': 'Arrastre la imagen aquí o haga click',
-								'replace': 'Arrastre la imagen o haga clic para reemplazar',
-								'remove': 'Quitar',
-								'error': 'Ooops, ha ocurrido un error.'
-							},
-							error: {
-								'fileSize': 'Demasiado grande ({{ value }} max).',
-								'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-								'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-								'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-								'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-								'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-							}
-						});
-					}
-		
-					// No requerir campo FOTO
-					$('#inputfotomapa').attr('required', false);
-		
-					// Activar boton descarga
-					$("#boton_descargarmapaubicacion").css('display', 'block');
-				}
-				else {
-					$("#boton_descargarmapaubicacion").css('display', 'none');
-				}
+			
+                
+                
+                if (response.info[0].FOTOUBICACION != null) {
+
+	var archivo = response.info[0].FOTOUBICACION;
+	var extension = archivo.substring(archivo.lastIndexOf("."));
+	var imagenUrl = '/mostrarmapa/0/' + response.info[0].ID + extension;
+
+	rutaMapa = imagenUrl;
+
+	// GUARDAMOS DATOS
+	$("#hidden_fotomapa").val(response.info[0].ID);
+	$("#hidden_fotomapa_extension").val(extension);
+	$("#hidden_fotomapa_ruta").val(response.info[0].FOTOUBICACION);
+
+	// INPUT FOTO UBICACION
+	if ($('#inputfotomapa').data('dropify')) {
+
+		$('#inputfotomapa').dropify().data('dropify').destroy();
+
+		$('#inputfotomapa').dropify({
+			defaultFile: imagenUrl,
+			messages: {
+				'default': 'Arrastre la imagen aquí o haga click',
+				'replace': 'Arrastre la imagen o haga clic para reemplazar',
+				'remove': 'Quitar',
+				'error': 'Ooops, ha ocurrido un error.'
+			},
+			error: {
+				'fileSize': 'Demasiado grande ({{ value }} max).',
+				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+			}
+		});
+
+	} else {
+
+		$('#inputfotomapa').attr('data-default-file', imagenUrl);
+
+		$('#inputfotomapa').dropify({
+			messages: {
+				'default': 'Arrastre la imagen aquí o haga click',
+				'replace': 'Arrastre la imagen o haga clic para reemplazar',
+				'remove': 'Quitar',
+				'error': 'Ooops, ha ocurrido un error.'
+			},
+			error: {
+				'fileSize': 'Demasiado grande ({{ value }} max).',
+				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+			}
+		});
+	}
+
+	$('#inputfotomapa').attr('required', false);
+
+	$("#boton_descargarmapaubicacion").css('display', 'block');
+
+} else {
+
+	$("#boton_descargarmapaubicacion").css('display', 'none');
+}
+
+
+
+// FOTO PLANO
 
 				if (response.info[0].FOTOPLANO != null) {
-					var archivo = response.info[0].FOTOPLANO;
-					var extension = archivo.substring(archivo.lastIndexOf("."));
-					var imagenUrl = '/mostrarplano/0/' + response.info[0].ID + extension;
-			
-					rutaMapa = imagenUrl;
-			
-					$("#hidden_fotoplano").val(response.info[0].ID);
-					$("#hidden_fotoplano_extension").val(extension);
-			
-					// INPUT FOTO PLANO
-					if ($('#inputfotoplano').data('dropify')) {
-						$('#inputfotoplano').dropify().data('dropify').destroy();
-						// $('.dropify-wrapper').css('height', 400);
-						$('#inputfotoplano').dropify().data('dropify').settings.defaultFile = imagenUrl;
-						$('#inputfotoplano').dropify().data('dropify').init();
-					}
-					else {
-						// $('#inputfotoplano').attr('data-height', 400);
-						$('#inputfotoplano').attr('data-default-file', imagenUrl);
-						$('#inputfotoplano').dropify({
-							messages: {
-								'default': 'Arrastre la imagen aquí o haga click',
-								'replace': 'Arrastre la imagen o haga clic para reemplazar',
-								'remove': 'Quitar',
-								'error': 'Ooops, ha ocurrido un error.'
-							},
-							error: {
-								'fileSize': 'Demasiado grande ({{ value }} max).',
-								'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-								'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-								'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-								'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-								'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-							}
-						});
-					}
-			
-					// No requerir campo FOTO
-					$('#inputfotoplano').attr('required', false);
-			
-					// Activar boton descarga
-					$("#boton_descargarplanoinstalacion").css('display', 'block');
+
+	var archivo = response.info[0].FOTOPLANO;
+	var extension = archivo.substring(archivo.lastIndexOf("."));
+	var imagenUrl = '/mostrarplano/0/' + response.info[0].ID + extension;
+
+	rutaMapa = imagenUrl;
+
+	$("#hidden_fotoplano").val(response.info[0].ID);
+	$("#hidden_fotoplano_extension").val(extension);
+
+	// NUEVO
+	$("#hidden_fotoplano_ruta").val(response.info[0].FOTOPLANO);
+
+	// INPUT FOTO PLANO
+	if ($('#inputfotoplano').data('dropify')) {
+
+		$('#inputfotoplano').dropify().data('dropify').destroy();
+
+		$('#inputfotoplano').dropify().data('dropify').settings.defaultFile = imagenUrl;
+
+		$('#inputfotoplano').dropify().data('dropify').init();
+
+	}
+	else {
+
+		$('#inputfotoplano').attr('data-default-file', imagenUrl);
+
+		$('#inputfotoplano').dropify({
+			messages: {
+				'default': 'Arrastre la imagen aquí o haga click',
+				'replace': 'Arrastre la imagen o haga clic para reemplazar',
+				'remove': 'Quitar',
+				'error': 'Ooops, ha ocurrido un error.'
+			},
+			error: {
+				'fileSize': 'Demasiado grande ({{ value }} max).',
+				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+			}
+		});
+	}
+
+	$('#inputfotoplano').attr('required', false);
+
+	$("#boton_descargarplanoinstalacion").css('display', 'block');
+
+}
+else {
+
+	$("#boton_descargarplanoinstalacion").css('display', 'none');
 				}
-				else {
-					$("#boton_descargarplanoinstalacion").css('display', 'none');
+				
+				
+
+
+// FOTO INSTALACION
+
+				if (response.info[0].FOTOINSTALACION) {
+
+	var archivo = response.info[0].FOTOINSTALACION;
+	var extension = archivo.substring(archivo.lastIndexOf("."));
+	var imagenUrl = '/mostrarfotoinstalacion/0/' + response.info[0].ID + extension;
+
+	$("#hidden_fotoinstalacion").val(response.info[0].ID);
+	$("#hidden_fotoinstalacion_extension").val(extension);
+
+	// NUEVO
+	$("#hidden_fotoinstalacion_ruta").val(response.info[0].FOTOINSTALACION);
+
+	// INPUT FOTO INSTALACION
+	if ($('#inputfotoinstalacion').data('dropify')) {
+
+		$('#inputfotoinstalacion').dropify().data('dropify').destroy();
+
+		$('#inputfotoinstalacion').dropify().data('dropify').settings.defaultFile = imagenUrl;
+
+		$('#inputfotoinstalacion').dropify().data('dropify').init();
+
+	}
+	else {
+
+		$('#inputfotoinstalacion').attr('data-default-file', imagenUrl);
+
+		$('#inputfotoinstalacion').dropify({
+			messages: {
+				'default': 'Arrastre la imagen aquí o haga click',
+				'replace': 'Arrastre la imagen o haga clic para reemplazar',
+				'remove': 'Quitar',
+				'error': 'Ooops, ha ocurrido un error.'
+			},
+			error: {
+				'fileSize': 'Demasiado grande ({{ value }} max).',
+				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+			}
+		});
+	}
+
+	$('#inputfotoinstalacion').attr('required', false);
+
+	$("#boton_descargarfotoinstalacion").css('display', 'block');
+
+}
+else {
+
+	$('#inputfotoinstalacion').val('');
+
+	$('#inputfotoinstalacion').dropify().data('dropify').resetPreview();
+
+	$('#inputfotoinstalacion').dropify().data('dropify').clearElement();
+
+	$('#inputfotoinstalacion').attr('required', false);
+
+	$("#boton_descargarfotoinstalacion").css('display', 'none');
 				}
+				
+
+				
+				// //FOTOS OBTENIDAS DE RECSENSORIAL
+				// if (response.info[0].FOTOUBICACION != null) {
+				// 	var archivo = response.info[0].FOTOUBICACION;
+				// 	var extension = archivo.substring(archivo.lastIndexOf("."));
+				// 	var imagenUrl = '/mostrarmapa/0/' + response.info[0].ID + extension;
+		
+				// 	rutaMapa = imagenUrl
+				// 	$("#hidden_fotomapa").val(response.info[0].ID);
+				// 	$("#hidden_fotomapa_extension").val(extension);
+		
+				// 	// INPUT FOTO UBICACION
+				// 	if ($('#inputfotomapa').data('dropify')) {
+				// 		$('#inputfotomapa').dropify().data('dropify').destroy();
+				// 		// $('.dropify-wrapper').css('height', 400);
+				// 		$('#inputfotomapa').dropify().data('dropify').settings.defaultFile = imagenUrl;
+				// 		$('#inputfotomapa').dropify().data('dropify').init();
+				// 	}
+				// 	else {
+				// 		// $('#inputfotomapa').attr('data-height', 400);
+				// 		$('#inputfotomapa').attr('data-default-file', imagenUrl);
+				// 		$('#inputfotomapa').dropify({
+				// 			messages: {
+				// 				'default': 'Arrastre la imagen aquí o haga click',
+				// 				'replace': 'Arrastre la imagen o haga clic para reemplazar',
+				// 				'remove': 'Quitar',
+				// 				'error': 'Ooops, ha ocurrido un error.'
+				// 			},
+				// 			error: {
+				// 				'fileSize': 'Demasiado grande ({{ value }} max).',
+				// 				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+				// 				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+				// 				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+				// 				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+				// 				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+				// 			}
+				// 		});
+				// 	}
+		
+				// 	// No requerir campo FOTO
+				// 	$('#inputfotomapa').attr('required', false);
+		
+				// 	// Activar boton descarga
+				// 	$("#boton_descargarmapaubicacion").css('display', 'block');
+				// }
+				// else {
+				// 	$("#boton_descargarmapaubicacion").css('display', 'none');
+				// }
+
+				// if (response.info[0].FOTOPLANO != null) {
+				// 	var archivo = response.info[0].FOTOPLANO;
+				// 	var extension = archivo.substring(archivo.lastIndexOf("."));
+				// 	var imagenUrl = '/mostrarplano/0/' + response.info[0].ID + extension;
+			
+				// 	rutaMapa = imagenUrl;
+			
+				// 	$("#hidden_fotoplano").val(response.info[0].ID);
+				// 	$("#hidden_fotoplano_extension").val(extension);
+			
+				// 	// INPUT FOTO PLANO
+				// 	if ($('#inputfotoplano').data('dropify')) {
+				// 		$('#inputfotoplano').dropify().data('dropify').destroy();
+				// 		// $('.dropify-wrapper').css('height', 400);
+				// 		$('#inputfotoplano').dropify().data('dropify').settings.defaultFile = imagenUrl;
+				// 		$('#inputfotoplano').dropify().data('dropify').init();
+				// 	}
+				// 	else {
+				// 		// $('#inputfotoplano').attr('data-height', 400);
+				// 		$('#inputfotoplano').attr('data-default-file', imagenUrl);
+				// 		$('#inputfotoplano').dropify({
+				// 			messages: {
+				// 				'default': 'Arrastre la imagen aquí o haga click',
+				// 				'replace': 'Arrastre la imagen o haga clic para reemplazar',
+				// 				'remove': 'Quitar',
+				// 				'error': 'Ooops, ha ocurrido un error.'
+				// 			},
+				// 			error: {
+				// 				'fileSize': 'Demasiado grande ({{ value }} max).',
+				// 				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+				// 				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+				// 				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+				// 				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+				// 				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+				// 			}
+				// 		});
+				// 	}
+			
+				// 	// No requerir campo FOTO
+				// 	$('#inputfotoplano').attr('required', false);
+			
+				// 	// Activar boton descarga
+				// 	$("#boton_descargarplanoinstalacion").css('display', 'block');
+				// }
+				// else {
+				// 	$("#boton_descargarplanoinstalacion").css('display', 'none');
+				// }
 
 			
 			
-				// OBTENER FOTO INSTALACION
-				if (response.info[0].FOTOINSTALACION) {
-					var archivo = response.info[0].FOTOINSTALACION;
-					var extension = archivo.substring(archivo.lastIndexOf("."));
-					var imagenUrl = '/mostrarfotoinstalacion/0/' + response.info[0].ID + extension;
+				// // OBTENER FOTO INSTALACION
+				// if (response.info[0].FOTOINSTALACION) {
+				// 	var archivo = response.info[0].FOTOINSTALACION;
+				// 	var extension = archivo.substring(archivo.lastIndexOf("."));
+				// 	var imagenUrl = '/mostrarfotoinstalacion/0/' + response.info[0].ID + extension;
 			
 					
-					$("#hidden_fotoinstalacion").val(response.info[0].ID);
-					$("#hidden_fotoinstalacion_extension").val(extension);
-					// INPUT FOTO INSTALACION
-					$('#inputfotoinstalacion').dropify().data('dropify').destroy();
-					// $('.dropify-wrapper').css('height', 400);
-					$('#inputfotoinstalacion').dropify().data('dropify').settings.defaultFile = imagenUrl;
-					$('#inputfotoinstalacion').dropify().data('dropify').init();
+				// 	$("#hidden_fotoinstalacion").val(response.info[0].ID);
+				// 	$("#hidden_fotoinstalacion_extension").val(extension);
+				// 	// INPUT FOTO INSTALACION
+				// 	$('#inputfotoinstalacion').dropify().data('dropify').destroy();
+				// 	// $('.dropify-wrapper').css('height', 400);
+				// 	$('#inputfotoinstalacion').dropify().data('dropify').settings.defaultFile = imagenUrl;
+				// 	$('#inputfotoinstalacion').dropify().data('dropify').init();
 			
-					// No requerir campo FOTO
-					$('#inputfotoinstalacion').attr('required', false);
+				// 	// No requerir campo FOTO
+				// 	$('#inputfotoinstalacion').attr('required', false);
 			
-					// Activar boton descarga
-					$("#boton_descargarfotoinstalacion").css('display', 'block');
+				// 	// Activar boton descarga
+				// 	$("#boton_descargarfotoinstalacion").css('display', 'block');
 			
-				} else {
+				// } else {
 			
-					// Resetear campo FOTO INSTALACION
-					$('#inputfotoinstalacion').val('');
-					$('#inputfotoinstalacion').dropify().data('dropify').resetPreview();
-					$('#inputfotoinstalacion').dropify().data('dropify').clearElement();
+				// 	// Resetear campo FOTO INSTALACION
+				// 	$('#inputfotoinstalacion').val('');
+				// 	$('#inputfotoinstalacion').dropify().data('dropify').resetPreview();
+				// 	$('#inputfotoinstalacion').dropify().data('dropify').clearElement();
 			
-					// No requerir campo FOTO
-					$('#inputfotoinstalacion').attr('required', false);
-					$("#boton_descargarfotoinstalacion").css('display', 'none');
-				}
+				// 	// No requerir campo FOTO
+				// 	$('#inputfotoinstalacion').attr('required', false);
+				// 	$("#boton_descargarfotoinstalacion").css('display', 'none');
+				// }
 			
-		
+
+
+                
 
 
 				swal({

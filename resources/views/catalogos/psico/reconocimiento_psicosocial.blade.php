@@ -32,33 +32,32 @@
     }
 
     .green-breadcrumb {
-    /* background-color: #8bd249; 
+        /* background-color: #8bd249; 
     color: white; 
     padding: 5px 10px; 
     border-radius: 5px;  */
-    padding: 0.75rem 1rem;
-    margin-bottom: 1rem;
-    list-style: none;
-    background-color: rgb(139, 210, 73);
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+        list-style: none;
+        background-color: rgb(139, 210, 73);
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
     }
+
     .blue-breadcrumb {
-    /* background-color: #8bd249; 
+        /* background-color: #8bd249; 
     color: white; 
     padding: 5px 10px; 
     border-radius: 5px;  */
-    padding: 0.75rem 1rem;
-    margin-bottom: 1rem;
-    list-style: none;
-    background-color: rgb(0, 152, 199);
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+        list-style: none;
+        background-color: rgb(0, 152, 199);
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
     }
-
-
 </style>
 
 <!-- CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
@@ -82,10 +81,10 @@
 </style>
 
 <div class="row">
-    <div class="col-12">
+    <div class="col-12 mt-4">
         <div class="card">
             <!-- MENU DE TABS -->
-                <ul class="nav nav-tabs customtab" role="tablist">
+            <ul class="nav nav-tabs customtab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link link_menuprincipal active" data-toggle="tab" href="#tab_1" id="tab_menu1" role="tab">
                         <span class="hidden-sm-up"><i class="ti-list"></i></span>
@@ -120,9 +119,8 @@
                             <thead>
                                 <tr>
                                     <th width="60">No.</th>
-                                    <th width="100">Alcance</th>
-                                    <th width="130">Folios</th>
-                                    <th width="110">Cliente / Contrato</th>
+                                    <th width="130">RFC</th>
+                                    <th width="110">C.P</th>
                                     <th>Folio Proyecto</th>
                                     <th>Instalación</th>
                                     <th width="70">Mostrar</th>
@@ -256,10 +254,10 @@
                                                                         <h6 class="card-subtitle text-white m-b-0 op-5">&nbsp;</h6>
                                                                         <div class="row">
                                                                             {!! csrf_field() !!}
-                                                                    
+
                                                                             <div class="col-12 mt-3 mb-3">
-                                                                            <input type="hidden" class="form-control" id="recsensorial_id" name="recsensorial_id" value="0">
-                                                                            <input type="hidden" class="form-control" id="tipocliente" name="tipocliente" value="1">
+                                                                                <input type="hidden" class="form-control" id="recsensorial_id" name="recsensorial_id" value="0">
+                                                                                <input type="hidden" class="form-control" id="tipocliente" name="tipocliente" value="1">
                                                                             </div>
                                                                             <div class="col-12 text-center" id="infoCliente">
                                                                                 <!-- <style>
@@ -305,13 +303,16 @@
                                                                             <input type="hidden" name="contrato_id" id="contrato_id">
                                                                             <input type="hidden" name="descripcion_cliente" id="descripcion_cliente">
                                                                             <input type="hidden" name="descripcion_contrato" id="descripcion_contrato">
-                                                                            
 
 
+
+                                                                            <input type="hidden" id="hidden_fotomapa_ruta" name="hidden_fotomapa_ruta">
+                                                                            <input type="hidden" id="hidden_fotoplano_ruta" name="hidden_fotoplano_ruta">
+                                                                            <input type="hidden" id="hidden_fotoinstalacion_ruta" name="hidden_fotoinstalacion_ruta">
                                                                             <!-- Guardamos la data de los clientes para poder usarla en JS -->
                                                                             <script type="text/javascript">
-                                                                               
-                                                                            
+
+
                                                                             </script>
 
                                                                             <!-- Datos de Informe obtenido por el cliente -->
@@ -540,7 +541,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            
+
 
 
                                                                         </div>
@@ -564,8 +565,6 @@
                                                                                                 }
                                                                                             </style>
                                                                                             <input type="file" accept="image/jpeg,image/x-png,image/gif" id="inputfotomapa" name="inputfotomapa" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" />
-                                                                                            <input type="hidden" id="hidden_fotomapa" name="hidden_fotomapa" value="">
-                                                                                            <input type="hidden" id="hidden_fotomapa_extension" name="hidden_fotomapa_extension" value="">
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -586,9 +585,7 @@
                                                                                                     /*tamaño estatico del campo foto*/
                                                                                                 }
                                                                                             </style>
-                                                                                            <input type="file" accept="image/jpeg,image/x-png,image/gif" id="inputfotoplano" name="inputfotoplano" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" required />
-                                                                                            <input type="hidden" id="hidden_fotoplano" name="hidden_fotoplano" value="">
-                                                                                            <input type="hidden" id="hidden_fotoplano_extension" name="hidden_fotoplano_extension" value="">
+                                                                                            <input type="file" accept="image/jpeg,image/x-png,image/gif" id="inputfotoplano" name="inputfotoplano" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" />
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -609,9 +606,7 @@
                                                                                                     /*tamaño estatico del campo foto*/
                                                                                                 }
                                                                                             </style>
-                                                                                            <input type="file" accept="image/jpeg,image/x-png,image/gif" id="inputfotoinstalacion" name="inputfotoinstalacion" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" required />
-                                                                                            <input type="hidden" id="hidden_fotoinstalacion" name="hidden_fotoinstalacion" value="">
-                                                                                            <input type="hidden" id="hidden_fotoinstalacion_extension" name="hidden_fotoinstalacion_extension" value="">
+                                                                                            <input type="file" accept="image/jpeg,image/x-png,image/gif" id="inputfotoinstalacion" name="inputfotoinstalacion" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" />
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -626,7 +621,7 @@
                                                         </div>
                                                         <!-- Botones de envio y desactivacion -->
                                                         <div class="row">
-                                                            
+
                                                             <div class="col-12">
                                                                 @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Psicólogo']))
                                                                 <div class="form-group" style="text-align: right;">
@@ -727,7 +722,7 @@
                                                         <div class="row">
                                                             <div class="col-12">
                                                                 <div class="card">
-                                                                    <div class="card-body" >
+                                                                    <div class="card-body">
                                                                         <div class="col-12" style="text-align: center;">
                                                                             <label style="font-weight: bold;font-size: 20px;">Normativa (Criterio según número de trabajadores)</label>
                                                                             <h6 class="card-subtitle text-white m-b-0 op-5">&nbsp;</h6>
@@ -749,24 +744,24 @@
                                                                             <div class="col-5 mt-3 mb-3">
                                                                                 <label>Seleccione los criterios para aplicar la NOM-035-STPS-2018:</label>
                                                                                 <div class="custom-control custom-checkbox">
-                                                                                        <input type="checkbox" class="custom-control-input" id="optionA" name="optionA" >
-                                                                                        <label class="custom-control-label" for="optionA">Seleccionar guias adicionales: </label>
-                                                                                    </div>
+                                                                                    <input type="checkbox" class="custom-control-input" id="optionA" name="optionA">
+                                                                                    <label class="custom-control-label" for="optionA">Seleccionar guias adicionales: </label>
+                                                                                </div>
                                                                                 <div class="form-group">
                                                                                     <div class="custom-control custom-checkbox">
-                                                                                        <input type="checkbox" class="custom-control-input" id="option1" name="option1" >
+                                                                                        <input type="checkbox" class="custom-control-input" id="option1" name="option1">
                                                                                         <label class="custom-control-label" for="option1">GUIA DE REFERENCIA I (Acontecimientos Traumáticos Severos)</label>
                                                                                     </div>
                                                                                     <div class="custom-control custom-checkbox">
-                                                                                        <input type="checkbox" class="custom-control-input" id="option2" name="option2" >
+                                                                                        <input type="checkbox" class="custom-control-input" id="option2" name="option2">
                                                                                         <label class="custom-control-label" for="option2">GUIA DE REFERENCIA II (Factores de Riesgo Psicosocial)</label>
                                                                                     </div>
                                                                                     <div class="custom-control custom-checkbox">
-                                                                                        <input type="checkbox" class="custom-control-input" id="option3" name="option3" >
+                                                                                        <input type="checkbox" class="custom-control-input" id="option3" name="option3">
                                                                                         <label class="custom-control-label" for="option3">GUIA DE REFERENCIA III (Evaluación del Entorno Organizacional)</label>
                                                                                     </div>
                                                                                     <div class="custom-control custom-checkbox">
-                                                                                        <input type="checkbox" class="custom-control-input" id="option4" name="option4" >
+                                                                                        <input type="checkbox" class="custom-control-input" id="option4" name="option4">
                                                                                         <label class="custom-control-label" for="option4">GUIA DE REFERENCIA V (Datos del trabajador)</label>
                                                                                     </div>
                                                                                 </div>
@@ -781,7 +776,7 @@
                                                                                     <span id="error_aplicable_a" style="color: red; display: none;">Por favor selecciona una opción válida</span>
                                                                                 </div>
                                                                             </div>
-                                        
+
                                                                             <div class="col-12 mt-3 mb-3">
                                                                                 <div class="custom-control custom-checkbox">
                                                                                     <input type="checkbox" class="custom-control-input" id="habilitar_opcional" name="habilitar_opcional">
@@ -811,7 +806,7 @@
                                                                                     <div class="col-4 mt-3 mb-3">
                                                                                         <label>Hombres (cantidad/porcentaje):</label>
                                                                                         <div class="input-group">
-                                                                                            <input type="number" class="form-control" id="valor_hombres" name="RECPSICO_TOTALHOMBRESTRABAJO" placeholder="Ingresa valor de hombres" >
+                                                                                            <input type="number" class="form-control" id="valor_hombres" name="RECPSICO_TOTALHOMBRESTRABAJO" placeholder="Ingresa valor de hombres">
                                                                                             <div class="input-group-append">
                                                                                                 <span class="input-group-text" id="sufijo_hombres"> %</span>
                                                                                             </div>
@@ -822,90 +817,90 @@
                                                                                     <div class="col-4 mt-3 mb-3">
                                                                                         <label>Mujeres (cantidad/porcentaje):</label>
                                                                                         <div class="input-group">
-                                                                                            <input type="number" class="form-control" id="valor_mujeres" name="RECPSICO_TOTALMUJERESTRABAJO" placeholder="Ingresa valor de mujeres" >
+                                                                                            <input type="number" class="form-control" id="valor_mujeres" name="RECPSICO_TOTALMUJERESTRABAJO" placeholder="Ingresa valor de mujeres">
                                                                                             <div class="input-group-append">
                                                                                                 <span class="input-group-text" id="sufijo_mujeres"> %</span>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
 
+                                                                                </div>
+
                                                                             </div>
-                                                                      
-                                                                        </div>
-                                                                        <div class="col-12 mt-6 mb-3 align-items-center" id="resultados_trabajadores" style="margin: 20px auto;">
-                                                                            <div id="totaltrabajadores_container" lass="col-12 mt-6 mb-3 text-center" style="border-style: dotted; padding: 10px; width: 100%; display: none;" >
-                                                                                <div class="form-group">
-                                                                                    <div id="resultado-container" class="row mx-0 text-center align-items-center" style="display: flex; justify-content: center; align-items: center;">
-                                                                                        <h2 id="" class="mt-2" style="font-weight:bold">
-                                                                                        <i class="fa fa-id-badge">
-                                                                                        </i>
-                                                                                        Número de trabajadores a entrevistar: 
-                                                                                        </h2>
-                                                                                        <input type="number" class="form-control" id="RECPSICO_TOTALAPLICACION" name="RECPSICO_TOTALAPLICACION" value="" min="" required style="max-width: 100px; text-align: center; margin: 0 10px; font-size: 1.2rem; font-weight:bold">
-                                                                                        <h2 id="" class="mt-2" style="font-weight:bold">
-                                                                                        <i class="fa fa-id-badge">
-                                                                                        </i>
-                                                                                        trabajadores.
-                                                                                        </h2>
-                                                                                    </div>
-                                                                                    <div id="generos_container" class="col-12 text-center" style="display: none;">
-                                                                                        <h2 id="" class="mt-4" style="font-weight:bold">
-                                                                                        <i class="fa fa-id-badge">
-                                                                                        </i>
-                                                                                        Trabajadores por género: 
-                                                                                        </h2>
-                                                                                        <h3 class="mb-2" id="porcentajes" >
-                                                                                        <h3 class="mb-2" id="seleccion" >
-                                                                                        
+                                                                            <div class="col-12 mt-6 mb-3 align-items-center" id="resultados_trabajadores" style="margin: 20px auto;">
+                                                                                <div id="totaltrabajadores_container" lass="col-12 mt-6 mb-3 text-center" style="border-style: dotted; padding: 10px; width: 100%; display: none;">
+                                                                                    <div class="form-group">
+                                                                                        <div id="resultado-container" class="row mx-0 text-center align-items-center" style="display: flex; justify-content: center; align-items: center;">
+                                                                                            <h2 id="" class="mt-2" style="font-weight:bold">
+                                                                                                <i class="fa fa-id-badge">
+                                                                                                </i>
+                                                                                                Número de trabajadores a entrevistar:
+                                                                                            </h2>
+                                                                                            <input type="number" class="form-control" id="RECPSICO_TOTALAPLICACION" name="RECPSICO_TOTALAPLICACION" value="" min="" required style="max-width: 100px; text-align: center; margin: 0 10px; font-size: 1.2rem; font-weight:bold">
+                                                                                            <h2 id="" class="mt-2" style="font-weight:bold">
+                                                                                                <i class="fa fa-id-badge">
+                                                                                                </i>
+                                                                                                trabajadores.
+                                                                                            </h2>
+                                                                                        </div>
+                                                                                        <div id="generos_container" class="col-12 text-center" style="display: none;">
+                                                                                            <h2 id="" class="mt-4" style="font-weight:bold">
+                                                                                                <i class="fa fa-id-badge">
+                                                                                                </i>
+                                                                                                Trabajadores por género:
+                                                                                            </h2>
+                                                                                            <h3 class="mb-2" id="porcentajes">
+                                                                                                <h3 class="mb-2" id="seleccion">
+
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-12" style="text-align: center;">
-                                                                            <div class="form-group" style="text-align: center;">
-                                                                                <button type="submit" class="btn btn-danger w-50 botonguardar_modulorecsensorial" id="boton_guardar_normativa">
-                                                                                    Guardar datos de Normativa <i class="fa fa-save"></i>
+                                                                            <div class="col-12" style="text-align: center;">
+                                                                                <div class="form-group" style="text-align: center;">
+                                                                                    <button type="submit" class="btn btn-danger w-50 botonguardar_modulorecsensorial" id="boton_guardar_normativa">
+                                                                                        Guardar datos de Normativa <i class="fa fa-save"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <hr>
+                                                                            </div>
+                                                                            &ensp;
+                                                                            <div class="col-12" style="text-align: center;">
+                                                                                <label class="col-12" style="font-weight: bold;font-size: 20px;">Carga de trabajadores del centro de trabajo</label>
+                                                                                <!-- <h6 class="col-12 card-subtitle text-white m-b-0 op-5">&nbsp;</h6> -->
+                                                                                <button type="button" class="btn btn-success me-2 waves-effect waves-light botonnuevo_modulorecsensorial" style="margin: 25px;" data-toggle="tooltip" title="Cargar trabajadores" id="boton_carga_trabajadores" onclick="abrirTrabajadoresExcel()">
+                                                                                    <span class="btn-label"><i class="fa fa-file-excel-o"></i></span>Cargar trabajadores y/o muestrear
                                                                                 </button>
                                                                             </div>
-                                                                            <hr>
-                                                                        </div>
-                                                                        &ensp;
-                                                                        <div class="col-12" style="text-align: center;">
-                                                                            <label class="col-12" style="font-weight: bold;font-size: 20px;">Carga de trabajadores del centro de trabajo</label>
-                                                                            <!-- <h6 class="col-12 card-subtitle text-white m-b-0 op-5">&nbsp;</h6> -->
-                                                                            <button type="button" class="btn btn-success me-2 waves-effect waves-light botonnuevo_modulorecsensorial" style="margin: 25px;" data-toggle="tooltip" title="Cargar trabajadores" id="boton_carga_trabajadores" onclick="abrirTrabajadoresExcel()">
-                                                                                <span class="btn-label"><i class="fa fa-file-excel-o"></i></span>Cargar trabajadores y/o muestrear
-                                                                            </button>
-                                                                        </div>
 
-                                                                        <div class="col-12" style="text-align: center;">
-                                                                            <div>
-                                                                                <ol class="breadcrumb m-b-10 blue-breadcrumb">
-                                                                                    <h2 style="color: #ffff; margin: 0;"> <i class="fa fa-braille" aria-hidden="true"></i> Lista de trabajadores totales cargados</h2>
-                                                                                </ol>
-                                                                                <div class="table-responsive">
-                                                                                    <table class="table table-hover stylish-table" width="100%" id="tabla_trabajadores_cargados">
-                                                                                        <thead>
-                                                                                            <tr>
-                                                                                            <th class="sorting_disabled text-center" rowspan="1" colspan="1">No. Orden</th>
-                                                                                            <th class="sorting_disabled text-center" rowspan="1" colspan="1">Nombre completo del trabajador</th>
-                                                                                            <th class="sorting_disabled text-center" rowspan="1" colspan="1">Muestra</th>
-                                                                                            </tr>
-                                                                                        </thead>
-                                                                                        <tbody></tbody>
-                                                                                    </table>
+                                                                            <div class="col-12" style="text-align: center;">
+                                                                                <div>
+                                                                                    <ol class="breadcrumb m-b-10 blue-breadcrumb">
+                                                                                        <h2 style="color: #ffff; margin: 0;"> <i class="fa fa-braille" aria-hidden="true"></i> Lista de trabajadores totales cargados</h2>
+                                                                                    </ol>
+                                                                                    <div class="table-responsive">
+                                                                                        <table class="table table-hover stylish-table" width="100%" id="tabla_trabajadores_cargados">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th class="sorting_disabled text-center" rowspan="1" colspan="1">No. Orden</th>
+                                                                                                    <th class="sorting_disabled text-center" rowspan="1" colspan="1">Nombre completo del trabajador</th>
+                                                                                                    <th class="sorting_disabled text-center" rowspan="1" colspan="1">Muestra</th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody></tbody>
+                                                                                        </table>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>   
-                                                                    </div> 
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </form>
+                                                    </form>
                                                 </div>
                                             </div>
-                                           
+
                                             <!--STEP 5-->
                                             <div class="multisteps-form__panel" data-animation="scaleIn" id="steps_contenido_tab5">
                                                 <div class="multisteps-form__content">
@@ -979,11 +974,11 @@
                                                                             <input type="file" class="dropify" accept="image/jpeg,image/x-png" id="CONTRATO_DOC_IMG" name="CONTRATO_DOC_IMG" data-allowed-file-extensions="jpg png JPG PNG" data-height="296" data-default-file="" required>
                                                                         </div>
                                                                     </div>
-                                                                   
 
-                                                                   
-                                                                    
-                                                                   
+
+
+
+
                                                                 </div>
                                                             </div>
 
@@ -1032,33 +1027,33 @@
                             <input type="number" class="form-control" id="RECPSICO_APLICACION" name="RECPSICO_APLICACION" style="visibility: hidden;">
                             <div class="col-12" id="cargarTrabajadores_excel">
                             </div>
-                                        <div class="form-group">
-                                            <label> Cargar excel de trabajadores totales del centro de trabajo *</label>
-                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                <div class="form-control" data-trigger="fileinput" id="input_file_excel_documento_trabajadores">
-                                                    <i class="fa fa-file fileinput-exists"></i>
-                                                    <span class="fileinput-filename"></span>
-                                                </div>
-                                                <span class="input-group-addon btn btn-secondary btn-file">
-                                                    <span class="fileinput-new">Seleccione</span>
-                                                    <span class="fileinput-exists">Cambiar</span>
-                                                    <input type="file" accept=".xls,.xlsx" name="excelTrabajadores" id="excelTrabajadores" required>
-                                                </span>
-                                                <a href="#" class="input-group-addon btn btn-secondary fileinput-exists" data-dismiss="fileinput">Quitar</a>
-                                            </div>
-                                        </div>
-                                        <div class="row mx-2 mb-2" id="alertaVerificacion" style="display:none">
-                                            <p class="text-danger"><i class="fa fa-info-circle" aria-hidden="true"></i> Por favor, asegúrese de que el nombre de las Áreas y/o categorías a insertar corresponda con las que están cargadas en el Software. </p>
-                                        </div> 
-                                                                        
+                            <div class="form-group">
+                                <label> Cargar excel de trabajadores totales del centro de trabajo *</label>
+                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                    <div class="form-control" data-trigger="fileinput" id="input_file_excel_documento_trabajadores">
+                                        <i class="fa fa-file fileinput-exists"></i>
+                                        <span class="fileinput-filename"></span>
+                                    </div>
+                                    <span class="input-group-addon btn btn-secondary btn-file">
+                                        <span class="fileinput-new">Seleccione</span>
+                                        <span class="fileinput-exists">Cambiar</span>
+                                        <input type="file" accept=".xls,.xlsx" name="excelTrabajadores" id="excelTrabajadores" required>
+                                    </span>
+                                    <a href="#" class="input-group-addon btn btn-secondary fileinput-exists" data-dismiss="fileinput">Quitar</a>
+                                </div>
+                            </div>
+                            <div class="row mx-2 mb-2" id="alertaVerificacion" style="display:none">
+                                <p class="text-danger"><i class="fa fa-info-circle" aria-hidden="true"></i> Por favor, asegúrese de que el nombre de las Áreas y/o categorías a insertar corresponda con las que están cargadas en el Software. </p>
+                            </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer" style="display: flex; justify-content: space-between;">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="RECPSICOTRABAJADOR_MUESTRA" name="RECPSICOTRABAJADOR_MUESTRA">
-                    <label class="custom-control-label" for="RECPSICOTRABAJADOR_MUESTRA">Obtener muestra </label>
-                </div>    
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="RECPSICOTRABAJADOR_MUESTRA" name="RECPSICOTRABAJADOR_MUESTRA">
+                        <label class="custom-control-label" for="RECPSICOTRABAJADOR_MUESTRA">Obtener muestra </label>
+                    </div>
                     <div>
                         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
                         @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Psicólogo']))
@@ -1089,67 +1084,67 @@
                             <input type="hidden" class="form-control" id="RECPSICO_ID" name="RECPSICO_ID" value="0">
                         </div>
                         <div class="col-12" id="cargarTrabajadores_excel">
-                                                                            @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador', 'CoordinadorHI']))
-                                                                            
-                                                                                            <form method="post" enctype="multipart/form-data" name="form_reconocimientofisicos_pdf" id="form_reconocimientofisicos_pdf">
-                                                                                                <table width="100%" cellpadding="0" cellspacing="0">
-                                                                                                    <tbody>
-                                                                                                        <tr>
-                                                                                                            <td>
-                                                                                                                {!! csrf_field() !!}
-                                                                                                                <label style="font-size: 16px;">Cargar excel con el total de trabajadores del centro de trabajo*</label>
-                                                                                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                                                                                    <div class="form-control" data-trigger="fileinput">
-                                                                                                                        <i class="fa fa-file fileinput-exists"></i>
-                                                                                                                        <span class="fileinput-filename"></span>
-                                                                                                                    </div>
-                                                                                                                    <span class="input-group-addon btn btn-secondary btn-file">
-                                                                                                                        <span class="fileinput-new">Seleccione</span>
-                                                                                                                        <span class="fileinput-exists">Cambiar</span>
-                                                                                                                        <input type="file" accept="application/pdf" id="reconocimientofisicospdf" name="reconocimientofisicospdf" required>
-                                                                                                                    </span>
-                                                                                                                    <a href="#" class="input-group-addon btn btn-secondary fileinput-exists" data-dismiss="fileinput">Quitar</a>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                            <td>
-                                                                                                                {!! csrf_field() !!}
-                                                                                                                <label style="font-size: 16px;">Cargar excel con la muestra de trabajadores proporcionada por centro de trabajo*</label>
-                                                                                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                                                                                    <div class="form-control" data-trigger="fileinput">
-                                                                                                                        <i class="fa fa-file fileinput-exists"></i>
-                                                                                                                        <span class="fileinput-filename"></span>
-                                                                                                                    </div>
-                                                                                                                    <span class="input-group-addon btn btn-secondary btn-file">
-                                                                                                                        <span class="fileinput-new">Seleccione</span>
-                                                                                                                        <span class="fileinput-exists">Cambiar</span>
-                                                                                                                        <input type="file" accept="application/pdf" id="reconocimientofisicospdf" name="reconocimientofisicospdf" required>
-                                                                                                                    </span>
-                                                                                                                    <a href="#" class="input-group-addon btn btn-secondary fileinput-exists" data-dismiss="fileinput">Quitar</a>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                            <td width="110" style="text-align: right; vertical-align: bottom;">
-                                                                                                                <button type="submit" class="btn btn-danger" style="height: 38px;" id="boton_guardar_reconocimientofisicospdf">
-                                                                                                                    Guardar <i class="fa fa-cloud-upload"></i>
-                                                                                                                </button>
-                                                                                                            </td>
-                                                                                                            <td >
-                                                                                                               
-                                                                                                            </td>
-                                                                        
-                                                                                                        </tr>
-                                                                                                    </tbody>
-                                                                                                </table>
-                                                                                            </form>
-                                                                    
-                                                                            @endif
-                                                                        </div>
+                            @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador', 'CoordinadorHI']))
 
-                                                                        
+                            <form method="post" enctype="multipart/form-data" name="form_reconocimientofisicos_pdf" id="form_reconocimientofisicos_pdf">
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {!! csrf_field() !!}
+                                                <label style="font-size: 16px;">Cargar excel con el total de trabajadores del centro de trabajo*</label>
+                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                    <div class="form-control" data-trigger="fileinput">
+                                                        <i class="fa fa-file fileinput-exists"></i>
+                                                        <span class="fileinput-filename"></span>
+                                                    </div>
+                                                    <span class="input-group-addon btn btn-secondary btn-file">
+                                                        <span class="fileinput-new">Seleccione</span>
+                                                        <span class="fileinput-exists">Cambiar</span>
+                                                        <input type="file" accept="application/pdf" id="reconocimientofisicospdf" name="reconocimientofisicospdf" required>
+                                                    </span>
+                                                    <a href="#" class="input-group-addon btn btn-secondary fileinput-exists" data-dismiss="fileinput">Quitar</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {!! csrf_field() !!}
+                                                <label style="font-size: 16px;">Cargar excel con la muestra de trabajadores proporcionada por centro de trabajo*</label>
+                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                    <div class="form-control" data-trigger="fileinput">
+                                                        <i class="fa fa-file fileinput-exists"></i>
+                                                        <span class="fileinput-filename"></span>
+                                                    </div>
+                                                    <span class="input-group-addon btn btn-secondary btn-file">
+                                                        <span class="fileinput-new">Seleccione</span>
+                                                        <span class="fileinput-exists">Cambiar</span>
+                                                        <input type="file" accept="application/pdf" id="reconocimientofisicospdf" name="reconocimientofisicospdf" required>
+                                                    </span>
+                                                    <a href="#" class="input-group-addon btn btn-secondary fileinput-exists" data-dismiss="fileinput">Quitar</a>
+                                                </div>
+                                            </td>
+                                            <td width="110" style="text-align: right; vertical-align: bottom;">
+                                                <button type="submit" class="btn btn-danger" style="height: 38px;" id="boton_guardar_reconocimientofisicospdf">
+                                                    Guardar <i class="fa fa-cloud-upload"></i>
+                                                </button>
+                                            </td>
+                                            <td>
+
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+
+                            @endif
+                        </div>
+
+
 
                     </div>
                 </div>
                 <div class="modal-footer" style="display: flex; justify-content: space-between;">
-    
+
                     <div>
                         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
                         @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Psicólogo']))
@@ -1242,65 +1237,65 @@
                         <div class="col-12">
                             <input type="hidden" class="form-control" id="RECPSICO_ID_GUIAV" name="RECPSICO_ID" value="0">
                             <input type="hidden" class="form-control" id="ID_GUIAV" name="ID_GUIAV" value="0">
-                                <div class="form-group">
-                                    <label>Seleccionar las preguntas que desea aplicar de la Guia de referencia V *</label>
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta1" name="pregunta1" checked readonly>
-                                        <label class="custom-control-label" for="pregunta1">Sexo</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta2" name="pregunta2" checked>
-                                        <label class="custom-control-label" for="pregunta2">Edad en años</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta3" name="pregunta3" checked>
-                                        <label class="custom-control-label" for="pregunta3">Estado civil</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta4" name="pregunta4" checked>
-                                        <label class="custom-control-label" for="pregunta4">Nivel de estudios</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta5" name="pregunta5" checked readonly>
-                                        <label class="custom-control-label" for="pregunta5">Ocupacion/profesión/puesto</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta6" name="pregunta6" checked readonly>
-                                        <label class="custom-control-label" for="pregunta6">Departamento/Sección/Área</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;"> 
-                                        <input type="checkbox" class="custom-control-input" id="pregunta7" name="pregunta7" checked>
-                                        <label class="custom-control-label" for="pregunta7">Tipo de puesto</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta8" name="pregunta8" checked>
-                                        <label class="custom-control-label" for="pregunta8">Tipo de contratación</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta9" name="pregunta9" checked>
-                                        <label class="custom-control-label" for="pregunta9">Tipo de personal</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta10" name="pregunta10" checked>
-                                        <label class="custom-control-label" for="pregunta10">Tipo de jornada de trabajo</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta11" name="pregunta11" checked>
-                                        <label class="custom-control-label" for="pregunta11">Realiza rotación de turnos</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta12" name="pregunta12" checked>
-                                        <label class="custom-control-label" for="pregunta12">Tiempo en el puesto actual</label>
-                                    </div> 
-                                    <div class="custom-control custom-checkbox" style="display: block;">
-                                        <input type="checkbox" class="custom-control-input" id="pregunta13" name="pregunta13" checked>
-                                        <label class="custom-control-label" for="pregunta13">Tiempo de experiencia laboral</label>
-                                    </div> 
+                            <div class="form-group">
+                                <label>Seleccionar las preguntas que desea aplicar de la Guia de referencia V *</label>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta1" name="pregunta1" checked readonly>
+                                    <label class="custom-control-label" for="pregunta1">Sexo</label>
                                 </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta2" name="pregunta2" checked>
+                                    <label class="custom-control-label" for="pregunta2">Edad en años</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta3" name="pregunta3" checked>
+                                    <label class="custom-control-label" for="pregunta3">Estado civil</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta4" name="pregunta4" checked>
+                                    <label class="custom-control-label" for="pregunta4">Nivel de estudios</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta5" name="pregunta5" checked readonly>
+                                    <label class="custom-control-label" for="pregunta5">Ocupacion/profesión/puesto</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta6" name="pregunta6" checked readonly>
+                                    <label class="custom-control-label" for="pregunta6">Departamento/Sección/Área</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta7" name="pregunta7" checked>
+                                    <label class="custom-control-label" for="pregunta7">Tipo de puesto</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta8" name="pregunta8" checked>
+                                    <label class="custom-control-label" for="pregunta8">Tipo de contratación</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta9" name="pregunta9" checked>
+                                    <label class="custom-control-label" for="pregunta9">Tipo de personal</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta10" name="pregunta10" checked>
+                                    <label class="custom-control-label" for="pregunta10">Tipo de jornada de trabajo</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta11" name="pregunta11" checked>
+                                    <label class="custom-control-label" for="pregunta11">Realiza rotación de turnos</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta12" name="pregunta12" checked>
+                                    <label class="custom-control-label" for="pregunta12">Tiempo en el puesto actual</label>
+                                </div>
+                                <div class="custom-control custom-checkbox" style="display: block;">
+                                    <input type="checkbox" class="custom-control-input" id="pregunta13" name="pregunta13" checked>
+                                    <label class="custom-control-label" for="pregunta13">Tiempo de experiencia laboral</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer" style="display: flex; justify-content: space-between;">   
+                <div class="modal-footer" style="display: flex; justify-content: space-between;">
                     <div>
                         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-danger waves-effect waves-light" id="boton_guadarGuiaV">
@@ -1358,48 +1353,48 @@
                                         <label> Proceso del área * </label>
                                         <textarea class="form-control" rows="3" id="RECSENSORIALAREA_PROCESO" name="RECSENSORIALAREA_PROCESO"></textarea>
                                     </div>
-                                </div>     
+                                </div>
                             </div>
-                    <div class="row">
-                        <div class="col-12">
-                            @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Psicólogo']))
-                            <ol class="breadcrumb m-b-10">
-                                <button type="button" class="btn btn-secondary waves-effect waves-light botonnuevo_modulorecsensorial" data-toggle="tooltip" title="Agregar categoría" id="boton_nueva_areacategoria">
-                                    <span class="btn-label"><i class="fa fa-plus"></i></span>Categoría en el área
+                            <div class="row">
+                                <div class="col-12">
+                                    @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Psicólogo']))
+                                    <ol class="breadcrumb m-b-10">
+                                        <button type="button" class="btn btn-secondary waves-effect waves-light botonnuevo_modulorecsensorial" data-toggle="tooltip" title="Agregar categoría" id="boton_nueva_areacategoria">
+                                            <span class="btn-label"><i class="fa fa-plus"></i></span>Categoría en el área
+                                        </button>
+                                    </ol>
+                                    @endif
+                                    <div class="table-responsive" style="margin: 0px 0px 20px 0px; max-height: 220px; overflow-x: hidden; overflow-y: auto;">
+                                        <table class="table table-bordered table-hover stylish-table" style="margin: 0px;" width="100%" id="tabla_areacategorias">
+                                            <thead>
+                                                <tr>
+                                                    <th>Categoría</th>
+                                                    <th>Actividades</th>
+                                                    <th style="width: 120px!important;">GEH</th>
+                                                    <th style="width: 120px!important;">Total personas</th>
+                                                    <th style="width: 70px!important;">Eliminar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="7">&nbsp;</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                                @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Psicólogo']))
+                                <button type="submit" class="btn btn-danger waves-effect waves-light botonguardar_modulorecsensorial" id="boton_guardar_area">
+                                    Guardar <i class="fa fa-save"></i>
                                 </button>
-                            </ol>
-                            @endif
-                            <div class="table-responsive" style="margin: 0px 0px 20px 0px; max-height: 220px; overflow-x: hidden; overflow-y: auto;">
-                                <table class="table table-bordered table-hover stylish-table" style="margin: 0px;" width="100%" id="tabla_areacategorias">
-                                    <thead>
-                                        <tr>
-                                            <th>Categoría</th>
-                                            <th>Actividades</th>
-                                            <th style="width: 120px!important;">GEH</th>
-                                            <th style="width: 120px!important;">Total personas</th>
-                                            <th style="width: 70px!important;">Eliminar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="7">&nbsp;</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                @endif
                             </div>
                         </div>
-                    </div>
-    
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-                    @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Psicólogo']))
-                    <button type="submit" class="btn btn-danger waves-effect waves-light botonguardar_modulorecsensorial" id="boton_guardar_area">
-                        Guardar <i class="fa fa-save"></i>
-                    </button>
-                    @endif
-                </div>
-                </div>
             </form>
         </div>
     </div>
