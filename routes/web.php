@@ -2135,6 +2135,9 @@ Route::get('mostrarmapariesgoergo/{archivo_opcion}/{recsensorial_id}', ['as' => 
 Route::get('getGraficaErgo/{reco_id}', ['as' => 'getGraficaErgo', 'uses' => 'ERGO\reconocimientoergoController@getGraficaErgo']);
 Route::get('obtenerDatosInformesRecoergo/{ID}', ['as' => 'obtenerDatosInformesRecoergo', 'uses' => 'ERGO\reconocimientoergoController@obtenerDatosInformesRecoergo']);
 
+Route::post('obtenerDatosPlantilla', ['as' => 'obtenerDatosPlantilla', 'uses' => 'ERGO\reconocimientoergoController@obtenerDatosPlantilla']);
+
+
 //// portada
 Route::post('guardarPortadaRecoErgo',['as' => 'guardarPortadaRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarPortadaRecoErgo']);
 Route::get('mostrarportadarecoergo/{archivo_opcion}/{reco_id}',['as' => 'mostrarportadarecoergo','uses' => 'ERGO\reconocimientoergoController@mostrarportadarecoergo']);
@@ -2221,6 +2224,8 @@ Route::get('Tablarecoareasergo', ['as' => 'ERGO.Tablarecoareasergo', 'uses' => '
 Route::resource('recoergofichas', 'ERGO\fichasergoController');
 Route::get('getCategoriasErgo', ['as' => 'ERGO.getCategoriasErgo', 'uses' => 'ERGO\fichasergoController@getCategoriasErgo']);
 Route::get('Tablarecofichasergo', ['as' => 'ERGO.Tablarecofichasergo', 'uses' => 'ERGO\fichasergoController@Tablarecofichasergo']);
+Route::post('obtenerPEFichas', ['as' => 'ERGO.obtenerPEFichas', 'uses' => 'ERGO\fichasergoController@obtenerPEFichas']);
+
 
 /////////////// COPIAR CATEGORIAS Y AREAS
 Route::post('sincronizarHigieneErgo', ['as' => 'sincronizarHigieneErgo', 'uses' => 'ERGO\reconocimientoergoController@sincronizarHigieneErgo']);

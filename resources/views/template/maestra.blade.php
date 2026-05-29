@@ -954,7 +954,7 @@ use Illuminate\Support\Str;
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
     {{-- pagina --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js_sitio/reconocimientoergo.js?v=42"></script>
+    <script src="/js_sitio/reconocimientoergo.js?v=44"></script>
     <script src="/js_sitio/funcionesgeneralesergo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 

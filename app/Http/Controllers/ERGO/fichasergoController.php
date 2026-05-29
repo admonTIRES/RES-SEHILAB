@@ -105,6 +105,38 @@ class fichasergoController extends Controller
 
 
 
+    public function obtenerPEFichas(Request $request)
+    {
+        $reco_id = $request->reco_id;
+
+        $fichas = DB::table('recoergo_fichastecnicas')
+            ->where('RECO_ID', $reco_id)
+            ->whereNotNull('PE_EVALUADAS')
+            ->where('PE_EVALUADAS', '!=', '')
+            ->pluck('PE_EVALUADAS');
+
+        $mayor = 0;
+
+        foreach ($fichas as $pt) {
+            preg_match('/\d+/', $pt, $matches);
+            if (isset($matches[0])) {
+                $numero = intval($matches[0]);
+                if ($numero > $mayor) {
+                    $mayor = $numero;
+                }
+            }
+        }
+
+        $nuevo = $mayor + 1;
+
+        return response()->json([
+            'pe' => 'PE' . $nuevo
+        ]);
+    }
+
+
+
+
     public function store(Request $request)
     {
         try {

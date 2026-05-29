@@ -10,6 +10,7 @@ class recoergofichastecnicasModel extends Model
     protected $table = 'recoergo_fichastecnicas';
     protected $fillable = [
         'RECO_ID',
+        'PE_EVALUADAS',
         'CATEGORIA_ID_FICHA',
         'CAT_DEPARTAMENTO_FICHA',
         'CAT_AREAS_FICHA',
