@@ -1063,10 +1063,8 @@ class reconocimientoergoController extends Controller
 
 
     //// TABLA MAPA DE RIESGO 
-
     public function getMapaPeligros($reco_id)
     {
-
         $criterios = [
             '1.1' => 'Levantamiento de cargas',
             '1.2' => 'Transporte de cargas',
@@ -1076,91 +1074,63 @@ class reconocimientoergoController extends Controller
             '4.2' => 'Posturas dinámicas forzadas'
         ];
 
-
-        $categorias_ids = recoergofichastecnicasModel::where(
-            'RECO_ID',
-            $reco_id
-        )
-            ->where('ACTIVO', 1)
-            ->whereNotNull('CATEGORIA_ID_FICHA')
-            ->pluck('CATEGORIA_ID_FICHA')
-            ->unique()
-            ->toArray();
-
-        $categorias = recoergocategoriasModel::whereIn(
-            'ID_CATEGORIA_ERGO',
-            $categorias_ids
-        )
-            ->where('ACTIVO', 1)
-            ->get()
-            ->sortBy(function ($item) {
-
-                return intval(
-                    str_replace(
-                        'PT',
-                        '',
-                        $item->PT_CATEGORIA
-                    )
-                );
-            })
-            ->values();
-
-
         $fichas = recoergofichastecnicasModel::where(
             'RECO_ID',
             $reco_id
         )
             ->where('ACTIVO', 1)
+            ->whereNotNull('PE_EVALUADAS')
+            ->where('PE_EVALUADAS', '!=', '')
+            ->orderBy('ID_FICHAS_TECNICAS')
             ->get();
 
         $respuesta = [];
 
         foreach ($criterios as $codigo => $titulo) {
+
             $fila = [];
             $fila['codigo'] = $codigo;
             $fila['titulo'] = $titulo;
             $fila['resultados'] = [];
 
-            foreach ($categorias as $categoria) {
-          
+            foreach ($fichas as $ficha) {
+
                 $resultadoFinal = 'VERDE';
 
-                $fichasCategoria = $fichas->where(
-                    'CATEGORIA_ID_FICHA',
-                    $categoria->ID_CATEGORIA_ERGO
+                $json = json_decode(
+                    $ficha->JSON_FICHAS,
+                    true
                 );
 
-                foreach ($fichasCategoria as $fichaDB) {
-                    $json = json_decode(
-                        $fichaDB->JSON_FICHAS,
-                        true
-                    );
-                    if (!$json) {
-                        continue;
-                    }
+                if ($json) {
+
                     foreach ($json as $bloque) {
+
                         if (
                             isset($bloque['ficha']) &&
                             $bloque['ficha'] == $codigo
                         ) {
+
                             if (
                                 isset($bloque['resultado']) &&
                                 strtoupper($bloque['resultado']) == 'ROJO'
                             ) {
+
                                 $resultadoFinal = 'ROJO';
-                                break 2;
+                                break;
                             }
                         }
                     }
                 }
 
-                $fila['resultados'][$categoria->ID_CATEGORIA_ERGO] = $resultadoFinal;
+                $fila['resultados'][$ficha->ID_FICHAS_TECNICAS] = $resultadoFinal;
             }
 
             $respuesta[] = $fila;
         }
+
         return response()->json([
-            'categorias' => $categorias,
+            'fichas' => $fichas,
             'criterios' => $respuesta
         ]);
     }
@@ -1688,10 +1658,6 @@ class reconocimientoergoController extends Controller
         }
     }
 
-
-
-
-
     public function guardarProcesoInstalacionRecoErgo(Request $request)
     {
         try {
@@ -1732,17 +1698,32 @@ class reconocimientoergoController extends Controller
 
     public function tablaReporteCategoriasErgo(Request $request)
     {
-
-        $categorias = recoergocategoriasModel::where(
-            'RECO_ID',
-            $request->ergoid
+        $categorias = recoergocategoriasModel::select(
+            'recoergocategorias.ID_CATEGORIA_ERGO',
+            'recoergocategorias.PT_CATEGORIA',
+            'recoergocategorias.NOMBRE_CATEGORIA_ERGO',
+            DB::raw('COUNT(recoergo_fichastecnicas.ID_FICHAS_TECNICAS) AS TOTAL_EVALUADOS')
         )
-            ->where('ACTIVO', 1)
-            ->orderBy('ID_CATEGORIA_ERGO', 'ASC')
+            ->leftJoin(
+                'recoergo_fichastecnicas',
+                'recoergo_fichastecnicas.CATEGORIA_ID_FICHA',
+                '=',
+                'recoergocategorias.ID_CATEGORIA_ERGO'
+            )
+            ->where('recoergocategorias.RECO_ID', $request->ergoid)
+            ->where('recoergocategorias.ACTIVO', 1)
+            ->groupBy(
+                'recoergocategorias.ID_CATEGORIA_ERGO',
+                'recoergocategorias.PT_CATEGORIA',
+                'recoergocategorias.NOMBRE_CATEGORIA_ERGO'
+            )
+            ->orderBy('recoergocategorias.ID_CATEGORIA_ERGO', 'ASC')
             ->get();
+
         $numero = 1;
 
         foreach ($categorias as $categoria) {
+
             $categoria->NUMERO = $numero;
             $numero++;
         }
@@ -1751,9 +1732,6 @@ class reconocimientoergoController extends Controller
             'data' => $categorias
         ]);
     }
-
-
-
 
     public function tablaReporteAreasErgo(Request $request)
     {
@@ -2379,7 +2357,29 @@ class reconocimientoergoController extends Controller
 
 
 
+    public function obtenerDatosPlantilla(Request $request)
+    {
+        $reco = reconocimientoergoModel::find($request->id);
 
+        if (!$reco) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Registro no encontrado'
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'INSTALACION' => $reco->instalacion,
+                'DIRECCION' => $reco->direccion,
+                'COORDENADAS' => $reco->coordenadas,
+                'DESCRIPCIONPROCESO' => $reco->descripcionproceso,
+                'DESCRIPCIONACTIVIDAD' => $reco->actividadprincipal,
+
+            ]
+        ]);
+    }
 
     public function descargarRevisionRecoErgo(Request $request, $RECO_ID)
     {
@@ -2614,8 +2614,6 @@ class reconocimientoergoController extends Controller
             $plantillaword->setValue('OBJETIVO_GENERAL', $datosGenerales->INFORME_OBJETIVOGENERALES ?? 'No cargado');
 
             //// OBEJTIVO ESPECIFICOS
-
-
             $textoObjetivos = '';
 
             if (!empty($datosGenerales->INFORME_OBJETIVOSESPECIFICOS)) {
@@ -2675,10 +2673,26 @@ class reconocimientoergoController extends Controller
 
             //// TABLA DE LAS CATEGORIAS
 
-
-            $categorias = recoergocategoriasModel::where('RECO_ID', $RECO_ID)
-                ->where('ACTIVO', 1)
-                ->orderBy('ID_CATEGORIA_ERGO', 'ASC')
+            $categorias = recoergocategoriasModel::select(
+                'recoergocategorias.ID_CATEGORIA_ERGO',
+                'recoergocategorias.PT_CATEGORIA',
+                'recoergocategorias.NOMBRE_CATEGORIA_ERGO',
+                DB::raw('COUNT(recoergo_fichastecnicas.ID_FICHAS_TECNICAS) AS TOTAL_EVALUADOS')
+            )
+                ->leftJoin(
+                    'recoergo_fichastecnicas',
+                    'recoergo_fichastecnicas.CATEGORIA_ID_FICHA',
+                    '=',
+                    'recoergocategorias.ID_CATEGORIA_ERGO'
+                )
+                ->where('recoergocategorias.RECO_ID', $RECO_ID)
+                ->where('recoergocategorias.ACTIVO', 1)
+                ->groupBy(
+                    'recoergocategorias.ID_CATEGORIA_ERGO',
+                    'recoergocategorias.PT_CATEGORIA',
+                    'recoergocategorias.NOMBRE_CATEGORIA_ERGO'
+                )
+                ->orderBy('recoergocategorias.ID_CATEGORIA_ERGO', 'ASC')
                 ->get();
 
             $fuente = 'Poppins';
@@ -2696,8 +2710,20 @@ class reconocimientoergoController extends Controller
                 'color' => '000000'
             );
 
+            $texto_negrita = array(
+                'name' => $fuente,
+                'size' => 10,
+                'bold' => true,
+                'color' => '000000'
+            );
+
             $centrado = array(
                 'alignment' => 'center',
+                'valign' => 'center'
+            );
+
+            $derecha = array(
+                'alignment' => 'right',
                 'valign' => 'center'
             );
 
@@ -2711,8 +2737,8 @@ class reconocimientoergoController extends Controller
             );
 
             $ancho_col_1 = 2000;
-            $ancho_col_2 = 7200;
-
+            $ancho_col_2 = 6000;
+            $ancho_col_3 = 2500;
 
             $table = new Table(array(
                 'name' => $fuente,
@@ -2724,17 +2750,48 @@ class reconocimientoergoController extends Controller
 
             $table->addRow(500);
 
-            $table->addCell($ancho_col_1, $encabezado_celda)->addTextRun($centrado)->addText('PT', $encabezado_texto);
-            $table->addCell($ancho_col_2, $encabezado_celda)->addTextRun($centrado)->addText('Categoría', $encabezado_texto);
+            $table->addCell(
+                $ancho_col_1,
+                $encabezado_celda
+            )->addTextRun($centrado)->addText(
+                'PT',
+                $encabezado_texto
+            );
 
+            $table->addCell(
+                $ancho_col_2,
+                $encabezado_celda
+            )->addTextRun($centrado)->addText(
+                'Categoría',
+                $encabezado_texto
+            );
+
+            $table->addCell(
+                $ancho_col_3,
+                $encabezado_celda
+            )->addTextRun($centrado)->addText(
+                'Número de evaluados',
+                $encabezado_texto
+            );
+
+            $totalPersonas = 0;
 
             if (count($categorias) > 0) {
+
                 foreach ($categorias as $categoria) {
+
+                    $totalPersonas += $categoria->TOTAL_EVALUADOS;
+
                     $table->addRow();
+
                     $table->addCell(
                         $ancho_col_1,
                         $celda
-                    )->addTextRun($centrado)->addText($categoria->PT_CATEGORIA, $texto);
+                    )->addTextRun($centrado)->addText(
+                        $categoria->PT_CATEGORIA,
+                        $texto
+                    );
+
                     $table->addCell(
                         $ancho_col_2,
                         $celda
@@ -2742,15 +2799,50 @@ class reconocimientoergoController extends Controller
                         $categoria->NOMBRE_CATEGORIA_ERGO,
                         $texto
                     );
+
+                    $table->addCell(
+                        $ancho_col_3,
+                        $celda
+                    )->addTextRun($centrado)->addText(
+                        $categoria->TOTAL_EVALUADOS,
+                        $texto
+                    );
                 }
-            } else {
+
+
                 $table->addRow();
-                $table->addCell($ancho_col_1 + $ancho_col_2, $celda)->addTextRun($centrado)->addText('No hay categorías registradas', $texto);
+
+                $table->addCell(
+                    $ancho_col_1 + $ancho_col_2,
+                    array_merge($celda, [
+                        'gridSpan' => 2
+                    ])
+                )->addTextRun($derecha)->addText(
+                    'TOTAL EVALUADOS',
+                    $texto_negrita
+                );
+
+                $table->addCell(
+                    $ancho_col_3,
+                    $celda
+                )->addTextRun($centrado)->addText(
+                    $totalPersonas,
+                    $texto_negrita
+                );
+            } else {
+
+                $table->addRow();
+
+                $table->addCell(
+                    $ancho_col_1 + $ancho_col_2 + $ancho_col_3,
+                    $celda
+                )->addTextRun($centrado)->addText(
+                    'No hay categorías registradas',
+                    $texto
+                );
             }
 
-
-            $plantillaword->setComplexBlock('TABLA_5_3', $table);
-
+            $plantillaword->setComplexBlock('TABLA_5_3',$table);
 
             //// AREAS - CATEGORIAS
 
@@ -2871,37 +2963,6 @@ class reconocimientoergoController extends Controller
 
             //// CONCLUSION
             $plantillaword->setValue('CONCLUSION', $datosGenerales->INFORME_CONCLUSION ? htmlspecialchars($datosGenerales->INFORME_CONCLUSION) : 'No cargado');
-
-
-
-            //// RECOMENDACIONES
-
-            $recomendaciones = DB::table(
-                'recomendacionesinformeergo as ri'
-            )
-                ->join(
-                    'catergo_recomendaciones as cr',
-                    'cr.ID_RECOMENDACIONES',
-                    '=',
-                    'ri.CATALOGO_RECOMENDACIONES_ID'
-                )
-                ->where('ri.RECO_ID',  $RECO_ID)
-                ->select('cr.DESCRIPCION_RECOMENDACIONES')
-                ->get();
-
-
-            $texto_recomendaciones = '';
-
-            if (count($recomendaciones) > 0) {
-                foreach ($recomendaciones as $recomendacion) {
-                    $texto_recomendaciones .=
-                        trim(strip_tags($recomendacion->DESCRIPCION_RECOMENDACIONES)) . '</w:t><w:br/><w:br/><w:t>';
-                }
-            } else {
-                $texto_recomendaciones = 'No cargado';
-            }
-
-            $plantillaword->setValue('RECOMENDACIONES', $texto_recomendaciones);
 
 
             //// RESPONSABLE 1
@@ -3204,6 +3265,225 @@ class reconocimientoergoController extends Controller
 
             ////// TABLA 7.2
 
+            // $criteriosMapa = [
+
+            //     '1.1' => 'Levantamiento de cargas',
+            //     '1.2' => 'Transporte de cargas',
+            //     '2.1' => 'Empuje y tracción de cargas',
+            //     '3.1' => 'Movimientos repetitivos',
+            //     '4.1' => 'Posturas estáticas forzadas',
+            //     '4.2' => 'Posturas dinámicas forzadas'
+
+            // ];
+            // $categorias_ids = recoergofichastecnicasModel::where(
+            //     'RECO_ID',
+            //     $RECO_ID
+            // )
+            //     ->where('ACTIVO', 1)
+            //     ->whereNotNull('CATEGORIA_ID_FICHA')
+            //     ->pluck('CATEGORIA_ID_FICHA')
+            //     ->unique()
+            //     ->toArray();
+
+            // $categorias = recoergocategoriasModel::whereIn(
+            //     'ID_CATEGORIA_ERGO',
+            //     $categorias_ids
+            // )
+            //     ->where('ACTIVO', 1)
+            //     ->get()
+            //     ->sortBy(function ($item) {
+
+            //         return intval(
+
+            //             str_replace(
+            //                 'PT',
+            //                 '',
+            //                 $item->PT_CATEGORIA
+            //             )
+
+            //         );
+            //     })
+            //     ->values();
+
+            // $fichas = recoergofichastecnicasModel::where(
+            //     'RECO_ID',
+            //     $RECO_ID
+            // )
+            //     ->where('ACTIVO', 1)
+            //     ->get();
+
+
+            // $fuente = 'Poppins';
+            // $textoTitulo = [
+            //     'name' => $fuente,
+            //     'size' => 16,
+            //     'bold' => true,
+            //     'color' => '000000'
+
+            // ];
+
+            // $textoHeader = [
+            //     'name' => $fuente,
+            //     'size' => 11,
+            //     'bold' => true,
+            //     'color' => '000000'
+
+            // ];
+
+            // $texto = [
+            //     'name' => $fuente,
+            //     'size' => 10,
+            //     'color' => '000000'
+
+            // ];
+
+
+            // $centrado = [
+            //     'alignment' => 'center',
+            //     'valign' => 'center'
+
+            // ];
+
+            // $izquierda = [
+            //     'alignment' => 'left',
+            //     'valign' => 'center'
+
+            // ];
+
+
+            // $anchoTitulo = 4500;
+            // $espacioPT = 7000;
+
+
+            // $anchoPT = intval(
+            //     $espacioPT /
+            //         max(count($categorias), 1)
+            // );
+
+            // $anchoTotal =
+            //     $anchoTitulo +
+            //     ($anchoPT * count($categorias));
+
+            // $table = new Table([
+
+            //     'borderSize' => 12,
+            //     'borderColor' => '0B2C6B',
+            //     'cellMargin' => 50,
+            //     'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER
+
+            // ]);
+
+
+            // $table->addRow(700);
+            // $table->addCell(
+            //     $anchoTotal,
+            //     [
+            //         'gridSpan' =>
+            //         count($categorias) + 1,
+            //         'bgColor' =>
+            //         'FFFFFF',
+            //         'valign' =>
+            //         'center'
+            //     ]
+            // )->addTextRun($centrado)->addText(
+            //     'MAPA DE PELIGROS',
+            //     $textoTitulo
+
+            // );
+
+            // $table->addRow(700);
+            // $table->addCell(
+            //     $anchoTitulo,
+            //     [
+            //         'valign' => 'center',
+            //         'bgColor' => 'FFFFFF'
+
+            //     ]
+            // )->addTextRun($izquierda)->addText(
+            //     'Peligro/puesto de trabajo',
+            //     $textoHeader
+            // );
+
+            // foreach ($categorias as $categoria) {
+            //     $table->addCell(
+            //         $anchoPT,
+            //         [
+            //             'valign' => 'center',
+            //             'bgColor' => 'FFFFFF'
+            //         ]
+            //     )->addTextRun($centrado)->addText(
+            //         $categoria->PT_CATEGORIA,
+            //         $textoHeader
+            //     );
+            // }
+
+            // foreach ($criteriosMapa as $codigo => $titulo) {
+            //     $table->addRow(600);
+
+            //     $table->addCell(
+            //         $anchoTitulo,
+            //         [
+            //             'valign' => 'center'
+            //         ]
+            //     )->addTextRun($izquierda)->addText(
+            //         $titulo,
+            //         $texto
+            //     );
+
+            //     foreach ($categorias as $categoria) {
+            //         $resultadoFinal = 'VERDE';
+
+            //         $fichasCategoria = $fichas->where(
+            //             'CATEGORIA_ID_FICHA',
+            //             $categoria->ID_CATEGORIA_ERGO
+            //         );
+
+            //         foreach ($fichasCategoria as $fichaDB) {
+            //             $json = json_decode(
+            //                 $fichaDB->JSON_FICHAS,
+            //                 true
+            //             );
+            //             if (!$json) {
+            //                 continue;
+            //             }
+            //             foreach ($json as $bloque) {
+            //                 if (
+            //                     isset($bloque['ficha']) &&
+            //                     $bloque['ficha'] == $codigo
+            //                 ) {
+            //                     if (
+            //                         isset($bloque['resultado']) &&
+            //                         strtoupper($bloque['resultado']) == 'ROJO'
+            //                     ) {
+            //                         $resultadoFinal = 'ROJO';
+            //                         break 2;
+            //                     }
+            //                 }
+            //             }
+            //         }
+
+            //         $colorCelda = 'A9D18E';
+            //         if ($resultadoFinal == 'ROJO') {
+            //             $colorCelda = 'FF0000';
+            //         }
+
+
+            //         $table->addCell(
+            //             $anchoPT,
+            //             [
+            //                 'bgColor' => $colorCelda,
+            //                 'valign' => 'center'
+            //             ]
+            //         )->addTextRun($centrado)->addText('');
+            //     }
+            // }
+
+
+            // $plantillaword->setComplexBlock('TABLA_7_2',$table);
+
+
+
+
             $criteriosMapa = [
 
                 '1.1' => 'Levantamiento de cargas',
@@ -3214,150 +3494,138 @@ class reconocimientoergoController extends Controller
                 '4.2' => 'Posturas dinámicas forzadas'
 
             ];
-            $categorias_ids = recoergofichastecnicasModel::where(
-                'RECO_ID',
-                $RECO_ID
-            )
-                ->where('ACTIVO', 1)
-                ->whereNotNull('CATEGORIA_ID_FICHA')
-                ->pluck('CATEGORIA_ID_FICHA')
-                ->unique()
-                ->toArray();
-
-            $categorias = recoergocategoriasModel::whereIn(
-                'ID_CATEGORIA_ERGO',
-                $categorias_ids
-            )
-                ->where('ACTIVO', 1)
-                ->get()
-                ->sortBy(function ($item) {
-
-                    return intval(
-
-                        str_replace(
-                            'PT',
-                            '',
-                            $item->PT_CATEGORIA
-                        )
-
-                    );
-                })
-                ->values();
 
             $fichas = recoergofichastecnicasModel::where(
                 'RECO_ID',
                 $RECO_ID
             )
                 ->where('ACTIVO', 1)
+                ->whereNotNull('PE_EVALUADAS')
+                ->where('PE_EVALUADAS', '!=', '')
+                ->orderBy('ID_FICHAS_TECNICAS')
                 ->get();
 
-
             $fuente = 'Poppins';
+
             $textoTitulo = [
                 'name' => $fuente,
-                'size' => 16,
+                'size' => 13,
                 'bold' => true,
                 'color' => '000000'
-
             ];
 
             $textoHeader = [
                 'name' => $fuente,
-                'size' => 11,
+                'size' => 9,
                 'bold' => true,
                 'color' => '000000'
-
             ];
 
             $texto = [
                 'name' => $fuente,
-                'size' => 10,
+                'size' => 8,
                 'color' => '000000'
-
             ];
-
 
             $centrado = [
                 'alignment' => 'center',
                 'valign' => 'center'
-
             ];
 
             $izquierda = [
                 'alignment' => 'left',
                 'valign' => 'center'
-
             ];
 
 
-            $anchoTitulo = 4500;
-            $espacioPT = 7000;
 
+            $totalAnchoTabla = 9000;
+            $anchoTitulo = 2800;
 
-            $anchoPT = intval(
-                $espacioPT /
-                    max(count($categorias), 1)
+            $cantidadPE = max(count($fichas), 1);
+
+            $anchoPE = intval(
+                ($totalAnchoTabla - $anchoTitulo)
+                    / $cantidadPE
             );
-
-            $anchoTotal =
-                $anchoTitulo +
-                ($anchoPT * count($categorias));
 
             $table = new Table([
 
                 'borderSize' => 12,
                 'borderColor' => '0B2C6B',
-                'cellMargin' => 50,
-                'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER
+                'cellMargin' => 40,
+                'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::START
 
             ]);
 
 
-            $table->addRow(700);
+
+            $table->addRow(500);
+
             $table->addCell(
-                $anchoTotal,
+                $totalAnchoTabla,
                 [
-                    'gridSpan' =>
-                    count($categorias) + 1,
-                    'bgColor' =>
-                    'FFFFFF',
-                    'valign' =>
-                    'center'
+                    'gridSpan' => $cantidadPE + 1,
+                    'bgColor' => 'FFFFFF',
+                    'valign' => 'center'
                 ]
             )->addTextRun($centrado)->addText(
                 'MAPA DE PELIGROS',
                 $textoTitulo
-
             );
 
-            $table->addRow(700);
+
+            $table->addRow(450);
+
             $table->addCell(
                 $anchoTitulo,
                 [
+                    'vMerge' => 'restart',
                     'valign' => 'center',
                     'bgColor' => 'FFFFFF'
-
                 ]
-            )->addTextRun($izquierda)->addText(
-                'Peligro/puesto de trabajo',
+            )->addTextRun($centrado)->addText(
+                'Criterios de carga física',
                 $textoHeader
             );
 
-            foreach ($categorias as $categoria) {
+            $table->addCell(
+                $anchoPE * $cantidadPE,
+                [
+                    'gridSpan' => $cantidadPE,
+                    'valign' => 'center',
+                    'bgColor' => 'FFFFFF'
+                ]
+            )->addTextRun($centrado)->addText(
+                'Personas evaluadas',
+                $textoHeader
+            );
+
+            $table->addRow(400);
+
+            $table->addCell(
+                $anchoTitulo,
+                [
+                    'vMerge' => 'continue'
+                ]
+            );
+
+            foreach ($fichas as $ficha) {
                 $table->addCell(
-                    $anchoPT,
+                    $anchoPE,
                     [
                         'valign' => 'center',
                         'bgColor' => 'FFFFFF'
                     ]
                 )->addTextRun($centrado)->addText(
-                    $categoria->PT_CATEGORIA,
+                    $ficha->PE_EVALUADAS,
                     $textoHeader
                 );
             }
 
+
             foreach ($criteriosMapa as $codigo => $titulo) {
-                $table->addRow(600);
+                $table->addRow(350);
 
                 $table->addCell(
                     $anchoTitulo,
@@ -3369,22 +3637,15 @@ class reconocimientoergoController extends Controller
                     $texto
                 );
 
-                foreach ($categorias as $categoria) {
+                foreach ($fichas as $fichaDB) {
                     $resultadoFinal = 'VERDE';
 
-                    $fichasCategoria = $fichas->where(
-                        'CATEGORIA_ID_FICHA',
-                        $categoria->ID_CATEGORIA_ERGO
+                    $json = json_decode(
+                        $fichaDB->JSON_FICHAS,
+                        true
                     );
 
-                    foreach ($fichasCategoria as $fichaDB) {
-                        $json = json_decode(
-                            $fichaDB->JSON_FICHAS,
-                            true
-                        );
-                        if (!$json) {
-                            continue;
-                        }
+                    if ($json) {
                         foreach ($json as $bloque) {
                             if (
                                 isset($bloque['ficha']) &&
@@ -3395,20 +3656,20 @@ class reconocimientoergoController extends Controller
                                     strtoupper($bloque['resultado']) == 'ROJO'
                                 ) {
                                     $resultadoFinal = 'ROJO';
-                                    break 2;
+                                    break;
                                 }
                             }
                         }
                     }
 
-                    $colorCelda = 'A9D18E';
+                    $colorCelda = '28A745';
+
                     if ($resultadoFinal == 'ROJO') {
-                        $colorCelda = 'FF0000';
+                        $colorCelda = 'DC3545';
                     }
 
-
                     $table->addCell(
-                        $anchoPT,
+                        $anchoPE,
                         [
                             'bgColor' => $colorCelda,
                             'valign' => 'center'
@@ -3417,8 +3678,9 @@ class reconocimientoergoController extends Controller
                 }
             }
 
-
             $plantillaword->setComplexBlock('TABLA_7_2',$table);
+
+
 
 
 

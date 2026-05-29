@@ -156,6 +156,9 @@ $('.link_menuprincipal').click(function () {
 
 			$("#steps_menu_tab1").click();
 
+
+           
+            
 			cargarDatosGeneralesInformeReco();
 			cargarDatosInformesRecoErgo();
 			cargarDefinicionesInformeErgo();
@@ -168,6 +171,76 @@ $('.link_menuprincipal').click(function () {
             cargarGraficasFichas();
             cargarMapaPeligros();
 
+            
+            $.ajax({
+                    url: 'obtenerDatosPlantilla',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        id: recsensorial
+                    },
+                    success: function(resp) {
+
+                        if (!resp.success) {
+                            return;
+                        }
+
+                        // INTRODUCCIÓN (SUMMERNOTE)
+                        let contenido = $('#INFORME_INTRODUCCION').summernote('code');
+
+                        if (contenido) {
+
+                            $.each(resp.data, function(marcador, valor) {
+                                contenido = contenido.split(marcador).join(valor || '');
+                            });
+
+                            $('#INFORME_INTRODUCCION').summernote('code', contenido);
+                        }
+
+                        // UBICACIÓN
+                        let ubicacion = $('#INFORME_UBICACIONINSTALACION').val();
+
+                        if (ubicacion) {
+
+                            $.each(resp.data, function(marcador, valor) {
+                                ubicacion = ubicacion.split(marcador).join(valor || '');
+                            });
+
+                            $('#INFORME_UBICACIONINSTALACION').val(ubicacion);
+                        }
+
+                        // PROCESO
+                        let proceso = $('#INFORME_PROCESOINSTALACION').val();
+
+                        if (proceso) {
+
+                            $.each(resp.data, function(marcador, valor) {
+                                proceso = proceso.split(marcador).join(valor || '');
+                            });
+
+                            $('#INFORME_PROCESOINSTALACION').val(proceso);
+                        }
+
+                        // ACTIVIDAD PRINCIPAL
+                        let actividad = $('#INFORME_ACTIVIDADPRINCIPAL').val();
+
+                        if (actividad) {
+
+                            $.each(resp.data, function(marcador, valor) {
+                                actividad = actividad.split(marcador).join(valor || '');
+                            });
+
+                            $('#INFORME_ACTIVIDADPRINCIPAL').val(actividad);
+                        }
+
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            
 		$('#RUTA_IMAGEN_PORTADA').dropify({
 				messages: {
 					'default': 'Arrastre la imagen aquí o haga click',
@@ -2366,6 +2439,8 @@ $('#Tablarecocategoriasergo tbody').on('click', 'td>button.editar', function () 
 
     cargarareaSelect(valoresAreas);
 
+
+
     if (
         row.data().PT_CATEGORIA === null ||
         row.data().PT_CATEGORIA === '' ||
@@ -2760,6 +2835,25 @@ $("#boton_nueva_ficha").click(function (e) {
     selectTurno.clear();
     
     
+    $.ajax({
+        url: 'obtenerPEFichas',
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            reco_id: recsensorial
+        },
+        success: function (resp) {
+            $('#PE_EVALUADAS').val(resp.pe);
+        },
+        error: function (xhr) {
+            console.log(xhr.responseText);
+        }
+    });
+
+
+
 });
 
 $('#modal_fichas').on('hidden.bs.modal', function (e) {
@@ -2767,8 +2861,6 @@ $('#modal_fichas').on('hidden.bs.modal', function (e) {
      ID_FICHAS_TECNICAS = 0;
 
     $('#form_fichas')[0].reset();
-
-    cargarCategoriasSelect();
 
     $('[id^="ficha_"]').empty();
 
@@ -4760,6 +4852,10 @@ function mostrarTablarecofichasergo() {
 					render: function (data, type, row, meta) {
 						return meta.row + 1;
 					}
+                },
+                {
+					"data": "PE_EVALUADAS",
+					"defaultContent": "-"
 				},
 				{
 					"data": "NOMBRE_CATEGORIA",
@@ -4932,8 +5028,6 @@ $('#Tablarecofichasergo tbody').on('click', 'td>button.editar', function () {
 
     $('#modal_fichas .modal-title').html(data.NOMBRE_EMPLEADO_FICHA);
 
-	
-	
     let areasGuardadas = data.CAT_AREAS_FICHA;
 
     if (typeof areasGuardadas === "string") {
@@ -4946,8 +5040,6 @@ $('#Tablarecofichasergo tbody').on('click', 'td>button.editar', function () {
     }
 
 
-
-    
     if (!$('#TURNO_EMPLEADO_FICHA')[0].selectize) {
         $('#TURNO_EMPLEADO_FICHA').selectize({
             placeholder: 'Seleccione una o varias opciones',
@@ -4968,9 +5060,7 @@ $('#Tablarecofichasergo tbody').on('click', 'td>button.editar', function () {
         selTurno.setValue(valoresTurno);
     }
 
-    
-    
-    
+
     cargarCategoriasSelect(function () {
 
         $('#CATEGORIA_ID_FICHA')
@@ -5021,6 +5111,34 @@ $('#Tablarecofichasergo tbody').on('click', 'td>button.editar', function () {
 		}, 200);
 
 	}, 300);
+
+
+
+     if (
+        row.data().PE_EVALUADAS === null ||
+        row.data().PE_EVALUADAS === '' ||
+        typeof row.data().PE_EVALUADAS === 'undefined'
+    ) {
+
+        $.ajax({
+            url: 'obtenerPEFichas',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                reco_id: recsensorial
+            },
+            success: function (resp) {
+                $('#PE_EVALUADAS').val(resp.pe);
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+
+    }
+
 
 
 });
@@ -5752,10 +5870,6 @@ function crearTermometroFicha(
 
 
 
-    //------------------------------------------
-    // INSERTAR
-    //------------------------------------------
-
     $('#' + id).html(html);
 
 }
@@ -5783,87 +5897,146 @@ function generarTablaMapaPeligros(response)
 
     $('#TABLE_MAPEOPELIGRO').empty();
 
-    let categorias = response.categorias;
+    let fichas = response.fichas;
     let criterios = response.criterios;
 
 
     let html = `
 
-        <div style=" width:100%; overflow-x:auto;">
-            <table style=" width:100%; border-collapse:collapse; text-align:center; font-size:16px;border:3px solid #0B2C6B;">
+        <div style="width:100%; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; text-align:center; font-size:16px; border:3px solid #0B2C6B;">
+
                 <thead>
+
                     <tr>
                         <th
-                            colspan="${categorias.length + 1}"
-                            style=" background:#FFF;font-size:32px;font-weight:bold;padding:12px;border:3px solid #0B2C6B;">
+                            colspan="${fichas.length + 1}"
+                            style="
+                                background:#FFF;
+                                font-size:32px;
+                                font-weight:bold;
+                                text-align:center;
+                                padding:12px;
+                                border:3px solid #0B2C6B;">
                             MAPA DE PELIGROS
                         </th>
                     </tr>
+
                     <tr>
-                        <th style=" width:450px; text-align:left;padding:10px; font-size:20px;border:2px solid #000;">
-                            Peligro/puesto de trabajo
-                        </th>`;
+
+                        <th
+                            rowspan="2"
+                            style="
+                                width:450px;
+                                text-align:center;
+                                vertical-align:middle;
+                                padding:10px;
+                                font-size:20px;
+                                font-weight:bold;
+                                border:2px solid #000;">
+                            Criterios de carga física
+                        </th>
+
+                        <th
+                            colspan="${fichas.length}"
+                            style="
+                                text-align:center;
+                                vertical-align:middle;
+                                font-size:20px;
+                                font-weight:bold;
+                                border:2px solid #000;">
+                            Personas evaluadas
+                        </th>
+
+                    </tr>
+
+                    <tr>
+    `;
 
 
 
-
-    //------------------------------------------
-    // COLUMNAS PT
-    //------------------------------------------
-
-    categorias.forEach(function (categoria)
+    fichas.forEach(function (ficha)
     {
         html += `
-                <th style=" width:60px; padding:8px; font-size:20px; font-weight:bold;border:2px solid #000;">
-                    ${categoria.PT_CATEGORIA}
-                </th>
-            `;
-
+            <th
+                style="
+                    width:60px;
+                    padding:8px;
+                    text-align:center;
+                    vertical-align:middle;
+                    font-size:20px;
+                    font-weight:bold;
+                    border:2px solid #000;">
+                ${ficha.PE_EVALUADAS || '-'}
+            </th>
+        `;
     });
 
+
+
     html += `
-                </tr>
+                    </tr>
+
                 </thead>
+
                 <tbody>
-            `;
+    `;
+
+
 
     criterios.forEach(function (criterio)
     {
 
         html += `
             <tr>
-                <td style=" text-align:left; padding:10px; font-size:18px; border:2px solid #000;">
+
+                <td
+                    style="
+                        text-align:left;
+                        padding:10px;
+                        font-size:18px;
+                        border:2px solid #000;">
                     ${criterio.titulo}
                 </td>
-            `;
+        `;
 
 
-        categorias.forEach(function (categoria)
+
+        fichas.forEach(function (ficha)
         {
 
             let resultado =
-                criterio.resultados[categoria.ID_CATEGORIA_ERGO];
+                criterio.resultados[ficha.ID_FICHAS_TECNICAS];
 
-            let color = '#A9D18E';
-            if (resultado == 'ROJO')
+            let color = '#28a745';
+
+            if (resultado === 'ROJO')
             {
-                color = '#FF0000';
+                color = '#dc3545';
             }
 
             html += `
-                    <td style=" background:${color}; height:55px; border:2px solid #000;">
-                    </td>
-                `;
-
+                <td
+                    style="
+                        background:${color};
+                        height:55px;
+                        border:2px solid #000;">
+                </td>
+            `;
         });
+
+
+
         html += `
             </tr>
         `;
     });
 
 
+
     html += `
                 </tbody>
+
             </table>
         </div>
     `;
@@ -5871,6 +6044,9 @@ function generarTablaMapaPeligros(response)
     $('#TABLE_MAPEOPELIGRO').html(html);
 
 }
+
+
+
 
 /////////////// PORTADA  //////////////
 
@@ -6154,7 +6330,7 @@ function cargarDatosGeneralesInformeReco()
 
             <p>Dentro del medio ambiente laboral existen condiciones de riesgo de tipo ergonómico.</p>
 
-            <p>En el presente estudio se describen los resultados y evidencias obtenidas durante la evaluación realizada en las áreas de la <font color="#000000" style="background-color: rgb(255, 255, 0);">"ESCRIBIR INSTALACION (ejemplo: Refinería Olmeca perteneciente a PEMEX, Planta Efluentes), los días del XX al XX de MES de AÑO."</font></p>`
+            <p>En el presente estudio se describen los resultados y evidencias obtenidas durante la evaluación realizada en las áreas de la INSTALACION, <font color="#000000" style="background-color: rgb(255, 255, 0);">"los días del XX al XX de MES de AÑO."</font></p>`
                 );
 
             }
@@ -6163,27 +6339,18 @@ function cargarDatosGeneralesInformeReco()
 
           if (response.INFORME_OBJETIVOGENERALES &&
                 response.INFORME_OBJETIVOGENERALES.trim() != '') {
-
-                $('#INFORME_OBJETIVOGENERALES')
-                    .val(response.INFORME_OBJETIVOGENERALES);
-
+                $('#INFORME_OBJETIVOGENERALES').val(response.INFORME_OBJETIVOGENERALES);
             } else {
-
                 $('#INFORME_OBJETIVOGENERALES')
                     .val(`Evaluar los factores de riesgo ergonómicos de las actividades laborales que impliquen postura, movimientos, manipulación manual de cargas y esfuerzos, mediante la observación y aplicación de métodos de carga física para la prevención de trastornos músculo esqueléticos.`);
-
             }
 
 
 
             if (response.INFORME_OBJETIVOSESPECIFICOS &&
                 response.INFORME_OBJETIVOSESPECIFICOS.trim() != '') {
-
-                $('#INFORME_OBJETIVOSESPECIFICOS')
-                    .val(response.INFORME_OBJETIVOSESPECIFICOS);
-
+                $('#INFORME_OBJETIVOSESPECIFICOS').val(response.INFORME_OBJETIVOSESPECIFICOS);
             } else {
-
                 $('#INFORME_OBJETIVOSESPECIFICOS')
                     .val(`• Identificar los trabajos prioritarios y tareas con riesgo ergonómico a través de un reconocimiento sensorial y entrevista con los trabajadores.
 
@@ -6194,15 +6361,34 @@ function cargarDatosGeneralesInformeReco()
             }
             
             
+
+            if (response.INFORME_UBICACIONINSTALACION &&
+                response.INFORME_UBICACIONINSTALACION.trim() != '') {
+                $('#INFORME_UBICACIONINSTALACION').val(response.INFORME_UBICACIONINSTALACION);
+            } else {
+                $('#INFORME_UBICACIONINSTALACION')
+                    .val(` Este estudio se realizó en las áreas de la INSTALACION, con domicilio DIRECCION.
+
+Se localiza en las coordenadas  COORDENADAS.`);
+
+            }
             
-            $('#INFORME_UBICACIONINSTALACION')
-                .val(response.INFORME_UBICACIONINSTALACION);
 
-			$('#INFORME_PROCESOINSTALACION')
-				.val(response.INFORME_PROCESOINSTALACION);
 
-			$('#INFORME_ACTIVIDADPRINCIPAL')
-				.val(response.INFORME_ACTIVIDADPRINCIPAL);
+            if (response.INFORME_PROCESOINSTALACION &&
+                response.INFORME_PROCESOINSTALACION.trim() != '') {
+                $('#INFORME_PROCESOINSTALACION').val(response.INFORME_PROCESOINSTALACION);
+            } else {
+                $('#INFORME_PROCESOINSTALACION').val(`DESCRIPCIONPROCESO`);
+            }
+           
+            if (response.INFORME_ACTIVIDADPRINCIPAL &&
+                response.INFORME_ACTIVIDADPRINCIPAL.trim() != '') {
+                $('#INFORME_ACTIVIDADPRINCIPAL').val(response.INFORME_ACTIVIDADPRINCIPAL);
+            } else {
+                $('#INFORME_ACTIVIDADPRINCIPAL').val(`DESCRIPCIONACTIVIDAD`);
+            }
+		
 
 			$('#SELECT_CONCLUSION')
 				.val(response.SELECT_CONCLUSION)
@@ -7187,36 +7373,62 @@ function tablaReporteCategoriasErgo()
                     "defaultContent": "-",
 
                     "render": function (data, type, row) {
+
                         if (!data) {
 
                             if (type === 'sort' || type === 'type') {
-
                                 return 999999;
                             }
+
                             return '-';
                         }
+
                         let numero = parseInt(
                             data.toString().replace('PT', '')
                         );
-                        if (type === 'sort' || type === 'type') {
 
+                        if (type === 'sort' || type === 'type') {
                             return numero;
                         }
+
                         return data;
                     }
                 },
 				{
 					"data": "NOMBRE_CATEGORIA_ERGO",
 					"defaultContent": "-"
-				}
+                },
+                {
+                    "data": "TOTAL_EVALUADOS",
+                    "defaultContent": 0
+                }
 
 			],
+
+            "footerCallback": function (row, data, start, end, display)
+            {
+                var api = this.api();
+
+                var total = api
+                    .column(2)
+                    .data()
+                    .reduce(function (a, b)
+                    {
+                        return (parseInt(a) || 0) +
+                               (parseInt(b) || 0);
+                    }, 0);
+
+                $(api.column(2).footer()).html(
+                    '<b>' + total + '</b>'
+                );
+            },
 
 			"order": [],
 			"ordering": true,
 			"responsive": true,
 			"autoWidth": false,
 			"processing": true,
+
 			"language": {
 				"lengthMenu": "Mostrar _MENU_ registros",
 				"zeroRecords": "No se encontraron registros",
@@ -7235,6 +7447,7 @@ function tablaReporteCategoriasErgo()
 				}
 			}
 		});
+
 		tabla_reporte_categoria.on('draw', function () {
 
 			$('[data-toggle="tooltip"]').tooltip();
@@ -7244,7 +7457,10 @@ function tablaReporteCategoriasErgo()
 	}
 	catch (exception) {
 
-		console.error("Error en tablaReporteCategoriasErgo:", exception);
+		console.error(
+            "Error en tablaReporteCategoriasErgo:",
+            exception
+        );
 
 	}
 }
@@ -7564,34 +7780,6 @@ $("#form_informe_listarecomendaciones").on(
     $('input[name="DESCRIPCION_RECOMENDACIONES[]"]')
         .prop('checked', false);
 
-
-
-    $.get(
-
-        '/obtenerRecomendacionesInformeErgo/' +
-        recsensorial,
-
-        function(response)
-        {
-
-            //---------------------------------------
-            // RECORRER DATOS
-            //---------------------------------------
-
-            response.forEach(function(dato)
-            {
-
-                $('input[name="DESCRIPCION_RECOMENDACIONES[]"][value="' +
-                    dato.CATALOGO_RECOMENDACIONES_ID +
-                    '"]')
-
-                .prop('checked', true);
-
-            });
-
-        }
-
-    );
 
 }
 

@@ -344,7 +344,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                             <input type="hidden" id="hidden_fotomapa_ruta" name="hidden_fotomapa_ruta">
                                                                             <input type="hidden" id="hidden_fotoplano_ruta" name="hidden_fotoplano_ruta">
                                                                             <input type="hidden" id="hidden_fotoinstalacion_ruta" name="hidden_fotoinstalacion_ruta">
-                                                                            
+
                                                                             <!-- Guardamos la data de los clientes para poder usarla en JS -->
                                                                             <script type="text/javascript">
 
@@ -801,6 +801,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                     <thead>
                                                                         <tr>
                                                                             <th style="width: 60px!important;">No.</th>
+                                                                            <th>No.PE</th>
                                                                             <th>Categoría</th>
                                                                             <th>Nombre del empleado </th>
                                                                             <th>Ficha / No empleado</th>
@@ -1061,9 +1062,8 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     <a href="#7_1" class="list-group-item submenu">7.1.- Resultados de la evaluación conforme a las fichas de la ISO 12995-2014 <i class="fa " id="menureporte_7_1"></i></a>
                                     <a href="#7_2" class="list-group-item submenu">7.2.- Mapeo de Peligros/Riesgos Ergonómicos<i class="fa " id="menureporte_7_2"></i></a>
                                     <a href="#8" class="list-group-item">8.- Conclusiones <i class="fa" id="menureporte_8"></i></a>
-                                    <a href="#9" class="list-group-item">9.- Recomendaciones de control <i class="fa" id="menureporte_9"></i></a>
-                                    <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
-                                    <a href="#10" class="list-group-item">11.- Generar informe <i class="fa" id="menureporte_11"></i></a>
+                                    <a href="#10" class="list-group-item">9.- Responsables del informe <i class="fa" id="menureporte_9"></i></a>
+                                    <a href="#10" class="list-group-item">10.- Generar informe <i class="fa" id="menureporte_10"></i></a>
 
                                     <!-- <a href="#6_2" class="list-group-item submenu">6.2.- Método empleado y criterio de selección <i class="fa fa-times" id="menureporte_6_2"></i></a>
                                     <a href="#6_2_1" class="list-group-item subsubmenu">6.2.1.- Índice de área <i class="fa fa-times" id="menureporte_6_2_1"></i></a>
@@ -1288,7 +1288,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
 
 <p>Dentro del medio ambiente laboral existen condiciones de riesgo de tipo ergonómico, que de no encontrarse identificados pueden poner en riesgo la salud y la productividad del trabajador; por lo que la identificación temprana y el establecimiento de estrategias de control son primordiales para mantener una condición de trabajo óptima.</p>
 
-<p>En el presente estudio se describen los resultados y evidencias obtenidas durante la evaluación realizada en las áreas de la <font color="#000000" style="background-color: rgb(255, 255, 0);"> "ESCRIBIR INSTALACION (ejemplo: Refinería Olmeca perteneciente a PEMEX, Planta Efluentes), los días del XX al XX de MES de AÑO."</font></p> </textarea>
+<p>En el presente estudio se describen los resultados y evidencias obtenidas durante la evaluación realizada en las áreas de la INSTALACION,<font color="#000000" style="background-color: rgb(255, 255, 0);">los días del XX al XX de MES de AÑO."</font></p> </textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12" style="text-align: right;">
@@ -1451,7 +1451,11 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                 <div class="row">
                                                     <div class="col-12">
                                                         {!! csrf_field() !!}
-                                                        <textarea class="form-control" style="margin-bottom: 0px;" rows="14" id="INFORME_UBICACIONINSTALACION" name="INFORME_UBICACIONINSTALACION" required></textarea>
+                                                        <textarea class="form-control" style="margin-bottom: 0px;" rows="14" id="INFORME_UBICACIONINSTALACION" name="INFORME_UBICACIONINSTALACION" required>
+                                                            Este estudio se realizó en las áreas de la INSTALACION, con domicilio DIRECCION.
+
+Se localiza en las coordenadas  COORDENADAS.
+                                                        </textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1476,11 +1480,15 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                 {!! csrf_field() !!}
                                                 <div class="form-group">
                                                     <label>Descripción del proceso en la instalación</label>
-                                                    <textarea class="form-control" style="margin-bottom: 0px;" rows="20" id="INFORME_PROCESOINSTALACION" name="INFORME_PROCESOINSTALACION" required></textarea>
+                                                    <textarea class="form-control" style="margin-bottom: 0px;" rows="20" id="INFORME_PROCESOINSTALACION" name="INFORME_PROCESOINSTALACION" required>
+                                                        DESCRIPCIONPROCESO
+                                                    </textarea>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Descripción de la actividad principal de la instalación</label>
-                                                    <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="INFORME_ACTIVIDADPRINCIPAL" name="INFORME_ACTIVIDADPRINCIPAL" required></textarea>
+                                                    <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="INFORME_ACTIVIDADPRINCIPAL" name="INFORME_ACTIVIDADPRINCIPAL" required>
+                                                        DESCRIPCIONACTIVIDAD
+                                                    </textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12" style="text-align: right;">
@@ -1499,10 +1507,22 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                     <tr>
                                                         <th>PT</th>
                                                         <th>Categoría</th>
+                                                        <th>Número de evaluados</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
-                                            </table><br><br>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th colspan="2" style="text-align:right;">
+                                                            Total evaluados:
+                                                        </th>
+                                                        <th id="total_personas_evaluadas">0</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+
+
+                                            <br><br>
                                             <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_area">
                                                 <thead>
                                                     <tr>
@@ -1613,25 +1633,16 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                         <select class="custom-select form-control"
                                                             id="SELECT_CONCLUSION"
                                                             name="SELECT_CONCLUSION">
-
                                                             <option value=""></option>
-
                                                             @foreach($catconclusion as $dato)
-
                                                             <option
                                                                 value="{{$dato->ID_CONCLUSION}}"
                                                                 data-conclusion="{{ htmlspecialchars($dato->NOMBRE_CONCLUSION) }}">
-
                                                                 {{$dato->QUIEN_CONCLUSION}}
-
                                                             </option>
-
                                                             @endforeach
-
                                                         </select>
                                                     </div>
-
-
                                                     <textarea class="form-control" style="margin-bottom: 0px;" rows="20" id="INFORME_CONCLUSION" name="INFORME_CONCLUSION" required></textarea>
                                                 </div>
                                             </div>
@@ -1642,55 +1653,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     </form>
 
 
-                                    <h4 class="card-title" id="9">9.- Recomendaciones de control</h4>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <form enctype="multipart/form-data" method="post" name="form_informe_listarecomendaciones" id="form_informe_listarecomendaciones">
-                                                <div class="row mb-3">
-                                                    <table class="table-sm" style="width: 96%; table-layout: fixed;">
-                                                        <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_recomendaciones">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Descripción</th>
-                                                                    <th width="80">Activo</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach ($catrecomendaciones as $dato)
-                                                                <tr>
-
-                                                                    <td class="justificado">
-                                                                        {{ $dato->DESCRIPCION_RECOMENDACIONES }}
-
-                                                                    </td>
-
-                                                                    <td class="text-center">
-                                                                        <div class="switch">
-                                                                            <label>
-                                                                                <input type="checkbox"
-                                                                                    class="recomendacion_checkbox"
-                                                                                    name="DESCRIPCION_RECOMENDACIONES[]"
-                                                                                    value="{{ $dato->ID_RECOMENDACIONES }}"
-                                                                                    onclick="activa_recomendacion(this);"
-                                                                                    {{ $dato->ACTIVO == 1 ? '' : '' }}>
-                                                                                <span class="lever switch-col-light-blue"></span>
-                                                                            </label>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                </div>
-                                                <div class="col-12" style="text-align: right;">
-                                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_recomendaciones">Guardar recomendaciones <i class="fa fa-save"></i></button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-
-                                    <h4 class="card-title" id="10">10.- Responsables del informe</h4>
+                                    <h4 class="card-title" id="9">9.- Responsables del informe</h4>
                                     <form enctype="multipart/form-data" method="post" name="form_informe_responsablesinforme" id="form_informe_responsablesinforme">
                                         <div class="row">
                                             <div class="col-6">
@@ -1750,7 +1713,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     </form>
 
 
-                                    <h4 class="card-title" id="11">Generar informe .docx</h4>
+                                    <h4 class="card-title" id="10">Generar informe .docx</h4>
                                     <div class="row">
                                         <div class="col-12">
                                             <ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
@@ -1951,12 +1914,16 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                     <div class="row">
 
 
-
                         <input type="hidden" name="JSON_ACTIVIDADES" id="JSON_ACTIVIDADES">
                         <input type="hidden" name="JSON_FICHAS" id="JSON_FICHAS">
 
-                        <!-- CATEGORÍA -->
-                        <div class="col-4">
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label>N° PE *</label>
+                                <input type="text" class="form-control" name="PE_EVALUADAS" id="PE_EVALUADAS" required readonly>
+                            </div>
+                        </div>
+                        <div class="col-3">
                             <div class="form-group">
                                 <label>Categoría *</label>
                                 <select class="form-control" id="CATEGORIA_ID_FICHA" name="CATEGORIA_ID_FICHA" required>
@@ -1964,7 +1931,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                 </select>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             <div class="form-group">
                                 <label> Departamento *</label>
                                 <select class="custom-select form-control" id="CAT_DEPARTAMENTO_FICHA" name="CAT_DEPARTAMENTO_FICHA" required style="pointer-events:none; background-color:#e9ecef;">
@@ -1976,7 +1943,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                             </div>
                         </div>
 
-                        <div class="col-4">
+                        <div class="col-3">
                             <div class="form-group">
                                 <label>Áreas *</label>
                                 <select class="custom-select form-control" id="CAT_AREAS_FICHA" name="CAT_AREAS_FICHA[]" multiple>
