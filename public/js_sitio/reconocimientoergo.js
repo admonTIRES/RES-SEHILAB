@@ -6075,6 +6075,9 @@ function cargarDatosInformesRecoErgo()
         $('#OPCION_PORTADA6').html(response.opciones);
 
 
+        $('#INFORME_MES').val("");
+        $('#INFORME_ANIO').val("");
+        
         //-----------------------------------------
         // SI EXISTE INFORMACION
         //-----------------------------------------
