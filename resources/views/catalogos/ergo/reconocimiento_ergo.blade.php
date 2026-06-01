@@ -1371,7 +1371,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                         rows="8"
                                                         id="INFORME_OBJETIVOGENERALES"
                                                         name="INFORME_OBJETIVOGENERALES"
-                                                        required>Evaluar los factores de riesgo ergonómicos de las actividades laborales que impliquen postura, movimientos, manipulación manual de cargas y esfuerzos, mediante la observación y aplicación de métodos de carga física para la prevención de trastornos músculo esqueléticos.</textarea>
+                                                        required>Identificar los riesgos y peligros ergonómicos de las actividades laborales que impliquen postura, movimientos, manipulación manual de cargas y esfuerzos, mediante la observación y aplicación de las fichas de la ISO-TR 12295 que permiten cuantificar el riesgo controlado o riesgo elevado.</textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12" style="text-align: right;">
@@ -1396,7 +1396,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
 
 • Determinar el nivel de riesgo por carga física a la cual se encuentran expuestos los trabajadores.
 
-• Generar recomendaciones derivadas de la identificación de riesgos para mitigar la probabilidad de ocurrencia de Trastornos Músculo Esqueléticos (TME) de origen laboral.</textarea>
+• Generar acciones derivadas de la identificación de riesgos para mitigar la probabilidad de ocurrencia de Trastornos Músculo Esqueléticos (TME) de origen laboral.</textarea>
 
                                                 </div>
                                             </div>

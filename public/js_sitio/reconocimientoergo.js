@@ -1006,51 +1006,7 @@ $('#tabla_reconocimiento_sensorial tbody').on('click', 'td.mostrar', function ()
 	}
 	
 
-		// 	var imagenUrl = '';
 
-		// if (row.data().fotoubicacion) {
-		// 	var archivo = row.data().fotoubicacion;
-		// 	var extension = archivo.substring(archivo.lastIndexOf("."));
-		// 	imagenUrl = '/mostrarmapaubicacionergo/0/' + row.data().id + extension;
-
-		// 	rutaMapa = imagenUrl;
-
-		// 	$("#boton_descargarmapaubicacion").css('display', 'block');
-		// } else {
-		// 	$("#boton_descargarmapaubicacion").css('display', 'none');
-		// }
-
-		// var drEvent = $('#inputfotomapa').data('dropify');
-
-		// if (drEvent) {
-		// 	drEvent.destroy();
-		// }
-
-		// $('#inputfotomapa').attr('data-default-file', imagenUrl);
-
-		// // Inicializar SIEMPRE
-		// $('#inputfotomapa').dropify({
-		// 	messages: {
-		// 		'default': 'Arrastre la imagen aquí o haga click',
-		// 		'replace': 'Arrastre la imagen o haga clic para reemplazar',
-		// 		'remove': 'Quitar',
-		// 		'error': 'Ooops, ha ocurrido un error.'
-		// 	},
-		// 	error: {
-		// 		'fileSize': 'Demasiado grande ({{ value }} max).',
-		// 		'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-		// 		'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-		// 		'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-		// 		'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-		// 		'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-		// 	}
-		// });
-
-		// 	$('#inputfotomapa').attr('required', false);
-			
-
-
-	
 	///////////// OBTENER PLANO INSTALACION /////////////
 	
 		if (row.data().fotoplano) {
@@ -1098,47 +1054,6 @@ $('#tabla_reconocimiento_sensorial tbody').on('click', 'td.mostrar', function ()
 			$("#boton_descargarplanoinstalacion").css('display', 'none');
 	}
 
-		// var imagenUrl = '';
-
-		// if (row.data().fotoplano) {
-		// 	var archivo = row.data().fotoplano;
-		// 	var extension = archivo.substring(archivo.lastIndexOf("."));
-		// 	imagenUrl = '/mostraplanoergo/0/' + row.data().id + extension;
-
-		// 	rutaMapa = imagenUrl;
-
-		// 	$("#boton_descargarplanoinstalacion").css('display', 'block');
-		// } else {
-		// 	$("#boton_descargarplanoinstalacion").css('display', 'none');
-		// }
-
-		// var drEvent = $('#inputfotoplano').data('dropify');
-
-		// if (drEvent) {
-		// 	drEvent.destroy();
-		// }
-
-		// $('#inputfotoplano').attr('data-default-file', imagenUrl);
-
-		// // Inicializar SIEMPRE
-		// $('#inputfotoplano').dropify({
-		// 	messages: {
-		// 		'default': 'Arrastre la imagen aquí o haga click',
-		// 		'replace': 'Arrastre la imagen o haga clic para reemplazar',
-		// 		'remove': 'Quitar',
-		// 		'error': 'Ooops, ha ocurrido un error.'
-		// 	},
-		// 	error: {
-		// 		'fileSize': 'Demasiado grande ({{ value }} max).',
-		// 		'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-		// 		'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-		// 		'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-		// 		'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-		// 		'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-		// 	}
-		// });
-
-		// $('#inputfotoplano').attr('required', false);
 
 	//////////// OBTENER FOTO INSTALACION ////////////
 	
@@ -1187,47 +1102,6 @@ $('#tabla_reconocimiento_sensorial tbody').on('click', 'td.mostrar', function ()
 			$("#boton_descargarfotoinstalacion").css('display', 'none');
 	}
 
-		// var imagenUrl = '';
-
-		// if (row.data().fotoinstalacion) {
-		// 	var archivo = row.data().fotoinstalacion;
-		// 	var extension = archivo.substring(archivo.lastIndexOf("."));
-		// 	imagenUrl = '/mostrafotoinstalacionergo/0/' + row.data().id + extension;
-
-		// 	rutaMapa = imagenUrl;
-
-		// 	$("#boton_descargarfotoinstalacion").css('display', 'block');
-		// } else {
-		// 	$("#boton_descargarfotoinstalacion").css('display', 'none');
-		// }
-
-		// var drEvent = $('#inputfotoinstalacion').data('dropify');
-
-		// if (drEvent) {
-		// 	drEvent.destroy();
-		// }
-
-		// $('#inputfotoinstalacion').attr('data-default-file', imagenUrl);
-
-		// $('#inputfotoinstalacion').dropify({
-		// 	messages: {
-		// 		'default': 'Arrastre la imagen aquí o haga click',
-		// 		'replace': 'Arrastre la imagen o haga clic para reemplazar',
-		// 		'remove': 'Quitar',
-		// 		'error': 'Ooops, ha ocurrido un error.'
-		// 	},
-		// 	error: {
-		// 		'fileSize': 'Demasiado grande ({{ value }} max).',
-		// 		'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-		// 		'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-		// 		'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-		// 		'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-		// 		'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-		// 	}
-		// });
-
-		// $('#inputfotoinstalacion').attr('required', false);
-
 	//////////// OBTENER MAPA DE RIESGO ////////////
 	
 		if (row.data().fotomapariesgo) {
@@ -1273,51 +1147,6 @@ $('#tabla_reconocimiento_sensorial tbody').on('click', 'td.mostrar', function ()
 		else {
 			$("#boton_descargarmapaderiesgo").css('display', 'none');
 	}
-
-
-
-	// var imagenUrl = '';
-
-	// 	if (row.data().fotomapariesgo) {
-	// 		var archivo = row.data().fotomapariesgo;
-	// 		var extension = archivo.substring(archivo.lastIndexOf("."));
-	// 		imagenUrl = '/mostrarmapariesgoergo/0/' + row.data().id + extension;
-
-	// 		rutaMapa = imagenUrl;
-
-	// 		$("#boton_descargarmapaderiesgo").css('display', 'block');
-	// 	} else {
-	// 		$("#boton_descargarmapaderiesgo").css('display', 'none');
-	// 	}
-
-	// 	var drEvent = $('#inputfotomapaderiesgo').data('dropify');
-
-	// 	if (drEvent) {
-	// 		drEvent.destroy();
-	// 	}
-
-	// 	$('#inputfotomapaderiesgo').attr('data-default-file', imagenUrl);
-
-	// 	$('#inputfotomapaderiesgo').dropify({
-	// 		messages: {
-	// 			'default': 'Arrastre la imagen aquí o haga click',
-	// 			'replace': 'Arrastre la imagen o haga clic para reemplazar',
-	// 			'remove': 'Quitar',
-	// 			'error': 'Ooops, ha ocurrido un error.'
-	// 		},
-	// 		error: {
-	// 			'fileSize': 'Demasiado grande ({{ value }} max).',
-	// 			'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-	// 			'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-	// 			'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-	// 			'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-	// 			'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-	// 		}
-	// 	});
-
-	// 	// No requerir campo FOTO
-	// $('#inputfotomapaderiesgo').attr('required', false);
-	
 
 
 
@@ -1685,131 +1514,131 @@ function obtenerEstructuraProyectos(FOLIO, NUEVO) {
                 
                 if (response.info[0].FOTOUBICACION != null) {
 
-	var archivo = response.info[0].FOTOUBICACION;
-	var extension = archivo.substring(archivo.lastIndexOf("."));
-	var imagenUrl = '/mostrarmapa/0/' + response.info[0].ID + extension;
+                    var archivo = response.info[0].FOTOUBICACION;
+                    var extension = archivo.substring(archivo.lastIndexOf("."));
+                    var imagenUrl = '/mostrarmapa/0/' + response.info[0].ID + extension;
 
-	rutaMapa = imagenUrl;
+                    rutaMapa = imagenUrl;
 
-	// GUARDAMOS DATOS
-	$("#hidden_fotomapa").val(response.info[0].ID);
-	$("#hidden_fotomapa_extension").val(extension);
-	$("#hidden_fotomapa_ruta").val(response.info[0].FOTOUBICACION);
+                    // GUARDAMOS DATOS
+                    $("#hidden_fotomapa").val(response.info[0].ID);
+                    $("#hidden_fotomapa_extension").val(extension);
+                    $("#hidden_fotomapa_ruta").val(response.info[0].FOTOUBICACION);
 
-	// INPUT FOTO UBICACION
-	if ($('#inputfotomapa').data('dropify')) {
+                    // INPUT FOTO UBICACION
+                    if ($('#inputfotomapa').data('dropify')) {
 
-		$('#inputfotomapa').dropify().data('dropify').destroy();
+                        $('#inputfotomapa').dropify().data('dropify').destroy();
 
-		$('#inputfotomapa').dropify({
-			defaultFile: imagenUrl,
-			messages: {
-				'default': 'Arrastre la imagen aquí o haga click',
-				'replace': 'Arrastre la imagen o haga clic para reemplazar',
-				'remove': 'Quitar',
-				'error': 'Ooops, ha ocurrido un error.'
-			},
-			error: {
-				'fileSize': 'Demasiado grande ({{ value }} max).',
-				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-			}
-		});
+                        $('#inputfotomapa').dropify({
+                            defaultFile: imagenUrl,
+                            messages: {
+                                'default': 'Arrastre la imagen aquí o haga click',
+                                'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                                'remove': 'Quitar',
+                                'error': 'Ooops, ha ocurrido un error.'
+                            },
+                            error: {
+                                'fileSize': 'Demasiado grande ({{ value }} max).',
+                                'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                                'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                                'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                                'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                                'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                            }
+                        });
 
-	} else {
+                    } else {
 
-		$('#inputfotomapa').attr('data-default-file', imagenUrl);
+                        $('#inputfotomapa').attr('data-default-file', imagenUrl);
 
-		$('#inputfotomapa').dropify({
-			messages: {
-				'default': 'Arrastre la imagen aquí o haga click',
-				'replace': 'Arrastre la imagen o haga clic para reemplazar',
-				'remove': 'Quitar',
-				'error': 'Ooops, ha ocurrido un error.'
-			},
-			error: {
-				'fileSize': 'Demasiado grande ({{ value }} max).',
-				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-			}
-		});
-	}
+                        $('#inputfotomapa').dropify({
+                            messages: {
+                                'default': 'Arrastre la imagen aquí o haga click',
+                                'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                                'remove': 'Quitar',
+                                'error': 'Ooops, ha ocurrido un error.'
+                            },
+                            error: {
+                                'fileSize': 'Demasiado grande ({{ value }} max).',
+                                'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                                'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                                'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                                'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                                'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                            }
+                        });
+                    }
 
-	$('#inputfotomapa').attr('required', false);
+                    $('#inputfotomapa').attr('required', false);
 
-	$("#boton_descargarmapaubicacion").css('display', 'block');
+                    $("#boton_descargarmapaubicacion").css('display', 'block');
 
-} else {
+                } else {
 
-	$("#boton_descargarmapaubicacion").css('display', 'none');
-}
+                    $("#boton_descargarmapaubicacion").css('display', 'none');
+                }
 
 
 
-// FOTO PLANO
+                // FOTO PLANO
 
 				if (response.info[0].FOTOPLANO != null) {
 
-	var archivo = response.info[0].FOTOPLANO;
-	var extension = archivo.substring(archivo.lastIndexOf("."));
-	var imagenUrl = '/mostrarplano/0/' + response.info[0].ID + extension;
+                    var archivo = response.info[0].FOTOPLANO;
+                    var extension = archivo.substring(archivo.lastIndexOf("."));
+                    var imagenUrl = '/mostrarplano/0/' + response.info[0].ID + extension;
 
-	rutaMapa = imagenUrl;
+                    rutaMapa = imagenUrl;
 
-	$("#hidden_fotoplano").val(response.info[0].ID);
-	$("#hidden_fotoplano_extension").val(extension);
+                    $("#hidden_fotoplano").val(response.info[0].ID);
+                    $("#hidden_fotoplano_extension").val(extension);
 
-	// NUEVO
-	$("#hidden_fotoplano_ruta").val(response.info[0].FOTOPLANO);
+                    // NUEVO
+                    $("#hidden_fotoplano_ruta").val(response.info[0].FOTOPLANO);
 
-	// INPUT FOTO PLANO
-	if ($('#inputfotoplano').data('dropify')) {
+                    // INPUT FOTO PLANO
+                    if ($('#inputfotoplano').data('dropify')) {
 
-		$('#inputfotoplano').dropify().data('dropify').destroy();
+                        $('#inputfotoplano').dropify().data('dropify').destroy();
 
-		$('#inputfotoplano').dropify().data('dropify').settings.defaultFile = imagenUrl;
+                        $('#inputfotoplano').dropify().data('dropify').settings.defaultFile = imagenUrl;
 
-		$('#inputfotoplano').dropify().data('dropify').init();
+                        $('#inputfotoplano').dropify().data('dropify').init();
 
-	}
-	else {
+                    }
+                    else {
 
-		$('#inputfotoplano').attr('data-default-file', imagenUrl);
+                        $('#inputfotoplano').attr('data-default-file', imagenUrl);
 
-		$('#inputfotoplano').dropify({
-			messages: {
-				'default': 'Arrastre la imagen aquí o haga click',
-				'replace': 'Arrastre la imagen o haga clic para reemplazar',
-				'remove': 'Quitar',
-				'error': 'Ooops, ha ocurrido un error.'
-			},
-			error: {
-				'fileSize': 'Demasiado grande ({{ value }} max).',
-				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-			}
-		});
-	}
+                        $('#inputfotoplano').dropify({
+                            messages: {
+                                'default': 'Arrastre la imagen aquí o haga click',
+                                'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                                'remove': 'Quitar',
+                                'error': 'Ooops, ha ocurrido un error.'
+                            },
+                            error: {
+                                'fileSize': 'Demasiado grande ({{ value }} max).',
+                                'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                                'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                                'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                                'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                                'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                            }
+                        });
+                    }
 
-	$('#inputfotoplano').attr('required', false);
+                    $('#inputfotoplano').attr('required', false);
 
-	$("#boton_descargarplanoinstalacion").css('display', 'block');
+                    $("#boton_descargarplanoinstalacion").css('display', 'block');
 
-}
-else {
+                }
+                else {
 
-	$("#boton_descargarplanoinstalacion").css('display', 'none');
-				}
-				
+                    $("#boton_descargarplanoinstalacion").css('display', 'none');
+                }
+                                
 				
 
 
@@ -1817,65 +1646,65 @@ else {
 
 				if (response.info[0].FOTOINSTALACION) {
 
-	var archivo = response.info[0].FOTOINSTALACION;
-	var extension = archivo.substring(archivo.lastIndexOf("."));
-	var imagenUrl = '/mostrarfotoinstalacion/0/' + response.info[0].ID + extension;
+                        var archivo = response.info[0].FOTOINSTALACION;
+                        var extension = archivo.substring(archivo.lastIndexOf("."));
+                        var imagenUrl = '/mostrarfotoinstalacion/0/' + response.info[0].ID + extension;
 
-	$("#hidden_fotoinstalacion").val(response.info[0].ID);
-	$("#hidden_fotoinstalacion_extension").val(extension);
+                        $("#hidden_fotoinstalacion").val(response.info[0].ID);
+                        $("#hidden_fotoinstalacion_extension").val(extension);
 
-	// NUEVO
-	$("#hidden_fotoinstalacion_ruta").val(response.info[0].FOTOINSTALACION);
+                        // NUEVO
+                        $("#hidden_fotoinstalacion_ruta").val(response.info[0].FOTOINSTALACION);
 
-	// INPUT FOTO INSTALACION
-	if ($('#inputfotoinstalacion').data('dropify')) {
+                        // INPUT FOTO INSTALACION
+                        if ($('#inputfotoinstalacion').data('dropify')) {
 
-		$('#inputfotoinstalacion').dropify().data('dropify').destroy();
+                            $('#inputfotoinstalacion').dropify().data('dropify').destroy();
 
-		$('#inputfotoinstalacion').dropify().data('dropify').settings.defaultFile = imagenUrl;
+                            $('#inputfotoinstalacion').dropify().data('dropify').settings.defaultFile = imagenUrl;
 
-		$('#inputfotoinstalacion').dropify().data('dropify').init();
+                            $('#inputfotoinstalacion').dropify().data('dropify').init();
 
-	}
-	else {
+                        }
+                        else {
 
-		$('#inputfotoinstalacion').attr('data-default-file', imagenUrl);
+                            $('#inputfotoinstalacion').attr('data-default-file', imagenUrl);
 
-		$('#inputfotoinstalacion').dropify({
-			messages: {
-				'default': 'Arrastre la imagen aquí o haga click',
-				'replace': 'Arrastre la imagen o haga clic para reemplazar',
-				'remove': 'Quitar',
-				'error': 'Ooops, ha ocurrido un error.'
-			},
-			error: {
-				'fileSize': 'Demasiado grande ({{ value }} max).',
-				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-			}
-		});
-	}
+                            $('#inputfotoinstalacion').dropify({
+                                messages: {
+                                    'default': 'Arrastre la imagen aquí o haga click',
+                                    'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                                    'remove': 'Quitar',
+                                    'error': 'Ooops, ha ocurrido un error.'
+                                },
+                                error: {
+                                    'fileSize': 'Demasiado grande ({{ value }} max).',
+                                    'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                                    'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                                    'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                                    'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                                    'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                                }
+                            });
+                        }
 
-	$('#inputfotoinstalacion').attr('required', false);
+                        $('#inputfotoinstalacion').attr('required', false);
 
-	$("#boton_descargarfotoinstalacion").css('display', 'block');
+                        $("#boton_descargarfotoinstalacion").css('display', 'block');
 
-}
-else {
+                    }
+                    else {
 
-	$('#inputfotoinstalacion').val('');
+                        $('#inputfotoinstalacion').val('');
 
-	$('#inputfotoinstalacion').dropify().data('dropify').resetPreview();
+                        $('#inputfotoinstalacion').dropify().data('dropify').resetPreview();
 
-	$('#inputfotoinstalacion').dropify().data('dropify').clearElement();
+                        $('#inputfotoinstalacion').dropify().data('dropify').clearElement();
 
-	$('#inputfotoinstalacion').attr('required', false);
+                        $('#inputfotoinstalacion').attr('required', false);
 
-	$("#boton_descargarfotoinstalacion").css('display', 'none');
-				}
+                        $("#boton_descargarfotoinstalacion").css('display', 'none');
+				    }
 				
 
 				
@@ -2009,10 +1838,7 @@ else {
 				// 	$('#inputfotoinstalacion').attr('required', false);
 				// 	$("#boton_descargarfotoinstalacion").css('display', 'none');
 				// }
-			
 
-
-                
 
 
 				swal({
@@ -3010,40 +2836,29 @@ function agregarActividad() {
 
     let html = `
     <div class="actividad-item" id="actividad_${total}">
-        
         <div class="actividad-card">
-
             <div class="d-flex justify-content-between mb-2">
                 <strong>Actividad ${total}</strong>
                 <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)">
                     <i class="fa fa-trash"></i>
                 </button>
             </div>
-
             <div class="actividad-row">
-
                 <div class="actividad-left">
                     <input type="text" 
                         class="form-control actividad-nombre" 
                         placeholder="Nombre de la actividad">
                 </div>
-
                 <div class="actividad-right">
-
                     <button type="button" 
                         class="btn btn-agregar-tarea"
                         onclick="agregarTarea(${total})">
                         + Agregar tarea
                     </button>
-
                     <div id="tareas_${total}"></div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
     `;
 
@@ -3091,7 +2906,6 @@ function agregarTarea(idActividad) {
 
     let html = `
     <div class="tarea-item">
-
         <div class="d-flex justify-content-between">
             <small>Tarea ${total}</small>
             <button type="button" class="btn btn-danger btn-sm"
@@ -3099,19 +2913,9 @@ function agregarTarea(idActividad) {
                 <i class="fa fa-trash"></i>
             </button>
         </div>
-
-        <input type="text" 
-            class="form-control mt-1 tarea-nombre" 
-            placeholder="Nombre">
-
-        <input type="text" 
-            class="form-control mt-1 tarea-frecuencia" 
-            placeholder="Frecuencia (No de veces durante la jornada)">
-
-        <input type="text" 
-            class="form-control mt-1 tarea-duracion" 
-            placeholder="Duración (tiempo en Min)">
-
+        <input type="text" class="form-control mt-1 tarea-nombre" placeholder="Nombre">
+        <input type="text" class="form-control mt-1 tarea-frecuencia" placeholder="Frecuencia (No de veces durante la jornada)">
+        <input type="text" class="form-control mt-1 tarea-duracion" placeholder="Duración (tiempo en Min)">
     </div>
     `;
 
@@ -4944,31 +4748,22 @@ function pintarActividades(json) {
                         <i class="fa fa-trash"></i>
                     </button>
                 </div>
-
                 <div class="actividad-row">
-
                     <div class="actividad-left">
                         <input type="text" 
                             class="form-control actividad-nombre" 
                             value="${actividad.nombre || ''}">
                     </div>
-
                     <div class="actividad-right">
-
                         <button type="button" 
                             class="btn btn-agregar-tarea"
                             onclick="agregarTarea(${num})">
                             + Agregar tarea
                         </button>
-
                         <div id="tareas_${num}"></div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
         `;
 
@@ -5433,120 +5228,45 @@ function crearGrafica(id,resultado,textoPregunta,nombreCategoria = '')
 
 
 function cargarGraficasFichas() {
-
     $.get(
-
         '/getGraficasFichas/' + recsensorial,
-
         function (data) {
-
             generarGraficasFichas(data);
-
         }
-
     );
-
 }
 
 function generarGraficasFichas(data) {
 
-    //------------------------------------------
-    // LIMPIAR
-    //------------------------------------------
-
     $('#contenedorGraficasfichas').empty();
 
-
-
-
-    //------------------------------------------
-    // ORDENAR FICHAS
-    //------------------------------------------
-
     data.sort(function (a, b) {
-
         return parseFloat(a.ficha) - parseFloat(b.ficha);
 
     });
 
 
-
-
-    //------------------------------------------
-    // RECORRER
-    //------------------------------------------
-
     data.forEach(function (ficha, index) {
 
-
-
-
-        //------------------------------------------
-        // TITULO
-        //------------------------------------------
-
         let titulo = `
-
-            <div style="
-                width:100%;
-                text-align:center;
-                margin-top:50px;
-                margin-bottom:30px;
-            ">
-
-                <div style="
-                    font-size:28px;
-                    color:#1b3c59;
-                    font-weight:bold;
-                ">
-
+            <div style="width:100%; text-align:center; margin-top:50px; margin-bottom:30px;">
+                <div style=" font-size:28px; color:#1b3c59; font-weight:bold;">
                     ${ficha.titulo}
-
                 </div>
-
             </div>
-
         `;
 
         $('#contenedorGraficasfichas').append(titulo);
 
-
-
-
-        //------------------------------------------
-        // FILA
-        //------------------------------------------
             let fila = `
 
-                <div
-                    id="fila_${index}"
-                    style="
-                        width:100%;
-                        display:flex;
-                        flex-wrap:wrap;
-                        justify-content:center;
-                        gap:20px;
-                        margin-bottom:30px;
-                        background:#FFFFFF;
-                    ">
+                <div id="fila_${index}" style=" width:100%; display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-bottom:30px; background:#FFFFFF;">
                 </div>
-
             `;
 
         $('#contenedorGraficasfichas').append(fila);
 
-
-
-
-        //------------------------------------------
-        // PREGUNTAS
-        //------------------------------------------
-
         Object.entries(ficha.preguntas)
-
-            //------------------------------------------
-            // ORDENAR
-            //------------------------------------------
 
             .sort(function (a, b) {
 
@@ -5564,18 +5284,7 @@ function generarGraficasFichas(data) {
 
             })
 
-            //------------------------------------------
-            // RECORRER
-            //------------------------------------------
-
             .forEach(function ([letra, pregunta], i) {
-
-
-
-
-                //------------------------------------------
-                // INCISO
-                //------------------------------------------
 
                 let inciso = obtenerIncisoReal(
 
@@ -5586,108 +5295,37 @@ function generarGraficasFichas(data) {
                 );
 
 
-
-
-                //------------------------------------------
-                // ID
-                //------------------------------------------
-
                 let idChart = 'chart_' + index + '_' + i;
-
-
-
-
-                //------------------------------------------
-                // CARD
-                //------------------------------------------
 
                 let card = `
 
-                    <div style="
-                        width:180px;
-                        background:#FFF;
-                        border-radius:20px;
-                        box-shadow:0 4px 12px rgba(0,0,0,.10);
-                        padding:15px;
-                        display:flex;
-                        flex-direction:column;
-                        align-items:center;
-                    ">
-
-                        <div style="
-                            font-size:28px;
-                            font-weight:bold;
-                            color:#1b3c59;
-                            margin-bottom:10px;
-                        ">
-
+                    <div style=" width:180px; background:#FFF; border-radius:20px; box-shadow:0 4px 12px rgba(0,0,0,.10); padding:15px; display:flex; flex-direction:column; align-items:center;">
+                        <div style=" font-size:28px; font-weight:bold; color:#1b3c59; margin-bottom:10px;">
                             ${inciso}
-
                         </div>
-
-                        <div
-                            id="${idChart}"
-                            style="
-                                width:100%;
-                            ">
+                        <div id="${idChart}" style="width:100%;">
                         </div>
-
                     </div>
-
                 `;
 
                 $('#fila_' + index).append(card);
 
-
-
-
-                //------------------------------------------
-                // TERMOMETRO
-                //------------------------------------------
-
                 crearTermometroFicha(
-
                     idChart,
-
                     pregunta.SI,
-
                     pregunta.NO
-
                 );
-
             });
-
     });
-
 }
 
 function obtenerIncisoReal(texto, letra) {
 
-    //------------------------------------------
-    // BUSCAR a. b. c.
-    //------------------------------------------
-
     let match = texto.match(/^([a-z])/i);
 
-
-
-
-    //------------------------------------------
-    // SI EXISTE
-    //------------------------------------------
-
     if (match) {
-
         return match[1].toUpperCase();
-
     }
-
-
-
-
-    //------------------------------------------
-    // LIMPIAR
-    //------------------------------------------
 
     return letra
         .replace(/[0-9_]/g, '')
@@ -5695,55 +5333,19 @@ function obtenerIncisoReal(texto, letra) {
 
 }
 
-function crearTermometroFicha(
-
-    id,
-    si,
-    no
-
-) {
-
-    //------------------------------------------
-    // TOTAL
-    //------------------------------------------
+function crearTermometroFicha(id,si,no)
+{
 
     let total = si + no;
-
-
-
-
-    //------------------------------------------
-    // PORCENTAJE SI
-    //------------------------------------------
 
     let porcentajeSi = total > 0
         ? ((si / total) * 100)
         : 0;
 
-
-
-
-    //------------------------------------------
-    // ALTURA TERMOMETRO
-    //------------------------------------------
-
     let alturaTotal = 180;
-
-
-
-
-    //------------------------------------------
-    // ALTURA VERDE
-    //------------------------------------------
 
     let alturaVerde = (alturaTotal * porcentajeSi) / 100;
 
-
-
-
-    //------------------------------------------
-    // COLOR BULBO
-    //------------------------------------------
 
     let colorBulbo = '#dc3545';
 
@@ -5754,35 +5356,11 @@ function crearTermometroFicha(
     }
 
 
-
-
-    //------------------------------------------
-    // HTML
-    //------------------------------------------
-
     let html = `
 
-        <div style="
-            width:100%;
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-        ">
+        <div style=" width:100%; display:flex; flex-direction:column; align-items:center; ">
+            <div style=" position:relative; width:70px; height:235px; ">
 
-
-
-
-            <!-- CONTENEDOR -->
-            <div style="
-                position:relative;
-                width:70px;
-                height:235px;
-            ">
-
-
-
-
-                <!-- TUBO -->
                 <div style="
                     position:absolute;
                     left:50%;
@@ -5794,29 +5372,11 @@ function crearTermometroFicha(
                     border:5px solid #b9e5e5;
                     border-radius:50px;
                     overflow:hidden;
-                    z-index:2;
-                ">
-
-
-
-
-                    <!-- VERDE -->
-                    <div style="
-                        position:absolute;
-                        top:0;
-                        width:100%;
-                        height:${alturaVerde}px;
-                        background:#28a745;
-                        transition:1s;
-                    ">
+                    z-index:2;">
+                    <div style=" position:absolute; top:0; width:100%; height:${alturaVerde}px; background:#28a745; transition:1s; ">
                     </div>
-
                 </div>
 
-
-
-
-                <!-- BULBO -->
                 <div style="
                     position:absolute;
                     bottom:0;
@@ -5827,49 +5387,19 @@ function crearTermometroFicha(
                     border-radius:50%;
                     background:${colorBulbo};
                     border:5px solid #b9e5e5;
-                    z-index:1;
-                ">
+                    z-index:1;">
                 </div>
-
             </div>
 
-
-
-
-            <!-- SI -->
-            <div style="
-                margin-top:12px;
-                font-size:18px;
-                font-weight:bold;
-                color:#28a745;
-            ">
-
+            <div style=" margin-top:12px; font-size:18px; font-weight:bold; color:#28a745;">
                 SI: ${si}
-
             </div>
 
-
-
-
-            <!-- NO -->
-            <div style="
-                margin-top:2px;
-                font-size:18px;
-                font-weight:bold;
-                color:#dc3545;
-            ">
-
+            <div style=" margin-top:2px; font-size:18px; font-weight:bold; color:#dc3545;">
                 NO: ${no}
-
             </div>
-
         </div>
-
     `;
-
-
-
-
     $('#' + id).html(html);
 
 }
@@ -5880,9 +5410,7 @@ function crearTermometroFicha(
 function cargarMapaPeligros()
 {
     $.get(
-
         '/getMapaPeligros/' + recsensorial,
-
         function (response)
         {
             generarTablaMapaPeligros(response);
@@ -5905,9 +5433,7 @@ function generarTablaMapaPeligros(response)
 
         <div style="width:100%; overflow-x:auto;">
             <table style="width:100%; border-collapse:collapse; text-align:center; font-size:16px; border:3px solid #0B2C6B;">
-
                 <thead>
-
                     <tr>
                         <th
                             colspan="${fichas.length + 1}"
@@ -5921,9 +5447,7 @@ function generarTablaMapaPeligros(response)
                             MAPA DE PELIGROS
                         </th>
                     </tr>
-
                     <tr>
-
                         <th
                             rowspan="2"
                             style="
@@ -5936,7 +5460,6 @@ function generarTablaMapaPeligros(response)
                                 border:2px solid #000;">
                             Criterios de carga física
                         </th>
-
                         <th
                             colspan="${fichas.length}"
                             style="
@@ -5947,9 +5470,7 @@ function generarTablaMapaPeligros(response)
                                 border:2px solid #000;">
                             Personas evaluadas
                         </th>
-
                     </tr>
-
                     <tr>
     `;
 
@@ -5976,9 +5497,7 @@ function generarTablaMapaPeligros(response)
 
     html += `
                     </tr>
-
                 </thead>
-
                 <tbody>
     `;
 
@@ -5989,7 +5508,6 @@ function generarTablaMapaPeligros(response)
 
         html += `
             <tr>
-
                 <td
                     style="
                         text-align:left;
@@ -6036,7 +5554,6 @@ function generarTablaMapaPeligros(response)
 
     html += `
                 </tbody>
-
             </table>
         </div>
     `;
@@ -6345,7 +5862,7 @@ function cargarDatosGeneralesInformeReco()
                 $('#INFORME_OBJETIVOGENERALES').val(response.INFORME_OBJETIVOGENERALES);
             } else {
                 $('#INFORME_OBJETIVOGENERALES')
-                    .val(`Evaluar los factores de riesgo ergonómicos de las actividades laborales que impliquen postura, movimientos, manipulación manual de cargas y esfuerzos, mediante la observación y aplicación de métodos de carga física para la prevención de trastornos músculo esqueléticos.`);
+                    .val(`Identificar los riesgos y peligros ergonómicos de las actividades laborales que impliquen postura, movimientos, manipulación manual de cargas y esfuerzos, mediante la observación y aplicación de las fichas de la ISO-TR 12295 que permiten cuantificar el riesgo controlado o riesgo elevado.`);
             }
 
 
@@ -6359,7 +5876,7 @@ function cargarDatosGeneralesInformeReco()
 
 • Determinar el nivel de riesgo por carga física a la cual se encuentran expuestos los trabajadores.
 
-• Generar recomendaciones derivadas de la identificación de riesgos para mitigar la probabilidad de ocurrencia de Trastornos Músculo Esqueléticos (TME) de origen laboral.`);
+• Generar acciones derivadas de la identificación de riesgos para mitigar la probabilidad de ocurrencia de Trastornos Músculo Esqueléticos (TME) de origen laboral.`);
 
             }
             
@@ -6432,15 +5949,7 @@ Se localiza en las coordenadas  COORDENADAS.`);
              
             $('#CONCLUSION_GRAFICASISO12995')
                 .val(response.CONCLUSION_GRAFICASISO12995);
-                        
-            
-            
-					//-----------------------------------
-            // IMAGEN UBICACION
-            //-----------------------------------
-
-
-
+                    
 			   if(response.RUTA_IMAGEN_UBICACION)
             {
 
@@ -6457,11 +5966,6 @@ Se localiza en las coordenadas  COORDENADAS.`);
                     recsensorial +
                     extension;
 
-
-
-                //-----------------------------------------
-                // DROPIFY
-                //-----------------------------------------
 
                 if ($('#RUTA_IMAGEN_UBICACION').data('dropify')) {
 
@@ -6511,254 +6015,208 @@ Se localiza en las coordenadas  COORDENADAS.`);
                 }
 
 
-
-                //-----------------------------------------
-                // NO REQUERIDO
-                //-----------------------------------------
-
                 $('#RUTA_IMAGEN_UBICACION')
                     .attr('required', false);
 
 			}
 			
 
+            $('#INFORME_RESPONSABLE1')
+                .val(response.INFORME_RESPONSABLE1);
 
 
-//-----------------------------------
-// RESPONSABLE 1
-//-----------------------------------
-
-$('#INFORME_RESPONSABLE1')
-    .val(response.INFORME_RESPONSABLE1);
-
-
-$('#INFORME_RESPONSABLE1CARGO')
-    .val(response.INFORME_RESPONSABLE1CARGO);
+            $('#INFORME_RESPONSABLE1CARGO')
+                .val(response.INFORME_RESPONSABLE1CARGO);
 
 
 
-if(response.INFORME_RESPONSABLE1DOCUMENTO)
-{
+        if(response.INFORME_RESPONSABLE1DOCUMENTO)
+        {
 
-    var archivo =
-        response.INFORME_RESPONSABLE1DOCUMENTO;
-
-
-
-    var extension = archivo.substring(
-        archivo.lastIndexOf(".")
-    );
+            var archivo =
+                response.INFORME_RESPONSABLE1DOCUMENTO;
 
 
 
-    var imagenUrl =
-        '/mostrarresponsable1recoergo/0/' +
-        recsensorial +
-        extension;
+            var extension = archivo.substring(
+                archivo.lastIndexOf(".")
+            );
 
 
 
-    //-----------------------------------------
-    // DROPIFY
-    //-----------------------------------------
+            var imagenUrl =
+                '/mostrarresponsable1recoergo/0/' +
+                recsensorial +
+                extension;
 
-    if ($('#INFORME_RESPONSABLE1DOCUMENTO')
-        .data('dropify')) {
+            if ($('#INFORME_RESPONSABLE1DOCUMENTO')
+                .data('dropify')) {
 
-        $('#INFORME_RESPONSABLE1DOCUMENTO')
-            .dropify()
-            .data('dropify')
-            .destroy();
-
-
-
-        $('#INFORME_RESPONSABLE1DOCUMENTO')
-            .dropify()
-            .data('dropify')
-            .settings.defaultFile = imagenUrl;
+                $('#INFORME_RESPONSABLE1DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .destroy();
 
 
 
-        $('#INFORME_RESPONSABLE1DOCUMENTO')
-            .dropify()
-            .data('dropify')
-            .init();
-
-    }
-    else {
-
-        $('#INFORME_RESPONSABLE1DOCUMENTO')
-            .attr('data-default-file', imagenUrl);
+                $('#INFORME_RESPONSABLE1DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .settings.defaultFile = imagenUrl;
 
 
 
-        $('#INFORME_RESPONSABLE1DOCUMENTO')
-            .dropify({
+                $('#INFORME_RESPONSABLE1DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .init();
 
-            messages: {
-                'default': 'Arrastre la imagen aquí o haga click',
-                'replace': 'Arrastre la imagen o haga clic para reemplazar',
-                'remove': 'Quitar',
-                'error': 'Ooops, ha ocurrido un error.'
-            },
+            }
+            else {
 
-            error: {
-                'fileSize': 'Demasiado grande ({{ value }} max).',
-                'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-                'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-                'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-                'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-                'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                $('#INFORME_RESPONSABLE1DOCUMENTO')
+                    .attr('data-default-file', imagenUrl);
+
+
+
+                $('#INFORME_RESPONSABLE1DOCUMENTO')
+                    .dropify({
+
+                    messages: {
+                        'default': 'Arrastre la imagen aquí o haga click',
+                        'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                        'remove': 'Quitar',
+                        'error': 'Ooops, ha ocurrido un error.'
+                    },
+
+                    error: {
+                        'fileSize': 'Demasiado grande ({{ value }} max).',
+                        'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                        'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                        'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                        'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                        'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                    }
+
+                });
+
             }
 
-        });
 
-    }
+            $('#INFORME_RESPONSABLE1DOCUMENTO')
+                .attr('required', false);
 
+            $("#boton_descargarresponsabledoc1")
+                .css('display', 'block');
 
+        }
+        else {
 
-    //-----------------------------------------
-    // NO REQUERIDO
-    //-----------------------------------------
+            $("#boton_descargarresponsabledoc1")
+                .css('display', 'none');
 
-    $('#INFORME_RESPONSABLE1DOCUMENTO')
-        .attr('required', false);
-
-
-
-    //-----------------------------------------
-    // BOTON DESCARGA
-    //-----------------------------------------
-
-    $("#boton_descargarresponsabledoc1")
-        .css('display', 'block');
-
-}
-else {
-
-    $("#boton_descargarresponsabledoc1")
-        .css('display', 'none');
-
-}
+        }
 
 
 
-//-----------------------------------
-// RESPONSABLE 2
-//-----------------------------------
-
-$('#INFORME_RESPONSABLE2')
-    .val(response.INFORME_RESPONSABLE2);
+        $('#INFORME_RESPONSABLE2')
+            .val(response.INFORME_RESPONSABLE2);
 
 
-$('#INFORME_RESPONSABLE2CARGO')
-    .val(response.INFORME_RESPONSABLE2CARGO);
+        $('#INFORME_RESPONSABLE2CARGO')
+            .val(response.INFORME_RESPONSABLE2CARGO);
 
 
 
-if(response.INFORME_RESPONSABLE2DOCUMENTO)
-{
+        if(response.INFORME_RESPONSABLE2DOCUMENTO)
+        {
 
-    var archivo =
-        response.INFORME_RESPONSABLE2DOCUMENTO;
-
-
-
-    var extension = archivo.substring(
-        archivo.lastIndexOf(".")
-    );
+            var archivo =
+                response.INFORME_RESPONSABLE2DOCUMENTO;
 
 
 
-    var imagenUrl =
-        '/mostrarresponsable2recoergo/0/' +
-        recsensorial +
-        extension;
+            var extension = archivo.substring(
+                archivo.lastIndexOf(".")
+            );
 
 
 
-    //-----------------------------------------
-    // DROPIFY
-    //-----------------------------------------
-
-    if ($('#INFORME_RESPONSABLE2DOCUMENTO')
-        .data('dropify')) {
-
-        $('#INFORME_RESPONSABLE2DOCUMENTO')
-            .dropify()
-            .data('dropify')
-            .destroy();
+            var imagenUrl =
+                '/mostrarresponsable2recoergo/0/' +
+                recsensorial +
+                extension;
 
 
 
-        $('#INFORME_RESPONSABLE2DOCUMENTO')
-            .dropify()
-            .data('dropify')
-            .settings.defaultFile = imagenUrl;
+            if ($('#INFORME_RESPONSABLE2DOCUMENTO')
+                .data('dropify')) {
+
+                $('#INFORME_RESPONSABLE2DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .destroy();
 
 
 
-        $('#INFORME_RESPONSABLE2DOCUMENTO')
-            .dropify()
-            .data('dropify')
-            .init();
-
-    }
-    else {
-
-        $('#INFORME_RESPONSABLE2DOCUMENTO')
-            .attr('data-default-file', imagenUrl);
+                $('#INFORME_RESPONSABLE2DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .settings.defaultFile = imagenUrl;
 
 
 
-        $('#INFORME_RESPONSABLE2DOCUMENTO')
-            .dropify({
+                $('#INFORME_RESPONSABLE2DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .init();
 
-            messages: {
-                'default': 'Arrastre la imagen aquí o haga click',
-                'replace': 'Arrastre la imagen o haga clic para reemplazar',
-                'remove': 'Quitar',
-                'error': 'Ooops, ha ocurrido un error.'
-            },
+            }
+            else {
 
-            error: {
-                'fileSize': 'Demasiado grande ({{ value }} max).',
-                'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-                'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-                'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-                'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-                'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                $('#INFORME_RESPONSABLE2DOCUMENTO')
+                    .attr('data-default-file', imagenUrl);
+
+
+
+                $('#INFORME_RESPONSABLE2DOCUMENTO')
+                    .dropify({
+
+                    messages: {
+                        'default': 'Arrastre la imagen aquí o haga click',
+                        'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                        'remove': 'Quitar',
+                        'error': 'Ooops, ha ocurrido un error.'
+                    },
+
+                    error: {
+                        'fileSize': 'Demasiado grande ({{ value }} max).',
+                        'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                        'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                        'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                        'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                        'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                    }
+
+                });
+
             }
 
-        });
-
-    }
-
-
-
-    //-----------------------------------------
-    // NO REQUERIDO
-    //-----------------------------------------
-
-    $('#INFORME_RESPONSABLE2DOCUMENTO')
-        .attr('required', false);
+            $('#INFORME_RESPONSABLE2DOCUMENTO')
+                .attr('required', false);
 
 
 
-    //-----------------------------------------
-    // BOTON DESCARGA
-    //-----------------------------------------
+            $("#boton_descargarresponsabledoc2")
+                .css('display', 'block');
 
-    $("#boton_descargarresponsabledoc2")
-        .css('display', 'block');
+        }
+        else {
 
-}
-else {
+            $("#boton_descargarresponsabledoc2")
+                .css('display', 'none');
 
-    $("#boton_descargarresponsabledoc2")
-        .css('display', 'none');
-
-}
+        }
 
         }
 
@@ -6772,9 +6230,7 @@ else {
 $('#SELECT_INTRODUCCION').on('change', function () {
 
     var selectedOption = $(this).find('option:selected');
-
     var introduccion = selectedOption.data('introduccion');
-
     $('#INFORME_INTRODUCCION').val(introduccion);
 
 });
@@ -6784,49 +6240,28 @@ $("#form_informe_introduccion").on("submit", function(e)
     e.preventDefault();
 
     let formData = new FormData(this);
-
     formData.append('RECO_ID', recsensorial);
-
-
 
     $.ajax({
 
         url: '/guardarIntroduccionRecoErgo',
-
         type: 'POST',
-
         data: formData,
-
         contentType: false,
-
         processData: false,
-
         cache: false,
-
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
 
-
-
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_introduccion")
-                .prop('disabled', true);
-
-            $("#botonguardar_reporte_introduccion")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_introduccion").prop('disabled', true);
+            $("#botonguardar_reporte_introduccion").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
-
 
         success: function(response)
         {
-
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -6834,16 +6269,11 @@ $("#form_informe_introduccion").on("submit", function(e)
                 timer: 2000,
                 showConfirmButton: false
             });
-
         },
-
-
 
         error: function(xhr)
         {
-
             console.log(xhr.responseText);
-
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -6852,21 +6282,12 @@ $("#form_informe_introduccion").on("submit", function(e)
 
         },
 
-
-
         complete: function()
         {
 
-            $("#botonguardar_reporte_introduccion")
-                .prop('disabled', false);
-
-            $("#botonguardar_reporte_introduccion")
-                .html(
-                    'Guardar introducción <i class="fa fa-save"></i>'
-                );
-
+            $("#botonguardar_reporte_introduccion").prop('disabled', false);
+            $("#botonguardar_reporte_introduccion").html('Guardar introducción <i class="fa fa-save"></i>');
         }
-
     });
 
 });
@@ -6878,51 +6299,28 @@ $("#form_informe_introduccion").on("submit", function(e)
 $("#form_informe_listadefiniciones").on("submit", function(e)
 {
     e.preventDefault();
-
     let formData = new FormData(this);
-
     formData.append('RECO_ID', recsensorial);
-
-
 
     $.ajax({
 
         url: '/guardarDefinicionesInformeErgo',
-
         type: 'POST',
-
         data: formData,
-
         contentType: false,
-
         processData: false,
-
         cache: false,
-
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
 
-
-
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_definiciones")
-                .prop('disabled', true);
-
-            $("#botonguardar_reporte_definiciones")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_definiciones").prop('disabled', true);
+            $("#botonguardar_reporte_definiciones").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
-
-
         success: function(response)
         {
-
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -6932,14 +6330,9 @@ $("#form_informe_listadefiniciones").on("submit", function(e)
             });
 
         },
-
-
-
         error: function(xhr)
         {
-
             console.log(xhr.responseText);
-
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -6948,23 +6341,12 @@ $("#form_informe_listadefiniciones").on("submit", function(e)
 
         },
 
-
-
         complete: function()
         {
-
-            $("#botonguardar_reporte_definiciones")
-                .prop('disabled', false);
-
-            $("#botonguardar_reporte_definiciones")
-                .html(
-                    'Guardar definiciones <i class="fa fa-save"></i>'
-                );
-
+            $("#botonguardar_reporte_definiciones").prop('disabled', false);
+            $("#botonguardar_reporte_definiciones").html('Guardar definiciones <i class="fa fa-save"></i>');
         }
-
     });
-
 });
 
 
@@ -6975,27 +6357,14 @@ function cargarDefinicionesInformeErgo()
         '/obtenerDefinicionesInformeErgo/' + recsensorial,
 
         function(response)
-        {
-
-           
-            $('input[name="DEFINICONES_INFORME[]"]')
-                .prop('checked', false);
-
-
+        {  
+            $('input[name="DEFINICONES_INFORME[]"]').prop('checked', false);
             response.forEach(function(item)
             {
-
-                $('input[name="DEFINICONES_INFORME[]"][value="' +
-                    item.CATALOGO_DEFINICIONES_ID +
-                    '"]')
-
-                    .prop('checked', true);
-
+                $('input[name="DEFINICONES_INFORME[]"][value="' + item.CATALOGO_DEFINICIONES_ID + '"]').prop('checked', true);
             });
-
         }
     );
-
 }
 
 
@@ -7011,46 +6380,25 @@ $("#form_informe_objetivogeneral").on("submit", function(e)
 
     formData.append('RECO_ID', recsensorial);
 
-
-
     $.ajax({
-
         url: '/guardarObjetivoGeneralRecoErgo',
-
         type: 'POST',
-
         data: formData,
-
         contentType: false,
-
         processData: false,
-
         cache: false,
-
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
 
-
-
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_objetivogeneral")
-                .prop('disabled', true);
-
-            $("#botonguardar_reporte_objetivogeneral")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_objetivogeneral").prop('disabled', true);
+            $("#botonguardar_reporte_objetivogeneral").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
-
 
         success: function(response)
         {
-
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -7058,28 +6406,15 @@ $("#form_informe_objetivogeneral").on("submit", function(e)
                 timer: 2000,
                 showConfirmButton: false
             });
-
         },
-
-
 
         complete: function()
         {
-
-            $("#botonguardar_reporte_objetivogeneral")
-                .prop('disabled', false);
-
-            $("#botonguardar_reporte_objetivogeneral")
-                .html(
-                    'Guardar objetivo general <i class="fa fa-save"></i>'
-                );
-
+            $("#botonguardar_reporte_objetivogeneral").prop('disabled', false);
+            $("#botonguardar_reporte_objetivogeneral").html('Guardar objetivo general <i class="fa fa-save"></i>');
         }
-
     });
-
 });
-
 
 
 $("#form_informe_objetivoespecifico").on("submit", function(e)
@@ -7090,46 +6425,24 @@ $("#form_informe_objetivoespecifico").on("submit", function(e)
 
     formData.append('RECO_ID', recsensorial);
 
-
-
     $.ajax({
-
         url: '/guardarObjetivoEspecificoRecoErgo',
-
         type: 'POST',
-
         data: formData,
-
         contentType: false,
-
         processData: false,
-
         cache: false,
-
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
 
-
-
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_objetivoespecifico")
-                .prop('disabled', true);
-
-            $("#botonguardar_reporte_objetivoespecifico")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_objetivoespecifico").prop('disabled', true);
+            $("#botonguardar_reporte_objetivoespecifico").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
-
-
         success: function(response)
         {
-
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -7137,26 +6450,14 @@ $("#form_informe_objetivoespecifico").on("submit", function(e)
                 timer: 2000,
                 showConfirmButton: false
             });
-
         },
-
-
 
         complete: function()
         {
-
-            $("#botonguardar_reporte_objetivoespecifico")
-                .prop('disabled', false);
-
-            $("#botonguardar_reporte_objetivoespecifico")
-                .html(
-                    'Guardar objetivos específicos <i class="fa fa-save"></i>'
-                );
-
+            $("#botonguardar_reporte_objetivoespecifico").prop('disabled', false);
+            $("#botonguardar_reporte_objetivoespecifico").html('Guardar objetivos específicos <i class="fa fa-save"></i>');
         }
-
     });
-
 });
 
 
@@ -7167,51 +6468,29 @@ $("#form_informe_objetivoespecifico").on("submit", function(e)
 $("#form_informe_ubicacion").on("submit", function(e)
 {
     e.preventDefault();
-
     let formData = new FormData(this);
-
     formData.append('RECO_ID', recsensorial);
 
-
-
     $.ajax({
-
         url: '/guardarUbicacionRecoErgo',
-
         type: 'POST',
-
         data: formData,
-
         contentType: false,
-
         processData: false,
-
         cache: false,
-
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
 
-
-
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_ubicacion")
-                .prop('disabled', true);
-
-            $("#botonguardar_reporte_ubicacion")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_ubicacion").prop('disabled', true);
+            $("#botonguardar_reporte_ubicacion").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
 
 
         success: function(response)
         {
-
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -7219,31 +6498,17 @@ $("#form_informe_ubicacion").on("submit", function(e)
                 timer: 2000,
                 showConfirmButton: false
             });
-
         },
-
-
 
         complete: function()
         {
-
-            $("#botonguardar_reporte_ubicacion")
-                .prop('disabled', false);
-
-            $("#botonguardar_reporte_ubicacion")
-                .html(
-                    'Guardar ubicación <i class="fa fa-save"></i>'
-                );
-
+            $("#botonguardar_reporte_ubicacion").prop('disabled', false);
+            $("#botonguardar_reporte_ubicacion").html('Guardar ubicación <i class="fa fa-save"></i>');
         }
-
     });
-
 });
 
 ///////////////  Descripción del proceso en la instalación////////////////
-
-
 
 $("#form_reporte_procesoinstalacion").on(
     "submit",
@@ -7251,61 +6516,31 @@ $("#form_reporte_procesoinstalacion").on(
 {
 
     e.preventDefault();
-
-
-
     let formData = new FormData(this);
-
-
-
-    formData.append(
-        'RECO_ID',
-        recsensorial
-    );
-
-
+    
+    formData.append('RECO_ID',recsensorial);
 
     $.ajax({
-
         url: '/guardarProcesoInstalacionRecoErgo',
-
         type: 'POST',
-
         data: formData,
-
         cache: false,
-
         contentType: false,
-
         processData: false,
-
         headers: {
             'X-CSRF-TOKEN':
                 $('meta[name="csrf-token"]')
                 .attr('content')
         },
 
-
-
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_procesoinstalacion")
-                .prop('disabled', true);
-
-
-            $("#botonguardar_reporte_procesoinstalacion")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_procesoinstalacion").prop('disabled', true);
+            $("#botonguardar_reporte_procesoinstalacion").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
-
 
         success: function(response)
         {
-
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -7313,28 +6548,14 @@ $("#form_reporte_procesoinstalacion").on(
                 timer: 2000,
                 showConfirmButton: false
             });
-
         },
-
-
-
         complete: function()
         {
-
-            $("#botonguardar_reporte_procesoinstalacion")
-                .prop('disabled', false);
-
-
-            $("#botonguardar_reporte_procesoinstalacion")
-                .html(
-                    'Guardar proceso instalación <i class="fa fa-save"></i>'
-                );
-
+            $("#botonguardar_reporte_procesoinstalacion").prop('disabled', false);
+            $("#botonguardar_reporte_procesoinstalacion").html('Guardar proceso instalación <i class="fa fa-save"></i>');
         }
-
     });
-
-	});
+});
 
 
 ///////////  Población ocupacionalmente expuesta
@@ -7347,14 +6568,11 @@ function tablaReporteCategoriasErgo()
 		var ruta = "/tablaReporteCategoriasErgo";
 
 		if ($.fn.DataTable.isDataTable('#tabla_reporte_categoria')) {
-
 			tabla_reporte_categoria.destroy();
-
 			$('#tabla_reporte_categoria tbody').empty();
 		}
 
 		tabla_reporte_categoria = $('#tabla_reporte_categoria').DataTable({
-
 			"ajax": {
 				"url": ruta,
 				"type": "GET",
@@ -7407,11 +6625,9 @@ function tablaReporteCategoriasErgo()
                 }
 
 			],
-
             "footerCallback": function (row, data, start, end, display)
             {
                 var api = this.api();
-
                 var total = api
                     .column(2)
                     .data()
@@ -7574,76 +6790,43 @@ function tablaReporteAreasErgo()
 //// CONCLUSIONES
 
 $('#SELECT_CONCLUSION').on('change', function () {
-
     var selectedOption = $(this).find('option:selected');
-
     var conclusion = selectedOption.data('conclusion');
-
     $('#INFORME_CONCLUSION').val(conclusion);
-
 });
+
 
 $("#form_informe_conclusiones").on(
     "submit",
     function(e)
 {
-
     e.preventDefault();
-
-
 
     let formData = new FormData(this);
 
-
-
-    formData.append(
-        'RECO_ID',
-        recsensorial
-    );
-
-
+    formData.append('RECO_ID',recsensorial);
 
     $.ajax({
-
         url: '/guardarConclusionRecoErgo',
-
         type: 'POST',
-
         data: formData,
-
         cache: false,
-
         contentType: false,
-
         processData: false,
-
         headers: {
             'X-CSRF-TOKEN':
                 $('meta[name="csrf-token"]')
                 .attr('content')
         },
 
-
-
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_conclusion")
-                .prop('disabled', true);
-
-
-            $("#botonguardar_reporte_conclusion")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_conclusion").prop('disabled', true);
+            $("#botonguardar_reporte_conclusion").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
-
 
         success: function(response)
         {
-
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -7651,31 +6834,17 @@ $("#form_informe_conclusiones").on(
                 timer: 2000,
                 showConfirmButton: false
             });
-
         },
-
-
 
         complete: function()
         {
-
-            $("#botonguardar_reporte_conclusion")
-                .prop('disabled', false);
-
-
-            $("#botonguardar_reporte_conclusion")
-                .html(
-                    'Guardar conclusión <i class="fa fa-save"></i>'
-                );
-
+            $("#botonguardar_reporte_conclusion").prop('disabled', false);
+            $("#botonguardar_reporte_conclusion").html('Guardar conclusión <i class="fa fa-save"></i>');
         }
-
     });
-
-	});
+});
 
 ///// RECOMENDACIONES
-
 
 $("#form_informe_listarecomendaciones").on(
     "submit",
@@ -7684,35 +6853,17 @@ $("#form_informe_listarecomendaciones").on(
 
     e.preventDefault();
 
-
-
     let formData = new FormData(this);
 
-
-
-    formData.append(
-        'RECO_ID',
-        recsensorial
-    );
-
-
+    formData.append('RECO_ID',recsensorial);
 
     $.ajax({
-
-        url:
-            '/guardarRecomendacionesInformeErgo',
-
+        url: '/guardarRecomendacionesInformeErgo',
         type: 'POST',
-
         data: formData,
-
         cache: false,
-
         contentType: false,
-
         processData: false,
-
-
 
         headers: {
             'X-CSRF-TOKEN':
@@ -7720,27 +6871,14 @@ $("#form_informe_listarecomendaciones").on(
                 .attr('content')
         },
 
-
-
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_recomendaciones")
-                .prop('disabled', true);
-
-
-            $("#botonguardar_reporte_recomendaciones")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_recomendaciones").prop('disabled', true);
+            $("#botonguardar_reporte_recomendaciones").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
-
 
         success: function(response)
         {
-
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -7748,37 +6886,20 @@ $("#form_informe_listarecomendaciones").on(
                 timer: 2000,
                 showConfirmButton: false
             });
-
         },
-
-
 
         complete: function()
         {
-
-            $("#botonguardar_reporte_recomendaciones")
-                .prop('disabled', false);
-
-
-            $("#botonguardar_reporte_recomendaciones")
-                .html(
-                    'Guardar recomendaciones <i class="fa fa-save"></i>'
-                );
-
+            $("#botonguardar_reporte_recomendaciones").prop('disabled', false);
+            $("#botonguardar_reporte_recomendaciones").html('Guardar recomendaciones <i class="fa fa-save"></i>');
         }
-
     });
-
-	});
-
+});
 
 
-	function cargarRecomendacionesInformeErgo()
+
+function cargarRecomendacionesInformeErgo()
 {
-
-    //---------------------------------------
-    // LIMPIAR TODOS
-    //---------------------------------------
 
     $('input[name="DESCRIPCION_RECOMENDACIONES[]"]')
         .prop('checked', false);
@@ -7790,8 +6911,6 @@ $("#form_informe_listarecomendaciones").on(
 ////////  responsables
 
 
-
-
 $("#form_informe_responsablesinforme").on(
     "submit",
     function(e)
@@ -7799,35 +6918,17 @@ $("#form_informe_responsablesinforme").on(
 
     e.preventDefault();
 
-
-
     let formData = new FormData(this);
 
-
-
-    formData.append(
-        'RECO_ID',
-        recsensorial
-    );
-
-
+    formData.append('RECO_ID',recsensorial);
 
     $.ajax({
-
-        url:
-            '/guardarResponsablesInformeRecoErgo',
-
+        url: '/guardarResponsablesInformeRecoErgo',
         type: 'POST',
-
         data: formData,
-
         cache: false,
-
         contentType: false,
-
         processData: false,
-
-
 
         headers: {
             'X-CSRF-TOKEN':
@@ -7835,27 +6936,14 @@ $("#form_informe_responsablesinforme").on(
                 .attr('content')
         },
 
-
-
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_responsablesinforme")
-                .prop('disabled', true);
-
-
-            $("#botonguardar_reporte_responsablesinforme")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_responsablesinforme").prop('disabled', true);
+            $("#botonguardar_reporte_responsablesinforme").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
-
 
         success: function(response)
         {
-
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -7863,28 +6951,15 @@ $("#form_informe_responsablesinforme").on(
                 timer: 2000,
                 showConfirmButton: false
             });
-
         },
-
-
 
         complete: function()
         {
-
-            $("#botonguardar_reporte_responsablesinforme")
-                .prop('disabled', false);
-
-
-            $("#botonguardar_reporte_responsablesinforme")
-                .html(
-                    'Guardar responsables del informe <i class="fa fa-save"></i>'
-                );
-
+            $("#botonguardar_reporte_responsablesinforme").prop('disabled', false);
+            $("#botonguardar_reporte_responsablesinforme").html('Guardar responsables del informe <i class="fa fa-save"></i>');
         }
-
     });
-
-	});
+});
 
 
 
@@ -7898,35 +6973,16 @@ $("#form_preguntas-nom-036").on(
 
     e.preventDefault();
 
-
-
     let formData = new FormData(this);
 
-
-
-    formData.append(
-        'RECO_ID',
-        recsensorial
-    );
-
-
-
+    formData.append('RECO_ID',recsensorial);
     $.ajax({
-
-        url:
-            '/guardarIntroduccionGraficasNom036',
-
+        url:'/guardarIntroduccionGraficasNom036',
         type: 'POST',
-
         data: formData,
-
         cache: false,
-
         contentType: false,
-
         processData: false,
-
-
 
         headers: {
             'X-CSRF-TOKEN':
@@ -7938,70 +6994,35 @@ $("#form_preguntas-nom-036").on(
 
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_introduccionnom036")
-                .prop('disabled', true);
-
-
-            $("#botonguardar_reporte_introduccionnom036")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_introduccionnom036").prop('disabled', true);
+            $("#botonguardar_reporte_introduccionnom036").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
-
 
         success: function(response)
         {
-
             Swal.fire({
-
                 icon: 'success',
-
                 title: 'Correcto',
-
                 text: response.msj,
-
                 timer: 2000,
-
                 showConfirmButton: false
-
             });
-
         },
-
-
 
         error: function(xhr)
         {
-
             Swal.fire({
-
                 icon: 'error',
-
                 title: 'Error',
-
                 text:
                     xhr.responseJSON.msj
-
             });
-
         },
-
-
 
         complete: function()
         {
-
-            $("#botonguardar_reporte_introduccionnom036")
-                .prop('disabled', false);
-
-
-            $("#botonguardar_reporte_introduccionnom036")
-                .html(
-                    'Guardar <i class="fa fa-save"></i>'
-                );
+            $("#botonguardar_reporte_introduccionnom036").prop('disabled', false);
+            $("#botonguardar_reporte_introduccionnom036").html('Guardar <i class="fa fa-save"></i>');
 
         }
 
@@ -8020,115 +7041,56 @@ $("#form_preguntas-analisis-036").on(
 
     e.preventDefault();
 
-
-
     let formData = new FormData(this);
 
-
-
-    formData.append(
-        'RECO_ID',
-        recsensorial
-    );
-
-
+    formData.append('RECO_ID',recsensorial);
 
     $.ajax({
-
-        url:
-            '/guardarConclusionGraficasNom036',
-
+        url:'/guardarConclusionGraficasNom036',
         type: 'POST',
-
         data: formData,
-
         cache: false,
-
         contentType: false,
-
         processData: false,
-
-
-
         headers: {
             'X-CSRF-TOKEN':
                 $('meta[name="csrf-token"]')
                 .attr('content')
         },
 
-
-
         beforeSend: function()
         {
-
-            $("#botonguardar_reporte_conclusionnom036")
-                .prop('disabled', true);
-
-
-            $("#botonguardar_reporte_conclusionnom036")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
-
+            $("#botonguardar_reporte_conclusionnom036").prop('disabled', true);
+            $("#botonguardar_reporte_conclusionnom036").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
-
-
 
         success: function(response)
         {
-
             Swal.fire({
-
                 icon: 'success',
-
                 title: 'Correcto',
-
                 text: response.msj,
-
                 timer: 2000,
-
                 showConfirmButton: false
-
             });
-
         },
-
-
 
         error: function(xhr)
         {
-
             Swal.fire({
-
                 icon: 'error',
-
                 title: 'Error',
-
                 text:
                     xhr.responseJSON.msj
-
             });
-
         },
-
-
 
         complete: function()
         {
-
-            $("#botonguardar_reporte_conclusionnom036")
-                .prop('disabled', false);
-
-
-            $("#botonguardar_reporte_conclusionnom036")
-                .html(
-                    'Guardar <i class="fa fa-save"></i>'
-                );
-
+            $("#botonguardar_reporte_conclusionnom036").prop('disabled', false);
+            $("#botonguardar_reporte_conclusionnom036").html('Guardar <i class="fa fa-save"></i>');
         }
-
     });
-
 });
 
 
@@ -8145,15 +7107,11 @@ function tablaVersionesRecoErgo()
             "/tablaVersionesRecoErgo/" +
             recsensorial;
 
-
-
         if(tabla_reporte_revisiones != null)
         {
             tabla_reporte_revisiones
                 .destroy();
         }
-
-
 
         tabla_reporte_revisiones =
             $('#tabla_reporte_revisiones')
@@ -8165,67 +7123,46 @@ function tablaVersionesRecoErgo()
                 cache: false
             },
 
-
-
             columns: [
-
                 {
                     data: "NUMERO_REVISION"
                 },
-
                 {
                     data: "FECHA_FINALIZADO"
                 },
-
                 {
                     data: "FINALIZADO_NOMBRE"
                 },
-
                 {
                     data: "CHECKBOX_CANCELADO"
                 },
-
                 {
                     data: "CANCELADO_NOMBRE"
                 },
-
                 {
                     data: "ESTADO"
                 },
-
                 {
                     data: "BOTON_DESCARGAR"
                 }
-
             ],
-
-
-
+            
             ordering: true,
-
             processing: true,
-
             responsive: true,
-
-
-
+            
             language: {
-
                 emptyTable:
                     "No hay revisiones"
-
             }
-
         });
-
     }
     catch(exception) {
-
         console.error(exception);
-
     }
 
 }
+
 
 $("#boton_reporte_nuevarevision")
 .on("click", function()
@@ -8233,184 +7170,96 @@ $("#boton_reporte_nuevarevision")
 
     $.ajax({
 
-        url:
-            '/crearRevisionRecoErgo',
-
+        url: '/crearRevisionRecoErgo',
         type: 'POST',
-
         data: {
-
-            RECO_ID:
-                recsensorial,
-
+            RECO_ID: recsensorial,
             _token:
                 $('meta[name="csrf-token"]')
                 .attr('content')
-
         },
-
-
 
         success: function(response)
         {
-
             Swal.fire({
-
                 icon: 'success',
-
                 title: 'Correcto',
-
                 text: response.msj
-
             });
-
-
 
             tablaVersionesRecoErgo();
 			validarEdicionRecoErgo()
         }
-
     });
-
 });
 
 
 
-function cancelarRevisionRecoErgo(
-    ID_VERSION_RECO_ERGO,
-    checkbox
-) {
-
-    //---------------------------------------
-    // SI DESMARCA
-    //---------------------------------------
+function cancelarRevisionRecoErgo(ID_VERSION_RECO_ERGO,checkbox)
+{
 
     if(!checkbox.checked)
     {
         return;
     }
 
-
-
     Swal.fire({
-
         title: 'Cancelar revisión',
-
         input: 'textarea',
-
         inputLabel: 'Motivo de cancelación',
-
         inputPlaceholder:
-            'Escriba el motivo...',
-
+        'Escriba el motivo...',
         inputAttributes: {
             'required': true
         },
-
         showCancelButton: true,
-
         confirmButtonText: 'Cancelar revisión',
-
         cancelButtonText: 'Cerrar'
-
     }).then((result) => {
 
-        //---------------------------------------
-        // SI CONFIRMA
-        //---------------------------------------
 
         if(result.isConfirmed)
         {
-
             $.ajax({
-
-                url:
-                    '/cancelarRevisionRecoErgo',
-
+                url:'/cancelarRevisionRecoErgo',
                 type: 'POST',
-
                 data: {
-
-                    ID_VERSION_RECO_ERGO:
-                        ID_VERSION_RECO_ERGO,
-
-                    MOTIVO_CANCELACION:
-                        result.value,
+                    ID_VERSION_RECO_ERGO: ID_VERSION_RECO_ERGO,
+                    MOTIVO_CANCELACION: result.value,
 
                     _token:
                         $('meta[name="csrf-token"]')
                         .attr('content')
-
                 },
-
-
 
                 success: function(response)
                 {
-
                     Swal.fire({
-
                         icon: 'success',
-
                         title: 'Correcto',
-
                         text: response.msj
-
                     });
 
-
-
-                    //---------------------------------------
-                    // RECARGAR TABLA
-                    //---------------------------------------
-
                     tablaVersionesRecoErgo();
-
-
-
-                    //---------------------------------------
-                    // VALIDAR BLOQUEOS
-                    //---------------------------------------
-
                     validarEdicionRecoErgo();
-
                 },
-
-
 
                 error: function(xhr)
                 {
-
                     console.log(xhr.responseText);
-
                     Swal.fire({
-
                         icon: 'error',
-
                         title: 'Error',
-
-                        text:
-                            'No se pudo cancelar'
-
+                        text:'No se pudo cancelar'
                     });
-
                 }
-
             });
-
         }
         else {
 
-            //---------------------------------------
-            // DESMARCAR CHECK
-            //---------------------------------------
-
             checkbox.checked = false;
-
         }
-
     });
-
 }
 
 
@@ -8422,19 +7271,12 @@ function validarEdicionRecoErgo()
 {
 
     $.get(
-
-        '/validarEdicionRecoErgo/' +
-        recsensorial,
-
+        '/validarEdicionRecoErgo/' +  recsensorial,
         function(response)
         {
 
-            //---------------------------------------
-            // TODOS LOS BOTONES
-            //---------------------------------------
-
             let botones = `
-
+                #botonguardar_reporte_portada,
                 #botonguardar_reporte_introduccion,
                 #botonguardar_reporte_objetivogeneral,
                 #botonguardar_reporte_objetivoespecifico,
@@ -8442,10 +7284,12 @@ function validarEdicionRecoErgo()
                 #botonguardar_reporte_procesoinstalacion,
                 #botonguardar_reporte_conclusion,
                 #botonguardar_reporte_definiciones,
-                #botonguardar_reporte_recomendaciones,
                 #botonguardar_reporte_responsablesinforme,
-                #boton_reporte_nuevarevision
-
+                #boton_reporte_nuevarevision,
+                #botonguardar_reporte_introduccionnom036,
+                #botonguardar_reporte_conclusionnom036,
+                #botonguardar_reporte_introduccioniso12995,
+                #botonguardar_reporte_conclusioniso12995,
             `;
 
 
