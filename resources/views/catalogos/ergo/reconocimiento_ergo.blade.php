@@ -63,8 +63,7 @@
     }
 
     tr.error {
-        background-color: #ffe5e5 !important
-        ;
+        background-color: #ffe5e5 !important;
     }
 </style>
 
@@ -1457,7 +1456,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                     <div class="col-12">
                                                         {!! csrf_field() !!}
                                                         <textarea class="form-control" style="margin-bottom: 0px;" rows="14" id="INFORME_UBICACIONINSTALACION" name="INFORME_UBICACIONINSTALACION" required>
-                                                            Este estudio se realizó en las áreas de la INSTALACION, con domicilio DIRECCION.
+Este estudio se realizó en las áreas de la INSTALACION, con domicilio DIRECCION.
 
 Se localiza en las coordenadas  COORDENADAS.
                                                         </textarea>
@@ -1486,13 +1485,13 @@ Se localiza en las coordenadas  COORDENADAS.
                                                 <div class="form-group">
                                                     <label>Descripción del proceso en la instalación</label>
                                                     <textarea class="form-control" style="margin-bottom: 0px;" rows="20" id="INFORME_PROCESOINSTALACION" name="INFORME_PROCESOINSTALACION" required>
-                                                        DESCRIPCIONPROCESO
+DESCRIPCIONPROCESO
                                                     </textarea>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Descripción de la actividad principal de la instalación</label>
                                                     <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="INFORME_ACTIVIDADPRINCIPAL" name="INFORME_ACTIVIDADPRINCIPAL" required>
-                                                        DESCRIPCIONACTIVIDAD
+DESCRIPCIONACTIVIDAD
                                                     </textarea>
                                                 </div>
                                             </div>

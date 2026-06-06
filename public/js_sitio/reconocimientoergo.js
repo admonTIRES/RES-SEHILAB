@@ -382,6 +382,8 @@ $('input[name="informe_del_cliente"]').change(function () {
 $("#boton_nuevo_reconocimiento").click(function () {
 
 
+    recsensorial = 0;
+
 	$('#inputfotomapa').attr('required', false);
 
 	$('#titleOrganizacionLabel').fadeIn();
@@ -8014,7 +8016,8 @@ $('#boton_sincronizar_higiene').click(function () {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Aceptar",
-        cancelButtonText: "Cancelar"
+        cancelButtonText: "Cancelar",
+        returnFocus: false
     }).then((result) => {
 
         if (result.isConfirmed) {
@@ -8042,8 +8045,6 @@ $('#boton_sincronizar_higiene').click(function () {
                         'Importar desde higiene <i class="fa fa-refresh"></i>'
                     );
 
-                 
-
                     if (response.code == 1) {
 
                         Swal.fire({
@@ -8051,16 +8052,43 @@ $('#boton_sincronizar_higiene').click(function () {
                             title: "¡Información sincronizada!",
                             text: response.msj,
                             timer: 2500,
-                            showConfirmButton: false
+                            showConfirmButton: false,
+                            returnFocus: false
+                        });
+
+                    } else if (response.code == 2) {
+
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Guardar reconocimiento",
+                            text: response.msj,
+                            returnFocus: false
+                        }).then(() => {
+
+                            const botonGuardar = document.getElementById('boton_guardar_recsensorial');
+
+                            if (botonGuardar) {
+
+                                $('html, body').animate({
+                                    scrollTop: $(botonGuardar).offset().top - 150
+                                }, 800);
+
+                                $(botonGuardar).addClass('animate__animated animate__flash');
+
+                                setTimeout(function () {
+                                    $(botonGuardar).removeClass('animate__animated animate__flash');
+                                }, 3000);
+                            }
+
                         });
 
                     } else {
 
-
                         Swal.fire({
                             icon: "warning",
                             title: "Sin reconocimiento",
-                            text: response.msj
+                            text: response.msj,
+                            returnFocus: false
                         });
                     }
                 },
@@ -8076,7 +8104,8 @@ $('#boton_sincronizar_higiene').click(function () {
                     Swal.fire({
                         icon: "error",
                         title: "Error",
-                        text: "Ocurrió un error al sincronizar la información"
+                        text: "Ocurrió un error al sincronizar la información",
+                        returnFocus: false
                     });
                 }
             });
@@ -8088,11 +8117,104 @@ $('#boton_sincronizar_higiene').click(function () {
                 title: "Cancelado",
                 text: "La sincronización fue cancelada",
                 timer: 1000,
-                showConfirmButton: false
+                showConfirmButton: false,
+                returnFocus: false
             });
         }
     });
+
 });
+
+
+
+
+// $('#boton_sincronizar_higiene').click(function () {
+
+//     Swal.fire({
+//         title: "¡Confirme que desea sincronizar!",
+//         text: "Se importarán categorías y áreas desde Higiene Industrial",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonText: "Aceptar",
+//         cancelButtonText: "Cancelar"
+//     }).then((result) => {
+
+//         if (result.isConfirmed) {
+
+//             $.ajax({
+
+//                 url: '/sincronizarHigieneErgo',
+//                 type: 'POST',
+
+//                 data: {
+//                     RECO_ID: recsensorial,
+//                     _token: $('meta[name="csrf-token"]').attr('content')
+//                 },
+
+//                 beforeSend: function () {
+
+//                     $('#boton_sincronizar_higiene').html(
+//                         'Sincronizando <i class="fa fa-spin fa-spinner"></i>'
+//                     );
+//                 },
+
+//                 success: function (response) {
+
+//                     $('#boton_sincronizar_higiene').html(
+//                         'Importar desde higiene <i class="fa fa-refresh"></i>'
+//                     );
+
+                 
+
+//                     if (response.code == 1) {
+
+//                         Swal.fire({
+//                             icon: "success",
+//                             title: "¡Información sincronizada!",
+//                             text: response.msj,
+//                             timer: 2500,
+//                             showConfirmButton: false
+//                         });
+
+//                     } else {
+
+
+//                         Swal.fire({
+//                             icon: "warning",
+//                             title: "Sin reconocimiento",
+//                             text: response.msj
+//                         });
+//                     }
+//                 },
+
+//                 error: function (xhr) {
+
+//                     console.log(xhr.responseText);
+
+//                     $('#boton_sincronizar_higiene').html(
+//                         'Importar desde higiene <i class="fa fa-refresh"></i>'
+//                     );
+
+//                     Swal.fire({
+//                         icon: "error",
+//                         title: "Error",
+//                         text: "Ocurrió un error al sincronizar la información"
+//                     });
+//                 }
+//             });
+
+//         } else {
+
+//             Swal.fire({
+//                 icon: "info",
+//                 title: "Cancelado",
+//                 text: "La sincronización fue cancelada",
+//                 timer: 1000,
+//                 showConfirmButton: false
+//             });
+//         }
+//     });
+// });
 
 
 

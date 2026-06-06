@@ -2147,6 +2147,9 @@ $("#boton_nuevo_contrato").click(function () {
         // HIDDEN
         $("#contrato_id").val(0);
 
+        $("#CONTRATO_ID_PRINCIPAL").val(0);
+
+
         // Abrir modal
         $('#modal_contrato').modal({ backdrop: false });
 

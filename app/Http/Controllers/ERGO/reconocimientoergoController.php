@@ -326,13 +326,138 @@ class reconocimientoergoController extends Controller
 
 
 
+    // public function sincronizarHigieneErgo(Request $request)
+    // {
+    //     try {
+
+    //         $reconocimientoergo = reconocimientoergoModel::findOrFail(
+    //             $request->RECO_ID
+    //         );
+
+    //         $proyecto = proyectoModel::where(
+    //             'proyecto_folio',
+    //             $reconocimientoergo->proyecto_folio
+    //         )->first();
+
+    //         if (
+    //             !$proyecto ||
+    //             is_null($proyecto->recsensorial_id)
+    //         ) {
+
+    //             return response()->json([
+    //                 'code' => 0,
+    //                 'msj' => 'Este proyecto no cuenta con un reconocimiento en Higiene Industrial para poder sincronizar categorías y áreas.'
+    //             ]);
+    //         }
+
+    //         $recsensorial_id = $proyecto->recsensorial_id;
+
+    //         $categorias = DB::table('recsensorialcategoria')
+    //             ->where('recsensorial_id', $recsensorial_id)
+    //             ->get();
+
+    //         foreach ($categorias as $categoria) {
+
+    //             $categoriaErgo = recoergocategoriasModel::where(
+    //                 'RECO_ID',
+    //                 $reconocimientoergo->id
+    //             )
+    //                 ->where(
+    //                     'CATEGORIAS_ID_HI',
+    //                     $categoria->id
+    //                 )
+    //                 ->first();
+
+    //             if ($categoriaErgo) {
+    //                 $categoriaErgo->update([
+    //                     'NOMBRE_CATEGORIA_ERGO' => $categoria->recsensorialcategoria_nombrecategoria,
+    //                     'CAT_DEPARTAMENTO' => $categoria->catdepartamento_id,
+    //                     'CAT_TIPOPUESTO' => $categoria->catmovilfijo_id,
+    //                     'JSON_TURNOS' => $categoria->JSON_TURNOS
+    //                 ]);
+    //             } else {
+
+    //                 recoergocategoriasModel::create([
+    //                     'RECO_ID' => $reconocimientoergo->id,
+    //                     'CATEGORIAS_ID_HI' => $categoria->id,
+    //                     'NOMBRE_CATEGORIA_ERGO' => $categoria->recsensorialcategoria_nombrecategoria,
+    //                     'CAT_DEPARTAMENTO' => $categoria->catdepartamento_id,
+    //                     'CAT_TIPOPUESTO' => $categoria->catmovilfijo_id,
+    //                     'JSON_TURNOS' => $categoria->JSON_TURNOS,
+    //                     'ACTIVO' => 1
+    //                 ]);
+    //             }
+    //         }
+
+    //         $areas = DB::table('recsensorialarea')
+    //             ->where('recsensorial_id', $recsensorial_id)
+    //             ->get();
+
+    //         foreach ($areas as $area) {
+
+
+    //             $areaErgo = recoergoareasModel::where(
+    //                 'RECO_ID',
+    //                 $reconocimientoergo->id
+    //             )
+    //                 ->where(
+    //                     'AREA_ID_HI',
+    //                     $area->id
+    //                 )
+    //                 ->first();
+    //             if ($areaErgo) {
+    //                 $areaErgo->update([
+
+    //                     'NOMBRE_AREA_ERGO' => $area->recsensorialarea_nombre,
+    //                     'DESCRIPCION_AREA_ERGO' => $area->RECSENSORIALAREA_PROCESO
+    //                 ]);
+    //             } else {
+    //                 recoergoareasModel::create([
+    //                     'RECO_ID' => $reconocimientoergo->id,
+    //                     'AREA_ID_HI' => $area->id,
+    //                     'NOMBRE_AREA_ERGO' => $area->recsensorialarea_nombre,
+    //                     'DESCRIPCION_AREA_ERGO' => $area->RECSENSORIALAREA_PROCESO,
+    //                     'ACTIVO' => 1
+    //                 ]);
+    //             }
+    //         }
+
+    //         return response()->json([
+    //             'code' => 1,
+    //             'msj' => 'Categorías y áreas sincronizadas correctamente desde Higiene Industrial.'
+    //         ]);
+    //     } catch (Exception $e) {
+
+    //         return response()->json([
+    //             'code' => 0,
+    //             'msj' => $e->getMessage()
+    //         ]);
+    //     }
+    // }
+
+
+
     public function sincronizarHigieneErgo(Request $request)
     {
         try {
 
-            $reconocimientoergo = reconocimientoergoModel::findOrFail(
-                $request->RECO_ID
-            );
+            if (($request->RECO_ID + 0) == 0) {
+
+                return response()->json([
+                    'code' => 2,
+                    'msj' => 'Primero debe guardar el reconocimiento ergonómico antes de sincronizar.'
+                ]);
+            }
+
+            $reconocimientoergo = reconocimientoergoModel::find($request->RECO_ID);
+
+            if (!$reconocimientoergo) {
+
+                return response()->json([
+                    'code' => 2,
+                    'msj' => 'Primero debe guardar el reconocimiento ergonómico antes de sincronizar.'
+                ]);
+            }
 
             $proyecto = proyectoModel::where(
                 'proyecto_folio',
@@ -369,6 +494,7 @@ class reconocimientoergoController extends Controller
                     ->first();
 
                 if ($categoriaErgo) {
+
                     $categoriaErgo->update([
                         'NOMBRE_CATEGORIA_ERGO' => $categoria->recsensorialcategoria_nombrecategoria,
                         'CAT_DEPARTAMENTO' => $categoria->catdepartamento_id,
@@ -395,7 +521,6 @@ class reconocimientoergoController extends Controller
 
             foreach ($areas as $area) {
 
-
                 $areaErgo = recoergoareasModel::where(
                     'RECO_ID',
                     $reconocimientoergo->id
@@ -405,13 +530,15 @@ class reconocimientoergoController extends Controller
                         $area->id
                     )
                     ->first();
-                if ($areaErgo) {
-                    $areaErgo->update([
 
+                if ($areaErgo) {
+
+                    $areaErgo->update([
                         'NOMBRE_AREA_ERGO' => $area->recsensorialarea_nombre,
                         'DESCRIPCION_AREA_ERGO' => $area->RECSENSORIALAREA_PROCESO
                     ]);
                 } else {
+
                     recoergoareasModel::create([
                         'RECO_ID' => $reconocimientoergo->id,
                         'AREA_ID_HI' => $area->id,
@@ -435,6 +562,7 @@ class reconocimientoergoController extends Controller
         }
     }
 
+    
 
     /**
      * Store a newly created resource in storage.
