@@ -3021,14 +3021,14 @@ NOTA: Señale con una "X", cuando la condición verificada está presente (colum
 
 <td width="100">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="a" id="a_no" value="NO">
+<input class="form-check-input" type="radio" name="a" id="a_no" value="NO" required>
 <label class="form-check-label" for="a_no">NO</label>
 </div>
 </td>
 
 <td width="100">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="a" id="a_si" value="SI">
+<input class="form-check-input" type="radio" name="a" id="a_si" value="SI" required>
 <label class="form-check-label" for="a_si">SI</label>
 </div>
 </td>
@@ -3044,14 +3044,14 @@ O bien,<br><br>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="b" id="b_no" value="NO">
+<input class="form-check-input" type="radio" name="b" id="b_no" value="NO" required>
 <label class="form-check-label" for="b_no">NO</label>
 </div>
 </td>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="b" id="b_si" value="SI">
+<input class="form-check-input" type="radio" name="b" id="b_si" value="SI" required>
 <label class="form-check-label" for="b_si">SI</label>
 </div>
 </td>
@@ -3063,14 +3063,14 @@ O bien,<br><br>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="c" id="c_no" value="NO">
+<input class="form-check-input" type="radio" name="c" id="c_no" value="NO" required>
 <label class="form-check-label" for="c_no">NO</label>
 </div>
 </td>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="c" id="c_si" value="SI">
+<input class="form-check-input" type="radio" name="c" id="c_si" value="SI" required>
 <label class="form-check-label" for="c_si">SI</label>
 </div>
 </td>
@@ -3082,14 +3082,14 @@ O bien,<br><br>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="d" id="d_no" value="NO">
+<input class="form-check-input" type="radio" name="d" id="d_no" value="NO" required>
 <label class="form-check-label" for="d_no">NO</label>
 </div>
 </td>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="d" id="d_si" value="SI">
+<input class="form-check-input" type="radio" name="d" id="d_si" value="SI" required>
 <label class="form-check-label" for="d_si">SI</label>
 </div>
 </td>
@@ -3101,14 +3101,14 @@ O bien,<br><br>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="e" id="e_no" value="NO">
+<input class="form-check-input" type="radio" name="e" id="e_no" value="NO" required>
 <label class="form-check-label" for="e_no">NO</label>
 </div>
 </td>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="e" id="e_si" value="SI">
+<input class="form-check-input" type="radio" name="e" id="e_si" value="SI" required>
 <label class="form-check-label" for="e_si">SI</label>
 </div>
 </td>
@@ -3165,14 +3165,14 @@ Y<br>
 
 <td width="100">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="a2" id="a2_no" value="NO">
+<input class="form-check-input" type="radio" name="a2" id="a2_no" value="NO" required>
 <label class="form-check-label" for="a2_no">NO</label>
 </div>
 </td>
 
 <td width="100">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="a2" id="a2_si" value="SI">
+<input class="form-check-input" type="radio" name="a2" id="a2_si" value="SI" required>
 <label class="form-check-label" for="a2_si">SI</label>
 </div>
 </td>
@@ -3192,14 +3192,14 @@ Y<br>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="b2" id="b2_no" value="NO">
+<input class="form-check-input" type="radio" name="b2" id="b2_no" value="NO" required>
 <label class="form-check-label" for="b2_no">NO</label>
 </div>
 </td>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="b2" id="b2_si" value="SI">
+<input class="form-check-input" type="radio" name="b2" id="b2_si" value="SI" required>
 <label class="form-check-label" for="b2_si">SI</label>
 </div>
 </td>
@@ -3211,14 +3211,14 @@ Y<br>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="c2" id="c2_no" value="NO">
+<input class="form-check-input" type="radio" name="c2" id="c2_no" value="NO" required>
 <label class="form-check-label" for="c2_no">NO</label>
 </div>
 </td>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="c2" id="c2_si" value="SI">
+<input class="form-check-input" type="radio" name="c2" id="c2_si" value="SI" required>
 <label class="form-check-label" for="c2_si">SI</label>
 </div>
 </td>
@@ -3414,14 +3414,14 @@ NOTA: Señale con una "X", cuando la condición verificada está presente (colum
 
 <td width="100">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="a21" id="a21_no" value="NO">
+<input class="form-check-input" type="radio" name="a21" id="a21_no" value="NO" required>
 <label class="form-check-label" for="a21_no">NO</label>
 </div>
 </td>
 
 <td width="100">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="a21" id="a21_si" value="SI">
+<input class="form-check-input" type="radio" name="a21" id="a21_si" value="SI" required>
 <label class="form-check-label" for="a21_si">SI</label>
 </div>
 </td>
@@ -3433,14 +3433,14 @@ NOTA: Señale con una "X", cuando la condición verificada está presente (colum
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="b21" id="b21_no" value="NO">
+<input class="form-check-input" type="radio" name="b21" id="b21_no" value="NO" required>
 <label class="form-check-label" for="b21_no">NO</label>
 </div>
 </td>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="b21" id="b21_si" value="SI">
+<input class="form-check-input" type="radio" name="b21" id="b21_si" value="SI" required>
 <label class="form-check-label" for="b21_si">SI</label>
 </div>
 </td>
@@ -3452,14 +3452,14 @@ NOTA: Señale con una "X", cuando la condición verificada está presente (colum
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="c21" id="c21_no" value="NO">
+<input class="form-check-input" type="radio" name="c21" id="c21_no" value="NO" required>
 <label class="form-check-label" for="c21_no">NO</label>
 </div>
 </td>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="c21" id="c21_si" value="SI">
+<input class="form-check-input" type="radio" name="c21" id="c21_si" value="SI" required>
 <label class="form-check-label" for="c21_si">SI</label>
 </div>
 </td>
@@ -3471,14 +3471,14 @@ NOTA: Señale con una "X", cuando la condición verificada está presente (colum
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="d21" id="d21_no" value="NO">
+<input class="form-check-input" type="radio" name="d21" id="d21_no" value="NO" required>
 <label class="form-check-label" for="d21_no">NO</label>
 </div>
 </td>
 
 <td>
 <div class="form-check">
-<input class="form-check-input" type="radio" name="d21" id="d21_si" value="SI">
+<input class="form-check-input" type="radio" name="d21" id="d21_si" value="SI" required>
 <label class="form-check-label" for="d21_si">SI</label>
 </div>
 </td>
@@ -3638,14 +3638,14 @@ NOTA: Señale con una "X", cuando la condición verificada está presente (colum
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m1" id="m1_no" value="NO">
+<input class="form-check-input" type="radio" name="m1" id="m1_no" value="NO" required>
 <label class="form-check-label" for="m1_no">NO</label>
 </div>
 </td>
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m1" id="m1_si" value="SI">
+<input class="form-check-input" type="radio" name="m1" id="m1_si" value="SI" required>
 <label class="form-check-label" for="m1_si">SI</label>
 </div>
 </td>
@@ -3657,14 +3657,14 @@ NOTA: Señale con una "X", cuando la condición verificada está presente (colum
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m2" id="m2_no" value="NO">
+<input class="form-check-input" type="radio" name="m2" id="m2_no" value="NO" required>
 <label class="form-check-label" for="m2_no">NO</label>
 </div>
 </td>
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m2" id="m2_si" value="SI">
+<input class="form-check-input" type="radio" name="m2" id="m2_si" value="SI" required>
 <label class="form-check-label" for="m2_si">SI</label>
 </div>
 </td>
@@ -3680,14 +3680,14 @@ O bien,<br><br>
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m3" id="m3_no" value="NO">
+<input class="form-check-input" type="radio" name="m3" id="m3_no" value="NO" required>
 <label class="form-check-label" for="m3_no">NO</label>
 </div>
 </td>
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m3" id="m3_si" value="SI">
+<input class="form-check-input" type="radio" name="m3" id="m3_si" value="SI" required>
 <label class="form-check-label" for="m3_si">SI</label>
 </div>
 </td>
@@ -3699,14 +3699,14 @@ O bien,<br><br>
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m4" id="m4_no" value="NO">
+<input class="form-check-input" type="radio" name="m4" id="m4_no" value="NO" required>
 <label class="form-check-label" for="m4_no">NO</label>
 </div>
 </td>
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m4" id="m4_si" value="SI">
+<input class="form-check-input" type="radio" name="m4" id="m4_si" value="SI" required>
 <label class="form-check-label" for="m4_si">SI</label>
 </div>
 </td>
@@ -3718,14 +3718,14 @@ O bien,<br><br>
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m5" id="m5_no" value="NO">
+<input class="form-check-input" type="radio" name="m5" id="m5_no" value="NO" required>
 <label class="form-check-label" for="m5_no">NO</label>
 </div>
 </td>
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m5" id="m5_si" value="SI">
+<input class="form-check-input" type="radio" name="m5" id="m5_si" value="SI" required>
 <label class="form-check-label" for="m5_si">SI</label>
 </div>
 </td>
@@ -3737,14 +3737,14 @@ O bien,<br><br>
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m6" id="m6_no" value="NO">
+<input class="form-check-input" type="radio" name="m6" id="m6_no" value="NO" required>
 <label class="form-check-label" for="m6_no">NO</label>
 </div>
 </td>
 
 <td class="text-center">
 <div class="form-check">
-<input class="form-check-input" type="radio" name="m6" id="m6_si" value="SI">
+<input class="form-check-input" type="radio" name="m6" id="m6_si" value="SI" required>
 <label class="form-check-label" for="m6_si">SI</label>
 </div>
 </td>
@@ -4262,13 +4262,13 @@ function fila13(name, texto) {
         <td colspan="2" class="texto-pregunta">${texto}</td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO" required>
                 <label class="form-check-label" for="${name}_no">NO</label>
             </div>
         </td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI" required>
                 <label class="form-check-label" for="${name}_si">SI</label>
             </div>
         </td>
@@ -4283,13 +4283,13 @@ function fila14(name, letra, texto) {
         <td class="texto-pregunta">${texto}</td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO" required>
                 <label class="form-check-label" for="${name}_no">NO</label>
             </div>
         </td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI" required>
                 <label class="form-check-label" for="${name}_si">SI</label>
             </div>
         </td>
@@ -4304,13 +4304,13 @@ function fila15(name, letra, texto) {
         <td class="texto-pregunta">${texto}</td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO" required>
                 <label class="form-check-label" for="${name}_no">NO</label>
             </div>
         </td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI" required>
                 <label class="form-check-label" for="${name}_si">SI</label>
             </div>
         </td>
@@ -4324,13 +4324,13 @@ function fila22(name, texto) {
         <td colspan="2" class="texto-pregunta">${texto}</td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO" required>
                 <label class="form-check-label" for="${name}_no">NO</label>
             </div>
         </td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI" required>
                 <label class="form-check-label" for="${name}_si">SI</label>
             </div>
         </td>
@@ -4345,13 +4345,13 @@ function fila23(name, letra, texto) {
         <td class="texto-pregunta">${texto}</td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO" required>
                 <label class="form-check-label" for="${name}_no">NO</label>
             </div>
         </td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI" required>
                 <label class="form-check-label" for="${name}_si">SI</label>
             </div>
         </td>
@@ -4366,13 +4366,13 @@ function fila32(name, letra, texto) {
         <td class="texto-pregunta">${texto}</td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO" required>
                 <label class="form-check-label" for="${name}_no">NO</label>
             </div>
         </td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI" required>
                 <label class="form-check-label" for="${name}_si">SI</label>
             </div>
         </td>
@@ -4387,13 +4387,13 @@ function fila41(name, letra, texto) {
         <td class="texto-pregunta">${texto}</td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO" required>
                 <label class="form-check-label" for="${name}_no">NO</label>
             </div>
         </td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI" required>
                 <label class="form-check-label" for="${name}_si">SI</label>
             </div>
         </td>
@@ -4408,13 +4408,13 @@ function fila42(name, letra, texto) {
         <td class="texto-pregunta">${texto}</td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_no" value="NO" required>
                 <label class="form-check-label" for="${name}_no">NO</label>
             </div>
         </td>
         <td class="text-center">
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI">
+                <input class="form-check-input" type="radio" name="${name}" id="${name}_si" value="SI" required>
                 <label class="form-check-label" for="${name}_si">SI</label>
             </div>
         </td>
@@ -5045,18 +5045,24 @@ function activarLogicaFichas() {
 ////// FICHAS NOM-036
 
 
-function cargarGraficas() {
 
-    $.get('/getGraficaErgo/' + recsensorial, function (data) {
 
+
+function cargarGraficas()
+{
+    $.get('/getGraficaErgo/' + recsensorial, function (data)
+    {
         generarGraficas(data);
     });
-
 }
 
-function generarGraficas(data) {
+
+
+function generarGraficas(data)
+{
 
     $('#contenedorGraficas').empty();
+
     $('#contenedorGraficas').css({
         width: '100%',
         display: 'flex',
@@ -5065,16 +5071,22 @@ function generarGraficas(data) {
         gap: '100px'
     });
 
-    data.forEach(function (item, index) {
-
+    data.forEach(function (item, index)
+    {
         let html = `
             <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
                 <div style="width:100%;display:flex;justify-content:center;align-items:flex-start;gap:40px;flex-wrap:nowrap;">
-                    <div id="chart_p1_${index}"style="width:430px;height:500px;">
+                    <div
+                        id="chart_p1_${index}"
+                        style="width:430px;height:550px;">
                     </div>
-                    <div id="chart_p2_${index}"style="width:430px;height:500px;">
+                    <div
+                        id="chart_p2_${index}"
+                        style="width:430px;height:550px;">
                     </div>
-                    <div id="chart_p3_${index}"style="width:430px;height:500px;">
+                    <div
+                        id="chart_p3_${index}"
+                        style="width:430px;height:550px;">
                     </div>
                 </div>
             </div>
@@ -5085,23 +5097,27 @@ function generarGraficas(data) {
         crearGrafica(
             'chart_p1_' + index,
             item.P1_RESULTADO,
-            '1. Durante su jornada laboral\n¿levanta, baja o manipula objetos\nmayores a 3 Kg?',
+            '1. Durante su jornada laboral\n¿levanta, baja o manipula objetos\nmayores a 3 Kg?'
         );
 
         crearGrafica(
             'chart_p2_' + index,
             item.P2_RESULTADO,
             '2. ¿Realiza actividades manuales de\ncarga más de una vez al día?',
-            item.NOMBRE_CATEGORIA_ERGO
+            item.NOMBRE_CATEGORIA_ERGO +
+            ' (' +
+            item.TOTAL_REGISTROS +
+            ')'
         );
 
         crearGrafica(
             'chart_p3_' + index,
             item.P3_RESULTADO,
-            '3. ¿Levanta, transporta, empuja o\nestiba materiales como parte de su\ntrabajo?',
+            '3. ¿Levanta, transporta, empuja o\nestiba materiales como parte de su\ntrabajo?'
         );
     });
 }
+
 
 function crearGrafica(id,resultado,textoPregunta,nombreCategoria = '')
 {
@@ -5115,28 +5131,30 @@ function crearGrafica(id,resultado,textoPregunta,nombreCategoria = '')
     let valor = resultado === 'SI'
         ? 25
         : 75;
-    
+
     chart.setOption({
         animation: false,
         graphic: [
-            ...(nombreCategoria ? [
-                {
-                    type: 'text',
-                    left: 'center',
-                    top: 10,
-                    z: 100,
-                    style: {
-                        text: nombreCategoria,
-                        fill: '#000',
-                        fontSize: 22,
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-                        width: 380,
-                        overflow: 'break',
-                        lineHeight: 28
+            ...(nombreCategoria
+                ? [
+                    {
+                        type: 'text',
+                        left: 'center',
+                        top: 5,
+                        z: 100,
+                        style: {
+                            text: nombreCategoria,
+                            fill: '#000',
+                            fontSize: 20,
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                            width: 420,
+                            overflow: 'break',
+                            lineHeight: 24
+                        }
                     }
-                }
-            ] : []),
+                ]
+                : []),
             {
                 type: 'text',
                 left: '17%',
@@ -5203,7 +5221,8 @@ function crearGrafica(id,resultado,textoPregunta,nombreCategoria = '')
                     show: false
                 },
                 detail: {
-                    formatter: function () {
+                    formatter: function ()
+                    {
                         return textoPregunta;
                     },
                     fontSize: 16,
@@ -5223,6 +5242,7 @@ function crearGrafica(id,resultado,textoPregunta,nombreCategoria = '')
         ]
     });
 }
+
 
 ////// GRAFICAS FICHAS
 

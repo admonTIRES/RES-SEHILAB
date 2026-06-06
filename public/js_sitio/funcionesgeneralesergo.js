@@ -2788,40 +2788,55 @@ function validarFormulario(form) {
 
 
 
+
 function validarFormulario3(form) {
-  var formulario = form;
 
-  formulario.find('input[required]:not([disabled]):visible, textarea[required]:not([disabled]):visible, select[required]:not([disabled]):visible')
-    .addClass('validar')
-    .removeClass('error');
+    var formulario = form;
 
-  var campos = formulario.find('.validar');
-  var formularioValido = true;
+    formulario.find('input[required]:not([disabled]):visible, textarea[required]:not([disabled]):visible, select[required]:not([disabled]):visible')
+        .addClass('validar')
+        .removeClass('error');
 
-  campos.each(function () { 
-    var tipoCampo = $(this).attr('type');
-    var valorCampo = $(this).val();
+    var campos = formulario.find('.validar');
+    var formularioValido = true;
+    var gruposValidados = [];
 
-    if (tipoCampo === 'radio' || tipoCampo === 'checkbox') {
-      var nombreGrupo = $(this).attr('name');
-      if ($('input[name="' + nombreGrupo + '"]:checked').length === 0 && $(this).is(':visible')) {
-        $('input[name="' + nombreGrupo + '"]').addClass('error');
-        formularioValido = false;
-      } else {
-        $('input[name="' + nombreGrupo + '"]').removeClass('error');
-      }
-    } 
-    // Valida otros campos visibles
-    else if ((valorCampo === '' || valorCampo === null) && $(this).is(':visible')) {
-      $(this).addClass('error');
-      formularioValido = false;
-    } else {
-      $(this).removeClass('error');
-    }
-  });
+    campos.each(function () {
 
-  return formularioValido;
+        var tipoCampo = $(this).attr('type');
+        var valorCampo = $(this).val();
+        if (tipoCampo === 'radio' || tipoCampo === 'checkbox') {
+            var nombreGrupo = $(this).attr('name');
+            if (gruposValidados.includes(nombreGrupo)) {
+                return;
+            }
+            gruposValidados.push(nombreGrupo);
+            var grupo = formulario.find('input[name="' + nombreGrupo + '"]');
+            if (grupo.filter(':checked').length === 0) {
+                grupo.addClass('error');
+                grupo.closest('tr').addClass('error');
+                formularioValido = false;
+
+            } else {
+                grupo.removeClass('error');
+                grupo.closest('tr').removeClass('error');
+            }
+        }
+
+        else {
+            if ((valorCampo === '' || valorCampo === null) && $(this).is(':visible')) {
+                $(this).addClass('error');
+                formularioValido = false;
+            } else {
+                $(this).removeClass('error');
+            }
+        }
+    });
+
+    return formularioValido;
 }
+
+
 
 
 // Evento para eliminar la clase "error" cuando el campo cambia o recibe entrada

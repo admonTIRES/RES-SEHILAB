@@ -384,7 +384,6 @@ class reconocimientoergoController extends Controller
                         'CAT_DEPARTAMENTO' => $categoria->catdepartamento_id,
                         'CAT_TIPOPUESTO' => $categoria->catmovilfijo_id,
                         'JSON_TURNOS' => $categoria->JSON_TURNOS,
-
                         'ACTIVO' => 1
                     ]);
                 }
@@ -891,6 +890,85 @@ class reconocimientoergoController extends Controller
 
 
 
+    // public function getGraficaErgo($reco_id)
+    // {
+    //     $datos = DB::table('recoergo_fichastecnicas as f')
+
+    //         ->join(
+    //             'recoergocategorias as c',
+    //             'f.CATEGORIA_ID_FICHA',
+    //             '=',
+    //             'c.ID_CATEGORIA_ERGO'
+    //         )
+
+    //         ->select(
+
+    //             'f.CATEGORIA_ID_FICHA',
+
+    //             'c.NOMBRE_CATEGORIA_ERGO',
+
+    //             DB::raw("
+    //             CASE 
+    //                 WHEN SUM(
+    //                     CASE 
+    //                         WHEN f.P1_CARGA_MAYOR_3KG = 'SI' 
+    //                         THEN 1 
+    //                         ELSE 0 
+    //                     END
+    //                 ) > 0 
+    //                 THEN 'SI' 
+    //                 ELSE 'NO' 
+    //             END as P1_RESULTADO
+    //         "),
+
+    //             DB::raw("
+    //             CASE 
+    //                 WHEN SUM(
+    //                     CASE 
+    //                         WHEN f.P2_FRECUENCIA_CARGA = 'SI' 
+    //                         THEN 1 
+    //                         ELSE 0 
+    //                     END
+    //                 ) > 0 
+    //                 THEN 'SI' 
+    //                 ELSE 'NO' 
+    //             END as P2_RESULTADO
+    //         "),
+
+    //             DB::raw("
+    //             CASE 
+    //                 WHEN SUM(
+    //                     CASE 
+    //                         WHEN f.P3_MANIPULACION_CARGA = 'SI' 
+    //                         THEN 1 
+    //                         ELSE 0 
+    //                     END
+    //                 ) > 0 
+    //                 THEN 'SI' 
+    //                 ELSE 'NO' 
+    //             END as P3_RESULTADO
+    //         ")
+
+    //         )
+
+    //         ->where('f.RECO_ID', $reco_id)
+
+    //         ->where('f.ACTIVO', 1)
+
+    //         ->groupBy(
+    //             'f.CATEGORIA_ID_FICHA',
+    //             'c.NOMBRE_CATEGORIA_ERGO'
+    //         )
+
+    //         ->orderBy('c.PT_CATEGORIA', 'ASC')
+
+    //         ->get();
+
+    //     return response()->json($datos);
+    // }
+
+
+
     public function getGraficaErgo($reco_id)
     {
         $datos = DB::table('recoergo_fichastecnicas as f')
@@ -908,45 +986,47 @@ class reconocimientoergoController extends Controller
 
                 'c.NOMBRE_CATEGORIA_ERGO',
 
+                DB::raw('COUNT(*) as TOTAL_REGISTROS'),
+
                 DB::raw("
-                CASE 
+                CASE
                     WHEN SUM(
-                        CASE 
-                            WHEN f.P1_CARGA_MAYOR_3KG = 'SI' 
-                            THEN 1 
-                            ELSE 0 
+                        CASE
+                            WHEN f.P1_CARGA_MAYOR_3KG = 'SI'
+                            THEN 1
+                            ELSE 0
                         END
-                    ) > 0 
-                    THEN 'SI' 
-                    ELSE 'NO' 
+                    ) > 0
+                    THEN 'SI'
+                    ELSE 'NO'
                 END as P1_RESULTADO
             "),
 
                 DB::raw("
-                CASE 
+                CASE
                     WHEN SUM(
-                        CASE 
-                            WHEN f.P2_FRECUENCIA_CARGA = 'SI' 
-                            THEN 1 
-                            ELSE 0 
+                        CASE
+                            WHEN f.P2_FRECUENCIA_CARGA = 'SI'
+                            THEN 1
+                            ELSE 0
                         END
-                    ) > 0 
-                    THEN 'SI' 
-                    ELSE 'NO' 
+                    ) > 0
+                    THEN 'SI'
+                    ELSE 'NO'
                 END as P2_RESULTADO
             "),
 
                 DB::raw("
-                CASE 
+                CASE
                     WHEN SUM(
-                        CASE 
-                            WHEN f.P3_MANIPULACION_CARGA = 'SI' 
-                            THEN 1 
-                            ELSE 0 
+                        CASE
+                            WHEN f.P3_MANIPULACION_CARGA = 'SI'
+                            THEN 1
+                            ELSE 0
                         END
-                    ) > 0 
-                    THEN 'SI' 
-                    ELSE 'NO' 
+                    ) > 0
+                    THEN 'SI'
+                    ELSE 'NO'
                 END as P3_RESULTADO
             ")
 
@@ -968,7 +1048,7 @@ class reconocimientoergoController extends Controller
         return response()->json($datos);
     }
 
-
+    
     ///// GRAFICA FICHAS
 
 

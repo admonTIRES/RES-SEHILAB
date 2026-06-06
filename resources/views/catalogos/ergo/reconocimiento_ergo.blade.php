@@ -61,6 +61,11 @@
         display: flex;
         justify-content: space-between;
     }
+
+    tr.error {
+        background-color: #ffe5e5 !important
+        ;
+    }
 </style>
 
 
