@@ -1,5 +1,4 @@
 /node_modules
-/public/hot
 /public/storage
 /.idea
 /.vagrant
@@ -7,10 +6,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-*.PDF
-*.pdf
-*.JPG
-*.jpg
-*.png
+
 /storage
+/vendor
 .env
