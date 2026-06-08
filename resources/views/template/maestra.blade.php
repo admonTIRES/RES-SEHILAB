@@ -141,6 +141,32 @@ use Illuminate\Support\Str;
 
     @endif
 
+    
+    @if(request()->is('evaluacionfre'))
+    <!-- file upload -->
+    <link rel="stylesheet" href="/assets/plugins/dropify/dist/css/dropify.min.css">
+    <!-- Clock picker plugins css -->
+    <link href="/assets/plugins/clockpicker/dist/jquery-clockpicker.min.css" rel="stylesheet">
+    <!-- form_wizard_steps -->
+    <link href="/assets/plugins/form_wizard_steps_bootstrap/form_wizard_style.css" rel="stylesheet">
+    </link>
+    <link href="/assets/plugins/form_wizard_steps_bootstrap/form_wizard_style3.css" rel="stylesheet">
+    </link>
+    <!-- Popup CSS -->
+    <link href="/assets/plugins/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
+
+    {{-- Select2 search filter --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{-- Select search filter --}}
+    <link href="/assets/plugins/select-search/selectize.css" rel="stylesheet" type="text/css" />
+
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
+
+    @endif
+
+
 
     @if(request()->is('recsensorialquimicoscatalogos'))
     {{-- Select2 search filter --}}
@@ -297,7 +323,7 @@ use Illuminate\Support\Str;
                     @endif
 
 
-                    @if (request()->is('reconocimientoergo*') || request()->is('recergocatalogo*'))
+                    @if (request()->is('reconocimientoergo*') || request()->is('recergocatalogo*')   || request()->is('evaluacionfre*')   )
 
                     <div class="navbar-nav" style="left: 35%; position: absolute;">
                         <h1 style="color:#ffff;font-weight: bold;">Factor de Riesgo Ergonómico</h1>
@@ -573,12 +599,18 @@ use Illuminate\Support\Str;
                         @endif
 
 
-                        @if (request()->is('reconocimientoergo*') || request()->is('recergocatalogo*'))
+                        @if (request()->is('reconocimientoergo*') || request()->is('recergocatalogo*') || request()->is('evaluacionfre*') )
                         @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Ergónomo']))
 
                         <li>
                             <a class="has-arrow " href="{{route('reconocimientoergo.index')}}" aria-expanded="false">
                                 <i class="mdi mdi-access-point"></i><span class="hide-menu">Reconocimiento</span>
+                            </a>
+                        </li>
+
+                         <li>
+                            <a class="has-arrow " href="{{route('evaluacionfre.index')}}" aria-expanded="false">
+                                <i class="mdi mdi-access-point"></i><span class="hide-menu">Eval.Fre</span>
                             </a>
                         </li>
 
@@ -973,6 +1005,53 @@ use Illuminate\Support\Str;
 
 
     @endif
+
+
+
+
+    
+    @if(request()->is('evaluacionfre'))
+    <!-- form_wizard_steps -->
+    <script src="/assets/plugins/form_wizard_steps_bootstrap/form_wizard_script2.js"></script>
+    <script src="/assets/plugins/form_wizard_steps_bootstrap/form_wizard_script3.js"></script>
+    {{-- datatable --}}
+    <script src="/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/assets/plugins/datatables/dataTables.rowsGroup.js"></script>
+    <!-- jQuery file upload -->
+    <script src="/js/jasny-bootstrap.js"></script>
+    <script src="/assets/plugins/dropify/dist/js/dropify.min.js"></script>
+    <script src="/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="/assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    {{-- Select2 search filter --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    {{-- Select search filter --}}
+    <script src="/assets/plugins/select-search/selectize.js" type="text/javascript"></script>
+    <!-- Magnific popup JavaScript -->
+    <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
+    <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
+    {{-- pagina --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js_sitio/evaluacionfre.js"></script>
+    <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            $('#INFORME_INTRODUCCION').summernote({
+                height: 400
+            });
+
+        });
+    </script>
+
+
+    @endif
+
 
     @if(request()->is('clientecatalogo'))
     {{-- datatable --}}

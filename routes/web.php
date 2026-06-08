@@ -2236,6 +2236,19 @@ Route::get('ergoconsultacatalogo/{num_catalogo}', ['as' => 'ERGO.ergoconsultacat
 Route::get('ergocatalogodesactiva/{catalogo}/{registro}/{estado}', ['as' => 'ERGO.ergocatalogodesactiva', 'uses' => 'ERGO\catergoController@ergocatalogodesactiva']);
 
 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////// EVALUACION FRE ////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Route::resource('evaluacionfre', 'ERGO\evaluacionfreController');
+
+Route::get('Tablafichasevaluacionfre', ['as' => 'ERGO.Tablafichasevaluacionfre', 'uses' => 'ERGO\evaluacionfreController@Tablafichasevaluacionfre']);
+
+
+
+
 Route::get('/clear-cache', function () {
     Artisan::call('config:cache');
     Artisan::call('config:clear');
