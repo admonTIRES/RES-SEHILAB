@@ -141,7 +141,7 @@ use Illuminate\Support\Str;
 
     @endif
 
-    
+
     @if(request()->is('evaluacionfre'))
     <!-- file upload -->
     <link rel="stylesheet" href="/assets/plugins/dropify/dist/css/dropify.min.css">
@@ -323,7 +323,7 @@ use Illuminate\Support\Str;
                     @endif
 
 
-                    @if (request()->is('reconocimientoergo*') || request()->is('recergocatalogo*')   || request()->is('evaluacionfre*')   )
+                    @if (request()->is('reconocimientoergo*') || request()->is('recergocatalogo*') || request()->is('evaluacionfre*') )
 
                     <div class="navbar-nav" style="left: 35%; position: absolute;">
                         <h1 style="color:#ffff;font-weight: bold;">Factor de Riesgo Ergonómico</h1>
@@ -608,9 +608,9 @@ use Illuminate\Support\Str;
                             </a>
                         </li>
 
-                         <li>
+                        <li>
                             <a class="has-arrow " href="{{route('evaluacionfre.index')}}" aria-expanded="false">
-                                <i class="mdi mdi-access-point"></i><span class="hide-menu">Eval.Fre</span>
+                                <i class="mdi mdi-access-point"></i><span class="hide-menu">Eval.FRE</span>
                             </a>
                         </li>
 
@@ -955,12 +955,20 @@ use Illuminate\Support\Str;
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     {{-- Select search filter --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    
     <script src="/assets/plugins/select-search/selectize.js" type="text/javascript"></script>
     <!-- Magnific popup JavaScript -->
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
     {{-- pagina --}}
-    <script src="/js_sitio/reconocimientoPsico.js?v=4"></script>
+    <script src="/js_sitio/reconocimientoPsico.js?v=5"></script>
+
+
+    <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
+
+
     @endif
 
 
@@ -1009,7 +1017,7 @@ use Illuminate\Support\Str;
 
 
 
-    
+
     @if(request()->is('evaluacionfre'))
     <!-- form_wizard_steps -->
     <script src="/assets/plugins/form_wizard_steps_bootstrap/form_wizard_script2.js"></script>

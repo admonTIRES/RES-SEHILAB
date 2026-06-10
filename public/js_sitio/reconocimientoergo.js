@@ -1912,6 +1912,7 @@ $("#boton_nueva_categoria").click(function (e) {
 
 });
 
+
 let selectAreas;
 
 $(document).ready(function () {
@@ -2241,6 +2242,8 @@ function mostrartablarecocategoriasergo() {
 		console.error("Error en Tablarecocategoriasergo:", exception);
 	}
 }
+
+
 
 $('#Tablarecocategoriasergo tbody').on('click', 'td>button.editar', function () {
     var tr = $(this).closest('tr');
@@ -8126,95 +8129,6 @@ $('#boton_sincronizar_higiene').click(function () {
 });
 
 
-
-
-// $('#boton_sincronizar_higiene').click(function () {
-
-//     Swal.fire({
-//         title: "¡Confirme que desea sincronizar!",
-//         text: "Se importarán categorías y áreas desde Higiene Industrial",
-//         icon: "warning",
-//         showCancelButton: true,
-//         confirmButtonText: "Aceptar",
-//         cancelButtonText: "Cancelar"
-//     }).then((result) => {
-
-//         if (result.isConfirmed) {
-
-//             $.ajax({
-
-//                 url: '/sincronizarHigieneErgo',
-//                 type: 'POST',
-
-//                 data: {
-//                     RECO_ID: recsensorial,
-//                     _token: $('meta[name="csrf-token"]').attr('content')
-//                 },
-
-//                 beforeSend: function () {
-
-//                     $('#boton_sincronizar_higiene').html(
-//                         'Sincronizando <i class="fa fa-spin fa-spinner"></i>'
-//                     );
-//                 },
-
-//                 success: function (response) {
-
-//                     $('#boton_sincronizar_higiene').html(
-//                         'Importar desde higiene <i class="fa fa-refresh"></i>'
-//                     );
-
-                 
-
-//                     if (response.code == 1) {
-
-//                         Swal.fire({
-//                             icon: "success",
-//                             title: "¡Información sincronizada!",
-//                             text: response.msj,
-//                             timer: 2500,
-//                             showConfirmButton: false
-//                         });
-
-//                     } else {
-
-
-//                         Swal.fire({
-//                             icon: "warning",
-//                             title: "Sin reconocimiento",
-//                             text: response.msj
-//                         });
-//                     }
-//                 },
-
-//                 error: function (xhr) {
-
-//                     console.log(xhr.responseText);
-
-//                     $('#boton_sincronizar_higiene').html(
-//                         'Importar desde higiene <i class="fa fa-refresh"></i>'
-//                     );
-
-//                     Swal.fire({
-//                         icon: "error",
-//                         title: "Error",
-//                         text: "Ocurrió un error al sincronizar la información"
-//                     });
-//                 }
-//             });
-
-//         } else {
-
-//             Swal.fire({
-//                 icon: "info",
-//                 title: "Cancelado",
-//                 text: "La sincronización fue cancelada",
-//                 timer: 1000,
-//                 showConfirmButton: false
-//             });
-//         }
-//     });
-// });
 
 
 

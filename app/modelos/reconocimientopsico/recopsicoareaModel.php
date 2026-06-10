@@ -12,6 +12,8 @@ class recopsicoareaModel extends Model
     protected $fillable = [
         'RECPSICO_ID',
         'RECPSICOAREA_NOMBRE',
-        'RECPSICOAREA_PROCESO'
+        'RECPSICOAREA_PROCESO',
+        'AREA_ID_HI',
+        'ACTIVO'
     ];
 }

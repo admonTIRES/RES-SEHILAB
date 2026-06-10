@@ -15,7 +15,9 @@ class recopsicocategoriaModel extends Model
         'catmovilfijo_id',
         'RECPSICO_NOMBRECATEGORIA',
         'SUMAHORASJORNADA',
-        'JSON_TURNOS'
+        'JSON_TURNOS',
+        'CATEGORIAS_ID_HI'
+
     ];
 
     public function catdepartamento()

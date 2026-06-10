@@ -23,6 +23,11 @@ use App\modelos\recsensorial\catmovilfijoModel;
 use App\modelos\reconocimientopsico\catcargos_psicoModel;
 
 
+use App\modelos\reconocimientopsico\recopsicocategoriaModel;
+use App\modelos\reconocimientopsico\recopsicoareaModel;
+
+
+
 class reconocimientoPsicoController extends Controller
 {
     //
@@ -168,6 +173,134 @@ class reconocimientoPsicoController extends Controller
             return response()->json($dato);
         }
     }
+
+
+
+    public function sincronizarHigienePsico(Request $request)
+    {
+        try {
+
+            if (($request->RECPSICO_ID + 0) == 0) {
+
+                return response()->json([
+                    'code' => 2,
+                    'msj' => 'Primero debe guardar el reconocimiento ergonómico antes de sincronizar.'
+                ]);
+            }
+
+            $reconocimientopsico = reconocimientopsicoModel::find($request->RECPSICO_ID);
+
+            if (!$reconocimientopsico) {
+
+                return response()->json([
+                    'code' => 2,
+                    'msj' => 'Primero debe guardar el reconocimiento ergonómico antes de sincronizar.'
+                ]);
+            }
+
+            $proyecto = proyectoModel::where(
+                'proyecto_folio',
+                $reconocimientopsico->proyecto_folio
+            )->first();
+
+            if (
+                !$proyecto ||
+                is_null($proyecto->recsensorial_id)
+            ) {
+
+                return response()->json([
+                    'code' => 0,
+                    'msj' => 'Este proyecto no cuenta con un reconocimiento en Higiene Industrial para poder sincronizar categorías y áreas.'
+                ]);
+            }
+
+            $recsensorial_id = $proyecto->recsensorial_id;
+
+            $categorias = DB::table('recsensorialcategoria')
+                ->where('recsensorial_id', $recsensorial_id)
+                ->get();
+
+            foreach ($categorias as $categoria) {
+
+                $categoriaErgo = recopsicocategoriaModel::where(
+                    'RECPSICO_ID',
+                    $reconocimientopsico->id
+                )
+                    ->where(
+                        'CATEGORIAS_ID_HI',
+                        $categoria->id
+                    )
+                    ->first();
+
+                if ($categoriaErgo) {
+
+                    $categoriaErgo->update([
+                        'RECPSICO_NOMBRECATEGORIA' => $categoria->recsensorialcategoria_nombrecategoria,
+                        'catdepartamento_id' => $categoria->catdepartamento_id,
+                        'catmovilfijo_id' => $categoria->catmovilfijo_id,
+                        'JSON_TURNOS' => $categoria->JSON_TURNOS
+                    ]);
+                } else {
+
+                    recopsicocategoriaModel::create([
+                        'RECPSICO_ID' => $reconocimientopsico->id,
+                        'CATEGORIAS_ID_HI' => $categoria->id,
+                        'RECPSICO_NOMBRECATEGORIA' => $categoria->recsensorialcategoria_nombrecategoria,
+                        'catdepartamento_id' => $categoria->catdepartamento_id,
+                        'catmovilfijo_id' => $categoria->catmovilfijo_id,
+                        'JSON_TURNOS' => $categoria->JSON_TURNOS,
+                        'ACTIVO' => 1
+                    ]);
+                }
+            }
+
+            $areas = DB::table('recsensorialarea')
+                ->where('recsensorial_id', $recsensorial_id)
+                ->get();
+
+            foreach ($areas as $area) {
+
+                $areaErgo = recopsicoareaModel::where(
+                    'RECPSICO_ID',
+                    $reconocimientopsico->id
+                )
+                    ->where(
+                        'AREA_ID_HI',
+                        $area->id
+                    )
+                    ->first();
+
+                if ($areaErgo) {
+
+                    $areaErgo->update([
+                        'RECPSICOAREA_NOMBRE' => $area->recsensorialarea_nombre,
+                        'RECPSICOAREA_PROCESO' => $area->RECSENSORIALAREA_PROCESO
+                    ]);
+                } else {
+
+                    recopsicoareaModel::create([
+                        'RECPSICO_ID' => $reconocimientopsico->id,
+                        'AREA_ID_HI' => $area->id,
+                        'RECPSICOAREA_NOMBRE' => $area->recsensorialarea_nombre,
+                        'RECPSICOAREA_PROCESO' => $area->RECSENSORIALAREA_PROCESO,
+                        'ACTIVO' => 1
+                    ]);
+                }
+            }
+
+            return response()->json([
+                'code' => 1,
+                'msj' => 'Categorías y áreas sincronizadas correctamente desde Higiene Industrial.'
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'code' => 0,
+                'msj' => $e->getMessage()
+            ]);
+        }
+    }
+
 
 
        /**

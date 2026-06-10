@@ -2264,7 +2264,6 @@ function mostrarCertificacionesadicionales(row) {
         const bloque = document.createElement('div');
         bloque.classList.add('col-6');
 
-        // 🔹 Construir opciones del select
         let opciones = `<option value="">Seleccione una certificación</option>`;
 
         if (window.catcertificaciones && Array.isArray(window.catcertificaciones)) {
@@ -2839,7 +2838,6 @@ function mostrarClasificacionRiesgo(row) {
         const clasificacionSeleccionada = item.CLASIFICACION_RIESGO_CAT;
         const cualClasificacion = item.CUAL_CLASIFICACION ?? "";
 
-        // 🔹 Opciones del select con selección
         let opcionesClasificacion = `<option value="">Seleccione una clasificación</option>`;
 
         if (window.catclasificacion && Array.isArray(window.catclasificacion)) {

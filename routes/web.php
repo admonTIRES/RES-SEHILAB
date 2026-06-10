@@ -1937,29 +1937,28 @@ Route::resource('informes', 'HI\informesrecoController');
 //RECONOCIMIENTO
 
 Route::resource('reconocimientoPsicosocial', 'PSICO\reconocimientoPsicoController');
-
 Route::get('/estructuraPsico/{FOLIO}', ['as' => 'reconocimientoPsico.estructuraPsico', 'uses' => 'PSICO\reconocimientoPsicoController@estructuraPsico']);
-
-
 Route::get('/folioproyectoPsico/{proyecto_folio}', ['as' => 'reconocimientoPsico.folioproyectoPsico', 'uses' => 'PSICO\reconocimientoPsicoController@folioproyectoPsico']);
-
 Route::get('mostrarplanopsico/{archivo_opcion}/{reconocimientopsico_id}', ['as' => 'mostrarplanopsico', 'uses' => 'PSICO\reconocimientoPsicoController@mostrarplanopsico']);
 Route::get('mostrarfotoinstalacionpsico/{archivo_opcion}/{reconocimientopsico_id}', ['as' => 'mostrarfotoinstalacionpsico', 'uses' => 'PSICO\reconocimientoPsicoController@mostrarfotoinstalacionpsico']);
 Route::get('mostrarmapapsico/{archivo_opcion}/{reconocimientopsico_id}', ['as' => 'mostrarmapapsico', 'uses' => 'PSICO\reconocimientoPsicoController@mostrarmapapsico']);
-
-
 Route::get('tablareconocimientopsico', ['as' => 'reconocimientoPsico.tablareconocimientopsico', 'uses' => 'PSICO\reconocimientoPsicoController@tablareconocimientopsico']);
-
 Route::get('mostrartecnicodoc/{archivo_opcion}/{reconocimientopsico_id}', ['as' => 'mostrartecnicodoc', 'uses' => 'PSICO\reconocimientoPsicoController@mostrartecnicodoc']);
 Route::get('mostrarcontratodoc/{archivo_opcion}/{reconocimientopsico_id}', ['as' => 'mostrarcontratodoc', 'uses' => 'PSICO\reconocimientoPsicoController@mostrarcontratodoc']);
 
-//categoria
-Route::get('recopsicocategoriatabla/{reconocimientopsico_id}', ['as' => 'recopsicocategoria.recopsicocategoriatabla', 'uses' => 'PSICO\recopsicocategoriaController@recopsicocategoriatabla']);
-Route::resource('recopsicocategoria', 'PSICO\recopsicocategoriaController');
-//area
-Route::resource('recopsicoarea', 'recsensorial\recsensorialareaController');
 
-Route::get('recopsicoareatabla/{reconocimientopsico_id}', ['as' => 'recsensorialarea.recsensorialareatabla', 'uses' => 'recsensorial\recsensorialareaController@recsensorialareatabla']);
+Route::post('sincronizarHigienePsico', ['as' => 'sincronizarHigienePsico', 'uses' => 'PSICO\reconocimientoPsicoController@sincronizarHigienePsico']);
+
+//categoria
+Route::resource('recopsicocategoria', 'PSICO\recopsicocategoriaController');
+Route::get('Tablarecocategoriaspsico', ['as' => 'PSICO.Tablarecocategoriaspsico', 'uses' => 'PSICO\recopsicocategoriaController@Tablarecocategoriaspsico']);
+
+
+
+//area
+Route::resource('recopsicoarea', 'PSICO\recopsicoareaController');
+Route::get('Tablarecoareaspsico', ['as' => 'PSICO.Tablarecoareaspsico', 'uses' => 'PSICO\recopsicoareaController@Tablarecoareaspsico']);
+
 
 //areacategorias
 Route::get('recopsicoareacategorias/{reconocimientopsico_id}', ['as' => 'recsensorialarea.recsensorialareacategorias', 'uses' => 'recsensorial\recsensorialareaController@recsensorialareacategorias']);
@@ -2244,7 +2243,7 @@ Route::get('ergocatalogodesactiva/{catalogo}/{registro}/{estado}', ['as' => 'ERG
 
 Route::resource('evaluacionfre', 'ERGO\evaluacionfreController');
 
-Route::get('Tablafichasevaluacionfre', ['as' => 'ERGO.Tablafichasevaluacionfre', 'uses' => 'ERGO\evaluacionfreController@Tablafichasevaluacionfre']);
+Route::get('Tablafichasevaluacionfre', ['as' => 'ERGO.Tablafichasevaluacionfre', 'uses' => 'ERGO\evaluacionfreController@Tablafichasevaluacionfre']); 
 
 
 

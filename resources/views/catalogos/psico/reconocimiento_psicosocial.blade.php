@@ -185,13 +185,20 @@
                                                 <i class="fa fa-address-card"></i><br>
                                                 <span>Normativa</span>
                                             </div>
-                                            <div class="multisteps-form__progress-btn" id="steps_menu_tab5">
-                                                <i class="fa fa-address-card"></i><br>
-                                                <span>Responsables</span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="text-center mb-5" style="display: none;" id="BOTON_TRAERHI">
+                                    <button type="button"
+                                        class="btn btn-info"
+                                        id="boton_sincronizar_higiene">
+                                        Importar categorías y áreas desde higiene
+                                    </button>
+                                </div>
+
+
+                                
                                 <!--form panels-->
                                 <div class="row">
                                     <div class="col-12">
@@ -654,13 +661,11 @@
                                                             </ol>
                                                             @endif
                                                             <div class="table-responsive">
-                                                                <table class="table table-bordered table-hover stylish-table" width="100%" id="tabla_recsensorialcategorias">
+                                                                <table class="table table-bordered table-hover stylish-table" width="100%" id="Tablarecocategoriaspsico">
                                                                     <thead>
                                                                         <tr>
-                                                                            {{-- <th style="width: 100px !important;">No.</th> --}}
-                                                                            <th style="width: 150px!important;">Departamento</th>
+                                                                            <th style="width: 100px !important;">#</th>
                                                                             <th>Categoría</th>
-                                                                            <th style="width: 100px!important;">Tipo</th>
                                                                             <th style="width: 100px!important;">Editar</th>
                                                                             <!-- <th style="width: 100px!important;">Eliminar</th> -->
                                                                         </tr>
@@ -694,14 +699,13 @@
                                                             </ol>
                                                             @endif
                                                             <div class="table-responsive">
-                                                                <table class="table table-bordered table-hover stylish-table" width="100%" id="tabla_recsensorialareas">
+                                                                <table class="table table-bordered table-hover stylish-table" width="100%" id="Tablarecoareaspsico">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th style="width: 60px!important;">No.</th>
+                                                                            <th style="width: 100px !important;">No.</th>
                                                                             <th>Área</th>
-                                                                            <th>Categorías</th>
+                                                                            <th>Proceso del área </th>
                                                                             <th style="width: 80px!important;">Editar</th>
-                                                                            <!-- <th style="width: 80px!important;">Eliminar</th> -->
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -901,99 +905,10 @@
                                                 </div>
                                             </div>
 
-                                            <!--STEP 5-->
-                                            <div class="multisteps-form__panel" data-animation="scaleIn" id="steps_contenido_tab5">
-                                                <div class="multisteps-form__content">
-                                                    <form enctype="multipart/form-data" method="post" name="form_responsables" id="form_responsables">
-                                                        <div class="row justify-content-center align-items-center">
-                                                            <div class="col-12">
-                                                                {!! csrf_field() !!}
-                                                            </div>
-                                                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                                                <ol class="breadcrumb m-b-10 text-light">
-                                                                    Responsables del informe de reconocimiento sensorial
-                                                                </ol>
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Nombre del responsable Técnico del informe</label>
-                                                                            <input type="text" class="form-control" id="NOMBRE_TECNICO" name="NOMBRE_TECNICO" required>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Nombre del responsable del Contrato/Proyecto </label>
-                                                                            <input type="text" class="form-control" id="NOMBRE_CONTRATO" name="NOMBRE_CONTRATO" required>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Cargo del responsable Técnico del informe</label>
-                                                                            <select class="custom-select form-control" id="CARGO_TECNICO" name="CARGO_TECNICO" required>
-                                                                                <option value=""></option>
-                                                                                @foreach($cargos as $dato)
-                                                                                <option value="{{$dato->CARGO}}">{{$dato->CARGO}}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Cargo del responsable del Contrato/Proyecto</label>
-                                                                            <select class="custom-select form-control" id="CARGO_CONTRATO" name="CARGO_CONTRATO" required>
-                                                                                <option value=""></option>
-                                                                                @foreach($cargos as $dato)
-                                                                                <option value="{{$dato->CARGO}}">{{$dato->CARGO}}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Documento del responsable Técnico del informe</label>
-                                                                            <style type="text/css" media="screen">
-                                                                                .dropify-wrapper {
-                                                                                    height: 296px !important;
-                                                                                    /*tamaño estatico del campo foto*/
-                                                                                }
-                                                                            </style>
-                                                                            <input type="file" class="dropify" accept="image/jpeg,image/x-png" id="TECNICO_DOC_IMG" name="TECNICO_DOC_IMG" data-allowed-file-extensions="jpg png JPG PNG" data-height="296" data-default-file="" required>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Documento del responsable del Contrato/Proyecto</label>
-                                                                            <style type="text/css" media="screen">
-                                                                                .dropify-wrapper {
-                                                                                    height: 296px !important;
-                                                                                    /*tamaño estatico del campo foto*/
-                                                                                }
-                                                                            </style>
-                                                                            <input type="file" class="dropify" accept="image/jpeg,image/x-png" id="CONTRATO_DOC_IMG" name="CONTRATO_DOC_IMG" data-allowed-file-extensions="jpg png JPG PNG" data-height="296" data-default-file="" required>
-                                                                        </div>
-                                                                    </div>
 
 
 
 
-
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div class="col-sm-8">
-                                                                <div class="form-group" style="text-align: right;">
-                                                                    <button type="submit" class="btn btn-danger botonguardar_modulorecsensorial w-100 p-3" id="boton_guardar_responsables">
-                                                                        Guardar responsables <i class="fa fa-save"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1170,10 +1085,7 @@
                 <div class="modal-body">
                     {!! csrf_field() !!}
                     <div class="row">
-                        <div class="col-12">
-                            <input type="hidden" class="form-control" id="ID_RECOPSICOCATEGORIA" name="ID_RECOPSICOCATEGORIA" value="0">
-                            <input type="hidden" class="form-control" id="RECPSICO_ID" name="RECPSICO_ID" value="0">
-                        </div>
+
                         <div class="col-4">
                             <div class="form-group">
                                 <label> Departamento *</label>
@@ -1203,7 +1115,7 @@
                             </div>
                         </div>
 
-                        <div class="row listadodeturno"></div>
+                        <div class="row listadodeturno m-2"></div>
 
                     </div>
                 </div>
@@ -1335,57 +1247,23 @@
                 <div class="modal-body">
                     {!! csrf_field() !!}
                     <div class="row">
-                        <div class="col-12">
-                            <input type="hidden" class="form-control" id="area_id" name="area_id" value="0">
-                            <input type="hidden" class="form-control" id="area_recsensorial_id" name="recsensorial_id" value="0">
-                        </div>
+
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label> Nombre del área *</label>
-                                        <input type="text" class="form-control" name="recsensorialarea_nombre" id="recsensorialarea_nombre" required>
+                                        <input type="text" class="form-control" name="RECPSICOAREA_NOMBRE" id="RECPSICOAREA_NOMBRE" required>
                                     </div>
                                 </div>
 
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label> Proceso del área * </label>
-                                        <textarea class="form-control" rows="3" id="RECSENSORIALAREA_PROCESO" name="RECSENSORIALAREA_PROCESO"></textarea>
+                                        <textarea class="form-control" rows="3" id="RECPSICOAREA_PROCESO" name="RECPSICOAREA_PROCESO"></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Psicólogo']))
-                                    <ol class="breadcrumb m-b-10">
-                                        <button type="button" class="btn btn-secondary waves-effect waves-light botonnuevo_modulorecsensorial" data-toggle="tooltip" title="Agregar categoría" id="boton_nueva_areacategoria">
-                                            <span class="btn-label"><i class="fa fa-plus"></i></span>Categoría en el área
-                                        </button>
-                                    </ol>
-                                    @endif
-                                    <div class="table-responsive" style="margin: 0px 0px 20px 0px; max-height: 220px; overflow-x: hidden; overflow-y: auto;">
-                                        <table class="table table-bordered table-hover stylish-table" style="margin: 0px;" width="100%" id="tabla_areacategorias">
-                                            <thead>
-                                                <tr>
-                                                    <th>Categoría</th>
-                                                    <th>Actividades</th>
-                                                    <th style="width: 120px!important;">GEH</th>
-                                                    <th style="width: 120px!important;">Total personas</th>
-                                                    <th style="width: 70px!important;">Eliminar</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="7">&nbsp;</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
                                 @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Psicólogo']))
