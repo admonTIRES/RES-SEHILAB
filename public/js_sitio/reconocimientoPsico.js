@@ -1274,8 +1274,6 @@ function cargarFoliosProyecto(proyecto_folio) {
 
 
 
-
-
 $('#boton_sincronizar_higiene').click(function () {
 
     Swal.fire({
@@ -1419,8 +1417,6 @@ $("#boton_nueva_categoria").click(function (e) {
 
 
 });
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
 	const botonAgregar = document.getElementById('botonagregarhorario');
@@ -1812,7 +1808,6 @@ function mostrarturnos(row) {
 
 /////// AREAS
 
-
 $("#boton_nueva_area").click(function (e) {
     e.preventDefault();
 
@@ -1831,9 +1826,6 @@ $("#boton_nueva_area").click(function (e) {
 
 
 });
-
-
-
 
 $("#boton_guardar_area").click(function (e) {
     e.preventDefault();
@@ -1919,9 +1911,6 @@ $("#boton_guardar_area").click(function (e) {
 }
     
 });
-
-
-
 
 function mostrartablarecoareaspsico() {
 	try {
@@ -2036,349 +2025,300 @@ $(document).ready(function() {
         ]
     });
  
-	$("#boton_cargarTrabajadores").click(function() {
-		var guardar = 0;
-		var recpsico_id = $("#recsensorial_id").val();
-		//var muestra = $('#tipoArchivo').val();
-		$("#RECPSICO_ID_TRABAJADORES").val($("#recsensorial_id").val());
-		$("#RECPSICO_APLICACION").val($("#RECPSICO_TOTALAPLICACION").val());
+	// $("#boton_cargarTrabajadores").click(function() {
+	// 	var guardar = 0;
+	// 	var recpsico_id = $("#recsensorial_id").val();
+	// 	//var muestra = $('#tipoArchivo').val();
+	// 	$("#RECPSICO_ID_TRABAJADORES").val($("#recsensorial_id").val());
+	// 	$("#RECPSICO_APLICACION").val($("#RECPSICO_TOTALAPLICACION").val());
 
-		// valida campos vacios
-		var valida = this.form.checkValidity();
-		if (valida){
+	// 	// valida campos vacios
+	// 	var valida = this.form.checkValidity();
+	// 	if (valida){
 
-			var formData = new FormData($('#form_cargaTrabajadores')[0]);
-			formData.append('RECPSICOTRABAJADOR_MUESTRA', document.getElementById("RECPSICOTRABAJADOR_MUESTRA").checked ? 1 : 0);
-			var RECPSICOTRABAJADOR_MUESTRA = document.getElementById("RECPSICOTRABAJADOR_MUESTRA").checked ? 1 : 0;
-			formData.append('RECPSICO_APLICACION', parseInt(document.getElementById('RECPSICO_APLICACION').value));
-			var RECPSICO_APLICACION = document.getElementById('RECPSICO_APLICACION').value;
+	// 		var formData = new FormData($('#form_cargaTrabajadores')[0]);
+	// 		formData.append('RECPSICOTRABAJADOR_MUESTRA', document.getElementById("RECPSICOTRABAJADOR_MUESTRA").checked ? 1 : 0);
+	// 		var RECPSICOTRABAJADOR_MUESTRA = document.getElementById("RECPSICOTRABAJADOR_MUESTRA").checked ? 1 : 0;
+	// 		formData.append('RECPSICO_APLICACION', parseInt(document.getElementById('RECPSICO_APLICACION').value));
+	// 		var RECPSICO_APLICACION = document.getElementById('RECPSICO_APLICACION').value;
 			
-			// var totalEmpleadosMuestra = parseInt(document.getElementById('RECPSICO_TOTALAPLICACION').value);
-			// if (isNaN(totalEmpleadosMuestra)) {
-			// 	totalEmpleadosMuestra = 1; 
-			// } 
-				// Tipo archivo
-				var archivo = $("#excelTrabajadores").val();
-				var extension = archivo.substring(archivo.lastIndexOf("."));
+	// 		// var totalEmpleadosMuestra = parseInt(document.getElementById('RECPSICO_TOTALAPLICACION').value);
+	// 		// if (isNaN(totalEmpleadosMuestra)) {
+	// 		// 	totalEmpleadosMuestra = 1; 
+	// 		// } 
+	// 			// Tipo archivo
+	// 			var archivo = $("#excelTrabajadores").val();
+	// 			var extension = archivo.substring(archivo.lastIndexOf("."));
 
-				// valida tipo de archivo
-				if(extension == ".xlsx" || extension == ".XLSX"){
-					guardar = 1;
-				}
-				else{
-					// mensaje
-					swal({
-						title: "Tipo de archivo incorrecto "+extension,
-						text: "Solo se pueden cargar archivos tipo .xlsx",
-						type: "warning", // warning, error, success, info
-						buttons: {
-							visible: false, // true , false
-						},
-						timer: 3000,
-						showConfirmButton: false
-					});
+	// 			// valida tipo de archivo
+	// 			if(extension == ".xlsx" || extension == ".XLSX"){
+	// 				guardar = 1;
+	// 			}
+	// 			else{
+	// 				// mensaje
+	// 				swal({
+	// 					title: "Tipo de archivo incorrecto "+extension,
+	// 					text: "Solo se pueden cargar archivos tipo .xlsx",
+	// 					type: "warning", // warning, error, success, info
+	// 					buttons: {
+	// 						visible: false, // true , false
+	// 					},
+	// 					timer: 3000,
+	// 					showConfirmButton: false
+	// 				});
 
-					guardar = 0;
+	// 				guardar = 0;
 
-					return false;
-				}
+	// 				return false;
+	// 			}
 			
 			
 
-			// guardar
-			if (guardar == 1){
+	// 		// guardar
+	// 		if (guardar == 1){
 			
-				swal({   
-					title: "¿Está  seguro de cargar este documento?",   
-					text: "Está acción  no se puede revertir",   
-					type: "warning",   
-					showCancelButton: true,   
-					confirmButtonColor: "#DD6B55",   
-					confirmButtonText: "Guardar!",   
-					cancelButtonText: "Cancelar!",   
-					closeOnConfirm: false,   
-					closeOnCancel: false 
-				}, function (isConfirm) {   
+	// 			swal({   
+	// 				title: "¿Está  seguro de cargar este documento?",   
+	// 				text: "Está acción  no se puede revertir",   
+	// 				type: "warning",   
+	// 				showCancelButton: true,   
+	// 				confirmButtonColor: "#DD6B55",   
+	// 				confirmButtonText: "Guardar!",   
+	// 				cancelButtonText: "Cancelar!",   
+	// 				closeOnConfirm: false,   
+	// 				closeOnCancel: false 
+	// 			}, function (isConfirm) {   
 					
-					if (isConfirm){
-						// cerrar msj confirmacion
-						swal.close();
+	// 				if (isConfirm){
+	// 					// cerrar msj confirmacion
+	// 					swal.close();
 
-						// enviar datos
-						$('#form_cargaTrabajadores').ajaxForm({
-							dataType: 'json',
-							type: 'POST',
-							url: "/recopsiconormativa",
-							data: {
-								opcion: 1000,
-								'RECPSICOTRABAJADOR_MUESTRA': RECPSICOTRABAJADOR_MUESTRA,
-								'RECPSICO_APLICACION': RECPSICO_APLICACION,
-							},
-							contentType: false,
-							processData: false,
-							success: function (dato) {
+	// 					// enviar datos
+	// 					$('#form_cargaTrabajadores').ajaxForm({
+	// 						dataType: 'json',
+	// 						type: 'POST',
+	// 						url: "/recopsiconormativa",
+	// 						data: {
+	// 							opcion: 1000,
+	// 							'RECPSICOTRABAJADOR_MUESTRA': RECPSICOTRABAJADOR_MUESTRA,
+	// 							'RECPSICO_APLICACION': RECPSICO_APLICACION,
+	// 						},
+	// 						contentType: false,
+	// 						processData: false,
+	// 						success: function (dato) {
 
-								// actualizar boton
+	// 							// actualizar boton
 								
 								
-								if (dato.code == 200) {
+	// 							if (dato.code == 200) {
 
-									cargarTrabajadores(recpsico_id, tabla);
-									// cerrar modal
-									$('#modal_cargarTrabajadores').modal('hide');
+	// 								cargarTrabajadores(recpsico_id, tabla);
+	// 								// cerrar modal
+	// 								$('#modal_cargarTrabajadores').modal('hide');
 
-									// mensaje
-									swal({
-										title: "Los datos fueron importados exitosamente",
-										text: ""+dato.msj,
-										type: "success", 
-										buttons: {visible: true},
-										showConfirmButton: true,
-										showCancelButton: false
-									});
+	// 								// mensaje
+	// 								swal({
+	// 									title: "Los datos fueron importados exitosamente",
+	// 									text: ""+dato.msj,
+	// 									type: "success", 
+	// 									buttons: {visible: true},
+	// 									showConfirmButton: true,
+	// 									showCancelButton: false
+	// 								});
 
-								} else {
+	// 							} else {
 
-									swal({
-										title: "Ocurrio un error al intentar importar los datos.",
-										// text: ""+dato.msj,
-										type: "error", // warning, error, success, info
-										buttons: {visible: true},
-										showConfirmButton: true,
-										showCancelButton: false
-									});
-								}
-								$('#boton_cargarTrabajadores').html('Guardar <i class="fa fa-save"></i>');
+	// 								swal({
+	// 									title: "Ocurrio un error al intentar importar los datos.",
+	// 									// text: ""+dato.msj,
+	// 									type: "error", // warning, error, success, info
+	// 									buttons: {visible: true},
+	// 									showConfirmButton: true,
+	// 									showCancelButton: false
+	// 								});
+	// 							}
+	// 							$('#boton_cargarTrabajadores').html('Guardar <i class="fa fa-save"></i>');
 								
-							},
-							beforeSend: function () {
-								$('#boton_cargarTrabajadores').html('Guardando <i class="fa fa-spin fa-spinner"></i>');							
-							},
-							error: function(dato) {
-								$('#boton_cargarTrabajadores').html('Guardar <i class="fa fa-save"></i>');		
+	// 						},
+	// 						beforeSend: function () {
+	// 							$('#boton_cargarTrabajadores').html('Guardando <i class="fa fa-spin fa-spinner"></i>');							
+	// 						},
+	// 						error: function(dato) {
+	// 							$('#boton_cargarTrabajadores').html('Guardar <i class="fa fa-save"></i>');		
 
-								console.log(""+dato.msj);
-								// mensaje
-								swal({
-									title: "Error al cargar los datos.",
-									text: ""+dato.msj,
-									type: "error", // warning, error, success, info
-									buttons: {
-										visible: false, // true , false
-									},
-									timer: 1500,
-									showConfirmButton: false
-								});
+	// 							console.log(""+dato.msj);
+	// 							// mensaje
+	// 							swal({
+	// 								title: "Error al cargar los datos.",
+	// 								text: ""+dato.msj,
+	// 								type: "error", // warning, error, success, info
+	// 								buttons: {
+	// 									visible: false, // true , false
+	// 								},
+	// 								timer: 1500,
+	// 								showConfirmButton: false
+	// 							});
 
-								return false;
-							}
-						}).submit();
-						return false;
-					}
-					else 
-					{
-						// mensaje
-						swal({
-							title: "Cancelado",
-							text: "Acción cancelada",
-							type: "error", // warning, error, success, info
-							buttons: {
-								visible: false, // true , false
-							},
-							timer: 1500,
-							showConfirmButton: false
-						});   
-					} 
-				});
-				return false;
-			}
-		}
-	});
+	// 							return false;
+	// 						}
+	// 					}).submit();
+	// 					return false;
+	// 				}
+	// 				else 
+	// 				{
+	// 					// mensaje
+	// 					swal({
+	// 						title: "Cancelado",
+	// 						text: "Acción cancelada",
+	// 						type: "error", // warning, error, success, info
+	// 						buttons: {
+	// 							visible: false, // true , false
+	// 						},
+	// 						timer: 1500,
+	// 						showConfirmButton: false
+	// 					});   
+	// 				} 
+	// 			});
+	// 			return false;
+	// 		}
+	// 	}
+	// });
+
+
+
+	$("#boton_cargarTrabajadores").click(function () {
+
+    var guardar = 0;
+    var recpsico_id = $("#recsensorial_id").val();
+
+    $("#RECPSICO_ID_TRABAJADORES").val($("#recsensorial_id").val());
+    $("#RECPSICO_APLICACION").val($("#RECPSICO_TOTALAPLICACION").val());
+
+    var valida = this.form.checkValidity();
+
+    if (valida) {
+
+        var RECPSICOTRABAJADOR_MUESTRA = document.getElementById("RECPSICOTRABAJADOR_MUESTRA").checked ? 1 : 0;
+        var RECPSICO_APLICACION = document.getElementById('RECPSICO_APLICACION').value;
+
+        var archivo = $("#excelTrabajadores").val();
+        var extension = archivo.substring(archivo.lastIndexOf("."));
+
+        if (extension == ".xlsx" || extension == ".XLSX") {
+            guardar = 1;
+        }
+        else {
+
+            Swal.fire({
+                icon: "warning",
+                title: "Tipo de archivo incorrecto " + extension,
+                text: "Solo se pueden cargar archivos tipo .xlsx",
+                timer: 3000,
+                showConfirmButton: false
+            });
+
+            return false;
+        }
+
+        if (guardar == 1) {
+
+            Swal.fire({
+                title: "¿Está seguro de cargar este documento?",
+                text: "Esta acción no se puede revertir",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Guardar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $('#form_cargaTrabajadores').ajaxForm({
+                        dataType: 'json',
+                        type: 'POST',
+                        url: "/recopsiconormativa",
+                        data: {
+                            opcion: 1000,
+                            RECPSICOTRABAJADOR_MUESTRA: RECPSICOTRABAJADOR_MUESTRA,
+                            RECPSICO_APLICACION: RECPSICO_APLICACION
+                        },
+                        contentType: false,
+                        processData: false,
+
+                        beforeSend: function () {
+
+                            $('#boton_cargarTrabajadores').html('Guardando <i class="fa fa-spin fa-spinner"></i>');
+
+                        },
+
+                        success: function (dato) {
+
+                            $('#boton_cargarTrabajadores').html('Guardar <i class="fa fa-save"></i>');
+
+                            if (dato.code == 200) {
+
+                                cargarTrabajadores(recpsico_id, tabla);
+
+                                $('#modal_cargarTrabajadores').modal('hide');
+
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Los datos fueron importados exitosamente",
+                                    text: dato.msj
+                                });
+
+                            } else {
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Ocurrió un error al intentar importar los datos",
+                                    text: dato.msj
+                                });
+                            }
+
+                        },
+
+                        error: function (xhr) {
+
+                            $('#boton_cargarTrabajadores').html('Guardar <i class="fa fa-save"></i>');
+
+                            console.log(xhr.responseText);
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error al cargar los datos",
+                                text: xhr.responseText
+                            });
+
+                        }
+
+                    }).submit();
+
+                }
+                else {
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Cancelado",
+                        text: "Acción cancelada",
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+
+                }
+
+            });
+
+            return false;
+        }
+    }
+
 });
-$(document).ready(function () {
-	// Función para actualizar el texto del área seleccionada
-	function actualizarTextoAreaSeleccionada() {
-		var selectedOption = $("#RECSENSORIAL_DATOSAREA option:selected").text();
-		$("#selectedArea").text(selectedOption);
-	}
-
-	// Al cambiar la selección en el select RECSENSORIAL_DATOSAREA
-	$("#RECSENSORIAL_DATOSAREA").change(function () {
-		// Actualizar el texto del área seleccionada
-		actualizarTextoAreaSeleccionada();
-	});
-
-	$('#tabla_recsensorialareas tbody').on('click', 'td.editar', function () {
-		// Restablecer formulario
-		$('#form_area').each(function () {
-			this.reset();
-		});
-
-		// Obtener datos de la fila
-		var tr = $(this).closest('tr');
-		var row = tabla_recsensorialareas.row(tr);
-
-		// Llenar campos con los datos de la fila
-		$("#area_id").val(row.data().id);
-		$("#area_recsensorial_id").val(row.data().recsensorial_id);
-		$("#recsensorialarea_nombre").val(row.data().recsensorialarea_nombre);
-		$("#RECSENSORIALAREA_PROCESO").val(row.data().RECSENSORIALAREA_PROCESO);
-		$("#recsensorialarea_condicion").val(row.data().recsensorialarea_condicion);
-		$("#recsensorialarea_caracteristica").val(row.data().recsensorialarea_caracteristica);
-		$("#recsensorialarea_extraccionaire").val(row.data().recsensorialarea_extraccionaire);
-		$("#recsensorialarea_inyeccionaire").val(row.data().recsensorialarea_inyeccionaire);
-		$("#RECSENSORIAL_DATOSAREA").val(row.data().RECSENSORIAL_DATOSAREA);
-		$("#recsensorialarea_controlestecnicos").val(row.data().recsensorialarea_controlestecnicos);
-		$("#recsensorialarea_controlesadministrativos").val(row.data().recsensorialarea_controlesadministrativos);
-		$("#JERARQUIACONTROL").val(row.data().JERARQUIACONTROL);
-		$("#CONTROLESJERARQUIA_DESCRIPCION").val(row.data().CONTROLESJERARQUIA_DESCRIPCION);
-		$("#DESCRIPCION_AREA").val(row.data().DESCRIPCION_AREA);
-
-		// Actualizar valor del select RECSENSORIAL_DATOSAREA
-		$('#RECSENSORIAL_DATOSAREA').val(row.data().RECSENSORIAL_DATOSAREA);
-
-		actualizarTextoAreaSeleccionada();
-
-		// Consultar categorías
-		//consulta_areascategorias(row.data().id);
 
 
-		// Mostrar modal
-		$('#modal_area').modal({ backdrop: false });
-
-		// Mostrar opciones seleccionadas del campo recsensorialarea_generacioncontaminante
-		var opcionesSeleccionadas = row.data().recsensorialarea_generacioncontaminante;
-		var selectElement = $("#recsensorialarea_generacioncontaminante");
-
-		if (opcionesSeleccionadas) {
-			// Convertir la cadena de opciones separadas por comas en un array
-			var opcionesArray = opcionesSeleccionadas.split(',');
-
-			// Establecer las opciones seleccionadas en el elemento <select>
-			selectElement.val(opcionesArray);
-		}
-
-
-	});
+	
 });
-$(document).ready(function () {
-	// Función para restablecer los estilos del select al guardar un nuevo elemento
-	function resetSelectStyles() {
-		$('#JERARQUIACONTROL').css('background-color', 'white'); // Color de fondo blanco
-		$('#JERARQUIACONTROL').css('color', 'black'); // Color del texto negro
-		$('#JERARQUIACONTROL').val(''); // Restablecer el valor seleccionado
-	}
 
-	// Función para restablecer el select de datos de área al guardar un nuevo elemento
-	function resetDatosAreaSelect() {
-		$('#RECSENSORIAL_DATOSAREA').val(''); // Restablecer el valor seleccionado
-		$('#selectedArea').text(''); // Limpiar el texto del área seleccionada
-	}
-
-	$("#boton_guardar_area").click(function () {
-		// valida campos vacios
-		var valida = this.form.checkValidity();
-		if (valida) {
-			var seleccionados = 0;
-
-			$('#checkbox_areaagentes input[type=checkbox]').each(function () {
-				if (this.checked) {
-					seleccionados += 1;
-				}
-			});
-
-			// valida parametros seleccionados
-			if (seleccionados > 0 && areacategorias_total > 0) {
-
-				// Obtener opciones seleccionadas en un array
-				var opcionesSeleccionadas = $('#recsensorialarea_generacioncontaminante').val();
-
-				// enviar datos
-				$('#form_area').ajaxForm({
-					dataType: 'json',
-					type: 'POST',
-					url: '/recsensorialarea',
-					data: {
-						recsensorialarea_generacioncontaminante: opcionesSeleccionadas // Agregar opciones seleccionadas
-					},
-					resetForm: false,
-					success: function (dato) {
-						// Campos Hidden
-						$("#area_id").val(dato.area.id);
-						$("#area_recsensorial_id").val(dato.area.recsensorial_id);
-
-						// actualiza tabla
-						funcion_tabla_recsensorialareas(dato.area.recsensorial_id);
-
-						// mensaje
-						swal({
-							title: "Correcto",
-							text: "" + dato.msj,
-							type: "success", // warning, error, success, info
-							buttons: {
-								visible: false, // true , false
-							},
-							timer: 1500,
-							showConfirmButton: false
-						});
-
-						// actualiza boton
-						$('#boton_guardar_area').html('Guardar <i class="fa fa-save"></i>');
-
-						// cerrar modal
-						$('#modal_area').modal('hide');
-
-						
-						// Restablecer select de datos de área al guardar un nuevo elemento
-						resetDatosAreaSelect();
-					},
-					beforeSend: function () {
-						$('#boton_guardar_area').html('Guardando <i class="fa fa-spin fa-spinner"></i>');
-					},
-					error: function (dato) {
-						// actualiza boton
-						$('#boton_guardar_area').html('Guardar <i class="fa fa-save"></i>');
-						// mensaje
-						swal({
-							title: "Error",
-							text: "Error en la acción: " + dato,
-							type: "error", // warning, error, success, info
-							buttons: {
-								visible: false, // true , false
-							},
-							timer: 1500,
-							showConfirmButton: false
-						});
-						return false;
-					}
-				}).submit();
-				return false;
-			} else {
-				// mensaje
-				swal({
-					title: "Seleccione opciones",
-					text: "Debe Seleccionar al menos un factor de riesgo y una o mas categorías",
-					type: "warning", // warning, error, success, info
-					buttons: {
-						visible: false, // true , false
-					},
-					timer: 2500,
-					showConfirmButton: false
-				});
-				return false;
-			}
-		}
-	});
-
-	// Al cerrar el modal
-	$('#modal_area').on('hidden.bs.modal', function () { 
-		// Restablecer estilos del select al cerrar el modal
-		resetSelectStyles();
-
-		// Restablecer select de datos de área al cerrar el modal
-		resetDatosAreaSelect();
-	});
-});
 
 $(document).ready(function () {
 
@@ -2550,10 +2490,6 @@ $("#boton_carga_muestra").click(function () {
 		this.reset();
 	});
 
-	// // Campos Hidden
-	// $("#area_id").val(0);
-	// $("#area_recsensorial_id").val($("#recsensorial_id").val());
-	// Mostrar modal
 	$('#modal_cargarMuestra').modal({ backdrop: false });
 
 
@@ -2561,73 +2497,90 @@ $("#boton_carga_muestra").click(function () {
 });
 
 $("#boton_guardar_normativa").click(function (event) {
-	event.preventDefault(); 
 
-	$("#RECPSICO_ID_NORMATIVA").val($("#recsensorial_id").val());
+    event.preventDefault();
 
-	var valida = this.form.checkValidity();
-	if (valida) {
+    $("#RECPSICO_ID_NORMATIVA").val($("#recsensorial_id").val());
 
-		var formData = new FormData($('#form_normativa')[0]);
-		formData.append('opcion', 1);
-		formData.append('RECPSICO_GENEROS', document.getElementById("habilitar_opcional").checked ? 1 : 0);
-		formData.append('RECPSICO_GUIAI', document.getElementById("option1").checked ? 1 : 0);
-		formData.append('RECPSICO_GUIAII', document.getElementById("option2").checked ? 1 : 0);
-		formData.append('RECPSICO_GUIAIII', document.getElementById("option3").checked ? 1 : 0);
-		formData.append('RECPSICO_GUIAV', document.getElementById("option4").checked ? 1 : 0);
+    var valida = this.form.checkValidity();
 
-		// formData.append('JSON_TURNOS', JSON.stringify(turnosjs));
-		//formData.append('SUMAHORASJORNADA', sumaHorasJornada);
+    if (valida) {
 
+        Swal.fire({
+            title: "¡Confirme que desea guardar!",
+            text: "Normativa Psicosocial",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Aceptar",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
 
-		// Enviar datos
-		$.ajax({
-			type: 'POST',
-			url: "/recopsiconormativa",
-			data: formData,
-			dataType: 'json',
-			processData: false,
-			contentType: false,
-			success: function (dato) {
+            if (result.isConfirmed) {
 
-				$("#ID_RECOPSICONORMATIVA").val(dato.normativapsico.ID_RECOPSICONORMATIVA);
-				
-				//$("#RECPSICO_ID").val(dato.normativapsico.RECPSICO_ID);
+                var formData = new FormData($('#form_normativa')[0]);
+                formData.append('opcion', 1);
+                formData.append('RECPSICO_GENEROS', document.getElementById("habilitar_opcional").checked ? 1 : 0);
+                formData.append('RECPSICO_GUIAI', document.getElementById("option1").checked ? 1 : 0);
+                formData.append('RECPSICO_GUIAII', document.getElementById("option2").checked ? 1 : 0);
+                formData.append('RECPSICO_GUIAIII', document.getElementById("option3").checked ? 1 : 0);
+                formData.append('RECPSICO_GUIAV', document.getElementById("option4").checked ? 1 : 0);
 
-				// mensaje
-				swal({
-					title: "Correcto",
-					text: "" + dato.msj,
-					type: "success", 
-					buttons: {
-						visible: false, 
-					},
-					timer: 1500,
-					showConfirmButton: false
-				});
+                $.ajax({
+                    type: 'POST',
+                    url: "/recopsiconormativa",
+                    data: formData,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
 
-				$('#boton_guardar_normativa').html('Guardar <i class="fa fa-save"></i>');
+                    beforeSend: function () {
+                        $('#boton_guardar_normativa').html('Guardando <i class="fa fa-spin fa-spinner"></i>');
+                    },
 
+                    success: function (dato) {
 
-			},
-			beforeSend: function () {
-				$('#boton_guardar_normativa').html('Guardando <i class="fa fa-spin fa-spinner"></i>');
-			},
-			error: function (error) {
-				$('#boton_guardar_normativa').html('Guardar <i class="fa fa-save"></i>');
-				swal({
-					title: "Error",
-					text: "Error en la acción: " + error.responseText, 
-					type: "error", 
-					buttons: {
-						visible: false, 
-					},
-					timer: 1500,
-					showConfirmButton: false
-				});
-			}
-		});
-	}
+                        $("#ID_RECOPSICONORMATIVA").val(dato.normativapsico.ID_RECOPSICONORMATIVA);
+
+                        Swal.fire({
+                            icon: "success",
+                            title: "¡La normativa fue guardada exitosamente!",
+                            text: dato.msj,
+                            timer: 2500,
+                            showConfirmButton: false
+                        });
+
+                        $('#boton_guardar_normativa').html('Guardar <i class="fa fa-save"></i>');
+                    },
+
+                    error: function (error) {
+
+                        $('#boton_guardar_normativa').html('Guardar <i class="fa fa-save"></i>');
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Error en la acción: " + error.responseText
+                        });
+                    }
+                });
+
+            } else {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Cancelado",
+                    text: "Acción cancelada",
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+
+            }
+
+        });
+
+        return false;
+    }
+
 });
 
 $("#boton_guadarGuiaV").click(function (event) {
@@ -2739,6 +2692,7 @@ $("#modalvisor_boton_cerrar").click(function () {
 });
 
 //-----------------------------------------------------FUNCIONES------------------------------------------------------------//
+
 function datosNormativa(recpsico_id){
 	// Borrar formulario
 	$('#form_normativa').each(function () {
@@ -2759,14 +2713,31 @@ function datosNormativa(recpsico_id){
 			if (response && response.length > 0) {
 				const data = response[0]; // Accede al primer objeto del array
 		
+				// document.getElementById('total_empleados').value = data.RECPSICO_TOTALTRABAJADORES || 0;
+				// validarEmpleados();
+
+				// document.getElementById('aplicable_a').value = data.RECPSICO_TIPOAPLICACION || '';
+				// document.getElementById('RECPSICO_TOTALHOMBRESSELECCION').value = data.RECPSICO_TOTALHOMBRESSELECCION || 0;
+				// document.getElementById('RECPSICO_TOTALMUJERESSELECCION').value = data.RECPSICO_TOTALMUJERESSELECCION || 0;
+				// document.getElementById('RECPSICO_PORCENTAJEHOMBRESTRABAJO').value = data.RECPSICO_PORCENTAJEHOMBRESTRABAJO || 0;
+				// document.getElementById('RECPSICO_PORCENTAJEMUJERESTRABAJO').value = data.RECPSICO_PORCENTAJEMUJERESTRABAJO || 0;
+
 				document.getElementById('total_empleados').value = data.RECPSICO_TOTALTRABAJADORES || 0;
+
+				// Carga las opciones del select
 				validarEmpleados();
 
+				// Selecciona la opción guardada
 				document.getElementById('aplicable_a').value = data.RECPSICO_TIPOAPLICACION || '';
+
+				// Ejecuta el cálculo como si el usuario hubiera cambiado el select
+				calcularResultado();
+
 				document.getElementById('RECPSICO_TOTALHOMBRESSELECCION').value = data.RECPSICO_TOTALHOMBRESSELECCION || 0;
 				document.getElementById('RECPSICO_TOTALMUJERESSELECCION').value = data.RECPSICO_TOTALMUJERESSELECCION || 0;
 				document.getElementById('RECPSICO_PORCENTAJEHOMBRESTRABAJO').value = data.RECPSICO_PORCENTAJEHOMBRESTRABAJO || 0;
 				document.getElementById('RECPSICO_PORCENTAJEMUJERESTRABAJO').value = data.RECPSICO_PORCENTAJEMUJERESTRABAJO || 0;
+				
 
 			} else {
 				console.error('No se encontraron datos en la respuesta');
@@ -2823,180 +2794,9 @@ function abrirTrabajadoresExcel() {
 		
 }
 
-function consulta_categorias(recsensorial_id) {
-	$.ajax({
-		type: "GET",
-		dataType: "json",
-		url: "/recsensorialareacategorias/" + recsensorial_id,
-		data: {},
-		cache: false,
-		success: function (dato) {
-			select_areacategorias_opciones = '<option value=""></option>';
-			$.each(dato.categorias, function (key, value) {
-				select_areacategorias_opciones += '<option value="' + value.id + '">' + value.categoria_nombre + '</option>';
-			});
-		},
-		error: function (dato) {
-			select_areacategorias_opciones = '<option value="">No hay categorias que mostrar</option>';
-			return false;
-		}
-	});//Fin ajax
-}
-
-function consulta_areascategorias(area_id) {
-	var actividad = '';
-	var geh = '';
-	var total = '';
-	var tiempo = '';
-	var frecuencia = '';
-	var tiempo_quimicos = '';
-	var frecuencia_quimicos = '';
 
 
 
-	$.ajax({
-		type: "GET",
-		dataType: "json",
-		url: "/recsensorialareacategoriaselegidas/" + area_id,
-		data: {},
-		cache: false,
-		success: function (dato) {
-			// Dibujar fila categorias
-			$('#tabla_areacategorias tbody').html('');
-
-			$.each(dato.categoriaselegidas, function (key, value) {
-				if (value.recsensorialareacategorias_actividad == null) { actividad = ''; } else { actividad = value.recsensorialareacategorias_actividad; }
-				if (value.recsensorialareacategorias_geh == null) { geh = ''; } else { geh = value.recsensorialareacategorias_geh; }
-				if (value.recsensorialareacategorias_total == null) { total = ''; } else { total = value.recsensorialareacategorias_total; }
-				if (value.recsensorialareacategorias_tiempoexpo == null) { tiempo = ''; } else { tiempo = value.recsensorialareacategorias_tiempoexpo; }
-				if (value.recsensorialareacategorias_frecuenciaexpo == null) { frecuencia = ''; } else { frecuencia = value.recsensorialareacategorias_frecuenciaexpo; }
-				if (value.tiempoexpo_quimico == null) { tiempo_quimicos = ''; } else { tiempo_quimicos = value.tiempoexpo_quimico; }
-				if (value.frecuenciaexpo_quimico == null) { frecuencia_quimicos = ''; } else { frecuencia_quimicos = value.frecuenciaexpo_quimico; }
-
-
-
-
-				$("#tabla_areacategorias tbody").append('<tr>' +
-					'<td style="padding:2px 4px;"><select class="custom-select form-control" style="padding:0px 4px;" id="categoria_' + key + '" name="categoria[]" required>' + select_areacategorias_opciones + '</select></td>' +
-					'<td style="padding:2px 4px;"><input type="text" class="form-control" style="padding:0px 4px;" name="actividad[]" value="' + actividad + '" required></td>' +
-					'<td style="padding:2px 4px;"><input type="number" class="form-control" style="padding:0px 4px;" name="geh[]" value="' + geh + '" required></td>' +
-					'<td style="padding:2px 4px;"><input type="number" class="form-control" style="padding:0px 4px;" name="total[]" value="' + total + '" required></td>' +
-					'<td style="padding:2px 4px;" class="eliminar"><button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash"></i></button></td>' +
-					'</tr>');
-
-				// seleccionar categoria del select
-				$('#categoria_' + key).val(value.recsensorialcategoria_id);
-
-				// Actualiza contador categorias por area
-				areacategorias_total += 1;
-			});
-		},
-		beforeSend: function () {
-			$('#tabla_areacategorias tbody').html('<tr><td colspan="7"><i class="fa fa-spin fa-spinner fa-4x" style="margin: 0px auto;"></i></td></tr>');
-		},
-		error: function (dato) {
-			$('#tabla_areacategorias tbody').html('<tr><td colspan="7">&nbsp;</td></tr>');
-			return false;
-		}
-	});//Fin ajax
-}
-
-function consulta_areascategorias(area_id) {
-	var actividad = '';
-	var geh = '';
-	var total = '';
-	var tiempo = '';
-	var frecuencia = '';
-	var tiempo_quimicos = '';
-	var frecuencia_quimicos = '';
-
-
-
-	$.ajax({
-		type: "GET",
-		dataType: "json",
-		url: "/recsensorialareacategoriaselegidas/" + area_id,
-		data: {},
-		cache: false,
-		success: function (dato) {
-			// Dibujar fila categorias
-			$('#tabla_areacategorias tbody').html('');
-
-			$.each(dato.categoriaselegidas, function (key, value) {
-				if (value.recsensorialareacategorias_actividad == null) { actividad = ''; } else { actividad = value.recsensorialareacategorias_actividad; }
-				if (value.recsensorialareacategorias_geh == null) { geh = ''; } else { geh = value.recsensorialareacategorias_geh; }
-				if (value.recsensorialareacategorias_total == null) { total = ''; } else { total = value.recsensorialareacategorias_total; }
-				if (value.recsensorialareacategorias_tiempoexpo == null) { tiempo = ''; } else { tiempo = value.recsensorialareacategorias_tiempoexpo; }
-				if (value.recsensorialareacategorias_frecuenciaexpo == null) { frecuencia = ''; } else { frecuencia = value.recsensorialareacategorias_frecuenciaexpo; }
-				if (value.tiempoexpo_quimico == null) { tiempo_quimicos = ''; } else { tiempo_quimicos = value.tiempoexpo_quimico; }
-				if (value.frecuenciaexpo_quimico == null) { frecuencia_quimicos = ''; } else { frecuencia_quimicos = value.frecuenciaexpo_quimico; }
-
-
-
-
-				$("#tabla_areacategorias tbody").append('<tr>' +
-					'<td style="padding:2px 4px;"><select class="custom-select form-control" style="padding:0px 4px;" id="categoria_' + key + '" name="categoria[]" required>' + select_areacategorias_opciones + '</select></td>' +
-					'<td style="padding:2px 4px;"><input type="text" class="form-control" style="padding:0px 4px;" name="actividad[]" value="' + actividad + '" required></td>' +
-					'<td style="padding:2px 4px;"><input type="number" class="form-control" style="padding:0px 4px;" name="geh[]" value="' + geh + '" required></td>' +
-					'<td style="padding:2px 4px;"><input type="number" class="form-control" style="padding:0px 4px;" name="total[]" value="' + total + '" required></td>' +
-					'<td style="padding:2px 4px;" class="eliminar"><button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash"></i></button></td>' +
-					'</tr>');
-
-				// seleccionar categoria del select
-				$('#categoria_' + key).val(value.recsensorialcategoria_id);
-
-				// Actualiza contador categorias por area
-				areacategorias_total += 1;
-			});
-		},
-		beforeSend: function () {
-			$('#tabla_areacategorias tbody').html('<tr><td colspan="7"><i class="fa fa-spin fa-spinner fa-4x" style="margin: 0px auto;"></i></td></tr>');
-		},
-		error: function (dato) {
-			$('#tabla_areacategorias tbody').html('<tr><td colspan="7">&nbsp;</td></tr>');
-			return false;
-		}
-	});//Fin ajax
-}
-
-function consulta_areas(nombre_campo, id_seleccionado, recsensorial_id, quimicas) {
-	// alert('mensaje');
-	$.ajax({
-		type: "GET",
-		dataType: "json",
-		url: "/recsensorialconsultaareas/" + recsensorial_id + "/" + id_seleccionado + "/" + quimicas,
-		data: {},
-		cache: false,
-		success: function (dato) {
-			$("#" + nombre_campo).html(dato.opciones);
-		},
-		error: function (dato) {
-			// alert('Error: '+dato.msj);
-			return false;
-		}
-	});//Fin ajax
-}
-
-function consulta_categorias_evaluadas(recsensorial_id) {
-
-	categoriasEvaluadas = '';
-	$.ajax({
-		type: "GET",
-		dataType: "json",
-		url: "/obtenerCategoriasEvaluadas/" + recsensorial_id,
-		data: {},
-		cache: false,
-		success: function (dato) {
-
-			categoriasEvaluadas = dato.opciones;
-
-		},
-		error: function (dato) {
-			// alert('Error: '+dato.msj);
-			return false;
-		}
-	});//Fin ajax
-}
 
 
 
@@ -3327,8 +3127,7 @@ function validarEmpleados() {
         selectAplicableA.disabled = true;
     }
 
-    // Limpiar resultado
-    document.getElementById('resultado').innerText = ' ';
+
 }
 
 function calcularResultado() {
@@ -3357,12 +3156,11 @@ function calcularResultado() {
 	document.getElementById('RECPSICO_TOTALAPLICACION').setAttribute('min', `${resultado}`);
 	document.getElementById('RECPSICO_TOTALAPLICACION').setAttribute('max', `${totalEmpleados}`);
 	const totalTrabajadoresContainer = document.getElementById('totaltrabajadores_container');
-	totalTrabajadoresContainer.style.display = 'block';857
+	totalTrabajadoresContainer.style.display = 'block';
 
     // Si se selecciona "MUESTRA DE TRABAJADORES", activar el checkbox opcional
     if (opcionSeleccionada === "opcion2") {
         document.getElementById('habilitar_opcional').checked = true;
-		document.getElementById('boton_carga_muestra').disabled = false;
 		document.getElementById('RECPSICOTRABAJADOR_MUESTRA').disabled = false;
 		
 		const camposOpcionales = document.getElementById('campos_opcionales');
@@ -3380,7 +3178,6 @@ function calcularResultado() {
 			document.getElementById('seleccion').innerText = '';
     }else{
 		document.getElementById('habilitar_opcional').checked = false;
-		document.getElementById('boton_carga_muestra').disabled = true;
 		document.getElementById('RECPSICOTRABAJADOR_MUESTRA').disabled = true;
 		const camposOpcionales = document.getElementById('campos_opcionales');
 		camposOpcionales.style.display = 'none';

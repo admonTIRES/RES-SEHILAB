@@ -198,7 +198,7 @@
                                 </div>
 
 
-                                
+
                                 <!--form panels-->
                                 <div class="row">
                                     <div class="col-12">
@@ -742,6 +742,12 @@
                                                                                     <input type="number" class="form-control" id="total_empleados" name="RECPSICO_TOTALTRABAJADORES" required>
                                                                                     <input type="hidden" class="form-control" name="RECPSICO_TOTALHOMBRESSELECCION" id="RECPSICO_TOTALHOMBRESSELECCION" value="0">
                                                                                     <input type="hidden" class="form-control" name="RECPSICO_TOTALMUJERESSELECCION" id="RECPSICO_TOTALMUJERESSELECCION" value="0">
+                                                                                    <input type="hidden" class="form-control" name="RECPSICO_PORCENTAJEHOMBRESTRABAJO" id="RECPSICO_PORCENTAJEHOMBRESTRABAJO" value="0">
+                                                                                    <input type="hidden" class="form-control" name="RECPSICO_PORCENTAJEMUJERESTRABAJO" id="RECPSICO_PORCENTAJEMUJERESTRABAJO" value="0">
+
+
+
+
                                                                                 </div>
                                                                             </div>
 
@@ -853,8 +859,8 @@
                                                                                                 </i>
                                                                                                 Trabajadores por género:
                                                                                             </h2>
-                                                                                            <h3 class="mb-2" id="porcentajes">
-                                                                                                <h3 class="mb-2" id="seleccion">
+                                                                                            <h3 class="mb-2" id="porcentajes"></h3>
+                                                                                            <h3 class="mb-2" id="seleccion"></h3>
 
                                                                                         </div>
                                                                                     </div>
