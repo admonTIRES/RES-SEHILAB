@@ -202,6 +202,9 @@ $('input[name="informe_del_cliente"]').change(function () {
 $("#boton_nuevo_reconocimiento").click(function () {
 
 
+	recsensorial = 0;
+
+	
 	$('#inputfotomapa').attr('required', false);
 
 	$('#titleOrganizacionLabel').fadeIn();
@@ -1272,8 +1275,6 @@ function cargarFoliosProyecto(proyecto_folio) {
 	});//Fin ajax
 }
 
-
-
 $('#boton_sincronizar_higiene').click(function () {
 
     Swal.fire({
@@ -1390,7 +1391,6 @@ $('#boton_sincronizar_higiene').click(function () {
     });
 
 });
-
 
 
 
