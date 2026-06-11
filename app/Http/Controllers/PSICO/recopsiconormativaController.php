@@ -26,8 +26,17 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use Illuminate\Support\Facades\Response;
-
 use Illuminate\Support\Facades\DB;
+
+
+
+use Illuminate\Support\Facades\Storage;
+use Image;
+use DateTime;
+use Illuminate\Support\Facades\Auth;
+
+
+
 //fechas
 use Carbon\Carbon;
 class recopsiconormativaController extends Controller
@@ -85,8 +94,20 @@ class recopsiconormativaController extends Controller
          return response()->json($normativa);
      }
 
-    
-     /**
+
+
+    public function mostrarplantillatrabajadores()
+    {
+        $filePath = storage_path('app/plantillas_excel/Plantilla para cargar de trabajadores del centro de trabajo.xlsx');
+
+        if (!file_exists($filePath)) {
+            return response()->json(['error' => 'Archivo no encontrado'], 404);
+        }
+
+        return response()->download($filePath);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -308,6 +329,8 @@ class recopsiconormativaController extends Controller
                     return response()->json(['msj' => 'Se produjo un error al intentar cargar los trabajadores, inténtelo de nuevo o comuníquelo con el responsable ' . ' ---- ' . $e->getMessage(), 'code' => 500]);
                 }
             }
+
+            
             //SELECCIONAR LAS PREGUNTAS QUE DESEA APLICAR DE LA GUIA V
             if ($request->opcion == 5){
                 $RECPSICO_ID = $request['RECPSICO_ID'];

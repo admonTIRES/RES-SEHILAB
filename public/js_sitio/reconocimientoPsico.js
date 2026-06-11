@@ -1998,6 +1998,14 @@ $('#Tablarecoareaspsico tbody').on('click', 'td>button.editar', function () {
 
 });
 
+///// NORMATIVO
+
+
+
+$('#btn_descargarPlantillaTrabajadores').on('click', function () {
+    window.location.href = '/mostrarplantillatrabajadores';
+});
+
 
 
 $(document).ready(function() {

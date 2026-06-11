@@ -964,9 +964,16 @@
                                 </div>
                             </div>
                             <div class="row mx-2 mb-2" id="alertaVerificacion" style="display:none">
-                                <p class="text-danger"><i class="fa fa-info-circle" aria-hidden="true"></i> Por favor, asegúrese de que el nombre de las Áreas y/o categorías a insertar corresponda con las que están cargadas en el Software. </p>
+                                <p class="text-danger"><i class="fa fa-info-circle" aria-hidden="true"></i> Por favor, asegúrese de que el nombre de las categorías a insertar corresponda con las que están cargadas en el Software. </p>
                             </div>
 
+                            <div class="form-group text-center">
+                                <button type="button"
+                                    class="btn btn-info"
+                                    id="btn_descargarPlantillaTrabajadores">
+                                    <i class="fa fa-download"></i> Descargar plantilla
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

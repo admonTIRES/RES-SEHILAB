@@ -1973,6 +1973,10 @@ Route::get('/datosnormativa/{reconocimientopsico_id}', ['as' => 'recopsiconormat
 Route::get('recopsicotrabajadorescargados/{reconocimientopsico_id}', ['as' => 'recopsicotrabajadores.recopsicotrabajadoresCargadosTabla', 'uses' => 'PSICO\recopsiconormativaController@recopsicotrabajadoresCargadosTabla']);
 
 
+Route::get('mostrarplantillatrabajadores', ['as' => 'PSICO.mostrarplantillatrabajadores', 'uses' => 'PSICO\recopsiconormativaController@mostrarplantillatrabajadores']);
+
+
+
 //==============PROGRAMA DE TRABAJO
 Route::resource('programaPsicosocial', 'PSICO\programaTrabajoPsicoController');
 
