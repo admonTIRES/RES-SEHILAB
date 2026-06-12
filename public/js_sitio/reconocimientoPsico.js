@@ -2701,62 +2701,241 @@ $("#modalvisor_boton_cerrar").click(function () {
 
 //-----------------------------------------------------FUNCIONES------------------------------------------------------------//
 
-function datosNormativa(recpsico_id){
-	// Borrar formulario
-	$('#form_normativa').each(function () {
-		this.reset();
-	});
 
-	// Campos hidden
-	$("#RECPSICO_ID_NORMATIVA").val(recpsico_id);
+function datosNormativa(recpsico_id) {
 
-	$.ajax({
-		url: '/datosnormativa/' + recpsico_id,
-		method: 'GET',
-		beforeSend: function () {
-		},
-		success: function (response) {
-			console.log('Response completa:', response);
-		
-			if (response && response.length > 0) {
-				const data = response[0]; // Accede al primer objeto del array
-		
-				// document.getElementById('total_empleados').value = data.RECPSICO_TOTALTRABAJADORES || 0;
-				// validarEmpleados();
+    // Borrar formulario
+    $('#form_normativa').each(function () {
+        this.reset();
+    });
 
-				// document.getElementById('aplicable_a').value = data.RECPSICO_TIPOAPLICACION || '';
-				// document.getElementById('RECPSICO_TOTALHOMBRESSELECCION').value = data.RECPSICO_TOTALHOMBRESSELECCION || 0;
-				// document.getElementById('RECPSICO_TOTALMUJERESSELECCION').value = data.RECPSICO_TOTALMUJERESSELECCION || 0;
-				// document.getElementById('RECPSICO_PORCENTAJEHOMBRESTRABAJO').value = data.RECPSICO_PORCENTAJEHOMBRESTRABAJO || 0;
-				// document.getElementById('RECPSICO_PORCENTAJEMUJERESTRABAJO').value = data.RECPSICO_PORCENTAJEMUJERESTRABAJO || 0;
+    $("#RECPSICO_ID_NORMATIVA").val(recpsico_id);
 
-				document.getElementById('total_empleados').value = data.RECPSICO_TOTALTRABAJADORES || 0;
+    $.ajax({
+        url: '/datosnormativa/' + recpsico_id,
+        method: 'GET',
+        beforeSend: function () {
+        },
+        success: function (response) {
 
-				// Carga las opciones del select
-				validarEmpleados();
+            console.log('Response completa:', response);
 
-				// Selecciona la opción guardada
-				document.getElementById('aplicable_a').value = data.RECPSICO_TIPOAPLICACION || '';
+            if (response && response.length > 0) {
 
-				// Ejecuta el cálculo como si el usuario hubiera cambiado el select
-				calcularResultado();
+                const data = response[0];
 
-				document.getElementById('RECPSICO_TOTALHOMBRESSELECCION').value = data.RECPSICO_TOTALHOMBRESSELECCION || 0;
-				document.getElementById('RECPSICO_TOTALMUJERESSELECCION').value = data.RECPSICO_TOTALMUJERESSELECCION || 0;
-				document.getElementById('RECPSICO_PORCENTAJEHOMBRESTRABAJO').value = data.RECPSICO_PORCENTAJEHOMBRESTRABAJO || 0;
-				document.getElementById('RECPSICO_PORCENTAJEMUJERESTRABAJO').value = data.RECPSICO_PORCENTAJEMUJERESTRABAJO || 0;
-				
+                // Total trabajadores
+                document.getElementById('total_empleados').value = data.RECPSICO_TOTALTRABAJADORES || 0;
 
-			} else {
-				console.error('No se encontraron datos en la respuesta');
-			}
-		},
-		error: function (jqXHR, textStatus, errorThrown) {
-			console.error('Error al consultar los datos:', textStatus, errorThrown);
-		}
-	});
+                // IMPORTANTE: cargar sin recalcular
+                validarEmpleados(true);
+
+                // Aplicación
+                document.getElementById('aplicable_a').value = data.RECPSICO_TIPOAPLICACION || '';
+
+                calcularResultado();
+
+                // Totales
+                document.getElementById('RECPSICO_TOTALHOMBRESSELECCION').value =
+                    data.RECPSICO_TOTALHOMBRESSELECCION || 0;
+
+                document.getElementById('RECPSICO_TOTALMUJERESSELECCION').value =
+                    data.RECPSICO_TOTALMUJERESSELECCION || 0;
+
+                document.getElementById('RECPSICO_PORCENTAJEHOMBRESTRABAJO').value =
+                    data.RECPSICO_PORCENTAJEHOMBRESTRABAJO || 0;
+
+                document.getElementById('RECPSICO_PORCENTAJEMUJERESTRABAJO').value =
+                    data.RECPSICO_PORCENTAJEMUJERESTRABAJO || 0;
+
+
+                // Recuperar guías guardadas
+                document.getElementById('option1').checked = data.RECPSICO_GUIAI == 1;
+                document.getElementById('option2').checked = data.RECPSICO_GUIAII == 1;
+                document.getElementById('option3').checked = data.RECPSICO_GUIAIII == 1;
+                document.getElementById('option4').checked = data.RECPSICO_GUIAV == 1;
+
+
+                // Si hay guías adicionales
+                if (
+                    data.RECPSICO_GUIAII == 1 ||
+                    data.RECPSICO_GUIAIII == 1 ||
+                    data.RECPSICO_GUIAV == 1
+                ) {
+
+                    document.getElementById('optionA').checked = true;
+
+                    const totalEmpleados = parseInt(document.getElementById('total_empleados').value);
+
+                    if (!isNaN(totalEmpleados)) {
+
+                        if (totalEmpleados < 16) {
+
+                            document.getElementById('option2').disabled = false;
+                            document.getElementById('option3').disabled = false;
+                            document.getElementById('option4').disabled = false;
+
+                        }
+                        else if (totalEmpleados >= 16 && totalEmpleados <= 50) {
+
+                            document.getElementById('option2').disabled = false;
+                            document.getElementById('option3').disabled = false;
+                            document.getElementById('option4').disabled = false;
+
+                        }
+                        else if (totalEmpleados > 50) {
+
+                            document.getElementById('option4').disabled = false;
+
+                        }
+                    }
+                }
+
+            } else {
+
+                console.error('No se encontraron datos en la respuesta');
+
+            }
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+
+            console.error('Error al consultar los datos:', textStatus, errorThrown);
+
+        }
+    });
 
 }
+// function datosNormativa(recpsico_id) {
+//     // Borrar formulario
+//     $('#form_normativa').each(function () {
+//         this.reset();
+//     });
+
+//     $("#RECPSICO_ID_NORMATIVA").val(recpsico_id);
+
+//     $.ajax({
+//         url: '/datosnormativa/' + recpsico_id,
+//         method: 'GET',
+//         beforeSend: function () {
+//         },
+//         success: function (response) {
+//             console.log('Response completa:', response);
+
+//             if (response && response.length > 0) {
+
+//                 const data = response[0];
+
+//                 document.getElementById('total_empleados').value = data.RECPSICO_TOTALTRABAJADORES || 0;
+
+//                 validarEmpleados();
+
+//                 document.getElementById('aplicable_a').value = data.RECPSICO_TIPOAPLICACION || '';
+
+//                 calcularResultado();
+
+//                 document.getElementById('RECPSICO_TOTALHOMBRESSELECCION').value = data.RECPSICO_TOTALHOMBRESSELECCION || 0;
+//                 document.getElementById('RECPSICO_TOTALMUJERESSELECCION').value = data.RECPSICO_TOTALMUJERESSELECCION || 0;
+//                 document.getElementById('RECPSICO_PORCENTAJEHOMBRESTRABAJO').value = data.RECPSICO_PORCENTAJEHOMBRESTRABAJO || 0;
+//                 document.getElementById('RECPSICO_PORCENTAJEMUJERESTRABAJO').value = data.RECPSICO_PORCENTAJEMUJERESTRABAJO || 0;
+
+
+//                 document.getElementById('option1').checked = data.RECPSICO_GUIAI == 1;
+//                 document.getElementById('option2').checked = data.RECPSICO_GUIAII == 1;
+//                 document.getElementById('option3').checked = data.RECPSICO_GUIAIII == 1;
+//                 document.getElementById('option4').checked = data.RECPSICO_GUIAV == 1;
+
+
+//                 if (
+//                     data.RECPSICO_GUIAII == 1 ||
+//                     data.RECPSICO_GUIAIII == 1 ||
+//                     data.RECPSICO_GUIAV == 1
+//                 ) {
+
+//                     document.getElementById('optionA').checked = true;
+
+//                     const totalEmpleados = parseInt(document.getElementById('total_empleados').value);
+
+//                     if (!isNaN(totalEmpleados)) {
+
+//                         if (totalEmpleados < 16) {
+
+//                             document.getElementById('option2').disabled = false;
+//                             document.getElementById('option3').disabled = false;
+//                             document.getElementById('option4').disabled = false;
+
+//                         }
+//                         else if (totalEmpleados >= 16 && totalEmpleados <= 50) {
+
+//                             document.getElementById('option2').disabled = false;
+//                             document.getElementById('option3').disabled = false;
+//                             document.getElementById('option4').disabled = false;
+
+//                         }
+//                         else if (totalEmpleados > 50) {
+
+//                             document.getElementById('option4').disabled = false;
+
+//                         }
+
+//                     }
+
+//                     document.getElementById('campos_opcionales').style.display = 'block';
+//                 }
+
+//             } else {
+//                 console.error('No se encontraron datos en la respuesta');
+//             }
+//         },
+//         error: function (jqXHR, textStatus, errorThrown) {
+//             console.error('Error al consultar los datos:', textStatus, errorThrown);
+//         }
+//     });
+
+// }
+
+// function datosNormativa(recpsico_id){
+// 	// Borrar formulario
+// 	$('#form_normativa').each(function () {
+// 		this.reset();
+// 	});
+
+// 	$("#RECPSICO_ID_NORMATIVA").val(recpsico_id);
+
+// 	$.ajax({
+// 		url: '/datosnormativa/' + recpsico_id,
+// 		method: 'GET',
+// 		beforeSend: function () {
+// 		},
+// 		success: function (response) {
+// 			console.log('Response completa:', response);
+		
+// 			if (response && response.length > 0) {
+// 				const data = response[0]; 
+
+// 				document.getElementById('total_empleados').value = data.RECPSICO_TOTALTRABAJADORES || 0;
+
+// 				validarEmpleados();
+
+// 				document.getElementById('aplicable_a').value = data.RECPSICO_TIPOAPLICACION || '';
+
+// 				calcularResultado();
+
+// 				document.getElementById('RECPSICO_TOTALHOMBRESSELECCION').value = data.RECPSICO_TOTALHOMBRESSELECCION || 0;
+// 				document.getElementById('RECPSICO_TOTALMUJERESSELECCION').value = data.RECPSICO_TOTALMUJERESSELECCION || 0;
+// 				document.getElementById('RECPSICO_PORCENTAJEHOMBRESTRABAJO').value = data.RECPSICO_PORCENTAJEHOMBRESTRABAJO || 0;
+// 				document.getElementById('RECPSICO_PORCENTAJEMUJERESTRABAJO').value = data.RECPSICO_PORCENTAJEMUJERESTRABAJO || 0;
+				
+// 			} else {
+// 				console.error('No se encontraron datos en la respuesta');
+// 			}
+// 		},
+// 		error: function (jqXHR, textStatus, errorThrown) {
+// 			console.error('Error al consultar los datos:', textStatus, errorThrown);
+// 		}
+// 	});
+
+// }
 
 function cargarTrabajadores(recpsico_id, tabla) {		
 	
@@ -3056,87 +3235,303 @@ function updateCheckboxValue(checkbox) {
     // Aquí puedes enviar el valor a tu backend o procesarlo como necesites
 }
 
-function validarEmpleados() {
+
+// function validarEmpleados(cargando = false) {
+
+//     const totalEmpleados = parseInt(document.getElementById('total_empleados').value);
+//     const selectAplicableA = document.getElementById('aplicable_a');
+//     document.getElementById('RECPSICOTRABAJADOR_MUESTRA').disabled = true;
+
+//     document.getElementById('habilitar_opcional').checked = false;
+
+// 	if (!cargando) {
+
+// 		document.getElementById('habilitar_opcional').checked = false;
+
+// 		document.getElementById('optionA').checked = false;
+
+// 		document.getElementById('option1').checked = false;
+// 		document.getElementById('option2').checked = false;
+// 		document.getElementById('option3').checked = false;
+// 		document.getElementById('option4').checked = false;
+
+// 		document.getElementById('valor_hombres').value = '';
+// 		document.getElementById('valor_mujeres').value = '';
+// 		document.getElementById('sufijo_hombres').innerText = ' %';
+// 		document.getElementById('sufijo_mujeres').innerText = ' %';
+// 		document.getElementById('porcentajes').innerText = '';
+// 		document.getElementById('valor_hombres').value = '';
+// 		document.getElementById('tipo_valor_hombres').selectedIndex = 0;
+// 		document.getElementById('seleccion').innerText = '';
+// 	}
+
+// 		// ESTO SIEMPRE
+// 		document.getElementById('campos_opcionales').style.display = 'none';
+// 		document.getElementById('generos_container').style.display = 'none';
+// 		document.getElementById('resultados_trabajadores').style.display = 'none';
+
+//     document.getElementById('optionA').disabled = true;
+//     document.getElementById('option1').disabled = true;
+//     document.getElementById('option2').disabled = true;
+//     document.getElementById('option3').disabled = true;
+//     document.getElementById('option4').disabled = true;
+
+
+//     if (!isNaN(totalEmpleados)) {
+
+//         if (totalEmpleados < 16) {
+
+//             document.getElementById('optionA').disabled = false;
+//             document.getElementById('option1').disabled = true;
+
+//             if (!cargando) {
+//                 document.getElementById('option1').checked = true;
+//             }
+
+//         }
+//         else if (totalEmpleados >= 16 && totalEmpleados <= 50) {
+
+//             document.getElementById('optionA').disabled = false;
+//             document.getElementById('option1').disabled = true;
+//             document.getElementById('option2').disabled = false;
+
+//             if (!cargando) {
+//                 document.getElementById('option1').checked = true;
+//                 document.getElementById('option2').checked = true;
+//             }
+
+//         }
+//         else if (totalEmpleados > 50) {
+
+//             document.getElementById('optionA').disabled = false;
+//             document.getElementById('option1').disabled = true;
+//             document.getElementById('option3').disabled = true;
+
+//             if (!cargando) {
+//                 document.getElementById('option1').checked = true;
+//                 document.getElementById('option3').checked = true;
+//             }
+//         }
+//     }
+
+//     selectAplicableA.innerHTML = '<option value="">Selecciona una opción</option>';
+
+//     if (!isNaN(totalEmpleados) && totalEmpleados > 0) {
+
+//         if (totalEmpleados <= 50) {
+
+//             selectAplicableA.innerHTML += '<option value="opcion1">TODOS LOS TRABAJADORES</option>';
+
+//         } else {
+
+//             selectAplicableA.innerHTML += '<option value="opcion1">TODOS LOS TRABAJADORES</option>';
+//             selectAplicableA.innerHTML += '<option value="opcion2">MUESTRA DE TRABAJADORES</option>';
+
+//         }
+
+//         selectAplicableA.disabled = false;
+
+//     } else {
+
+//         selectAplicableA.disabled = true;
+
+//     }
+
+// }
+
+
+function validarEmpleados(cargando = false) {
+
     const totalEmpleados = parseInt(document.getElementById('total_empleados').value);
     const selectAplicableA = document.getElementById('aplicable_a');
-	document.getElementById('RECPSICOTRABAJADOR_MUESTRA').disabled = true;
 
+    document.getElementById('RECPSICOTRABAJADOR_MUESTRA').disabled = true;
+
+    // SIEMPRE ocultar y reiniciar opciones adicionales
     document.getElementById('habilitar_opcional').checked = false;
 
+    document.getElementById('campos_opcionales').style.display = 'none';
+    document.getElementById('generos_container').style.display = 'none';
+    document.getElementById('resultados_trabajadores').style.display = 'none';
 
-    document.getElementById('optionA').checked = false;
+    document.getElementById('tipo_valor_hombres').disabled = true;
+    document.getElementById('valor_hombres').disabled = true;
+    document.getElementById('valor_mujeres').disabled = true;
 
-    document.getElementById('option1').checked = false;
-    document.getElementById('option2').checked = false;
-    document.getElementById('option3').checked = false;
-    document.getElementById('option4').checked = false;
+    document.getElementById('valor_hombres').value = '';
+    document.getElementById('valor_mujeres').value = '';
 
+    document.getElementById('sufijo_hombres').innerText = ' %';
+    document.getElementById('sufijo_mujeres').innerText = ' %';
 
-	document.getElementById('optionA').disabled = true;
+    document.getElementById('porcentajes').innerText = '';
+
+    if (!cargando) {
+
+        document.getElementById('optionA').checked = false;
+
+        document.getElementById('option1').checked = false;
+        document.getElementById('option2').checked = false;
+        document.getElementById('option3').checked = false;
+        document.getElementById('option4').checked = false;
+
+        document.getElementById('tipo_valor_hombres').selectedIndex = 0;
+        document.getElementById('seleccion').innerText = '';
+    }
+
+    // Deshabilitar todas las guías
+    document.getElementById('optionA').disabled = true;
     document.getElementById('option1').disabled = true;
     document.getElementById('option2').disabled = true;
     document.getElementById('option3').disabled = true;
     document.getElementById('option4').disabled = true;
 
 
-	const camposOpcionales = document.getElementById('campos_opcionales');
-    camposOpcionales.style.display = 'none';
-	const generosContainer = document.getElementById('generos_container');
-	generosContainer.style.display = 'none';
-	const resultadosContainer = document.getElementById('resultados_trabajadores');
-	resultadosContainer.style.display = 'none';
-		document.getElementById('valor_hombres').value = '';
-		document.getElementById('valor_mujeres').value = '';
-		document.getElementById('sufijo_hombres').innerText = ' %';
-		document.getElementById('sufijo_mujeres').innerText = ' %';
-		document.getElementById('porcentajes').innerText = '';
-		document.getElementById('valor_hombres').value = '';
-		document.getElementById('tipo_valor_hombres').selectedIndex = 0;
-        document.getElementById('seleccion').innerText = '';
-
     if (!isNaN(totalEmpleados)) {
+
         if (totalEmpleados < 16) {
-			document.getElementById('optionA').disabled = false;
-            document.getElementById('option1').disabled = true;
-			document.getElementById('option1').checked = true;
 
-        } else if (totalEmpleados >= 16 && totalEmpleados <= 50) {
-			document.getElementById('optionA').disabled = false;
+            document.getElementById('optionA').disabled = false;
             document.getElementById('option1').disabled = true;
-			document.getElementById('option1').checked = true;
-			//document.getElementById('option1').disabled = false;
+
+            if (!cargando) {
+                document.getElementById('option1').checked = true;
+            }
+
+        }
+        else if (totalEmpleados >= 16 && totalEmpleados <= 50) {
+
+            document.getElementById('optionA').disabled = false;
+            document.getElementById('option1').disabled = true;
             document.getElementById('option2').disabled = false;
-			document.getElementById('option2').checked = true;
 
+            if (!cargando) {
+                document.getElementById('option1').checked = true;
+                document.getElementById('option2').checked = true;
+            }
 
-        } else if (totalEmpleados > 50) {
-			document.getElementById('optionA').disabled = false;
+        }
+        else if (totalEmpleados > 50) {
+
+            document.getElementById('optionA').disabled = false;
             document.getElementById('option1').disabled = true;
-			document.getElementById('option1').checked = true;
-			document.getElementById('option3').disabled = true;
-			document.getElementById('option3').checked = true;
+            document.getElementById('option3').disabled = true;
 
+            if (!cargando) {
+                document.getElementById('option1').checked = true;
+                document.getElementById('option3').checked = true;
+            }
         }
     }
 
+
+    // Llenar opciones del select Aplicable a
     selectAplicableA.innerHTML = '<option value="">Selecciona una opción</option>';
 
     if (!isNaN(totalEmpleados) && totalEmpleados > 0) {
+
         if (totalEmpleados <= 50) {
-            selectAplicableA.innerHTML += '<option value="opcion1">TODOS LOS TRABAJADORES</option>';
+
+            selectAplicableA.innerHTML +=
+                '<option value="opcion1">TODOS LOS TRABAJADORES</option>';
+
         } else {
-            selectAplicableA.innerHTML += '<option value="opcion1">TODOS LOS TRABAJADORES</option>';
-            selectAplicableA.innerHTML += '<option value="opcion2">MUESTRA DE TRABAJADORES</option>';
+
+            selectAplicableA.innerHTML +=
+                '<option value="opcion1">TODOS LOS TRABAJADORES</option>';
+
+            selectAplicableA.innerHTML +=
+                '<option value="opcion2">MUESTRA DE TRABAJADORES</option>';
         }
-        // Habilitar el select de opciones
+
         selectAplicableA.disabled = false;
+
     } else {
-        // Deshabilitar el select si no hay un total válido
+
         selectAplicableA.disabled = true;
     }
-
-
 }
+// function validarEmpleados() {
+//     const totalEmpleados = parseInt(document.getElementById('total_empleados').value);
+//     const selectAplicableA = document.getElementById('aplicable_a');
+// 	document.getElementById('RECPSICOTRABAJADOR_MUESTRA').disabled = true;
+
+//     document.getElementById('habilitar_opcional').checked = false;
+
+
+//     document.getElementById('optionA').checked = false;
+
+//     document.getElementById('option1').checked = false;
+//     document.getElementById('option2').checked = false;
+//     document.getElementById('option3').checked = false;
+//     document.getElementById('option4').checked = false;
+
+
+// 	document.getElementById('optionA').disabled = true;
+//     document.getElementById('option1').disabled = true;
+//     document.getElementById('option2').disabled = true;
+//     document.getElementById('option3').disabled = true;
+//     document.getElementById('option4').disabled = true;
+
+
+// 	const camposOpcionales = document.getElementById('campos_opcionales');
+//     camposOpcionales.style.display = 'none';
+// 	const generosContainer = document.getElementById('generos_container');
+// 	generosContainer.style.display = 'none';
+// 	const resultadosContainer = document.getElementById('resultados_trabajadores');
+// 	resultadosContainer.style.display = 'none';
+// 		document.getElementById('valor_hombres').value = '';
+// 		document.getElementById('valor_mujeres').value = '';
+// 		document.getElementById('sufijo_hombres').innerText = ' %';
+// 		document.getElementById('sufijo_mujeres').innerText = ' %';
+// 		document.getElementById('porcentajes').innerText = '';
+// 		document.getElementById('valor_hombres').value = '';
+// 		document.getElementById('tipo_valor_hombres').selectedIndex = 0;
+//         document.getElementById('seleccion').innerText = '';
+
+//     if (!isNaN(totalEmpleados)) {
+//         if (totalEmpleados < 16) {
+// 			document.getElementById('optionA').disabled = false;
+//             document.getElementById('option1').disabled = true;
+// 			document.getElementById('option1').checked = true;
+
+//         } else if (totalEmpleados >= 16 && totalEmpleados <= 50) {
+// 			document.getElementById('optionA').disabled = false;
+//             document.getElementById('option1').disabled = true;
+// 			document.getElementById('option1').checked = true;
+// 			//document.getElementById('option1').disabled = false;
+//             document.getElementById('option2').disabled = false;
+// 			document.getElementById('option2').checked = true;
+
+
+//         } else if (totalEmpleados > 50) {
+// 			document.getElementById('optionA').disabled = false;
+//             document.getElementById('option1').disabled = true;
+// 			document.getElementById('option1').checked = true;
+// 			document.getElementById('option3').disabled = true;
+// 			document.getElementById('option3').checked = true;
+
+//         }
+//     }
+
+//     selectAplicableA.innerHTML = '<option value="">Selecciona una opción</option>';
+
+//     if (!isNaN(totalEmpleados) && totalEmpleados > 0) {
+//         if (totalEmpleados <= 50) {
+//             selectAplicableA.innerHTML += '<option value="opcion1">TODOS LOS TRABAJADORES</option>';
+//         } else {
+//             selectAplicableA.innerHTML += '<option value="opcion1">TODOS LOS TRABAJADORES</option>';
+//             selectAplicableA.innerHTML += '<option value="opcion2">MUESTRA DE TRABAJADORES</option>';
+//         }
+//         // Habilitar el select de opciones
+//         selectAplicableA.disabled = false;
+//     } else {
+//         // Deshabilitar el select si no hay un total válido
+//         selectAplicableA.disabled = true;
+//     }
+
+
+// }
 
 function calcularResultado() {
     const totalEmpleados = document.getElementById('total_empleados').value;
