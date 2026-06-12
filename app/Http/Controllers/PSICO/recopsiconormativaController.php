@@ -199,7 +199,7 @@ class recopsiconormativaController extends Controller
 
                         // ====================================================== FUNCIONES ===================================================================
                         // =========================================================================================================================
-                    
+
 
 
                         // =========================================================================================================================
@@ -208,52 +208,60 @@ class recopsiconormativaController extends Controller
 
                         // ====================================================== INSERCION DE DATOS ===================================================================
                         // ========================================================================================================================
-                               
-                                //Limpiamos, Validamos y Insertamos todos los datos del Excel
-                                foreach ($datosGenerales as $rowData) {
 
-                                    $TRABAJADOR = recopsicotrabajadoresModel::create([
-                                        'RECPSICO_ID' => $RECPSICO_ID,
-                                        'RECPSICOTRABAJADOR_MUESTRA' => 0,
-                                        'RECPSICOTRABAJADOR_ORDEN' => is_null($rowData['A']) ? null : $rowData['A'],
-                                        'RECPSICOTRABAJADOR_NOMBRE' => is_null($rowData['B']) ? null : $rowData['B'],
-                                        'RECPSICOTRABAJADOR_GENERO' => is_null($rowData['C']) ? null : $rowData['C'],
-                                        'RECPSICOTRABAJADOR_AREA' => null,
-                                        'RECPSICOTRABAJADOR_CATEGORIA' => null,
-                                        'RECPSICOTRABAJADOR_FICHA' => is_null($rowData['F']) ? null : $rowData['F'],
-                                        'RECPSICOTRABAJADOR_CORREO' => is_null($rowData['G']) ? null : str_replace(' ', '', $rowData['G']),
-                                        'RECPSICOTRABAJADOR_SELECCIONADO' => null,
-                                        'RECPSICOTRABAJADOR_OBSERVACION' => null,
-                                        'RECPSICOTRABAJADOR_MODALIDAD' => null
-                                    ]);
+                        //Limpiamos, Validamos y Insertamos todos los datos del Excel
 
-                                    $fechaNacimiento = $rowData['H'];
+                        foreach ($datosGenerales as $rowData) {
+
+                            $TRABAJADOR = recopsicotrabajadoresModel::create([
+                                'RECPSICO_ID' => $RECPSICO_ID,
+                                'RECPSICOTRABAJADOR_MUESTRA' => 0,
+                                'RECPSICOTRABAJADOR_ORDEN' => is_null($rowData['A']) ? null : $rowData['A'],
+                                'RECPSICOTRABAJADOR_NOMBRE' => is_null($rowData['B']) ? null : $rowData['B'],
+                                'RECPSICOTRABAJADOR_GENERO' => is_null($rowData['C']) ? null : $rowData['C'],
+                                'RECPSICOTRABAJADOR_AREA' => null,
+                                'RECPSICOTRABAJADOR_CATEGORIA' => null,
+                                'RECPSICOTRABAJADOR_FICHA' => is_null($rowData['F']) ? null : $rowData['F'],
+                                'RECPSICOTRABAJADOR_CORREO' => is_null($rowData['G']) ? null : str_replace(' ', '', $rowData['G']),
+                                'RECPSICOTRABAJADOR_SELECCIONADO' => null,
+                                'RECPSICOTRABAJADOR_OBSERVACION' => null,
+                                'RECPSICOTRABAJADOR_MODALIDAD' => null
+                            ]);
+
+                            $fechaNacimiento = $rowData['H'];
+
+                            $edad = null;
+
+                            if (!is_null($fechaNacimiento) && trim($fechaNacimiento) != '') {
+                                try {
                                     $fechaNacimientoFormat = Carbon::createFromFormat('d/m/Y', $fechaNacimiento);
                                     $fechaActual = Carbon::now();
                                     $edad = $fechaNacimientoFormat->diffInYears($fechaActual);
-                                    //$edadEntera = (int) $edad->y;
-                                    // // validar si envia guiav
-                                    $TRABAJADORGUIA5 = recopsicoguia5Model::create([
-                                        'RECPSICOTRABAJADOR_ID' => $TRABAJADOR->ID_RECOPSICOTRABAJADOR,
-                                        'RECPSICO_ID' => $RECPSICO_ID,
-                                        'RECPSICOTRABAJADOR_GENERO' => is_null($rowData['C']) ? null : $rowData['C'],
-                                        'RECPSICOTRABAJADOR_EDAD' => $edad,
-                                        'RECPSICOTRABAJADOR_FNACIMIENTO' => is_null($rowData['H']) ? null : $rowData['H'],
-                                        'RECPSICOTRABAJADOR_ESTADOCIVIL' => is_null($rowData['I']) ? null : $rowData['I'],
-                                        'RECPSICOTRABAJADOR_ESTUDIOS' => is_null($rowData['J']) ? null : $rowData['J'],
-                                        'RECPSICOTRABAJADOR_TIPOPUESTO' => is_null($rowData['K']) ? null : $rowData['K'],
-                                        'RECPSICOTRABAJADOR_TIPOCONTRATACION' => is_null($rowData['L']) ? null : $rowData['L'],
-                                        'RECPSICOTRABAJADOR_TIPOPERSONAL' => is_null($rowData['M']) ? null : $rowData['M'],
-                                        'RECPSICOTRABAJADOR_TIPOJORNADA' => is_null($rowData['N']) ? null : $rowData['N'],
-                                        'RECPSICOTRABAJADOR_ROTACIONTURNOS' => is_null($rowData['O']) ? null : $rowData['O'],
-                                        'RECPSICOTRABAJADOR_TIEMPOPUESTO' => is_null($rowData['P']) ? null : $rowData['P'],
-                                        'RECPSICOTRABAJADOR_TIEMPOEXPERIENCIA' => is_null($rowData['Q']) ? null : $rowData['Q']
-                                    ]);
-
-
-                                    $trabajadoresInsertados++;
+                                } catch (Exception $e) {
+                                    $edad = null;
                                 }
-                                
+                            }
+
+                            // // validar si envia guiav
+                            $TRABAJADORGUIA5 = recopsicoguia5Model::create([
+                                'RECPSICOTRABAJADOR_ID' => $TRABAJADOR->ID_RECOPSICOTRABAJADOR,
+                                'RECPSICO_ID' => $RECPSICO_ID,
+                                'RECPSICOTRABAJADOR_GENERO' => is_null($rowData['C']) ? null : $rowData['C'],
+                                'RECPSICOTRABAJADOR_EDAD' => $edad,
+                                'RECPSICOTRABAJADOR_FNACIMIENTO' => is_null($rowData['H']) ? null : $rowData['H'],
+                                'RECPSICOTRABAJADOR_ESTADOCIVIL' => is_null($rowData['I']) ? null : $rowData['I'],
+                                'RECPSICOTRABAJADOR_ESTUDIOS' => is_null($rowData['J']) ? null : $rowData['J'],
+                                'RECPSICOTRABAJADOR_TIPOPUESTO' => is_null($rowData['K']) ? null : $rowData['K'],
+                                'RECPSICOTRABAJADOR_TIPOCONTRATACION' => is_null($rowData['L']) ? null : $rowData['L'],
+                                'RECPSICOTRABAJADOR_TIPOPERSONAL' => is_null($rowData['M']) ? null : $rowData['M'],
+                                'RECPSICOTRABAJADOR_TIPOJORNADA' => is_null($rowData['N']) ? null : $rowData['N'],
+                                'RECPSICOTRABAJADOR_ROTACIONTURNOS' => is_null($rowData['O']) ? null : $rowData['O'],
+                                'RECPSICOTRABAJADOR_TIEMPOPUESTO' => is_null($rowData['P']) ? null : $rowData['P'],
+                                'RECPSICOTRABAJADOR_TIEMPOEXPERIENCIA' => is_null($rowData['Q']) ? null : $rowData['Q']
+                            ]);
+
+                            $trabajadoresInsertados++;
+                        }
                                
                                 if($RECPSICOTRABAJADOR_MUESTRA==1){
 

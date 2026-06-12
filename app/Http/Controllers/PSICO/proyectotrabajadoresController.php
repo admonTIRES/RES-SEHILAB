@@ -111,13 +111,14 @@ class proyectotrabajadoresController extends Controller
                                     <td>
                                         <div class="switch" style="border: 0px #000 solid;">
                                             <label>
-                                                <input type="checkbox" name="TRABAJADOR_SELECCIONADO[]" value="'.$numero_registros.'"  class="worker-checkbox" data-index="'.$numero_registros.'" '.$checked.'>
+                                                <input type="checkbox" name="TRABAJADOR_SELECCIONADO[]" value="'.$numero_registros.'"  class="worker-checkbox" data-index="'.$numero_registros.'" '.$checked. '>
                                                 <span class="lever switch-col-light-blue" style="padding: 0px; margin: 0px;"></span>
                                             </label>
                                         </div>
                                     </td>
                                     <td>
                                         <select class="custom-select form-control" name="TRABAJADOR_MODALIDAD[]" id="TRABAJADOR_MODALIDAD">
+                                            <option value="">Seleccionar</option>
                                             <option value="Online" ' . ($value->TRABAJADOR_MODALIDAD == "Online" ? "selected" : "") . '>Online</option>
                                             <option value="Presencial" ' . ($value->TRABAJADOR_MODALIDAD == "Presencial" ? "selected" : "") . '>Presencial</option>
                                         </select>
