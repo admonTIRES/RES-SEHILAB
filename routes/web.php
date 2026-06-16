@@ -332,6 +332,7 @@ Route::get('/estructura/{FOLIO}', ['as' => 'recsensorial.estructuraproyectos', '
 
 Route::get('/folioproyecto/{proyecto_folio}', ['as' => 'recsensorial.folioproyecto', 'uses' => 'recsensorial\recsensorialController@folioproyecto']);
 
+Route::get('descargarExcelRecoQuimico/{id}', ['as' => 'recsensorial.descargarExcelRecoQuimico', 'uses' => 'recsensorial\recsensorialController@descargarExcelRecoQuimico']);
 
 
 Route::get('tablarecsensorial', ['as' => 'recsensorial.tablarecsensorial', 'uses' => 'recsensorial\recsensorialController@tablarecsensorial']);
@@ -2001,9 +2002,9 @@ Route::resource('ejecucionPsicosocial', 'PSICO\ejecucionPsicoController');
 
 Route::get('ejecucionPsicoTabla', ['as' => 'PSICO.ejecucionPsico', 'uses' => 'PSICO\ejecucionPsicoController@tablaEjecucion']);
 
-Route::get('trabajadoresOnlineEjecucionPsico/{proyecto_id}', ['as' => 'PSICO.trabajadoresOnline', 'uses' => 'PSICO\ejecucionPsicoController@tablaTrabajadoresOnline']);
+Route::get('trabajadoresOnlineEjecucionPsico/{proyecto_id}', ['as' => 'PSICO.trabajadoresOnlineEjecucionPsico', 'uses' => 'PSICO\ejecucionPsicoController@trabajadoresOnlineEjecucionPsico']);
 
-Route::get('trabajadoresPresencialEjecucionPsico/{proyecto_id}', ['as' => 'PSICO.trabajadoresPresencial', 'uses' => 'PSICO\ejecucionPsicoController@tablaTrabajadoresPresencial']);
+Route::get('trabajadoresPresencialEjecucionPsico/{proyecto_id}', ['as' => 'PSICO.trabajadoresPresencialEjecucionPsico', 'uses' => 'PSICO\ejecucionPsicoController@trabajadoresPresencialEjecucionPsico']);
 
 Route::get('ejecuciontrabajadoresnombres', ['as' => 'ejecucionpsico.trabajadoresNombres', 'uses' => 'PSICO\ejecucionPsicoController@trabajadoresNombres']);
 

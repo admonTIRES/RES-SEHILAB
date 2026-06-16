@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Auth;
 use ZipArchive;
 
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 
 use App\Http\Controllers\recsensorialreportes\recsensorialquimicosreportewordController;
@@ -1583,8 +1585,1061 @@ class recsensorialController extends Controller
     }
 
 
+    //// DESCARGA EXCEL DE VALIDACION 
 
 
+
+    public function descargarExcelRecoQuimico($id)
+    {
+        ini_set('memory_limit', '-1');
+        set_time_limit(300);
+
+        $recsensorial = recsensorialModel::find($id);
+
+        if (!$recsensorial) {
+            abort(404, 'Registro no encontrado');
+        }
+
+        $rutaPlantilla = storage_path('app/plantillas_excel/plantilla validacion reco quimico.xlsx');
+
+        $reader = IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load($rutaPlantilla);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | HOJA "1 "
+        |--------------------------------------------------------------------------
+        */
+        $sheet = $spreadsheet->getSheetByName('1 ');
+
+        if (!$sheet) {
+            abort(500, 'No se encontró la hoja 1');
+        }
+
+        $sheet->setCellValue('F7',  $recsensorial->recsensorial_empresa);
+        $sheet->setCellValue('F9',  $recsensorial->recsensorial_rfc);
+        $sheet->setCellValue('F11', $recsensorial->recsensorial_direccion);
+        $sheet->setCellValue('F13', $recsensorial->recsensorial_instalacion);
+        $sheet->setCellValue('F15', $recsensorial->recsensorial_actividadprincipal);
+
+        $instalacion = str_replace(
+            ['\\', '/', ':', '*', '?', '"', '<', '>', '|'],
+            '',
+            $recsensorial->recsensorial_instalacion
+        );
+
+
+
+        $fila = 24;
+
+        $sql1 = DB::select("
+            SELECT hoja.catsustancia_nombre,
+                sus.SUSTANCIA_QUIMICA,
+                ingreso.catviaingresoorganismo_viaingreso AS VIA_INGRESO,
+                sus.CLASIFICACION_RIESGO,
+                IFNULL(entidad.VLE_PPT, 'ND') AS PPT,
+                IFNULL(entidad.VLE_CT_P, 'ND') AS CT,
+                relacion.PORCENTAJE
+            FROM recsensorialquimicosinventario inventario
+            LEFT JOIN catHojasSeguridad_SustanciasQuimicas relacion
+                ON relacion.HOJA_SEGURIDAD_ID = inventario.catsustancia_id
+            LEFT JOIN catsustancia hoja
+                ON hoja.id = relacion.HOJA_SEGURIDAD_ID
+            LEFT JOIN catsustancias_quimicas sus
+                ON sus.ID_SUSTANCIA_QUIMICA = relacion.SUSTANCIA_QUIMICA_ID
+            LEFT JOIN sustanciaQuimicaEntidad entidad
+                ON entidad.SUSTANCIA_QUIMICA_ID = sus.ID_SUSTANCIA_QUIMICA
+            LEFT JOIN catEntidades catEntidad
+                ON catEntidad.ID_ENTIDAD = entidad.ENTIDAD_ID
+            LEFT JOIN catviaingresoorganismo ingreso
+                ON ingreso.id = sus.VIA_INGRESO
+            WHERE inventario.recsensorial_id = ?
+            AND (entidad.ENTIDAD_ID = 1)
+            AND (
+                relacion.PORCENTAJE > 1.00
+                OR (
+                    JSON_CONTAINS(entidad.CONNOTACION, '\"1\"')
+                    OR JSON_CONTAINS(entidad.CONNOTACION, '\"2\"')
+                )
+            )
+            GROUP BY relacion.HOJA_SEGURIDAD_ID,
+                    relacion.SUSTANCIA_QUIMICA_ID,
+                    hoja.catsustancia_nombre,
+                    sus.SUSTANCIA_QUIMICA,
+                    ingreso.catviaingresoorganismo_viaingreso,
+                    sus.CLASIFICACION_RIESGO,
+                    PPT,
+                    CT,
+                    relacion.PORCENTAJE
+            ORDER BY hoja.id ASC
+            ", [$id]);
+
+
+        $sql2 = DB::select("
+                SELECT
+                    hoja.catsustancia_nombre,
+                    sus.SUSTANCIA_QUIMICA,
+                    IFNULL(sus.NUM_CAS,'ND') AS NUM_CAS,
+                    IFNULL(relacion.TEM_EBULLICION,'ND') AS TEM_EBULLICION,
+                    IFNULL(sus.PM,'ND') AS PM,
+                    IF(relacion.ESTADO_FISICO = 100,'ND',estado.catestadofisicosustancia_estado) AS catestadofisicosustancia_estado,
+                    IF(relacion.VOLATILIDAD = 100,'ND',volatilidad.catvolatilidad_tipo) AS catvolatilidad_tipo
+                FROM recsensorialquimicosinventario inventario
+                LEFT JOIN catHojasSeguridad_SustanciasQuimicas relacion
+                    ON relacion.HOJA_SEGURIDAD_ID = inventario.catsustancia_id
+                LEFT JOIN catsustancia hoja
+                    ON hoja.id = relacion.HOJA_SEGURIDAD_ID
+                LEFT JOIN catsustancias_quimicas sus
+                    ON sus.ID_SUSTANCIA_QUIMICA = relacion.SUSTANCIA_QUIMICA_ID
+                LEFT JOIN catestadofisicosustancia estado
+                    ON estado.id = relacion.ESTADO_FISICO
+                LEFT JOIN catvolatilidad volatilidad
+                    ON volatilidad.id = relacion.VOLATILIDAD
+                WHERE inventario.recsensorial_id = ?
+                ORDER BY hoja.id, sus.SUSTANCIA_QUIMICA
+                ", [$id]);
+    
+            $sql3 = DB::select("
+                SELECT sus.catsustancia_nombre AS agente,
+                    IFNULL(recsensorialarea.recsensorialarea_nombre,'Sin dato') AS recsensorialarea_nombre,
+                    recsensorialmaquinaria.recsensorialmaquinaria_descripcionfuente AS recsensorialmaquinaria_nombre
+                FROM recsensorialmaquinaria
+                LEFT JOIN recsensorialarea
+                    ON recsensorialmaquinaria.recsensorialarea_id = recsensorialarea.id
+                LEFT JOIN catsustancia sus
+                    ON sus.id = recsensorialmaquinaria.recsensorialmaquinaria_quimica
+                WHERE recsensorialmaquinaria.recsensorial_id = ?
+                AND (
+                    recsensorialmaquinaria.recsensorialmaquinaria_afecta = 2
+                    OR recsensorialmaquinaria.recsensorialmaquinaria_afecta = 3
+                )
+                ORDER BY recsensorialarea.id ASC,
+                        recsensorialmaquinaria.recsensorialmaquinaria_nombre ASC
+                ", [$id]);
+
+
+        $datos2 = [];
+
+
+        foreach ($sql2 as $item2) {
+            $clave = trim($item2->catsustancia_nombre) . '|' . trim($item2->SUSTANCIA_QUIMICA);
+
+            $datos2[$clave] = [
+                'NUM_CAS' => $item2->NUM_CAS,
+                'TEM_EBULLICION' => $item2->TEM_EBULLICION,
+                'PM' => $item2->PM,
+                'ESTADO' => $item2->catestadofisicosustancia_estado,
+                'VOLATILIDAD' => $item2->catvolatilidad_tipo
+            ];
+        }
+
+
+
+        $datos3 = [];
+
+        foreach ($sql3 as $item3) {
+            $datos3[trim($item3->agente)] = [
+                'AREA' => $item3->recsensorialarea_nombre,
+                'FUENTE' => $item3->recsensorialmaquinaria_nombre
+            ];
+        }
+
+        $fila = 24;
+        $sustanciaAnterior = '';
+
+
+        foreach ($sql1 as $item1) {
+            $sustancia = trim($item1->catsustancia_nombre);
+
+            $clave = $sustancia . '|' . trim($item1->SUSTANCIA_QUIMICA);
+
+            $NUM_CAS = 'ND';
+            $TEM_EBULLICION = 'ND';
+            $PM = 'ND';
+            $ESTADO = 'ND';
+            $VOLATILIDAD = 'ND';
+
+            if (isset($datos2[$clave])) {
+                $NUM_CAS = $datos2[$clave]['NUM_CAS'];
+                $TEM_EBULLICION = $datos2[$clave]['TEM_EBULLICION'];
+                $PM = $datos2[$clave]['PM'];
+                $ESTADO = $datos2[$clave]['ESTADO'];
+                $VOLATILIDAD = $datos2[$clave]['VOLATILIDAD'];
+            }
+
+            $AREA = '';
+            $FUENTE = '';
+
+            if (isset($datos3[$sustancia])) {
+                $AREA = $datos3[$sustancia]['AREA'];
+                $FUENTE = $datos3[$sustancia]['FUENTE'];
+            }
+
+
+            if ($sustanciaAnterior != $sustancia) {
+                $AREA = '';
+                $FUENTE = '';
+
+                if (isset($datos3[$sustancia])) {
+                    $AREA = $datos3[$sustancia]['AREA'];
+                    $FUENTE = $datos3[$sustancia]['FUENTE'];
+                }
+
+                $sheet->setCellValue('D' . $fila, $AREA);
+                $sheet->setCellValue('E' . $fila, $sustancia);
+                $sheet->setCellValue('P' . $fila, $FUENTE);
+            }
+
+
+
+            $sheet->setCellValue('F' . $fila, $item1->SUSTANCIA_QUIMICA);
+            $sheet->setCellValue('G' . $fila, $NUM_CAS);
+            $sheet->setCellValue('H' . $fila, $TEM_EBULLICION);
+            $sheet->setCellValue('I' . $fila, $PM);
+            $sheet->setCellValue('J' . $fila, $ESTADO);
+            $sheet->setCellValue('K' . $fila, $VOLATILIDAD);
+            $sheet->setCellValue('L' . $fila, $item1->VIA_INGRESO);
+            $sheet->setCellValue('M' . $fila, $item1->CLASIFICACION_RIESGO);
+            $sheet->setCellValue('N' . $fila, $item1->PPT);
+            $sheet->setCellValue('O' . $fila, $item1->CT);
+
+
+            $sustanciaAnterior = $sustancia;
+
+            $fila++;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | HOJA "2"
+        |--------------------------------------------------------------------------
+        */
+
+        $sheet2 = $spreadsheet->getSheetByName('2');
+
+        if (!$sheet2) {
+            abort(500, 'No se encontró la hoja 2');
+        }
+
+
+
+        $sql4 = DB::select("
+        SELECT
+            SUMAS.AREA,
+            SUMAS.AREA_ID,
+            SUMAS.PRODUCTO,
+            SUMAS.COMPONENTE,
+            SUMAS.ENTIDAD_ID,
+            SUMAS.PONDERACION_CANTIDAD,
+            SUMAS.PORCENTAJE,
+            SUMAS.PONDERACION_CLASIFICACION,
+            SUMAS.PONDERACION_VOLATILIDAD,
+            SUMAS.SUMA_PONDERACIONES,
+            SUMAS.hoja_id,
+
+            (
+                CASE
+                    WHEN SUMAS.SUMA_PONDERACIONES BETWEEN 1 AND 4 THEN 'Muy Baja'
+                    WHEN SUMAS.SUMA_PONDERACIONES >= 5 AND SUMAS.SUMA_PONDERACIONES <= 7 THEN 'Baja'
+                    WHEN SUMAS.SUMA_PONDERACIONES = 8 OR SUMAS.SUMA_PONDERACIONES = 9 THEN 'Moderada'
+                    WHEN SUMAS.SUMA_PONDERACIONES = 10 OR SUMAS.SUMA_PONDERACIONES = 11 THEN 'Alta'
+                    WHEN SUMAS.SUMA_PONDERACIONES >= 12 THEN 'Muy Alta'
+                    ELSE 'Desconocida'
+                END
+            ) AS PRIORIDAD,
+
+            (
+                CASE
+                    WHEN SUMAS.SUMA_PONDERACIONES BETWEEN 1 AND 4 THEN '#FDFEFE'
+                    WHEN SUMAS.SUMA_PONDERACIONES >= 5 AND SUMAS.SUMA_PONDERACIONES <= 7 THEN '#2ECC71'
+                    WHEN SUMAS.SUMA_PONDERACIONES = 8 OR SUMAS.SUMA_PONDERACIONES = 9 THEN '#F1C40F'
+                    WHEN SUMAS.SUMA_PONDERACIONES = 10 OR SUMAS.SUMA_PONDERACIONES = 11 THEN '#E74C3C'
+                    WHEN SUMAS.SUMA_PONDERACIONES >= 12 THEN '#8E44AD'
+                    ELSE '#000000'
+                END
+            ) AS COLOR
+
+        FROM
+        (
+            SELECT
+                PONDERACIONES.AREA,
+                PONDERACIONES.AREA_ID,
+                PONDERACIONES.PRODUCTO,
+                PONDERACIONES.hoja_id,
+                PONDERACIONES.COMPONENTE,
+                PONDERACIONES.ENTIDAD_ID,
+                PONDERACIONES.PONDERACION_CANTIDAD,
+                PONDERACIONES.PORCENTAJE,
+                PONDERACIONES.PONDERACION_CLASIFICACION,
+                PONDERACIONES.PONDERACION_VOLATILIDAD,
+                (
+                    PONDERACION_CANTIDAD +
+                    PONDERACION_CLASIFICACION +
+                    PONDERACION_VOLATILIDAD
+                ) AS SUMA_PONDERACIONES
+
+            FROM
+            (
+                SELECT
+                    IFNULL(area.recsensorialarea_nombre,'Sin dato') AREA,
+                    area.id AREA_ID,
+                    hoja.catsustancia_nombre PRODUCTO,
+                    hoja.id hoja_id,
+                    sus.SUSTANCIA_QUIMICA COMPONENTE,
+                    entidad.ENTIDAD_ID,
+
+                    IF(
+                        (
+                            JSON_CONTAINS(entidad.CONNOTACION,'\"1\"')
+                            OR JSON_CONTAINS(entidad.CONNOTACION,'\"2\"')
+                        ),
+                        5,
+                        f_ponderacion_cantidad(
+                            ?, inventario.recsensorialcategoria_id,
+                            inventario.recsensorialarea_id,
+                            inventario.catsustancia_id,
+                            sus.ID_SUSTANCIA_QUIMICA
+                        )
+                    ) AS PONDERACION_CANTIDAD,
+
+                    ((inventario.recsensorialquimicosinventario_cantidad * relacion.PORCENTAJE)/100) AS PORCENTAJE,
+
+                    (
+                        CASE
+                            WHEN sus.CLASIFICACION_RIESGO = 0 THEN 1
+                            WHEN sus.CLASIFICACION_RIESGO = 1 THEN 2
+                            WHEN sus.CLASIFICACION_RIESGO = 2 THEN 3
+                            WHEN sus.CLASIFICACION_RIESGO = 3 THEN 4
+                            WHEN sus.CLASIFICACION_RIESGO = 4 THEN 5
+                            ELSE 0
+                        END
+                    ) AS PONDERACION_CLASIFICACION,
+
+                    vol.catvolatilidad_ponderacion PONDERACION_VOLATILIDAD
+
+                FROM recsensorialquimicosinventario inventario
+
+                LEFT JOIN catHojasSeguridad_SustanciasQuimicas relacion
+                    ON relacion.HOJA_SEGURIDAD_ID = inventario.catsustancia_id
+
+                LEFT JOIN catsustancia hoja
+                    ON hoja.id = relacion.HOJA_SEGURIDAD_ID
+
+                LEFT JOIN catsustancias_quimicas sus
+                    ON sus.ID_SUSTANCIA_QUIMICA = relacion.SUSTANCIA_QUIMICA_ID
+
+                LEFT JOIN sustanciaQuimicaEntidad entidad
+                    ON entidad.SUSTANCIA_QUIMICA_ID = sus.ID_SUSTANCIA_QUIMICA
+
+                LEFT JOIN recsensorialarea area
+                    ON inventario.recsensorialarea_id = area.id
+
+                LEFT JOIN catvolatilidad vol
+                    ON vol.id = relacion.VOLATILIDAD
+
+                WHERE inventario.recsensorial_id = ?
+                    AND (entidad.ENTIDAD_ID = 1)
+                    AND (
+                        relacion.PORCENTAJE > 1.00
+                        OR JSON_CONTAINS(entidad.CONNOTACION,'\"1\"')
+                        OR JSON_CONTAINS(entidad.CONNOTACION,'\"2\"')
+                    )
+
+            ) PONDERACIONES
+
+        ) SUMAS
+
+        ORDER BY
+        SUMAS.hoja_id,
+        SUMAS.AREA_ID,
+        SUMAS.PRODUCTO
+        ", [$id, $id]);
+
+
+        $sql5 = DB::select("
+            SELECT
+                IFNULL(catsustancia.catsustancia_nombre,'Sin dato') PRODUCTO,
+                recsensorialquimicosinventario.recsensorialquimicosinventario_cantidad CANTIDAD,
+                catunidadmedidasustacia.catunidadmedidasustacia_abreviacion UNIDAD
+            FROM recsensorialquimicosinventario
+            LEFT JOIN catsustancia
+                ON recsensorialquimicosinventario.catsustancia_id = catsustancia.id
+            LEFT JOIN catunidadmedidasustacia
+                ON recsensorialquimicosinventario.catunidadmedidasustacia_id = catunidadmedidasustacia.id
+            WHERE recsensorialquimicosinventario.recsensorial_id = ?
+            GROUP BY
+                catsustancia.id,
+                catsustancia.catsustancia_nombre,
+                recsensorialquimicosinventario.recsensorialquimicosinventario_cantidad,
+                catunidadmedidasustacia.catunidadmedidasustacia_abreviacion
+            ORDER BY catsustancia.id
+            ", [$id]);
+
+
+
+        $sql6 = DB::select("
+            SELECT
+                hoja.catsustancia_nombre,
+                sus.SUSTANCIA_QUIMICA,
+                IFNULL(
+                    IF(
+                        ROUND(relacion.PORCENTAJE,2)=ROUND(relacion.PORCENTAJE),
+                        ROUND(relacion.PORCENTAJE),
+                        relacion.PORCENTAJE
+                    ),
+                    'ND'
+                ) AS PORCENTAJE,
+                IF(relacion.OPERADOR='*','',relacion.OPERADOR) OPERADOR
+            FROM recsensorialquimicosinventario inventario
+            LEFT JOIN catHojasSeguridad_SustanciasQuimicas relacion
+                ON relacion.HOJA_SEGURIDAD_ID=inventario.catsustancia_id
+            LEFT JOIN catsustancia hoja
+                ON hoja.id=relacion.HOJA_SEGURIDAD_ID
+            LEFT JOIN catsustancias_quimicas sus
+                ON sus.ID_SUSTANCIA_QUIMICA=relacion.SUSTANCIA_QUIMICA_ID
+            WHERE inventario.recsensorial_id=?
+            GROUP BY
+                relacion.HOJA_SEGURIDAD_ID,
+                relacion.SUSTANCIA_QUIMICA_ID,
+                hoja.catsustancia_nombre,
+                sus.SUSTANCIA_QUIMICA,
+                PORCENTAJE,
+                OPERADOR
+            ORDER BY hoja.id,sus.SUSTANCIA_QUIMICA
+            ", [$id]);
+
+
+
+        $sql7 = DB::select("
+            SELECT DISTINCT
+                hoja.catsustancia_nombre PRODUCTO,
+                sus.SUSTANCIA_QUIMICA COMPONENTE,
+                area.recsensorialarea_nombre AREA,
+                cat.recsensorialcategoria_nombrecategoria CATEGORIA,
+                relacion.recsensorialareacategorias_actividad ACTIVIDAD,
+                grupos.POE,
+                relacion.frecuenciaexpo_quimico FRECUENCIA,
+                cat.sumaHorasJornada JORNADA
+            FROM grupos_de_exposicion grupos
+            LEFT JOIN recsensorialareacategorias relacion
+                ON relacion.id = grupos.RELACION_AREA_CAT_ID
+            LEFT JOIN recsensorialarea area
+                ON area.id = relacion.recsensorialarea_id
+            LEFT JOIN recsensorialcategoria cat
+                ON cat.id = relacion.recsensorialcategoria_id
+            LEFT JOIN catHojasSeguridad_SustanciasQuimicas relacionSus
+                ON relacionSus.ID_HOJA_SUSTANCIA = grupos.RELACION_HOJA_SUS_ID
+            LEFT JOIN catsustancia hoja
+                ON hoja.id = relacionSus.HOJA_SEGURIDAD_ID
+            LEFT JOIN catsustancias_quimicas sus
+                ON sus.ID_SUSTANCIA_QUIMICA = relacionSus.SUSTANCIA_QUIMICA_ID
+            WHERE grupos.RECSENSORIAL_ID = ?
+            ORDER BY hoja.id,sus.SUSTANCIA_QUIMICA
+            ", [$id]);
+
+
+
+        $datos4 = [];
+
+        foreach ($sql4 as $item4) {
+            $clave = trim($item4->PRODUCTO) . '|' . trim($item4->COMPONENTE);
+
+            $datos4[$clave] = [
+                'PONDERACION_CANTIDAD' => $item4->PONDERACION_CANTIDAD,
+                'PONDERACION_CLASIFICACION' => $item4->PONDERACION_CLASIFICACION,
+                'PONDERACION_VOLATILIDAD' => $item4->PONDERACION_VOLATILIDAD,
+                'SUMA_PONDERACIONES' => $item4->SUMA_PONDERACIONES,
+                'PRIORIDAD' => $item4->PRIORIDAD,
+                'COLOR' => $item4->COLOR
+            ];
+        }
+
+        $datos5 = [];
+
+        foreach ($sql5 as $item5) {
+            $datos5[trim($item5->PRODUCTO)] = [
+                'CANTIDAD' => $item5->CANTIDAD,
+                'UNIDAD' => $item5->UNIDAD
+            ];
+        }
+
+        $datos6 = [];
+
+        foreach ($sql6 as $item6) {
+            $clave = trim($item6->catsustancia_nombre) . '|' . trim($item6->SUSTANCIA_QUIMICA);
+
+            $datos6[$clave] = [
+                'OPERADOR' => $item6->OPERADOR,
+                'PORCENTAJE' => $item6->PORCENTAJE
+            ];
+        }
+
+        $fila2 = 8;
+
+        $productoAnterior = '';
+
+        foreach ($sql7 as $item7) {
+            $producto = trim($item7->PRODUCTO);
+            $componente = trim($item7->COMPONENTE);
+
+            $clave = $producto . '|' . $componente;
+
+            $ponderacionCantidad = '';
+            $ponderacionClasificacion = '';
+            $ponderacionVolatilidad = '';
+            $sumaPonderaciones = '';
+            $prioridad = '';
+            $color = 'FFFFFF';
+
+            if (isset($datos4[$clave])) {
+                $ponderacionCantidad = $datos4[$clave]['PONDERACION_CANTIDAD'];
+                $ponderacionClasificacion = $datos4[$clave]['PONDERACION_CLASIFICACION'];
+                $ponderacionVolatilidad = $datos4[$clave]['PONDERACION_VOLATILIDAD'];
+                $sumaPonderaciones = $datos4[$clave]['SUMA_PONDERACIONES'];
+                $prioridad = $datos4[$clave]['PRIORIDAD'];
+                $color = str_replace('#', '', $datos4[$clave]['COLOR']);
+            }
+
+            $cantidad = '';
+            $unidad = '';
+
+            if (isset($datos5[$producto])) {
+                $cantidad = $datos5[$producto]['CANTIDAD'];
+                $unidad = $datos5[$producto]['UNIDAD'];
+            }
+
+            $operador = '';
+            $porcentaje = '';
+
+            if (isset($datos6[$clave])) {
+                $operador = $datos6[$clave]['OPERADOR'];
+                $porcentaje = $datos6[$clave]['PORCENTAJE'];
+            }
+
+
+            if ($productoAnterior != $producto) {
+                $sheet2->setCellValue('D' . $fila2, $item7->AREA);
+                $sheet2->setCellValue('E' . $fila2, $producto);
+                $sheet2->setCellValue('G' . $fila2, $cantidad);
+                $sheet2->setCellValue('H' . $fila2, $unidad);
+                $sheet2->setCellValue('J' . $fila2,$cantidad . ' ' . $unidad);
+            }
+
+
+            $sheet2->setCellValue('F'.$fila2,$componente);
+            $sheet2->setCellValue('I'.$fila2,$operador.$porcentaje);
+            $sheet2->setCellValue('K'.$fila2,$ponderacionCantidad);
+            $sheet2->setCellValue('L'.$fila2,$ponderacionClasificacion);
+            $sheet2->setCellValue('M'.$fila2,$ponderacionVolatilidad);
+            $sheet2->setCellValue('N'.$fila2,$sumaPonderaciones);
+            $sheet2->setCellValue('O'.$fila2,$prioridad);
+            $sheet2->setCellValue('P'.$fila2,$item7->CATEGORIA);
+            $sheet2->setCellValue('Q'.$fila2,$item7->ACTIVIDAD);
+            $sheet2->setCellValue('R'.$fila2,$item7->POE);
+            $sheet2->setCellValue('T'.$fila2,$item7->FRECUENCIA);
+            $sheet2->setCellValue('U'.$fila2,$item7->JORNADA);
+
+            $sheet2->getStyle('O' . $fila2)
+                ->getFill()
+                ->setFillType(
+                    \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID
+                );
+
+            $sheet2->getStyle('O' . $fila2)
+                ->getFill()
+                ->getStartColor()
+                ->setARGB($color);
+
+            $productoAnterior = $producto;
+
+            $fila2++;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | HOJA "3.1"
+        |--------------------------------------------------------------------------
+        */
+
+        $sheet31 = $spreadsheet->getSheetByName('3.1');
+
+        if (!$sheet31) {
+            abort(500, 'No se encontró la hoja 3.1');
+        }
+
+        $fila31 = 4;
+
+
+
+        $sql31 = DB::select("
+                    SELECT SUMAS_PONDERACIONES.*,
+                    (
+                    CASE
+                        WHEN SUMAS_PONDERACIONES.SUMA_PONDERACIONES >= 13 THEN 'Muy alta'
+                        WHEN SUMAS_PONDERACIONES.SUMA_PONDERACIONES BETWEEN 9 AND 12 THEN 'Alta'
+                        WHEN SUMAS_PONDERACIONES.SUMA_PONDERACIONES BETWEEN 4 AND 8 THEN 'Moderada'
+                        WHEN SUMAS_PONDERACIONES.SUMA_PONDERACIONES <= 3 THEN 'Baja'
+                        ELSE 'ND'
+                    END
+                    ) AS PRIORIDAD,
+
+                    (
+                    CASE
+                        WHEN SUMAS_PONDERACIONES.SUMA_PONDERACIONES >= 13 THEN '#8E44AD'
+                        WHEN SUMAS_PONDERACIONES.SUMA_PONDERACIONES BETWEEN 9 AND 12 THEN '#E74C3C'
+                        WHEN SUMAS_PONDERACIONES.SUMA_PONDERACIONES BETWEEN 4 AND 8 THEN '#F1C40F'
+                        WHEN SUMAS_PONDERACIONES.SUMA_PONDERACIONES <= 3 THEN '#2ECC71'
+                        ELSE '#000000'
+                    END
+                    ) AS COLOR,
+
+                    (
+                    CASE
+                    WHEN SUMAS_PONDERACIONES.SUMA_PONDERACIONES >= 13 THEN
+                    CASE
+                        WHEN POE > 100 THEN 20
+                        WHEN POE >= 51 THEN 15
+                        WHEN POE >= 26 THEN 8
+                        WHEN POE >= 16 THEN 5
+                        WHEN POE >= 9 THEN 3
+                        WHEN POE >= 3 THEN 2
+                        ELSE 1
+                    END
+                    ELSE
+                    CASE
+                        WHEN POE > 100 THEN 10
+                        WHEN POE >= 51 THEN 7
+                        WHEN POE >= 31 THEN 5
+                        WHEN POE >= 21 THEN 4
+                        WHEN POE >= 11 THEN 3
+                        WHEN POE >= 6 THEN 2
+                        ELSE 1
+                    END
+                    END
+                    ) AS NUM_POE
+
+                    FROM
+                    (
+                        SELECT PONDERACIONES.*,
+                        (
+                            PONDERACION_INGRESO +
+                            PONDERACION_POE +
+                            PONDERACION_EXPOSICION
+                        ) AS SUMA_PONDERACIONES
+
+                        FROM
+                        (
+                            SELECT
+                                grupos.CLASIFICACION,
+                                hoja.catsustancia_nombre,
+                                sus.SUSTANCIA_QUIMICA,
+                                area.recsensorialarea_nombre AREA,
+                                cat.recsensorialcategoria_nombrecategoria CATEGORIA,
+                                grupos.POE,
+
+                                IFNULL(
+                                    ingreso.catviaingresoorganismo_ponderacion,
+                                    0
+                                ) AS PONDERACION_INGRESO,
+
+                                (
+                                CASE
+                                    WHEN grupos.POE > 100 THEN 8
+                                    WHEN grupos.POE BETWEEN 25 AND 100 THEN 4
+                                    WHEN grupos.POE BETWEEN 5 AND 24 THEN 2
+                                    WHEN grupos.POE < 5 THEN 1
+                                    ELSE 0
+                                END
+                                ) AS PONDERACION_POE,
+
+                                (
+                                CASE
+                                    WHEN ((IFNULL(relacion.tiempoexpo_quimico,0)
+                                    *
+                                    IFNULL(relacion.frecuenciaexpo_quimico,0))/60) >= 7 THEN 8
+
+                                    WHEN ((IFNULL(relacion.tiempoexpo_quimico,0)
+                                    *
+                                    IFNULL(relacion.frecuenciaexpo_quimico,0))/60) >= 3 THEN 4
+
+                                    WHEN ((IFNULL(relacion.tiempoexpo_quimico,0)
+                                    *
+                                    IFNULL(relacion.frecuenciaexpo_quimico,0))/60) >= 1 THEN 2
+
+                                    ELSE 1
+                                END
+                                ) AS PONDERACION_EXPOSICION
+
+                            FROM grupos_de_exposicion grupos
+
+                            LEFT JOIN recsensorialareacategorias relacion
+                                ON relacion.id = grupos.RELACION_AREA_CAT_ID
+
+                            LEFT JOIN recsensorialarea area
+                                ON area.id = relacion.recsensorialarea_id
+
+                            LEFT JOIN recsensorialcategoria cat
+                                ON cat.id = relacion.recsensorialcategoria_id
+
+                            LEFT JOIN catHojasSeguridad_SustanciasQuimicas relacionSus
+                                ON relacionSus.ID_HOJA_SUSTANCIA = grupos.RELACION_HOJA_SUS_ID
+
+                            LEFT JOIN catsustancia hoja
+                                ON hoja.id = relacionSus.HOJA_SEGURIDAD_ID
+
+                            LEFT JOIN catsustancias_quimicas sus
+                                ON sus.ID_SUSTANCIA_QUIMICA = relacionSus.SUSTANCIA_QUIMICA_ID
+
+                            LEFT JOIN catviaingresoorganismo ingreso
+                                ON ingreso.id = sus.VIA_INGRESO
+
+                            WHERE grupos.RECSENSORIAL_ID = ?
+
+                            ORDER BY grupos.CLASIFICACION
+
+                        ) PONDERACIONES
+
+                    ) SUMAS_PONDERACIONES
+                    ", [$id]);
+
+
+            if (!empty($sql31))
+            {
+                $clasificacion = 'xxx';
+                $producto = 'xxx';
+                $area = 'xxx';
+
+                foreach ($sql31 as $item31)
+                {
+
+                    if ($clasificacion != $item31->CLASIFICACION)
+                    {
+                        $producto = 'xxx';
+                        $area = 'xxx';
+                    }
+
+                    if ($producto != $item31->catsustancia_nombre) {
+                        if ($area != $item31->AREA) {
+                            $sheet31->setCellValue('D' . $fila31,$item31->AREA);
+                            $area = $item31->AREA;
+                        }
+                        $sheet31->setCellValue('E' . $fila31,$item31->catsustancia_nombre);
+                        $producto = $item31->catsustancia_nombre;
+                    }
+
+                    $sheet31->setCellValue('F' . $fila31,$item31->SUSTANCIA_QUIMICA);
+                    $sheet31->setCellValue('G' . $fila31,$item31->PONDERACION_INGRESO);
+                    $sheet31->setCellValue('H' . $fila31,$item31->PONDERACION_POE);
+                    $sheet31->setCellValue('I' . $fila31,$item31->PONDERACION_EXPOSICION);
+                    $sheet31->setCellValue('J' . $fila31,$item31->SUMA_PONDERACIONES);
+                    $sheet31->setCellValue('K' . $fila31,$item31->PRIORIDAD);
+                    $sheet31->setCellValue('L' . $fila31,$item31->CATEGORIA);
+                    $sheet31->setCellValue('M' . $fila31,$item31->NUM_POE);
+                    $sheet31->getStyle('K' . $fila31)
+                        ->getFill()
+                        ->setFillType(
+                            \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID
+                        );
+
+                    $sheet31->getStyle('K' . $fila31)
+                        ->getFill()
+                        ->getStartColor()
+                        ->setARGB(
+                            str_replace('#', '', $item31->COLOR)
+                        );
+                    $clasificacion = $item31->CLASIFICACION;
+
+                    $fila31++;
+                }
+            }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | HOJA "4"
+        |--------------------------------------------------------------------------
+        */
+
+        $sheet4 = $spreadsheet->getSheetByName('4');
+
+        if (!$sheet4) {
+            abort(500, 'No se encontró la hoja 4');
+        }
+
+
+        $fila4 = 8;
+
+        $sql41 = DB::table('recsensorialarea as area')
+            ->join(
+                'recsensorialareapruebas as pruebas',
+                'pruebas.recsensorialarea_id',
+                '=',
+                'area.id'
+            )
+            ->where('area.recsensorial_id', $id)
+            ->where('pruebas.catprueba_id', 15)
+            ->select('area.*')
+            ->distinct()
+            ->orderBy('area.id', 'asc')
+            ->get();
+
+
+
+        $columna = 'E';
+
+        foreach ($sql41 as $area) {
+            $sheet4->setCellValue(
+                $columna . $fila4,
+                $area->recsensorialarea_nombre
+            );
+
+            $columna++;
+        }
+
+
+        $columna = 'E';
+
+        foreach ($sql41 as $area) {
+            if ($area->recsensorialarea_condicion == 'Cerrado') {
+                $sheet4->setCellValue($columna . '9', 'X');
+            } elseif ($area->recsensorialarea_condicion == 'Abierto') {
+                $sheet4->setCellValue($columna . '11', 'X');
+            }
+
+            $columna++;
+        }
+
+
+        $columna = 'E';
+
+        foreach ($sql41 as $area)
+        {
+            if (
+                $area->recsensorialarea_extraccionaire == 'General'
+                || $area->recsensorialarea_extraccionaire == 'Localizado'
+            )
+            {
+                $sheet4->setCellValue($columna.'13', 'X');
+            }
+            elseif ($area->recsensorialarea_extraccionaire == 'Ninguno')
+            {
+                $sheet4->setCellValue($columna.'14', 'X');
+            }
+
+            $columna++;
+        }
+
+
+        $columna = 'E';
+
+        foreach ($sql41 as $area) {
+            if (
+                $area->recsensorialarea_inyeccionaire == 'General'
+                || $area->recsensorialarea_inyeccionaire == 'Localizado'
+            ) {
+                $sheet4->setCellValue($columna . '15', 'X');
+            } elseif ($area->recsensorialarea_inyeccionaire == 'Ninguno') {
+                $sheet4->setCellValue($columna . '16', 'X');
+            }
+
+            $columna++;
+        }
+
+
+
+        $columna = 'E';
+
+        foreach ($sql41 as $area) {
+            if ($area->recsensorialarea_caracteristica == 'Continuo') {
+                $sheet4->setCellValue($columna . '17', 'X');
+            } elseif ($area->recsensorialarea_caracteristica == 'Intermitente') {
+                $sheet4->setCellValue($columna . '19', 'X');
+            }
+
+            $columna++;
+        }
+
+
+
+        $columna = 'E';
+
+        foreach ($sql41 as $area) {
+
+            $generacion = explode(',', $area->recsensorialarea_generacioncontaminante);
+
+            if (in_array('Combustión', $generacion)) {
+                $sheet4->setCellValue($columna . '21', 'X');
+            }
+
+            if (in_array('Aumento de temperatura', $generacion)) {
+                $sheet4->setCellValue($columna . '23', 'X');
+            }
+
+            if (in_array('Disminución de temperatura', $generacion)) {
+                $sheet4->setCellValue($columna . '25', 'X');
+            }
+
+            if (in_array('Aumento de presión', $generacion)) {
+                $sheet4->setCellValue($columna . '27', 'X');
+            }
+
+            if (in_array('Disminución de presión', $generacion)) {
+                $sheet4->setCellValue($columna . '29', 'X');
+            }
+
+            if (in_array('Generación de humedad', $generacion)) {
+                $sheet4->setCellValue($columna . '31', 'X');
+            }
+
+            if (
+                in_array('N/A', $generacion)
+                || in_array('Otro', $generacion)
+            ) {
+
+                $sheet4->setCellValue($columna . '22', 'X');
+                $sheet4->setCellValue($columna . '24', 'X');
+                $sheet4->setCellValue($columna . '26', 'X');
+                $sheet4->setCellValue($columna . '28', 'X');
+                $sheet4->setCellValue($columna . '30', 'X');
+                $sheet4->setCellValue($columna . '32', 'X');
+            }
+
+            $columna++;
+        }
+
+
+        $columna = 'E';
+
+        foreach ($sql41 as $area) {
+            $sheet4->setCellValue($columna . '34', 'X');
+            $sheet4->setCellValue($columna . '36', 'X');
+            $sheet4->setCellValue($columna . '38', 'X');
+            $sheet4->setCellValue($columna . '40', 'X');
+            $sheet4->setCellValue($columna . '42', 'X');
+            $sheet4->setCellValue($columna . '44', 'X');
+            $sheet4->setCellValue($columna . '46', 'X');
+            $sheet4->setCellValue($columna . '47', 'X');
+            $sheet4->setCellValue($columna . '50', 'X');
+            $sheet4->setCellValue($columna . '52', 'X');
+            $sheet4->setCellValue($columna . '54', 'X');
+
+            $columna++;
+        }
+
+
+
+        $sql42 = [];
+
+        foreach ($sql41 as $area) {
+            $categorias = DB::table('recsensorialareacategorias')
+                ->where('recsensorialarea_id', $area->id)
+                ->pluck('recsensorialcategoria_id');
+
+            if ($categorias->count() == 0) {
+                $epp = DB::table('recsensorialequipopp')
+                    ->where('recsensorial_id', $id)
+                    ->where('recsensorialcategoria_id', 0)
+                    ->pluck('catpartecuerpo_id');
+            } else {
+                $epp = DB::table('recsensorialequipopp')
+                    ->where('recsensorial_id', $id)
+                    ->whereIn('recsensorialcategoria_id', $categorias)
+                    ->pluck('catpartecuerpo_id');
+
+                if ($epp->count() == 0) {
+                    $epp = DB::table('recsensorialequipopp')
+                        ->where('recsensorial_id', $id)
+                        ->where('recsensorialcategoria_id', 0)
+                        ->pluck('catpartecuerpo_id');
+                }
+            }
+
+            $sql42[$area->id] = $epp->unique()->toArray();
+        }
+
+
+
+        $columna = 'E';
+
+        foreach ($sql41 as $area) {
+            if (isset($sql42[$area->id])) {
+                $partes = $sql42[$area->id];
+
+                $otros = false;
+
+                foreach ($partes as $parte) {
+                    switch ($parte) {
+                        case 7:
+                            $sheet4->setCellValue($columna . '55', 'X');
+                            break;
+
+                        case 1:
+                            $sheet4->setCellValue($columna . '57', 'X');
+                            break;
+
+                        case 2:
+                            $sheet4->setCellValue($columna . '59', 'X');
+                            break;
+
+                        case 5:
+                            $sheet4->setCellValue($columna . '61', 'X');
+                            break;
+
+                        case 6:
+                            $sheet4->setCellValue($columna . '63', 'X');
+                            break;
+
+                        case 4:
+                            $sheet4->setCellValue($columna . '65', 'X');
+                            break;
+
+                        // Otros
+                        case 8:
+                            $sheet4->setCellValue($columna . '56', 'X');
+                            $sheet4->setCellValue($columna . '58', 'X');
+                            $sheet4->setCellValue($columna . '60', 'X');
+                            $sheet4->setCellValue($columna . '62', 'X');
+                            $sheet4->setCellValue($columna . '64', 'X');
+                            $sheet4->setCellValue($columna . '66', 'X');
+                            break;
+                    }
+                }
+                if ($otros) {
+                    $sheet4->setCellValue($columna . '56', 'X');
+                    $sheet4->setCellValue($columna . '58', 'X');
+                    $sheet4->setCellValue($columna . '60', 'X');
+                    $sheet4->setCellValue($columna . '62', 'X');
+                    $sheet4->setCellValue($columna . '64', 'X');
+                    $sheet4->setCellValue($columna . '66', 'X');
+                }
+            }
+
+            $columna++;
+        }
+
+
+
+        $nombreArchivo = 'Validación reconocimiento - ' . $instalacion . '.xlsx';
+
+        $rutaTemp = storage_path('app/temp');
+
+        if (!file_exists($rutaTemp)) {
+            mkdir($rutaTemp, 0777, true);
+        }
+
+        $archivoTemporal = $rutaTemp . '/' . $nombreArchivo;
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($archivoTemporal);
+
+        $spreadsheet->disconnectWorksheets();
+        unset($spreadsheet);
+
+        return response()->download($archivoTemporal)->deleteFileAfterSend(true);
+    }
 
 
     /**

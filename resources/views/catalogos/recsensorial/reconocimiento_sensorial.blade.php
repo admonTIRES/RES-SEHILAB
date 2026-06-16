@@ -738,7 +738,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            
+
 
 
                                                                         </div>
@@ -2251,9 +2251,19 @@
                                         Resumen rec. químicos
 
                                         @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Operativo HI']))
+
+                                        <button type="button" class="btn btn-success" style="float: right; background: #5FB404!important; margin-left: 20px;" data-toggle="tooltip" title=" Descargar validación" id="boton_descargarvalidacion">
+                                            Descargar validación (excel)&nbsp;&nbsp;<i class="fa  fa-file-excel-o fa-1x"></i>
+                                        </button>
+
+                                        &nbsp;&nbsp;
+
                                         <button type="button" class="btn btn-info" style="float: right; background: #000!important; margin-left: 20px;" data-toggle="tooltip" title="Configurar informe sensorial de químicos .doc" id="boton_editarInforme">
                                             Configurar informe (word)&nbsp;&nbsp;<i class="fa fa-file-word-o fa-1x"></i>
                                         </button>
+
+
+
                                         @endif
                                         <button type="button" class="btn btn-info" style="float: right; background: #000!important; display: none;" data-toggle="tooltip" title="Descargar informe de reconocimiento químicos autorizado .pdf" id="boton_descargarquimicospdf">
                                             Descargar pdf&nbsp;&nbsp;<i class="fa fa-file-pdf-o fa-1x"></i>
@@ -4170,7 +4180,7 @@
 <!-- ============================================================== -->
 
 <script>
-    var rolUsuario = @json(auth()->user()->roles->first()->rol_Nombre);
+    var rolUsuario = @json(auth() -> user() -> roles -> first() -> rol_Nombre);
 </script>
 
 {{-- ========================================================================= --}}

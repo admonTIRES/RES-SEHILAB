@@ -1865,8 +1865,8 @@ $('#tabla_reconocimiento_sensorial tbody').on('click', 'td.mostrar', function ()
 
 	// Desactivar campos si no es ultimo registro
 	if (parseInt(row.data().recsensorial_activo) == 0) {
-		$("#recsensorial_alcancefisico").attr('disabled', true);
-		$("#recsensorial_alcancequimico").attr('disabled', true);
+		$("#recsensorial_alcancefisico").attr('disabled', false);
+		$("#recsensorial_alcancequimico").attr('disabled', false);
 	}
 	else {
 		$("#recsensorial_alcancefisico").attr('disabled', false);
@@ -3358,8 +3358,8 @@ $("#boton_guardar_recsensorial").click(function () {
 
 								// Desactivar campos si no es ultimo registro
 								if (parseInt(dato.recsensorial.recsensorial_activo) == 0) {
-									$("#recsensorial_alcancefisico").attr('disabled', true);
-									$("#recsensorial_alcancequimico").attr('disabled', true);
+									$("#recsensorial_alcancefisico").attr('disabled', false);
+									$("#recsensorial_alcancequimico").attr('disabled', false);
 								}
 								else {
 									$("#recsensorial_alcancefisico").attr('disabled', false);
@@ -13224,3 +13224,12 @@ $('#boton_descargarquimicosdoc_final').on('click', function (e) {
 	$('#cambios_realizados').val('')
 
 })
+
+
+
+
+$("#boton_descargarvalidacion").click(function(){
+
+    window.location.href = '/descargarExcelRecoQuimico/' + recsensorial;
+
+});

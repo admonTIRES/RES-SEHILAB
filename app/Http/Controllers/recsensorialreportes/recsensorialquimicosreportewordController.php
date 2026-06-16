@@ -848,7 +848,7 @@ class recsensorialquimicosreportewordController extends Controller
                             LEFT JOIN catEntidades catEntidad ON catEntidad.ID_ENTIDAD = entidad.ENTIDAD_ID
                             LEFT JOIN catviaingresoorganismo ingreso ON ingreso.id = sus.VIA_INGRESO
                             WHERE inventario.recsensorial_id = ?
-                                    AND (entidad.ENTIDAD_ID = 1 OR entidad.ENTIDAD_ID = 2) 
+                                    AND (entidad.ENTIDAD_ID = 1 ) 
                                     AND  (relacion.PORCENTAJE > 1.00 OR (JSON_CONTAINS(entidad.CONNOTACION, '\"1\"') OR JSON_CONTAINS(entidad.CONNOTACION, '\"2\"')))
                             GROUP BY relacion.HOJA_SEGURIDAD_ID,
                                             relacion.SUSTANCIA_QUIMICA_ID,
@@ -1070,7 +1070,7 @@ class recsensorialquimicosreportewordController extends Controller
                     $table->addRow(); // fila para el nuevo área
                     $table->addCell(null, $combinar_fila)->addTextRun($centrado)->addText($value->AREA, $texto);
                     $table->addCell(null, $combinar_fila)->addTextRun($centrado)->addText('[' . $productos[$value->PRODUCTO] . '] ' . sanitizeText($value->PRODUCTO), $texto);
-                    $table->addCell(null, $celda)->addTextRun($centrado)->addText(sanitizeText($value->COMPONENTE), $texto);
+                        $table->addCell(null, $celda)->addTextRun($centrado)->addText(sanitizeText($value->COMPONENTE), $texto);
                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_CANTIDAD, $texto);
                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_CLASIFICACION, $texto);
                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_VOLATILIDAD, $texto);
