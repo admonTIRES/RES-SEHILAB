@@ -6318,7 +6318,7 @@ class reporteiluminacionController extends Controller
                                         'reportearea_alturalamparas' => is_null($rowData['R']) ? null : $rowData['R'],
                                         'reportearea_programamantenimiento' => is_null($rowData['S']) ? null : $rowData['S'],
                                         'reportearea_tipoiluminacion' => is_null($rowData['T']) ? null : tipoIluminacion($rowData['T']),
-                                        'reportearea_descripcionilimunacion' => is_null($rowData['U']) ? null : $rowData['U'],
+                                        'reportearea_descripcion' => is_null($rowData['U']) ? null : $rowData['U'],
                                     ]);
 
                                     $puntosInsertados++;

@@ -1943,19 +1943,19 @@
 						<div class="col-4">
 							<div class="form-group">
 								<label><b>x</b>&nbsp;Largo del área (m) *</label>
-								<input type="text" class="form-control infoAdicionalArea" id="reportearea_largo" name="reportearea_largo" required>
+								<input type="number" class="form-control infoAdicionalArea" id="reportearea_largo" name="reportearea_largo" required>
 							</div>
 						</div>
 						<div class="col-4">
 							<div class="form-group">
 								<label><b>y</b>&nbsp;Ancho del área (m) *</label>
-								<input type="text" class="form-control infoAdicionalArea" id="reportearea_ancho" name="reportearea_ancho" required>
+								<input type="number" class="form-control infoAdicionalArea" id="reportearea_ancho" name="reportearea_ancho" required>
 							</div>
 						</div>
 						<div class="col-4">
 							<div class="form-group">
 								<label><b>h</b>&nbsp;Alto del área (m) *</label>
-								<input type="text" class="form-control infoAdicionalArea" id="reportearea_alto" name="reportearea_alto" required>
+								<input type="number" class="form-control infoAdicionalArea" id="reportearea_alto" name="reportearea_alto" required>
 							</div>
 						</div>
 						<div class="col-4">
@@ -2637,4 +2637,4 @@
 </script>
 
 <script src="/js_sitio/html2canvas.js"></script>
-<script src="/js_sitio/reportes/reporteiluminacion.js?v=5.2"></script>
+<script src="/js_sitio/reportes/reporteiluminacion.js?v=6"></script>

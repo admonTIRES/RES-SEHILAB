@@ -3209,7 +3209,10 @@ $('#tabla_reporte_area tbody').on('click', 'td.editar', function()
 	$('#reportearea_alturalamparas').val(row.data().reportearea_alturalamparas);
 	$('#reportearea_programamantenimiento').val(row.data().reportearea_programamantenimiento);
 	$('#reportearea_tipoiluminacion').val(row.data().reportearea_tipoiluminacion);
-	$('#reportearea_descripcionilimunacion').val(row.data().reportearea_descripcionilimunacion);
+	$('#reportearea_descripcionilimunacion').val(row.data().reportearea_descripcion);
+
+
+
 
 	//Validamos el check de que si aplica o no aplica
 	if (row.data().aplica_iluminacion == 1) {
