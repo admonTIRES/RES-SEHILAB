@@ -5645,7 +5645,7 @@ class reportequimicosController extends Controller
                         ->where('agente_nombre', $request->agente_nombre)
                         ->where('registro_id', $reporte->id)
                         ->delete();
-
+                    
                     DB::statement('ALTER TABLE reporterecomendaciones AUTO_INCREMENT = 1;');
 
                     foreach ($request->recomendacion_checkbox as $key => $value) {
@@ -5687,8 +5687,11 @@ class reportequimicosController extends Controller
                             'reporterecomendacionescatalogo_id' => 0,
                             'reporterecomendaciones_tipo' => $request->recomendacionadicional_tipo[$key],
                             'reporterecomendaciones_descripcion' => $this->datosproyectolimpiartexto($proyecto, $recsensorial, $quimicos_nombre, $request->recomendacionadicional_descripcion[$key]),
-                            'catalogo_id' => $request->recomendacionadicional_quimicopartida[$key]
-                        ]);
+                            'catalogo_id' => isset($request->recomendacionadicional_quimicopartida[$key])
+                                ? $request->recomendacionadicional_quimicopartida[$key]
+                                : null
+                                
+                                ]);
                     }
 
                     // Mensaje

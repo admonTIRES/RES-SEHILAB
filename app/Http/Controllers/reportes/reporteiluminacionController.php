@@ -6077,7 +6077,7 @@ class reporteiluminacionController extends Controller
                         function formatearHora($hora)
                         {
 
-                            if ($hora == 'N/A' || $hora == 'n/a' || $hora =='NP' || $hora == '---'|| $hora == '' ) {
+                            if ($hora == 'N/A' || $hora == 'NA' || $hora == 'n/a' || $hora =='NP' || $hora == '---'|| $hora == '' ) {
                                 
                                 return null;
 
@@ -6120,7 +6120,7 @@ class reporteiluminacionController extends Controller
                             if (is_numeric($valor)) {
                                 return intval($valor);
                             } else {
-                                return 0;
+                                return 1;
                             }
                         }
 
@@ -6128,15 +6128,39 @@ class reporteiluminacionController extends Controller
                         //Reiniciamos el Autoincrements de la  tabla de puntos
                         DB::statement('ALTER TABLE reporteiluminacionpuntos AUTO_INCREMENT = 1;');
 
+
+                        
                         //Limpiamos, Validamos y Insertamos todos los datos del Excel
                         foreach ($datosGenerales as $rowData) {
 
+
+                            // Buscar ID del área por nombre y proyecto
+                            $area = DB::table('reportearea')
+                                ->where('proyecto_id', $request['proyecto_id'])
+                                ->where('reportearea_nombre', trim($rowData['F']))
+                                ->first();
+
+                            $area_id = $area ? $area->id : null;
+
+
+                            // Buscar ID de la categoría por nombre y proyecto
+                            $categoria = DB::table('reportecategoria')
+                                ->where('proyecto_id', $request['proyecto_id'])
+                                ->where('reportecategoria_nombre', trim($rowData['I']))
+                                ->first();
+
+                            $categoria_id = $categoria ? $categoria->id : null;
+
+
+                            
                             reporteiluminacionpuntosModel::create([
                                 'proyecto_id' => $request['proyecto_id'],
                                 'registro_id' => $request['registro_id'],
+                                'reporteiluminacionpuntos_area_id' => $area_id,
+                                'reporteiluminacionpuntos_categoria_id' => $categoria_id,
                                 'reporteiluminacionpuntos_nombre' => 'NP',
                                 'reporteiluminacionpuntos_ficha' => 'NP',
-                                'reporteiluminacionpuntos_nopoe' => is_null($rowData['H']) ? 0 : limpiarPOE($rowData['H']),
+                                'reporteiluminacionpuntos_nopoe' => is_null($rowData['H']) ? 1 : limpiarPOE($rowData['H']),
                                 'reporteiluminacionpuntos_nopunto' => is_null($rowData['A']) ? null : intval($rowData['A']),
                                 'reporteiluminacionpuntos_fechaeval' => is_null($rowData['B']) ? null : validarFecha($rowData['B']),
                                 'reporteiluminacionpuntos_horario1' => is_null($rowData['C']) ? null : formatearHora($rowData['C']),
@@ -6294,7 +6318,7 @@ class reporteiluminacionController extends Controller
                                         'reportearea_alturalamparas' => is_null($rowData['R']) ? null : $rowData['R'],
                                         'reportearea_programamantenimiento' => is_null($rowData['S']) ? null : $rowData['S'],
                                         'reportearea_tipoiluminacion' => is_null($rowData['T']) ? null : tipoIluminacion($rowData['T']),
-                                        'reportearea_descripcion' => is_null($rowData['U']) ? null : $rowData['U'],
+                                        'reportearea_descripcionilimunacion' => is_null($rowData['U']) ? null : $rowData['U'],
                                     ]);
 
                                     $puntosInsertados++;

@@ -1617,11 +1617,25 @@ class recsensorialController extends Controller
             abort(500, 'No se encontró la hoja 1');
         }
 
+
+        $proyecto = DB::table('proyecto')
+            ->where('proyecto_folio', $recsensorial->proyecto_folio)
+            ->first();
+
+        $actividadPrincipal = '';
+
+        if ($proyecto) {
+            $actividadPrincipal = $proyecto->proyecto_clientegiroempresa;
+        }
+
+        $sheet->setCellValue('F15', $actividadPrincipal);
+
+
+
         $sheet->setCellValue('F7',  $recsensorial->recsensorial_empresa);
         $sheet->setCellValue('F9',  $recsensorial->recsensorial_rfc);
         $sheet->setCellValue('F11', $recsensorial->recsensorial_direccion);
         $sheet->setCellValue('F13', $recsensorial->recsensorial_instalacion);
-        $sheet->setCellValue('F15', $recsensorial->recsensorial_actividadprincipal);
 
         $instalacion = str_replace(
             ['\\', '/', ':', '*', '?', '"', '<', '>', '|'],
@@ -1633,14 +1647,20 @@ class recsensorialController extends Controller
 
         $fila = 24;
 
-        $sql1 = DB::select("
-            SELECT hoja.catsustancia_nombre,
+
+        $sql1 = DB::select(
+            "CALL sp_obtener_caracteristicas_sustancia_informe_b(?)",
+            [$id]
+        );
+
+        $sqlComplemento = DB::select("
+            SELECT
+                hoja.catsustancia_nombre,
                 sus.SUSTANCIA_QUIMICA,
                 ingreso.catviaingresoorganismo_viaingreso AS VIA_INGRESO,
                 sus.CLASIFICACION_RIESGO,
-                IFNULL(entidad.VLE_PPT, 'ND') AS PPT,
-                IFNULL(entidad.VLE_CT_P, 'ND') AS CT,
-                relacion.PORCENTAJE
+                IFNULL(MAX(entidad.VLE_PPT),'ND') AS PPT,
+                IFNULL(MAX(entidad.VLE_CT_P),'ND') AS CT
             FROM recsensorialquimicosinventario inventario
             LEFT JOIN catHojasSeguridad_SustanciasQuimicas relacion
                 ON relacion.HOJA_SEGURIDAD_ID = inventario.catsustancia_id
@@ -1650,160 +1670,112 @@ class recsensorialController extends Controller
                 ON sus.ID_SUSTANCIA_QUIMICA = relacion.SUSTANCIA_QUIMICA_ID
             LEFT JOIN sustanciaQuimicaEntidad entidad
                 ON entidad.SUSTANCIA_QUIMICA_ID = sus.ID_SUSTANCIA_QUIMICA
-            LEFT JOIN catEntidades catEntidad
-                ON catEntidad.ID_ENTIDAD = entidad.ENTIDAD_ID
             LEFT JOIN catviaingresoorganismo ingreso
                 ON ingreso.id = sus.VIA_INGRESO
             WHERE inventario.recsensorial_id = ?
-            AND (entidad.ENTIDAD_ID = 1)
-            AND (
-                relacion.PORCENTAJE > 1.00
-                OR (
-                    JSON_CONTAINS(entidad.CONNOTACION, '\"1\"')
-                    OR JSON_CONTAINS(entidad.CONNOTACION, '\"2\"')
-                )
-            )
-            GROUP BY relacion.HOJA_SEGURIDAD_ID,
-                    relacion.SUSTANCIA_QUIMICA_ID,
-                    hoja.catsustancia_nombre,
-                    sus.SUSTANCIA_QUIMICA,
-                    ingreso.catviaingresoorganismo_viaingreso,
-                    sus.CLASIFICACION_RIESGO,
-                    PPT,
-                    CT,
-                    relacion.PORCENTAJE
-            ORDER BY hoja.id ASC
+            GROUP BY
+                hoja.catsustancia_nombre,
+                sus.SUSTANCIA_QUIMICA,
+                ingreso.catviaingresoorganismo_viaingreso,
+                sus.CLASIFICACION_RIESGO
+            ORDER BY hoja.id, sus.SUSTANCIA_QUIMICA
             ", [$id]);
 
-
-        $sql2 = DB::select("
-                SELECT
-                    hoja.catsustancia_nombre,
-                    sus.SUSTANCIA_QUIMICA,
-                    IFNULL(sus.NUM_CAS,'ND') AS NUM_CAS,
-                    IFNULL(relacion.TEM_EBULLICION,'ND') AS TEM_EBULLICION,
-                    IFNULL(sus.PM,'ND') AS PM,
-                    IF(relacion.ESTADO_FISICO = 100,'ND',estado.catestadofisicosustancia_estado) AS catestadofisicosustancia_estado,
-                    IF(relacion.VOLATILIDAD = 100,'ND',volatilidad.catvolatilidad_tipo) AS catvolatilidad_tipo
-                FROM recsensorialquimicosinventario inventario
-                LEFT JOIN catHojasSeguridad_SustanciasQuimicas relacion
-                    ON relacion.HOJA_SEGURIDAD_ID = inventario.catsustancia_id
-                LEFT JOIN catsustancia hoja
-                    ON hoja.id = relacion.HOJA_SEGURIDAD_ID
-                LEFT JOIN catsustancias_quimicas sus
-                    ON sus.ID_SUSTANCIA_QUIMICA = relacion.SUSTANCIA_QUIMICA_ID
-                LEFT JOIN catestadofisicosustancia estado
-                    ON estado.id = relacion.ESTADO_FISICO
-                LEFT JOIN catvolatilidad volatilidad
-                    ON volatilidad.id = relacion.VOLATILIDAD
-                WHERE inventario.recsensorial_id = ?
-                ORDER BY hoja.id, sus.SUSTANCIA_QUIMICA
-                ", [$id]);
-    
-            $sql3 = DB::select("
-                SELECT sus.catsustancia_nombre AS agente,
-                    IFNULL(recsensorialarea.recsensorialarea_nombre,'Sin dato') AS recsensorialarea_nombre,
-                    recsensorialmaquinaria.recsensorialmaquinaria_descripcionfuente AS recsensorialmaquinaria_nombre
-                FROM recsensorialmaquinaria
-                LEFT JOIN recsensorialarea
-                    ON recsensorialmaquinaria.recsensorialarea_id = recsensorialarea.id
-                LEFT JOIN catsustancia sus
-                    ON sus.id = recsensorialmaquinaria.recsensorialmaquinaria_quimica
-                WHERE recsensorialmaquinaria.recsensorial_id = ?
-                AND (
-                    recsensorialmaquinaria.recsensorialmaquinaria_afecta = 2
-                    OR recsensorialmaquinaria.recsensorialmaquinaria_afecta = 3
-                )
-                ORDER BY recsensorialarea.id ASC,
-                        recsensorialmaquinaria.recsensorialmaquinaria_nombre ASC
-                ", [$id]);
-
-
-        $datos2 = [];
-
-
-        foreach ($sql2 as $item2) {
-            $clave = trim($item2->catsustancia_nombre) . '|' . trim($item2->SUSTANCIA_QUIMICA);
-
-            $datos2[$clave] = [
-                'NUM_CAS' => $item2->NUM_CAS,
-                'TEM_EBULLICION' => $item2->TEM_EBULLICION,
-                'PM' => $item2->PM,
-                'ESTADO' => $item2->catestadofisicosustancia_estado,
-                'VOLATILIDAD' => $item2->catvolatilidad_tipo
-            ];
-        }
-
-
+        $sql3 = DB::select("
+            SELECT
+                sus.catsustancia_nombre AS agente,
+                IFNULL(recsensorialarea.recsensorialarea_nombre,'Sin dato') AS recsensorialarea_nombre,
+                recsensorialmaquinaria.recsensorialmaquinaria_descripcionfuente AS recsensorialmaquinaria_nombre
+            FROM recsensorialmaquinaria
+            LEFT JOIN recsensorialarea
+                ON recsensorialmaquinaria.recsensorialarea_id = recsensorialarea.id
+            LEFT JOIN catsustancia sus
+                ON sus.id = recsensorialmaquinaria.recsensorialmaquinaria_quimica
+            WHERE recsensorialmaquinaria.recsensorial_id = ?
+            AND (
+                recsensorialmaquinaria.recsensorialmaquinaria_afecta = 2
+                OR recsensorialmaquinaria.recsensorialmaquinaria_afecta = 3
+            )
+            ORDER BY recsensorialarea.id ASC,
+                    recsensorialmaquinaria.recsensorialmaquinaria_nombre ASC
+        ", [$id]);
 
         $datos3 = [];
 
         foreach ($sql3 as $item3) {
-            $datos3[trim($item3->agente)] = [
-                'AREA' => $item3->recsensorialarea_nombre,
-                'FUENTE' => $item3->recsensorialmaquinaria_nombre
+            $agente = trim($item3->agente);
+
+            if (!isset($datos3[$agente])) {
+                $datos3[$agente] = [
+                    'AREA' => [],
+                    'FUENTE' => []
+                ];
+            }
+
+            $datos3[$agente]['AREA'][] = $item3->recsensorialarea_nombre;
+            $datos3[$agente]['FUENTE'][] = $item3->recsensorialmaquinaria_nombre;
+        }
+
+
+        $datosComplementarios = [];
+
+        foreach ($sqlComplemento as $item) {
+            $clave = trim($item->catsustancia_nombre) . '|' . trim($item->SUSTANCIA_QUIMICA);
+
+            $datosComplementarios[$clave] = [
+                'VIA_INGRESO' => $item->VIA_INGRESO,
+                'CLASIFICACION_RIESGO' => $item->CLASIFICACION_RIESGO,
+                'PPT' => $item->PPT,
+                'CT' => $item->CT
             ];
         }
+
 
         $fila = 24;
         $sustanciaAnterior = '';
 
-
         foreach ($sql1 as $item1) {
             $sustancia = trim($item1->catsustancia_nombre);
-
-            $clave = $sustancia . '|' . trim($item1->SUSTANCIA_QUIMICA);
-
-            $NUM_CAS = 'ND';
-            $TEM_EBULLICION = 'ND';
-            $PM = 'ND';
-            $ESTADO = 'ND';
-            $VOLATILIDAD = 'ND';
-
-            if (isset($datos2[$clave])) {
-                $NUM_CAS = $datos2[$clave]['NUM_CAS'];
-                $TEM_EBULLICION = $datos2[$clave]['TEM_EBULLICION'];
-                $PM = $datos2[$clave]['PM'];
-                $ESTADO = $datos2[$clave]['ESTADO'];
-                $VOLATILIDAD = $datos2[$clave]['VOLATILIDAD'];
-            }
 
             $AREA = '';
             $FUENTE = '';
 
             if (isset($datos3[$sustancia])) {
-                $AREA = $datos3[$sustancia]['AREA'];
-                $FUENTE = $datos3[$sustancia]['FUENTE'];
+                $AREA = implode("\n", array_unique($datos3[$sustancia]['AREA']));
+                $FUENTE = implode("\n", array_unique($datos3[$sustancia]['FUENTE']));
             }
 
+            $clave = $sustancia . '|' . trim($item1->SUSTANCIA_QUIMICA);
+
+            $VIA_INGRESO = '';
+            $CLASIFICACION_RIESGO = '';
+            $PPT = 'ND';
+            $CT = 'ND';
+
+            if (isset($datosComplementarios[$clave])) {
+                $VIA_INGRESO = $datosComplementarios[$clave]['VIA_INGRESO'];
+                $CLASIFICACION_RIESGO = $datosComplementarios[$clave]['CLASIFICACION_RIESGO'];
+                $PPT = $datosComplementarios[$clave]['PPT'];
+                $CT = $datosComplementarios[$clave]['CT'];
+            }
 
             if ($sustanciaAnterior != $sustancia) {
-                $AREA = '';
-                $FUENTE = '';
-
-                if (isset($datos3[$sustancia])) {
-                    $AREA = $datos3[$sustancia]['AREA'];
-                    $FUENTE = $datos3[$sustancia]['FUENTE'];
-                }
-
                 $sheet->setCellValue('D' . $fila, $AREA);
                 $sheet->setCellValue('E' . $fila, $sustancia);
                 $sheet->setCellValue('P' . $fila, $FUENTE);
             }
 
-
-
             $sheet->setCellValue('F' . $fila, $item1->SUSTANCIA_QUIMICA);
-            $sheet->setCellValue('G' . $fila, $NUM_CAS);
-            $sheet->setCellValue('H' . $fila, $TEM_EBULLICION);
-            $sheet->setCellValue('I' . $fila, $PM);
-            $sheet->setCellValue('J' . $fila, $ESTADO);
-            $sheet->setCellValue('K' . $fila, $VOLATILIDAD);
-            $sheet->setCellValue('L' . $fila, $item1->VIA_INGRESO);
-            $sheet->setCellValue('M' . $fila, $item1->CLASIFICACION_RIESGO);
-            $sheet->setCellValue('N' . $fila, $item1->PPT);
-            $sheet->setCellValue('O' . $fila, $item1->CT);
+            $sheet->setCellValue('G' . $fila, $item1->NUM_CAS);
+            $sheet->setCellValue('H' . $fila, $item1->TEM_EBULLICION);
+            $sheet->setCellValue('I' . $fila, $item1->PM);
+            $sheet->setCellValue('J' . $fila, $item1->catestadofisicosustancia_estado);
+            $sheet->setCellValue('K' . $fila, $item1->catvolatilidad_tipo);
 
+            $sheet->setCellValue('L' . $fila, $VIA_INGRESO);
+            $sheet->setCellValue('M' . $fila, $CLASIFICACION_RIESGO);
+            $sheet->setCellValue('N' . $fila, $PPT);
+            $sheet->setCellValue('O' . $fila, $CT);
 
             $sustanciaAnterior = $sustancia;
 
@@ -2076,15 +2048,66 @@ class recsensorialController extends Controller
             ];
         }
 
+
+        $datos7 = [];
+
+        foreach ($sql7 as $item7) {
+
+            $clave = trim($item7->PRODUCTO) . '|' . trim($item7->COMPONENTE);
+
+            $datos7[$clave][] = [
+                'CATEGORIA'  => $item7->CATEGORIA,
+                'ACTIVIDAD'  => $item7->ACTIVIDAD,
+                'POE'        => $item7->POE,
+                'FRECUENCIA' => $item7->FRECUENCIA,
+                'JORNADA'    => $item7->JORNADA
+            ];
+        }
+
+
+        $datosArea2 = [];
+
+        foreach ($sql3 as $item3) {
+
+            $productoArea = trim($item3->agente);
+
+            if (!isset($datosArea2[$productoArea])) {
+
+                $datosArea2[$productoArea] = [
+                    'AREA' => [],
+                    'FUENTE' => []
+                ];
+            }
+
+            $datosArea2[$productoArea]['AREA'][] = $item3->recsensorialarea_nombre;
+            $datosArea2[$productoArea]['FUENTE'][] = $item3->recsensorialmaquinaria_nombre;
+        }
+
+
         $fila2 = 8;
 
         $productoAnterior = '';
+        $componenteAnterior = '';
+        $areaAnterior = '';
 
-        foreach ($sql7 as $item7) {
-            $producto = trim($item7->PRODUCTO);
-            $componente = trim($item7->COMPONENTE);
+
+        foreach ($sql1 as $item1) {
+
+            $producto = trim($item1->catsustancia_nombre);
+            $componente = trim($item1->SUSTANCIA_QUIMICA);
 
             $clave = $producto . '|' . $componente;
+
+            $area = '';
+
+            if (isset($datosArea2[$producto])) {
+
+                $area = implode(
+                    "\n",
+                    array_unique($datosArea2[$producto]['AREA'])
+                );
+            }
+
 
             $ponderacionCantidad = '';
             $ponderacionClasificacion = '';
@@ -2094,6 +2117,7 @@ class recsensorialController extends Controller
             $color = 'FFFFFF';
 
             if (isset($datos4[$clave])) {
+
                 $ponderacionCantidad = $datos4[$clave]['PONDERACION_CANTIDAD'];
                 $ponderacionClasificacion = $datos4[$clave]['PONDERACION_CLASIFICACION'];
                 $ponderacionVolatilidad = $datos4[$clave]['PONDERACION_VOLATILIDAD'];
@@ -2106,56 +2130,151 @@ class recsensorialController extends Controller
             $unidad = '';
 
             if (isset($datos5[$producto])) {
+
                 $cantidad = $datos5[$producto]['CANTIDAD'];
                 $unidad = $datos5[$producto]['UNIDAD'];
             }
+
 
             $operador = '';
             $porcentaje = '';
 
             if (isset($datos6[$clave])) {
+
                 $operador = $datos6[$clave]['OPERADOR'];
                 $porcentaje = $datos6[$clave]['PORCENTAJE'];
             }
 
 
-            if ($productoAnterior != $producto) {
-                $sheet2->setCellValue('D' . $fila2, $item7->AREA);
-                $sheet2->setCellValue('E' . $fila2, $producto);
-                $sheet2->setCellValue('G' . $fila2, $cantidad);
-                $sheet2->setCellValue('H' . $fila2, $unidad);
-                $sheet2->setCellValue('J' . $fila2,$cantidad . ' ' . $unidad);
+            if (isset($datos7[$clave])) {
+
+                foreach ($datos7[$clave] as $grupo) {
+
+                    if ($areaAnterior != $area) {
+
+                        $sheet2->setCellValue('D' . $fila2, $area);
+                    } else {
+
+                        $sheet2->setCellValue('D' . $fila2, '');
+                    }
+
+
+                    if ($productoAnterior != $producto) {
+
+                        $sheet2->setCellValue('E' . $fila2, $producto);
+
+                        $sheet2->setCellValue('G' . $fila2, $cantidad);
+                        $sheet2->setCellValue('H' . $fila2, $unidad);
+                        $sheet2->setCellValue('J' . $fila2, $cantidad . ' ' . $unidad);
+                    } else {
+
+                        $sheet2->setCellValue('E' . $fila2, '');
+                        $sheet2->setCellValue('G' . $fila2, '');
+                        $sheet2->setCellValue('H' . $fila2, '');
+                        $sheet2->setCellValue('J' . $fila2, '');
+                    }
+
+
+                    if ($componenteAnterior != $componente) {
+
+                        $sheet2->setCellValue('F' . $fila2, $componente);
+
+                        $sheet2->setCellValue('I' . $fila2, $operador . $porcentaje);
+
+                        $sheet2->setCellValue('K' . $fila2, $ponderacionCantidad);
+                        $sheet2->setCellValue('L' . $fila2, $ponderacionClasificacion);
+                        $sheet2->setCellValue('M' . $fila2, $ponderacionVolatilidad);
+                        $sheet2->setCellValue('N' . $fila2, $sumaPonderaciones);
+
+                        $sheet2->setCellValue('O' . $fila2, $prioridad);
+
+                        $sheet2->getStyle('O' . $fila2)
+                            ->getFill()
+                            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+
+                        $sheet2->getStyle('O' . $fila2)
+                            ->getFill()
+                            ->getStartColor()
+                            ->setARGB($color);
+                    } else {
+
+                        $sheet2->setCellValue('F' . $fila2, '');
+                        $sheet2->setCellValue('I' . $fila2, '');
+
+                        $sheet2->setCellValue('K' . $fila2, '');
+                        $sheet2->setCellValue('L' . $fila2, '');
+                        $sheet2->setCellValue('M' . $fila2, '');
+                        $sheet2->setCellValue('N' . $fila2, '');
+
+                        $sheet2->setCellValue('O' . $fila2, '');
+                    }
+
+
+                    $sheet2->setCellValue('P' . $fila2, $grupo['CATEGORIA']);
+                    $sheet2->setCellValue('Q' . $fila2, $grupo['ACTIVIDAD']);
+                    $sheet2->setCellValue('R' . $fila2, $grupo['POE']);
+                    $sheet2->setCellValue('T' . $fila2, $grupo['FRECUENCIA']);
+                    $sheet2->setCellValue('U' . $fila2, $grupo['JORNADA']);
+
+
+                    $areaAnterior = $area;
+                    $productoAnterior = $producto;
+                    $componenteAnterior = $componente;
+
+                    $fila2++;
+                }
+            } else {
+
+                if ($areaAnterior != $area) {
+
+                    $sheet2->setCellValue('D' . $fila2, $area);
+                }
+
+                if ($productoAnterior != $producto) {
+
+                    $sheet2->setCellValue('E' . $fila2, $producto);
+
+                    $sheet2->setCellValue('G' . $fila2, $cantidad);
+                    $sheet2->setCellValue('H' . $fila2, $unidad);
+                    $sheet2->setCellValue('J' . $fila2, $cantidad . ' ' . $unidad);
+                }
+
+                if ($componenteAnterior != $componente) {
+
+                    $sheet2->setCellValue('F' . $fila2, $componente);
+
+                    $sheet2->setCellValue('I' . $fila2, $operador . $porcentaje);
+
+                    $sheet2->setCellValue('K' . $fila2, $ponderacionCantidad);
+                    $sheet2->setCellValue('L' . $fila2, $ponderacionClasificacion);
+                    $sheet2->setCellValue('M' . $fila2, $ponderacionVolatilidad);
+                    $sheet2->setCellValue('N' . $fila2, $sumaPonderaciones);
+
+                    $sheet2->setCellValue('O' . $fila2, $prioridad);
+
+                    $sheet2->getStyle('O' . $fila2)
+                        ->getFill()
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+
+                    $sheet2->getStyle('O' . $fila2)
+                        ->getFill()
+                        ->getStartColor()
+                        ->setARGB($color);
+                }
+
+                $areaAnterior = $area;
+                $productoAnterior = $producto;
+                $componenteAnterior = $componente;
+
+                $fila2++;
             }
-
-
-            $sheet2->setCellValue('F'.$fila2,$componente);
-            $sheet2->setCellValue('I'.$fila2,$operador.$porcentaje);
-            $sheet2->setCellValue('K'.$fila2,$ponderacionCantidad);
-            $sheet2->setCellValue('L'.$fila2,$ponderacionClasificacion);
-            $sheet2->setCellValue('M'.$fila2,$ponderacionVolatilidad);
-            $sheet2->setCellValue('N'.$fila2,$sumaPonderaciones);
-            $sheet2->setCellValue('O'.$fila2,$prioridad);
-            $sheet2->setCellValue('P'.$fila2,$item7->CATEGORIA);
-            $sheet2->setCellValue('Q'.$fila2,$item7->ACTIVIDAD);
-            $sheet2->setCellValue('R'.$fila2,$item7->POE);
-            $sheet2->setCellValue('T'.$fila2,$item7->FRECUENCIA);
-            $sheet2->setCellValue('U'.$fila2,$item7->JORNADA);
-
-            $sheet2->getStyle('O' . $fila2)
-                ->getFill()
-                ->setFillType(
-                    \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID
-                );
-
-            $sheet2->getStyle('O' . $fila2)
-                ->getFill()
-                ->getStartColor()
-                ->setARGB($color);
-
-            $productoAnterior = $producto;
-
-            $fila2++;
         }
+
+
+
+
+
+
 
 
         /*
@@ -2306,55 +2425,131 @@ class recsensorialController extends Controller
                     ", [$id]);
 
 
-            if (!empty($sql31))
-            {
-                $clasificacion = 'xxx';
-                $producto = 'xxx';
-                $area = 'xxx';
 
-                foreach ($sql31 as $item31)
-                {
+        $datos31 = [];
 
-                    if ($clasificacion != $item31->CLASIFICACION)
-                    {
-                        $producto = 'xxx';
-                        $area = 'xxx';
-                    }
+        foreach ($sql31 as $item31) {
 
-                    if ($producto != $item31->catsustancia_nombre) {
-                        if ($area != $item31->AREA) {
-                            $sheet31->setCellValue('D' . $fila31,$item31->AREA);
-                            $area = $item31->AREA;
-                        }
-                        $sheet31->setCellValue('E' . $fila31,$item31->catsustancia_nombre);
-                        $producto = $item31->catsustancia_nombre;
-                    }
+            $clave = trim($item31->catsustancia_nombre) . '|' . trim($item31->SUSTANCIA_QUIMICA);
 
-                    $sheet31->setCellValue('F' . $fila31,$item31->SUSTANCIA_QUIMICA);
-                    $sheet31->setCellValue('G' . $fila31,$item31->PONDERACION_INGRESO);
-                    $sheet31->setCellValue('H' . $fila31,$item31->PONDERACION_POE);
-                    $sheet31->setCellValue('I' . $fila31,$item31->PONDERACION_EXPOSICION);
-                    $sheet31->setCellValue('J' . $fila31,$item31->SUMA_PONDERACIONES);
-                    $sheet31->setCellValue('K' . $fila31,$item31->PRIORIDAD);
-                    $sheet31->setCellValue('L' . $fila31,$item31->CATEGORIA);
-                    $sheet31->setCellValue('M' . $fila31,$item31->NUM_POE);
-                    $sheet31->getStyle('K' . $fila31)
-                        ->getFill()
-                        ->setFillType(
-                            \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID
-                        );
+            $datos31[$clave][] = [
+                'CATEGORIA' => $item31->CATEGORIA,
+                'PONDERACION_INGRESO' => $item31->PONDERACION_INGRESO,
+                'PONDERACION_POE' => $item31->PONDERACION_POE,
+                'PONDERACION_EXPOSICION' => $item31->PONDERACION_EXPOSICION,
+                'SUMA_PONDERACIONES' => $item31->SUMA_PONDERACIONES,
+                'PRIORIDAD' => $item31->PRIORIDAD,
+                'NUM_POE' => $item31->NUM_POE,
+                'COLOR' => $item31->COLOR
+            ];
+        }
 
-                    $sheet31->getStyle('K' . $fila31)
-                        ->getFill()
-                        ->getStartColor()
-                        ->setARGB(
-                            str_replace('#', '', $item31->COLOR)
-                        );
-                    $clasificacion = $item31->CLASIFICACION;
 
-                    $fila31++;
-                }
+
+
+        $productoAnterior31 = '';
+        $componenteAnterior31 = '';
+        $areaAnterior31 = '';
+
+        foreach ($sql1 as $item1) {
+
+            $producto = trim($item1->catsustancia_nombre);
+            $componente = trim($item1->SUSTANCIA_QUIMICA);
+
+            $clave = $producto . '|' . $componente;
+
+            $area = '';
+
+            if (isset($datosArea2[$producto])) {
+
+                $area = implode(
+                    "\n",
+                    array_unique($datosArea2[$producto]['AREA'])
+                );
             }
+
+
+            if (!isset($datos31[$clave])) {
+
+                $datos31[$clave][] = [
+                    'CATEGORIA' => '',
+                    'PONDERACION_INGRESO' => '',
+                    'PONDERACION_POE' => '',
+                    'PONDERACION_EXPOSICION' => '',
+                    'SUMA_PONDERACIONES' => '',
+                    'PRIORIDAD' => '',
+                    'NUM_POE' => '',
+                    'COLOR' => 'FFFFFF'
+                ];
+            }
+
+            foreach ($datos31[$clave] as $grupo) {
+
+                if ($areaAnterior31 != $area) {
+
+                    $sheet31->setCellValue('D' . $fila31, $area);
+                } else {
+
+                    $sheet31->setCellValue('D' . $fila31, '');
+                }
+
+
+                if ($productoAnterior31 != $producto) {
+
+                    $sheet31->setCellValue('E' . $fila31, $producto);
+                } else {
+
+                    $sheet31->setCellValue('E' . $fila31, '');
+                }
+
+
+                if ($componenteAnterior31 != $componente) {
+
+                    $sheet31->setCellValue('F' . $fila31, $componente);
+
+                    $sheet31->setCellValue('G' . $fila31, $grupo['PONDERACION_INGRESO']);
+                    $sheet31->setCellValue('H' . $fila31, $grupo['PONDERACION_POE']);
+                    $sheet31->setCellValue('I' . $fila31, $grupo['PONDERACION_EXPOSICION']);
+                    $sheet31->setCellValue('J' . $fila31, $grupo['SUMA_PONDERACIONES']);
+                    $sheet31->setCellValue('K' . $fila31, $grupo['PRIORIDAD']);
+
+                    if ($grupo['COLOR'] != '') {
+
+                        $sheet31->getStyle('K' . $fila31)
+                            ->getFill()
+                            ->setFillType(
+                                \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID
+                            );
+
+                        $sheet31->getStyle('K' . $fila31)
+                            ->getFill()
+                            ->getStartColor()
+                            ->setARGB(
+                                str_replace('#', '', $grupo['COLOR'])
+                            );
+                    }
+                } else {
+
+                    $sheet31->setCellValue('F' . $fila31, '');
+                    $sheet31->setCellValue('G' . $fila31, '');
+                    $sheet31->setCellValue('H' . $fila31, '');
+                    $sheet31->setCellValue('I' . $fila31, '');
+                    $sheet31->setCellValue('J' . $fila31, '');
+                    $sheet31->setCellValue('K' . $fila31, '');
+                }
+
+
+                $sheet31->setCellValue('L' . $fila31, $grupo['CATEGORIA']);
+                $sheet31->setCellValue('M' . $fila31, $grupo['NUM_POE']);
+
+                $areaAnterior31 = $area;
+                $productoAnterior31 = $producto;
+                $componenteAnterior31 = $componente;
+
+                $fila31++;
+            }
+        }
+
 
 
         /*
@@ -2374,13 +2569,12 @@ class recsensorialController extends Controller
 
         $sql41 = DB::table('recsensorialarea as area')
             ->join(
-                'recsensorialareapruebas as pruebas',
-                'pruebas.recsensorialarea_id',
+                'recsensorialmaquinaria as maq',
+                'maq.recsensorialarea_id',
                 '=',
                 'area.id'
             )
-            ->where('area.recsensorial_id', $id)
-            ->where('pruebas.catprueba_id', 15)
+            ->where('maq.recsensorial_id', $id)
             ->select('area.*')
             ->distinct()
             ->orderBy('area.id', 'asc')
@@ -2660,37 +2854,6 @@ class recsensorialController extends Controller
                 $recsensorial_activo = 0;
 
 
-                // formatear campos fechas antes de guardar
-                // $request['recsensorial_fechainicio'] = Carbon::createFromFormat('d-m-Y', $request['recsensorial_fechainicio'])->format('Y-m-d');
-                // $request['recsensorial_fechafin'] = Carbon::createFromFormat('d-m-Y', $request['recsensorial_fechafin'])->format('Y-m-d');
-
-
-                // if (($request->recsensorial_alcancefisico + 0) == 0) {
-                //     // Eliminar carpeta si acaso existio
-                //     Storage::deleteDirectory('recsensorial/' . $request->recsensorial_id . '/responsables/rec_fisicos');
-
-                //     $request['recsensorial_repfisicos1nombre'] = NULL;
-                //     $request['recsensorial_repfisicos1cargo'] = NULL;
-                //     $request['recsensorial_repfisicos1doc'] = NULL;
-                //     $request['recsensorial_repfisicos2nombre'] = NULL;
-                //     $request['recsensorial_repfisicos2cargo'] = NULL;
-                //     $request['recsensorial_repfisicos2doc'] = NULL;
-                // }
-
-                // if (($request->recsensorial_alcancequimico + 0) == 0) {
-                //     // Eliminar carpeta si acaso existio
-                //     Storage::deleteDirectory('recsensorial/' . $request->recsensorial_id . '/responsables/rec_quimicos');
-
-                //     $request['recsensorial_repquimicos1nombre'] = NULL;
-                //     $request['recsensorial_repquimicos1cargo'] = NULL;
-                //     $request['recsensorial_repquimicos1doc'] = NULL;
-                //     $request['recsensorial_repquimicos2nombre'] = NULL;
-                //     $request['recsensorial_repquimicos2cargo'] = NULL;
-                //     $request['recsensorial_repquimicos2doc'] = NULL;
-                // }
-
-
-
                 if (($request->recsensorial_alcancefisico + 0) == 0) {
                    
                 }
@@ -2887,112 +3050,204 @@ class recsensorialController extends Controller
                     $recsensorial_activo = 1;
                 } else { //EDITAR 
 
+                    // // Obtener registro
+                    // $recsensorial = recsensorialModel::findOrFail($request->recsensorial_id);
+
+                    // // consultar ID ultimo registro de la tabla
+                    // $recsensorial_idmax = DB::select('SELECT
+                    //                                         MAX( recsensorial.id ) AS recsensorial_idmax
+                    //                                     FROM
+                    //                                         recsensorial
+                    //                                     WHERE
+                    //                                         recsensorial.recsensorial_eliminado = 0');
+
+                    // // Validar que sea el ultimo ID, y permita editar folios
+                    // if (($recsensorial_idmax[0]->recsensorial_idmax + 0) === ($request->recsensorial_id + 0)) {
+                    //     // En caso de ser el ultimo rsgistro de la base de datos, consultar modificar folios
+                    //     $folio = DB::select('SELECT
+                    //                             (COUNT(IF(recsensorial.recsensorial_alcancefisico = 1, 1, NULL)) + 1) AS folio_fisicocompleto,
+                    //                             (COUNT(IF(recsensorial.recsensorial_alcancequimico = 1, 1, NULL)) + 1) AS folio_quimicocompleto,
+                    //                             (COUNT(IF(recsensorial.recsensorial_alcancefisico = 2, 1, NULL)) + 1) AS folio_fisicoincompleto,
+                    //                             (COUNT(IF(recsensorial.recsensorial_alcancequimico = 2, 1, NULL)) + 1) AS folio_quimicoincompleto
+                    //                         FROM
+                    //                             recsensorial
+                    //                         WHERE
+                    //                             DATE_FORMAT(recsensorial.created_at, "%Y") = DATE_FORMAT(CURDATE(), "%Y") 
+                    //                             AND recsensorial.id != ' . ($request->recsensorial_id + 0) . '
+                    //                             AND recsensorial.recsensorial_eliminado = 0');
+
+                    //     // Validar si envía Reconocimiento de fisicos
+                    //     $foliofisico = "";
+                    //     if (($request['recsensorial_alcancefisico'] + 0) > 0) {
+                    //         if (($request['recsensorial_alcancefisico'] + 0) == 1) //reconocimiento de fisicos COMPLETO
+                    //         {
+                    //             switch ($folio[0]->folio_fisicocompleto) {
+                    //                 case ($folio[0]->folio_fisicocompleto < 10):
+                    //                     $foliofisico = "RES-RS-" . $ano . "-00" . $folio[0]->folio_fisicocompleto;
+                    //                     break;
+                    //                 case ($folio[0]->folio_fisicocompleto < 100):
+                    //                     $foliofisico = "RES-RS-" . $ano . "-0" . $folio[0]->folio_fisicocompleto;
+                    //                     break;
+                    //                 default:
+                    //                     $foliofisico = "RES-RS-" . $ano . "-" . $folio[0]->folio_fisicocompleto;
+                    //                     break;
+                    //             }
+                    //         } else //reconocimiento de fisicos INCOMPLETO
+                    //         {
+                    //             switch ($folio[0]->folio_fisicoincompleto) {
+                    //                 case ($folio[0]->folio_fisicoincompleto < 10):
+                    //                     $foliofisico = "RES-RS-" . $ano . "-00" . $folio[0]->folio_fisicoincompleto;
+                    //                     break;
+                    //                 case ($folio[0]->folio_fisicoincompleto < 100):
+                    //                     $foliofisico = "RES-RS-" . $ano . "-0" . $folio[0]->folio_fisicoincompleto;
+                    //                     break;
+                    //                 default:
+                    //                     $foliofisico = "RES-RS-" . $ano . "-" . $folio[0]->folio_fisicoincompleto;
+                    //                     break;
+                    //             }
+                    //         }
+
+                    //         // Asignar folio
+                    //         $request['recsensorial_foliofisico'] = $foliofisico;
+                    //     } else {
+                    //         // Asignar folio
+                    //         $request['recsensorial_foliofisico'] = NULL;
+                    //     }
+
+                    //     // Validar si envía Reconocimiento de Quimicos
+                    //     $folioquimico = "";
+                    //     if (($request['recsensorial_alcancequimico'] + 0) > 0) {
+                    //         if (($request['recsensorial_alcancequimico'] + 0) == 1) //reconocimiento de Quimicos COMPLETO
+                    //         {
+                    //             switch ($folio[0]->folio_quimicocompleto) {
+                    //                 case ($folio[0]->folio_quimicocompleto < 10):
+                    //                     $folioquimico = "RES-RQ-" . $ano . "-00" . $folio[0]->folio_quimicocompleto;
+                    //                     break;
+                    //                 case ($folio[0]->folio_quimicocompleto < 100):
+                    //                     $folioquimico = "RES-RQ-" . $ano . "-0" . $folio[0]->folio_quimicocompleto;
+                    //                     break;
+                    //                 default:
+                    //                     $folioquimico = "RES-RQ-" . $ano . "-" . $folio[0]->folio_quimicocompleto;
+                    //                     break;
+                    //             }
+                    //         } else //reconocimiento de Quimicos INCOMPLETO
+                    //         {
+                    //             switch ($folio[0]->folio_quimicoincompleto) {
+                    //                 case ($folio[0]->folio_quimicoincompleto < 10):
+                    //                     $folioquimico = "RES-RQ-" . $ano . "-00" . $folio[0]->folio_quimicoincompleto;
+                    //                     break;
+                    //                 case ($folio[0]->folio_quimicoincompleto < 100):
+                    //                     $folioquimico = "RES-RQ-" . $ano . "-0" . $folio[0]->folio_quimicoincompleto;
+                    //                     break;
+                    //                 default:
+                    //                     $folioquimico = "RES-RQ-" . $ano . "-" . $folio[0]->folio_quimicoincompleto;
+                    //                     break;
+                    //             }
+                    //         }
+
+                    //         // Asignar folio
+                    //         $request['recsensorial_folioquimico'] = $folioquimico;
+                    //     } else {
+                    //         // Asignar folio
+                    //         $request['recsensorial_folioquimico'] = NULL;
+                    //     }
+                    // } else {
+                    //     $request['recsensorial_alcancefisico'] = $recsensorial->recsensorial_alcancefisico;
+                    //     $request['recsensorial_alcancequimico'] = $recsensorial->recsensorial_alcancequimico;
+                    // }
+
+
                     // Obtener registro
                     $recsensorial = recsensorialModel::findOrFail($request->recsensorial_id);
 
-                    // consultar ID ultimo registro de la tabla
-                    $recsensorial_idmax = DB::select('SELECT
-                                                            MAX( recsensorial.id ) AS recsensorial_idmax
-                                                        FROM
-                                                            recsensorial
-                                                        WHERE
-                                                            recsensorial.recsensorial_eliminado = 0');
 
-                    // Validar que sea el ultimo ID, y permita editar folios
-                    if (($recsensorial_idmax[0]->recsensorial_idmax + 0) === ($request->recsensorial_id + 0)) {
-                        // En caso de ser el ultimo rsgistro de la base de datos, consultar modificar folios
-                        $folio = DB::select('SELECT
-                                                (COUNT(IF(recsensorial.recsensorial_alcancefisico = 1, 1, NULL)) + 1) AS folio_fisicocompleto,
-                                                (COUNT(IF(recsensorial.recsensorial_alcancequimico = 1, 1, NULL)) + 1) AS folio_quimicocompleto,
-                                                (COUNT(IF(recsensorial.recsensorial_alcancefisico = 2, 1, NULL)) + 1) AS folio_fisicoincompleto,
-                                                (COUNT(IF(recsensorial.recsensorial_alcancequimico = 2, 1, NULL)) + 1) AS folio_quimicoincompleto
-                                            FROM
-                                                recsensorial
-                                            WHERE
-                                                DATE_FORMAT(recsensorial.created_at, "%Y") = DATE_FORMAT(CURDATE(), "%Y") 
-                                                AND recsensorial.id != ' . ($request->recsensorial_id + 0) . '
-                                                AND recsensorial.recsensorial_eliminado = 0');
+                    // Consultar folios existentes (excluyendo el registro actual)
+                    $folio = DB::select('SELECT
+                            (COUNT(IF(recsensorial.recsensorial_alcancefisico = 1, 1, NULL)) + 1) AS folio_fisicocompleto,
+                            (COUNT(IF(recsensorial.recsensorial_alcancequimico = 1, 1, NULL)) + 1) AS folio_quimicocompleto,
+                            (COUNT(IF(recsensorial.recsensorial_alcancefisico = 2, 1, NULL)) + 1) AS folio_fisicoincompleto,
+                            (COUNT(IF(recsensorial.recsensorial_alcancequimico = 2, 1, NULL)) + 1) AS folio_quimicoincompleto,
+                            (COUNT(IF(recsensorial.recsensorial_alcancequimico = 3, 1, NULL)) + 1) AS folio_quimicotercero
+                    FROM
+                            recsensorial
+                    WHERE
+                            DATE_FORMAT(recsensorial.created_at, "%Y") = DATE_FORMAT(CURDATE(), "%Y")
+                            AND recsensorial.id != ' . ($request->recsensorial_id + 0) . '
+                            AND recsensorial.recsensorial_eliminado = 0');
 
-                        // Validar si envía Reconocimiento de fisicos
-                        $foliofisico = "";
-                        if (($request['recsensorial_alcancefisico'] + 0) > 0) {
-                            if (($request['recsensorial_alcancefisico'] + 0) == 1) //reconocimiento de fisicos COMPLETO
-                            {
+
+                    // ===================== FISICOS =====================
+                    if (($request['recsensorial_alcancefisico'] + 0) > 0) {
+                        // Si ya tiene folio se conserva
+                        if ($recsensorial->recsensorial_foliofisico) {
+                            $request['recsensorial_foliofisico'] = $recsensorial->recsensorial_foliofisico;
+                        } else {
+                            // Se genera uno nuevo
+                            if (($request['recsensorial_alcancefisico'] + 0) == 1) {
                                 switch ($folio[0]->folio_fisicocompleto) {
                                     case ($folio[0]->folio_fisicocompleto < 10):
                                         $foliofisico = "RES-RS-" . $ano . "-00" . $folio[0]->folio_fisicocompleto;
                                         break;
+
                                     case ($folio[0]->folio_fisicocompleto < 100):
                                         $foliofisico = "RES-RS-" . $ano . "-0" . $folio[0]->folio_fisicocompleto;
                                         break;
+
                                     default:
                                         $foliofisico = "RES-RS-" . $ano . "-" . $folio[0]->folio_fisicocompleto;
                                         break;
                                 }
-                            } else //reconocimiento de fisicos INCOMPLETO
-                            {
+                            } else {
                                 switch ($folio[0]->folio_fisicoincompleto) {
                                     case ($folio[0]->folio_fisicoincompleto < 10):
                                         $foliofisico = "RES-RS-" . $ano . "-00" . $folio[0]->folio_fisicoincompleto;
                                         break;
+
                                     case ($folio[0]->folio_fisicoincompleto < 100):
                                         $foliofisico = "RES-RS-" . $ano . "-0" . $folio[0]->folio_fisicoincompleto;
                                         break;
+
                                     default:
                                         $foliofisico = "RES-RS-" . $ano . "-" . $folio[0]->folio_fisicoincompleto;
                                         break;
                                 }
                             }
 
-                            // Asignar folio
                             $request['recsensorial_foliofisico'] = $foliofisico;
-                        } else {
-                            // Asignar folio
-                            $request['recsensorial_foliofisico'] = NULL;
                         }
+                    } else {
+                        $request['recsensorial_foliofisico'] = null;
+                    }
 
-                        // Validar si envía Reconocimiento de Quimicos
-                        $folioquimico = "";
-                        if (($request['recsensorial_alcancequimico'] + 0) > 0) {
-                            if (($request['recsensorial_alcancequimico'] + 0) == 1) //reconocimiento de Quimicos COMPLETO
-                            {
+
+                    // ===================== QUIMICOS =====================
+                    if (($request['recsensorial_alcancequimico'] + 0) > 0) {
+                        // Si ya tiene folio se conserva
+                        if ($recsensorial->recsensorial_folioquimico) {
+                            $request['recsensorial_folioquimico'] = $recsensorial->recsensorial_folioquimico;
+                        } else {
+                            if (($request['recsensorial_alcancequimico'] + 0) == 1) {
                                 switch ($folio[0]->folio_quimicocompleto) {
                                     case ($folio[0]->folio_quimicocompleto < 10):
                                         $folioquimico = "RES-RQ-" . $ano . "-00" . $folio[0]->folio_quimicocompleto;
                                         break;
+
                                     case ($folio[0]->folio_quimicocompleto < 100):
                                         $folioquimico = "RES-RQ-" . $ano . "-0" . $folio[0]->folio_quimicocompleto;
                                         break;
+
                                     default:
                                         $folioquimico = "RES-RQ-" . $ano . "-" . $folio[0]->folio_quimicocompleto;
                                         break;
                                 }
-                            } else //reconocimiento de Quimicos INCOMPLETO
-                            {
-                                switch ($folio[0]->folio_quimicoincompleto) {
-                                    case ($folio[0]->folio_quimicoincompleto < 10):
-                                        $folioquimico = "RES-RQ-" . $ano . "-00" . $folio[0]->folio_quimicoincompleto;
-                                        break;
-                                    case ($folio[0]->folio_quimicoincompleto < 100):
-                                        $folioquimico = "RES-RQ-" . $ano . "-0" . $folio[0]->folio_quimicoincompleto;
-                                        break;
-                                    default:
-                                        $folioquimico = "RES-RQ-" . $ano . "-" . $folio[0]->folio_quimicoincompleto;
-                                        break;
-                                }
                             }
 
-                            // Asignar folio
                             $request['recsensorial_folioquimico'] = $folioquimico;
-                        } else {
-                            // Asignar folio
-                            $request['recsensorial_folioquimico'] = NULL;
                         }
                     } else {
-                        $request['recsensorial_alcancefisico'] = $recsensorial->recsensorial_alcancefisico;
-                        $request['recsensorial_alcancequimico'] = $recsensorial->recsensorial_alcancequimico;
+                        $request['recsensorial_folioquimico'] = null;
                     }
-
+                    
                     // checkbox validacion químicos
                     if ($request->recsensorial_quimicovalidado != null) {
                         $request['recsensorial_quimicovalidado'] = 1;

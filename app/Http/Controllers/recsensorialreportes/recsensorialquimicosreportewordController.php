@@ -452,8 +452,8 @@ class recsensorialquimicosreportewordController extends Controller
 
             $folio = $recsensorial[0]->recsensorial_folioquimico;
         } else {
-            $folio = $recsensorial[0]->recsensorial_folioquimico. " - Rev ".$numeroVersiones;
-          
+            // $folio = $recsensorial[0]->recsensorial_folioquimico. " - Rev ".$numeroVersiones;
+            $folio = $recsensorial[0]->recsensorial_folioquimico;
         }
         
 

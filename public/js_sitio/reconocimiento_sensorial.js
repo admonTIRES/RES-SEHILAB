@@ -2940,7 +2940,10 @@ function bloquearBotones() {
 		"boton_guardarDatosInforme",
 		"boton_guardarRecomendaciones",
 		"boton_guardarTablaInformes",
-		"boton_guardarTablaClienteInformes"
+		"boton_guardarTablaClienteInformes",
+		"boton_guardar_equipopp",
+		
+		
 	];
 
 	botones.forEach(id => {
@@ -2976,7 +2979,9 @@ function desbloquearBotones() {
 		"boton_guardarDatosInforme",
 		"boton_guardarRecomendaciones",
 		"boton_guardarTablaInformes",
-		"boton_guardarTablaClienteInformes"
+		"boton_guardarTablaClienteInformes",
+		"boton_guardar_equipopp",
+
 	];
 
 	botones.forEach(id => {
@@ -13228,8 +13233,8 @@ $('#boton_descargarquimicosdoc_final').on('click', function (e) {
 
 
 
-$("#boton_descargarvalidacion").click(function(){
+$("#boton_descargarvalidacion").click(function () {
 
-    window.location.href = '/descargarExcelRecoQuimico/' + recsensorial;
+    window.open('/descargarExcelRecoQuimico/' + recsensorial, '_blank');
 
 });
