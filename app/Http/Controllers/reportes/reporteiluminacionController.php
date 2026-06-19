@@ -6146,7 +6146,7 @@ class reporteiluminacionController extends Controller
                             // Buscar ID de la categoría por nombre y proyecto
                             $categoria = DB::table('reportecategoria')
                                 ->where('proyecto_id', $request['proyecto_id'])
-                                ->where('reportecategoria_nombre', trim($rowData['I']))
+                                ->where('reportecategoria_nombre', trim($rowData['J']))
                                 ->first();
 
                             $categoria_id = $categoria ? $categoria->id : null;
@@ -6160,17 +6160,19 @@ class reporteiluminacionController extends Controller
                                 'reporteiluminacionpuntos_categoria_id' => $categoria_id,
                                 'reporteiluminacionpuntos_nombre' => 'NP',
                                 'reporteiluminacionpuntos_ficha' => 'NP',
-                                'reporteiluminacionpuntos_nopoe' => is_null($rowData['H']) ? 1 : limpiarPOE($rowData['H']),
+                                'reporteiluminacionpuntos_nopoe' => is_null($rowData['I']) ? 1 : limpiarPOE($rowData['I']), 
                                 'reporteiluminacionpuntos_nopunto' => is_null($rowData['A']) ? null : intval($rowData['A']),
                                 'reporteiluminacionpuntos_fechaeval' => is_null($rowData['B']) ? null : validarFecha($rowData['B']),
                                 'reporteiluminacionpuntos_horario1' => is_null($rowData['C']) ? null : formatearHora($rowData['C']),
                                 'reporteiluminacionpuntos_horario2' => is_null($rowData['D']) ? null :  formatearHora($rowData['D']),
                                 'reporteiluminacionpuntos_horario3' => is_null($rowData['E']) ? null : formatearHora($rowData['E']),
-                                'reporteiluminacionpuntos_concepto' => is_null($rowData['G']) ? 'NA' : $rowData['G'],
-                                'reporteiluminacionpuntos_lux' => is_null($rowData['J']) ? null : intval($rowData['J']),
-                                'reporteiluminacionpuntos_luxmed1' => is_null($rowData['K']) ? 0 : puntosLimpios($rowData['K']),
-                                'reporteiluminacionpuntos_luxmed2' => is_null($rowData['N']) ? 0 : puntosLimpios($rowData['N']),
-                                'reporteiluminacionpuntos_luxmed3' => is_null($rowData['Q']) ? 0 : puntosLimpios($rowData['Q']),
+                                // 'reporteiluminacionpuntos_concepto' => is_null($rowData['G']) ? 'NA' : $rowData['G'], 
+                                'reporteiluminacionpuntos_concepto' => (trim(($rowData['G'] ?? '') . ' ' . ($rowData['H'] ?? '')) == '')
+                                ? 'NA' : trim(($rowData['G'] ?? '') . ' ' . ($rowData['H'] ?? '')),
+                                'reporteiluminacionpuntos_lux' => is_null($rowData['K']) ? null : intval($rowData['K']), 
+                                'reporteiluminacionpuntos_luxmed1' => is_null($rowData['L']) ? 0 : puntosLimpios($rowData['L']), 
+                                'reporteiluminacionpuntos_luxmed2' => is_null($rowData['O']) ? 0 : puntosLimpios($rowData['O']),
+                                'reporteiluminacionpuntos_luxmed3' => is_null($rowData['R']) ? 0 : puntosLimpios($rowData['R']),
                                 'reporteiluminacionpuntos_luxmed1menor' => 0,
                                 'reporteiluminacionpuntos_luxmed2menor' => 0,
                                 'reporteiluminacionpuntos_luxmed3menor' => 0,
@@ -6179,12 +6181,12 @@ class reporteiluminacionController extends Controller
                                 'reporteiluminacionpuntos_luxmed3mayor' => 0,
                                 'reporteiluminacionpuntos_frp' => 60,
                                 'reporteiluminacionpuntos_frpt' => 50,
-                                'reporteiluminacionpuntos_frpmed1' => is_null($rowData['L']) ? null : limpiarFRP($rowData['L']),
-                                'reporteiluminacionpuntos_frpmed2' => is_null($rowData['O']) ? null : limpiarFRP($rowData['O']),
-                                'reporteiluminacionpuntos_frpmed3' => is_null($rowData['R']) ? null : limpiarFRP($rowData['R']),
-                                'reporteiluminacionpuntos_frptmed1' => is_null($rowData['M']) ? null : limpiarFRPT($rowData['M']),
-                                'reporteiluminacionpuntos_frptmed2' => is_null($rowData['P']) ? null : limpiarFRPT($rowData['P']),
-                                'reporteiluminacionpuntos_frptmed3' => is_null($rowData['S']) ? null : limpiarFRPT($rowData['S']),
+                                'reporteiluminacionpuntos_frpmed1' => is_null($rowData['M']) ? null : limpiarFRP($rowData['M']),
+                                'reporteiluminacionpuntos_frpmed2' => is_null($rowData['P']) ? null : limpiarFRP($rowData['P']),
+                                'reporteiluminacionpuntos_frpmed3' => is_null($rowData['S']) ? null : limpiarFRP($rowData['S']),
+                                'reporteiluminacionpuntos_frptmed1' => is_null($rowData['N']) ? null : limpiarFRPT($rowData['N']),
+                                'reporteiluminacionpuntos_frptmed2' => is_null($rowData['Q']) ? null : limpiarFRPT($rowData['Q']), 
+                                'reporteiluminacionpuntos_frptmed3' => is_null($rowData['T']) ? null : limpiarFRPT($rowData['T']),
 
                             ]);
 

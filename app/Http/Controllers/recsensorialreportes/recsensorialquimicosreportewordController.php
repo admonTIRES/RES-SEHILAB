@@ -1698,7 +1698,7 @@ class recsensorialquimicosreportewordController extends Controller
         $table->addCell(1400, $encabezado_celda)->addTextRun($centrado)->addText('PPT', $encabezado_texto);
         $table->addCell(1400, $encabezado_celda)->addTextRun($centrado)->addText('CT', $encabezado_texto);
         $table->addCell(1200, $continua_fila);
-        $table->addCell(2500, $continua_fila);
+        // $table->addCell(2500, $continua_fila);
 
         if (!empty($sql)) {
             // registros tabla

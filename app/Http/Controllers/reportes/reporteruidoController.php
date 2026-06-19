@@ -6573,7 +6573,7 @@ class reporteruidoController extends Controller
                                         'reporteruidopuntoner_RdB' => NULL,
                                         'reporteruidopuntoner_lmpe' => $lmpe,
                                         'reporteruidopuntoner_tmpe' => is_null($rowData['B']) ? 'NA' : calculartmpe($rowData['B']),
-                                        'reporteruidopuntoner_ubicacion' => $ubicaciones[$rowData['A']],
+                                        // 'reporteruidopuntoner_ubicacion' => $ubicaciones[$rowData['A']],
 
                                     ]);
 
@@ -6619,8 +6619,7 @@ class reporteruidoController extends Controller
                                         'reporteruidocategoria_id' => isset($IdCategorias[$rowData['E']]) ?  $IdCategorias[$rowData['E']] : null,
                                         'reporteruidodosisner_lmpe' => $lmpe,
                                         'reporteruidodosisner_tmpe' => is_null($rowData['C']) ? 'NA' : calculartmpe($rowData['C']),
-                                        'reporteruidodosisner_nombre' => is_null($rowData['F']) ? 'NA' : $rowData['F'],
-                                    ]);
+                                        'reporteruidodosisner_nombre' => isset($rowData['F']) ? $rowData['F'] : 'NA',                                    ]);
 
 
                                     $puntosInsertados++;
