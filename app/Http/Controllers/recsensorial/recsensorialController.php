@@ -3312,11 +3312,7 @@ class recsensorialController extends Controller
                     }
 
 
-                    //Activar que solo el ultimo registro agregado pueda ser editado
-                    if (($recsensorial_idmax[0]->recsensorial_idmax + 0) === ($request->recsensorial_id + 0)) //ultimo registro agregado
-                    {
-                        $recsensorial_activo = 1;
-                    }
+                  
 
                     ///VERIFICAMOS QUE EL FOLIO DEL PROYECTO QUE ENVIA SEA EL MISMO
                     if ($recsensorial->proyecto_folio == $request['proyecto_folio']) {
