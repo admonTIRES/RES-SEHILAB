@@ -2252,15 +2252,29 @@
 
                                         @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Operativo HI']))
 
-                                        <button type="button" class="btn btn-success" style="float: right; background: #5FB404!important; margin-left: 20px;" data-toggle="tooltip" title=" Descargar validación" id="boton_descargarvalidacion">
-                                            Descargar validación (excel)&nbsp;&nbsp;<i class="fa  fa-file-excel-o fa-1x"></i>
-                                        </button>
+                                        <div style="float: right;">
 
-                                        &nbsp;&nbsp;
+                                            <button type="button"
+                                                class="btn btn-success"
+                                                style="display: block; background: #5FB404 !important; margin-bottom: 10px;"
+                                                data-toggle="tooltip"
+                                                title="Descargar validación"
+                                                id="boton_descargarvalidacion">
+                                                Descargar validación (excel)
+                                                <i class="fa fa-file-excel-o"></i>
+                                            </button>
 
-                                        <button type="button" class="btn btn-info" style="float: right; background: #000!important; margin-left: 20px;" data-toggle="tooltip" title="Configurar informe sensorial de químicos .doc" id="boton_editarInforme">
-                                            Configurar informe (word)&nbsp;&nbsp;<i class="fa fa-file-word-o fa-1x"></i>
-                                        </button>
+                                            <button type="button"
+                                                class="btn btn-info"
+                                                style="display: block; background: #000 !important;"
+                                                data-toggle="tooltip"
+                                                title="Configurar informe sensorial de químicos .doc"
+                                                id="boton_editarInforme">
+                                                Configurar informe (word)
+                                                <i class="fa fa-file-word-o"></i>
+                                            </button>
+
+                                        </div>
 
 
 
@@ -2270,6 +2284,7 @@
                                         </button>
 
                                     </h4>
+                                    <br><br>
                                     <hr>
                                     <div class="row">
                                         <div class="col-12">

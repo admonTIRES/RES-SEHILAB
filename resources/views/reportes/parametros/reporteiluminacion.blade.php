@@ -994,8 +994,7 @@
 						<span class="btn-label"><i class="fa fa-plus"></i></span>Punto de iluminación
 					</button>
 
-
-					@if(auth()->user()->hasRoles(['Superusuario', 'Administrador']))
+					@if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador']))
 					<button type="button" class="btn btn-default waves-effect botoninforme" data-toggle="tooltip" title="Borrar todos los registros de la tabla de resultados" id="boton_borrar_registrosiluminacionpunto">
 						<span class="btn-label"><i class="fa fa-trash" aria-hidden="true"></i>
 						</span>Eliminar todos los puntos
@@ -2637,4 +2636,4 @@
 </script>
 
 <script src="/js_sitio/html2canvas.js"></script>
-<script src="/js_sitio/reportes/reporteiluminacion.js?v=7"></script>
+<script src="/js_sitio/reportes/reporteiluminacion.js?v=8"></script>

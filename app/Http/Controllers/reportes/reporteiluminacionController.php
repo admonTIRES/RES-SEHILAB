@@ -6158,8 +6158,8 @@ class reporteiluminacionController extends Controller
                                 'registro_id' => $request['registro_id'],
                                 'reporteiluminacionpuntos_area_id' => $area_id,
                                 'reporteiluminacionpuntos_categoria_id' => $categoria_id,
-                                'reporteiluminacionpuntos_nombre' => 'NP',
-                                'reporteiluminacionpuntos_ficha' => 'NP',
+                                'reporteiluminacionpuntos_nombre' => is_null($rowData['V']) ? null : $rowData['V'],
+                                'reporteiluminacionpuntos_ficha' => is_null($rowData['W']) ? null : $rowData['W'],
                                 'reporteiluminacionpuntos_nopoe' => is_null($rowData['I']) ? 1 : limpiarPOE($rowData['I']), 
                                 'reporteiluminacionpuntos_nopunto' => is_null($rowData['A']) ? null : intval($rowData['A']),
                                 'reporteiluminacionpuntos_fechaeval' => is_null($rowData['B']) ? null : validarFecha($rowData['B']),
@@ -6209,7 +6209,7 @@ class reporteiluminacionController extends Controller
 
                         return response()->json(["msj" => 'No se ha subido ningún archivo Excel', "code" => 500]);
                     }
-                } catch (Exception $e) {
+                } catch (\Throwable $e) {
 
                     return response()->json(['msj' => 'Se produjo un error al intentar cargar los puntos, inténtelo de nuevo o comuníquelo con el responsable ' . ' ---- ' . $e->getMessage(), 'code' => 500]);
                 }
