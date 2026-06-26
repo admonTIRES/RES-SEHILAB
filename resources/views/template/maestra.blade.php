@@ -1187,7 +1187,7 @@ use Illuminate\Support\Str;
     {{-- Select search filter --}}
     <script src="/assets/plugins/select-search/selectize.js" type="text/javascript"></script>
     {{-- pagina --}}
-    <script src="/js_sitio/ejecucionPsico.js?v=4.2"></script>
+    <script src="/js_sitio/ejecucionPsico.js?v=5"></script>
 
     @endif
 

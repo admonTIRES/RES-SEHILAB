@@ -14,6 +14,15 @@ use App\modelos\reconocimientopsico\recpsicofotostrabajadoresModel;
 use App\modelos\proyecto\proyectoModel;
 
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use Illuminate\Support\Facades\Response;
+
 use Illuminate\Support\Facades\Crypt; // Importa el helper de encriptación
 class ejecucionPsicoController extends Controller
 {
@@ -71,79 +80,8 @@ class ejecucionPsicoController extends Controller
      */
 
 
-    // public function tablaTrabajadoresOnline($proyecto_id)
-    // {   
-    //     $existingRecords = DB::table('proyectotrabajadores')
-    //     ->where('proyecto_id', $proyecto_id)
-    //     ->exists();
 
-    //     if($existingRecords){
-    //         //TARE LOS DATOS DE LA TABLA DE SEGUIMIENTO RELACIONADO CON LA DE PROGRAMA DE TRABAJO
-    //         $tablaOnline = DB::select('SELECT p.TRABAJADOR_NOMBRE TRABAJADOR_NOMBRE,
-    //                                         p.TRABAJADOR_ID TRABAJADOR_ID, 
-    //                                         p.TRABAJADOR_ESTADOCORREO ESTADOCORREO, 
-    //                                         p.TRABAJADOR_FECHAINICIO FECHAINICIO,
-    //                                         p.TRABAJADOR_FECHAFIN FECHAFIN,
-    //                                         p.TRABAJADOR_ESTADOCONTESTADO ESTADOCONTESTADO,
-    //                                         r.RECPSICO_ID,
-    //                                         r.RECPSICOTRABAJADOR_CORREO TRABAJADOR_CORREO
-    //                                     FROM proyectotrabajadores p
-    //                                     LEFT JOIN recopsicotrabajadores r ON p.TRABAJADOR_ID = r.ID_RECOPSICOTRABAJADOR
-    //                                     WHERE p.TRABAJADOR_SELECCIONADO = 1 AND p.TRABAJADOR_MODALIDAD = "Online" AND p.proyecto_id = ' . $proyecto_id . '');
-
-
-    //         $count = 0;
-    //         foreach ($tablaOnline as $key => $value) {
-    //         $count += 1;
-
-    //         $value->COUNT = $count;
-
-    //         if($value->ESTADOCORREO == 'Sin enviar'){
-    //             $value->TRABAJADOR_ESTADOCORREO = '<span class="badge badge-pill badge-danger" style="font-size: 12px">'. $value->ESTADOCORREO .'</span>';
-    //         }
-    //         else if($value->ESTADOCORREO == null){
-    //             $value->TRABAJADOR_ESTADOCORREO = '<span class="badge badge-pill badge-danger" style="font-size: 12px">Sin enviar</span>';
-    //         }else{
-    //             $value->TRABAJADOR_ESTADOCORREO = '<span class="badge badge-pill badge-verde" style="font-size: 12px">'. $value->ESTADOCORREO .'</span>';
-
-    //         }
-
-    //         $value->FECHAINICIO = $value->FECHAINICIO ?? '';
-    //         $value->FECHAFIN = $value->FECHAFIN ?? '';
-    //         $value->TRABAJADOR_ID = $value->TRABAJADOR_ID;
-    //         $value->TRABAJADOR_NOMBRE = $value->TRABAJADOR_NOMBRE;
-
-
-    //         if ($value->ESTADOCONTESTADO == 'Sin iniciar') {
-    //             $value->TRABAJADOR_ESTADOCONTESTADO = '<span class="badge badge-pill badge-danger" style="font-size: 12px">' . $value->ESTADOCONTESTADO . '</span>';
-
-    //         } else if ($value->ESTADOCONTESTADO == 'En proceso'){
-
-    //             $value->TRABAJADOR_ESTADOCONTESTADO = '<span class="badge badge-pill badge-warning" style="font-size: 12px">' . $value->ESTADOCONTESTADO . '</span>';
-    //         }
-    //         else if($value->ESTADOCONTESTADO == null) {
-    //                 $value->TRABAJADOR_ESTADOCONTESTADO = '<span class="badge badge-pill badge-danger" style="font-size: 12px">Sin iniciar</span>';
-
-    //         }else{
-    //             $value->TRABAJADOR_ESTADOCONTESTADO = '<span class="badge badge-pill badge-verde" style="font-size: 12px">' . $value->ESTADOCONTESTADO . '</span>';
-    //         }
-
-
-    //         $value->boton_enviarCorreo = '<button type="button" class="btn btn-warning btn-circle enviarcorreo" id="enviarCorreoTrabajador'.$count.'" name="enviarCorreoTrabajador" onclick="enviarCorreo('.$value->TRABAJADOR_ID.', '.$value->RECPSICO_ID.')" style="padding: 0px;"><i class="fa fa-paper-plane "></i></button>';
-    //         $value->boton_guardarCambios = '<button type="button" class="btn btn-danger btn-circle guardarCambios" id="guardarCambiosTrabajador'.$value->TRABAJADOR_ID.'" name="guardarCambiosTrabajador" onclick="guardarCambios('.$value->TRABAJADOR_ID.', '.$value->RECPSICO_ID.')" style="padding: 0px;"><i class="fa fa-save"></i></button>';
-
-    //     }
-    //     }
-
-
-
-    //     $online['data']  = $tablaOnline;
-    //     return response()->json($online);
-    // }
-
-
-
-    public function tablaTrabajadoresOnline($proyecto_id)
+    public function trabajadoresOnlineEjecucionPsico($proyecto_id)
     {
         $tablaOnline = [];
 
@@ -255,13 +193,25 @@ class ejecucionPsicoController extends Controller
      * @param  int  $proyecto_id
      * @return \Illuminate\Http\Response
      */
-    public function tablaTrabajadoresPresencial($proyecto_id)
+    public function trabajadoresPresencialEjecucionPsico($proyecto_id)
     {
-        $tablaPresencial = DB::select('SELECT p.TRABAJADOR_NOMBRE NOMBRE
-                                        FROM proyectotrabajadores p
-                                        WHERE p.TRABAJADOR_SELECCIONADO = 1 
-                                        AND p.TRABAJADOR_MODALIDAD = "Presencial" 
-                                        AND p.proyecto_id = ' . $proyecto_id . '');
+
+
+        $tablaPresencial = DB::select('SELECT
+                                        p.TRABAJADOR_NOMBRE NOMBRE,
+                                        p.TRABAJADOR_ID TRABAJADOR_ID,
+                                        p.TRABAJADOR_ESTADOCORREO ESTADOCORREO,
+                                        p.TRABAJADOR_FECHAINICIO FECHAINICIO,
+                                        p.TRABAJADOR_FECHAFIN FECHAFIN,
+                                        p.TRABAJADOR_ESTADOCONTESTADO ESTADOCONTESTADO,
+                                        r.RECPSICO_ID,
+                                        r.RECPSICOTRABAJADOR_CORREO TRABAJADOR_CORREO
+                                    FROM proyectotrabajadores p
+                                    LEFT JOIN recopsicotrabajadores r
+                                        ON p.TRABAJADOR_ID = r.ID_RECOPSICOTRABAJADOR
+                                    WHERE p.TRABAJADOR_SELECCIONADO = 1
+                                        AND p.TRABAJADOR_MODALIDAD = "Presencial"
+                                        AND p.proyecto_id = ' . $proyecto_id);
 
 
         $count = 0;
@@ -271,6 +221,14 @@ class ejecucionPsicoController extends Controller
             $value->COUNT = $count;
             $value->FECHAAPLICACION = '';
             $value->ESTADOCUESTIONARIO = 'En proceso';
+
+            $value->BTN_EDITAR = '
+                    <button type="button" class="btn btn-info btn-circle editar">
+                       <i class="fa fa-check-circle"></i>
+                    </button>';
+
+
+
         }
 
         $online['data']  = $tablaPresencial;
@@ -370,18 +328,110 @@ class ejecucionPsicoController extends Controller
      }
 
 
-    public function envioGuia($tipo, $idPersonal, $idRecsensorial){
+
+    public function envioGuia($tipo, $idPersonal, $idRecsensorial)
+    {
         try {
-            
+
             //Validamos el tipo de envio
             if ($tipo == 1) { //-> Envio masivo
 
 
+                // Obtener trabajadores Online del proyecto
+                $trabajadores = DB::select('SELECT
+                                t.ID_RECOPSICOTRABAJADOR,
+                                t.RECPSICOTRABAJADOR_NOMBRE,
+                                t.RECPSICOTRABAJADOR_CORREO,
+                                p.TRABAJADOR_FECHAFIN,
+                                p.TRABAJADOR_ESTADOCONTESTADO,
+                                DATEDIFF(p.TRABAJADOR_FECHAFIN, DATE_FORMAT(NOW(),"%Y-%m-%d")) AS DIAS
+                            FROM proyectotrabajadores p
+                            INNER JOIN recopsicotrabajadores t
+                                ON t.ID_RECOPSICOTRABAJADOR = p.TRABAJADOR_ID
+                            WHERE p.proyecto_id = ?
+                            AND p.TRABAJADOR_MODALIDAD = "Online"', [$idRecsensorial]);
+
+                // Obtener información del reconocimiento asociado al proyecto
+                $proyecto = DB::select('SELECT reconocimiento_psico_id
+                        FROM proyecto
+                        WHERE id = ?', [$idRecsensorial]);
+
+                $reconocimiento_psico_id = $proyecto[0]->reconocimiento_psico_id;
+
+
+                // Obtener guías
+                $datos = DB::select('SELECT RECPSICO_GUIAI,
+                            RECPSICO_GUIAII,
+                            RECPSICO_GUIAIII,
+                            RECPSICO_GUIAV
+                    FROM recopsiconormativa
+                    WHERE RECPSICO_ID = ?', [$reconocimiento_psico_id]);
+
+
+                $guia1 = $datos[0]->RECPSICO_GUIAI;
+                $guia2 = $datos[0]->RECPSICO_GUIAII;
+                $guia3 = $datos[0]->RECPSICO_GUIAIII;
+                $guia5 = $datos[0]->RECPSICO_GUIAV;
+
+
+                // Obtener psicólogo asignado
+                $psicoInfo = DB::select('SELECT IFNULL(s.signatario_Nombre, "NA") as info
+                        FROM proyectosignatariosactual p
+                        LEFT JOIN signatario s
+                            ON s.id = p.signatario_id
+                        WHERE p.proyecto_id = ?
+                        LIMIT 1', [$idRecsensorial]);
+
+                $psico = $psicoInfo[0]->info;
+
+                // Recorrer trabajadores y enviar correos
+                foreach ($trabajadores as $trabajador) {
+
+                    // Encriptar datos
+                    $encryptedGuia1 = Crypt::encrypt($guia1);
+                    $encryptedGuia2 = Crypt::encrypt($guia2);
+                    $encryptedGuia3 = Crypt::encrypt($guia3);
+                    $encryptedGuia5 = Crypt::encrypt($guia5);
+
+                    $encryptedfechalimite = Crypt::encrypt($trabajador->TRABAJADOR_FECHAFIN);
+                    $encryptedstatus = Crypt::encrypt($trabajador->TRABAJADOR_ESTADOCONTESTADO);
+
+                    $encryptedId = Crypt::encrypt($trabajador->ID_RECOPSICOTRABAJADOR);
+
+
+                    // Enviar correo
+                    Mail::to($trabajador->RECPSICOTRABAJADOR_CORREO)
+                        ->send(
+                            new sendGuiaPsico(
+                                $trabajador->RECPSICOTRABAJADOR_NOMBRE,
+                                $encryptedGuia1,
+                                $encryptedGuia2,
+                                $encryptedGuia3,
+                                $encryptedGuia5,
+                                $encryptedstatus,
+                                $encryptedfechalimite,
+                                $encryptedId,
+                                $trabajador->DIAS,
+                                $psico
+                            )
+                        );
+
+
+                    // Actualizar estado del correo
+                    DB::table('proyectotrabajadores')
+                        ->where('TRABAJADOR_ID', $trabajador->ID_RECOPSICOTRABAJADOR)
+                        ->where('proyecto_id', $idRecsensorial)
+                        ->update([
+                            'TRABAJADOR_ESTADOCORREO' => 'Enviado'
+                        ]);
+                }
 
 
 
-            
-            } else { //-> Envio unico
+
+
+            } 
+            else { //-> Envio unico
 
                 //Obtenemos los datos del trabajador segun el id
                 $datos = DB::select('SELECT t.RECPSICOTRABAJADOR_NOMBRE,
@@ -393,6 +443,7 @@ class ejecucionPsicoController extends Controller
                                 LEFT JOIN proyectotrabajadores s ON s.TRABAJADOR_ID = t.ID_RECOPSICOTRABAJADOR
                                 WHERE t.ID_RECOPSICOTRABAJADOR = ?', [$idPersonal]);
 
+
                 $nombre = $datos[0]->RECPSICOTRABAJADOR_NOMBRE;
                 $correo = $datos[0]->RECPSICOTRABAJADOR_CORREO;
                 $fechalimite = $datos[0]->TRABAJADOR_FECHAFIN;
@@ -400,10 +451,13 @@ class ejecucionPsicoController extends Controller
                 $dias = $datos[0]->DIAS;
 
 
+
                 //Obtenemos los datos del reconocimiento para las guias
                 $datos = DB::select('SELECT RECPSICO_GUIAI, RECPSICO_GUIAII, RECPSICO_GUIAIII, RECPSICO_GUIAV
                                     FROM recopsiconormativa
                                     WHERE RECPSICO_ID = ?', [$idRecsensorial]);
+
+
 
                 $guia1 = $datos[0]->RECPSICO_GUIAI;
                 $guia2 = $datos[0]->RECPSICO_GUIAII;
@@ -414,7 +468,7 @@ class ejecucionPsicoController extends Controller
                 $encryptedGuia2 = Crypt::encrypt($guia2);
                 $encryptedGuia3 = Crypt::encrypt($guia3);
                 $encryptedGuia5 = Crypt::encrypt($guia5);
-                
+
                 $encryptedfechalimite = Crypt::encrypt($fechalimite);
                 $encryptedstatus = Crypt::encrypt($status);
 
@@ -438,26 +492,26 @@ class ejecucionPsicoController extends Controller
 
 
                 Mail::to($correo)->send(new sendGuiaPsico($nombre, $encryptedGuia1, $encryptedGuia2, $encryptedGuia3, $encryptedGuia5, $encryptedstatus, $encryptedfechalimite, $encryptedId, $dias, $psico));
-            
+
                 //cambiar el estado de envio de correo en el registro deltrabajador
                 DB::table('proyectotrabajadores')
-                ->where('TRABAJADOR_ID', $idPersonal)
-                ->update(['TRABAJADOR_ESTADOCORREO' => 'Enviado']);  
+                    ->where('TRABAJADOR_ID', $idPersonal)
+                    ->update(['TRABAJADOR_ESTADOCORREO' => 'Enviado']);
             }
 
             //Retornamos respuesta
             $response["msj"] = "Correo enviado correctamente";
             return response()->json($response, 200);
-        
-        }  catch (Exception $e) {
+        } catch (Exception $e) {
 
             $response["msj"] = 'Error: ' . $e->getMessage();
             return response()->json($response, 500);
         }
-
     }
 
-       /**
+
+
+    /**
      * Display a listing of the resource.
      *
      * @param  int  $proyecto_id
@@ -573,4 +627,433 @@ class ejecucionPsicoController extends Controller
         }
     }
 
+
+
+
+
+    public function obtenerGuiasTrabajadorPresencial($proyecto_id, $trabajador_id)
+    {
+        $proyecto = DB::select('SELECT reconocimiento_psico_id
+                            FROM proyecto
+                            WHERE id = ?', [$proyecto_id]);
+
+        if (count($proyecto) == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontró el proyecto.'
+            ]);
+        }
+
+        $idRecsensorial = $proyecto[0]->reconocimiento_psico_id;
+
+
+        $guias = DB::select('SELECT
+                            RECPSICO_GUIAI,
+                            RECPSICO_GUIAII,
+                            RECPSICO_GUIAIII,
+                            RECPSICO_GUIAV
+                         FROM recopsiconormativa
+                         WHERE RECPSICO_ID = ?', [$idRecsensorial]);
+
+        if (count($guias) == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontraron las guías.'
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+
+            'TRABAJADOR_ID' => $trabajador_id,
+
+            'GUIA1' => $guias[0]->RECPSICO_GUIAI,
+            'GUIA2' => $guias[0]->RECPSICO_GUIAII,
+            'GUIA3' => $guias[0]->RECPSICO_GUIAIII,
+            'GUIA5' => $guias[0]->RECPSICO_GUIAV
+        ]);
+    }
+
+
+    public function consultarRespuestasGuardadasPresencial(Request $request)
+    {
+        $idTrabajador = $request->id_trabajador;
+
+        $trabajador = DB::select("
+                    SELECT
+                        RECPSICO_GUIAI_RESPUESTAS,
+                        RECPSICO_GUIAII_RESPUESTAS,
+                        RECPSICO_GUIAIII_RESPUESTAS
+                    FROM recopsicoTrabajadoresRespuestas
+                    WHERE RECPSICO_TRABAJADOR = ?
+                ", [$idTrabajador]);
+
+        if (count($trabajador) > 0) {
+            return response()->json($trabajador[0]);
+        }
+
+        return response()->json(null);
+    }
+
+
+
+    public function mostrarplantillaguia1y2()
+    {
+        $filePath = storage_path('app/plantillas_excel/Calificación Guia 1 y 2 NOM035.xlsx');
+
+        if (!file_exists($filePath)) {
+            return response()->json(['error' => 'Archivo no encontrado'], 404);
+        }
+
+        return response()->download($filePath);
+    }
+
+
+
+    public function mostrarplantillaguia1y3()
+    {
+        $filePath = storage_path('app/plantillas_excel/Calificación Guia 1 y 3 NOM035.xlsx');
+
+        if (!file_exists($filePath)) {
+            return response()->json(['error' => 'Archivo no encontrado'], 404);
+        }
+
+        return response()->download($filePath);
+    }
+
+
+
+    public function importarRespuestasTrabajadores(Request $request)
+    {
+        try {
+
+           
+            $request->validate([
+                'excelRespuestasTrabajador' => 'required|file|mimes:xls,xlsx',
+                'tipoGuia' => 'required',
+                'proyecto_id' => 'required'
+            ]);
+
+            $tipoGuia = $request->tipoGuia;
+            $proyecto_id = $request->proyecto_id;
+
+
+            $proyecto = DB::table('proyecto')
+                ->where('id', $proyecto_id)
+                ->first();
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'mensaje' => 'Proyecto no encontrado.'
+                ], 404);
+            }
+
+            $recpsico_id = $proyecto->reconocimiento_psico_id;
+
+            $archivo = $request->file('excelRespuestasTrabajador');
+
+            $spreadsheet = IOFactory::load($archivo->getRealPath());
+
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $ultimaFila = $sheet->getHighestRow();
+
+            $guardados = 0;
+            $errores = [];
+
+
+            for ($fila = 3; $fila <= $ultimaFila; $fila++) {
+
+                $nombreTrabajador = trim(
+                    $sheet->getCell('B' . $fila)->getCalculatedValue()
+                );
+
+                if ($nombreTrabajador == "") {
+                    continue;
+                }
+
+                $trabajador = DB::table('proyectotrabajadores')
+                    ->where('proyecto_id', $proyecto_id)
+                    ->whereRaw('TRIM(TRABAJADOR_NOMBRE)=?', [trim($nombreTrabajador)])
+                                        ->first();
+
+                if (!$trabajador) {
+
+                    $errores[] = "Fila {$fila}: No se encontró al trabajador {$nombreTrabajador}";
+
+                    continue;
+                }
+
+                $trabajador_id = $trabajador->TRABAJADOR_ID;
+
+
+                $guia1 = array_fill(0, 15, null);
+
+                $indice = 0;
+
+                foreach (range('E', 'S') as $columna) {
+
+                    $valor = $sheet->getCell($columna . $fila)->getCalculatedValue();
+
+                    if ($valor === "" || $valor === null) {
+                        $guia1[$indice] = null;
+                    } else {
+                        $guia1[$indice] = strval($valor);
+                    }
+
+                    $indice++;
+                }
+
+                $jsonGuia1 = json_encode($guia1, JSON_UNESCAPED_UNICODE);
+
+
+
+                if ($tipoGuia == 12) {
+
+
+                    $guia2 = array_fill(0, 48, null);
+
+                    $indice = 0;
+
+                    foreach (range('T', 'Z') as $columna) {
+
+                        $valor = $sheet->getCell($columna . $fila)->getCalculatedValue();
+
+                        if ($valor !== "" && $valor !== null) {
+                            $guia2[$indice] = (string)$valor;
+                        }
+
+                        $indice++;
+                    }
+
+                    foreach (range('A', 'Z') as $letra) {
+
+                        $columna = 'A' . $letra;
+
+                        if ($columna > 'BO') {
+                            break;
+                        }
+
+                        $valor = $sheet->getCell($columna . $fila)->getCalculatedValue();
+
+                        if ($valor !== "" && $valor !== null) {
+                            $guia2[$indice] = (string)$valor;
+                        }
+
+                        $indice++;
+
+                        if ($indice >= 48) {
+                            break;
+                        }
+                    }
+
+                    if ($indice < 48) {
+
+                        foreach (range('A', 'O') as $letra) {
+
+                            $columna = 'B' . $letra;
+
+                            $valor = $sheet->getCell($columna . $fila)->getCalculatedValue();
+
+                            if ($valor !== "" && $valor !== null) {
+                                $guia2[$indice] = (string)$valor;
+                            }
+
+                            $indice++;
+
+                            if ($indice >= 48) {
+                                break;
+                            }
+                        }
+                    }
+
+                    $jsonGuia2 = json_encode($guia2);
+
+
+                    $existe = DB::table('recopsicoTrabajadoresRespuestas')
+                        ->where('RECPSICO_TRABAJADOR', $trabajador_id)
+                        ->exists();
+
+                    if ($existe) {
+
+                        DB::table('recopsicoTrabajadoresRespuestas')
+                            ->where('RECPSICO_TRABAJADOR', $trabajador_id)
+                            ->update([
+                                'RECPSICO_GUIAI_RESPUESTAS' => $jsonGuia1,
+                                'RECPSICO_GUIAII_RESPUESTAS' => $jsonGuia2,
+                                'RECPSICO_ID' => $recpsico_id,
+                                'updated_at' => now()
+                            ]);
+                    } else {
+
+                        DB::table('recopsicoTrabajadoresRespuestas')
+                            ->insert([
+                                'RECPSICO_TRABAJADOR' => $trabajador_id,
+                                'RECPSICO_ID' => $recpsico_id,
+                                'RECPSICO_GUIAI_RESPUESTAS' => $jsonGuia1,
+                                'RECPSICO_GUIAII_RESPUESTAS' => $jsonGuia2,
+                                'created_at' => now(),
+                                'updated_at' => now()
+                            ]);
+                    }
+
+                    DB::table('proyectotrabajadores')
+                        ->where('TRABAJADOR_ID', $trabajador_id)
+                        ->update([
+                            'TRABAJADOR_ESTADOCONTESTADO' => 'Finalizado',
+                            'updated_at' => now()
+
+                        ]);
+
+                    $guardados++;
+
+                }
+
+                else if ($tipoGuia == 13) {
+
+
+                    $guia3 = array_fill(0, 74, null);
+
+                    $indice = 0;
+
+                    foreach (range('T', 'Z') as $columna) {
+
+                        $valor = $sheet->getCell($columna . $fila)->getCalculatedValue();
+
+                        if ($valor !== "" && $valor !== null) {
+                            $guia3[$indice] = (string)$valor;
+                        }
+
+                        $indice++;
+                    }
+
+                    foreach (range('A', 'Z') as $letra) {
+
+                        $columna = 'A' . $letra;
+
+                        $valor = $sheet->getCell($columna . $fila)->getCalculatedValue();
+
+                        if ($valor !== "" && $valor !== null) {
+                            $guia3[$indice] = (string)$valor;
+                        }
+
+                        $indice++;
+
+                        if ($indice >= 74) {
+                            break;
+                        }
+                    }
+
+                    if ($indice < 74) {
+
+                        foreach (range('A', 'Z') as $letra) {
+
+                            $columna = 'B' . $letra;
+
+                            $valor = $sheet->getCell($columna . $fila)->getCalculatedValue();
+
+                            if ($valor !== "" && $valor !== null) {
+                                $guia3[$indice] = (string)$valor;
+                            }
+
+                            $indice++;
+
+                            if ($indice >= 74) {
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($indice < 74) {
+
+                        foreach (range('A', 'O') as $letra) {
+
+                            $columna = 'C' . $letra;
+
+                            $valor = $sheet->getCell($columna . $fila)->getCalculatedValue();
+
+                            if ($valor !== "" && $valor !== null) {
+                                $guia3[$indice] = (string)$valor;
+                            }
+
+                            $indice++;
+
+                            if ($indice >= 74) {
+                                break;
+                            }
+                        }
+                    }
+
+                    $jsonGuia3 = json_encode($guia3);
+
+
+                    $existe = DB::table('recopsicoTrabajadoresRespuestas')
+                        ->where('RECPSICO_TRABAJADOR', $trabajador_id)
+                        ->exists();
+
+                    if ($existe) {
+
+                        DB::table('recopsicoTrabajadoresRespuestas')
+                            ->where('RECPSICO_TRABAJADOR', $trabajador_id)
+                            ->update([
+
+                                'RECPSICO_GUIAI_RESPUESTAS'   => $jsonGuia1,
+                                'RECPSICO_GUIAIII_RESPUESTAS' => $jsonGuia3,
+                                'RECPSICO_ID'                => $recpsico_id,
+                                'updated_at'                 => now()
+
+                            ]);
+                    } else {
+
+                        DB::table('recopsicoTrabajadoresRespuestas')
+                            ->insert([
+                                'RECPSICO_TRABAJADOR'        => $trabajador_id,
+                                'RECPSICO_ID'                => $recpsico_id,
+                                'RECPSICO_GUIAI_RESPUESTAS'   => $jsonGuia1,
+                                'RECPSICO_GUIAIII_RESPUESTAS' => $jsonGuia3,
+                                'created_at' => now(),
+                                'updated_at' => now()
+
+                            ]);
+                    }
+
+
+                    DB::table('proyectotrabajadores')
+                        ->where('TRABAJADOR_ID', $trabajador_id)
+                        ->update([
+
+                            'TRABAJADOR_ESTADOCONTESTADO' => 'Finalizado',
+                            'updated_at' => now()
+
+                        ]);
+
+                    $guardados++;
+
+
+
+                }
+            }
+
+            return response()->json([
+                'mensaje'    => 'Importación finalizada correctamente.',
+                'guardados' => $guardados,
+                'errores'   => $errores
+            ]);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'mensaje' => 'Ocurrió un error al importar el archivo.',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
+
 }
+
+
+

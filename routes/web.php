@@ -1997,7 +1997,7 @@ Route::get('proyectoequiposinventarioPsico/{proyecto_id}', ['as' => 'proyectoequ
 
 Route::get('proyectovehiculosinventarioPsico/{proyecto_id}', ['as' => 'proyectovehiculo.proyectovehiculosinventarioPsico', 'uses' => 'proyecto\proyectoVehiculoController@proyectovehiculosinventarioPsico']);
 
-//================EJECUCION
+//================ EJECUCION  ================//
 Route::resource('ejecucionPsicosocial', 'PSICO\ejecucionPsicoController');
 
 Route::get('ejecucionPsicoTabla', ['as' => 'PSICO.ejecucionPsico', 'uses' => 'PSICO\ejecucionPsicoController@tablaEjecucion']);
@@ -2016,7 +2016,15 @@ Route::get('psicoevidenciafotomostrar/{foto_opcion}/{tipo_foto}/{foto_id}', ['as
 
 Route::get('psicoevidenciafotosonline/{proyecto_id}', ['as' => 'PSICO.evidenciafotosOnline', 'uses' => 'PSICO\ejecucionPsicoController@evidenciafotosOnline']);
 
+Route::get('obtenerGuiasTrabajadorPresencial/{proyecto_id}/{trabajador_id}', ['as' => 'PSICO.obtenerGuiasTrabajadorPresencial','uses' => 'PSICO\ejecucionPsicoController@obtenerGuiasTrabajadorPresencial']);
 
+Route::post('/consultarRespuestasGuardadasPresencial', 'PSICO\ejecucionPsicoController@consultarRespuestasGuardadasPresencial');
+
+Route::get('mostrarplantillaguia1y2', ['as' => 'PSICO.mostrarplantillaguia1y2', 'uses' => 'PSICO\ejecucionPsicoController@mostrarplantillaguia1y2']);
+
+Route::get('mostrarplantillaguia1y3', ['as' => 'PSICO.mostrarplantillaguia1y3', 'uses' => 'PSICO\ejecucionPsicoController@mostrarplantillaguia1y3']);
+
+Route::post('importarRespuestasTrabajadores',['as' => 'PSICO.importarRespuestasTrabajadores','uses' => 'PSICO\ejecucionPsicoController@importarRespuestasTrabajadores']);
 
 //================INFORMES
 Route::resource('informesPsicosocial', 'PSICO\informesrecoPsicoController');

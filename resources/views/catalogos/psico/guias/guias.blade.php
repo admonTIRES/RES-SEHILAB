@@ -21,11 +21,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.4/dist/sweetalert2.min.css">
     <!-- Date picker plugins css -->
     <link href="/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
 
+
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+
+        }
+
+
         /* DISEÑO DE SCROLLBAR */
         ::-webkit-scrollbar {
             width: 8px;
@@ -727,7 +736,7 @@
     <header class="header-container">
         <div class="header-content">
             <div class="logo-wrapper">
-                <img src="/assets/images/logo-light.png" alt="Results In Performance Logo">
+                <img src="/assets/images/logoBlanco.png" alt="Results In Performance Logo">
             </div>
             <div class="title-wrapper">
                 <h1 class="main-title">Results In Performance</h1>
@@ -755,7 +764,7 @@
                         </h6>
                     </div>
                     <div class="card-body">
-                        
+
                         <p class="lead mt-3 mb-3">
                             <i class="fa fa-check-circle" style="color: #28a745;"></i>
                             Sus respuestas han sido guardadas y enviadas exitosamente.
@@ -781,7 +790,7 @@
 
     <section id="sectionExpirado" class="container mt-5 d-none">
         <div class="row justify-content-center">
-        <div class="col-12">
+            <div class="col-12">
                 <div class="card text-center" style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 10px;">
                     <div class="card-header" style="background-color: #b81414; color: #fff; font-weight: bold; border-radius: 12px 12px 0 0;">
                         <h6 class="card-title m-0" style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">
@@ -790,7 +799,7 @@
                         </h6>
                     </div>
                     <div class="card-body">
-                        
+
                         <p class="lead mt-3 mb-3">
                             <i class="fa fa-exclamation-circle" style="color: #b81414;"></i>
                             Ya ha pasado la fecha límite en la que podia contestar este cuestionario.
@@ -851,94 +860,31 @@
                                 </div>
 
                             </div>
-                            <div id="pregunta2_1" class="divPreguntas" style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
-                            <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;">
+                            <div style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
+                                <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;">
                                     <i class="fa fa-info-circle" id="Exp1_2" data-toggle="tooltip" title=""></i>
-                                    accidente que tenga como consecuencia la muerte, la pérdida de un miembro o una lesión grave?</p>
-                                <div class="d-none" >
-                                    <div>
-                                        <label for="pregunta2_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta2_si" name="GUIA1_2" value="1" onchange="guia1()">
-                                    </div>
-                                    <div>
-                                        <label for="pregunta2_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta2_no" name="GUIA1_2" value="0" onchange="guia1()">
-                                    </div>
-                                </div>
+                                    accidente que tenga como consecuencia la muerte, la pérdida de un miembro o una lesión grave?
+                                </p>
                             </div>
-                            <div id="pregunta3_1" class="divPreguntas" style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
-                            <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;"><i class="fa fa-info-circle" id="Exp1_3" data-toggle="tooltip" title=""></i>
+                            <div style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
+                                <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;"><i class="fa fa-info-circle" id="Exp1_3" data-toggle="tooltip" title=""></i>
                                     asaltos?</p>
-                                <div class="d-none" >
-                                    <div>
-                                        <label for="pregunta3_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta3_si" name="GUIA1_3" value="1" onchange="guia1()">
-                                    </div>
-
-                                    <div>
-                                        <label for="pregunta3_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta3_no" name="GUIA1_3" value="0" onchange="guia1()">
-                                    </div>
-                                </div>
                             </div>
-                            <div id="pregunta4_1" class="divPreguntas" style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
-                            <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;"><i class="fa fa-info-circle" id="Exp1_4" data-toggle="tooltip" title=""></i>
+                            <div style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
+                                <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;"><i class="fa fa-info-circle" id="Exp1_4" data-toggle="tooltip" title=""></i>
                                     actos violentos que derivaron en lesiones graves?</p>
-                                <div class="d-none" >
-                                    <div>
-                                        <label for="pregunta4_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta4_si" name="GUIA1_4" value="1" onchange="guia1()">
-                                    </div>
-
-                                    <div>
-                                        <label for="pregunta4_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta4_no" name="GUIA1_4" value="0" onchange="guia1()">
-                                    </div>
-                                </div>
                             </div>
-                            <div id="pregunta5_1" class="divPreguntas" style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
-                            <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;"><i class="fa fa-info-circle" id="Exp1_5" data-toggle="tooltip" title=""></i>
+                            <div style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
+                                <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;"><i class="fa fa-info-circle" id="Exp1_5" data-toggle="tooltip" title=""></i>
                                     secuestro?</p>
-                                <div class="d-none" >
-                                    <div>
-                                        <label for="pregunta5_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta5_si" name="GUIA1_5" value="1" onchange="guia1()">
-                                    </div>
-
-                                    <div>
-                                        <label for="pregunta5_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta5_no" name="GUIA1_5" value="0" onchange="guia1()">
-                                    </div>
-                                </div>
                             </div>
-                            <div id="pregunta6_1" class="divPreguntas" style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
-                            <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;"><i class="fa fa-info-circle" id="Exp1_6" data-toggle="tooltip" title=""></i>
+                            <div style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
+                                <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;"><i class="fa fa-info-circle" id="Exp1_6" data-toggle="tooltip" title=""></i>
                                     amenazas?</p>
-                                <div class="d-none" >
-                                    <div>
-                                        <label for="pregunta6_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta6_si" name="GUIA1_6" value="1" onchange="guia1()">
-                                    </div>
-
-                                    <div>
-                                        <label for="pregunta6_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta6_no" name="GUIA1_6" value="0" onchange="guia1()">
-                                    </div>
-                                </div>
                             </div>
-                            <div id="pregunta7_1" class="divPreguntas" style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
-                            <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;"><i class="fa fa-info-circle" id="Exp1_7" data-toggle="tooltip" title=""></i>
+                            <div style="margin: 0 0 0 25px !important; padding: 0 !important; border-radius: 0 !important; transition: none !important; margin-bottom: 0px !important;">
+                                <p style="margin: 0 0 0 25px !important; flex: 1; font-style: italic;"><i class="fa fa-info-circle" id="Exp1_7" data-toggle="tooltip" title=""></i>
                                     cualquier otro que ponga en riesgo su vida o salud, y/o la de otras personas?</p>
-                                <div class="d-none">
-                                    <div>
-                                        <label for="pregunta7_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta7_si" name="GUIA1_7" value="1" onchange="guia1()">
-                                    </div>
-                                    <div>
-                                        <label for="pregunta7_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta7_no" name="GUIA1_7" value="0" onchange="guia1()">
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -946,24 +892,119 @@
                             <div id="titulo2">
                                 <h5 style="text-align: left; width: 70%;" class="titulo-seccion"><b>II.- Recuerdos persistentes sobre el acontecimiento (durante el último mes):</b></h5>
                             </div>
-                            <div id="pregunta8_1" class="mt-4 ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+                            <div id="pregunta2_1" class="mt-4 ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
                                 <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_8" data-toggle="tooltip" title=""></i>
                                     2. ¿Ha tenido recuerdos recurrentes sobre el acontecimiento que le provocan malestares?</p>
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     <div>
-                                        <label for="preguta8_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="preguta8_si" name="GUIA1_8" value="1">
+                                        <label for="preguta2_si" style="margin-right: 1px;">Sí</label>
+                                        <input type="radio" id="preguta2_si" name="GUIA1_2" value="1">
                                     </div>
 
                                     <div>
-                                        <label for="preguta8_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="preguta8_no" name="GUIA1_8" value="0">
+                                        <label for="preguta2_no" style="margin-right: 1px;">No</label>
+                                        <input type="radio" id="preguta2_no" name="GUIA1_2" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pregunta3_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_9" data-toggle="tooltip" title=""></i>
+                                    3. ¿Ha tenido sueños de carácter recurrente sobre el acontecimiento, que le producen malestar?</p>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div>
+                                        <label for="pregunta3_si" style="margin-right: 1px;">Sí</label>
+                                        <input type="radio" id="pregunta3_si" name="GUIA1_3" value="1">
+                                    </div>
+
+                                    <div>
+                                        <label for="pregunta3_no" style="margin-right: 1px;">No</label>
+                                        <input type="radio" id="pregunta3_no" name="GUIA1_3" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="seccion3" class="mt-3" style="display: none; padding: 10px;">
+                            <div id="titulo3">
+                                <h5 style="text-align: left; width: 70%;" class="titulo-seccion"><b>III.- Esfuerzo por evitar circunstancias parecidas o asociadas al acontecimiento (durante el último mes):</b></h5>
+                            </div>
+                            <div id="pregunta4_1" class="mt-4 ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_10" data-toggle="tooltip" title=""></i>
+                                    4. ¿Se ha esforzado por evitar todo tipo de sentimientos, conversaciones o situaciones que le puedan recordar el acontecimiento?</p>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div>
+                                        <label for="preguta4_si" style="margin-right: 1px;">Sí</label>
+                                        <input type="radio" id="preguta4_si" name="GUIA1_4" value="1">
+                                    </div>
+
+                                    <div>
+                                        <label for="preguta4_no" style="margin-right: 1px;">No</label>
+                                        <input type="radio" id="preguta4_no" name="GUIA1_4" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pregunta5_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_11" data-toggle="tooltip" title=""></i>
+                                    5. ¿Se ha esforzado por evitar todo tipo de actividades, lugares o personas que motivan recuerdos del acontecimiento?</p>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div>
+                                        <label for="pregunta5_si" style="margin-right: 1px;">Sí</label>
+                                        <input type="radio" id="pregunta5_si" name="GUIA1_5" value="1">
+                                    </div>
+
+                                    <div>
+                                        <label for="pregunta5_no" style="margin-right: 1px;">No</label>
+                                        <input type="radio" id="pregunta5_no" name="GUIA1_5" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pregunta6_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_12" data-toggle="tooltip" title=""></i>
+                                    6. ¿Ha tenido dificultad para recordar alguna parte importante del evento?</p>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div>
+                                        <label for="pregunta6_si" style="margin-right: 1px;">Sí</label>
+                                        <input type="radio" id="pregunta6_si" name="GUIA1_6" value="1">
+                                    </div>
+
+                                    <div>
+                                        <label for="pregunta6_no" style="margin-right: 1px;">No</label>
+                                        <input type="radio" id="pregunta6_no" name="GUIA1_6" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pregunta7_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_13" data-toggle="tooltip" title=""></i>
+                                    7. ¿Ha disminuido su interés en sus actividades cotidianas?</p>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div>
+                                        <label for="pregunta7_si" style="margin-right: 1px;">Sí</label>
+                                        <input type="radio" id="pregunta7_si" name="GUIA1_7" value="1">
+                                    </div>
+
+                                    <div>
+                                        <label for="pregunta7_no" style="margin-right: 1px;">No</label>
+                                        <input type="radio" id="pregunta7_no" name="GUIA1_7" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pregunta8_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_14" data-toggle="tooltip" title=""></i>
+                                    8. ¿Se ha sentido usted alejado o distante de los demás?</p>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div>
+                                        <label for="pregunta8_si" style="margin-right: 1px;">Sí</label>
+                                        <input type="radio" id="pregunta8_si" name="GUIA1_8" value="1">
+                                    </div>
+
+                                    <div>
+                                        <label for="pregunta8_no" style="margin-right: 1px;">No</label>
+                                        <input type="radio" id="pregunta8_no" name="GUIA1_8" value="0">
                                     </div>
                                 </div>
                             </div>
                             <div id="pregunta9_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_9" data-toggle="tooltip" title=""></i>
-                                    3. ¿Ha tenido sueños de carácter recurrente sobre el acontecimiento, que le producen malestar?</p>
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_15" data-toggle="tooltip" title=""></i>
+                                    9. ¿Ha notado que tiene dificultad para expresar sus sentimientos?</p>
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     <div>
                                         <label for="pregunta9_si" style="margin-right: 1px;">Sí</label>
@@ -976,44 +1017,44 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div id="seccion3" class="mt-3" style="display: none; padding: 10px;">
-                            <div id="titulo3">
-                                <h5 style="text-align: left; width: 70%;" class="titulo-seccion"><b>III.- Esfuerzo por evitar circunstancias parecidas o asociadas al acontecimiento (durante el último mes):</b></h5>
-                            </div>
-                            <div id="pregunta10_1" class="mt-4 ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_10" data-toggle="tooltip" title=""></i>
-                                    4. ¿Se ha esforzado por evitar todo tipo de sentimientos, conversaciones o situaciones que le puedan recordar el acontecimiento?</p>
+                            <div id="pregunta10_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_16" data-toggle="tooltip" title=""></i>
+                                    10. ¿Ha tenido la impresión de que su vida se va a acortar, que va a morir antes que otras personas o que tiene un futuro limitado?</p>
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     <div>
-                                        <label for="preguta10_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="preguta10_si" name="GUIA1_10" value="1">
+                                        <label for="pregunta10_si" style="margin-right: 1px;">Sí</label>
+                                        <input type="radio" id="pregunta10_si" name="GUIA1_10" value="1">
                                     </div>
 
                                     <div>
-                                        <label for="preguta10_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="preguta10_no" name="GUIA1_10" value="0">
+                                        <label for="pregunta10_no" style="margin-right: 1px;">No</label>
+                                        <input type="radio" id="pregunta10_no" name="GUIA1_10" value="0">
                                     </div>
                                 </div>
                             </div>
-                            <div id="pregunta11_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_11" data-toggle="tooltip" title=""></i>
-                                    5. ¿Se ha esforzado por evitar todo tipo de actividades, lugares o personas que motivan recuerdos del acontecimiento?</p>
+                        </div>
+                        <div id="seccion4" class="mt-3" style="display: none; padding: 10px; ">
+                            <div id="titulo4">
+                                <h5 style="text-align: left; width: 70%;" class="titulo-seccion"><b>IV.- Afectación (durante el último mes):</b></h5>
+                            </div>
+                            <div id="pregunta11_1" class="mt-4 ocultas" class="mt-4 divPreguntas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_17" data-toggle="tooltip" title=""></i>
+                                    11. ¿Ha tenido usted dificultades para dormir?</p>
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     <div>
-                                        <label for="pregunta11_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta11_si" name="GUIA1_11" value="1">
+                                        <label for="preguta11_si" style="margin-right: 1px;">Sí</label>
+                                        <input type="radio" id="preguta11_si" name="GUIA1_11" value="1">
                                     </div>
 
                                     <div>
-                                        <label for="pregunta11_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta11_no" name="GUIA1_11" value="0">
+                                        <label for="preguta11_no" style="margin-right: 1px;">No</label>
+                                        <input type="radio" id="preguta11_no" name="GUIA1_11" value="0">
                                     </div>
                                 </div>
                             </div>
                             <div id="pregunta12_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_12" data-toggle="tooltip" title=""></i>
-                                    6. ¿Ha tenido dificultad para recordar alguna parte importante del evento?</p>
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_18" data-toggle="tooltip" title=""></i>
+                                    12. ¿Ha estado particularmente irritable o le han dado arranques de coraje?</p>
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     <div>
                                         <label for="pregunta12_si" style="margin-right: 1px;">Sí</label>
@@ -1027,8 +1068,8 @@
                                 </div>
                             </div>
                             <div id="pregunta13_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_13" data-toggle="tooltip" title=""></i>
-                                    7. ¿Ha disminuido su interés en sus actividades cotidianas?</p>
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_19" data-toggle="tooltip" title=""></i>
+                                    13. ¿Ha tenido dificultad para concentrarse?</p>
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     <div>
                                         <label for="pregunta13_si" style="margin-right: 1px;">Sí</label>
@@ -1042,8 +1083,8 @@
                                 </div>
                             </div>
                             <div id="pregunta14_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_14" data-toggle="tooltip" title=""></i>
-                                    8. ¿Se ha sentido usted alejado o distante de los demás?</p>
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_20" data-toggle="tooltip" title=""></i>
+                                    14. ¿Ha estado nervioso o constantemente en alerta?</p>
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     <div>
                                         <label for="pregunta14_si" style="margin-right: 1px;">Sí</label>
@@ -1057,8 +1098,8 @@
                                 </div>
                             </div>
                             <div id="pregunta15_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_15" data-toggle="tooltip" title=""></i>
-                                    9. ¿Ha notado que tiene dificultad para expresar sus sentimientos?</p>
+                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_21" data-toggle="tooltip" title=""></i>
+                                    15. ¿Se ha sobresaltado fácilmente por cualquier cosa?</p>
                                 <div style="display: flex; align-items: center; gap: 20px;">
                                     <div>
                                         <label for="pregunta15_si" style="margin-right: 1px;">Sí</label>
@@ -1068,101 +1109,6 @@
                                     <div>
                                         <label for="pregunta15_no" style="margin-right: 1px;">No</label>
                                         <input type="radio" id="pregunta15_no" name="GUIA1_15" value="0">
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="pregunta16_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_16" data-toggle="tooltip" title=""></i>
-                                    10. ¿Ha tenido la impresión de que su vida se va a acortar, que va a morir antes que otras personas o que tiene un futuro limitado?</p>
-                                <div style="display: flex; align-items: center; gap: 20px;">
-                                    <div>
-                                        <label for="pregunta16_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta16_si" name="GUIA1_16" value="1">
-                                    </div>
-
-                                    <div>
-                                        <label for="pregunta16_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta16_no" name="GUIA1_16" value="0">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="seccion4" class="mt-3" style="display: none; padding: 10px; ">
-                            <div id="titulo4">
-                                <h5 style="text-align: left; width: 70%;" class="titulo-seccion"><b>IV.- Afectación (durante el último mes):</b></h5>
-                            </div>
-                            <div id="pregunta17_1" class="mt-4 ocultas" class="mt-4 divPreguntas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_17" data-toggle="tooltip" title=""></i>
-                                    11. ¿Ha tenido usted dificultades para dormir?</p>
-                                <div style="display: flex; align-items: center; gap: 20px;">
-                                    <div>
-                                        <label for="preguta17_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="preguta17_si" name="GUIA1_17" value="1">
-                                    </div>
-
-                                    <div>
-                                        <label for="preguta17_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="preguta17_no" name="GUIA1_17" value="0">
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="pregunta18_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_18" data-toggle="tooltip" title=""></i>
-                                    12. ¿Ha estado particularmente irritable o le han dado arranques de coraje?</p>
-                                <div style="display: flex; align-items: center; gap: 20px;">
-                                    <div>
-                                        <label for="pregunta18_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta18_si" name="GUIA1_18" value="1">
-                                    </div>
-
-                                    <div>
-                                        <label for="pregunta18_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta18_no" name="GUIA1_18" value="0">
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="pregunta19_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_19" data-toggle="tooltip" title=""></i>
-                                    13. ¿Ha tenido dificultad para concentrarse?</p>
-                                <div style="display: flex; align-items: center; gap: 20px;">
-                                    <div>
-                                        <label for="pregunta19_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta19_si" name="GUIA1_19" value="1">
-                                    </div>
-
-                                    <div>
-                                        <label for="pregunta19_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta19_no" name="GUIA1_19" value="0">
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="pregunta20_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_20" data-toggle="tooltip" title=""></i>
-                                    14. ¿Ha estado nervioso o constantemente en alerta?</p>
-                                <div style="display: flex; align-items: center; gap: 20px;">
-                                    <div>
-                                        <label for="pregunta20_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta20_si" name="GUIA1_20" value="1">
-                                    </div>
-
-                                    <div>
-                                        <label for="pregunta20_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta20_no" name="GUIA1_20" value="0">
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="pregunta21_1" class="ocultas" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
-                                <p style="margin: 0; flex: 1;"><i class="fa fa-info-circle" id="Exp1_21" data-toggle="tooltip" title=""></i>
-                                    15. ¿Se ha sobresaltado fácilmente por cualquier cosa?</p>
-                                <div style="display: flex; align-items: center; gap: 20px;">
-                                    <div>
-                                        <label for="pregunta21_si" style="margin-right: 1px;">Sí</label>
-                                        <input type="radio" id="pregunta21_si" name="GUIA1_21" value="1">
-                                    </div>
-
-                                    <div>
-                                        <label for="pregunta21_no" style="margin-right: 1px;">No</label>
-                                        <input type="radio" id="pregunta21_no" name="GUIA1_21" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -4694,66 +4640,64 @@
             <div class="modal-content">
                 <div class="modal-header d-flex justify-content-between align-items-center">
                     <h5 class="modal-title" id="avisoPrivacidadModalLabel">AVISO DE PRIVACIDAD</h5>
-                    <img src="/assets/images/logo-light.png" alt="Imagen de Privacidad" style="width: 150px;">
+                    <img src="/assets/images/logoBlanco.png" alt="Imagen de Privacidad" style="width: 150px;">
                 </div>
 
                 <div class="modal-body">
-                <p style="text-align: justify;">
+                    <p style="text-align: justify;">
                         Antes de comenzar, lee y acepta el Aviso de Privacidad.
                         Todos los datos personales y respuestas a los cuestionarios serán tratados de
                         forma confidencial y anónima, conforme a la Ley y la NOM-035.
                     </p>
                     <p style="text-align: justify;">
-                    Con fundamento en la Ley Federal de Protección de Datos Personales en Posesión de
-                    los Particulares, y en cumplimiento con la Norma Oficial Mexicana NOM-035-STPS-
-                    2018, relativa a los factores de riesgo psicosocial en el trabajo, Results In
-                    Performance (RESULTS) con domicilio en Calle Carmen Cadena de Buendía No.
-                    128, Colonia Nueva Villahermosa, C. P. 86070, Villahermosa, Tabasco pone a su
-                    disposición el presente Aviso de Privacidad.
+                        Con fundamento en la Ley Federal de Protección de Datos Personales en Posesión de
+                        los Particulares, y en cumplimiento con la Norma Oficial Mexicana NOM-035-STPS-
+                        2018, relativa a los factores de riesgo psicosocial en el trabajo, Results In
+                        Performance (RESULTS) con domicilio en Calle Prolongación de Avenida Los Ríos No. 203, Esquina Cerrada de Niebla, Colonia Atasta de Serra, CP 86100, Villahermosa, Tabasco. pone a su disposición el presente Aviso de Privacidad.
                     </p>
                     <h6>1. Datos que se recabarán</h6>
                     <p style="text-align: justify;">
-                    Recabaremos información personal, laboral y psicosocial, la cual puede incluir:
-                    - Datos de identificación: nombre, cargo, área de trabajo, etc.
-                    - Datos de contacto: correo electrónico, teléfono, etc.
-                    - Datos psicosociales: respuestas a cuestionarios, encuestas y evaluaciones que
-                    miden los factores de riesgo psicosocial y el clima organizacional, entre otros.
+                        Recabaremos información personal, laboral y psicosocial, la cual puede incluir:
+                        - Datos de identificación: nombre, cargo, área de trabajo, etc.
+                        - Datos de contacto: correo electrónico, teléfono, etc.
+                        - Datos psicosociales: respuestas a cuestionarios, encuestas y evaluaciones que
+                        miden los factores de riesgo psicosocial y el clima organizacional, entre otros.
                     </p>
                     <h6>2. Finalidad del tratamiento de los datos personales</h6>
                     <p style="text-align: justify;">
-                    Sus datos personales serán tratados para cumplir con las disposiciones de la
-                    NOM-035-STPS-2018, lo cual incluye:
-                    - Identificar y analizar los factores de riesgo psicosocial en su lugar de trabajo.
-                    - Implementar medidas preventivas y correctivas para mejorar el ambiente laboral.
-                    - Desarrollar políticas y programas de bienestar y salud en el trabajo.
+                        Sus datos personales serán tratados para cumplir con las disposiciones de la
+                        NOM-035-STPS-2018, lo cual incluye:
+                        - Identificar y analizar los factores de riesgo psicosocial en su lugar de trabajo.
+                        - Implementar medidas preventivas y correctivas para mejorar el ambiente laboral.
+                        - Desarrollar políticas y programas de bienestar y salud en el trabajo.
                     </p>
                     <h6>3. Uso y protección de la información</h6>
                     <p style="text-align: justify;">
-                    Sus datos serán utilizados únicamente para los fines establecidos en este aviso
-                    y serán tratados con absoluta confidencialidad. Contamos con medidas de
-                    seguridad para proteger sus datos personales contra el acceso no autorizado,
-                    daño, pérdida o alteración.
+                        Sus datos serán utilizados únicamente para los fines establecidos en este aviso
+                        y serán tratados con absoluta confidencialidad. Contamos con medidas de
+                        seguridad para proteger sus datos personales contra el acceso no autorizado,
+                        daño, pérdida o alteración.
                     </p>
                     <h6>4. Transferencia de datos personales</h6>
                     <p style="text-align: justify;">
-                    Sus datos personales no serán compartidos con terceros sin su consentimiento,
-                    salvo en los casos establecidos por la Ley o que resulten necesarios para
-                    cumplir con la NOM-035-STPS-2018 y otras disposiciones aplicables.
+                        Sus datos personales no serán compartidos con terceros sin su consentimiento,
+                        salvo en los casos establecidos por la Ley o que resulten necesarios para
+                        cumplir con la NOM-035-STPS-2018 y otras disposiciones aplicables.
                     </p>
                     <h6>5. Derechos ARCO</h6>
                     <p style="text-align: justify;">
-                    Usted tiene derecho a acceder, rectificar, cancelar u oponerse al tratamiento de
-                    sus datos personales (derechos ARCO). Para ejercer estos derechos o para
-                    cualquier consulta relacionada con sus datos personales, puede dirigirse a
-                    contacto@results-in-performance.com, este derecho puede ser ejercido durante
-                    todo el tiempo de la vigencia del contrato de prestación de los servicios
-                    brindados por RESULTS, una vez concluido ese periodo deberá de realizar la
-                    solicitud presencialmente para exponer los motivos del ejercicio de su derecho.
+                        Usted tiene derecho a acceder, rectificar, cancelar u oponerse al tratamiento de
+                        sus datos personales (derechos ARCO). Para ejercer estos derechos o para
+                        cualquier consulta relacionada con sus datos personales, puede dirigirse a
+                        contacto@results-in-performance.com, este derecho puede ser ejercido durante
+                        todo el tiempo de la vigencia del contrato de prestación de los servicios
+                        brindados por RESULTS, una vez concluido ese periodo deberá de realizar la
+                        solicitud presencialmente para exponer los motivos del ejercicio de su derecho.
                     </p>
                     <h6>6. Cambios en el aviso de privacidad</h6>
                     <p style="text-align: justify;">
-                    Este Aviso de Privacidad podrá ser modificado para cumplir con cambios en la
-                    normativa aplicable o actualizaciones en las políticas internas de Results In Performance. Las modificaciones estarán disponibles <a href="https://results-in-performance.com/images/2024/Aviso_privacidad.pdf" target="_blank">aquí.</a>
+                        Este Aviso de Privacidad podrá ser modificado para cumplir con cambios en la
+                        normativa aplicable o actualizaciones en las políticas internas de Results In Performance. Las modificaciones estarán disponibles <a href="https://results-in-performance.com/images/2024/Aviso_privacidad.pdf" target="_blank">aquí.</a>
                     </p>
 
                 </div>
@@ -4768,20 +4712,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="avisoPermisosModalLabel">PERMISO DE USO DE CÁMARA WEB</h5>
-                    <img src="/assets/images/logo-light.png" alt="Imagen de Privacidad" style="width: 150px;">
+                    <img src="/assets/images/logoBlanco.png" alt="Imagen de Privacidad" style="width: 150px;">
                 </div>
                 <div class="modal-body">
                     <h6>Permiso de uso de cámara web requerido</h6>
                     <p style="text-align: justify;">
-                    Autorizo a Results In Performance para hacer uso de la cámara web de mi dispositivo durante la evaluación de los Factores de Riesgo Psicosocial. Esta autorización se concede bajo las siguientes condiciones:
-<br>  <br>- El uso de la cámara web estará destinado únicamente a la evaluación de Factores de Riesgo Psicosocial, permitiendo la correcta identificación del usuario, la validación de la participación activa y la supervisión del proceso evaluativo en línea.
-<br>  <br>- Results se compromete a proteger la confidencialidad de las imágenes y datos personales capturados durante la evaluación, en conformidad con la normativa de protección de datos aplicable y la política de privacidad de la empresa.
-<br>  <br>- Las imágenes y cualquier dato capturado durante la evaluación serán utilizados exclusivamente para fines de verificación y registro de la evaluación de Factores de Riesgo Psicosocial, y no serán compartidos ni utilizados para otros propósitos sin autorización previa del usuario.
-<br> <br> - Esta autorización será válida únicamente durante el tiempo que dure la evaluación de los Factores de Riesgo Psicosocial.
+                        Autorizo a Results In Performance para hacer uso de la cámara web de mi dispositivo durante la evaluación de los Factores de Riesgo Psicosocial. Esta autorización se concede bajo las siguientes condiciones:
+                        <br> <br>- El uso de la cámara web estará destinado únicamente a la evaluación de Factores de Riesgo Psicosocial, permitiendo la correcta identificación del usuario, la validación de la participación activa y la supervisión del proceso evaluativo en línea.
+                        <br> <br>- Results se compromete a proteger la confidencialidad de las imágenes y datos personales capturados durante la evaluación, en conformidad con la normativa de protección de datos aplicable y la política de privacidad de la empresa.
+                        <br> <br>- Las imágenes y cualquier dato capturado durante la evaluación serán utilizados exclusivamente para fines de verificación y registro de la evaluación de Factores de Riesgo Psicosocial, y no serán compartidos ni utilizados para otros propósitos sin autorización previa del usuario.
+                        <br> <br> - Esta autorización será válida únicamente durante el tiempo que dure la evaluación de los Factores de Riesgo Psicosocial.
 
                     </p>
                     <p style="text-align: justify;">
-                    Cualquier duda puede consultar nuestro aviso de privacidad <a href="https://results-in-performance.com/images/2024/Aviso_privacidad.pdf">aquí</a> o ponerse en contacto a través del correo contacto@results-in-performance.com
+                        Cualquier duda puede consultar nuestro aviso de privacidad <a href="https://results-in-performance.com/images/2024/Aviso_privacidad.pdf">aquí</a> o ponerse en contacto a través del correo contacto@results-in-performance.com
 
                     </p>
                 </div>
@@ -4848,8 +4792,8 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header d-flex justify-content-between align-items-center">
-                    <h5 class="modal-title" id="instruccionesModalLabel">INSTRUCCIONES PARA APLICAR  <br> LA NOM-035-STPS-2018 EN LÍNEA</h5>
-                    <img src="/assets/images/logo-light.png" alt="Imagen de Privacidad" style="width: 150px;">
+                    <h5 class="modal-title" id="instruccionesModalLabel">INSTRUCCIONES PARA APLICAR <br> LA NOM-035-STPS-2018 EN LÍNEA</h5>
+                    <img src="/assets/images/logoBlanco.png" alt="Imagen de Privacidad" style="width: 150px;">
                 </div>
 
                 <div class="modal-body">
@@ -4867,20 +4811,20 @@
                     </h6>
 
                     <p style="font-size: 0.9rem; color: #555; font-style: italic; text-align: justify;">
-                    Completar el cuestionario te tomará aproximadamente 15-
-                    30 minutos.
+                        Completar el cuestionario te tomará aproximadamente 15-
+                        30 minutos.
                     </p>
                     <p style="font-size: 0.9rem; color: #555; text-align: justify;">
-                    Lee cada pregunta cuidadosamente y responde con sinceridad;
-                     <strong>
-                     no hay respuestas correctas o incorrectas.
-                           
+                        Lee cada pregunta cuidadosamente y responde con sinceridad;
+                        <strong>
+                            no hay respuestas correctas o incorrectas.
+
                         </strong>Este cuestionario es una herramienta
-                    para mejorar tu entorno laboral.
+                        para mejorar tu entorno laboral.
                     </p>
                     <p style="font-size: 0.9rem; color: #555; text-align: justify;">
-                    Todos los datos personales y respuestas a los cuestionarios serán tratados de
-                    forma confidencial y anónima, conforme a la Ley y la NOM-035.
+                        Todos los datos personales y respuestas a los cuestionarios serán tratados de
+                        forma confidencial y anónima, conforme a la Ley y la NOM-035.
                     </p>
 
                 </div>
@@ -4894,7 +4838,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal guia 5 -->
     <div class="modal fade" id="guia5Modal" tabindex="-1" role="dialog" aria-labelledby="guia5ModalLabel">
         <div class="modal-dialog modal-lg" role="document">
@@ -5129,7 +5072,7 @@
     <script src="/assets/plugins/sweetalert/jquery.sweet-alert.custom.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.4/dist/sweetalert2.all.min.js"></script>
-    <script src="/js_sitio/guias.js"></script>
+    <script src="/js_sitio/guias.js?v=1"></script>
 
 
 

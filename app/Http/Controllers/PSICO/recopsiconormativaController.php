@@ -18,6 +18,7 @@ use App\modelos\proyecto\proyectoModel;
 
 //use DB;
 //Re//cursos para abrir el Excel
+
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;

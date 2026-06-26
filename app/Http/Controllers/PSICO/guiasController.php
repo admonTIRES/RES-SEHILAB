@@ -174,6 +174,8 @@ class guiasController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+
+    
     public function store(Request $request)
     {
         try {
@@ -182,8 +184,8 @@ class guiasController extends Controller
 
             if ($option == 1) { // GUIA 1
        
-                $datosRegistro = array_fill(0, 21, null);
-                    for ($i = 1; $i <= 21; $i++) {
+                $datosRegistro = array_fill(0, 15, null);
+                    for ($i = 1; $i <= 15; $i++) {
                         $campoNombre = "GUIA1_$i"; 
                         if ($request->has($campoNombre)) {
                             $datosRegistro[$i - 1] = $request->input($campoNombre);

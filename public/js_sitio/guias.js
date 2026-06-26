@@ -414,6 +414,14 @@ function guardarGuia1y3(){
             var form2Data = new FormData(form2);
             var valida2 = form2.checkValidity();
 
+            form2Data.append('option', 3);
+            form2Data.append('tipoGuardado', 1);
+
+            for (let pair of form2Data.entries()) {
+                console.log(pair[0], pair[1]);
+            }
+            
+
             if (valida2) {
                 $.ajax({
                     url: '/guardarGuiasPsico',
@@ -717,40 +725,11 @@ function guia1() {
     const pregunta1Si = document.getElementById("pregunta1_si").checked;
     const pregunta1No = document.getElementById("pregunta1_no").checked;
 
-    const pregunta2Si = document.getElementById("pregunta2_si");
-    const pregunta3Si = document.getElementById("pregunta3_si");
-    const pregunta4Si = document.getElementById("pregunta4_si");
-    const pregunta5Si = document.getElementById("pregunta5_si");
-    const pregunta6Si = document.getElementById("pregunta6_si");
-    const pregunta7Si = document.getElementById("pregunta7_si");
-
-    const pregunta2No = document.getElementById("pregunta2_no");
-    const pregunta3No = document.getElementById("pregunta3_no");
-    const pregunta4No = document.getElementById("pregunta4_no");
-    const pregunta5No = document.getElementById("pregunta5_no");
-    const pregunta6No = document.getElementById("pregunta6_no");
-    const pregunta7No = document.getElementById("pregunta7_no");
-
-    if(pregunta1No) {
-        pregunta2No.checked = true;
-        pregunta3No.checked = true;
-        pregunta4No.checked = true;
-        pregunta5No.checked = true;
-        pregunta6No.checked = true;
-        pregunta7No.checked = true;
-    }
-
     if (pregunta1Si) {
         document.getElementById("seccion2").style.display = "block";
         document.getElementById("seccion3").style.display = "block";
         document.getElementById("seccion4").style.display = "block";
         $('.ocultas').addClass('divPreguntas');
-        pregunta2No.checked = true;
-        pregunta3No.checked = true;
-        pregunta4No.checked = true;
-        pregunta5No.checked = true;
-        pregunta6No.checked = true;
-        pregunta7No.checked = true;
 
     } else {
         document.getElementById("seccion2").style.display = "none";
