@@ -63,8 +63,7 @@
     }
 
     tr.error {
-        background-color: #ffe5e5 !important
-        ;
+        background-color: #ffe5e5 !important;
     }
 </style>
 
@@ -90,8 +89,6 @@
 
 
 <style>
-   
-
     .bloqueado:hover {
         cursor: not-allowed;
     }
@@ -118,7 +115,7 @@
                         <span class="hidden-xs-down">Datos del reconocimiento</span>
                     </a>
                 </li>
-               
+
             </ul>
             <!-- CONTENIDO DE TABS -->
             <div class="tab-content">
@@ -126,9 +123,9 @@
                 <div class="tab-pane p-20 active" id="tab_1" role="tabpanel">
                     <ol class="breadcrumb m-b-10">
                         <h2 style="color: #ffff; margin: 0;"> <i class="fa fa-braille" aria-hidden="true"></i> Evaluación FRE </h2>
-                        
+
                     </ol>
-                   
+
                     <div class="table-responsive">
                         <table class="table table-hover stylish-table" width="100%" id="tabla_reconocimiento_sensorial">
                             <thead>
@@ -196,7 +193,7 @@
                                     </div>
                                 </div>
 
-                              
+
 
                                 <!--form panels-->
                                 <div class="row">
@@ -664,7 +661,7 @@
                                                 </div>
                                             </div>
 
-                                          
+
 
                                             <!--STEP 4-->
                                             <div class="multisteps-form__panel" data-animation="scaleIn" id="steps_contenido_tab4">
@@ -715,594 +712,594 @@
                     </div>
                 </div> <!-- /FIN TAB 2 -->
 
-              
+
+            </div>
         </div>
     </div>
-</div>
 
 
 
 
 
 
-<!-- ============================================================== -->
-<!-- MODALES FICHAS TECNICAS  -->
-<!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- MODALES FICHAS TECNICAS  -->
+    <!-- ============================================================== -->
 
-<div id="modal_fichas" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg" style="min-width: 90%!important;">
-        <div class="modal-content">
-            <form enctype="multipart/form-data" method="post" name="form_fichas" id="form_fichas">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Nueva fichas</h4>
-                </div>
-                <div class="modal-body">
-                    {!! csrf_field() !!}
-                    <div class="row">
-
-
-                        <input type="hidden" name="JSON_ACTIVIDADES" id="JSON_ACTIVIDADES">
-                        <input type="hidden" name="JSON_FICHAS" id="JSON_FICHAS">
-
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label>N° PE *</label>
-                                <input type="text" class="form-control" name="PE_EVALUADAS" id="PE_EVALUADAS" required readonly>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label>Categoría *</label>
-                                <select class="form-control" id="CATEGORIA_ID_FICHA" name="CATEGORIA_ID_FICHA" required>
-                                    <option value="">Selecciona un tipo de valor</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label> Departamento *</label>
-                                <select class="custom-select form-control" id="CAT_DEPARTAMENTO_FICHA" name="CAT_DEPARTAMENTO_FICHA" required style="pointer-events:none; background-color:#e9ecef;">
-                                    <option value=""></option>
-                                    @foreach($catdepartamento as $dato)
-                                    <option value="{{$dato->id}}">{{$dato->catdepartamento_nombre}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label>Áreas *</label>
-                                <select class="custom-select form-control" id="CAT_AREAS_FICHA" name="CAT_AREAS_FICHA[]" multiple>
-                                </select>
-                            </div>
-                        </div>
+    <div id="modal_fichas" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg" style="min-width: 90%!important;">
+            <div class="modal-content">
+                <form enctype="multipart/form-data" method="post" name="form_fichas" id="form_fichas">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Nueva fichas</h4>
+                    </div>
+                    <div class="modal-body">
+                        {!! csrf_field() !!}
+                        <div class="row">
 
 
-                        <!-- NOMBRE -->
-                        <div class="col-8">
-                            <div class="form-group">
-                                <label>Nombre del empleado *</label>
-                                <input type="text" class="form-control" name="NOMBRE_EMPLEADO_FICHA" id="NOMBRE_EMPLEADO_FICHA" required>
-                            </div>
-                        </div>
+                            <input type="hidden" name="JSON_ACTIVIDADES" id="JSON_ACTIVIDADES">
+                            <input type="hidden" name="JSON_FICHAS" id="JSON_FICHAS">
 
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Ficha / No empleado </label>
-                                <input type="text" class="form-control" name="NO_EMPLEADO_FICHA" id="NO_EMPLEADO_FICHA">
-                            </div>
-                        </div>
-                        <!-- SEXO -->
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Sexo *</label>
-                                <select class="form-control" name="SEXO_EMPLEADO_FICHA" id="SEXO_EMPLEADO_FICHA" required>
-                                    <option value="">Seleccionar</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Femenino</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- FECHA NACIMIENTO -->
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Fecha de nacimiento </label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control mydatepicker" placeholder="aaaa-mm-dd" id="FECHA_NACIMIENTO" name="FECHA_NACIMIENTO">
-                                    <span class="input-group-addon"><i class="icon-calender"></i></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Edad </label>
+                            <div class="col-3">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="EDAD_EMPLEADO_FICHA" id="EDAD_EMPLEADO_FICHA" readonly>
+                                    <label>N° PE *</label>
+                                    <input type="text" class="form-control" name="PE_EVALUADAS" id="PE_EVALUADAS" required readonly>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- PESO -->
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Peso (kg) </label>
-                                <input type="number" class="form-control" name="PESO_FICHA" id="PESO_FICHA" step="0.1">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Categoría *</label>
+                                    <select class="form-control" id="CATEGORIA_ID_FICHA" name="CATEGORIA_ID_FICHA" required>
+                                        <option value="">Selecciona un tipo de valor</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- TALLA -->
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Talla (cm) </label>
-                                <input type="number" class="form-control" name="TALLA_FICHA" id="TALLA_FICHA">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label> Departamento *</label>
+                                    <select class="custom-select form-control" id="CAT_DEPARTAMENTO_FICHA" name="CAT_DEPARTAMENTO_FICHA" required style="pointer-events:none; background-color:#e9ecef;">
+                                        <option value=""></option>
+                                        @foreach($catdepartamento as $dato)
+                                        <option value="{{$dato->id}}">{{$dato->catdepartamento_nombre}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Régimen Contractual </label>
-
-                                <select class="custom-select form-control" id="REGIMEN_CONTRACTUAL_FICHA" name="REGIMEN_CONTRACTUAL_FICHA">
-                                    <option value=""></option>
-                                    @foreach($catregimen as $dato)
-                                    <option value="{{$dato->ID_REGIMEN_CONTRACTUAL}}">{{$dato->NOMBRE_REGIMEN_CONTRACTUAL}}</option>
-                                    @endforeach
-                                </select>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Áreas *</label>
+                                    <select class="custom-select form-control" id="CAT_AREAS_FICHA" name="CAT_AREAS_FICHA[]" multiple>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Jornada </label>
-                                <select class="custom-select form-control" id="JORNADA_EMPLEADO_FICHA" name="JORNADA_EMPLEADO_FICHA">
-                                    <option value=""></option>
-                                    @foreach($catjornada as $dato)
-                                    <option value="{{$dato->ID_JORNADA}}">{{$dato->NOMBRE_JORNADA}}</option>
-                                    @endforeach
-                                </select>
+
+                            <!-- NOMBRE -->
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <label>Nombre del empleado *</label>
+                                    <input type="text" class="form-control" name="NOMBRE_EMPLEADO_FICHA" id="NOMBRE_EMPLEADO_FICHA" required>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Turno </label>
-
-                                <select class="custom-select form-control" id="TURNO_EMPLEADO_FICHA" name="TURNO_EMPLEADO_FICHA[]" multiple>
-                                    <option value=""></option>
-                                    @foreach($caturno as $dato)
-                                    <option value="{{$dato->ID_TURNO}}">{{$dato->NOMBRE_TURNO}}</option>
-                                    @endforeach
-                                </select>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Ficha / No empleado </label>
+                                    <input type="text" class="form-control" name="NO_EMPLEADO_FICHA" id="NO_EMPLEADO_FICHA">
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>¿Cuánto tiempo lleva en la empresa?</label>
-                                <input type="text" class="form-control" name="TIEMPO_EMPRESA_FICHA" id="TIEMPO_EMPRESA_FICHA">
+                            <!-- SEXO -->
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Sexo *</label>
+                                    <select class="form-control" name="SEXO_EMPLEADO_FICHA" id="SEXO_EMPLEADO_FICHA" required>
+                                        <option value="">Seleccionar</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Antigüedad en la categoría</label>
-                                <input type="text" class="form-control" name="ANTIGUEDAD_CATEOGORIA_FICHA" id="ANTIGUEDAD_CATEOGORIA_FICHA">
-                            </div>
-                        </div>
-
-
-
-
-
-                        <br><br>
-                        <div class="col-12 mt-2 text-center">
-                             Actividades
-                        </div>
-
-                        <div id="contenedorActividades" class="mt-2"></div>
-
-
-
-
-                        <br><br>
-
-                        <style>
-                            /* ACTIVIDADES */
-
-                            #contenedorActividades {
-                                width: 100%;
-                            }
-
-                            .actividad-card {
-                                width: 100%;
-                                border: 1px solid #ddd;
-                                border-radius: 10px;
-                                padding: 15px;
-                                margin-bottom: 10px;
-                                background: #fff;
-                            }
-
-                            .actividad-row {
-                                display: flex;
-                                gap: 15px;
-                                align-items: flex-start;
-                            }
-
-                            .actividad-left {
-                                width: 30%;
-                            }
-
-                            .actividad-right {
-                                width: 70%;
-                            }
-
-                            .btn-agregar-tarea {
-                                width: 20%;
-                                background: linear-gradient(90deg, #6dd6e4, #6dd6e4);
-                                color: white;
-                                border: none;
-                            }
-
-                            .tarea-item {
-                                border: 1px solid #e5e7eb;
-                                border-radius: 8px;
-                                padding: 10px;
-                                margin-top: 8px;
-                                background: #f9fafb;
-                            }
-
-
-
-                            /* FICHAS */
-                            .custom-container-left {
-                                width: 100%;
-                                max-width: 100%;
-                                /* evita límite */
-                                padding-left: !important;
-                                padding-right: !important;
-                            }
-
-                            .no-padding {
-                                padding-left: !important;
-                                padding-right: !important;
-                            }
-
-
-
-                            .custom-card-header {
-                                width: 100%;
-                                text-align: left;
-                            }
-
-                            .custom-card-nom .card-body {
-                                padding: 20px;
-                            }
-
-                            .custom-card-nom .row {
-                                justify-content: flex-start;
-                            }
-                        </style>
-
-                        <div class="container-fluid custom-container-left no-padding">
-                            <div class="card mb-3">
-
-
-                                <div class="card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
-                                    onclick="toggleSeccion('contenido1')">
-                                    <div class="text-left w-100">
-                                        <b>1.NOM-036-1-STPS-2018 (A continuación responda las tres preguntas que permiten identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en el trabajo derivados del manejo manual de cargas, según corresponda con un sí o no, si la respuesta es no en la primera no tendrá que responder los criterios de levantamientos, transporte y empuje y tracción. )</b><br>
+                            <!-- FECHA NACIMIENTO -->
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Fecha de nacimiento </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control mydatepicker" placeholder="aaaa-mm-dd" id="FECHA_NACIMIENTO" name="FECHA_NACIMIENTO">
+                                        <span class="input-group-addon"><i class="icon-calender"></i></span>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Edad </label>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="EDAD_EMPLEADO_FICHA" id="EDAD_EMPLEADO_FICHA" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PESO -->
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Peso (kg) </label>
+                                    <input type="number" class="form-control" name="PESO_FICHA" id="PESO_FICHA" step="0.1">
+                                </div>
+                            </div>
+
+                            <!-- TALLA -->
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Talla (cm) </label>
+                                    <input type="number" class="form-control" name="TALLA_FICHA" id="TALLA_FICHA">
+                                </div>
+                            </div>
+
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Régimen Contractual </label>
+
+                                    <select class="custom-select form-control" id="REGIMEN_CONTRACTUAL_FICHA" name="REGIMEN_CONTRACTUAL_FICHA">
+                                        <option value=""></option>
+                                        @foreach($catregimen as $dato)
+                                        <option value="{{$dato->ID_REGIMEN_CONTRACTUAL}}">{{$dato->NOMBRE_REGIMEN_CONTRACTUAL}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Jornada </label>
+                                    <select class="custom-select form-control" id="JORNADA_EMPLEADO_FICHA" name="JORNADA_EMPLEADO_FICHA">
+                                        <option value=""></option>
+                                        @foreach($catjornada as $dato)
+                                        <option value="{{$dato->ID_JORNADA}}">{{$dato->NOMBRE_JORNADA}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Turno </label>
+
+                                    <select class="custom-select form-control" id="TURNO_EMPLEADO_FICHA" name="TURNO_EMPLEADO_FICHA[]" multiple>
+                                        <option value=""></option>
+                                        @foreach($caturno as $dato)
+                                        <option value="{{$dato->ID_TURNO}}">{{$dato->NOMBRE_TURNO}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>¿Cuánto tiempo lleva en la empresa?</label>
+                                    <input type="text" class="form-control" name="TIEMPO_EMPRESA_FICHA" id="TIEMPO_EMPRESA_FICHA">
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Antigüedad en la categoría</label>
+                                    <input type="text" class="form-control" name="ANTIGUEDAD_CATEOGORIA_FICHA" id="ANTIGUEDAD_CATEOGORIA_FICHA">
+                                </div>
+                            </div>
 
 
 
-                                <div id="contenido1" style="display:block;">
-
-                                    <div class="row m-2">
 
 
-                                        <div class="col-4">
-                                            <div class="form-group">
-                                                <label>
-                                                    1. Durante su jornada laboral, ¿levanta, baja, manipula objetos o materiales con un peso mayor a 3 Kg?
-                                                </label>
-                                                <select class="form-control" name="P1_CARGA_MAYOR_3KG" id="P1_CARGA_MAYOR_3KG" required>
-                                                    <option value="">Seleccione</option>
-                                                    <option value="SI">Sí</option>
-                                                    <option value="NO">No</option>
-                                                </select>
+                            <br><br>
+                            <div class="col-12 mt-2 text-center">
+                                Actividades
+                            </div>
+
+                            <div id="contenedorActividades" class="mt-2"></div>
+
+
+
+
+                            <br><br>
+
+                            <style>
+                                /* ACTIVIDADES */
+
+                                #contenedorActividades {
+                                    width: 100%;
+                                }
+
+                                .actividad-card {
+                                    width: 100%;
+                                    border: 1px solid #ddd;
+                                    border-radius: 10px;
+                                    padding: 15px;
+                                    margin-bottom: 10px;
+                                    background: #fff;
+                                }
+
+                                .actividad-row {
+                                    display: flex;
+                                    gap: 15px;
+                                    align-items: flex-start;
+                                }
+
+                                .actividad-left {
+                                    width: 30%;
+                                }
+
+                                .actividad-right {
+                                    width: 70%;
+                                }
+
+                                .btn-agregar-tarea {
+                                    width: 20%;
+                                    background: linear-gradient(90deg, #6dd6e4, #6dd6e4);
+                                    color: white;
+                                    border: none;
+                                }
+
+                                .tarea-item {
+                                    border: 1px solid #e5e7eb;
+                                    border-radius: 8px;
+                                    padding: 10px;
+                                    margin-top: 8px;
+                                    background: #f9fafb;
+                                }
+
+
+
+                                /* FICHAS */
+                                .custom-container-left {
+                                    width: 100%;
+                                    max-width: 100%;
+                                    /* evita límite */
+                                    padding-left: !important;
+                                    padding-right: !important;
+                                }
+
+                                .no-padding {
+                                    padding-left: !important;
+                                    padding-right: !important;
+                                }
+
+
+
+                                .custom-card-header {
+                                    width: 100%;
+                                    text-align: left;
+                                }
+
+                                .custom-card-nom .card-body {
+                                    padding: 20px;
+                                }
+
+                                .custom-card-nom .row {
+                                    justify-content: flex-start;
+                                }
+                            </style>
+
+                            <div class="container-fluid custom-container-left no-padding">
+                                <div class="card mb-3">
+
+
+                                    <div class="card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
+                                        onclick="toggleSeccion('contenido1')">
+                                        <div class="text-left w-100">
+                                            <b>1.NOM-036-1-STPS-2018 (A continuación responda las tres preguntas que permiten identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en el trabajo derivados del manejo manual de cargas, según corresponda con un sí o no, si la respuesta es no en la primera no tendrá que responder los criterios de levantamientos, transporte y empuje y tracción. )</b><br>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div id="contenido1" style="display:block;">
+
+                                        <div class="row m-2">
+
+
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label>
+                                                        1. Durante su jornada laboral, ¿levanta, baja, manipula objetos o materiales con un peso mayor a 3 Kg?
+                                                    </label>
+                                                    <select class="form-control" name="P1_CARGA_MAYOR_3KG" id="P1_CARGA_MAYOR_3KG" required>
+                                                        <option value="">Seleccione</option>
+                                                        <option value="SI">Sí</option>
+                                                        <option value="NO">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label>
+                                                        2. ¿Con qué frecuencia realiza actividades que involucren el manejo manual de cargas (más de una vez al día)?
+                                                    </label>
+                                                    <select class="form-control" name="P2_FRECUENCIA_CARGA" id="P2_FRECUENCIA_CARGA" required>
+                                                        <option value="">Seleccione</option>
+                                                        <option value="SI">Sí</option>
+                                                        <option value="NO">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label>
+                                                        3. ¿Tiene que levantar, bajar, transportar, empujar, jalar y/o estibar objetos o materiales como parte de su trabajo?
+                                                    </label>
+                                                    <select class="form-control" name="P3_MANIPULACION_CARGA" id="P3_MANIPULACION_CARGA" required>
+                                                        <option value="">Seleccione</option>
+                                                        <option value="SI">Sí</option>
+                                                        <option value="NO">No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="card mt-2" id="TEXTO_MANIPULACION" style="display: block;">
+                                        <div class="card-header header-verde-res d-flex align-items-center">
+                                            <i class="fa fa-info mr-2" aria-hidden="true"></i>
+                                            <div class="text-center w-100">
+                                                <b>Manipulación manual de cargas</b>
                                             </div>
                                         </div>
+                                        <div class="card-body">
+                                            Cualquier operación de transporte o sujeción de una carga mayor a 3 kg por parte de uno o varios trabajadores, como el levantamiento, la colocación, el empuje, la tracción o el desplazamiento, que por sus características ergonómicas inadecuadas entrañe riesgo, en particular dorsolumbares, para los trabajadores.
+                                        </div>
+                                    </div>
 
-                                        <div class="col-4">
-                                            <div class="form-group">
-                                                <label>
-                                                    2. ¿Con qué frecuencia realiza actividades que involucren el manejo manual de cargas (más de una vez al día)?
-                                                </label>
-                                                <select class="form-control" name="P2_FRECUENCIA_CARGA" id="P2_FRECUENCIA_CARGA" required>
-                                                    <option value="">Seleccione</option>
-                                                    <option value="SI">Sí</option>
-                                                    <option value="NO">No</option>
-                                                </select>
+                                    <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
+                                        onclick="toggleSeccion('contenido2')" id="LEVANTAMIENTO_CARGA" style="display:block !important;">
+                                        <div class="text-center">
+                                            <b>2.Levantamiento de cargas</b><br>
+                                        </div>
+                                    </div>
+
+                                    <div id="contenido2" style="display:none;">
+                                        <div class="card-body">
+
+                                            <div class="container-fluid">
+                                                <div id="ficha_1_1"></div>
+                                                <div id="ficha_1_4"></div>
+                                                <div id="ficha_1_3"></div>
+                                            </div>
+
+                                            <br><br>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
+                                        onclick="toggleSeccion('contenido3')" id="TRANSPORTE_CARGAS" style="display:block !important;">
+                                        <div class="text-center">
+                                            <b>3.Transporte de cargas</b><br>
+                                        </div>
+                                    </div>
+
+
+                                    <div id="contenido3" style="display:none;">
+                                        <div class="card-body">
+                                            <div class="container-fluid">
+                                                <div id="ficha_1_2"></div>
+                                                <div id="ficha_1_5"></div>
+                                            </div>
+
+                                            <br><br>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
+                                        onclick="toggleSeccion('contenido4')" id="EMPUJE_TRACCION" style="display:block !important;">
+                                        <div class="text-center">
+                                            <b>4.Empuje y tracción de cargas</b><br>
+                                        </div>
+                                    </div>
+
+
+                                    <div id="contenido4" style="display:none;">
+                                        <div class="card-body">
+                                            <div class="container-fluid">
+                                                <div id="ficha_2_1"></div>
+                                                <div id="ficha_2_3"></div>
+                                                <div id="ficha_2_2"></div>
+                                            </div>
+                                            <br><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="card mt-5">
+                                        <div class="card-header header-verde-res d-flex align-items-center">
+                                            <i class="fa fa-info mr-2" aria-hidden="true"></i>
+                                            <div class="text-center w-100">
+                                                <b>Movimiento repetitivo</b>
                                             </div>
                                         </div>
+                                        <div class="card-body">
+                                            Tarea caracterizada por tener un ciclo de trabajo que se repite. Está caracterizada por la presencia de ciclos con acciones técnicas que deben ser realizadas por las extremidades superiores.
+                                        </div>
+                                    </div>
 
-                                        <div class="col-4">
-                                            <div class="form-group">
-                                                <label>
-                                                    3. ¿Tiene que levantar, bajar, transportar, empujar, jalar y/o estibar objetos o materiales como parte de su trabajo?
-                                                </label>
-                                                <select class="form-control" name="P3_MANIPULACION_CARGA" id="P3_MANIPULACION_CARGA" required>
-                                                    <option value="">Seleccione</option>
-                                                    <option value="SI">Sí</option>
-                                                    <option value="NO">No</option>
-                                                </select>
+                                    <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
+                                        onclick="toggleSeccion('contenido5')" style="display:block !important;">
+                                        <div class="text-center">
+                                            <b>5.Movimientos repetitivos de la extremidad superior</b><br>
+                                        </div>
+                                    </div>
+
+
+                                    <div id="contenido5" style="display:none;">
+                                        <div class="card-body">
+                                            <div class="container-fluid">
+                                                <div id="ficha_3_1"></div>
+                                                <div id="ficha_3_2"></div>
+                                            </div>
+                                            <br><br>
+                                        </div>
+                                    </div>
+
+                                    <div class="card mt-5">
+                                        <div class="card-header header-verde-res d-flex align-items-center">
+                                            <i class="fa fa-info mr-2" aria-hidden="true"></i>
+                                            <div class="text-center w-100">
+                                                <b>Postura estática</b>
                                             </div>
                                         </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="card mt-2" id="TEXTO_MANIPULACION" style="display: block;">
-                                    <div class="card-header header-verde-res d-flex align-items-center">
-                                        <i class="fa fa-info mr-2" aria-hidden="true"></i>
-                                        <div class="text-center w-100">
-                                            <b>Manipulación manual de cargas</b>
+                                        <div class="card-body">
+                                            Posición que se realiza con una contracción muscular prolongada sin producir movimiento durante por lo menos 4 segundos de manera consecutiva.
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        Cualquier operación de transporte o sujeción de una carga mayor a 3 kg por parte de uno o varios trabajadores, como el levantamiento, la colocación, el empuje, la tracción o el desplazamiento, que por sus características ergonómicas inadecuadas entrañe riesgo, en particular dorsolumbares, para los trabajadores.
-                                    </div>
-                                </div>
 
-                                <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
-                                    onclick="toggleSeccion('contenido2')" id="LEVANTAMIENTO_CARGA" style="display:block !important;">
-                                    <div class="text-center">
-                                        <b>2.Levantamiento de cargas</b><br>
-                                    </div>
-                                </div>
-
-                                <div id="contenido2" style="display:none;">
-                                    <div class="card-body">
-
-                                        <div class="container-fluid">
-                                            <div id="ficha_1_1"></div>
-                                            <div id="ficha_1_4"></div>
-                                            <div id="ficha_1_3"></div>
-                                        </div>
-
-                                        <br><br>
-                                    </div>
-                                </div>
-
-
-                                <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
-                                    onclick="toggleSeccion('contenido3')" id="TRANSPORTE_CARGAS" style="display:block !important;">
-                                    <div class="text-center">
-                                        <b>3.Transporte de cargas</b><br>
-                                    </div>
-                                </div>
-
-
-                                <div id="contenido3" style="display:none;">
-                                    <div class="card-body">
-                                        <div class="container-fluid">
-                                            <div id="ficha_1_2"></div>
-                                            <div id="ficha_1_5"></div>
-                                        </div>
-
-                                        <br><br>
-                                    </div>
-                                </div>
-
-
-                                <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
-                                    onclick="toggleSeccion('contenido4')" id="EMPUJE_TRACCION" style="display:block !important;">
-                                    <div class="text-center">
-                                        <b>4.Empuje y tracción de cargas</b><br>
-                                    </div>
-                                </div>
-
-
-                                <div id="contenido4" style="display:none;">
-                                    <div class="card-body">
-                                        <div class="container-fluid">
-                                            <div id="ficha_2_1"></div>
-                                            <div id="ficha_2_3"></div>
-                                            <div id="ficha_2_2"></div>
-                                        </div>
-                                        <br><br>
-                                    </div>
-                                </div>
-
-                                <div class="card mt-5">
-                                    <div class="card-header header-verde-res d-flex align-items-center">
-                                        <i class="fa fa-info mr-2" aria-hidden="true"></i>
-                                        <div class="text-center w-100">
-                                            <b>Movimiento repetitivo</b>
+                                    <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
+                                        onclick="toggleSeccion('contenido6')" style="display:block !important;">
+                                        <div class="text-center">
+                                            <b>6.Posturas estáticas forzadas</b><br>
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        Tarea caracterizada por tener un ciclo de trabajo que se repite. Está caracterizada por la presencia de ciclos con acciones técnicas que deben ser realizadas por las extremidades superiores.
-                                    </div>
-                                </div>
-
-                                <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
-                                    onclick="toggleSeccion('contenido5')" style="display:block !important;">
-                                    <div class="text-center">
-                                        <b>5.Movimientos repetitivos de la extremidad superior</b><br>
-                                    </div>
-                                </div>
 
 
-                                <div id="contenido5" style="display:none;">
-                                    <div class="card-body">
-                                        <div class="container-fluid">
-                                            <div id="ficha_3_1"></div>
-                                            <div id="ficha_3_2"></div>
-                                        </div>
-                                        <br><br>
-                                    </div>
-                                </div>
-
-                                <div class="card mt-5">
-                                    <div class="card-header header-verde-res d-flex align-items-center">
-                                        <i class="fa fa-info mr-2" aria-hidden="true"></i>
-                                        <div class="text-center w-100">
-                                            <b>Postura estática</b>
+                                    <div id="contenido6" style="display:none;">
+                                        <div class="card-body">
+                                            <div class="container-fluid">
+                                                <div id="ficha_4_1"></div>
+                                            </div>
+                                            <br><br>
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        Posición que se realiza con una contracción muscular prolongada sin producir movimiento durante por lo menos 4 segundos de manera consecutiva.
-                                    </div>
-                                </div>
 
-                                <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
-                                    onclick="toggleSeccion('contenido6')" style="display:block !important;">
-                                    <div class="text-center">
-                                        <b>6.Posturas estáticas forzadas</b><br>
-                                    </div>
-                                </div>
-
-
-                                <div id="contenido6" style="display:none;">
-                                    <div class="card-body">
-                                        <div class="container-fluid">
-                                            <div id="ficha_4_1"></div>
+                                    <div class="card mt-5">
+                                        <div class="card-header header-verde-res d-flex align-items-center">
+                                            <i class="fa fa-info mr-2" aria-hidden="true"></i>
+                                            <div class="text-center w-100">
+                                                <b>Postura dinámica</b>
+                                            </div>
                                         </div>
-                                        <br><br>
-                                    </div>
-                                </div>
-
-                                <div class="card mt-5">
-                                    <div class="card-header header-verde-res d-flex align-items-center">
-                                        <i class="fa fa-info mr-2" aria-hidden="true"></i>
-                                        <div class="text-center w-100">
-                                            <b>Postura dinámica</b>
+                                        <div class="card-body">
+                                            Posición corporal que se realiza con una contracción de diferentes grupos musculares y con cambios en los movimientos de las articulaciones.
                                         </div>
                                     </div>
-                                    <div class="card-body">
-                                        Posición corporal que se realiza con una contracción de diferentes grupos musculares y con cambios en los movimientos de las articulaciones.
-                                    </div>
-                                </div>
 
-                                <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
-                                    onclick="toggleSeccion('contenido7')" style="display:block !important;">
-                                    <div class="text-center">
-                                        <b>7.Posturas dinámicas forzadas</b><br>
-                                    </div>
-                                </div>
-
-
-                                <div id="contenido7" style="display:none;">
-                                    <div class="card-body">
-                                        <div class="container-fluid">
-                                            <div id="ficha_4_2"></div>
+                                    <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
+                                        onclick="toggleSeccion('contenido7')" style="display:block !important;">
+                                        <div class="text-center">
+                                            <b>7.Posturas dinámicas forzadas</b><br>
                                         </div>
-                                        <br><br>
                                     </div>
-                                </div>
 
+
+                                    <div id="contenido7" style="display:none;">
+                                        <div class="card-body">
+                                            <div class="container-fluid">
+                                                <div id="ficha_4_2"></div>
+                                            </div>
+                                            <br><br>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
-                        </div>
 
 
 
 
 
 
-                        <style>
-                            #ficha_1_1,
-                            #ficha_1_2,
-                            #ficha_1_3,
-                            #ficha_2_1,
-                            #ficha_2_2,
-                            #ficha_3_1,
-                            #ficha_4_1,
-                            #ficha_4_2 {
-                                width: 100%;
-                            }
+                            <style>
+                                #ficha_1_1,
+                                #ficha_1_2,
+                                #ficha_1_3,
+                                #ficha_2_1,
+                                #ficha_2_2,
+                                #ficha_3_1,
+                                #ficha_4_1,
+                                #ficha_4_2 {
+                                    width: 100%;
+                                }
 
-                            /* .card {
+                                /* .card {
                                 width: 100%;
                             } */
 
-                            .table td.texto-pregunta {
-                                font-size: 17px !important;
-                                font-weight: 500;
-                                line-height: 1.5;
-                            }
+                                .table td.texto-pregunta {
+                                    font-size: 17px !important;
+                                    font-weight: 500;
+                                    line-height: 1.5;
+                                }
 
-                            .ficha {
-                                border: 1px solid #000;
-                                font-family: Arial, sans-serif;
-                            }
+                                .ficha {
+                                    border: 1px solid #000;
+                                    font-family: Arial, sans-serif;
+                                }
 
-                            .ficha-header {
-                                background: #a8d5a2;
-                                padding: 10px;
-                                font-weight: bold;
-                                color: #000;
-                                /* negro */
-                            }
-
-
-                            .ficha table {
-                                width: 100%;
-                                border-collapse: collapse;
-                            }
-
-                            .ficha td {
-                                border: 1px solid #000;
-                                padding: 10px;
-                                color: #000;
-                            }
-
-                            .col-letra {
-                                width: 40px;
-                                text-align: center;
-                                font-weight: bold;
-                            }
-
-                            .col-radio {
-                                width: 80px;
-                                text-align: center;
-                            }
+                                .ficha-header {
+                                    background: #a8d5a2;
+                                    padding: 10px;
+                                    font-weight: bold;
+                                    color: #000;
+                                    /* negro */
+                                }
 
 
-                            .header-verde {
-                                background-color: #a8d5a2 !important;
-                                color: #000 !important;
-                            }
+                                .ficha table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                }
 
-                            .header-res {
-                                background-color: #007DBA !important;
-                                color: #000 !important;
-                            }
+                                .ficha td {
+                                    border: 1px solid #000;
+                                    padding: 10px;
+                                    color: #000;
+                                }
 
-                            .header-verde-res {
-                                background-color: #A4D65E !important;
-                                color: #000 !important;
+                                .col-letra {
+                                    width: 40px;
+                                    text-align: center;
+                                    font-weight: bold;
+                                }
 
-                            }
+                                .col-radio {
+                                    width: 80px;
+                                    text-align: center;
+                                }
 
-                            .header-azul {
-                                background-color: #b7c7d6 !important;
-                                color: #000 !important;
-                            }
 
-                            /* Rojo (Zona roja) */
-                            .header-rojo {
-                                background-color: #f28b82 !important;
-                                color: #000 !important;
-                            }
+                                .header-verde {
+                                    background-color: #a8d5a2 !important;
+                                    color: #000 !important;
+                                }
 
-                            /* .card {
+                                .header-res {
+                                    background-color: #007DBA !important;
+                                    color: #000 !important;
+                                }
+
+                                .header-verde-res {
+                                    background-color: #A4D65E !important;
+                                    color: #000 !important;
+
+                                }
+
+                                .header-azul {
+                                    background-color: #b7c7d6 !important;
+                                    color: #000 !important;
+                                }
+
+                                /* Rojo (Zona roja) */
+                                .header-rojo {
+                                    background-color: #f28b82 !important;
+                                    color: #000 !important;
+                                }
+
+                                /* .card {
                                 border-radius: 6px;
                             }
 
@@ -1310,415 +1307,840 @@
                                 font-weight: bold;
                             } */
 
-                            /* .card-body {
+                                /* .card-body {
                                 padding: 0;
                             } */
 
-                            .table td {
-                                vertical-align: middle;
-                            }
+                                .table td {
+                                    vertical-align: middle;
+                                }
 
-                            /* .card {
+                                /* .card {
                                 box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
                             } */
-                        </style>
+                            </style>
 
 
 
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer" style="display: flex; justify-content: space-between;">
-                    <div>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                    <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                        <div>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
-<!-- ============================================================== -->
-<!-- MODALES EVALUACION FRE  -->
-<!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- MODALES EVALUACION FRE  -->
+    <!-- ============================================================== -->
 
-<div id="modal_evalfre" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg" style="min-width: 90%!important;">
-        <div class="modal-content">
-            <form enctype="multipart/form-data" method="post" name="form_evalfre" id="form_evalfre">
+    <div id="modal_evalfre" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg" style="min-width: 90%!important;">
+            <div class="modal-content">
+                <form enctype="multipart/form-data" method="post" name="form_evalfre" id="form_evalfre">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Evaluación FRE </h4>
+                    </div>
+                    <div class="modal-body">
+                        {!! csrf_field() !!}
+                        <div class="row">
+
+                            <input type="hidden" name="ID_FICHAS_TECNICAS" id="ID_FICHAS_TECNICAS">
+                            <input type="hidden" name="JSON_ACTIVIDADES" id="JSON_ACTIVIDADES">
+                            <input type="hidden" name="JSON_FICHAS" id="JSON_FICHAS">
+
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Fecha de evaluación *</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control mydatepicker" placeholder="aaaa-mm-dd" id="FECHA_EVALUACION" name="FECHA_EVALUACION">
+                                        <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Instalación *</label>
+                                    <input type="text" class="form-control" name="INSTALACION_FRE" id="INSTALACION_FRE">
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Categoría *</label>
+                                    <select class="form-control" id="CATEGORIA_ID_FRE" name="CATEGORIA_ID_FRE" required>
+                                        <option value="">Selecciona un tipo de valor</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label> Departamento *</label>
+                                    <select class="custom-select form-control" id="CAT_DEPARTAMENTO_FRE" name="CAT_DEPARTAMENTO_FRE" required style="pointer-events:none; background-color:#e9ecef;">
+                                        <option value=""></option>
+                                        @foreach($catdepartamento as $dato)
+                                        <option value="{{$dato->id}}">{{$dato->catdepartamento_nombre}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 mt-2 p-2 d-flex justify-content-start  clienteblock">
+                                <h3 class="clienteblock">¿La evaluación es para el mismo trabajador ?</h3>
+                                <div class="form-check mx-4 clienteblock">
+                                    <input class="form-check-input" type="radio" name="evalaucion_trabajador" id="informe_del_trabajador_si" value="1" checked>
+                                    <label class="form-check-label" for="informe_del_trabajador_si">
+                                        Si
+                                    </label>
+                                </div>
+                                <div class="form-check mx-4 clienteblock">
+                                    <input class="form-check-input" type="radio" name="evalaucion_trabajador" id="informe_del_trabajador_no" value="0">
+                                    <label class="form-check-label" for="informe_del_trabajador_no">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- NOMBRE -->
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <label>Nombre del empleado *</label>
+                                    <input type="text" class="form-control" name="NOMBRE_EMPLEADO_FRE" id="NOMBRE_EMPLEADO_FRE" required>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Ficha / No empleado </label>
+                                    <input type="text" class="form-control" name="NO_EMPLEADO_FRE" id="NO_EMPLEADO_FRE">
+                                </div>
+                            </div>
+
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Último grado de estudio </label>
+                                    <input type="text" class="form-control" name="ULTIMO_GRADO_FRE" id="ULTIMO_GRADO_FRE">
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Indique la ubicación de sus principales actividades o puesto de trabajo </label>
+                                    <select class="form-control" name="INDIQUE_UBICACION_FRE" id="INDIQUE_UBICACION_FRE">
+                                        <option value="">Seleccionar</option>
+                                        <option value="1">Campo</option>
+                                        <option value="2">Instalación</option>
+                                        <option value="3">Oficina </option>
+                                    </select>
+                                </div>
+
+
+                            </div>
+                            <!-- SEXO -->
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Sexo *</label>
+                                    <select class="form-control" name="SEXO_EMPLEADO_FRE" id="SEXO_EMPLEADO_FRE" required>
+                                        <option value="">Seleccionar</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- FECHA NACIMIENTO -->
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Fecha de nacimiento </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control mydatepicker" placeholder="aaaa-mm-dd" id="FECHA_NACIMIENTO_FRE" name="FECHA_NACIMIENTO_FRE">
+                                        <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Edad </label>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="EDAD_EMPLEADO_FRE" id="EDAD_EMPLEADO_FRE" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Régimen Contractual </label>
+
+                                    <select class="custom-select form-control" id="REGIMEN_CONTRACTUAL_FRE" name="REGIMEN_CONTRACTUAL_FRE">
+                                        <option value=""></option>
+                                        @foreach($catregimen as $dato)
+                                        <option value="{{$dato->ID_REGIMEN_CONTRACTUAL}}">{{$dato->NOMBRE_REGIMEN_CONTRACTUAL}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Jornada </label>
+                                    <select class="custom-select form-control" id="JORNADA_EMPLEADO_FRE" name="JORNADA_EMPLEADO_FRE">
+                                        <option value=""></option>
+                                        @foreach($catjornada as $dato)
+                                        <option value="{{$dato->ID_JORNADA}}">{{$dato->NOMBRE_JORNADA}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>¿Cuánto tiempo lleva en la empresa?</label>
+                                    <input type="text" class="form-control" name="TIEMPO_EMPRESA_FRE" id="TIEMPO_EMPRESA_FRE">
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label>Antigüedad en la categoría</label>
+                                    <input type="text" class="form-control" name="ANTIGUEDAD_CATEOGORIA_FRE" id="ANTIGUEDAD_CATEOGORIA_FRE">
+                                </div>
+                            </div>
+
+
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Pausas de descanso que toma durante la
+                                        jornada de trabajo (Mencione cuantas y
+                                        duración en minutos)</label>
+                                    <input type="text" class="form-control" name="PAUSAS_DESCANSO" id="PAUSAS_DESCANSO">
+                                </div>
+                            </div>
+
+
+                            <br><br>
+                            <div class="col-12 mt-2">
+                                <button type="button" class="btn btn-danger" onclick="agregarActividadFRE()">
+                                    + Agregar Actividad
+                                </button>
+                            </div>
+
+                            <div id="contenedorActividadesfre" class="mt-2"></div>
+
+
+
+
+                            <br><br>
+
+                            <style>
+                                /* ACTIVIDADES */
+
+                                #contenedorActividadesfre {
+                                    width: 100%;
+                                }
+
+                                .actividad-card {
+                                    width: 100%;
+                                    border: 1px solid #ddd;
+                                    border-radius: 10px;
+                                    padding: 15px;
+                                    margin-bottom: 10px;
+                                    background: #fff;
+                                }
+
+                                .actividad-row {
+                                    display: flex;
+                                    gap: 15px;
+                                    align-items: flex-start;
+                                }
+
+                                .actividad-left {
+                                    width: 30%;
+                                }
+
+                                .actividad-right {
+                                    width: 70%;
+                                }
+
+                                .btn-agregar-tarea {
+                                    width: 20%;
+                                    background: linear-gradient(90deg, #6dd6e4, #6dd6e4);
+                                    color: white;
+                                    border: none;
+                                }
+
+                                .tarea-item {
+                                    border: 1px solid #e5e7eb;
+                                    border-radius: 8px;
+                                    padding: 10px;
+                                    margin-top: 8px;
+                                    background: #f9fafb;
+                                }
+
+
+
+                                /* FICHAS */
+                                .custom-container-left {
+                                    width: 100%;
+                                    max-width: 100%;
+                                    /* evita límite */
+                                    padding-left: !important;
+                                    padding-right: !important;
+                                }
+
+                                .no-padding {
+                                    padding-left: !important;
+                                    padding-right: !important;
+                                }
+
+
+
+                                .custom-card-header {
+                                    width: 100%;
+                                    text-align: left;
+                                }
+
+                                .custom-card-nom .card-body {
+                                    padding: 20px;
+                                }
+
+                                .custom-card-nom .row {
+                                    justify-content: flex-start;
+                                }
+                            </style>
+
+
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>
+                                        1. ¿SU MÉDICO LE HA DIAGNOSTICADO ALGUNA ENFERMEDAD MUSCULO-ESQUELÉTICA?
+                                    </label>
+
+                                    <select class="form-control" id="enfermedad_musculoesqueletica" name="enfermedad_musculoesqueletica">
+                                        <option value="">Seleccione</option>
+                                        <option value="SI">SI</option>
+                                        <option value="NO">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12" id="datosEnfermedadMusculo" style="display:none;">
+
+                                <div class="row">
+
+
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>En caso de responder SI ¿Cuál?</label>
+                                            <input type="text"
+                                                class="form-control"
+                                                id="enfermedad_musculoesqueletica_cual"
+                                                name="enfermedad_musculoesqueletica_cual">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>En caso de responder SI ¿Hace cuánto tiempo?</label>
+                                            <input type="text"
+                                                class="form-control"
+                                                id="enfermedad_musculoesqueletica_tiempo"
+                                                name="enfermedad_musculoesqueletica_tiempo">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>
+                                        2. ¿HA ESTADO INCAPACITADO (A) A CAUSA DEL DOLOR MUSCULO ESQUELÉTICO EN EL ÚLTIMO AÑO?
+                                    </label>
+
+                                    <select class="form-control" id="enfermedad_musculoesqueletica" name="enfermedad_musculoesqueletica">
+                                        <option value="">Seleccione</option>
+                                        <option value="SI">SI</option>
+                                        <option value="NO">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-12">
+
+                                <button type="button" class="btn btn-danger" id="agregarFilaEquipo">
+                                    Agregar fila
+                                </button>
+                                <br>
+                                <br>
+
+                                <div class="table-responsive">
+                                    <h5 class="text-center mb-3"><strong>Máquinas, herramientas y utensilios</strong></h5>
+                                    <table class="table table-bordered align-middle" id="tablaEquiposTrabajo">
+                                        <thead>
+                                            <tr>
+                                                <th width="15%">Tipo</th>
+                                                <th width="20%">Nombre</th>
+                                                <th width="25%">Características</th>
+                                                <th width="20%">Peso</th>
+                                                <th width="15%">Método (agarres, técnicas, ayudas)</th>
+                                                <th width="5%">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 text-center">
+                                <h4>
+                                    <b> Descripción de las condiciones ambientales (apercepción del trabajador) </b>
+                                </h4>
+
+                            </div>
+
+
+                            <div class="col-12">
+                                <h4 style="color: #95C12D; font-weight: bold;">
+                                    Iluminación (Del área de trabajo)
+                                </h4>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Fuente</label>
+                                    <select class="form-control" name="fuente_iluminacion" id="fuente_iluminacion">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">Natural</option>
+                                        <option value="2">Artificial</option>
+                                        <option value="3">Mixta</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Intensidad</label>
+                                    <select class="form-control" name="intensidad_iluminacion" id="intensidad_iluminacion">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">Normal</option>
+                                        <option value="2">Deficiente</option>
+                                        <option value="3">Excesiva</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Observaciones</label>
+
+                                    <div class="input-group">
+
+                                        <textarea class="form-control"
+                                            id="observaciones_iluminacion"
+                                            rows="3"></textarea>
+
+                                        <button type="button"
+                                            class="btn btn-info btnMicrofono"
+                                            data-target="observaciones_iluminacion">
+                                            <i class="fa fa-microphone"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="col-12 mt-3">
+                                <h4 style="color: #95C12D; font-weight: bold;">
+                                    Condiciones térmicas (Percepción de frío o calor)
+                                </h4>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Percepción</label>
+                                    <select class="form-control" name="percepcion_termica" id="percepcion_termica">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">Calor</option>
+                                        <option value="2">Frío</option>
+                                        <option value="3">Otros</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Intensidad</label>
+                                    <select class="form-control" name="intensidad_termica" id="intensidad_termica">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">Leve</option>
+                                        <option value="2">Moderada</option>
+                                        <option value="3">Severa</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12" id="CONDICION_TERMINCA_CUAL" style="display: none;">
+                                <div class="form-group">
+                                    <label>Cuál ? *</label>
+                                    <input type="text" class="form-control" name="CUAL_PERCEPCION" id="CUAL_PERCEPCION">
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <label>Fuentes</label>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="tablaFuentesTermicas">
+                                        <thead>
+                                            <tr>
+                                                <th>Fuente</th>
+                                                <th width="80">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <button type="button"
+                                    class="btn btn-danger"
+                                    id="agregarFuenteTermica">
+                                    Agregar fuente
+                                </button>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <div class="form-group">
+                                    <label>Observaciones</label>
+
+                                    <div class="input-group">
+                                        <textarea class="form-control"
+                                            name="observaciones_termica"
+                                            id="observaciones_termica"
+                                            rows="3"></textarea>
+
+                                        <button type="button"
+                                            class="btn btn-info btnMicrofono"
+                                            data-target="observaciones_termica">
+                                            <i class="fa fa-microphone"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-12 mt-4">
+                                <h4 style="color: #95C12D; font-weight: bold;">
+                                    Ambiente sonoro (Ruido ambiental)
+                                </h4>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Intensidad</label>
+                                    <select class="form-control" name="intensidad_ruido" id="intensidad_ruido">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">Leve</option>
+                                        <option value="2">Moderada</option>
+                                        <option value="3">Severa</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Continuidad</label>
+                                    <select class="form-control" name="continuidad_ruido" id="continuidad_ruido">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">Continuo</option>
+                                        <option value="2">Intermitente</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <label>Fuentes</label>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="tablaFuentesRuido">
+                                        <thead>
+                                            <tr>
+                                                <th>Fuente</th>
+                                                <th width="80">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <button type="button"
+                                    class="btn btn-danger"
+                                    id="agregarFuenteRuido">
+                                    Agregar fuente
+                                </button>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <div class="form-group">
+                                    <label>Observaciones</label>
+
+                                    <div class="input-group">
+
+                                        <textarea class="form-control"
+                                            name="observaciones_ruido"
+                                            id="observaciones_ruido"
+                                            rows="3"></textarea>
+
+                                        <button type="button"
+                                            class="btn btn-info btnMicrofono"
+                                            data-target="observaciones_ruido">
+                                            <i class="fa fa-microphone"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="col-12 mt-4">
+                                <h4 style="color: #95C12D; font-weight: bold;">
+                                    Vibración (Generada por máquinas) si usa herramientas que vibren especifique cuál y su uso (diario, mensual, etc.)
+                                </h4>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Intensidad</label>
+                                    <select class="form-control" name="intensidad_vibracion" id="intensidad_vibracion">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">Leve</option>
+                                        <option value="2">Moderada</option>
+                                        <option value="3">Severa</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Segmentos corporales</label>
+                                    <select class="form-control" name="segmento_vibracion" id="segmento_vibracion">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">Mano brazo</option>
+                                        <option value="2">Cuerpo entero</option>
+                                        <option value="3">Columna y miembros inferiores</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <label>Fuentes</label>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="tablaFuentesVibracion">
+                                        <thead>
+                                            <tr>
+                                                <th>Fuente</th>
+                                                <th width="80">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <button type="button"
+                                    class="btn btn-danger"
+                                    id="agregarFuenteVibracion">
+                                    Agregar fuente
+                                </button>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <div class="form-group">
+                                    <label>Observaciones</label>
+
+                                    <div class="input-group">
+
+                                        <textarea class="form-control"
+                                            name="observaciones_vibracion"
+                                            id="observaciones_vibracion"
+                                            rows="3"></textarea>
+
+                                        <button type="button"
+                                            class="btn btn-info btnMicrofono"
+                                            data-target="observaciones_vibracion">
+                                            <i class="fa fa-microphone"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <h4>
+                                    <b>Cuestionario Nórdico:</b> Traducido directamente de la publicación original “Standardised Nordic questionnaires for the
+                                    of músculoskeletal symptoms” de Kuoirinka et col, por Jaime Ibacache Araya Profesional Ergónomo del Instituto de
+                                    Salud Pública de Chile.
+                                </h4>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Peso (kg) </label>
+                                    <input type="number" class="form-control" name="PESO_FRE" id="PESO_FRE">
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Talla (cm) </label>
+                                    <input type="number" class="form-control" name="TALLA_FRE" id="TALLA_FRE">
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                        <div>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                            @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Ergónomo']))
+                            <button type="submit" class="btn btn-danger waves-effect waves-light botonguardar_modulorecsensorial" id="boton_guardar_fichastecnicas">
+                                Guardar <i class="fa fa-save"></i>
+                            </button>
+                            @endif
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================== -->
+    <!-- VISOR-MODAL -->
+    <!-- ============================================================== -->
+    <style type="text/css" media="screen">
+        #modal_visor>.modal-dialog {
+            min-width: 900px !important;
+        }
+
+        #visor_menu_bloqueado {
+            width: 851px;
+            height: 52px;
+            background: #555555;
+            position: absolute;
+            z-index: 500;
+            border: 0px #F00 solid;
+        }
+
+        #visor_contenido_bloqueado {
+            width: 852px;
+            height: 600px;
+            /*background: #555555;*/
+            position: absolute;
+            z-index: 600;
+            border: 0px #FFF solid;
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 0px #fff solid;
+        }
+    </style>
+    <div id="modal_visor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Evaluación FRE </h4>
+                    <h4 class="modal-title" id="nombre_documento_visor"></h4>
                 </div>
-                <div class="modal-body">
-                    {!! csrf_field() !!}
+                <div class="modal-body" style="background: #555555;">
                     <div class="row">
-
-                        <input type="hidden" name="ID_FICHAS_TECNICAS" id="ID_FICHAS_TECNICAS">
-
-                        <input type="hidden" name="JSON_ACTIVIDADES" id="JSON_ACTIVIDADES">
-                        <input type="hidden" name="JSON_FICHAS" id="JSON_FICHAS">
-
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label>N° PE *</label>
-                                <input type="text" class="form-control" name="PE_EVALUADAS" id="PE_EVALUADAS" required readonly>
-                            </div>
+                        <div class="col-12">
+                            {{-- <div id="visor_menu_bloqueado"></div> --}}
+                            {{-- <div id="visor_contenido_bloqueado"></div> --}}
+                            <iframe src="/assets/images/cargando.gif" name="visor_documento" id="visor_documento" style=""></iframe>
                         </div>
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label>Categoría *</label>
-                                <select class="form-control" id="CATEGORIA_ID_FICHA" name="CATEGORIA_ID_FICHA" required>
-                                    <option value="">Selecciona un tipo de valor</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label> Departamento *</label>
-                                <select class="custom-select form-control" id="CAT_DEPARTAMENTO_FICHA" name="CAT_DEPARTAMENTO_FICHA" required style="pointer-events:none; background-color:#e9ecef;">
-                                    <option value=""></option>
-                                    @foreach($catdepartamento as $dato)
-                                    <option value="{{$dato->id}}">{{$dato->catdepartamento_nombre}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label>Áreas *</label>
-                                <select class="custom-select form-control" id="CAT_AREAS_FICHA" name="CAT_AREAS_FICHA[]" multiple>
-                                </select>
-                            </div>
-                        </div>
-
-
-                        <!-- NOMBRE -->
-                        <div class="col-8">
-                            <div class="form-group">
-                                <label>Nombre del empleado *</label>
-                                <input type="text" class="form-control" name="NOMBRE_EMPLEADO_FICHA" id="NOMBRE_EMPLEADO_FICHA" required>
-                            </div>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Ficha / No empleado </label>
-                                <input type="text" class="form-control" name="NO_EMPLEADO_FICHA" id="NO_EMPLEADO_FICHA">
-                            </div>
-                        </div>
-                        <!-- SEXO -->
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Sexo *</label>
-                                <select class="form-control" name="SEXO_EMPLEADO_FICHA" id="SEXO_EMPLEADO_FICHA" required>
-                                    <option value="">Seleccionar</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Femenino</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- FECHA NACIMIENTO -->
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Fecha de nacimiento </label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control mydatepicker" placeholder="aaaa-mm-dd" id="FECHA_NACIMIENTO" name="FECHA_NACIMIENTO">
-                                    <span class="input-group-addon"><i class="icon-calender"></i></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Edad </label>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="EDAD_EMPLEADO_FICHA" id="EDAD_EMPLEADO_FICHA" readonly>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- PESO -->
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Peso (kg) </label>
-                                <input type="number" class="form-control" name="PESO_FICHA" id="PESO_FICHA" step="0.1">
-                            </div>
-                        </div>
-
-                        <!-- TALLA -->
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Talla (cm) </label>
-                                <input type="number" class="form-control" name="TALLA_FICHA" id="TALLA_FICHA">
-                            </div>
-                        </div>
-
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Régimen Contractual </label>
-
-                                <select class="custom-select form-control" id="REGIMEN_CONTRACTUAL_FICHA" name="REGIMEN_CONTRACTUAL_FICHA">
-                                    <option value=""></option>
-                                    @foreach($catregimen as $dato)
-                                    <option value="{{$dato->ID_REGIMEN_CONTRACTUAL}}">{{$dato->NOMBRE_REGIMEN_CONTRACTUAL}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Jornada </label>
-                                <select class="custom-select form-control" id="JORNADA_EMPLEADO_FICHA" name="JORNADA_EMPLEADO_FICHA">
-                                    <option value=""></option>
-                                    @foreach($catjornada as $dato)
-                                    <option value="{{$dato->ID_JORNADA}}">{{$dato->NOMBRE_JORNADA}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Turno </label>
-
-                                <select class="custom-select form-control" id="TURNO_EMPLEADO_FICHA" name="TURNO_EMPLEADO_FICHA[]" multiple>
-                                    <option value=""></option>
-                                    @foreach($caturno as $dato)
-                                    <option value="{{$dato->ID_TURNO}}">{{$dato->NOMBRE_TURNO}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>¿Cuánto tiempo lleva en la empresa?</label>
-                                <input type="text" class="form-control" name="TIEMPO_EMPRESA_FICHA" id="TIEMPO_EMPRESA_FICHA">
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Antigüedad en la categoría</label>
-                                <input type="text" class="form-control" name="ANTIGUEDAD_CATEOGORIA_FICHA" id="ANTIGUEDAD_CATEOGORIA_FICHA">
-                            </div>
-                        </div>
-
-
-
-
-
-                        <br><br>
-                        <div class="col-12 mt-2">
-                            <button type="button" class="btn btn-danger" onclick="agregarActividad()">
-                                + Agregar Actividad
-                            </button>
-                        </div>
-
-                        <div id="contenedorActividades" class="mt-2"></div>
-
-
-
-
-                        <br><br>
-
-                        <style>
-                            /* ACTIVIDADES */
-
-                            #contenedorActividades {
-                                width: 100%;
-                            }
-
-                            .actividad-card {
-                                width: 100%;
-                                border: 1px solid #ddd;
-                                border-radius: 10px;
-                                padding: 15px;
-                                margin-bottom: 10px;
-                                background: #fff;
-                            }
-
-                            .actividad-row {
-                                display: flex;
-                                gap: 15px;
-                                align-items: flex-start;
-                            }
-
-                            .actividad-left {
-                                width: 30%;
-                            }
-
-                            .actividad-right {
-                                width: 70%;
-                            }
-
-                            .btn-agregar-tarea {
-                                width: 20%;
-                                background: linear-gradient(90deg, #6dd6e4, #6dd6e4);
-                                color: white;
-                                border: none;
-                            }
-
-                            .tarea-item {
-                                border: 1px solid #e5e7eb;
-                                border-radius: 8px;
-                                padding: 10px;
-                                margin-top: 8px;
-                                background: #f9fafb;
-                            }
-
-
-
-                            /* FICHAS */
-                            .custom-container-left {
-                                width: 100%;
-                                max-width: 100%;
-                                /* evita límite */
-                                padding-left: !important;
-                                padding-right: !important;
-                            }
-
-                            .no-padding {
-                                padding-left: !important;
-                                padding-right: !important;
-                            }
-
-
-
-                            .custom-card-header {
-                                width: 100%;
-                                text-align: left;
-                            }
-
-                            .custom-card-nom .card-body {
-                                padding: 20px;
-                            }
-
-                            .custom-card-nom .row {
-                                justify-content: flex-start;
-                            }
-                        </style>
-
                     </div>
                 </div>
-                <div class="modal-footer" style="display: flex; justify-content: space-between;">
-                    <div>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-                         @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Ergónomo']))
-                        <button type="submit" class="btn btn-danger waves-effect waves-light botonguardar_modulorecsensorial" id="boton_guardar_fichastecnicas">
-                            Guardar <i class="fa fa-save"></i>
-                        </button>
-                        @endif
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal" id="modalvisor_boton_cerrar">Cerrar</button>
+                    {{-- <button type="button" class="btn btn-danger waves-effect waves-light">Guardar</button> --}}
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<!-- ============================================================== -->
-<!-- VISOR-MODAL -->
-<!-- ============================================================== -->
-<style type="text/css" media="screen">
-    #modal_visor>.modal-dialog {
-        min-width: 900px !important;
-    }
-
-    #visor_menu_bloqueado {
-        width: 851px;
-        height: 52px;
-        background: #555555;
-        position: absolute;
-        z-index: 500;
-        border: 0px #F00 solid;
-    }
-
-    #visor_contenido_bloqueado {
-        width: 852px;
-        height: 600px;
-        /*background: #555555;*/
-        position: absolute;
-        z-index: 600;
-        border: 0px #FFF solid;
-    }
-
-    iframe {
-        width: 100%;
-        height: 600px;
-        border: 0px #fff solid;
-    }
-</style>
-<div id="modal_visor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="nombre_documento_visor"></h4>
-            </div>
-            <div class="modal-body" style="background: #555555;">
-                <div class="row">
-                    <div class="col-12">
-                        {{-- <div id="visor_menu_bloqueado"></div> --}}
-                        {{-- <div id="visor_contenido_bloqueado"></div> --}}
-                        <iframe src="/assets/images/cargando.gif" name="visor_documento" id="visor_documento" style=""></iframe>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal" id="modalvisor_boton_cerrar">Cerrar</button>
-                {{-- <button type="button" class="btn btn-danger waves-effect waves-light">Guardar</button> --}}
             </div>
         </div>
     </div>
-</div>
-<!-- ============================================================== -->
-<!-- VISOR-MODAL -->
-<!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- VISOR-MODAL -->
+    <!-- ============================================================== -->
 
-{{-- ========================================================================= --}}
-
+    {{-- ========================================================================= --}}
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
 
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
-        $('#INFORME_INTRODUCCION').summernote({
-            height: 400
+            $('#INFORME_INTRODUCCION').summernote({
+                height: 400
+            });
+
         });
+    </script>
 
-    });
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    {{-- Amcharts --}}
+    <link href="/assets/plugins/c3-master/c3.min.css" rel="stylesheet">
+    <script src="/assets/plugins/amChart/amcharts/amcharts.js" type="text/javascript"></script>
+    <script src="/assets/plugins/amChart/amcharts/serial.js" type="text/javascript"></script>
+    <script src="/assets/plugins/amChart/amcharts/plugins/responsive/responsive.min.js" type="text/javascript"></script>
+    <script src="/assets/plugins/amChart/amcharts/plugins/export/export.js" type="text/javascript"></script>
+    <link href="/assets/plugins/amChart/amcharts/plugins/export/export.css" type="text/css" media="all" rel="stylesheet" />
+    <script src="/assets/plugins/amChart/amcharts/pie.js" type="text/javascript"></script>
+    <script src="/assets/plugins/amChart/amcharts/themes/light.js" type="text/javascript"></script>
+    <script src="/assets/plugins/amChart/amcharts/themes/black.js" type="text/javascript"></script>
+    <script src="/assets/plugins/amChart/amcharts/themes/dark.js" type="text/javascript"></script>
+    <script src="/assets/plugins/amChart/amcharts/themes/chalk.js" type="text/javascript"></script>
+    <script src="/assets/plugins/amChart/amcharts/themes/patterns.js" type="text/javascript"></script>
+    <script src="/js_sitio/html2canvas.js"></script>
 
-{{-- Amcharts --}}
-<link href="/assets/plugins/c3-master/c3.min.css" rel="stylesheet">
-<script src="/assets/plugins/amChart/amcharts/amcharts.js" type="text/javascript"></script>
-<script src="/assets/plugins/amChart/amcharts/serial.js" type="text/javascript"></script>
-<script src="/assets/plugins/amChart/amcharts/plugins/responsive/responsive.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/amChart/amcharts/plugins/export/export.js" type="text/javascript"></script>
-<link href="/assets/plugins/amChart/amcharts/plugins/export/export.css" type="text/css" media="all" rel="stylesheet" />
-<script src="/assets/plugins/amChart/amcharts/pie.js" type="text/javascript"></script>
-<script src="/assets/plugins/amChart/amcharts/themes/light.js" type="text/javascript"></script>
-<script src="/assets/plugins/amChart/amcharts/themes/black.js" type="text/javascript"></script>
-<script src="/assets/plugins/amChart/amcharts/themes/dark.js" type="text/javascript"></script>
-<script src="/assets/plugins/amChart/amcharts/themes/chalk.js" type="text/javascript"></script>
-<script src="/assets/plugins/amChart/amcharts/themes/patterns.js" type="text/javascript"></script>
-<script src="/js_sitio/html2canvas.js"></script>
-
-@endsection
+    @endsection

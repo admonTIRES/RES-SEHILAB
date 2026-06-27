@@ -61,7 +61,7 @@ use App\modelos\reconocimientoergo\datosgeneralesinformeRecoModel;
 use App\modelos\reconocimientoergo\recoergofichastecnicasModel;
 
 
-
+ 
 class evaluacionfreController extends Controller
 {
        public function __construct()

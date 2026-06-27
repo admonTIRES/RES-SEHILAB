@@ -1,4 +1,4 @@
-//VARIABLES GLOBALES
+ //VARIABLES GLOBALES
 var tabla_recsensorial = null;
 var tabla_recsensorialareas = null;
 var tabla_recsensorialcategorias = null;
@@ -22,6 +22,11 @@ var tabla_reporte_categoria = null;
 var tabla_reporte_area = null;
 
 var tabla_reporte_revisiones  = null 
+
+
+var instalacionreco = '';
+
+
 
 ID_CATEGORIA_ERGO = 0;
 ID_AREA_ERGO = 0;
@@ -719,6 +724,10 @@ $('#tabla_reconocimiento_sensorial tbody').on('click', 'td.mostrar', function ()
 	// Campos hidden
 	recsensorial = row.data().id;
 	$("#recsensorial_id").val(row.data().id);
+
+
+
+	instalacionreco = row.data().instalacion;
 
 	//Obtemos la estructura del proyecto
 	obtenerEstructuraProyectos(row.data().proyecto_folio, 0);
@@ -1878,6 +1887,7 @@ function cargarAreasFicha(valoresSeleccionados = []) {
         }
     });
 }
+
 
 function agregarActividad() {
 
@@ -4111,6 +4121,49 @@ $('#Tablafichasevaluacionfre tbody').on('click', 'td>button.iniciarfre', functio
     $("#ID_FICHAS_TECNICAS").val(row.data().ID_FICHAS_TECNICAS);
    
 
+	 let areasGuardadas = row.data().CAT_AREAS_FICHA;
+
+    if (typeof areasGuardadas === "string") {
+        try { areasGuardadas = JSON.parse(areasGuardadas); } 
+        catch (e) { areasGuardadas = []; }
+    }
+
+    if (!Array.isArray(areasGuardadas)) {
+        areasGuardadas = [];
+	}
+	
+
+	cargarCategoriasSelectFRE(function () {
+
+	$('#CATEGORIA_ID_FRE')
+		.val(row.data().CATEGORIA_ID_FICHA)
+		.trigger('change');
+
+	setTimeout(() => {
+		cargarAreasFRE(areasGuardadas);
+	}, 300);
+
+	});
+
+
+	 $("#contenedorActividadesfre").empty(); 
+	pintarActividadesfre(row.data().JSON_ACTIVIDADES);
+
+	$("#NOMBRE_EMPLEADO_FRE").val(row.data().NOMBRE_EMPLEADO_FICHA);
+	$("#NO_EMPLEADO_FRE").val(row.data().NO_EMPLEADO_FICHA);
+	$("#SEXO_EMPLEADO_FRE").val(row.data().SEXO_EMPLEADO_FICHA);
+	$("#FECHA_NACIMIENTO_FRE").val(row.data().FECHA_NACIMIENTO);
+	$("#EDAD_EMPLEADO_FRE").val(row.data().EDAD_EMPLEADO_FICHA);
+	$("#PESO_FRE").val(row.data().PESO_FICHA);
+    $("#TALLA_FRE").val(row.data().TALLA_FICHA);
+    $("#REGIMEN_CONTRACTUAL_FRE").val(row.data().REGIMEN_CONTRACTUAL_FICHA);
+    $("#JORNADA_EMPLEADO_FRE").val(row.data().JORNADA_EMPLEADO_FICHA);
+	$("#TIEMPO_EMPRESA_FRE").val(row.data().TIEMPO_EMPRESA_FICHA)
+	$("#ANTIGUEDAD_CATEOGORIA_FRE").val(row.data().ANTIGUEDAD_CATEOGORIA_FICHA);	
+	
+	$('#INSTALACION_FRE').val(instalacionreco);
+
+
     $('#modal_evalfre').modal({backdrop:false});
 });
 
@@ -4118,3 +4171,627 @@ $('#Tablafichasevaluacionfre tbody').on('click', 'td>button.iniciarfre', functio
 
 
 
+$('#modal_evalfre').on('hidden.bs.modal', function (e) {
+
+	$("#ID_FICHAS_TECNICAS").val(0);
+
+    $('#form_evalfre')[0].reset();
+
+	$("#contenedorActividadesfre").empty(); 
+
+    $('#JSON_ACTIVIDADES').val('')
+	
+	$('#datosEnfermedadMusculo').hide();
+	
+	$('#tablaEquiposTrabajo tbody').empty();
+	$('#tablaFuentesTermicas tbody').empty();
+	$('#tablaFuentesRuido tbody').empty();
+
+	$('#tablaFuentesVibracion tbody').empty();
+
+	$('#CONDICION_TERMINCA_CUAL').hide();
+
+
+
+
+
+})
+
+
+
+function cargarCategoriasSelectFRE(callback = null) {
+
+    let reco_id = $("#recsensorial_id").val(); 
+
+    $.ajax({
+        url: '/getCategoriasErgo',
+        type: 'GET',
+        data: { reco_id: reco_id },
+        success: function (response) {
+
+            let select = $('#CATEGORIA_ID_FRE');
+            select.empty();
+
+            select.append('<option value="">Selecciona un tipo de valor</option>');
+
+            response.data.forEach(function (item) {
+
+                let areas = JSON.stringify(item.CATEGORIA_AREAS_ID || []);
+
+                select.append(`
+                    <option 
+                        value="${item.ID_CATEGORIA_ERGO}"
+                        data-departamento="${item.CAT_DEPARTAMENTO}"
+                        data-areas='${areas}'
+                    >
+                        ${item.NOMBRE_CATEGORIA_ERGO}
+                    </option>
+                `);
+            });
+            if (callback) callback();
+        }
+    });
+}
+
+$(document).on('change', '#CATEGORIA_ID_FRE', function () {
+
+    let selected = $(this).find(':selected');
+
+    let departamento = selected.data('departamento');
+    let areas = selected.data('areas');
+
+    if (departamento) {
+        $('#CAT_DEPARTAMENTO_FRE').val(departamento).trigger('change');
+    } else {
+        $('#CAT_DEPARTAMENTO_FRE').val('');
+    }
+
+    if (typeof areas === "string") {
+        try { areas = JSON.parse(areas); } 
+        catch (e) { areas = []; }
+    }
+
+    if (!Array.isArray(areas)) {
+        areas = [];
+    }
+
+    cargarAreasFRE(areas);
+});
+
+function cargarAreasFRE(valoresSeleccionados = []) {
+
+    let reco_id = $("#recsensorial_id").val(); 
+
+    selectAreasFichas.clearOptions();
+    selectAreasFichas.clear();
+
+    $.ajax({
+        url: '/obtenerareasergo',
+        type: 'GET',
+        data: { reco_id: reco_id },
+        success: function (response) {
+
+            response.data.forEach(function (item) {
+                selectAreasFichas.addOption({
+                    value: item.ID_AREA_ERGO,
+                    text: item.NOMBRE_AREA_ERGO
+                });
+            });
+
+            selectAreasFichas.setValue(valoresSeleccionados);
+
+            selectAreasFichas.refreshOptions(false);
+        },
+        error: function () {
+            console.log('Error cargando áreas');
+        }
+    });
+}
+
+$('#FECHA_NACIMIENTO_FRE').on('change blur', function () {
+    const fecha = $(this).val();
+    const edad = calcularEdad(fecha);
+
+    $('#EDAD_EMPLEADO_FRE').val(edad);
+});
+
+$('input[name="evalaucion_trabajador"]').change(function () {
+
+	var valor = $(this).val();
+
+	if (valor === '1') {
+
+
+	} else if (valor === '0') {
+
+		$("#NOMBRE_EMPLEADO_FRE").val('');
+		$("#NO_EMPLEADO_FRE").val('');
+		$("#SEXO_EMPLEADO_FRE").val('');
+		$("#FECHA_NACIMIENTO_FRE").val('');
+		$("#EDAD_EMPLEADO_FRE").val('');
+		$("#PESO_FRE").val('');
+		$("#TALLA_FRE").val('');
+		$("#TIEMPO_EMPRESA_FRE").val('');
+		$("#ANTIGUEDAD_CATEOGORIA_FRE").val('');
+
+
+	}
+});
+
+function agregarActividadFRE() {
+
+    let contenedor = document.getElementById("contenedorActividadesfre");
+    let total = contenedor.querySelectorAll('.actividad-item').length + 1;
+
+    let html = `
+    <div class="actividad-item" id="actividad_${total}">
+        <div class="actividad-card">
+            <div class="d-flex justify-content-between mb-2">
+                <strong>Actividad ${total}</strong>
+                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+            <div class="actividad-row">
+                <div class="actividad-left">
+                    <input type="text" 
+                        class="form-control actividad-nombre" 
+                        placeholder="Nombre de la actividad">
+                </div>
+                <div class="actividad-right">
+                    <button type="button" 
+                        class="btn btn-agregar-tarea"
+                        onclick="agregarTarea(${total})">
+                        + Agregar tarea
+                    </button>
+                    <div id="tareas_${total}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+
+    contenedor.insertAdjacentHTML('beforeend', html);
+}
+
+function eliminarActividadfre(btn) {
+
+    btn.closest('.actividad-item').remove();
+
+    reindexarActividadesfre();
+}
+
+function reindexarActividadesfre() {
+
+    let actividades = document.querySelectorAll('#contenedorActividadesfre .actividad-item');
+
+    actividades.forEach((el, index) => {
+
+        let num = index + 1;
+
+        el.id = `actividad_${num}`;
+
+        el.querySelector('strong').innerText = `Actividad ${num}`;
+
+        let input = el.querySelector('.actividad-left input');
+        input.name = `actividades[${num}][nombre]`;
+
+        let btnTarea = el.querySelector('.btn-agregar-tarea');
+        btnTarea.setAttribute('onclick', `agregarTarea(${num})`);
+
+     
+        let tareasDiv = el.querySelector('[id^="tareas_"]');
+        tareasDiv.id = `tareas_${num}`;
+
+       
+        reindexarTareasActividadfre(tareasDiv, num);
+    });
+}
+
+function agregarTareafre(idActividad) {
+
+    let contenedor = document.getElementById(`tareas_${idActividad}`);
+    let total = contenedor.querySelectorAll('.tarea-item').length + 1;
+
+    let html = `
+    <div class="tarea-item">
+        <div class="d-flex justify-content-between">
+            <small>Tarea ${total}</small>
+            <button type="button" class="btn btn-danger btn-sm"
+                onclick="eliminarTarea(this)">
+                <i class="fa fa-trash"></i>
+            </button>
+        </div>
+        <input type="text" class="form-control mt-1 tarea-nombre" placeholder="Nombre">
+        <input type="text" class="form-control mt-1 tarea-frecuencia" placeholder="Frecuencia (No de veces durante la jornada)">
+        <input type="text" class="form-control mt-1 tarea-duracion" placeholder="Duración (tiempo en Min)">
+    </div>
+    `;
+
+    contenedor.insertAdjacentHTML('beforeend', html);
+}
+
+function eliminarTareafre(btn) {
+
+    let tareaItem = btn.closest('.tarea-item');
+    let contenedor = tareaItem.parentElement;
+
+    tareaItem.remove();
+
+    let idActividad = contenedor.id.split('_')[1];
+
+    reindexarTareasActividadfre(contenedor, idActividad);
+}
+
+function reindexarTareasActividadfre(contenedor, idActividad) {
+
+    let tareas = contenedor.querySelectorAll('.tarea-item');
+
+    tareas.forEach((el, index) => {
+
+        let num = index + 1;
+
+     
+        let titulo = el.querySelector('small');
+        if (titulo) titulo.innerText = `Tarea ${num}`;
+
+        let inputs = el.querySelectorAll('input');
+
+        inputs[0].name = `actividades[${idActividad}][tareas][${num}][nombre]`;
+        inputs[1].name = `actividades[${idActividad}][tareas][${num}][frecuencia]`;
+        inputs[2].name = `actividades[${idActividad}][tareas][${num}][duracion]`;
+    });
+}
+
+function pintarActividadesfre(json) {
+
+    let contenedor = $('#contenedorActividadesfre');
+    contenedor.empty();
+
+    if (!json) return;
+
+    let data;
+
+    if (typeof json === "string") {
+        try {
+            data = JSON.parse(json);
+        } catch (e) {
+            data = [];
+        }
+    } else {
+        data = json;
+    }
+
+    if (!Array.isArray(data)) return;
+
+    data.forEach((actividad, index) => {
+
+        let num = index + 1;
+
+        let htmlActividad = `
+        <div class="actividad-item" id="actividad_${num}">
+            
+            <div class="actividad-card">
+
+                <div class="d-flex justify-content-between mb-2">
+                    <strong>Actividad ${num}</strong>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+                <div class="actividad-row">
+                    <div class="actividad-left">
+                        <input type="text" 
+                            class="form-control actividad-nombre" 
+                            value="${actividad.nombre || ''}">
+                    </div>
+                    <div class="actividad-right">
+                        <button type="button" 
+                            class="btn btn-agregar-tarea"
+                            onclick="agregarTarea(${num})">
+                            + Agregar tarea
+                        </button>
+                        <div id="tareas_${num}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+
+        contenedor.append(htmlActividad);
+
+        if (Array.isArray(actividad.tareas)) {
+
+            actividad.tareas.forEach((tarea, i) => {
+
+                let numT = i + 1;
+
+                let htmlTarea = `
+                <div class="tarea-item">
+
+                    <div class="d-flex justify-content-between">
+                        <small>Tarea ${numT}</small>
+                        <button type="button" class="btn btn-danger btn-sm"
+                            onclick="eliminarTarea(this)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+
+                    <input type="text" 
+                        class="form-control mt-1 tarea-nombre" 
+                        value="${tarea.nombre || ''}">
+
+                    <input type="text" 
+                        class="form-control mt-1 tarea-frecuencia" 
+                        value="${tarea.frecuencia || ''}">
+
+                    <input type="text" 
+                        class="form-control mt-1 tarea-duracion" 
+                        value="${tarea.duracion || ''}">
+
+                </div>
+                `;
+
+                $(`#tareas_${num}`).append(htmlTarea);
+
+            });
+
+        }
+
+    });
+}
+
+$(document).on('change', '#enfermedad_musculoesqueletica', function () {
+
+    if ($(this).val() === 'SI') {
+        $('#datosEnfermedadMusculo').show();
+    } else {
+        $('#datosEnfermedadMusculo').hide();
+
+        $('#enfermedad_musculoesqueletica_cual').val('');
+        $('#enfermedad_musculoesqueletica_tiempo').val('');
+    }
+
+});
+
+$(document).on('click', '#agregarFilaEquipo', function () {
+
+    let fila = `
+        <tr>
+            <td>
+                <select class="form-control" name="tipo_equipo[]">
+                    <option value="">Seleccione</option>
+                    <option value="M">M (Máquinas)</option>
+                    <option value="H">H (Herramientas)</option>
+                    <option value="U">U (Utensilios)</option>
+                    <option value="OTROS">Otros</option>
+                </select>
+            </td>
+
+            <td>
+                <textarea
+                    class="form-control"
+                    name="nombre_equipo[]"
+                    rows="2"></textarea>
+            </td>
+
+            <td>
+                <textarea
+                    class="form-control"
+                    name="caracteristicas_equipo[]"
+                    rows="2"></textarea>
+            </td>
+
+            <td>
+                <textarea
+                    class="form-control"
+                    name="peso_equipo[]"
+                    rows="2"></textarea>
+            </td>
+
+            <td>
+                <textarea
+                    class="form-control"
+                    name="metodo_equipo[]"
+                    rows="2"></textarea>
+            </td>
+
+            <td class="text-center">
+                <button
+                    type="button"
+                    class="btn btn-danger btn-sm eliminarFilaEquipo">
+                    <i class="fa fa-trash"></i>
+                    
+                </button>
+            </td>
+        </tr>
+    `;
+
+    $('#tablaEquiposTrabajo tbody').append(fila);
+
+});
+
+$(document).on('click', '.eliminarFilaEquipo', function () {
+    $(this).closest('tr').remove();
+});
+
+
+let recognition = null;
+let textareaActivo = null;
+let botonActivo = null;
+let grabando = false;
+
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+
+    const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    recognition = new SpeechRecognition();
+
+    recognition.lang = 'es-MX';
+    recognition.continuous = true;
+    recognition.interimResults = false;
+
+    recognition.onresult = function (event) {
+
+        let texto = '';
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+
+            if (event.results[i].isFinal) {
+                texto += event.results[i][0].transcript + ' ';
+            }
+
+        }
+
+        if (textareaActivo) {
+
+            let actual = $(textareaActivo).val();
+
+            $(textareaActivo).val(
+                actual + (actual ? ' ' : '') + texto
+            );
+
+        }
+    };
+
+    recognition.onend = function () {
+
+        if (grabando) {
+            recognition.start();
+        }
+
+    };
+}
+
+$(document).on('click', '.btnMicrofono', function () {
+
+    if (!recognition) {
+        alert('El navegador no soporta reconocimiento de voz');
+        return;
+    }
+
+    if (grabando) {
+
+        grabando = false;
+        recognition.stop();
+
+        $('.btnMicrofono')
+            .removeClass('btn-danger')
+            .addClass('btn-primary')
+            .html('<i class="fa fa-microphone"></i>');
+
+        return;
+    }
+
+    textareaActivo = '#' + $(this).data('target');
+    botonActivo = $(this);
+
+    grabando = true;
+
+    $('.btnMicrofono')
+        .removeClass('btn-danger')
+        .addClass('btn-primary')
+        .html('<i class="fa fa-microphone"></i>');
+
+    botonActivo
+        .removeClass('btn-primary')
+        .addClass('btn-danger')
+        .html('⏹');
+
+    recognition.start();
+});
+
+
+$(document).on('click', '#agregarFuenteTermica', function () {
+
+    let fila = `
+        <tr>
+            <td>
+                <textarea class="form-control"
+                          name="fuentes_termicas[]"
+                          rows="2"></textarea>
+            </td>
+
+            <td class="text-center">
+                <button type="button"
+                        class="btn btn-danger eliminarFuenteTermica">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `;
+
+    $('#tablaFuentesTermicas tbody').append(fila);
+
+});
+
+$(document).on('click', '.eliminarFuenteTermica', function () {
+    $(this).closest('tr').remove();
+});
+
+
+$(document).on('click', '#agregarFuenteRuido', function () {
+
+    let fila = `
+        <tr>
+            <td>
+                <textarea class="form-control"
+                          name="fuentes_ruido[]"
+                          rows="2"></textarea>
+            </td>
+
+            <td class="text-center">
+                <button type="button"
+                        class="btn btn-danger eliminarFuenteRuido">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `;
+
+    $('#tablaFuentesRuido tbody').append(fila);
+
+});
+
+$(document).on('click', '.eliminarFuenteRuido', function () {
+    $(this).closest('tr').remove();
+});
+
+$(document).on('click', '#agregarFuenteVibracion', function () {
+
+    let fila = `
+        <tr>
+            <td>
+                <textarea class="form-control"
+                          name="fuentes_vibracion[]"
+                          rows="2"></textarea>
+            </td>
+
+            <td class="text-center">
+                <button type="button"
+                        class="btn btn-danger eliminarFuenteVibracion">
+                   <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `;
+
+    $('#tablaFuentesVibracion tbody').append(fila);
+
+});
+
+$(document).on('click', '.eliminarFuenteVibracion', function () {
+    $(this).closest('tr').remove();
+});
+
+$('#percepcion_termica').on('change', function () {
+
+	if ($(this).val() == '3') {
+		$('#CONDICION_TERMINCA_CUAL').show();
+	} else {
+		$('#CONDICION_TERMINCA_CUAL').hide();
+		$('#CUAL_PERCEPCION').val(''); 
+	}
+
+});
