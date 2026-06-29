@@ -32,6 +32,11 @@ ID_CATEGORIA_ERGO = 0;
 ID_AREA_ERGO = 0;
 ID_FICHAS_TECNICAS = 0;
 
+ID_EVALUACION_FRE = 0;
+
+var fichas_id = null; 
+
+
 //--------------------------------------------------CARGA PRINCIPAL---------------------------------------------------------//
 $(document).ready(function () {
 	// mostrar tabla
@@ -3588,108 +3593,6 @@ function calcularResultadoFicha(ficha, preguntas) {
     return "VERDE";
 }
 
-$("#boton_guardar_fichastecnicas").click(function (e) {
-    e.preventDefault();
-
-
-    formularioValido = validarFormulario3($('#form_fichas'))
-
-    if (formularioValido) {
-
-
-		let json = generarJSONActividades();
-
-		if (!$('#JSON_ACTIVIDADES').length) {
-			$('#form_fichas').append('<input type="hidden" name="JSON_ACTIVIDADES" id="JSON_ACTIVIDADES">');
-		}
-
-		$('#JSON_ACTIVIDADES').val(json);
-
-		let jsonFichas = generarJSONFichas();
-
-		if (!$('#JSON_FICHAS').length) {
-			$('#form_fichas').append('<input type="hidden" name="JSON_FICHAS" id="JSON_FICHAS">');
-		}
-
-		$('#JSON_FICHAS').val(jsonFichas);
-		
-    if (ID_FICHAS_TECNICAS == 0) {
-        
-        alertMensajeConfirm({
-            title: "¿Desea guardar la información?",
-            text: "Al guardarla, se podra usar",
-            icon: "question",
-        },async function () { 
-
-            await loaderbtn('boton_guardar_fichastecnicas')
-            await ajaxAwaitFormData({ api: 1,RECO_ID: recsensorial, ID_FICHAS_TECNICAS: ID_FICHAS_TECNICAS }, 'recoergofichas', 'form_fichas', 'boton_guardar_fichastecnicas', { callbackAfter: true, callbackBefore: true }, () => {
-        
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Espere un momento',
-                    text: 'Estamos guardando la información',
-                    showConfirmButton: false
-                })
-
-                $('.swal2-popup').addClass('ld ld-breath')
-        
-                
-            }, function (data) {
-                    
-                    ID_FICHAS_TECNICAS = data.fichas.ID_FICHAS_TECNICAS
-                    alertMensaje('success','Información guardada correctamente', 'Esta información esta lista para usarse',null,null, 1500)
-                     $('#modal_fichas').modal('hide')
-                    document.getElementById('form_fichas').reset();
-                    Tablafichasevaluacionfre.ajax.reload()
-                
-            })
-            
-            
-            
-        }, 1)
-        
-    } else {
-            alertMensajeConfirm({
-            title: "¿Desea editar la información de este formulario?",
-            text: "Al guardarla, se podra usar",
-            icon: "question",
-        },async function () { 
-
-            await loaderbtn('boton_guardar_fichastecnicas')
-            await ajaxAwaitFormData({ api: 1, RECO_ID: recsensorial, ID_FICHAS_TECNICAS: ID_FICHAS_TECNICAS }, 'recoergofichas', 'form_fichas', 'boton_guardar_fichastecnicas', { callbackAfter: true, callbackBefore: true }, () => {
-        
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Espere un momento',
-                    text: 'Estamos guardando la información',
-                    showConfirmButton: false
-                })
-
-                $('.swal2-popup').addClass('ld ld-breath')
-        
-                
-            }, function (data) {
-                    
-                setTimeout(() => {
-
-                    ID_FICHAS_TECNICAS = data.fichas.ID_FICHAS_TECNICAS
-                    alertMensaje('success', 'Información editada correctamente', 'Información guardada')
-                     $('#modal_fichas').modal('hide')
-                    document.getElementById('form_fichas').reset();
-                    Tablafichasevaluacionfre.ajax.reload()
-
-                }, 300);  
-            })
-        }, 1)
-    }
-
-} else {
-    alertToast('Por favor, complete todos los campos del formulario.', 'error', 2000)
-
-}
-    
-});
-
 function mostrarTablafichasevaluacionfre() {
 	try {
 		var ruta = "/Tablafichasevaluacionfre";
@@ -4138,65 +4041,50 @@ $('#Tablafichasevaluacionfre tbody').on('click', 'td>button.iniciarfre', functio
 	$('#CATEGORIA_ID_FRE')
 		.val(row.data().CATEGORIA_ID_FICHA)
 		.trigger('change');
-
-	setTimeout(() => {
-		cargarAreasFRE(areasGuardadas);
-	}, 300);
-
 	});
 
 
-	 $("#contenedorActividadesfre").empty(); 
-	pintarActividadesfre(row.data().JSON_ACTIVIDADES);
+	fichas_id = row.data().ID_FICHAS_TECNICAS;
+    $('#INSTALACION_FRE').val(instalacionreco);
 
-	$("#NOMBRE_EMPLEADO_FRE").val(row.data().NOMBRE_EMPLEADO_FICHA);
-	$("#NO_EMPLEADO_FRE").val(row.data().NO_EMPLEADO_FICHA);
-	$("#SEXO_EMPLEADO_FRE").val(row.data().SEXO_EMPLEADO_FICHA);
-	$("#FECHA_NACIMIENTO_FRE").val(row.data().FECHA_NACIMIENTO);
-	$("#EDAD_EMPLEADO_FRE").val(row.data().EDAD_EMPLEADO_FICHA);
-	$("#PESO_FRE").val(row.data().PESO_FICHA);
-    $("#TALLA_FRE").val(row.data().TALLA_FICHA);
-    $("#REGIMEN_CONTRACTUAL_FRE").val(row.data().REGIMEN_CONTRACTUAL_FICHA);
-    $("#JORNADA_EMPLEADO_FRE").val(row.data().JORNADA_EMPLEADO_FICHA);
-	$("#TIEMPO_EMPRESA_FRE").val(row.data().TIEMPO_EMPRESA_FICHA)
-	$("#ANTIGUEDAD_CATEOGORIA_FRE").val(row.data().ANTIGUEDAD_CATEOGORIA_FICHA);	
+
 	
-	$('#INSTALACION_FRE').val(instalacionreco);
 
+	$.ajax({
+
+		url: '/obtenerEvaluacionFre',
+		type: 'POST',
+		data: {
+		FICHA_ID: fichas_id,
+		_token: $('meta[name="csrf-token"]').attr('content')
+
+	},
+
+	success: function (fre) {
+
+			console.log("Respuesta AJAX:", fre);
+
+			if (fre && fre.ID_EVALUACION_FRE) {
+
+				console.log("Entró al if");
+
+				cargarEvaluacionFre(fre);
+
+			} else {
+
+				console.log("Entró al else");
+				console.log(row.data());
+
+				cargarDatosFicha(row.data());
+
+			}
+
+		}
+	});
+	
 
     $('#modal_evalfre').modal({backdrop:false});
 });
-
-
-
-
-
-$('#modal_evalfre').on('hidden.bs.modal', function (e) {
-
-	$("#ID_FICHAS_TECNICAS").val(0);
-
-    $('#form_evalfre')[0].reset();
-
-	$("#contenedorActividadesfre").empty(); 
-
-    $('#JSON_ACTIVIDADES').val('')
-	
-	$('#datosEnfermedadMusculo').hide();
-	
-	$('#tablaEquiposTrabajo tbody').empty();
-	$('#tablaFuentesTermicas tbody').empty();
-	$('#tablaFuentesRuido tbody').empty();
-
-	$('#tablaFuentesVibracion tbody').empty();
-
-	$('#CONDICION_TERMINCA_CUAL').hide();
-
-
-
-
-
-})
-
 
 
 function cargarCategoriasSelectFRE(callback = null) {
@@ -4295,7 +4183,7 @@ $('#FECHA_NACIMIENTO_FRE').on('change blur', function () {
     $('#EDAD_EMPLEADO_FRE').val(edad);
 });
 
-$('input[name="evalaucion_trabajador"]').change(function () {
+$('input[name="EVALUACION_TRABAJADOR"]').change(function () {
 
 	var valor = $(this).val();
 
@@ -4443,7 +4331,9 @@ function reindexarTareasActividadfre(contenedor, idActividad) {
     });
 }
 
-function pintarActividadesfre(json) {
+function pintarActividadesfre(json, idHidden = 'JSON_ACTIVIDADES') {
+
+    $('#' + idHidden).val(typeof json === 'string' ? json : JSON.stringify(json));
 
     let contenedor = $('#contenedorActividadesfre');
     contenedor.empty();
@@ -4462,8 +4352,8 @@ function pintarActividadesfre(json) {
         data = json;
     }
 
-    if (!Array.isArray(data)) return;
-
+	if (!Array.isArray(data)) return;
+	
     data.forEach((actividad, index) => {
 
         let num = index + 1;
@@ -4540,20 +4430,426 @@ function pintarActividadesfre(json) {
 
     });
 }
+function cargarDatosFicha(data) {
 
-$(document).on('change', '#enfermedad_musculoesqueletica', function () {
+    $("#contenedorActividadesfre").empty();
+
+    pintarActividadesfre(data.JSON_ACTIVIDADES, 'JSON_ACTIVIDADES_FRE');
+
+    $("#NOMBRE_EMPLEADO_FRE").val(data.NOMBRE_EMPLEADO_FICHA);
+    $("#NO_EMPLEADO_FRE").val(data.NO_EMPLEADO_FICHA);
+    $("#SEXO_EMPLEADO_FRE").val(data.SEXO_EMPLEADO_FICHA);
+    $("#FECHA_NACIMIENTO_FRE").val(data.FECHA_NACIMIENTO);
+    $("#EDAD_EMPLEADO_FRE").val(data.EDAD_EMPLEADO_FICHA);
+    $("#PESO_FRE").val(data.PESO_FICHA);
+    $("#TALLA_FRE").val(data.TALLA_FICHA);
+    $("#REGIMEN_CONTRACTUAL_FRE").val(data.REGIMEN_CONTRACTUAL_FICHA);
+    $("#JORNADA_EMPLEADO_FRE").val(data.JORNADA_EMPLEADO_FICHA);
+    $("#TIEMPO_EMPRESA_FRE").val(data.TIEMPO_EMPRESA_FICHA);
+    $("#ANTIGUEDAD_CATEOGORIA_FRE").val(data.ANTIGUEDAD_CATEOGORIA_FICHA);
+
+
+
+}
+
+
+
+function cargarEvaluacionFre(data) {
+
+    ID_EVALUACION_FRE = data.ID_EVALUACION_FRE;
+    
+	$("#ID_EVALUACION_FRE").val(data.ID_EVALUACION_FRE);
+
+    $("#FECHA_EVALUACION_FRE").val(data.FECHA_EVALUACION_FRE);
+    $("#CAT_DEPARTAMENTO_FRE").val(data.CAT_DEPARTAMENTO_FRE);
+    $("#EVALUACION_TRABAJADOR").val(data.EVALUACION_TRABAJADOR);
+
+    $("#NOMBRE_EMPLEADO_FRE").val(data.NOMBRE_EMPLEADO_FRE);
+    $("#NO_EMPLEADO_FRE").val(data.NO_EMPLEADO_FRE);
+    $("#ULTIMO_GRADO_FRE").val(data.ULTIMO_GRADO_FRE);
+    $("#INDIQUE_UBICACION_FRE").val(data.INDIQUE_UBICACION_FRE);
+
+    $("#SEXO_EMPLEADO_FRE").val(data.SEXO_EMPLEADO_FRE);
+    $("#FECHA_NACIMIENTO_FRE").val(data.FECHA_NACIMIENTO_FRE);
+    $("#EDAD_EMPLEADO_FRE").val(data.EDAD_EMPLEADO_FRE);
+
+    $("#REGIMEN_CONTRACTUAL_FRE").val(data.REGIMEN_CONTRACTUAL_FRE);
+    $("#JORNADA_EMPLEADO_FRE").val(data.JORNADA_EMPLEADO_FRE);
+    $("#TIEMPO_EMPRESA_FRE").val(data.TIEMPO_EMPRESA_FRE);
+    $("#ANTIGUEDAD_CATEOGORIA_FRE").val(data.ANTIGUEDAD_CATEOGORIA_FRE);
+
+    $("#PAUSAS_DESCANSO").val(data.PAUSAS_DESCANSO);
+
+    $("#PESO_FRE").val(data.PESO_FRE);
+    $("#TALLA_FRE").val(data.TALLA_FRE);
+
+    $("#ENFERMEDAD_MUSCULOESQUELETICA").val(data.ENFERMEDAD_MUSCULOESQUELETICA).trigger('change');
+    $("#ENFERMEDAD_MUSCULOESQUELETICA_CUAL").val(data.ENFERMEDAD_MUSCULOESQUELETICA_CUAL);
+    $("#ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO").val(data.ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO);
+    $("#INCAPACITADO_DOLOR_MUSCULO").val(data.INCAPACITADO_DOLOR_MUSCULO);
+
+    $("#FUENTE_ILUMINACION").val(data.FUENTE_ILUMINACION);
+    $("#INTENSIDAD_ILUMINACION").val(data.INTENSIDAD_ILUMINACION);
+    $("#OBSERVACION_ILUMINACION").val(data.OBSERVACION_ILUMINACION);
+
+    $("#PERCEPCION_TERMICA").val(data.PERCEPCION_TERMICA).trigger('change');
+    $("#INTENSIDAD_TERMICA").val(data.INTENSIDAD_TERMICA);
+    $("#CUAL_PERCEPCION").val(data.CUAL_PERCEPCION);
+    $("#OBSERVACIONES_TERMICAS").val(data.OBSERVACIONES_TERMICAS);
+
+    $("#INTENSIDAD_RUIDO").val(data.INTENSIDAD_RUIDO);
+    $("#CONTINUIDAD_RUIDO").val(data.CONTINUIDAD_RUIDO);
+    $("#OBSERVACIONES_RUIDO").val(data.OBSERVACIONES_RUIDO);
+
+    $("#INTENSIDAD_VIBRACION").val(data.INTENSIDAD_VIBRACION);
+    $("#SEGMENTO_VIBRACION").val(data.SEGMENTO_VIBRACION);
+    $("#OBSERVACIONES_VIBRACION").val(data.OBSERVACIONES_VIBRACION);
+
+    $("#contenedorActividadesfre").empty();
+	pintarActividadesfre(data.JSON_ACTIVIDADES_FRE, 'JSON_ACTIVIDADES_FRE');
+	
+
+    $('input[name="CUELLO"][value="' + data.CUELLO + '"]').prop('checked', true).trigger('change');
+
+    $('input[name="HOMBRO"][value="' + data.HOMBRO + '"]').prop('checked', true).trigger('change');
+    $("#HOMBRO_IZQ").prop("checked", data.HOMBRO_IZQ == 1);
+    $("#HOMBRO_DER").prop("checked", data.HOMBRO_DER == 1);
+
+    $('input[name="CODO"][value="' + data.CODO + '"]').prop('checked', true).trigger('change');
+    $("#CODO_IZQ").prop("checked", data.CODO_IZQ == 1);
+    $("#CODO_DER").prop("checked", data.CODO_DER == 1);
+
+    $('input[name="MUNECA"][value="' + data.MUNECA + '"]').prop('checked', true).trigger('change');
+    $("#MUNECA_IZQ").prop("checked", data.MUNECA_IZQ == 1);
+    $("#MUNECA_DER").prop("checked", data.MUNECA_DER == 1);
+
+    $('input[name="ESPALDA_ALTA"][value="' + data.ESPALDA_ALTA + '"]').prop('checked', true);
+    $('input[name="ESPALDA_BAJA"][value="' + data.ESPALDA_BAJA + '"]').prop('checked', true);
+    $('input[name="CADERAS_PIERNAS"][value="' + data.CADERAS_PIERNAS + '"]').prop('checked', true);
+    $('input[name="RODILLAS"][value="' + data.RODILLAS + '"]').prop('checked', true);
+    $('input[name="TOBILLOS_PIES"][value="' + data.TOBILLOS_PIES + '"]').prop('checked', true);
+
+
+    $('input[name="CUELLO_12_MESES"][value="' + data.CUELLO_12_MESES + '"]').prop('checked', true);
+    $('input[name="CUELLO_7_DIAS"][value="' + data.CUELLO_7_DIAS + '"]').prop('checked', true);
+
+    $('input[name="HOMBRO_12_MESES"][value="' + data.HOMBRO_12_MESES + '"]').prop('checked', true);
+    $('input[name="HOMBRO_7_DIAS"][value="' + data.HOMBRO_7_DIAS + '"]').prop('checked', true);
+
+    $('input[name="CODO_12_MESES"][value="' + data.CODO_12_MESES + '"]').prop('checked', true);
+    $('input[name="CODO_7_DIAS"][value="' + data.CODO_7_DIAS + '"]').prop('checked', true);
+
+    $('input[name="MUNECA_12_MESES"][value="' + data.MUNECA_12_MESES + '"]').prop('checked', true);
+    $('input[name="MUNECA_7_DIAS"][value="' + data.MUNECA_7_DIAS + '"]').prop('checked', true);
+
+    $('input[name="ESPALDA_ALTA_12_MESES"][value="' + data.ESPALDA_ALTA_12_MESES + '"]').prop('checked', true);
+    $('input[name="ESPALDA_ALTA_7_DIAS"][value="' + data.ESPALDA_ALTA_7_DIAS + '"]').prop('checked', true);
+
+    $('input[name="ESPALDA_BAJA_12_MESES"][value="' + data.ESPALDA_BAJA_12_MESES + '"]').prop('checked', true);
+    $('input[name="ESPALDA_BAJA_7_DIAS"][value="' + data.ESPALDA_BAJA_7_DIAS + '"]').prop('checked', true);
+
+    $('input[name="CADERAS_PIERNAS_12_MESES"][value="' + data.CADERAS_PIERNAS_12_MESES + '"]').prop('checked', true);
+    $('input[name="CADERAS_PIERNAS_7_DIAS"][value="' + data.CADERAS_PIERNAS_7_DIAS + '"]').prop('checked', true);
+
+    $('input[name="RODILLAS_12_MESES"][value="' + data.RODILLAS_12_MESES + '"]').prop('checked', true);
+    $('input[name="RODILLAS_7_DIAS"][value="' + data.RODILLAS_7_DIAS + '"]').prop('checked', true);
+
+    $('input[name="TOBILLOS_PIES_12_MESES"][value="' + data.TOBILLOS_PIES_12_MESES + '"]').prop('checked', true);
+    $('input[name="TOBILLOS_PIES_7_DIAS"][value="' + data.TOBILLOS_PIES_7_DIAS + '"]').prop('checked', true);
+
+
+    $('input[name="COLUMNA_LUMBAR_P1"][value="' + data.COLUMNA_LUMBAR_P1 + '"]').prop('checked', true).trigger('change');
+    $('input[name="COLUMNA_LUMBAR_P2"][value="' + data.COLUMNA_LUMBAR_P2 + '"]').prop('checked', true);
+    $('input[name="COLUMNA_LUMBAR_P3"][value="' + data.COLUMNA_LUMBAR_P3 + '"]').prop('checked', true);
+    $('input[name="COLUMNA_LUMBAR_P4"][value="' + data.COLUMNA_LUMBAR_P4 + '"]').prop('checked', true).trigger('change');
+
+    $('input[name="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL"][value="' + data.COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL + '"]').prop('checked', true);
+    $('input[name="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO"][value="' + data.COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO + '"]').prop('checked', true);
+
+    $('input[name="COLUMNA_LUMBAR_P6"][value="' + data.COLUMNA_LUMBAR_P6 + '"]').prop('checked', true);
+    $('input[name="COLUMNA_LUMBAR_P7"][value="' + data.COLUMNA_LUMBAR_P7 + '"]').prop('checked', true);
+	$('input[name="COLUMNA_LUMBAR_P8"][value="' + data.COLUMNA_LUMBAR_P8 + '"]').prop('checked', true);
+	
+    $('input[name="CUELLO_P1"][value="' + data.CUELLO_P1 + '"]').prop('checked', true).trigger('change');
+    $('input[name="CUELLO_P2"][value="' + data.CUELLO_P2 + '"]').prop('checked', true);
+    $('input[name="CUELLO_P3"][value="' + data.CUELLO_P3 + '"]').prop('checked', true);
+    $('input[name="CUELLO_P4"][value="' + data.CUELLO_P4 + '"]').prop('checked', true).trigger('change');
+    $('input[name="CUELLO_P5_ACTIVIDAD_LABORAL"][value="' + data.CUELLO_P5_ACTIVIDAD_LABORAL + '"]').prop('checked', true);
+    $('input[name="CUELLO_P5_ACTIVIDAD_OCIO"][value="' + data.CUELLO_P5_ACTIVIDAD_OCIO + '"]').prop('checked', true);
+    $('input[name="CUELLO_P6"][value="' + data.CUELLO_P6 + '"]').prop('checked', true);
+    $('input[name="CUELLO_P7"][value="' + data.CUELLO_P7 + '"]').prop('checked', true);
+    $('input[name="CUELLO_P8"][value="' + data.CUELLO_P8 + '"]').prop('checked', true);
+
+    $('input[name="HOMBRO_P1"][value="' + data.HOMBRO_P1 + '"]').prop('checked', true).trigger('change');
+    $('input[name="HOMBRO_P2"][value="' + data.HOMBRO_P2 + '"]').prop('checked', true);
+    $('input[name="HOMBRO_P3"][value="' + data.HOMBRO_P3 + '"]').prop('checked', true);
+    $('input[name="HOMBRO_P4"][value="' + data.HOMBRO_P4 + '"]').prop('checked', true).trigger('change');
+    $('input[name="HOMBRO_P5_ACTIVIDAD_LABORAL"][value="' + data.HOMBRO_P5_ACTIVIDAD_LABORAL + '"]').prop('checked', true);
+    $('input[name="HOMBRO_P5_ACTIVIDAD_OCIO"][value="' + data.HOMBRO_P5_ACTIVIDAD_OCIO + '"]').prop('checked', true);
+    $('input[name="HOMBRO_P6"][value="' + data.HOMBRO_P6 + '"]').prop('checked', true);
+    $('input[name="HOMBRO_P7"][value="' + data.HOMBRO_P7 + '"]').prop('checked', true);
+    $('input[name="HOMBRO_P8"][value="' + data.HOMBRO_P8 + '"]').prop('checked', true);
+
+    $("#FUERZA_MANO_DERECHA").val(data.FUERZA_MANO_DERECHA);
+    $("#FUERZA_MANO_IZQUIERDA").val(data.FUERZA_MANO_IZQUIERDA);
+    $("#REQUIERE_FUERZA_MANUAL").val(data.REQUIERE_FUERZA_MANUAL);
+    $("#TIPO_DOMINANCIA").val(data.TIPO_DOMINANCIA);
+
+    $("#REALIZA_TAREAS_PIE").val(data.REALIZA_TAREAS_PIE);
+    $("#BIPEDESTACION_ESTATICA").val(data.BIPEDESTACION_ESTATICA);
+    $("#BIPEDESTACION_DINAMICA").val(data.BIPEDESTACION_DINAMICA);
+    $("#OBSERVACIONES_GENERALES").val(data.OBSERVACIONES_GENERALES);
+
+
+    if (data.JSON_EQUIPOS_TRABAJO) {
+        pintarEquiposTrabajo(data.JSON_EQUIPOS_TRABAJO);
+    }
+
+    if (data.JSON_FUENTES_TERMICAS) {
+        pintarFuentesTermicas(data.JSON_FUENTES_TERMICAS);
+    }
+
+    if (data.JSON_FUENTES_RUIDO) {
+        pintarFuentesRuido(data.JSON_FUENTES_RUIDO);
+    }
+
+    if (data.JSON_FUENTES_VIBRACION) {
+        pintarFuentesVibracion(data.JSON_FUENTES_VIBRACION);
+    }
+
+
+	$('#ENFERMEDAD_MUSCULOESQUELETICA').trigger('change');
+	$('#PERCEPCION_TERMICA').trigger('change');
+	$('input[name="HOMBRO"]:checked').trigger('change');
+	$('input[name="CODO"]:checked').trigger('change');
+	$('input[name="MUNECA"]:checked').trigger('change');
+	$('input[name="COLUMNA_LUMBAR_P1"]:checked').trigger('change');
+	$('input[name="COLUMNA_LUMBAR_P4"]:checked').trigger('change');
+	$('input[name="CUELLO_P1"]:checked').trigger('change');
+	$('input[name="CUELLO_P4"]:checked').trigger('change');
+	$('input[name="HOMBRO_P1"]:checked').trigger('change');
+	$('input[name="HOMBRO_P4"]:checked').trigger('change');
+		
+
+
+}
+
+
+function pintarEquiposTrabajo(json) {
+
+    $('#tablaEquiposTrabajo tbody').empty();
+
+    if (!json) return;
+
+    let data = typeof json === "string" ? JSON.parse(json) : json;
+
+    data.forEach(function (item) {
+
+        let fila = `
+            <tr>
+
+                <td>
+                    <select class="form-control" name="tipo_equipo[]">
+                        <option value="">Seleccione</option>
+                        <option value="M" ${item.tipo == 'M' ? 'selected' : ''}>M (Máquinas)</option>
+                        <option value="H" ${item.tipo == 'H' ? 'selected' : ''}>H (Herramientas)</option>
+                        <option value="U" ${item.tipo == 'U' ? 'selected' : ''}>U (Utensilios)</option>
+                        <option value="OTROS" ${item.tipo == 'OTROS' ? 'selected' : ''}>Otros</option>
+                    </select>
+                </td>
+
+                <td>
+                    <textarea class="form-control" name="nombre_equipo[]" rows="2">${item.nombre ?? ''}</textarea>
+                </td>
+
+                <td>
+                    <textarea class="form-control" name="caracteristicas_equipo[]" rows="2">${item.caracteristicas ?? ''}</textarea>
+                </td>
+
+                <td>
+                    <textarea class="form-control" name="peso_equipo[]" rows="2">${item.peso ?? ''}</textarea>
+                </td>
+
+                <td>
+                    <textarea class="form-control" name="metodo_equipo[]" rows="2">${item.metodo ?? ''}</textarea>
+                </td>
+
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger btn-sm eliminarFilaEquipo">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+
+            </tr>
+        `;
+
+        $('#tablaEquiposTrabajo tbody').append(fila);
+
+    });
+
+}
+
+function pintarFuentesTermicas(json) {
+
+    $('#tablaFuentesTermicas tbody').empty();
+
+    if (!json) return;
+
+    let data = typeof json === "string" ? JSON.parse(json) : json;
+
+    data.forEach(function (item) {
+
+        let fila = `
+            <tr>
+
+                <td>
+                    <textarea class="form-control"
+                              name="fuentes_termicas[]"
+                              rows="2">${item.fuente ?? ''}</textarea>
+                </td>
+
+                <td class="text-center">
+                    <button type="button"
+                            class="btn btn-danger eliminarFuenteTermica">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+
+            </tr>
+        `;
+
+        $('#tablaFuentesTermicas tbody').append(fila);
+
+    });
+
+}
+
+function pintarFuentesRuido(json) {
+
+    $('#tablaFuentesRuido tbody').empty();
+
+    if (!json) return;
+
+    let data = typeof json === "string" ? JSON.parse(json) : json;
+
+    data.forEach(function (item) {
+
+        let fila = `
+            <tr>
+
+                <td>
+                    <textarea class="form-control"
+                              name="fuentes_ruido[]"
+                              rows="2">${item.fuente ?? ''}</textarea>
+                </td>
+
+                <td class="text-center">
+                    <button type="button"
+                            class="btn btn-danger eliminarFuenteRuido">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+
+            </tr>
+        `;
+
+        $('#tablaFuentesRuido tbody').append(fila);
+
+    });
+
+}
+
+function pintarFuentesVibracion(json) {
+
+    $('#tablaFuentesVibracion tbody').empty();
+
+    if (!json) return;
+
+    let data = typeof json === "string" ? JSON.parse(json) : json;
+
+    data.forEach(function (item) {
+
+        let fila = `
+            <tr>
+
+                <td>
+                    <textarea class="form-control"
+                              name="fuentes_vibracion[]"
+                              rows="2">${item.fuente ?? ''}</textarea>
+                </td>
+
+                <td class="text-center">
+                    <button type="button"
+                            class="btn btn-danger eliminarFuenteVibracion">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+
+            </tr>
+        `;
+
+        $('#tablaFuentesVibracion tbody').append(fila);
+
+    });
+
+}
+
+$('#modal_evalfre').on('hidden.bs.modal', function (e) {
+
+	ID_EVALUACION_FRE = 0;
+
+    $('#form_evalfre')[0].reset();
+
+	$("#contenedorActividadesfre").empty(); 
+
+    $('#JSON_ACTIVIDADES_FRE').val('')
+	
+	$('#datosEnfermedadMusculo').hide();
+	
+	$('#tablaEquiposTrabajo tbody').empty();
+	$('#tablaFuentesTermicas tbody').empty();
+	$('#tablaFuentesRuido tbody').empty();
+
+	$('#tablaFuentesVibracion tbody').empty();
+
+	$('#CONDICION_TERMINCA_CUAL').hide();
+
+    fichas_id = 0; 
+
+	$('#HOMBRO_IZQ, #HOMBRO_DER').prop('checked', false).prop('disabled', true);
+	$('#CODO_IZQ, #CODO_DER').prop('checked', false).prop('disabled', true);
+	$('#MUNECA_IZQ, #MUNECA_DER').prop('checked', false).prop('disabled', true);
+
+
+	$('.bloque-lumbar-p2,.bloque-lumbar-p3,.bloque-lumbar-p4,.bloque-lumbar-p5,.bloque-lumbar-p6,.bloque-lumbar-p7,.bloque-lumbar-p8').find('input').prop('disabled', false);
+	$('.bloque-cuello-p2,.bloque-cuello-p3,.bloque-cuello-p4,.bloque-cuello-p5,.bloque-cuello-p6,.bloque-cuello-p7,.bloque-cuello-p8').find('input').prop('disabled', false);
+	$('.bloque-hombro-p2,.bloque-hombro-p3,.bloque-hombro-p4,.bloque-hombro-p5,.bloque-hombro-p6,.bloque-hombro-p7,.bloque-hombro-p8').find('input').prop('disabled', false);
+
+	$('#HOMBRO_IZQ,#HOMBRO_DER').prop('disabled', false);
+	$('#CODO_IZQ,#CODO_DER').prop('disabled', false);
+	$('#MUNECA_IZQ,#MUNECA_DER').prop('disabled', false);
+	
+
+})
+
+
+
+
+
+$(document).on('change', '#ENFERMEDAD_MUSCULOESQUELETICA', function () {
 
     if ($(this).val() === 'SI') {
         $('#datosEnfermedadMusculo').show();
     } else {
         $('#datosEnfermedadMusculo').hide();
 
-        $('#enfermedad_musculoesqueletica_cual').val('');
-        $('#enfermedad_musculoesqueletica_tiempo').val('');
+        $('#ENFERMEDAD_MUSCULOESQUELETICA_CUAL').val('');
+        $('#ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO').val('');
     }
 
 });
 
+//// GUARDAR NUEVO DINAMICO 
 $(document).on('click', '#agregarFilaEquipo', function () {
 
     let fila = `
@@ -4610,6 +4906,7 @@ $(document).on('click', '#agregarFilaEquipo', function () {
     $('#tablaEquiposTrabajo tbody').append(fila);
 
 });
+
 
 $(document).on('click', '.eliminarFilaEquipo', function () {
     $(this).closest('tr').remove();
@@ -4702,6 +4999,7 @@ $(document).on('click', '.btnMicrofono', function () {
     recognition.start();
 });
 
+//// GUARDAR NUEVO DINAMICO 
 
 $(document).on('click', '#agregarFuenteTermica', function () {
 
@@ -4730,6 +5028,7 @@ $(document).on('click', '.eliminarFuenteTermica', function () {
     $(this).closest('tr').remove();
 });
 
+//// GUARDAR NUEVO DINAMICO 
 
 $(document).on('click', '#agregarFuenteRuido', function () {
 
@@ -4758,6 +5057,8 @@ $(document).on('click', '.eliminarFuenteRuido', function () {
     $(this).closest('tr').remove();
 });
 
+//// GUARDAR NUEVO DINAMICO 
+
 $(document).on('click', '#agregarFuenteVibracion', function () {
 
     let fila = `
@@ -4785,7 +5086,7 @@ $(document).on('click', '.eliminarFuenteVibracion', function () {
     $(this).closest('tr').remove();
 });
 
-$('#percepcion_termica').on('change', function () {
+$('#PERCEPCION_TERMICA').on('change', function () {
 
 	if ($(this).val() == '3') {
 		$('#CONDICION_TERMINCA_CUAL').show();
@@ -4794,4 +5095,470 @@ $('#percepcion_termica').on('change', function () {
 		$('#CUAL_PERCEPCION').val(''); 
 	}
 
+});
+
+
+$('input[name="HOMBRO"]').change(function () {
+
+    if ($('#HOMBRO_NO').is(':checked')) {
+
+        $('#HOMBRO_IZQ').prop('checked', false);
+        $('#HOMBRO_DER').prop('checked', false);
+
+        $('#HOMBRO_IZQ').prop('disabled', true);
+        $('#HOMBRO_DER').prop('disabled', true);
+
+    }
+
+    if ($('#HOMBRO_SI').is(':checked')) {
+
+        $('#HOMBRO_IZQ').prop('disabled', false);
+        $('#HOMBRO_DER').prop('disabled', false);
+
+    }
+
+});
+
+
+$('input[name="CODO"]').change(function () {
+
+    if ($('#CODO_NO').is(':checked')) {
+
+        $('#CODO_IZQ').prop('checked', false);
+        $('#CODO_DER').prop('checked', false);
+
+        $('#CODO_IZQ').prop('disabled', true);
+        $('#CODO_DER').prop('disabled', true);
+
+    }
+
+    if ($('#CODO_SI').is(':checked')) {
+
+        $('#CODO_IZQ').prop('disabled', false);
+        $('#CODO_DER').prop('disabled', false);
+
+    }
+
+});
+
+
+$('input[name="MUNECA"]').change(function () {
+
+    if ($('#MUNECA_NO').is(':checked')) {
+
+        $('#MUNECA_IZQ').prop('checked', false);
+        $('#MUNECA_DER').prop('checked', false);
+
+        $('#MUNECA_IZQ').prop('disabled', true);
+        $('#MUNECA_DER').prop('disabled', true);
+
+    }
+
+    if ($('#MUNECA_SI').is(':checked')) {
+
+        $('#MUNECA_IZQ').prop('disabled', false);
+        $('#MUNECA_DER').prop('disabled', false);
+
+    }
+
+});
+
+
+
+function habilitarBloque(selector, habilitar) {
+
+    $(selector)
+        .find('input')
+        .prop('disabled', !habilitar);
+
+    if (!habilitar) {
+
+        $(selector)
+            .find('input')
+            .prop('checked', false);
+
+    }
+
+}
+
+
+// PREGUNTA 1
+$('input[name="COLUMNA_LUMBAR_P1"]').change(function () {
+
+    if ($('#COLUMNA_LUMBAR_P1_NO').is(':checked')) {
+
+        habilitarBloque('.bloque-lumbar-p2', false);
+        habilitarBloque('.bloque-lumbar-p3', false);
+        habilitarBloque('.bloque-lumbar-p4', false);
+        habilitarBloque('.bloque-lumbar-p5', false);
+        habilitarBloque('.bloque-lumbar-p6', false);
+        habilitarBloque('.bloque-lumbar-p7', false);
+        habilitarBloque('.bloque-lumbar-p8', false);
+
+    } else {
+
+        habilitarBloque('.bloque-lumbar-p2', true);
+        habilitarBloque('.bloque-lumbar-p3', true);
+        habilitarBloque('.bloque-lumbar-p4', true);
+        habilitarBloque('.bloque-lumbar-p5', true);
+        habilitarBloque('.bloque-lumbar-p6', true);
+        habilitarBloque('.bloque-lumbar-p7', true);
+        habilitarBloque('.bloque-lumbar-p8', true);
+
+    }
+
+});
+
+
+// PREGUNTA 4
+$('input[name="COLUMNA_LUMBAR_P4"]').change(function () {
+
+    if ($('#COLUMNA_LUMBAR_P4_0_DIAS').is(':checked')) {
+
+        habilitarBloque('.bloque-lumbar-p5', false);
+        habilitarBloque('.bloque-lumbar-p6', false);
+        habilitarBloque('.bloque-lumbar-p7', false);
+        habilitarBloque('.bloque-lumbar-p8', false);
+
+    } else {
+
+        habilitarBloque('.bloque-lumbar-p5', true);
+        habilitarBloque('.bloque-lumbar-p6', true);
+        habilitarBloque('.bloque-lumbar-p7', true);
+        habilitarBloque('.bloque-lumbar-p8', true);
+
+    }
+
+});
+
+
+function habilitarBloqueCuello(selector, habilitar) {
+
+    $(selector)
+        .find('input')
+        .prop('disabled', !habilitar);
+
+    if (!habilitar) {
+
+        $(selector)
+            .find('input')
+            .prop('checked', false);
+
+    }
+
+}
+
+
+//-------------------------------------
+// PREGUNTA 1
+//-------------------------------------
+$('input[name="CUELLO_P1"]').change(function () {
+
+    if ($('#CUELLO_P1_NO').is(':checked')) {
+
+        habilitarBloqueCuello('.bloque-cuello-p2', false);
+        habilitarBloqueCuello('.bloque-cuello-p3', false);
+        habilitarBloqueCuello('.bloque-cuello-p4', false);
+        habilitarBloqueCuello('.bloque-cuello-p5', false);
+        habilitarBloqueCuello('.bloque-cuello-p6', false);
+        habilitarBloqueCuello('.bloque-cuello-p7', false);
+        habilitarBloqueCuello('.bloque-cuello-p8', false);
+
+    } else {
+
+        habilitarBloqueCuello('.bloque-cuello-p2', true);
+        habilitarBloqueCuello('.bloque-cuello-p3', true);
+        habilitarBloqueCuello('.bloque-cuello-p4', true);
+        habilitarBloqueCuello('.bloque-cuello-p5', true);
+        habilitarBloqueCuello('.bloque-cuello-p6', true);
+        habilitarBloqueCuello('.bloque-cuello-p7', true);
+        habilitarBloqueCuello('.bloque-cuello-p8', true);
+
+    }
+
+});
+
+
+//-------------------------------------
+// PREGUNTA 4
+//-------------------------------------
+$('input[name="CUELLO_P4"]').change(function () {
+
+    if ($('#CUELLO_P4_0_DIAS').is(':checked')) {
+
+        habilitarBloqueCuello('.bloque-cuello-p5', false);
+        habilitarBloqueCuello('.bloque-cuello-p6', false);
+        habilitarBloqueCuello('.bloque-cuello-p7', false);
+        habilitarBloqueCuello('.bloque-cuello-p8', false);
+
+    } else {
+
+        habilitarBloqueCuello('.bloque-cuello-p5', true);
+        habilitarBloqueCuello('.bloque-cuello-p6', true);
+        habilitarBloqueCuello('.bloque-cuello-p7', true);
+        habilitarBloqueCuello('.bloque-cuello-p8', true);
+
+    }
+
+});
+
+
+
+
+
+function habilitarBloqueHombro(selector, habilitar) {
+
+    $(selector)
+        .find('input')
+        .prop('disabled', !habilitar);
+
+    if (!habilitar) {
+
+        $(selector)
+            .find('input')
+            .prop('checked', false);
+
+    }
+
+}
+
+
+//--------------------------------------------------
+// PREGUNTA 1
+//--------------------------------------------------
+$('input[name="HOMBRO_P1"]').change(function () {
+
+    if ($('#HOMBRO_P1_NO').is(':checked')) {
+
+        habilitarBloqueHombro('.bloque-hombro-p2', false);
+        habilitarBloqueHombro('.bloque-hombro-p3', false);
+        habilitarBloqueHombro('.bloque-hombro-p4', false);
+        habilitarBloqueHombro('.bloque-hombro-p5', false);
+        habilitarBloqueHombro('.bloque-hombro-p6', false);
+        habilitarBloqueHombro('.bloque-hombro-p7', false);
+        habilitarBloqueHombro('.bloque-hombro-p8', false);
+
+    } else {
+
+        habilitarBloqueHombro('.bloque-hombro-p2', true);
+        habilitarBloqueHombro('.bloque-hombro-p3', true);
+        habilitarBloqueHombro('.bloque-hombro-p4', true);
+        habilitarBloqueHombro('.bloque-hombro-p5', true);
+        habilitarBloqueHombro('.bloque-hombro-p6', true);
+        habilitarBloqueHombro('.bloque-hombro-p7', true);
+        habilitarBloqueHombro('.bloque-hombro-p8', true);
+
+    }
+
+});
+
+
+//--------------------------------------------------
+// PREGUNTA 4
+//--------------------------------------------------
+$('input[name="HOMBRO_P4"]').change(function () {
+
+    if ($('#HOMBRO_P4_0_DIAS').is(':checked')) {
+
+        habilitarBloqueHombro('.bloque-hombro-p5', false);
+        habilitarBloqueHombro('.bloque-hombro-p6', false);
+        habilitarBloqueHombro('.bloque-hombro-p7', false);
+        habilitarBloqueHombro('.bloque-hombro-p8', false);
+
+    } else {
+
+        habilitarBloqueHombro('.bloque-hombro-p5', true);
+        habilitarBloqueHombro('.bloque-hombro-p6', true);
+        habilitarBloqueHombro('.bloque-hombro-p7', true);
+        habilitarBloqueHombro('.bloque-hombro-p8', true);
+
+    }
+
+});
+
+
+function generarJSONActividadesfre() {
+
+    let data = [];
+
+    $('#contenedorActividadesfre .actividad-item').each(function () {
+
+        let actividad = {
+            nombre: $(this).find('.actividad-nombre').val(),
+            tareas: []
+        };
+
+        $(this).find('.tarea-item').each(function () {
+
+            actividad.tareas.push({
+                nombre: $(this).find('.tarea-nombre').val(),
+                frecuencia: $(this).find('.tarea-frecuencia').val(),
+                duracion: $(this).find('.tarea-duracion').val()
+            });
+
+        });
+
+        data.push(actividad);
+    });
+
+    return JSON.stringify(data);
+}
+
+
+function generarJSONEquiposTrabajo() {
+
+    let equipos = [];
+    $('#tablaEquiposTrabajo tbody tr').each(function () {
+        equipos.push({
+            tipo: $(this).find('select[name="tipo_equipo[]"]').val(),
+            nombre: $(this).find('textarea[name="nombre_equipo[]"]').val(),
+            caracteristicas: $(this).find('textarea[name="caracteristicas_equipo[]"]').val(),
+            peso: $(this).find('textarea[name="peso_equipo[]"]').val(),
+            metodo: $(this).find('textarea[name="metodo_equipo[]"]').val()
+        });
+    });
+    return JSON.stringify(equipos);
+}
+
+
+function generarJSONFuentesTermicas() {
+    let datos = [];
+    $('#tablaFuentesTermicas tbody tr').each(function () {
+        datos.push({fuente: $(this).find('textarea[name="fuentes_termicas[]"]').val()});
+    });
+    return JSON.stringify(datos);
+}
+
+function generarJSONFuentesRuido() {
+    let datos = [];
+    $('#tablaFuentesRuido tbody tr').each(function () {
+        datos.push({ fuente: $(this).find('textarea[name="fuentes_ruido[]"]').val()});
+    });
+    return JSON.stringify(datos);
+}
+
+function generarJSONFuentesVibracion() {
+
+    let datos = [];
+
+    $('#tablaFuentesVibracion tbody tr').each(function () {
+        datos.push({fuente: $(this).find('textarea[name="fuentes_vibracion[]"]').val()});
+    });
+    return JSON.stringify(datos);
+}
+
+
+$("#boton_guardar_fre").click(function (e) {
+    e.preventDefault();
+
+
+    formularioValido = validarFormulario3($('#form_evalfre'))
+
+    if (formularioValido) {
+
+
+		let json = generarJSONActividadesfre();
+		let jsonEquipos = generarJSONEquiposTrabajo();
+		let jsonTermicas = generarJSONFuentesTermicas();
+		let jsonRuido = generarJSONFuentesRuido();
+		let jsonVibracion = generarJSONFuentesVibracion();
+
+		if (!$('#JSON_ACTIVIDADES_FRE').length) {
+			$('#form_evalfre').append('<input type="hidden" name="JSON_ACTIVIDADES_FRE" id="JSON_ACTIVIDADES_FRE">');
+		}
+
+		if (!$('#JSON_EQUIPOS_TRABAJO').length)
+    	$('#form_evalfre').append('<input type="hidden" id="JSON_EQUIPOS_TRABAJO" name="JSON_EQUIPOS_TRABAJO">');
+
+		if (!$('#JSON_FUENTES_TERMICAS').length)
+		$('#form_evalfre').append('<input type="hidden" id="JSON_FUENTES_TERMICAS" name="JSON_FUENTES_TERMICAS">');
+
+		if (!$('#JSON_FUENTES_RUIDO').length)
+    	$('#form_evalfre').append('<input type="hidden" id="JSON_FUENTES_RUIDO" name="JSON_FUENTES_RUIDO">');
+
+		if (!$('#JSON_FUENTES_VIBRACION').length)
+		$('#form_evalfre').append('<input type="hidden" id="JSON_FUENTES_VIBRACION" name="JSON_FUENTES_VIBRACION">');
+		
+		$('#JSON_ACTIVIDADES_FRE').val(json);
+		$('#JSON_EQUIPOS_TRABAJO').val(jsonEquipos);
+		$('#JSON_FUENTES_TERMICAS').val(jsonTermicas);
+		$('#JSON_FUENTES_RUIDO').val(jsonRuido);
+		$('#JSON_FUENTES_VIBRACION').val(jsonVibracion);
+		
+
+    if (ID_EVALUACION_FRE == 0) {
+        
+        alertMensajeConfirm({
+            title: "¿Desea guardar la información?",
+            text: "Al guardarla, se podra usar",
+            icon: "question",
+        },async function () { 
+
+            await loaderbtn('boton_guardar_fre')
+            await ajaxAwaitFormData({ api: 1,FICHA_ID: fichas_id, ID_EVALUACION_FRE: ID_EVALUACION_FRE }, 'evaluacionfre', 'form_evalfre', 'boton_guardar_fre', { callbackAfter: true, callbackBefore: true }, () => {
+        
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Espere un momento',
+                    text: 'Estamos guardando la información',
+                    showConfirmButton: false
+                })
+
+                $('.swal2-popup').addClass('ld ld-breath')
+        
+                
+            }, function (data) {
+                    
+                    ID_EVALUACION_FRE = data.fre.ID_EVALUACION_FRE
+                    alertMensaje('success','Información guardada correctamente', 'Esta información esta lista para usarse',null,null, 1500)
+                     $('#modal_evalfre').modal('hide')
+                    document.getElementById('form_evalfre').reset();
+                    Tablafichasevaluacionfre.ajax.reload()
+                
+            })
+            
+            
+            
+        }, 1)
+        
+    } else {
+            alertMensajeConfirm({
+            title: "¿Desea editar la información de este formulario?",
+            text: "Al guardarla, se podra usar",
+            icon: "question",
+        },async function () { 
+
+            await loaderbtn('boton_guardar_fre')
+            await ajaxAwaitFormData({ api: 1, FICHA_ID: fichas_id, ID_EVALUACION_FRE: ID_EVALUACION_FRE }, 'evaluacionfre', 'form_evalfre', 'boton_guardar_fre', { callbackAfter: true, callbackBefore: true }, () => {
+        
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Espere un momento',
+                    text: 'Estamos guardando la información',
+                    showConfirmButton: false
+                })
+
+                $('.swal2-popup').addClass('ld ld-breath')
+        
+                
+            }, function (data) {
+                    
+                setTimeout(() => {
+
+                    ID_EVALUACION_FRE = data.fre.ID_EVALUACION_FRE
+                    alertMensaje('success', 'Información editada correctamente', 'Información guardada')
+                     $('#modal_evalfre').modal('hide')
+                    document.getElementById('form_evalfre').reset();
+                    Tablafichasevaluacionfre.ajax.reload()
+
+                }, 300);  
+            })
+        }, 1)
+    }
+
+} else {
+    alertToast('Por favor, complete todos los campos del formulario.', 'error', 2000)
+
+}
+    
 });

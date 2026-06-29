@@ -1351,16 +1351,19 @@
                         {!! csrf_field() !!}
                         <div class="row">
 
-                            <input type="hidden" name="ID_FICHAS_TECNICAS" id="ID_FICHAS_TECNICAS">
-                            <input type="hidden" name="JSON_ACTIVIDADES" id="JSON_ACTIVIDADES">
-                            <input type="hidden" name="JSON_FICHAS" id="JSON_FICHAS">
+                            <input type="hidden" name="ID_EVALUACION_FRE" id="ID_EVALUACION_FRE">
+                            <input type="hidden" name="JSON_ACTIVIDADES_FRE" id="JSON_ACTIVIDADES_FRE">
 
+                            <input type="hidden" name="JSON_EQUIPOS_TRABAJO" id="JSON_EQUIPOS_TRABAJO">
+                            <input type="hidden" name="JSON_FUENTES_TERMICAS" id="JSON_FUENTES_TERMICAS">
+                            <input type="hidden" name="JSON_FUENTES_RUIDO" id="JSON_FUENTES_RUIDO">
+                            <input type="hidden" name="JSON_FUENTES_VIBRACION" id="JSON_FUENTES_VIBRACION">
 
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Fecha de evaluación *</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control mydatepicker" placeholder="aaaa-mm-dd" id="FECHA_EVALUACION" name="FECHA_EVALUACION">
+                                        <input type="text" class="form-control mydatepicker" placeholder="aaaa-mm-dd" id="FECHA_EVALUACION_FRE" name="FECHA_EVALUACION_FRE">
                                         <span class="input-group-addon"><i class="icon-calender"></i></span>
                                     </div>
                                 </div>
@@ -1398,13 +1401,13 @@
                             <div class="col-12 mt-2 p-2 d-flex justify-content-start  clienteblock">
                                 <h3 class="clienteblock">¿La evaluación es para el mismo trabajador ?</h3>
                                 <div class="form-check mx-4 clienteblock">
-                                    <input class="form-check-input" type="radio" name="evalaucion_trabajador" id="informe_del_trabajador_si" value="1" checked>
+                                    <input class="form-check-input" type="radio" name="EVALUACION_TRABAJADOR" id="informe_del_trabajador_si" value="1" checked>
                                     <label class="form-check-label" for="informe_del_trabajador_si">
                                         Si
                                     </label>
                                 </div>
                                 <div class="form-check mx-4 clienteblock">
-                                    <input class="form-check-input" type="radio" name="evalaucion_trabajador" id="informe_del_trabajador_no" value="0">
+                                    <input class="form-check-input" type="radio" name="EVALUACION_TRABAJADOR" id="informe_del_trabajador_no" value="0">
                                     <label class="form-check-label" for="informe_del_trabajador_no">
                                         No
                                     </label>
@@ -1444,8 +1447,6 @@
                                         <option value="3">Oficina </option>
                                     </select>
                                 </div>
-
-
                             </div>
                             <!-- SEXO -->
                             <div class="col-4">
@@ -1539,7 +1540,10 @@
                                 </button>
                             </div>
 
-                            <div id="contenedorActividadesfre" class="mt-2"></div>
+
+                            <div class="col-12 mt-2">
+                                <div id="contenedorActividadesfre" class="mt-2"></div>
+                            </div>
 
 
 
@@ -1624,13 +1628,13 @@
                             </style>
 
 
-                            <div class="col-12">
+                            <div class="col-12 mt-5">
                                 <div class="form-group">
                                     <label>
                                         1. ¿SU MÉDICO LE HA DIAGNOSTICADO ALGUNA ENFERMEDAD MUSCULO-ESQUELÉTICA?
                                     </label>
 
-                                    <select class="form-control" id="enfermedad_musculoesqueletica" name="enfermedad_musculoesqueletica">
+                                    <select class="form-control" id="ENFERMEDAD_MUSCULOESQUELETICA" name="ENFERMEDAD_MUSCULOESQUELETICA">
                                         <option value="">Seleccione</option>
                                         <option value="SI">SI</option>
                                         <option value="NO">NO</option>
@@ -1641,25 +1645,19 @@
                             <div class="col-12" id="datosEnfermedadMusculo" style="display:none;">
 
                                 <div class="row">
-
-
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>En caso de responder SI ¿Cuál?</label>
-                                            <input type="text"
-                                                class="form-control"
-                                                id="enfermedad_musculoesqueletica_cual"
-                                                name="enfermedad_musculoesqueletica_cual">
+                                            <input type="text" class="form-control" id="ENFERMEDAD_MUSCULOESQUELETICA_CUAL" name="ENFERMEDAD_MUSCULOESQUELETICA_CUAL">
                                         </div>
                                     </div>
-
                                     <div class="col-6">
                                         <div class="form-group">
                                             <label>En caso de responder SI ¿Hace cuánto tiempo?</label>
                                             <input type="text"
                                                 class="form-control"
-                                                id="enfermedad_musculoesqueletica_tiempo"
-                                                name="enfermedad_musculoesqueletica_tiempo">
+                                                id="ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO"
+                                                name="ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO">
                                         </div>
                                     </div>
 
@@ -1672,7 +1670,7 @@
                                         2. ¿HA ESTADO INCAPACITADO (A) A CAUSA DEL DOLOR MUSCULO ESQUELÉTICO EN EL ÚLTIMO AÑO?
                                     </label>
 
-                                    <select class="form-control" id="enfermedad_musculoesqueletica" name="enfermedad_musculoesqueletica">
+                                    <select class="form-control" id="INCAPACITADO_DOLOR_MUSCULO" name="INCAPACITADO_DOLOR_MUSCULO">
                                         <option value="">Seleccione</option>
                                         <option value="SI">SI</option>
                                         <option value="NO">NO</option>
@@ -1727,7 +1725,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Fuente</label>
-                                    <select class="form-control" name="fuente_iluminacion" id="fuente_iluminacion">
+                                    <select class="form-control" name="FUENTE_ILUMINACION" id="FUENTE_ILUMINACION">
                                         <option value="">Seleccione</option>
                                         <option value="1">Natural</option>
                                         <option value="2">Artificial</option>
@@ -1739,7 +1737,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Intensidad</label>
-                                    <select class="form-control" name="intensidad_iluminacion" id="intensidad_iluminacion">
+                                    <select class="form-control" name="INTENSIDAD_ILUMINACION" id="INTENSIDAD_ILUMINACION">
                                         <option value="">Seleccione</option>
                                         <option value="1">Normal</option>
                                         <option value="2">Deficiente</option>
@@ -1751,19 +1749,11 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Observaciones</label>
-
                                     <div class="input-group">
-
-                                        <textarea class="form-control"
-                                            id="observaciones_iluminacion"
-                                            rows="3"></textarea>
-
-                                        <button type="button"
-                                            class="btn btn-info btnMicrofono"
-                                            data-target="observaciones_iluminacion">
+                                        <textarea class="form-control" name="OBSERVACION_ILUMINACION" id="OBSERVACION_ILUMINACION" rows="3"></textarea>
+                                        <button type="button" class="btn btn-info btnMicrofono" data-target="OBSERVACION_ILUMINACION">
                                             <i class="fa fa-microphone"></i>
                                         </button>
-
                                     </div>
                                 </div>
                             </div>
@@ -1780,7 +1770,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Percepción</label>
-                                    <select class="form-control" name="percepcion_termica" id="percepcion_termica">
+                                    <select class="form-control" name="PERCEPCION_TERMICA" id="PERCEPCION_TERMICA">
                                         <option value="">Seleccione</option>
                                         <option value="1">Calor</option>
                                         <option value="2">Frío</option>
@@ -1792,7 +1782,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Intensidad</label>
-                                    <select class="form-control" name="intensidad_termica" id="intensidad_termica">
+                                    <select class="form-control" name="INTENSIDAD_TERMICA" id="INTENSIDAD_TERMICA">
                                         <option value="">Seleccione</option>
                                         <option value="1">Leve</option>
                                         <option value="2">Moderada</option>
@@ -1804,7 +1794,7 @@
                             <div class="col-12" id="CONDICION_TERMINCA_CUAL" style="display: none;">
                                 <div class="form-group">
                                     <label>Cuál ? *</label>
-                                    <input type="text" class="form-control" name="CUAL_PERCEPCION" id="CUAL_PERCEPCION">
+                                    <input type="text" class="form-control" name="CUAL_PERCEPCION" id="CUAL_PERCEPCION" required>
                                 </div>
                             </div>
 
@@ -1837,13 +1827,13 @@
 
                                     <div class="input-group">
                                         <textarea class="form-control"
-                                            name="observaciones_termica"
-                                            id="observaciones_termica"
+                                            name="OBSERVACIONES_TERMICAS"
+                                            id="OBSERVACIONES_TERMICAS"
                                             rows="3"></textarea>
 
                                         <button type="button"
                                             class="btn btn-info btnMicrofono"
-                                            data-target="observaciones_termica">
+                                            data-target="OBSERVACIONES_TERMICAS">
                                             <i class="fa fa-microphone"></i>
                                         </button>
                                     </div>
@@ -1861,7 +1851,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Intensidad</label>
-                                    <select class="form-control" name="intensidad_ruido" id="intensidad_ruido">
+                                    <select class="form-control" name="INTENSIDAD_RUIDO" id="INTENSIDAD_RUIDO">
                                         <option value="">Seleccione</option>
                                         <option value="1">Leve</option>
                                         <option value="2">Moderada</option>
@@ -1873,7 +1863,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Continuidad</label>
-                                    <select class="form-control" name="continuidad_ruido" id="continuidad_ruido">
+                                    <select class="form-control" name="CONTINUIDAD_RUIDO" id="CONTINUIDAD_RUIDO">
                                         <option value="">Seleccione</option>
                                         <option value="1">Continuo</option>
                                         <option value="2">Intermitente</option>
@@ -1911,13 +1901,13 @@
                                     <div class="input-group">
 
                                         <textarea class="form-control"
-                                            name="observaciones_ruido"
-                                            id="observaciones_ruido"
+                                            name="OBSERVACIONES_RUIDO"
+                                            id="OBSERVACIONES_RUIDO"
                                             rows="3"></textarea>
 
                                         <button type="button"
                                             class="btn btn-info btnMicrofono"
-                                            data-target="observaciones_ruido">
+                                            data-target="OBSERVACIONES_RUIDO">
                                             <i class="fa fa-microphone"></i>
                                         </button>
 
@@ -1937,7 +1927,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Intensidad</label>
-                                    <select class="form-control" name="intensidad_vibracion" id="intensidad_vibracion">
+                                    <select class="form-control" name="INTENSIDAD_VIBRACION" id="INTENSIDAD_VIBRACION">
                                         <option value="">Seleccione</option>
                                         <option value="1">Leve</option>
                                         <option value="2">Moderada</option>
@@ -1949,7 +1939,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Segmentos corporales</label>
-                                    <select class="form-control" name="segmento_vibracion" id="segmento_vibracion">
+                                    <select class="form-control" name="SEGMENTO_VIBRACION" id="SEGMENTO_VIBRACION">
                                         <option value="">Seleccione</option>
                                         <option value="1">Mano brazo</option>
                                         <option value="2">Cuerpo entero</option>
@@ -1988,13 +1978,13 @@
                                     <div class="input-group">
 
                                         <textarea class="form-control"
-                                            name="observaciones_vibracion"
-                                            id="observaciones_vibracion"
+                                            name="OBSERVACIONES_VIBRACION"
+                                            id="OBSERVACIONES_VIBRACION"
                                             rows="3"></textarea>
 
                                         <button type="button"
                                             class="btn btn-info btnMicrofono"
-                                            data-target="observaciones_vibracion">
+                                            data-target="OBSERVACIONES_VIBRACION">
                                             <i class="fa fa-microphone"></i>
                                         </button>
 
@@ -2024,15 +2014,3232 @@
                                 </div>
                             </div>
 
+                            <!-- CUESTIONARIO NORDICO  -->
+
+                            <div class="col-12">
+
+                                <table width="100%">
+                                    <tr>
+
+                                        <td width="75%" valign="top">
+
+
+
+                                            <table class="table table-bordered">
+
+                                                <thead>
+
+                                                    <tr>
+                                                        <th width="45%">Problemas en el aparato locomotor</th>
+                                                        <th width="15%" class="text-center">No</th>
+                                                        <th width="15%" class="text-center">Sí</th>
+                                                        <th width="12%" class="text-center">Izq.</th>
+                                                        <th width="13%" class="text-center">Der.</th>
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <strong>Para ser respondido por todos</strong><br>
+                                                            ¿En algún momento durante los últimos 12 meses, ha tenido problemas
+                                                            (dolor, molestias, disconfort) en:
+                                                        </td>
+                                                    </tr>
+
+                                                    <!-- CUELLO -->
+                                                    <tr>
+
+                                                        <td>Cuello</td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO"
+                                                                    id="CUELLO_NO"
+                                                                    value="0">
+
+                                                                <label class="form-check-label" for="CUELLO_NO">
+                                                                    No
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO"
+                                                                    id="CUELLO_SI"
+                                                                    value="1">
+
+                                                                <label class="form-check-label" for="CUELLO_SI">
+                                                                    Sí
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td></td>
+
+                                                        <td></td>
+
+                                                    </tr>
+
+                                                    <!-- HOMBRO -->
+                                                    <tr>
+
+                                                        <td>Hombro</td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO"
+                                                                    id="HOMBRO_NO"
+                                                                    value="0">
+
+                                                                <label class="form-check-label" for="HOMBRO_NO">
+                                                                    No
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO"
+                                                                    id="HOMBRO_SI"
+                                                                    value="1">
+
+                                                                <label class="form-check-label" for="HOMBRO_SI">
+                                                                    Sí
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    name="HOMBRO_IZQ"
+                                                                    id="HOMBRO_IZQ"
+                                                                    disabled>
+
+                                                                <label class="form-check-label" for="HOMBRO_IZQ">
+                                                                    Izq.
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    name="HOMBRO_DER"
+                                                                    id="HOMBRO_DER"
+                                                                    disabled>
+
+                                                                <label class="form-check-label" for="HOMBRO_DER">
+                                                                    Der.
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+
+
+
+                                                    <!-- CODO -->
+                                                    <tr>
+
+                                                        <td>Codo</td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CODO"
+                                                                    id="CODO_NO"
+                                                                    value="0">
+
+                                                                <label class="form-check-label" for="CODO_NO">
+                                                                    No
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CODO"
+                                                                    id="CODO_SI"
+                                                                    value="1">
+
+                                                                <label class="form-check-label" for="CODO_SI">
+                                                                    Sí
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    name="CODO_IZQ"
+                                                                    id="CODO_IZQ"
+                                                                    disabled>
+
+                                                                <label class="form-check-label" for="CODO_IZQ">
+                                                                    Izq.
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    name="CODO_DER"
+                                                                    id="CODO_DER"
+                                                                    disabled>
+
+                                                                <label class="form-check-label" for="CODO_DER">
+                                                                    Der.
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+
+
+                                                    <!-- MUÑECA -->
+                                                    <tr>
+
+                                                        <td>Muñeca</td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="MUNECA"
+                                                                    id="MUNECA_NO"
+                                                                    value="0">
+
+                                                                <label class="form-check-label" for="MUNECA_NO">
+                                                                    No
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="MUNECA"
+                                                                    id="MUNECA_SI"
+                                                                    value="1">
+
+                                                                <label class="form-check-label" for="MUNECA_SI">
+                                                                    Sí
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    name="MUNECA_IZQ"
+                                                                    id="MUNECA_IZQ"
+                                                                    disabled>
+
+                                                                <label class="form-check-label" for="MUNECA_IZQ">
+                                                                    Izq.
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    name="MUNECA_DER"
+                                                                    id="MUNECA_DER"
+                                                                    disabled>
+
+                                                                <label class="form-check-label" for="MUNECA_DER">
+                                                                    Der.
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- ESPALDA ALTA (REGIÓN DORSAL) -->
+                                                    <tr>
+
+                                                        <td>Espalda alta (región dorsal)</td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="ESPALDA_ALTA"
+                                                                    id="ESPALDA_ALTA_NO"
+                                                                    value="0">
+
+                                                                <label class="form-check-label" for="ESPALDA_ALTA_NO">
+                                                                    No
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="ESPALDA_ALTA"
+                                                                    id="ESPALDA_ALTA_SI"
+                                                                    value="1">
+
+                                                                <label class="form-check-label" for="ESPALDA_ALTA_SI">
+                                                                    Sí
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td></td>
+
+                                                        <td></td>
+
+                                                    </tr>
+
+                                                    <!-- ESPALDA BAJA (REGIÓN LUMBAR) -->
+                                                    <tr>
+
+                                                        <td>Espalda baja (región lumbar)</td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="ESPALDA_BAJA"
+                                                                    id="ESPALDA_BAJA_NO"
+                                                                    value="0">
+
+                                                                <label class="form-check-label" for="ESPALDA_BAJA_NO">
+                                                                    No
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="ESPALDA_BAJA"
+                                                                    id="ESPALDA_BAJA_SI"
+                                                                    value="1">
+
+                                                                <label class="form-check-label" for="ESPALDA_BAJA_SI">
+                                                                    Sí
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td></td>
+
+                                                        <td></td>
+
+                                                    </tr>
+
+
+                                                    <!-- CADERAS / PIERNAS -->
+                                                    <tr>
+
+                                                        <td>Una o ambas caderas / piernas</td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CADERAS_PIERNAS"
+                                                                    id="CADERAS_PIERNAS_NO"
+                                                                    value="0">
+
+                                                                <label class="form-check-label" for="CADERAS_PIERNAS_NO">
+                                                                    No
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CADERAS_PIERNAS"
+                                                                    id="CADERAS_PIERNAS_SI"
+                                                                    value="1">
+
+                                                                <label class="form-check-label" for="CADERAS_PIERNAS_SI">
+                                                                    Sí
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td></td>
+
+                                                        <td></td>
+
+                                                    </tr>
+
+
+                                                    <!-- RODILLAS -->
+                                                    <tr>
+
+                                                        <td>Una o ambas rodillas</td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="RODILLAS"
+                                                                    id="RODILLAS_NO"
+                                                                    value="0">
+
+                                                                <label class="form-check-label" for="RODILLAS_NO">
+                                                                    No
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="RODILLAS"
+                                                                    id="RODILLAS_SI"
+                                                                    value="1">
+
+                                                                <label class="form-check-label" for="RODILLAS_SI">
+                                                                    Sí
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td></td>
+
+                                                        <td></td>
+
+                                                    </tr>
+
+                                                    <!-- TOBILLOS / PIES -->
+                                                    <tr>
+
+                                                        <td>Uno o ambos tobillos / pies</td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="TOBILLOS_PIES"
+                                                                    id="TOBILLOS_PIES_NO"
+                                                                    value="0">
+
+                                                                <label class="form-check-label" for="TOBILLOS_PIES_NO">
+                                                                    No
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check mx-4 clienteblock">
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="TOBILLOS_PIES"
+                                                                    id="TOBILLOS_PIES_SI"
+                                                                    value="1">
+
+                                                                <label class="form-check-label" for="TOBILLOS_PIES_SI">
+                                                                    Sí
+                                                                </label>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td></td>
+
+                                                        <td></td>
+
+                                                    </tr>
+
+                                                </tbody>
+
+                                            </table>
+
+
+                                        </td>
+
+                                        <td width="25%" class="text-center" valign="top">
+
+                                            <img src="{{ asset('assets/images/ergo/imagencuerpo.png') }}"
+                                                class="img-fluid"
+                                                style="max-width: 337px;">
+
+                                        </td>
+
+                                    </tr>
+                                </table>
+
+
+
+
+
+
+
+                                <table class="table table-bordered">
+
+                                    <thead>
+
+                                        <tr>
+                                            <th colspan="3" class="text-center">
+                                                PROBLEMAS EN EL APARATO LOCOMOTOR
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr>
+                                            <td colspan="3">
+                                                <strong>
+                                                    Para ser respondido solo por aquellos que han presentado problemas en el aparato locomotor durante los últimos 12 meses
+                                                </strong>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+
+                                            <td width="32%">
+                                                <strong>Segmento</strong>
+                                            </td>
+
+                                            <td width="34%" class="text-center">
+                                                ¿En algún momento, durante los últimos 12 meses, ha tenido algún impedimento para hacer su trabajo normal (en casa o fuera de casa) debido a sus molestias?
+                                            </td>
+
+                                            <td width="34%" class="text-center">
+                                                ¿En algún momento, durante los últimos 7 días, ha tenido algún impedimento para hacer su trabajo normal debido a sus molestias?
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- CUELLO -->
+                                        <tr>
+
+                                            <td>
+                                                Cuello
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_12_MESES"
+                                                            id="CUELLO_12_MESES_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="CUELLO_12_MESES_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_12_MESES"
+                                                            id="CUELLO_12_MESES_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="CUELLO_12_MESES_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_7_DIAS"
+                                                            id="CUELLO_7_DIAS_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="CUELLO_7_DIAS_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_7_DIAS"
+                                                            id="CUELLO_7_DIAS_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="CUELLO_7_DIAS_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- HOMBRO -->
+
+                                        <tr>
+
+                                            <td>
+
+                                                <div class="d-flex align-items-center">
+
+                                                    <span>Hombro</span>
+
+                                                    <div class="form-check mx-3 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="HOMBRO_IZQ_2"
+                                                            name="HOMBRO_IZQ_2">
+
+                                                        <label class="form-check-label" for="HOMBRO_IZQ_2">
+                                                            Izq.
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-3 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="HOMBRO_DER_2"
+                                                            name="HOMBRO_DER_2">
+
+                                                        <label class="form-check-label" for="HOMBRO_DER_2">
+                                                            Der.
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_12_MESES"
+                                                            id="HOMBRO_12_MESES_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="HOMBRO_12_MESES_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_12_MESES"
+                                                            id="HOMBRO_12_MESES_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="HOMBRO_12_MESES_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_7_DIAS"
+                                                            id="HOMBRO_7_DIAS_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="HOMBRO_7_DIAS_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_7_DIAS"
+                                                            id="HOMBRO_7_DIAS_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="HOMBRO_7_DIAS_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td>
+
+                                                <div class="d-flex align-items-center">
+
+                                                    <span>Codo</span>
+
+                                                    <div class="form-check mx-3 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="CODO_IZQ_2"
+                                                            name="CODO_IZQ_2">
+
+                                                        <label class="form-check-label" for="CODO_IZQ_2">
+                                                            Izq.
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-3 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="CODO_DER_2"
+                                                            name="CODO_DER_2">
+
+                                                        <label class="form-check-label" for="CODO_DER_2">
+                                                            Der.
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CODO_12_MESES"
+                                                            id="CODO_12_MESES_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="CODO_12_MESES_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CODO_12_MESES"
+                                                            id="CODO_12_MESES_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="CODO_12_MESES_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CODO_7_DIAS"
+                                                            id="CODO_7_DIAS_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="CODO_7_DIAS_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CODO_7_DIAS"
+                                                            id="CODO_7_DIAS_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="CODO_7_DIAS_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td>
+
+                                                <div class="d-flex align-items-center">
+
+                                                    <span>Muñeca</span>
+
+                                                    <div class="form-check mx-3 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="MUNECA_IZQ_2"
+                                                            name="MUNECA_IZQ_2">
+
+                                                        <label class="form-check-label" for="MUNECA_IZQ_2">
+                                                            Izq.
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-3 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="checkbox"
+                                                            id="MUNECA_DER_2"
+                                                            name="MUNECA_DER_2">
+
+                                                        <label class="form-check-label" for="MUNECA_DER_2">
+                                                            Der.
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="MUNECA_12_MESES"
+                                                            id="MUNECA_12_MESES_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="MUNECA_12_MESES_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="MUNECA_12_MESES"
+                                                            id="MUNECA_12_MESES_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="MUNECA_12_MESES_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="MUNECA_7_DIAS"
+                                                            id="MUNECA_7_DIAS_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="MUNECA_7_DIAS_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="MUNECA_7_DIAS"
+                                                            id="MUNECA_7_DIAS_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="MUNECA_7_DIAS_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+
+
+                                        <tr>
+
+                                            <td>
+                                                Espalda alta (región dorsal)
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="ESPALDA_ALTA_12_MESES"
+                                                            id="ESPALDA_ALTA_12_MESES_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="ESPALDA_ALTA_12_MESES_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="ESPALDA_ALTA_12_MESES"
+                                                            id="ESPALDA_ALTA_12_MESES_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="ESPALDA_ALTA_12_MESES_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="ESPALDA_ALTA_7_DIAS"
+                                                            id="ESPALDA_ALTA_7_DIAS_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="ESPALDA_ALTA_7_DIAS_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="ESPALDA_ALTA_7_DIAS"
+                                                            id="ESPALDA_ALTA_7_DIAS_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="ESPALDA_ALTA_7_DIAS_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td>
+                                                Espalda baja (región lumbar)
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="ESPALDA_BAJA_12_MESES"
+                                                            id="ESPALDA_BAJA_12_MESES_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="ESPALDA_BAJA_12_MESES_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="ESPALDA_BAJA_12_MESES"
+                                                            id="ESPALDA_BAJA_12_MESES_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="ESPALDA_BAJA_12_MESES_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="ESPALDA_BAJA_7_DIAS"
+                                                            id="ESPALDA_BAJA_7_DIAS_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="ESPALDA_BAJA_7_DIAS_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="ESPALDA_BAJA_7_DIAS"
+                                                            id="ESPALDA_BAJA_7_DIAS_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="ESPALDA_BAJA_7_DIAS_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td>
+                                                Una o ambas caderas / piernas
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CADERAS_PIERNAS_12_MESES"
+                                                            id="CADERAS_PIERNAS_12_MESES_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="CADERAS_PIERNAS_12_MESES_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CADERAS_PIERNAS_12_MESES"
+                                                            id="CADERAS_PIERNAS_12_MESES_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="CADERAS_PIERNAS_12_MESES_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CADERAS_PIERNAS_7_DIAS"
+                                                            id="CADERAS_PIERNAS_7_DIAS_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="CADERAS_PIERNAS_7_DIAS_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CADERAS_PIERNAS_7_DIAS"
+                                                            id="CADERAS_PIERNAS_7_DIAS_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="CADERAS_PIERNAS_7_DIAS_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td>
+                                                Una o ambas rodillas
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="RODILLAS_12_MESES"
+                                                            id="RODILLAS_12_MESES_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="RODILLAS_12_MESES_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="RODILLAS_12_MESES"
+                                                            id="RODILLAS_12_MESES_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="RODILLAS_12_MESES_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="RODILLAS_7_DIAS"
+                                                            id="RODILLAS_7_DIAS_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="RODILLAS_7_DIAS_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="RODILLAS_7_DIAS"
+                                                            id="RODILLAS_7_DIAS_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="RODILLAS_7_DIAS_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td>
+                                                Uno o ambos tobillos / pies
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="TOBILLOS_PIES_12_MESES"
+                                                            id="TOBILLOS_PIES_12_MESES_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="TOBILLOS_PIES_12_MESES_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="TOBILLOS_PIES_12_MESES"
+                                                            id="TOBILLOS_PIES_12_MESES_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="TOBILLOS_PIES_12_MESES_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="TOBILLOS_PIES_7_DIAS"
+                                                            id="TOBILLOS_PIES_7_DIAS_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="TOBILLOS_PIES_7_DIAS_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="TOBILLOS_PIES_7_DIAS"
+                                                            id="TOBILLOS_PIES_7_DIAS_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="TOBILLOS_PIES_7_DIAS_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+
+
+
+
+                                <table class="table table-bordered">
+
+                                    <thead>
+
+                                        <tr>
+                                            <th colspan="2" class="text-center">
+                                                COLUMNA LUMBAR (Espalda baja)
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody>
+
+                                        <!-- PREGUNTA 1 -->
+                                        <tr>
+
+                                            <td width="70%">
+                                                <strong>1.</strong>
+                                                ¿Alguna vez ha tenido problemas en la parte baja de la espalda
+                                                (molestias, dolor o disconfort)?
+                                            </td>
+
+                                            <td width="30%">
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P1"
+                                                            id="COLUMNA_LUMBAR_P1_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P1_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P1"
+                                                            id="COLUMNA_LUMBAR_P1_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P1_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- MENSAJE -->
+                                        <tr>
+
+                                            <td colspan="2" style="background:#efefef;">
+
+                                                <strong>
+                                                    Si respondió "<b> NO </b>" a la pregunta 1,
+                                                    entonces <b>NO </b> responda las preguntas 2 a la 8.
+                                                </strong>
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- PREGUNTA 2 -->
+                                        <tr class="bloque-lumbar-p2">
+
+                                            <td>
+
+                                                <strong>2.</strong>
+                                                ¿Ha sido hospitalizado por problemas
+                                                en la parte baja de la espalda?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P2"
+                                                            id="COLUMNA_LUMBAR_P2_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P2_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P2"
+                                                            id="COLUMNA_LUMBAR_P2_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P2_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 3 -->
+                                        <tr class="bloque-lumbar-p3">
+
+                                            <td>
+
+                                                <strong>3.</strong>
+
+                                                ¿Alguna vez ha tenido que cambiar de trabajo
+                                                o deberes debido a problemas en la espalda baja?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P3"
+                                                            id="COLUMNA_LUMBAR_P3_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P3_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P3"
+                                                            id="COLUMNA_LUMBAR_P3_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P3_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- PREGUNTA 4 -->
+                                        <tr class="bloque-lumbar-p4">
+
+                                            <td>
+
+                                                <strong>4.</strong>
+                                                ¿Cuántos días aproximadamente le ha impedido realizar
+                                                su trabajo (en casa o fuera de casa) durante los últimos
+                                                12 meses?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="COLUMNA_LUMBAR_P4"
+                                                        id="COLUMNA_LUMBAR_P4_0_DIAS"
+                                                        value="0">
+
+                                                    <label class="form-check-label"
+                                                        for="COLUMNA_LUMBAR_P4_0_DIAS">
+                                                        0 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="COLUMNA_LUMBAR_P4"
+                                                        id="COLUMNA_LUMBAR_P4_1_7"
+                                                        value="1">
+
+                                                    <label class="form-check-label"
+                                                        for="COLUMNA_LUMBAR_P4_1_7">
+                                                        1 - 7 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="COLUMNA_LUMBAR_P4"
+                                                        id="COLUMNA_LUMBAR_P4_8_30"
+                                                        value="2">
+
+                                                    <label class="form-check-label"
+                                                        for="COLUMNA_LUMBAR_P4_8_30">
+                                                        8 - 30 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="COLUMNA_LUMBAR_P4"
+                                                        id="COLUMNA_LUMBAR_P4_MAS30"
+                                                        value="3">
+
+                                                    <label class="form-check-label"
+                                                        for="COLUMNA_LUMBAR_P4_MAS30">
+                                                        Más de 30 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="COLUMNA_LUMBAR_P4"
+                                                        id="COLUMNA_LUMBAR_P4_TODOS"
+                                                        value="4">
+
+                                                    <label class="form-check-label"
+                                                        for="COLUMNA_LUMBAR_P4_TODOS">
+                                                        Todos los días
+                                                    </label>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <tr>
+
+                                            <td colspan="2" style="background:#efefef;">
+
+                                                <strong>
+                                                    Si respondió "NO" a la pregunta 1,
+                                                    entonces NO responda las preguntas 2 a la 8.
+                                                </strong>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 5 -->
+
+                                        <tr class="bloque-lumbar-p5">
+
+                                            <td>
+
+                                                <strong>5.</strong>
+                                                ¿Los problemas de la parte baja de la espalda le han hecho reducir
+                                                su actividad durante los últimos 12 meses?
+
+                                                <br><br>
+
+                                                <strong>a)</strong>
+                                                ¿Actividad laboral (en casa o fuera de casa)?
+
+                                                <br><br>
+
+                                                <strong>b)</strong>
+                                                ¿Actividad de ocio?
+
+                                            </td>
+
+                                            <td>
+
+                                                <!-- ACTIVIDAD LABORAL -->
+                                                <div class="d-flex justify-content-center mb-3">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL"
+                                                            id="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL"
+                                                            id="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- ACTIVIDAD DE OCIO -->
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO"
+                                                            id="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO"
+                                                            id="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 6 -->
+                                        <tr class="bloque-lumbar-p6">
+
+                                            <td>
+
+                                                <strong>6.</strong>
+                                                ¿Durante cuántos días aproximadamente ha tenido
+                                                problemas en la parte baja de la espalda durante
+                                                los últimos 12 meses?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="COLUMNA_LUMBAR_P6"
+                                                        id="COLUMNA_LUMBAR_P6_0_DIAS"
+                                                        value="0">
+
+                                                    <label class="form-check-label"
+                                                        for="COLUMNA_LUMBAR_P6_0_DIAS">
+                                                        0 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="COLUMNA_LUMBAR_P6"
+                                                        id="COLUMNA_LUMBAR_P6_1_7"
+                                                        value="1">
+
+                                                    <label class="form-check-label"
+                                                        for="COLUMNA_LUMBAR_P6_1_7">
+                                                        1 - 7 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="COLUMNA_LUMBAR_P6"
+                                                        id="COLUMNA_LUMBAR_P6_8_30"
+                                                        value="2">
+
+                                                    <label class="form-check-label"
+                                                        for="COLUMNA_LUMBAR_P6_8_30">
+                                                        8 - 30 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="COLUMNA_LUMBAR_P6"
+                                                        id="COLUMNA_LUMBAR_P6_MAS30"
+                                                        value="3">
+
+                                                    <label class="form-check-label"
+                                                        for="COLUMNA_LUMBAR_P6_MAS30">
+                                                        Más de 30 días
+                                                    </label>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- PREGUNTA 7 -->
+                                        <tr class="bloque-lumbar-p7">
+
+                                            <td>
+
+                                                <strong>7.</strong>
+                                                ¿Ha sido visto por un médico, fisioterapeuta,
+                                                quiropráctico u otro profesional de la salud debido
+                                                a problemas en la parte baja de la espalda durante
+                                                los últimos 12 meses?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P7"
+                                                            id="COLUMNA_LUMBAR_P7_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P7_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P7"
+                                                            id="COLUMNA_LUMBAR_P7_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P7_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 8 -->
+                                        <tr class="bloque-lumbar-p8">
+
+                                            <td>
+
+                                                <strong>8.</strong>
+                                                ¿Ha tenido problemas en la parte baja de la espalda
+                                                en algún momento durante los últimos 7 días?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P8"
+                                                            id="COLUMNA_LUMBAR_P8_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P8_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="COLUMNA_LUMBAR_P8"
+                                                            id="COLUMNA_LUMBAR_P8_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="COLUMNA_LUMBAR_P8_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+
+
+                                <table class="table table-bordered">
+
+                                    <thead>
+
+                                        <tr>
+                                            <th colspan="2" class="text-center">
+                                                CUELLO
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody>
+
+                                        <!-- PREGUNTA 1 -->
+                                        <tr>
+
+                                            <td width="70%">
+
+                                                <strong>1.</strong>
+                                                ¿Alguna vez ha tenido problemas en el cuello
+                                                (molestias, dolor o disconfort)?
+
+                                            </td>
+
+                                            <td width="30%">
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P1"
+                                                            id="CUELLO_P1_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P1_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P1"
+                                                            id="CUELLO_P1_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P1_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- MENSAJE -->
+                                        <tr>
+
+                                            <td colspan="2" style="background:#efefef;">
+
+                                                <strong>
+                                                    Si respondió <b>"NO"</b> a la pregunta 1,
+                                                    entonces <b>NO</b> responda las preguntas 2 a la 8.
+                                                </strong>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 2 -->
+                                        <tr class="bloque-cuello-p2">
+
+                                            <td>
+
+                                                <strong>2.</strong>
+
+                                                ¿Alguna vez se lastimó el cuello
+                                                en un accidente?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P2"
+                                                            id="CUELLO_P2_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P2_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P2"
+                                                            id="CUELLO_P2_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P2_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 3 -->
+                                        <tr class="bloque-cuello-p3">
+
+                                            <td>
+
+                                                <strong>3.</strong>
+
+                                                ¿Alguna vez ha tenido que cambiar
+                                                de trabajo o deberes debido
+                                                a problemas en el cuello?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P3"
+                                                            id="CUELLO_P3_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P3_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P3"
+                                                            id="CUELLO_P3_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P3_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+                                        <!-- PREGUNTA 4 -->
+                                        <tr class="bloque-cuello-p4">
+
+                                            <td>
+
+                                                <strong>4.</strong>
+                                                ¿Cuál es el tiempo total que ha tenido problemas en el cuello
+                                                durante los últimos 12 meses?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="CUELLO_P4"
+                                                        id="CUELLO_P4_0_DIAS"
+                                                        value="0">
+
+                                                    <label class="form-check-label"
+                                                        for="CUELLO_P4_0_DIAS">
+                                                        0 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="CUELLO_P4"
+                                                        id="CUELLO_P4_1_7"
+                                                        value="1">
+
+                                                    <label class="form-check-label"
+                                                        for="CUELLO_P4_1_7">
+                                                        1 - 7 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="CUELLO_P4"
+                                                        id="CUELLO_P4_8_30"
+                                                        value="2">
+
+                                                    <label class="form-check-label"
+                                                        for="CUELLO_P4_8_30">
+                                                        8 - 30 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="CUELLO_P4"
+                                                        id="CUELLO_P4_MAS30"
+                                                        value="3">
+
+                                                    <label class="form-check-label"
+                                                        for="CUELLO_P4_MAS30">
+                                                        Más de 30 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="CUELLO_P4"
+                                                        id="CUELLO_P4_TODOS"
+                                                        value="4">
+
+                                                    <label class="form-check-label"
+                                                        for="CUELLO_P4_TODOS">
+                                                        Todos los días
+                                                    </label>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- MENSAJE -->
+                                        <tr class="bloque-cuello-p5">
+
+                                            <td colspan="2" style="background:#efefef;">
+
+                                                <strong>
+                                                    Si usted respondió <b>"0 días"</b> en la pregunta 4,
+                                                    entonces <b>NO</b> responda las preguntas 5 a la 8.
+                                                </strong>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 5 -->
+                                        <tr class="bloque-cuello-p5">
+
+                                            <td>
+
+                                                <strong>5.</strong>
+
+                                                ¿Los problemas del cuello le han hecho reducir
+                                                su actividad durante los últimos 12 meses?
+
+                                                <br><br>
+
+                                                <strong>a)</strong>
+                                                ¿Actividad laboral (en casa o fuera de casa)?
+
+                                                <br><br>
+
+                                                <strong>b)</strong>
+                                                ¿Actividad de ocio?
+
+                                            </td>
+
+                                            <td>
+
+                                                <!-- ACTIVIDAD LABORAL -->
+                                                <div class="d-flex justify-content-center mb-3">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P5_ACTIVIDAD_LABORAL"
+                                                            id="CUELLO_P5_ACTIVIDAD_LABORAL_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P5_ACTIVIDAD_LABORAL_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P5_ACTIVIDAD_LABORAL"
+                                                            id="CUELLO_P5_ACTIVIDAD_LABORAL_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P5_ACTIVIDAD_LABORAL_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- ACTIVIDAD DE OCIO -->
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P5_ACTIVIDAD_OCIO"
+                                                            id="CUELLO_P5_ACTIVIDAD_OCIO_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P5_ACTIVIDAD_OCIO_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P5_ACTIVIDAD_OCIO"
+                                                            id="CUELLO_P5_ACTIVIDAD_OCIO_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P5_ACTIVIDAD_OCIO_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 6 -->
+                                        <tr class="bloque-cuello-p6">
+
+                                            <td>
+
+                                                <strong>6.</strong>
+                                                ¿Durante cuántos días aproximadamente ha tenido
+                                                problemas en el cuello durante los últimos 12 meses?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="CUELLO_P6"
+                                                        id="CUELLO_P6_0_DIAS"
+                                                        value="0">
+
+                                                    <label class="form-check-label"
+                                                        for="CUELLO_P6_0_DIAS">
+                                                        0 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="CUELLO_P6"
+                                                        id="CUELLO_P6_1_7"
+                                                        value="1">
+
+                                                    <label class="form-check-label"
+                                                        for="CUELLO_P6_1_7">
+                                                        1 - 7 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="CUELLO_P6"
+                                                        id="CUELLO_P6_8_30"
+                                                        value="2">
+
+                                                    <label class="form-check-label"
+                                                        for="CUELLO_P6_8_30">
+                                                        8 - 30 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="CUELLO_P6"
+                                                        id="CUELLO_P6_MAS30"
+                                                        value="3">
+
+                                                    <label class="form-check-label"
+                                                        for="CUELLO_P6_MAS30">
+                                                        Más de 30 días
+                                                    </label>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 7 -->
+                                        <tr class="bloque-cuello-p7">
+
+                                            <td>
+
+                                                <strong>7.</strong>
+                                                ¿Ha sido visto por un médico, fisioterapeuta,
+                                                quiropráctico u otro profesional de la salud
+                                                debido a problemas en el cuello durante los
+                                                últimos 12 meses?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P7"
+                                                            id="CUELLO_P7_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P7_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P7"
+                                                            id="CUELLO_P7_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P7_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 8 -->
+                                        <tr class="bloque-cuello-p8">
+
+                                            <td>
+
+                                                <strong>8.</strong>
+                                                ¿Ha tenido problemas en el cuello
+                                                durante los últimos 7 días?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P8"
+                                                            id="CUELLO_P8_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P8_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="CUELLO_P8"
+                                                            id="CUELLO_P8_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="CUELLO_P8_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+
+
+                                <table class="table table-bordered">
+
+                                    <thead>
+
+                                        <tr>
+                                            <th colspan="2" class="text-center">
+                                                HOMBROS
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody>
+
+                                        <!-- PREGUNTA 1 -->
+                                        <tr>
+
+                                            <td width="70%">
+
+                                                <strong>1.</strong>
+                                                ¿Alguna vez ha tenido problemas en el hombro
+                                                (molestias, dolor o disconfort)?
+
+                                            </td>
+
+                                            <td width="30%">
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P1"
+                                                            id="HOMBRO_P1_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="HOMBRO_P1_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P1"
+                                                            id="HOMBRO_P1_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="HOMBRO_P1_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- MENSAJE -->
+                                        <tr>
+
+                                            <td colspan="2" style="background:#efefef;">
+
+                                                <strong>
+                                                    Si respondió <b>"NO"</b> a la pregunta 1,
+                                                    entonces <b>NO</b> responda las preguntas 2 a la 8.
+                                                </strong>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 2 -->
+                                        <tr class="bloque-hombro-p2">
+
+                                            <td>
+
+                                                <strong>2.</strong>
+                                                ¿Alguna vez se lastimó el hombro en un accidente?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P2"
+                                                            id="HOMBRO_P2_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="HOMBRO_P2_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P2"
+                                                            id="HOMBRO_P2_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="HOMBRO_P2_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 3 -->
+                                        <tr class="bloque-hombro-p3">
+
+                                            <td>
+
+                                                <strong>3.</strong>
+                                                ¿Alguna vez ha tenido que cambiar de trabajo
+                                                o deberes debido a problemas en el hombro?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P3"
+                                                            id="HOMBRO_P3_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="HOMBRO_P3_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P3"
+                                                            id="HOMBRO_P3_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="HOMBRO_P3_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 4 -->
+                                        <tr class="bloque-hombro-p4">
+
+                                            <td>
+
+                                                <strong>4.</strong>
+                                                ¿Cuál es el tiempo total que ha tenido problemas en el hombro durante los últimos 12 meses?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="HOMBRO_P4"
+                                                        id="HOMBRO_P4_0_DIAS"
+                                                        value="0">
+
+                                                    <label class="form-check-label"
+                                                        for="HOMBRO_P4_0_DIAS">
+                                                        0 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="HOMBRO_P4"
+                                                        id="HOMBRO_P4_1_7"
+                                                        value="1">
+
+                                                    <label class="form-check-label"
+                                                        for="HOMBRO_P4_1_7">
+                                                        1 - 7 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="HOMBRO_P4"
+                                                        id="HOMBRO_P4_8_30"
+                                                        value="2">
+
+                                                    <label class="form-check-label"
+                                                        for="HOMBRO_P4_8_30">
+                                                        8 - 30 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="HOMBRO_P4"
+                                                        id="HOMBRO_P4_MAS30"
+                                                        value="3">
+
+                                                    <label class="form-check-label"
+                                                        for="HOMBRO_P4_MAS30">
+                                                        Más de 30 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="HOMBRO_P4"
+                                                        id="HOMBRO_P4_TODOS"
+                                                        value="4">
+
+                                                    <label class="form-check-label"
+                                                        for="HOMBRO_P4_TODOS">
+                                                        Todos los días
+                                                    </label>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- MENSAJE -->
+                                        <tr class="bloque-hombro-p5">
+
+                                            <td colspan="2" style="background:#efefef;">
+
+                                                <strong>
+                                                    Si usted respondió <b>"0 días"</b> en la pregunta 4,
+                                                    entonces <b>NO</b> responda las preguntas 5 a la 8.
+                                                </strong>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 5 -->
+                                        <tr class="bloque-hombro-p5">
+
+                                            <td>
+
+                                                <strong>5.</strong>
+
+                                                ¿Los problemas de hombro le han hecho reducir
+                                                su actividad durante los últimos 12 meses?
+
+                                                <br><br>
+
+                                                <strong>a)</strong>
+                                                ¿Actividad laboral (en casa o fuera de casa)?
+
+                                                <br><br>
+
+                                                <strong>b)</strong>
+                                                ¿Actividad de ocio?
+
+                                            </td>
+
+                                            <td>
+
+                                                <!-- ACTIVIDAD LABORAL -->
+                                                <div class="d-flex justify-content-center mb-3">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P5_ACTIVIDAD_LABORAL"
+                                                            id="HOMBRO_P5_ACTIVIDAD_LABORAL_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="HOMBRO_P5_ACTIVIDAD_LABORAL_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P5_ACTIVIDAD_LABORAL"
+                                                            id="HOMBRO_P5_ACTIVIDAD_LABORAL_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="HOMBRO_P5_ACTIVIDAD_LABORAL_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- ACTIVIDAD DE OCIO -->
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P5_ACTIVIDAD_OCIO"
+                                                            id="HOMBRO_P5_ACTIVIDAD_OCIO_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label"
+                                                            for="HOMBRO_P5_ACTIVIDAD_OCIO_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P5_ACTIVIDAD_OCIO"
+                                                            id="HOMBRO_P5_ACTIVIDAD_OCIO_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label"
+                                                            for="HOMBRO_P5_ACTIVIDAD_OCIO_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <!-- PREGUNTA 6 -->
+                                        <tr class="bloque-hombro-p6">
+
+                                            <td>
+
+                                                <strong>6.</strong>
+                                                ¿Cuál es el tiempo total que los problemas de hombro
+                                                le han impedido hacer su trabajo normal
+                                                (en casa o fuera de casa) durante los últimos 12 meses?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="HOMBRO_P6"
+                                                        id="HOMBRO_P6_0_DIAS"
+                                                        value="0">
+
+                                                    <label class="form-check-label" for="HOMBRO_P6_0_DIAS">
+                                                        0 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="HOMBRO_P6"
+                                                        id="HOMBRO_P6_1_7"
+                                                        value="1">
+
+                                                    <label class="form-check-label" for="HOMBRO_P6_1_7">
+                                                        1 - 7 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="HOMBRO_P6"
+                                                        id="HOMBRO_P6_8_30"
+                                                        value="2">
+
+                                                    <label class="form-check-label" for="HOMBRO_P6_8_30">
+                                                        8 - 30 días
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="form-check clienteblock">
+
+                                                    <input class="form-check-input"
+                                                        type="radio"
+                                                        name="HOMBRO_P6"
+                                                        id="HOMBRO_P6_MAS30"
+                                                        value="3">
+
+                                                    <label class="form-check-label" for="HOMBRO_P6_MAS30">
+                                                        Más de 30 días
+                                                    </label>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 7 -->
+                                        <tr class="bloque-hombro-p7">
+
+                                            <td>
+
+                                                <strong>7.</strong>
+                                                ¿Ha sido atendido por un médico, kinesiólogo,
+                                                quiropráctico u otra persona por problemas
+                                                en el hombro durante los últimos 12 meses?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P7"
+                                                            id="HOMBRO_P7_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="HOMBRO_P7_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P7"
+                                                            id="HOMBRO_P7_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="HOMBRO_P7_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                        <!-- PREGUNTA 8 -->
+                                        <tr class="bloque-hombro-p8">
+
+                                            <td>
+
+                                                <strong>8.</strong>
+                                                ¿Ha tenido problemas de hombro
+                                                en algún momento durante los últimos 7 días?
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex justify-content-center">
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P8"
+                                                            id="HOMBRO_P8_NO"
+                                                            value="0">
+
+                                                        <label class="form-check-label" for="HOMBRO_P8_NO">
+                                                            No
+                                                        </label>
+
+                                                    </div>
+
+                                                    <div class="form-check mx-4 clienteblock">
+
+                                                        <input class="form-check-input"
+                                                            type="radio"
+                                                            name="HOMBRO_P8"
+                                                            id="HOMBRO_P8_SI"
+                                                            value="1">
+
+                                                        <label class="form-check-label" for="HOMBRO_P8_SI">
+                                                            Sí
+                                                        </label>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+
+                            <div class="col-12">
+                                <h4>
+                                    Fuerza manual:
+                                </h4>
+                            </div>
+
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Mano derecha *</label>
+                                    <input type="text" class="form-control" id="FUERZA_MANO_DERECHA" name="FUERZA_MANO_DERECHA" placeholder="Valor">
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Mano izquierda *</label>
+                                    <input type="text" class="form-control" id="FUERZA_MANO_IZQUIERDA" name="FUERZA_MANO_IZQUIERDA" placeholder="Valor">
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Indique si su tarea requiere uso de fuerza manual: </label>
+                                    <select class="form-control" name="REQUIERE_FUERZA_MANUAL" id="REQUIERE_FUERZA_MANUAL">
+                                        <option value="">Seleccionar</option>
+                                        <option value="1">Sí</option>
+                                        <option value="2">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Tipo de Dominancia: </label>
+                                    <select class="form-control" name="TIPO_DOMINANCIA" id="TIPO_DOMINANCIA">
+                                        <option value="">Seleccionar</option>
+                                        <option value="1">Derecha</option>
+                                        <option value="2">Izquierda</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <h4>
+                                    LEY SILLA: DOF 19/12/24.
+                                </h4>
+                            </div>
+
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label><br> A) Realiza sus tareas laborales de pie por más de tres horas continuas durante su jornada laboral:</label>
+                                    <select class="form-control" name="REALIZA_TAREAS_PIE" id="REALIZA_TAREAS_PIE">
+                                        <option value="">Seleccionar</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>B) Bipedestación estática. La postura de las personas trabajadoras que realizan sus tareas de pie y prácticamente sin moverse o
+                                        con desplazamientos mínimos:</label>
+                                    <select class="form-control" name="BIPEDESTACION_ESTATICA" id="BIPEDESTACION_ESTATICA">
+                                        <option value="">Seleccionar</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>C) Bipedestación dinámica. La postura de las personas trabajadoras que tienen la posibilidad de realizar desplazamientos más
+                                        amplios que en la bipedestación estática:</label>
+                                    <select class="form-control" name="BIPEDESTACION_DINAMICA" id="BIPEDESTACION_DINAMICA">
+                                        <option value="">Seleccionar</option>
+                                        <option value="1">Si</option>
+                                        <option value="2">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 mt-3">
+                                <div class="form-group">
+                                    <label>Observaciones Generales: Llenar solo si aplica.</label>
+                                    <div class="input-group">
+                                        <textarea class="form-control" name="OBSERVACIONES_GENERALES" id="OBSERVACIONES_GENERALES" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
 
 
                         </div>
+
+
                     </div>
                     <div class="modal-footer" style="display: flex; justify-content: space-between;">
                         <div>
                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
                             @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Ergónomo']))
-                            <button type="submit" class="btn btn-danger waves-effect waves-light botonguardar_modulorecsensorial" id="boton_guardar_fichastecnicas">
+                            <button type="submit" class="btn btn-danger waves-effect waves-light botonguardar_modulorecsensorial" id="boton_guardar_fre">
                                 Guardar <i class="fa fa-save"></i>
                             </button>
                             @endif

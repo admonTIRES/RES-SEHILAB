@@ -2082,8 +2082,12 @@ DESCRIPCIONACTIVIDAD
                             </button>
                         </div>
 
-                        <div id="contenedorActividades" class="mt-2"></div>
 
+                        <div class="col-12 mt-2">
+
+                            <div id="contenedorActividades" class="mt-2"></div>
+
+                        </div>
 
 
 

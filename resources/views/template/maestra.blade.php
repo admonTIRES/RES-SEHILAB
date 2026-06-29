@@ -957,7 +957,7 @@ use Illuminate\Support\Str;
     {{-- Select search filter --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    
+
     <script src="/assets/plugins/select-search/selectize.js" type="text/javascript"></script>
     <!-- Magnific popup JavaScript -->
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
@@ -1040,7 +1040,7 @@ use Illuminate\Support\Str;
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
     {{-- pagina --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js_sitio/evaluacionfre.js"></script>
+    <script src="/js_sitio/evaluacionfre.js?v=1"></script>
     <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 

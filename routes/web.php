@@ -2256,9 +2256,10 @@ Route::get('ergocatalogodesactiva/{catalogo}/{registro}/{estado}', ['as' => 'ERG
 
 Route::resource('evaluacionfre', 'ERGO\evaluacionfreController');
 
-Route::get('Tablafichasevaluacionfre', ['as' => 'ERGO.Tablafichasevaluacionfre', 'uses' => 'ERGO\evaluacionfreController@Tablafichasevaluacionfre']); 
+Route::get('Tablafichasevaluacionfre', ['as' => 'ERGO.Tablafichasevaluacionfre', 'uses' => 'ERGO\evaluacionfreController@Tablafichasevaluacionfre']);
 
 
+Route::post('obtenerEvaluacionFre', ['as' => 'obtenerEvaluacionFre', 'uses' => 'ERGO\evaluacionfreController@obtenerEvaluacionFre']);
 
 
 Route::get('/clear-cache', function () {

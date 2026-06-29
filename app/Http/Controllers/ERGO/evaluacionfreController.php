@@ -61,7 +61,9 @@ use App\modelos\reconocimientoergo\datosgeneralesinformeRecoModel;
 use App\modelos\reconocimientoergo\recoergofichastecnicasModel;
 
 
- 
+use App\modelos\evaluacionfre\evaluacionfreModel;
+
+
 class evaluacionfreController extends Controller
 {
        public function __construct()
@@ -162,6 +164,62 @@ class evaluacionfreController extends Controller
             ]);
         }
     }
+
+
+    public function obtenerEvaluacionFre(Request $request)
+    {
+        $evaluacion = evaluacionfreModel::where('FICHA_ID', $request->FICHA_ID)
+            ->where('ACTIVO', 1)
+            ->first();
+
+        return response()->json($evaluacion);
+    }
+
+
+
+
+    public function store(Request $request)
+    {
+        try {
+            switch (intval($request->api)) {
+                case 1:
+                    if ($request->ID_EVALUACION_FRE == 0) {
+                        DB::statement('ALTER TABLE evaluacion_fre_ergo AUTO_INCREMENT=1;');
+                        $fre = evaluacionfreModel::create($request->all());
+                    } else {
+
+                        if (isset($request->ELIMINAR)) {
+                            if ($request->ELIMINAR == 1) {
+                                $fre = evaluacionfreModel::where('ID_EVALUACION_FRE', $request['ID_EVALUACION_FRE'])->update(['ACTIVO' => 0]);
+                                $response['code'] = 1;
+                                $response['fre'] = 'Desactivada';
+                            } else {
+                                $fre = evaluacionfreModel::where('ID_EVALUACION_FRE', $request['ID_EVALUACION_FRE'])->update(['ACTIVO' => 1]);
+                                $response['code'] = 1;
+                                $response['fre'] = 'Activada';
+                            }
+                        } else {
+                            $fre = evaluacionfreModel::find($request->ID_EVALUACION_FRE);
+                            $fre->update($request->all());
+                            $response['code'] = 1;
+                            $response['fre'] = 'Actualizada';
+                        }
+                        return response()->json($response);
+                    }
+                    $response['code']  = 1;
+                    $response['fre']  = $fre;
+                    return response()->json($response);
+                    break;
+                default:
+                    $response['code']  = 1;
+                    $response['msj']  = 'Api no encontrada';
+                    return response()->json($response);
+            }
+        } catch (Exception $e) {
+            return response()->json('Error al guardar ');
+        }
+    }
+
 
 
 
