@@ -4011,6 +4011,16 @@ function activarLogicaFichas() {
 
 
 
+	let selectAreasFRE;
+
+$(document).ready(function () {
+
+    selectAreasFRE = $('#CAT_AREAS_FRE').selectize({
+        placeholder: 'Seleccione una o varias opciones',
+        maxItems: null,
+    })[0].selectize;
+
+});
 
 
 $('#Tablafichasevaluacionfre tbody').on('click', 'td>button.iniciarfre', function() {
@@ -4024,25 +4034,34 @@ $('#Tablafichasevaluacionfre tbody').on('click', 'td>button.iniciarfre', functio
     $("#ID_FICHAS_TECNICAS").val(row.data().ID_FICHAS_TECNICAS);
    
 
-	 let areasGuardadas = row.data().CAT_AREAS_FICHA;
+	let areasGuardadas = row.data().CAT_AREAS_FICHA;
 
     if (typeof areasGuardadas === "string") {
-        try { areasGuardadas = JSON.parse(areasGuardadas); } 
-        catch (e) { areasGuardadas = []; }
+        try {
+            areasGuardadas = JSON.parse(areasGuardadas);
+        } catch (e) {
+            areasGuardadas = [];
+        }
     }
 
     if (!Array.isArray(areasGuardadas)) {
         areasGuardadas = [];
-	}
-	
+    }
 
-	cargarCategoriasSelectFRE(function () {
+    cargarCategoriasSelectFRE(function () {
 
-	$('#CATEGORIA_ID_FRE')
-		.val(row.data().CATEGORIA_ID_FICHA)
-		.trigger('change');
-	});
+        $('#CATEGORIA_ID_FRE')
+            .val(row.data().CATEGORIA_ID_FICHA)
+            .trigger('change');
 
+        setTimeout(() => {
+
+            cargarAreasFRE(areasGuardadas);
+
+        }, 300);
+
+    });
+    
 
 	fichas_id = row.data().ID_FICHAS_TECNICAS;
     $('#INSTALACION_FRE').val(instalacionreco);
@@ -4148,10 +4167,10 @@ $(document).on('change', '#CATEGORIA_ID_FRE', function () {
 
 function cargarAreasFRE(valoresSeleccionados = []) {
 
-    let reco_id = $("#recsensorial_id").val(); 
+    let reco_id = $("#recsensorial_id").val();
 
-    selectAreasFichas.clearOptions();
-    selectAreasFichas.clear();
+    selectAreasFRE.clearOptions();
+    selectAreasFRE.clear();
 
     $.ajax({
         url: '/obtenerareasergo',
@@ -4160,20 +4179,24 @@ function cargarAreasFRE(valoresSeleccionados = []) {
         success: function (response) {
 
             response.data.forEach(function (item) {
-                selectAreasFichas.addOption({
+
+                selectAreasFRE.addOption({
                     value: item.ID_AREA_ERGO,
                     text: item.NOMBRE_AREA_ERGO
                 });
+
             });
 
-            selectAreasFichas.setValue(valoresSeleccionados);
+            selectAreasFRE.setValue(valoresSeleccionados);
 
-            selectAreasFichas.refreshOptions(false);
+            selectAreasFRE.refreshOptions(false);
+
         },
         error: function () {
             console.log('Error cargando áreas');
         }
     });
+
 }
 
 $('#FECHA_NACIMIENTO_FRE').on('change blur', function () {
@@ -4430,6 +4453,7 @@ function pintarActividadesfre(json, idHidden = 'JSON_ACTIVIDADES') {
 
     });
 }
+
 function cargarDatosFicha(data) {
 
     $("#contenedorActividadesfre").empty();
@@ -4451,8 +4475,6 @@ function cargarDatosFicha(data) {
 
 
 }
-
-
 
 function cargarEvaluacionFre(data) {
 
@@ -4633,7 +4655,6 @@ function cargarEvaluacionFre(data) {
 
 
 }
-
 
 function pintarEquiposTrabajo(json) {
 
@@ -4829,6 +4850,9 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
 	$('#CODO_IZQ,#CODO_DER').prop('disabled', false);
 	$('#MUNECA_IZQ,#MUNECA_DER').prop('disabled', false);
 	
+    
+    selectAreasFRE.clear();
+
 
 })
 
