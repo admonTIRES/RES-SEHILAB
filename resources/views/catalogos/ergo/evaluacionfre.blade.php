@@ -648,7 +648,7 @@
                                                         <div class="row">
 
                                                             <div class="col-12">
-                                                                @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Ergónomo']))
+                                                                @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE']))
                                                                 <div class="form-group" style="text-align: right;">
                                                                     <button type="submit" class="btn btn-danger botonguardar_modulorecsensorial" id="boton_guardar_recsensorial">
                                                                         Guardar <i class="fa fa-save"></i>
@@ -668,7 +668,7 @@
                                                 <div class="multisteps-form__content">
                                                     <div class="row">
                                                         <div class="col-12">
-                                                            @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Ergónomo']))
+                                                            @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE','Especialista FRE']))
 
                                                             <ol class="breadcrumb m-b-10">
                                                                 <h2 style="color: #ffff; margin: 0;"><i class="fa fa-user"></i> Fichas técnicas</h2>
@@ -5238,7 +5238,7 @@
                     <div class="modal-footer" style="display: flex; justify-content: space-between;">
                         <div>
                             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-                            @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Ergónomo']))
+                            @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE','Especialista FRE']))
                             <button type="submit" class="btn btn-danger waves-effect waves-light botonguardar_modulorecsensorial" id="boton_guardar_fre">
                                 Guardar <i class="fa fa-save"></i>
                             </button>

@@ -60,7 +60,7 @@
                                     @elseif(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Compras','Almacén','Operativo HI']))
                                     <a class="cta" href="{{route('cliente.index')}}">
 
-                                        @elseif(auth()->user()->hasRoles(['Psicólogo','Ergónomo']))
+                                        @elseif(auth()->user()->hasRoles(['Psicólogo','Coordinador FRE','Especialista FRE']))
                                         <a class="cta" href="{{route('cliente.index')}}">
                                             @endif
                                             @endif
@@ -84,14 +84,14 @@
                     <div class="col-7">
                         <div class="d-flex justify-content-start mr-5">
 
-                            @if(!auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI','Psicólogo','Ergónomo','Capturista']))
+                            @if(!auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI','Psicólogo','Coordinador FRE','Capturista']))
                             <a class="unauthorized" href="#">
 
                                 @else
                                 @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI']))
                                 <a class="cta" href="{{route('programa.index')}}">
 
-                                    @elseif(auth()->user()->hasRoles(['Psicólogo','Ergónomo']))
+                                    @elseif(auth()->user()->hasRoles(['Psicólogo','Coordinador FRE']))
                                     <a class="cta" href="{{route('recsensorial.index')}}">
 
                                         @endif
@@ -121,7 +121,7 @@
                                 @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI']))
                                 <a class="cta" href="{{route('programa.index')}}">
 
-                                    @elseif(auth()->user()->hasRoles(['Psicólogo','Ergónomo']))
+                                    @elseif(auth()->user()->hasRoles(['Psicólogo','Coordinador FRE','Especialista FRE']))
                                     <a class="cta" href="{{route('recsensorial.index')}}">
 
                                         @elseif(auth()->user()->hasRoles(['Capturista']))
@@ -153,7 +153,7 @@
                             <a class="unauthorized" href="#">
 
                                 @else
-                                @if(auth()->user()->hasRoles(['Compras','Almacén','Operativo HI', 'Coordinador', 'Ergónomo']))
+                                @if(auth()->user()->hasRoles(['Compras','Almacén','Operativo HI', 'Coordinador', 'Coordinador FRE','Especialista FRE']))
                                 <a class="unauthorized" href="#">
 
                                     @elseif(auth()->user()->hasRoles(['Psicólogo','Superusuario', 'Administrador']))
@@ -221,35 +221,42 @@
 
 
                 <!-- Factor ergonomico -->
-
                 <div class="d-flex justify-content-center ml-5">
 
-                    @if(!auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI','Ergónomo']))
+                    @if(!auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI','Coordinador FRE','Especialista FRE']))
                     <a id="btnErgo" class="cta unauthorized" href="#">
                         @else
-                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI']))
-                        <a id="btnErgo" class="cta" href="{{route('reconocimientoergo.index')}}">
-                            @elseif(auth()->user()->hasRoles(['Psicólogo','Ergónomo']))
-                            <a id="btnErgo" class="cta" href="{{route('reconocimientoergo.index')}}">
-                                @endif
-                                @endif
 
-                                <div class="row circle-one">
-                                    <div class="col-12 circle-two">
-                                        <img src="/assets/images/modulos/ergonomia.png"
-                                            class="logos"
-                                            alt="Modulos de Factor Ergonomico">
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI']))
+                        <a id="btnErgo" class="cta" href="{{ route('reconocimientoergo.index') }}">
+
+                            @elseif(auth()->user()->hasRoles(['Coordinador FRE']))
+                            <a id="btnErgo" class="cta" href="{{ route('reconocimientoergo.index') }}">
+
+                                @elseif(auth()->user()->hasRoles(['Especialista FRE']))
+                                <a id="btnErgo" class="cta" href="{{ route('evaluacionfre.index') }}">
+
+                                    @endif
+
+                                    @endif
+
+                                    <div class="row circle-one">
+                                        <div class="col-12 circle-two">
+                                            <img src="/assets/images/modulos/ergonomia.png"
+                                                class="logos"
+                                                alt="Modulos de Factor Ergonomico">
+                                        </div>
+                                        <span class="titulos" style="justify-content: center; margin-top:20px">
+                                            Factor Ergonómico
+                                        </span>
                                     </div>
-                                    <span class="titulos" style="justify-content: center; margin-top:20px">
-                                        Factor Ergonómico
-                                    </span>
-                                </div>
-                            </a>
+                                </a>
+
                 </div>
 
 
 
-               
+
 
 
 
@@ -282,7 +289,7 @@
                                 @else
                                 @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI']))
                                 <a class="cta" href="{{route('tableroepp.index')}}"> {{-- ← Ruta para Seguridad Industrial --}}
-                                    @elseif(auth()->user()->hasRoles(['Psicólogo','Ergónomo']))
+                                    @elseif(auth()->user()->hasRoles(['Psicólogo','Coordinador FRE','Especialista FRE']))
                                     <a class="cta" href="{{route('tableroepp.index')}}"> {{-- También pueden entrar --}}
                                         @endif
                                         @endif

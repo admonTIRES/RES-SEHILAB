@@ -356,7 +356,7 @@ use Illuminate\Support\Str;
                         <!-- ============================================================== -->
                         <!-- Comment -->
                         <!-- ============================================================== -->
-                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador', 'Proyecto','Compras','Almacén', 'Operativo HI','Psicólogo','Ergónomo']))
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador', 'Proyecto','Compras','Almacén', 'Operativo HI']))
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-muted text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="mdi mdi-message"></i>
@@ -409,8 +409,10 @@ use Illuminate\Support\Str;
                                                 <b href="#" class="btn btn-rounded btn-danger">Almacén</b>
                                                 @elseif(auth()->user()->hasRoles(['Operativo HI']))
                                                 <b href="#" class="btn btn-rounded btn-danger">Operativo HI</b>
-                                                @elseif(auth()->user()->hasRoles(['Ergónomo']))
-                                                <b href="#" class="btn btn-rounded btn-danger">Ergónomo</b>
+                                                @elseif(auth()->user()->hasRoles(['Coordinador FRE']))
+                                                <b href="#" class="btn btn-rounded btn-danger">Coordinador FRE</b>
+                                                @elseif(auth()->user()->hasRoles(['Especialista FRE']))
+                                                <b href="#" class="btn btn-rounded btn-danger">Especialista FRE</b>
                                                 @elseif(auth()->user()->hasRoles(['Psicólogo']))
                                                 <b href="#" class="btn btn-rounded btn-danger">Psicólogo</b>
                                                 @elseif(auth()->user()->hasRoles(['Externo']))
@@ -464,7 +466,7 @@ use Illuminate\Support\Str;
                             </a>
                         </li>
                         @endif
-                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI','Psicólogo','Ergónomo']))
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI']))
                         <li>
                             <a class="has-arrow " href="{{route('cliente.index')}}" aria-expanded="false">
                                 <i class="mdi mdi-briefcase"></i><span class="hide-menu">Clientes</span>
@@ -478,7 +480,7 @@ use Illuminate\Support\Str;
                             </a>
                         </li>
                         @endif
-                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI','Psicólogo','Ergónomo']))
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI']))
                         <li>
                             <a class="has-arrow " href="{{route('biblioteca.index')}}" aria-expanded="false">
                                 <i class="fa fa-book"></i><span class="hide-menu">Centro de información</span>
@@ -523,7 +525,7 @@ use Illuminate\Support\Str;
 
                         @if (preg_match('/\bproyectos\b/', request()->path()))
 
-                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI','Psicólogo','Ergónomo']))
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Compras','Almacén','Operativo HI']))
                         <li>
                             <a class="has-arrow " href="{{route('proyectos.index')}}" aria-expanded="false">
                                 <i class="mdi mdi-format-list-numbers"></i><span class="hide-menu">Proyectos</span>
@@ -555,7 +557,7 @@ use Illuminate\Support\Str;
 
 
 
-                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Operativo HI', 'Psicólogo','Ergónomo']))
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Operativo HI']))
                         <li>
                             <a class="has-arrow " href="{{route('recsensorial.index')}}" aria-expanded="false">
                                 <i class="mdi mdi-access-point"></i><span class="hide-menu">Reconocimiento</span>
@@ -572,7 +574,7 @@ use Illuminate\Support\Str;
                         </li>
                         @endif
 
-                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Psicólogo','Ergónomo']))
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Psicólogo']))
                         <li>
                             <a class="has-arrow " href="{{route('informes.index')}}" aria-expanded="false">
                                 <i class="fa fa-print"></i><span class="hide-menu">Informes y entregables</span>
@@ -600,20 +602,25 @@ use Illuminate\Support\Str;
 
 
                         @if (request()->is('reconocimientoergo*') || request()->is('recergocatalogo*') || request()->is('evaluacionfre*') )
-                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Ergónomo']))
 
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE','Especialista FRE']))
+
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE']))
                         <li>
                             <a class="has-arrow " href="{{route('reconocimientoergo.index')}}" aria-expanded="false">
                                 <i class="mdi mdi-access-point"></i><span class="hide-menu">Reconocimiento</span>
                             </a>
                         </li>
-
+                        @endif
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE','Especialista FRE']))
                         <li>
                             <a class="has-arrow " href="{{route('evaluacionfre.index')}}" aria-expanded="false">
                                 <i class="mdi mdi-access-point"></i><span class="hide-menu">Eval.FRE</span>
                             </a>
                         </li>
+                        @endif
 
+                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE']))
                         <li>
                             <a class="has-arrow" href="#" aria-expanded="false">
                                 <i class="mdi mdi-file-multiple"></i><span class="hide-menu">Catálogos</span>
@@ -623,6 +630,7 @@ use Illuminate\Support\Str;
                                 <li><a href="{{route('recergocatalogo.index')}}">Catálogo Ergo</a></li>
                             </ul>
                         </li>
+                        @endif
 
                         @endif
                         @endif
