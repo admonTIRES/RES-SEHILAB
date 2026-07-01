@@ -123,7 +123,8 @@ class evaluacionfreModel extends Model
         'JSON_FUENTES_TERMICAS',
         'JSON_FUENTES_RUIDO',
         'JSON_FUENTES_VIBRACION',
-        'JSON_EPP'
+        'JSON_EPP',
+        'CATEGORIA_ID_FRE'
 
 
         
