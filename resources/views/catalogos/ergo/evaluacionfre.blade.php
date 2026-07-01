@@ -688,6 +688,7 @@
                                                                             <th>Nombre del empleado </th>
                                                                             <th>Ficha / No empleado</th>
                                                                             <th style="width: 80px!important;">Visualizar</th>
+                                                                            <th>Estatus FRE</th>
                                                                             <th style="width: 80px!important;">Iniciar FRE</th>
 
                                                                         </tr>

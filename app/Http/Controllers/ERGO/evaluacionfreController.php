@@ -113,9 +113,23 @@ class evaluacionfreController extends Controller
 
             $ergo = $request->get('ergoid');
 
+            // $tabla = recoergofichastecnicasModel::select(
+            //     'recoergo_fichastecnicas.*',
+            //     'recoergocategorias.NOMBRE_CATEGORIA_ERGO as NOMBRE_CATEGORIA'
+            // )
+            //     ->leftJoin(
+            //         'recoergocategorias',
+            //         'recoergo_fichastecnicas.CATEGORIA_ID_FICHA',
+            //         '=',
+            //         'recoergocategorias.ID_CATEGORIA_ERGO'
+            //     )
+            //     ->where('recoergo_fichastecnicas.RECO_ID', $ergo)
+            //     ->get();
+
             $tabla = recoergofichastecnicasModel::select(
                 'recoergo_fichastecnicas.*',
-                'recoergocategorias.NOMBRE_CATEGORIA_ERGO as NOMBRE_CATEGORIA'
+                'recoergocategorias.NOMBRE_CATEGORIA_ERGO as NOMBRE_CATEGORIA',
+                'evaluacion_fre_ergo.ID_EVALUACION_FRE'
             )
                 ->leftJoin(
                     'recoergocategorias',
@@ -123,8 +137,15 @@ class evaluacionfreController extends Controller
                     '=',
                     'recoergocategorias.ID_CATEGORIA_ERGO'
                 )
+                ->leftJoin(
+                    'evaluacion_fre_ergo',
+                    'evaluacion_fre_ergo.FICHA_ID',
+                    '=',
+                    'recoergo_fichastecnicas.ID_FICHAS_TECNICAS'
+                )
                 ->where('recoergo_fichastecnicas.RECO_ID', $ergo)
                 ->get();
+
 
             foreach ($tabla as $value) {
 
@@ -153,6 +174,26 @@ class evaluacionfreController extends Controller
                     </button>';
 
 
+                }
+
+
+                if ($value->ID_EVALUACION_FRE) {
+
+                    $value->ESTATUS_FRE =
+                        '<div class="text-center">
+                            <span class="badge badge-pill badge-success" style="font-size:12px">
+                                Iniciado
+                            </span>
+                        </div>';
+                
+                } else {
+
+                    $value->ESTATUS_FRE =
+                        '<div class="text-center">
+                            <span class="badge badge-pill badge-danger" style="font-size:12px">
+                                Sin iniciar
+                            </span>
+                        </div>';
                 }
             }
 

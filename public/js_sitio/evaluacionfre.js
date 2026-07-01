@@ -3640,6 +3640,11 @@ function mostrarTablafichasevaluacionfre() {
 					data: 'BTN_EDITAR',
 					orderable: false,
 					searchable: false
+                },
+                { 
+					data: 'ESTATUS_FRE',
+					orderable: false,
+					searchable: false
 				},
                 { 
 					data: 'BTN_FICHA',
@@ -4852,7 +4857,8 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
 
 	$("#contenedorActividadesfre").empty(); 
 
-    $('#JSON_ACTIVIDADES_FRE').val('')
+
+    $('#ID_EVALUACION_FRE').val('')
     $('#JSON_EQUIPOS_TRABAJO').val('')
     $('#JSON_FUENTES_TERMICAS').val('')
     $('#JSON_FUENTES_RUIDO').val('')
@@ -5729,7 +5735,7 @@ $("#boton_guardar_fre").click(function (e) {
         },async function () { 
 
             await loaderbtn('boton_guardar_fre')
-            await ajaxAwaitFormData({ api: 1,FICHA_ID: fichas_id, ID_EVALUACION_FRE: ID_EVALUACION_FRE }, 'evaluacionfre', 'form_evalfre', 'boton_guardar_fre', { callbackAfter: true, callbackBefore: true }, () => {
+            await ajaxAwaitFormData({ api: 1,FICHA_ID: fichas_id, ID_EVALUACION_FRE: ID_EVALUACION_FRE, RECO_ID: recsensorial, }, 'evaluacionfre', 'form_evalfre', 'boton_guardar_fre', { callbackAfter: true, callbackBefore: true }, () => {
         
                 Swal.fire({
                     icon: 'info',
@@ -5763,7 +5769,7 @@ $("#boton_guardar_fre").click(function (e) {
         },async function () { 
 
             await loaderbtn('boton_guardar_fre')
-            await ajaxAwaitFormData({ api: 1, FICHA_ID: fichas_id, ID_EVALUACION_FRE: ID_EVALUACION_FRE }, 'evaluacionfre', 'form_evalfre', 'boton_guardar_fre', { callbackAfter: true, callbackBefore: true }, () => {
+            await ajaxAwaitFormData({ api: 1, FICHA_ID: fichas_id, ID_EVALUACION_FRE: ID_EVALUACION_FRE, RECO_ID: recsensorial,}, 'evaluacionfre', 'form_evalfre', 'boton_guardar_fre', { callbackAfter: true, callbackBefore: true }, () => {
         
                 Swal.fire({
                     icon: 'info',

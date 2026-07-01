@@ -10,6 +10,7 @@ class evaluacionfreModel extends Model
     protected $table = 'evaluacion_fre_ergo';
     protected $primaryKey = 'ID_EVALUACION_FRE';
     protected $fillable = [
+        'RECO_ID',
         'FICHA_ID',
         'JSON_ACTIVIDADES_FRE',
         'FECHA_EVALUACION_FRE',
