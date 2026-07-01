@@ -3641,13 +3641,14 @@ function mostrarTablafichasevaluacionfre() {
 					orderable: false,
 					searchable: false
                 },
-                { 
-					data: 'ESTATUS_FRE',
-					orderable: false,
-					searchable: false
-				},
+               
                 { 
 					data: 'BTN_FICHA',
+					orderable: false,
+					searchable: false
+                },
+                 { 
+					data: 'ESTATUS_FRE',
 					orderable: false,
 					searchable: false
 				},

@@ -688,8 +688,8 @@
                                                                             <th>Nombre del empleado </th>
                                                                             <th>Ficha / No empleado</th>
                                                                             <th style="width: 80px!important;">Visualizar</th>
-                                                                            <th>Estatus FRE</th>
                                                                             <th style="width: 80px!important;">Iniciar FRE</th>
+                                                                            <th>Estatus FRE</th>
 
                                                                         </tr>
                                                                     </thead>
@@ -3750,8 +3750,8 @@
                                             <td colspan="2" style="background:#efefef;">
 
                                                 <strong>
-                                                    Si respondió "NO" a la pregunta 1,
-                                                    entonces NO responda las preguntas 2 a la 8.
+                                                    Si usted respondió <b>"0 días"</b> en la pregunta 4,
+                                                    entonces <b>NO</b> responda las preguntas 5 a la 8.
                                                 </strong>
 
                                             </td>
