@@ -1353,13 +1353,15 @@
 
                             <input type="hidden" name="ID_EVALUACION_FRE" id="ID_EVALUACION_FRE">
                             <input type="hidden" name="JSON_ACTIVIDADES_FRE" id="JSON_ACTIVIDADES_FRE">
-
                             <input type="hidden" name="JSON_EQUIPOS_TRABAJO" id="JSON_EQUIPOS_TRABAJO">
                             <input type="hidden" name="JSON_FUENTES_TERMICAS" id="JSON_FUENTES_TERMICAS">
                             <input type="hidden" name="JSON_FUENTES_RUIDO" id="JSON_FUENTES_RUIDO">
                             <input type="hidden" name="JSON_FUENTES_VIBRACION" id="JSON_FUENTES_VIBRACION">
+                            <input type="hidden" name="JSON_EPP" id="JSON_EPP">
 
-                            <div class="col-6">
+
+
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label>Fecha de evaluación *</label>
                                     <div class="input-group">
@@ -1369,10 +1371,18 @@
                                 </div>
                             </div>
 
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label>Instalación *</label>
                                     <input type="text" class="form-control" name="INSTALACION_FRE" id="INSTALACION_FRE">
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Áreas *</label>
+                                    <select class="custom-select form-control" id="CAT_AREAS_FRE" name="CAT_AREAS_FRE[]" multiple>
+                                    </select>
                                 </div>
                             </div>
 
@@ -1449,7 +1459,7 @@
                                 </div>
                             </div>
                             <!-- SEXO -->
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="form-group">
                                     <label>Sexo *</label>
                                     <select class="form-control" name="SEXO_EMPLEADO_FRE" id="SEXO_EMPLEADO_FRE" required>
@@ -1460,22 +1470,11 @@
                                 </div>
                             </div>
 
-                            <!-- FECHA NACIMIENTO -->
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label>Fecha de nacimiento </label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control mydatepicker" placeholder="aaaa-mm-dd" id="FECHA_NACIMIENTO_FRE" name="FECHA_NACIMIENTO_FRE">
-                                        <span class="input-group-addon"><i class="icon-calender"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="form-group">
                                     <label>Edad </label>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" name="EDAD_EMPLEADO_FRE" id="EDAD_EMPLEADO_FRE" readonly>
+                                        <input type="text" class="form-control" name="EDAD_EMPLEADO_FRE" id="EDAD_EMPLEADO_FRE">
                                     </div>
                                 </div>
                             </div>
@@ -1532,6 +1531,37 @@
                                 </div>
                             </div>
 
+                            <div class="col-12 mt-5">
+                                <div class="form-group">
+                                    <label>
+                                        ¿HA SUFRIDO ALGUNA LESIÓN O ACCIDENTES LABORAL DURANTE LA JORNADA LABORAL?
+                                    </label>
+
+                                    <select class="form-control" id="SUFRIDO_LESION_ACCIDENTE" name="SUFRIDO_LESION_ACCIDENTE">
+                                        <option value="">Seleccione</option>
+                                        <option value="SI">SI</option>
+                                        <option value="NO">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12" id="datosLesion" style="display:none;">
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>¿Cuándo?</label>
+                                            <input type="text" class="form-control" id="CUANDO_LESION_ACCIDENTE" name="CUANDO_LESION_ACCIDENTE">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>¿Cuál?</label>
+                                            <input type="text" class="form-control" id="CUAL_LESION_ACCIDENTE" name="CUAL_LESION_ACCIDENTE">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <br><br>
                             <div class="col-12 mt-2">
@@ -1647,23 +1677,19 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>En caso de responder SI ¿Cuál?</label>
+                                            <label>¿Cuál?</label>
                                             <input type="text" class="form-control" id="ENFERMEDAD_MUSCULOESQUELETICA_CUAL" name="ENFERMEDAD_MUSCULOESQUELETICA_CUAL">
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label>En caso de responder SI ¿Hace cuánto tiempo?</label>
-                                            <input type="text"
-                                                class="form-control"
-                                                id="ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO"
-                                                name="ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO">
+                                            <label>¿Hace cuánto tiempo?</label>
+                                            <input type="text" class="form-control" id="ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO" name="ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO">
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
+
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>
@@ -1679,17 +1705,41 @@
                             </div>
 
 
+                            <div class="col-12 mt-4">
+
+                                <h4><b>Equipo de Protección Personal (EPP)</b></h4>
+
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <button type="button"
+                                    class="btn btn-danger "
+                                    id="agregarEPP">
+                                    <i class="fa fa-plus"></i>
+                                    Agregar EPP
+                                </button>
+                            </div>
+                            <div class="col-12">
+                                <table class="table table-bordered table-hover" id="tablaEPP">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th width="25%">Región Anatómica</th>
+                                            <th width="35%">Clave y EPP</th>
+                                            <th width="30%">Tipo de Riesgo</th>
+                                            <th width="10%" class="text-center">Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
 
                             <div class="col-12">
-
-                                <button type="button" class="btn btn-danger" id="agregarFilaEquipo">
-                                    Agregar fila
-                                </button>
-                                <br>
-                                <br>
-
                                 <div class="table-responsive">
                                     <h5 class="text-center mb-3"><strong>Máquinas, herramientas y utensilios</strong></h5>
+                                    <button type="button" class="btn btn-danger mb-2" id="agregarFilaEquipo">
+                                        Agregar fila
+                                    </button>
                                     <table class="table table-bordered align-middle" id="tablaEquiposTrabajo">
                                         <thead>
                                             <tr>
@@ -5349,5 +5399,15 @@
     <script src="/assets/plugins/amChart/amcharts/themes/chalk.js" type="text/javascript"></script>
     <script src="/assets/plugins/amChart/amcharts/themes/patterns.js" type="text/javascript"></script>
     <script src="/js_sitio/html2canvas.js"></script>
+
+
+    <script>
+        window.catRegionAnatomica = @json($catregionanatomica);
+        window.catClaveEPP = @json($catclaveyepp);
+    </script>
+
+
+
+
 
     @endsection

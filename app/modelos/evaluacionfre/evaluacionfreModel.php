@@ -114,12 +114,15 @@ class evaluacionfreModel extends Model
         'BIPEDESTACION_ESTATICA',
         'BIPEDESTACION_DINAMICA',
         'OBSERVACIONES_GENERALES',
+        'SUFRIDO_LESION_ACCIDENTE',
+        'CUANDO_LESION_ACCIDENTE',
+        'CUAL_LESION_ACCIDENTE',
         'ACTIVO',
-
         'JSON_EQUIPOS_TRABAJO',
         'JSON_FUENTES_TERMICAS',
         'JSON_FUENTES_RUIDO',
-        'JSON_FUENTES_VIBRACION'
+        'JSON_FUENTES_VIBRACION',
+        'JSON_EPP'
 
 
         

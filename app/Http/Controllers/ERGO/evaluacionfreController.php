@@ -55,13 +55,16 @@ use App\modelos\reconocimientoergo\catergo_recomendacionesModel;
 use App\modelos\reconocimientoergo\recomendacionesinformeergoModel;
 use App\modelos\reconocimientoergo\versionesrecoergoModel;
 use App\modelos\clientes\clientecontratoModel;
-
 use App\modelos\reconocimientoergo\datosgeneralesinformeRecoModel;
-
 use App\modelos\reconocimientoergo\recoergofichastecnicasModel;
-
-
 use App\modelos\evaluacionfre\evaluacionfreModel;
+
+
+
+///// CAT EPP
+
+use App\modelos\eppcatalogo\catregionanatomicaModel;
+use App\modelos\eppcatalogo\catclaveyeppModel;
 
 
 class evaluacionfreController extends Controller
@@ -82,8 +85,6 @@ class evaluacionfreController extends Controller
 
         $catdepartamento = catdepartamentoModel::where('catdepartamento_activo', 1)->orderBy('catdepartamento_nombre', 'ASC')->get();
         $catmovilfijo = catmovilfijoModel::where('catmovilfijo_activo', 1)->get();
-
-
         $catregimen = catergo_regimencontractualModel::where('ACTIVO', 1)->get();
         $catjornada = catergo_jornada::where('ACTIVO', 1)->get();
         $caturno = catergo_turnoModel::where('ACTIVO', 1)->get();
@@ -91,14 +92,17 @@ class evaluacionfreController extends Controller
             ->orderBy('CONCEPTO_DEFINICION', 'ASC')
             ->get();
 
-
         $catintroduccion = catergo_introduccionModel::where('ACTIVO', 1)->get();
-
         $catconclusion = catergo_conclusionModel::where('ACTIVO', 1)->get();
-
         $catrecomendaciones = catergo_recomendacionesModel::whereIn('USO_RECOMENDACIONES', ['Reconocimiento', 'Ambos'])->get();
 
-        return view('catalogos.ergo.evaluacionfre', compact('catdepartamento', 'catmovilfijo', 'catregimen', 'catjornada', 'caturno', 'catdefiniciones', 'catintroduccion', 'catconclusion', 'catrecomendaciones'));
+        //// CAT EPP
+        $catregionanatomica = catregionanatomicaModel::where('ACTIVO', 1)->get();
+        $catclaveyepp = catclaveyeppModel::where('ACTIVO', 1)->get();
+
+
+
+        return view('catalogos.ergo.evaluacionfre', compact('catdepartamento', 'catmovilfijo', 'catregimen', 'catjornada', 'caturno', 'catdefiniciones', 'catintroduccion', 'catconclusion', 'catrecomendaciones', 'catregionanatomica', 'catclaveyepp'));
     }
 
 
