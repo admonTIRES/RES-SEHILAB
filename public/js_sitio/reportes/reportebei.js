@@ -5509,7 +5509,7 @@ $('#tabla_reporte_beipuntos tbody').on('click', 'td.editar', function () {
 	$('#EDAD_BEI').val(row.data().EDAD_BEI);
 	$('#ANTIGUEDAD_BEI').val(row.data().ANTIGUEDAD_BEI);
 	$('#MUESTRA_BEI').val(row.data().MUESTRA_BEI);
-	$('#UNIDAD_MEDIDA_BEI').val(row.data().UNIDAD_MEDIDA_BEI);
+	$('#UNIDAD_MEDIDA_BEI').val(row.data().UNIDAD_MEDIDA);
 	$('#RESULTADO_BEI').val(row.data().RESULTADO_BEI);
 	$('#REFERENCIA_BEI').val(row.data().REFERENCIA_BEI);
 

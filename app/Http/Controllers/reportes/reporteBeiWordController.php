@@ -56,6 +56,8 @@ use App\modelos\reportes\reporteanexosModel;
 use App\modelos\clientes\clientepartidasModel;
 use App\modelos\clientes\clientecontratoModel;
 use App\modelos\reportes\recursosPortadasInformesModel;
+
+
 class reporteBeiWordController extends Controller
 {
 
@@ -972,46 +974,174 @@ class reporteBeiWordController extends Controller
                                         c.recsensorialcategoria_nombrecategoria as CATEGORIA,
                                         p.CATEGORIA_ID,
                                         b.DETERMINANTE,
-                                        (IF((p.RESULTADO_BEI = "" OR p.RESULTADO_BEI IS NULL),"Sin evaluar",
+                                        
+                                    --     (IF((p.RESULTADO_BEI = "" OR p.RESULTADO_BEI IS NULL),"Sin evaluar",
+                                    --         IF(
+                                    --             -- Verificar si el valor contiene solo letras o es N.D, N.A, N/A
+                                    --             p.RESULTADO_BEI REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$", 
+                                    --             -- Si contiene solo letras o las abreviaturas, retornamos "Dentro de norma"
+                                    --             "ND",  
+                                    --             -- Si contiene números, continuamos con la limpieza
+                                    --             IF(
+                                    --                 CONVERT(REPLACE(REPLACE(REPLACE(p.RESULTADO_BEI, ">" , ""), "<" ,""), " ", ""), DECIMAL(10,2)) >= 0,
+                                    --                 -- Después de limpiar, verificamos si el valor es mayor o igual a 0.25
+                                    --                 IF(
+                                    --                                 (REPLACE(REPLACE(REPLACE(p.RESULTADO_BEI, ">" , ""), "<" ,""), " ", "") + 0) > p.REFERENCIA_BEI,
+                                    --                                 "Fuera de norma",  -- Si es mayor, está fuera de norma
+                                    --                                 "Dentro de norma"  -- Si es menor, está dentro de norma
+                                    --                 ),
+                                    --                 "Fuera de norma"  -- Si no es un número válido o es negativo, es fuera de norma
+                                    --             )
+                                    --         )
+                                    --     )
+                                    -- )  as NORMATIVIDAD,
+                                    --  (IF((p.RESULTADO_BEI = "" OR p.RESULTADO_BEI IS NULL),"Sin evaluar",
+                                    --         IF(
+                                    --             -- Verificar si el valor contiene solo letras o es N.D, N.A, N/A
+                                    --             p.RESULTADO_BEI REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$", 
+                                    --             -- Si contiene solo letras o las abreviaturas, retornamos "Dentro de norma"
+                                    --             "#FFFFFF",  
+                                    --             -- Si contiene números, continuamos con la limpieza
+                                    --             IF(
+                                    --                 CONVERT(REPLACE(REPLACE(REPLACE(p.RESULTADO_BEI, ">" , ""), "<" ,""), " ", ""), DECIMAL(10,2)) >= 0,
+                                    --                 -- Después de limpiar, verificamos si el valor es mayor o igual a 0.25
+                                    --                 IF(
+                                    --                                 (REPLACE(REPLACE(REPLACE(p.RESULTADO_BEI, ">" , ""), "<" ,""), " ", "") + 0) > p.REFERENCIA_BEI,
+                                    --                                 "#FF0000",  -- Si es mayor, está fuera de norma
+                                    --                                 "#00ff6c"  -- Si es menor, está dentro de norma
+                                    --                 ),
+                                    --                 "#FF0000"  -- Si no es un número válido o es negativo, es fuera de norma
+                                    --             )
+                                    --         )
+                                    --     )
+                                    -- )  as COLOR
+
+
+                                    (IF(
+                                        (p.RESULTADO_BEI = "" OR p.RESULTADO_BEI IS NULL),
+                                        "Sin evaluar",
+
+                                        IF(
+                                            p.RESULTADO_BEI REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$",
+                                            "ND",
+
                                             IF(
-                                                -- Verificar si el valor contiene solo letras o es N.D, N.A, N/A
-                                                p.RESULTADO_BEI REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$", 
-                                                -- Si contiene solo letras o las abreviaturas, retornamos "Dentro de norma"
-                                                "ND",  
-                                                -- Si contiene números, continuamos con la limpieza
+                                                CONVERT(
+                                                    REPLACE(
+                                                        REPLACE(
+                                                            REPLACE(
+                                                                REPLACE(
+                                                                    REPLACE(
+                                                                        REPLACE(TRIM(p.RESULTADO_BEI), "<=", ""),
+                                                                    ">=", ""),
+                                                                "<", ""),
+                                                            ">", ""),
+                                                        "=", ""),
+                                                    " ", ""),
+                                                DECIMAL(10,4)) >= 0,
+
                                                 IF(
-                                                    CONVERT(REPLACE(REPLACE(REPLACE(p.RESULTADO_BEI, ">" , ""), "<" ,""), " ", ""), DECIMAL(10,2)) >= 0,
-                                                    -- Después de limpiar, verificamos si el valor es mayor o igual a 0.25
-                                                    IF(
-                                                                    (REPLACE(REPLACE(REPLACE(p.RESULTADO_BEI, ">" , ""), "<" ,""), " ", "") + 0) > p.REFERENCIA_BEI,
-                                                                    "Fuera de norma",  -- Si es mayor, está fuera de norma
-                                                                    "Dentro de norma"  -- Si es menor, está dentro de norma
-                                                    ),
-                                                    "Fuera de norma"  -- Si no es un número válido o es negativo, es fuera de norma
-                                                )
+                                                    CONVERT(
+                                                        REPLACE(
+                                                            REPLACE(
+                                                                REPLACE(
+                                                                    REPLACE(
+                                                                        REPLACE(
+                                                                            REPLACE(TRIM(p.RESULTADO_BEI), "<=", ""),
+                                                                        ">=", ""),
+                                                                    "<", ""),
+                                                                ">", ""),
+                                                            "=", ""),
+                                                        " ", ""),
+                                                    DECIMAL(10,4))
+
+                                                    >
+
+                                                    CONVERT(
+                                                        REPLACE(
+                                                            REPLACE(
+                                                                REPLACE(
+                                                                    REPLACE(
+                                                                        REPLACE(
+                                                                            REPLACE(TRIM(IFNULL(p.REFERENCIA_BEI, b.VALOR_REFERENCIA)), "<=", ""),
+                                                                        ">=", ""),
+                                                                    "<", ""),
+                                                                ">", ""),
+                                                            "=", ""),
+                                                        " ", ""),
+                                                    DECIMAL(10,4)),
+
+                                                    "Fuera de norma",
+                                                    "Dentro de norma"
+                                                ),
+
+                                                "Fuera de norma"
                                             )
                                         )
-                                    )  as NORMATIVIDAD,
-                                     (IF((p.RESULTADO_BEI = "" OR p.RESULTADO_BEI IS NULL),"Sin evaluar",
+                                    )) AS NORMATIVIDAD,
+
+                                    (IF(
+                                        (p.RESULTADO_BEI = "" OR p.RESULTADO_BEI IS NULL),
+                                        "Sin evaluar",
+
+                                        IF(
+                                            p.RESULTADO_BEI REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$",
+                                            "#FFFFFF",
+
                                             IF(
-                                                -- Verificar si el valor contiene solo letras o es N.D, N.A, N/A
-                                                p.RESULTADO_BEI REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$", 
-                                                -- Si contiene solo letras o las abreviaturas, retornamos "Dentro de norma"
-                                                "#FFFFFF",  
-                                                -- Si contiene números, continuamos con la limpieza
+                                                CONVERT(
+                                                    REPLACE(
+                                                        REPLACE(
+                                                            REPLACE(
+                                                                REPLACE(
+                                                                    REPLACE(
+                                                                        REPLACE(TRIM(p.RESULTADO_BEI), "<=", ""),
+                                                                    ">=", ""),
+                                                                "<", ""),
+                                                            ">", ""),
+                                                        "=", ""),
+                                                    " ", ""),
+                                                DECIMAL(10,4)) >= 0,
+
                                                 IF(
-                                                    CONVERT(REPLACE(REPLACE(REPLACE(p.RESULTADO_BEI, ">" , ""), "<" ,""), " ", ""), DECIMAL(10,2)) >= 0,
-                                                    -- Después de limpiar, verificamos si el valor es mayor o igual a 0.25
-                                                    IF(
-                                                                    (REPLACE(REPLACE(REPLACE(p.RESULTADO_BEI, ">" , ""), "<" ,""), " ", "") + 0) > p.REFERENCIA_BEI,
-                                                                    "#FF0000",  -- Si es mayor, está fuera de norma
-                                                                    "#00ff6c"  -- Si es menor, está dentro de norma
-                                                    ),
-                                                    "#FF0000"  -- Si no es un número válido o es negativo, es fuera de norma
-                                                )
+                                                    CONVERT(
+                                                        REPLACE(
+                                                            REPLACE(
+                                                                REPLACE(
+                                                                    REPLACE(
+                                                                        REPLACE(
+                                                                            REPLACE(TRIM(p.RESULTADO_BEI), "<=", ""),
+                                                                        ">=", ""),
+                                                                    "<", ""),
+                                                                ">", ""),
+                                                            "=", ""),
+                                                        " ", ""),
+                                                    DECIMAL(10,4))
+
+                                                    >
+
+                                                    CONVERT(
+                                                        REPLACE(
+                                                            REPLACE(
+                                                                REPLACE(
+                                                                    REPLACE(
+                                                                        REPLACE(
+                                                                            REPLACE(TRIM(IFNULL(p.REFERENCIA_BEI, b.VALOR_REFERENCIA)), "<=", ""),
+                                                                        ">=", ""),
+                                                                    "<", ""),
+                                                                ">", ""),
+                                                            "=", ""),
+                                                        " ", ""),
+                                                    DECIMAL(10,4)),
+
+                                                    "#FF0000",
+                                                    "#00ff6c"
+                                                ),
+
+                                                "#FF0000"
                                             )
                                         )
-                                    )  as COLOR
+                                    )) AS COLOR
                                 FROM puntosBeiInforme p
                                 LEFT JOIN sustanciasEntidadBeis b ON b.ID_BEI = p.BEI_ID
                                 LEFT JOIN recsensorialarea a ON a.id = p.AREA_ID

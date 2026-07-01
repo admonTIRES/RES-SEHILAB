@@ -618,13 +618,13 @@
 
                 <h4 class="card-title" id="8">8.- Conclusiones</h4>
 
-                <select class="custom-select form-control mb-1" style="width: 100%;" id="ID_CATCONCLUSION" >
+                <select class="custom-select form-control mb-1" style="width: 100%;" id="ID_CATCONCLUSION">
                     <option value="">&nbsp;</option>
                     @foreach($catConclusiones as $dato)
                     <option value="{{$dato->ID_CATCONCLUSION}}" data-descripcion="{{$dato->DESCRIPCION}}">{{$dato->NOMBRE}}</option>
                     @endforeach
                 </select>
-                
+
                 <form method="post" enctype="multipart/form-data" name="form_reporte_conclusion" id="form_reporte_conclusion">
                     <div class="row">
                         <div class="col-12">
@@ -1246,7 +1246,7 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Unidad de medida *</label>
-                                <input type="text" class="form-control" id="UNIDAD_MEDIDA_BEI" name="UNIDAD_MEDIDA_BEI">
+                                <input type="text" class="form-control" id="UNIDAD_MEDIDA_BEI" name="UNIDAD_MEDIDA_BEI" required>
 
                             </div>
                         </div>
@@ -1544,4 +1544,4 @@
 </script>
 
 <script src="/js_sitio/html2canvas.js"></script>
-<script src="/js_sitio/reportes/reportebei.js?v=1.0"></script>
+<script src="/js_sitio/reportes/reportebei.js?v=2"></script>

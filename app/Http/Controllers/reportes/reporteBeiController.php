@@ -2158,52 +2158,119 @@ class reporteBeiController extends Controller{
                 }
             }
 
-            
-            $puntos = DB::select('SELECT p.ID_BEI_INFORME,
-                                        CONCAT(p.EDAD_BEI," años") as EDAD_BEI_TEXTO,
-                                        p.NUM_PUNTO_BEI,
-                                        p.RECSENSORIAL_ID,
-                                        p.EDAD_BEI,
-                                        p.NOMBRE_BEI,
-                                        p.GENERO_BEI,
-                                        p.FICHA_BEI,
-                                        p.ANTIGUEDAD_BEI,
-                                        p.MUESTRA_BEI,
-                                         IF(p.UNIDAD_MEDIDA_BEI <> "",p.UNIDAD_MEDIDA_BEI, b.UNIDAD_MEDIDA) as UNIDAD_MEDIDA,
-                                        CONCAT(IF(p.RESULTADO_BEI <> "", p.RESULTADO_BEI, 0)," ", IF(p.UNIDAD_MEDIDA_BEI <> "", p.UNIDAD_MEDIDA_BEI , b.UNIDAD_MEDIDA)) AS RESULTADO_BEI_TEXTO,
-                                        p.RESULTADO_BEI,
-                                        CONCAT(IF(p.REFERENCIA_BEI <> "", p.REFERENCIA_BEI, b.VALOR_REFERENCIA)," ", IF(p.UNIDAD_MEDIDA_BEI <> "", p.UNIDAD_MEDIDA_BEI , b.UNIDAD_MEDIDA)) AS REFERENCIA_BEI_TEXTO,
-                                        p.REFERENCIA_BEI,
-                                        a.recsensorialarea_nombre as AREA,
-                                        p.AREA_ID,
-                                        c.recsensorialcategoria_nombrecategoria as CATEGORIA,
-                                        p.CATEGORIA_ID,
-                                        b.DETERMINANTE,
-                                        (IF((p.RESULTADO_BEI = "" OR p.RESULTADO_BEI IS NULL),"Sin evaluar",
-                                            IF(
-                                                -- Verificar si el valor contiene solo letras o es N.D, N.A, N/A
-                                                p.RESULTADO_BEI REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$", 
-                                                -- Si contiene solo letras o las abreviaturas, retornamos "Dentro de norma"
-                                                "ND",  
-                                                -- Si contiene números, continuamos con la limpieza
-                                                IF(
-                                                    CONVERT(REPLACE(REPLACE(REPLACE(p.RESULTADO_BEI, ">" , ""), "<" ,""), " ", ""), DECIMAL(10,2)) >= 0,
-                                                    -- Después de limpiar, verificamos si el valor es mayor o igual a 0.25
-                                                    IF(
-                                                                    (REPLACE(REPLACE(REPLACE(p.RESULTADO_BEI, ">" , ""), "<" ,""), " ", "") + 0) > p.REFERENCIA_BEI,
-                                                                    "Fuera de norma",  -- Si es mayor, está fuera de norma
-                                                                    "Dentro de norma"  -- Si es menor, está dentro de norma
-                                                    ),
-                                                    "Fuera de norma"  -- Si no es un número válido o es negativo, es fuera de norma
-                                                )
-                                            )
-                                        )
-                                    )  as NORMATIVIDAD
-                                FROM puntosBeiInforme p
-                                LEFT JOIN sustanciasEntidadBeis b ON b.ID_BEI = p.BEI_ID
-                                LEFT JOIN recsensorialarea a ON a.id = p.AREA_ID
-                                LEFT JOIN recsensorialcategoria c ON c.id = p.CATEGORIA_ID
-                                WHERE p.PROYECTO_ID = ?', [$proyecto_id]);
+
+            $puntos = DB::select('SELECT
+                        p.ID_BEI_INFORME,
+                        CONCAT(p.EDAD_BEI," años") as EDAD_BEI_TEXTO,
+                        p.NUM_PUNTO_BEI,
+                        p.RECSENSORIAL_ID,
+                        p.EDAD_BEI,
+                        p.NOMBRE_BEI,
+                        p.GENERO_BEI,
+                        p.FICHA_BEI,
+                        p.ANTIGUEDAD_BEI,
+                        p.MUESTRA_BEI,
+                        IF(p.UNIDAD_MEDIDA_BEI <> "", p.UNIDAD_MEDIDA_BEI, b.UNIDAD_MEDIDA) AS UNIDAD_MEDIDA,
+
+                        CONCAT(
+                            IF(p.RESULTADO_BEI <> "", p.RESULTADO_BEI, 0),
+                            " ",
+                            IF(p.UNIDAD_MEDIDA_BEI <> "", p.UNIDAD_MEDIDA_BEI, b.UNIDAD_MEDIDA)
+                        ) AS RESULTADO_BEI_TEXTO,
+
+                        p.RESULTADO_BEI,
+
+                        CONCAT(
+                            IF(p.REFERENCIA_BEI <> "", p.REFERENCIA_BEI, b.VALOR_REFERENCIA),
+                            " ",
+                            IF(p.UNIDAD_MEDIDA_BEI <> "", p.UNIDAD_MEDIDA_BEI, b.UNIDAD_MEDIDA)
+                        ) AS REFERENCIA_BEI_TEXTO,
+
+                        p.REFERENCIA_BEI,
+
+                        a.recsensorialarea_nombre AS AREA,
+                        p.AREA_ID,
+                        c.recsensorialcategoria_nombrecategoria AS CATEGORIA,
+                        p.CATEGORIA_ID,
+                        b.DETERMINANTE,
+
+                        (
+                            IF(
+                                (p.RESULTADO_BEI = "" OR p.RESULTADO_BEI IS NULL),
+                                "Sin evaluar",
+
+                                IF(
+                                    p.RESULTADO_BEI REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$",
+                                    "ND",
+
+                                    IF(
+
+                                        CONVERT(
+                                            REPLACE(
+                                                REPLACE(
+                                                    REPLACE(
+                                                        REPLACE(
+                                                            REPLACE(
+                                                                REPLACE(TRIM(p.RESULTADO_BEI), "<=", ""),
+                                                            ">=", ""),
+                                                        "<", ""),
+                                                    ">", ""),
+                                                "=", ""),
+                                            " ", ""),
+                                        DECIMAL(10,4))
+
+                                        >= 0,
+
+                                        IF(
+
+                                            CONVERT(
+                                                REPLACE(
+                                                    REPLACE(
+                                                        REPLACE(
+                                                            REPLACE(
+                                                                REPLACE(
+                                                                    REPLACE(TRIM(p.RESULTADO_BEI), "<=", ""),
+                                                                ">=", ""),
+                                                            "<", ""),
+                                                        ">", ""),
+                                                    "=", ""),
+                                                " ", ""),
+                                            DECIMAL(10,4))
+
+                                            >
+
+                                            CONVERT(
+                                                REPLACE(
+                                                    REPLACE(
+                                                        REPLACE(
+                                                            REPLACE(
+                                                                REPLACE(
+                                                                    REPLACE(TRIM(p.REFERENCIA_BEI), "<=", ""),
+                                                                ">=", ""),
+                                                            "<", ""),
+                                                        ">", ""),
+                                                    "=", ""),
+                                                " ", ""),
+                                            DECIMAL(10,4)),
+
+                                            "Fuera de norma",
+                                            "Dentro de norma"
+                                        ),
+
+                                        "Fuera de norma"
+                                    )
+                                )
+                            )
+                        ) AS NORMATIVIDAD
+
+                    FROM puntosBeiInforme p
+                    LEFT JOIN sustanciasEntidadBeis b
+                        ON b.ID_BEI = p.BEI_ID
+                    LEFT JOIN recsensorialarea a
+                        ON a.id = p.AREA_ID
+                    LEFT JOIN recsensorialcategoria c
+                        ON c.id = p.CATEGORIA_ID
+                    WHERE p.PROYECTO_ID = ?', [$proyecto_id]);
             
 
 
