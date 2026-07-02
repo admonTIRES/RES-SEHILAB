@@ -222,6 +222,731 @@ class evaluacionfreController extends Controller
 
 
 
+  
+
+
+   public function cargarGraficaPregunta1(Request $request)
+   {   
+        try {
+
+            $reco_id = $request->recsensorial;
+
+            $registros = evaluacionfreModel::select(
+                'CUELLO',
+                'HOMBRO',
+                'CODO',
+                'MUNECA',
+                'ESPALDA_ALTA',
+                'ESPALDA_BAJA',
+                'CADERAS_PIERNAS',
+                'RODILLAS',
+                'TOBILLOS_PIES',
+                'CATEGORIA_ID_FRE'
+            )
+            ->where('RECO_ID', $reco_id)
+            ->get();
+
+            $total = $registros->count();
+
+            if ($total == 0) {
+
+                return response()->json([
+                    'code' => 200,
+                    'total' => 0,
+                    'porcentajes' => [],
+                    'tabla' => []
+                ]);
+
+            }
+
+            $nombreAreas = [
+
+                'CUELLO' => 'Cuello',
+                'HOMBRO' => 'Hombro',
+                'CODO' => 'Codo',
+                'MUNECA' => 'Muñeca',
+                'ESPALDA_ALTA' => 'Espalda alta (región dorsal)',
+                'ESPALDA_BAJA' => 'Espalda baja (región lumbar)',
+                'CADERAS_PIERNAS' => 'Una o ambas caderas / piernas',
+                'RODILLAS' => 'Una o ambas rodillas',
+                'TOBILLOS_PIES' => 'Uno o ambos tobillos / pies'
+
+            ];
+
+            $segmentos = [
+
+                'CUELLO',
+                'HOMBRO',
+                'CODO',
+                'MUNECA',
+                'ESPALDA_ALTA',
+                'ESPALDA_BAJA',
+                'CADERAS_PIERNAS',
+                'RODILLAS',
+                'TOBILLOS_PIES'
+
+            ];
+
+            $contador = [];
+
+            foreach ($segmentos as $segmento) {
+                $contador[$segmento] = 0;
+            }
+
+            $categorias = [];
+
+            foreach ($registros as $registro) {
+                foreach ($segmentos as $segmento) {
+                    if ($registro->$segmento == 1) {
+                        $contador[$segmento]++;
+                        if (!isset($categorias[$segmento])) {
+                            $categorias[$segmento] = [];
+                        }
+                        $categorias[$segmento][] = $registro->CATEGORIA_ID_FRE;
+
+                    }
+
+                }
+
+            }
+
+
+            $porcentajes = [];
+
+            foreach ($contador as $segmento => $cantidad) {
+                $porcentajes[$segmento] = round(
+                    ($cantidad / $total) * 100,
+                    2
+                );
+
+            }
+
+                $tabla = [];
+
+                foreach ($categorias as $segmento => $listaCategorias) {
+
+                    $conteoCategorias = array_count_values($listaCategorias);
+                    foreach ($conteoCategorias as $categoria_id => $cantidadCategoria) {
+                        $categoria = recoergocategoriasModel::find($categoria_id);
+                        $tabla[] = [
+                            'AREA' => $nombreAreas[$segmento],
+                            'CATEGORIA' => $categoria
+                                ? $categoria->NOMBRE_CATEGORIA_ERGO
+                                : 'SIN CATEGORÍA',
+                            'PORCENTAJE' => round(
+                                ($cantidadCategoria / $total) * 100,
+                                2
+                            )
+                        ];
+                    }
+                }
+
+                return response()->json([
+
+                    'code' => 200,
+                    'total' => $total,
+                    'porcentajes' => $porcentajes,
+                    'tabla' => $tabla
+
+                ]);
+            } catch (\Exception $e) {
+
+                return response()->json([
+                    'code' => 500,
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine()
+
+                ]);
+            }
+   }
+
+
+
+
+    public function cargarGraficaPregunta2(Request $request)
+    {
+        try {
+
+            $reco_id = $request->recsensorial;
+
+            $registros = evaluacionfreModel::select(
+                'CUELLO_12_MESES',
+                'HOMBRO_12_MESES',
+                'CODO_12_MESES',
+                'MUNECA_12_MESES',
+                'ESPALDA_ALTA_12_MESES',
+                'ESPALDA_BAJA_12_MESES',
+                'CADERAS_PIERNAS_12_MESES',
+                'RODILLAS_12_MESES',
+                'TOBILLOS_PIES_12_MESES',
+                'CATEGORIA_ID_FRE'
+            )
+            ->where('RECO_ID', $reco_id)
+            ->get();
+
+            $total = $registros->count();
+
+            if ($total == 0) {
+
+                return response()->json([
+                    'code' => 200,
+                    'total' => 0,
+                    'porcentajes' => [],
+                    'tabla' => []
+                ]);
+
+            }
+
+            $nombreAreas = [
+
+                'CUELLO_12_MESES' => 'Cuello',
+                'HOMBRO_12_MESES' => 'Hombro',
+                'CODO_12_MESES' => 'Codo',
+                'MUNECA_12_MESES' => 'Muñeca',
+                'ESPALDA_ALTA_12_MESES' => 'Espalda alta (región dorsal)',
+                'ESPALDA_BAJA_12_MESES' => 'Espalda baja (región lumbar)',
+                'CADERAS_PIERNAS_12_MESES' => 'Una o ambas caderas / piernas',
+                'RODILLAS_12_MESES' => 'Una o ambas rodillas',
+                'TOBILLOS_PIES_12_MESES' => 'Uno o ambos tobillos / pies'
+
+            ];
+
+            $segmentos = [
+
+                'CUELLO_12_MESES',
+                'HOMBRO_12_MESES',
+                'CODO_12_MESES',
+                'MUNECA_12_MESES',
+                'ESPALDA_ALTA_12_MESES',
+                'ESPALDA_BAJA_12_MESES',
+                'CADERAS_PIERNAS_12_MESES',
+                'RODILLAS_12_MESES',
+                'TOBILLOS_PIES_12_MESES'
+
+            ];
+
+            $contador = [];
+
+            foreach ($segmentos as $segmento) {
+                $contador[$segmento] = 0;
+            }
+
+            $categorias = [];
+
+            foreach ($registros as $registro) {
+
+                foreach ($segmentos as $segmento) {
+
+                    if ($registro->$segmento == 1) {
+
+                        $contador[$segmento]++;
+
+                        if (!isset($categorias[$segmento])) {
+                            $categorias[$segmento] = [];
+                        }
+
+                        $categorias[$segmento][] = $registro->CATEGORIA_ID_FRE;
+
+                    }
+
+                }
+
+            }
+
+            $porcentajes = [];
+
+            foreach ($contador as $segmento => $cantidad) {
+
+                $porcentajes[$segmento] = round(
+                    ($cantidad / $total) * 100,
+                    2
+                );
+
+            }
+
+                $tabla = [];
+
+                foreach ($categorias as $segmento => $listaCategorias) {
+
+                    $conteoCategorias = array_count_values($listaCategorias);
+
+                    foreach ($conteoCategorias as $categoria_id => $cantidadCategoria) {
+
+                        $categoria = recoergocategoriasModel::find($categoria_id);
+
+                        $tabla[] = [
+
+                            'AREA' => $nombreAreas[$segmento],
+
+                            'CATEGORIA' => $categoria
+                                ? $categoria->NOMBRE_CATEGORIA_ERGO
+                                : 'SIN CATEGORÍA',
+                            'PORCENTAJE' => round(
+                                ($cantidadCategoria / $total) * 100,
+                                2
+                            )
+
+                        ];
+                    }
+                }
+
+                return response()->json([
+                    'code' => 200,
+                    'total' => $total,
+                    'porcentajes' => $porcentajes,
+                    'tabla' => $tabla
+                ]);
+            } catch (\Exception $e) {
+
+                return response()->json([
+                    'code' => 500,
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine()
+                ]);
+            }
+    }
+
+
+
+    public function cargarGraficaPregunta3(Request $request)
+    {
+        try {
+
+            $reco_id = $request->recsensorial;
+
+            $registros = evaluacionfreModel::select(
+                'CUELLO_7_DIAS',
+                'HOMBRO_7_DIAS',
+                'CODO_7_DIAS',
+                'MUNECA_7_DIAS',
+                'ESPALDA_ALTA_7_DIAS',
+                'ESPALDA_BAJA_7_DIAS',
+                'CADERAS_PIERNAS_7_DIAS',
+                'RODILLAS_7_DIAS',
+                'TOBILLOS_PIES_7_DIAS',
+                'CATEGORIA_ID_FRE'
+            )
+            ->where('RECO_ID', $reco_id)
+            ->get();
+
+            $total = $registros->count();
+
+            if ($total == 0) {
+
+                return response()->json([
+                    'code' => 200,
+                    'total' => 0,
+                    'porcentajes' => [],
+                    'tabla' => []
+                ]);
+
+            }
+
+            $nombreAreas = [
+
+                'CUELLO_7_DIAS' => 'Cuello',
+                'HOMBRO_7_DIAS' => 'Hombro',
+                'CODO_7_DIAS' => 'Codo',
+                'MUNECA_7_DIAS' => 'Muñeca',
+                'ESPALDA_ALTA_7_DIAS' => 'Espalda alta (región dorsal)',
+                'ESPALDA_BAJA_7_DIAS' => 'Espalda baja (región lumbar)',
+                'CADERAS_PIERNAS_7_DIAS' => 'Una o ambas caderas / piernas',
+                'RODILLAS_7_DIAS' => 'Una o ambas rodillas',
+                'TOBILLOS_PIES_7_DIAS' => 'Uno o ambos tobillos / pies'
+
+            ];
+
+            $segmentos = [
+
+                'CUELLO_7_DIAS',
+                'HOMBRO_7_DIAS',
+                'CODO_7_DIAS',
+                'MUNECA_7_DIAS',
+                'ESPALDA_ALTA_7_DIAS',
+                'ESPALDA_BAJA_7_DIAS',
+                'CADERAS_PIERNAS_7_DIAS',
+                'RODILLAS_7_DIAS',
+                'TOBILLOS_PIES_7_DIAS'
+
+            ];
+
+            $contador = [];
+
+            foreach ($segmentos as $segmento) {
+                $contador[$segmento] = 0;
+            }
+
+            $categorias = [];
+
+            foreach ($registros as $registro) {
+                foreach ($segmentos as $segmento) {
+                    if ($registro->$segmento == 1) {
+                        $contador[$segmento]++;
+                        if (!isset($categorias[$segmento])) {
+                            $categorias[$segmento] = [];
+                        }
+                        $categorias[$segmento][] = $registro->CATEGORIA_ID_FRE;
+                    }
+                }
+            }
+
+
+            $porcentajes = [];
+            foreach ($contador as $segmento => $cantidad) {
+                $porcentajes[$segmento] = round(
+                    ($cantidad / $total) * 100,
+                    2
+                );
+            }
+
+                $tabla = [];
+
+                foreach ($categorias as $segmento => $listaCategorias) {
+
+                    $conteoCategorias = array_count_values($listaCategorias);
+
+                    foreach ($conteoCategorias as $categoria_id => $cantidadCategoria) {
+
+                        $categoria = recoergocategoriasModel::find($categoria_id);
+
+                        $tabla[] = [
+
+                            'AREA' => $nombreAreas[$segmento],
+
+                            'CATEGORIA' => $categoria
+                                ? $categoria->NOMBRE_CATEGORIA_ERGO
+                                : 'SIN CATEGORÍA',
+
+                            'PORCENTAJE' => round(
+                                ($cantidadCategoria / $total) * 100,
+                                2
+                            )
+
+                        ];
+                    }
+                }
+
+                return response()->json([
+
+                    'code' => 200,
+                    'total' => $total,
+                    'porcentajes' => $porcentajes,
+                    'tabla' => $tabla
+                ]);
+            } catch (\Exception $e) {
+
+                return response()->json([
+                    'code' => 500,
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine()
+                ]);
+            }
+    }
+
+
+
+    public function cargarGraficaPregunta4(Request $request)
+    {
+        try {
+
+            $reco_id = $request->recsensorial;
+
+            $registros = evaluacionfreModel::select(
+
+                'COLUMNA_LUMBAR_P1',
+                'COLUMNA_LUMBAR_P2',
+                'COLUMNA_LUMBAR_P3',
+                'COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL',
+                'COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO',
+                'COLUMNA_LUMBAR_P7',
+                'COLUMNA_LUMBAR_P8',
+                'CATEGORIA_ID_FRE'
+
+            )
+            ->where('RECO_ID',$reco_id)
+            ->get();
+
+            $total = $registros->count();
+
+            if($total==0){
+
+                return response()->json([
+                    'code'=>200,
+                    'porcentaje'=>0,
+                    'tabla'=>[]
+                ]);
+
+            }
+
+            $contador = 0;
+
+            $categorias = [];
+
+            foreach($registros as $registro){
+
+                $tieneDolor = (
+
+                    $registro->COLUMNA_LUMBAR_P1 == 1 ||
+                    $registro->COLUMNA_LUMBAR_P2 == 1 ||
+                    $registro->COLUMNA_LUMBAR_P3 == 1 ||
+                    $registro->COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL == 1 ||
+                    $registro->COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO == 1 ||
+                    $registro->COLUMNA_LUMBAR_P7 == 1 ||
+                    $registro->COLUMNA_LUMBAR_P8 == 1
+
+                );
+
+                if($tieneDolor){
+
+                    $contador++;
+
+                    $categorias[] = $registro->CATEGORIA_ID_FRE;
+
+                }
+
+            }
+
+        
+            $porcentaje = round(
+                ($contador/$total)*100,
+                2
+            );
+
+
+
+                $tabla = [];
+
+                $conteoCategorias = array_count_values($categorias);
+                foreach ($conteoCategorias as $categoria_id => $cantidadCategoria) {
+                    $categoria = recoergocategoriasModel::find($categoria_id);
+                    $tabla[] = [
+                        'CATEGORIA' => $categoria
+                            ? $categoria->NOMBRE_CATEGORIA_ERGO
+                            : 'SIN CATEGORÍA',
+                        'PORCENTAJE' => round(
+                            ($cantidadCategoria / $total) * 100,
+                            2
+                        )
+                    ];
+                }
+
+                return response()->json([
+
+                    'code' => 200,
+                    'total' => $total,
+                    'porcentaje' => $porcentaje,
+                    'tabla' => $tabla
+                ]);
+            } catch (\Exception $e) {
+
+                return response()->json([
+                    'code' => 500,
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine()
+                ]);
+            }
+    }
+
+
+    public function cargarGraficaPregunta5(Request $request)
+    {
+     try {
+
+            $reco_id = $request->recsensorial;
+
+            $registros = evaluacionfreModel::select(
+
+                'CUELLO_P1',
+                'CUELLO_P2',
+                'CUELLO_P3',
+                'CUELLO_P5_ACTIVIDAD_LABORAL',
+                'CUELLO_P5_ACTIVIDAD_OCIO',
+                'CUELLO_P7',
+                'CUELLO_P8',
+                'CATEGORIA_ID_FRE'
+
+            )
+            ->where('RECO_ID',$reco_id)
+            ->get();
+
+            $total = $registros->count();
+
+            if($total==0){
+
+                return response()->json([
+                    'code'=>200,
+                    'total'=>0,
+                    'porcentaje'=>0,
+                    'tabla'=>[]
+                ]);
+
+            }
+
+            $contador = 0;
+
+            $categorias = [];
+
+            foreach($registros as $registro){
+
+                $tieneProblema = (
+
+                    $registro->CUELLO_P1 == 1 ||
+                    $registro->CUELLO_P2 == 1 ||
+                    $registro->CUELLO_P3 == 1 ||
+                    $registro->CUELLO_P5_ACTIVIDAD_LABORAL == 1 ||
+                    $registro->CUELLO_P5_ACTIVIDAD_OCIO == 1 ||
+                    $registro->CUELLO_P7 == 1 ||
+                    $registro->CUELLO_P8 == 1
+
+                );
+
+                if($tieneProblema){
+                    $contador++;
+                    $categorias[] = $registro->CATEGORIA_ID_FRE;
+
+                }
+
+            }
+
+            $porcentaje = round(
+                ($contador / $total) * 100,
+                2
+            );
+        
+                $tabla = [];
+                $conteoCategorias = array_count_values($categorias);
+                foreach ($conteoCategorias as $categoria_id => $cantidadCategoria) {
+                    $categoria = recoergocategoriasModel::find($categoria_id);
+                    $tabla[] = [
+                        'CATEGORIA' => $categoria
+                            ? $categoria->NOMBRE_CATEGORIA_ERGO
+                            : 'SIN CATEGORÍA',
+                        'PORCENTAJE' => round(
+                            ($cantidadCategoria / $total) * 100,
+                            2
+                        )
+                    ];
+                }
+
+                return response()->json([
+
+                    'code' => 200,
+                    'total' => $total,
+                    'porcentaje' => $porcentaje,
+                    'tabla' => $tabla
+                ]);
+            } catch (\Exception $e) {
+
+                return response()->json([
+                    'code' => 500,
+                    'message' => $e->getMessage(),
+                    'line' => $e->getLine()
+                ]);
+            }
+    }
+
+
+    public function cargarGraficaPregunta6(Request $request)
+    {
+        try {
+
+        $reco_id = $request->recsensorial;
+
+        $registros = evaluacionfreModel::select(
+
+            'HOMBRO_P1',
+            'HOMBRO_P2',
+            'HOMBRO_P3',
+            'HOMBRO_P5_ACTIVIDAD_LABORAL',
+            'HOMBRO_P5_ACTIVIDAD_OCIO',
+            'HOMBRO_P7',
+            'HOMBRO_P8',
+            'CATEGORIA_ID_FRE'
+
+        )
+        ->where('RECO_ID',$reco_id)
+        ->get();
+
+        $total = $registros->count();
+
+        if($total==0){
+
+            return response()->json([
+                'code'=>200,
+                'total'=>0,
+                'porcentaje'=>0,
+                'tabla'=>[]
+            ]);
+
+        }
+
+        $contador = 0;
+
+        $categorias = [];
+
+        foreach($registros as $registro){
+
+            $tieneProblema = (
+
+                $registro->HOMBRO_P1 == 1 ||
+                $registro->HOMBRO_P2 == 1 ||
+                $registro->HOMBRO_P3 == 1 ||
+                $registro->HOMBRO_P5_ACTIVIDAD_LABORAL == 1 ||
+                $registro->HOMBRO_P5_ACTIVIDAD_OCIO == 1 ||
+                $registro->HOMBRO_P7 == 1 ||
+                $registro->HOMBRO_P8 == 1
+
+            );
+
+            if($tieneProblema){
+
+                $contador++;
+
+                $categorias[] = $registro->CATEGORIA_ID_FRE;
+
+            }
+
+        }
+
+        $porcentaje = round(
+            ($contador / $total) * 100,
+            2
+        );
+
+            $tabla = [];
+
+            $conteoCategorias = array_count_values($categorias);
+            foreach ($conteoCategorias as $categoria_id => $cantidadCategoria) {
+                $categoria = recoergocategoriasModel::find($categoria_id);
+                $tabla[] = [
+                    'CATEGORIA' => $categoria
+                        ? $categoria->NOMBRE_CATEGORIA_ERGO
+                        : 'SIN CATEGORÍA',
+                    'PORCENTAJE' => round(
+                        ($cantidadCategoria / $total) * 100,
+                        2
+                    )
+
+                ];
+            }
+
+            return response()->json([
+                'code' => 200,
+                'total' => $total,
+                'porcentaje' => $porcentaje,
+                'tabla' => $tabla
+
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'code' => 500,
+                'message' => $e->getMessage(),
+                'line' => $e->getLine()
+
+            ]);
+        }
+    }
 
     public function store(Request $request)
     {

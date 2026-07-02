@@ -2262,6 +2262,15 @@ Route::get('Tablafichasevaluacionfre', ['as' => 'ERGO.Tablafichasevaluacionfre',
 Route::post('obtenerEvaluacionFre', ['as' => 'obtenerEvaluacionFre', 'uses' => 'ERGO\evaluacionfreController@obtenerEvaluacionFre']);
 
 
+Route::post('cargarGraficaPregunta1', ['as' => 'cargarGraficaPregunta1', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta1']);
+Route::post('cargarGraficaPregunta2', ['as' => 'cargarGraficaPregunta2', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta2']);
+Route::post('cargarGraficaPregunta3', ['as' => 'cargarGraficaPregunta3', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta3']);
+Route::post('cargarGraficaPregunta4', ['as' => 'cargarGraficaPregunta4', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta4']);
+Route::post('cargarGraficaPregunta5', ['as' => 'cargarGraficaPregunta5', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta5']);
+Route::post('cargarGraficaPregunta6', ['as' => 'cargarGraficaPregunta6', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta6']);
+
+
+
 Route::get('/clear-cache', function () {
     Artisan::call('config:cache');
     Artisan::call('config:clear');

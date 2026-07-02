@@ -171,6 +171,15 @@ $('.multisteps-form__progress-btn').click(function () {
 		case "steps_menu_tab4":
 			recsensorial = $("#recsensorial_id").val(); 
             mostrarTablafichasevaluacionfre();
+            break;
+        case "steps_menu_tab5":
+            recsensorial = $("#recsensorial_id").val(); 
+            cargarGraficaPregunta1();
+            cargarGraficaPregunta2();
+            cargarGraficaPregunta3();
+            cargarGraficaPregunta4();
+            cargarGraficaPregunta5();
+            cargarGraficaPregunta6();
 		break;
 		default:
 		break;
@@ -5803,3 +5812,776 @@ $("#boton_guardar_fre").click(function (e) {
 }
     
 });
+
+////// GRAFICAS 1
+
+
+function cargarGraficaPregunta1()
+{
+
+    $.ajax({
+
+        url: '/cargarGraficaPregunta1',
+        type: 'POST',
+        dataType: 'json',
+        data:{
+            recsensorial: recsensorial,
+            _token: $('meta[name="csrf-token"]').attr('content')
+
+        },
+        beforeSend:function(){
+            $("#tablaPregunta1").html("");
+
+        },
+
+        success:function(response){
+            if(response.code==200)
+            {
+                llenarMapaPregunta1(response.porcentajes);
+                llenarTablaPregunta1(response.tabla);
+            }
+
+        },
+
+        error:function(xhr){
+            console.log(xhr.responseText);
+        }
+
+    });
+
+}
+
+
+function llenarMapaPregunta1(datos)
+{
+    colocarPorcentaje("#CUELLOP1",datos.CUELLO);
+    colocarPorcentaje("#HOMBREOP1",datos.HOMBRO);
+    colocarPorcentaje("#CODOP1",datos.CODO);
+    colocarPorcentaje("#MANOP1",datos.MUNECA);
+    colocarPorcentaje("#DORSALP1",datos.ESPALDA_ALTA);
+    colocarPorcentaje("#LUMBARP1",datos.ESPALDA_BAJA);
+    colocarPorcentaje("#CADERAP1",datos.CADERAS_PIERNAS);
+    colocarPorcentaje("#RODILLAP1",datos.RODILLAS);
+    colocarPorcentaje("#TOBILLOP1",datos.TOBILLOS_PIES);
+}
+
+
+function colocarPorcentaje(id, valor)
+{
+    $(id).text(valor + "%");
+
+    if (valor == 0)
+    {
+        $(id).css({
+            "background": "#FFFFFF",
+            "color": "black"
+        });
+    }
+    else if (valor >= 1 && valor < 50)
+    {
+        $(id).css({
+            "background": "#A4D65E",
+            "color": "black"
+        });
+    }
+    else
+    {
+        $(id).css({
+            "background": "#FF585D",
+            "color": "white"
+        });
+    }
+}
+
+
+function llenarTablaPregunta1(datos)
+{
+
+    let html = "";
+
+    html += `
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Área</th>
+                    <th>Categoría</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    let grupos = {};
+    $.each(datos, function(i, row){
+        if(!grupos[row.AREA]){
+            grupos[row.AREA] = [];
+        }
+        grupos[row.AREA].push(row);
+    });
+
+    $.each(grupos, function(area, filas){
+        $.each(filas, function(index, row){
+            html += "<tr>";
+            if(index == 0){
+                html += `
+                    <td rowspan="${filas.length}" class="align-middle font-weight-bold">
+                        ${area}
+                    </td>
+                `;
+            }
+            html += `
+                <td>${row.CATEGORIA}</td>
+                <td>${row.PORCENTAJE}%</td>
+            `;
+            html += "</tr>";
+        });
+    });
+    html += `
+            </tbody>
+        </table>
+    `;
+    $("#tablaPregunta1").html(html);
+}
+
+
+
+////// GRAFICAS 2
+
+
+function cargarGraficaPregunta2()
+{
+
+    $.ajax({
+        url: '/cargarGraficaPregunta2',
+        type: 'POST',
+        dataType: 'json',
+        data:{
+            recsensorial: recsensorial,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend:function(){
+            $("#tablaPregunta2").html("");
+        },
+        success:function(response){
+            if(response.code==200)
+            {
+                llenarMapaPregunta2(response.porcentajes);
+                llenarTablaPregunta2(response.tabla);
+            }
+        },
+        error:function(xhr){
+            console.log(xhr.responseText);
+        }
+
+    });
+
+}
+
+
+function llenarMapaPregunta2(datos)
+{
+
+    colocarPorcentajePregunta2("#CUELLOP2",datos.CUELLO_12_MESES);
+    colocarPorcentajePregunta2("#HOMBREOP2",datos.HOMBRO_12_MESES);
+    colocarPorcentajePregunta2("#CODOP2",datos.CODO_12_MESES);
+    colocarPorcentajePregunta2("#MANOP2",datos.MUNECA_12_MESES);
+    colocarPorcentajePregunta2("#DORSALP2",datos.ESPALDA_ALTA_12_MESES);
+    colocarPorcentajePregunta2("#LUMBARP2",datos.ESPALDA_BAJA_12_MESES);
+    colocarPorcentajePregunta2("#CADERAP2",datos.CADERAS_PIERNAS_12_MESES);
+    colocarPorcentajePregunta2("#RODILLAP2",datos.RODILLAS_12_MESES);
+    colocarPorcentajePregunta2("#TOBILLOP2",datos.TOBILLOS_PIES_12_MESES);
+
+}
+
+function colocarPorcentajePregunta2(id,valor)
+{
+
+    $(id).text(valor + "%");
+
+    if (valor == 0)
+    {
+        $(id).css({
+            "background": "#FFFFFF",
+            "color": "black"
+        });
+    }
+    else if (valor >= 1 && valor < 50)
+    {
+        $(id).css({
+            "background": "#A4D65E",
+            "color": "black"
+        });
+    }
+    else
+    {
+        $(id).css({
+            "background": "#FF585D",
+            "color": "white"
+        });
+    }
+
+}
+
+
+function llenarTablaPregunta2(datos)
+{
+
+    let html = "";
+
+    html += `
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Área</th>
+                    <th>Categoría</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    let grupos = {};
+    $.each(datos, function(i, row){
+
+        if(!grupos[row.AREA]){
+            grupos[row.AREA] = [];
+        }
+        grupos[row.AREA].push(row);
+    });
+
+    $.each(grupos, function(area, filas){
+        $.each(filas, function(index, row){
+            html += "<tr>";
+            if(index == 0){
+                html += `<td rowspan="${filas.length}" class="align-middle font-weight-bold">${area}</td>`;
+            }
+            html += `
+                <td>${row.CATEGORIA}</td>
+                <td>${row.PORCENTAJE}%</td>
+            `;
+            html += "</tr>";
+        });
+    });
+    html += `
+            </tbody>
+        </table>
+    `;
+    $("#tablaPregunta2").html(html);
+
+}
+
+////// GRAFICAS 3
+
+
+
+function cargarGraficaPregunta3()
+{
+    $.ajax({
+
+        url: '/cargarGraficaPregunta3',
+        type: 'POST',
+        dataType: 'json',
+        data:{
+            recsensorial: recsensorial,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend:function(){
+            $("#tablaPregunta3").html("");
+        },
+
+        success:function(response){
+
+            if(response.code==200)
+            {
+                llenarMapaPregunta3(response.porcentajes);
+                llenarTablaPregunta3(response.tabla);
+            }
+        },
+        error:function(xhr){
+            console.log(xhr.responseText);
+        }
+    });
+}
+
+
+function llenarMapaPregunta3(datos)
+{
+
+    colocarPorcentajePregunta3("#CUELLOP3",datos.CUELLO_7_DIAS);
+    colocarPorcentajePregunta3("#HOMBREOP3",datos.HOMBRO_7_DIAS);
+    colocarPorcentajePregunta3("#CODOP3",datos.CODO_7_DIAS);
+    colocarPorcentajePregunta3("#MANOP3",datos.MUNECA_7_DIAS);
+    colocarPorcentajePregunta3("#DORSALP3",datos.ESPALDA_ALTA_7_DIAS);
+    colocarPorcentajePregunta3("#LUMBARP3",datos.ESPALDA_BAJA_7_DIAS);
+    colocarPorcentajePregunta3("#CADERAP3",datos.CADERAS_PIERNAS_7_DIAS);
+    colocarPorcentajePregunta3("#RODILLAP3",datos.RODILLAS_7_DIAS);
+    colocarPorcentajePregunta3("#TOBILLOP3",datos.TOBILLOS_PIES_7_DIAS);
+
+}
+
+
+function colocarPorcentajePregunta3(id,valor)
+{
+     $(id).text(valor + "%");
+
+    if (valor == 0)
+    {
+        $(id).css({
+            "background": "#FFFFFF",
+            "color": "black"
+        });
+    }
+    else if (valor >= 1 && valor < 50)
+    {
+        $(id).css({
+            "background": "#A4D65E",
+            "color": "black"
+        });
+    }
+    else
+    {
+        $(id).css({
+            "background": "#FF585D",
+            "color": "white"
+        });
+    }
+
+}
+
+
+function llenarTablaPregunta3(datos)
+{
+    let html = "";
+
+    html += `
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Área</th>
+                    <th>Categoría</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    let grupos = {};
+
+    $.each(datos, function(i, row){
+
+        if(!grupos[row.AREA]){
+            grupos[row.AREA] = [];
+        }
+
+        grupos[row.AREA].push(row);
+
+    });
+
+    $.each(grupos, function(area, filas){
+        $.each(filas, function(index, row){
+            html += "<tr>";
+            if(index == 0){
+                html += `<td rowspan="${filas.length}" class="align-middle font-weight-bold">${area}</td>`;
+            }
+            html += `
+                <td>${row.CATEGORIA}</td>
+                <td>${row.PORCENTAJE}%</td>
+            `;
+            html += "</tr>";
+        });
+    });
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+    $("#tablaPregunta3").html(html);
+}
+
+
+////// GRAFICAS 4
+
+
+function cargarGraficaPregunta4()
+{
+    $.ajax({
+
+        url: '/cargarGraficaPregunta4',
+        type: 'POST',
+        dataType: 'json',
+        data:{
+            recsensorial: recsensorial,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend:function(){
+
+            $("#tablaPregunta4").html("");
+
+        },
+
+        success:function(response){
+
+            if(response.code==200)
+            {
+                llenarMapaPregunta4(response.porcentaje);
+                llenarTablaPregunta4(response.tabla);
+            }
+
+        },
+
+        error:function(xhr){
+
+            console.log(xhr.responseText);
+
+        }
+
+    });
+}
+
+function llenarMapaPregunta4(valor)
+{
+    colocarPorcentajePregunta4("#LUMBARP4", valor);
+}
+
+function colocarPorcentajePregunta4(id, valor)
+{
+
+    $(id).text(valor + "%");
+
+    if (valor == 0)
+    {
+        $(id).css({
+            "background": "#FFFFFF",
+            "color": "black"
+        });
+    }
+    else if (valor >= 1 && valor < 50)
+    {
+        $(id).css({
+            "background": "#A4D65E",
+            "color": "black"
+        });
+    }
+    else
+    {
+        $(id).css({
+            "background": "#FF585D",
+            "color": "white"
+        });
+    }
+
+}
+
+function llenarTablaPregunta4(datos)
+{
+
+    let html="";
+
+    html+=`
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    $.each(datos,function(i,row){
+
+        html+=`
+            <tr>
+                <td>${row.CATEGORIA}</td>
+                <td>${row.PORCENTAJE}%</td>
+            </tr>
+        `;
+
+    });
+
+    html+=`
+            </tbody>
+        </table>
+    `;
+
+    $("#tablaPregunta4").html(html);
+
+}
+
+
+
+////// GRAFICAS 5
+
+
+function cargarGraficaPregunta5()
+{
+    $.ajax({
+
+        url:'/cargarGraficaPregunta5',
+        type:'POST',
+        dataType:'json',
+        data:{
+            recsensorial:recsensorial,
+            _token:$('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend:function(){
+
+            $("#tablaPregunta5").html("");
+
+        },
+
+        success:function(response){
+
+            if(response.code==200)
+            {
+                llenarMapaPregunta5(response.porcentaje);
+                llenarTablaPregunta5(response.tabla);
+            }
+
+        },
+
+        error:function(xhr){
+
+            console.log(xhr.responseText);
+
+        }
+
+    });
+}
+
+function llenarMapaPregunta5(valor)
+{
+    colocarPorcentajePregunta5("#CUELLOP5",valor);
+}
+
+
+function colocarPorcentajePregunta5(id,valor)
+{
+
+    $(id).text(valor+"%");
+
+    if(valor==0)
+    {
+        $(id).css({
+
+            "background":"#FFFFFF",
+            "color":"black"
+
+        });
+    }
+    else if(valor>=1 && valor<50)
+    {
+        $(id).css({
+
+            "background":"#A4D65E",
+            "color":"black"
+
+        });
+    }
+    else
+    {
+        $(id).css({
+
+            "background":"#FF585D",
+            "color":"white"
+
+        });
+    }
+
+}
+
+function llenarTablaPregunta5(datos)
+{
+
+    let html="";
+
+    html+=`
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    $.each(datos,function(i,row){
+
+        html+=`
+            <tr>
+                <td>${row.CATEGORIA}</td>
+                <td>${row.PORCENTAJE}%</td>
+            </tr>
+        `;
+
+    });
+
+    html+=`
+            </tbody>
+        </table>
+    `;
+
+    $("#tablaPregunta5").html(html);
+
+}
+
+
+
+////// GRAFICAS 6
+
+
+function cargarGraficaPregunta6()
+{
+    $.ajax({
+
+        url:'/cargarGraficaPregunta6',
+        type:'POST',
+        dataType:'json',
+        data:{
+            recsensorial:recsensorial,
+            _token:$('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend:function(){
+
+            $("#tablaPregunta6").html("");
+
+        },
+
+        success:function(response){
+
+            if(response.code==200)
+            {
+                llenarMapaPregunta6(response.porcentaje);
+                llenarTablaPregunta6(response.tabla);
+            }
+
+        },
+
+        error:function(xhr){
+
+            console.log(xhr.responseText);
+
+        }
+
+    });
+}
+
+function llenarMapaPregunta6(valor)
+{
+    colocarPorcentajePregunta6("#HOMBROP6",valor);
+}
+
+function colocarPorcentajePregunta6(id,valor)
+{
+
+    $(id).text(valor+"%");
+
+    if(valor==0)
+    {
+        $(id).css({
+
+            "background":"#FFFFFF",
+            "color":"black"
+
+        });
+    }
+    else if(valor>=1 && valor<50)
+    {
+        $(id).css({
+
+            "background":"#A4D65E",
+            "color":"black"
+
+        });
+    }
+    else
+    {
+        $(id).css({
+
+            "background":"#FF585D",
+            "color":"white"
+
+        });
+    }
+
+}
+
+function llenarTablaPregunta6(datos)
+{
+
+    let html="";
+
+    html+=`
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>%</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    $.each(datos,function(i,row){
+
+        html+=`
+            <tr>
+                <td>${row.CATEGORIA}</td>
+                <td>${row.PORCENTAJE}%</td>
+            </tr>
+        `;
+
+    });
+
+    html+=`
+            </tbody>
+        </table>
+    `;
+
+    $("#tablaPregunta6").html(html);
+
+}
+
+
+/////  TOMAR CAPTURA
+
+
+function descargarCard(idCard,nombre)
+{
+
+    const card=document.getElementById(idCard);
+
+    const alto=card.style.height;
+    const overflow=card.style.overflow;
+
+    card.style.height="auto";
+    card.style.overflow="visible";
+
+    html2canvas(card,{
+
+        scale:3,
+        useCORS:true,
+        backgroundColor:"#ffffff"
+
+    }).then(function(canvas){
+
+        let enlace=document.createElement("a");
+
+        enlace.download=nombre+".png";
+
+        enlace.href=canvas.toDataURL("image/png");
+
+        enlace.click();
+
+        card.style.height=alto;
+        card.style.overflow=overflow;
+
+    });
+
+}
