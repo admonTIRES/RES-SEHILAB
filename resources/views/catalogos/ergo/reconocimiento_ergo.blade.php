@@ -220,6 +220,10 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                 <i class="fa fa-address-card"></i><br>
                                                 <span>Fichas técnicas</span>
                                             </div>
+                                            <div class="multisteps-form__progress-btn" id="steps_menu_tab5">
+                                                <i class="fa fa-folder-open"></i><br>
+                                                <span> Planos</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -826,94 +830,65 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
 
 
                                             <!--STEP 5-->
+
+                                            <style>
+                                                .plano_galeria {
+
+                                                    position: relative;
+                                                    margin-bottom: 20px;
+
+                                                }
+
+                                                .plano_galeria img {
+
+                                                    width: 100%;
+                                                    height: 150px;
+                                                    object-fit: contain;
+                                                    border: 1px solid #DDD;
+                                                    border-radius: 5px;
+                                                    cursor: pointer;
+
+                                                }
+
+                                                .plano_galeria i {
+
+                                                    opacity: 0;
+                                                    transition: .3s;
+
+                                                }
+
+                                                .plano_galeria:hover i {
+
+                                                    opacity: 1;
+
+                                                }
+                                            </style>
+
                                             <div class="multisteps-form__panel" data-animation="scaleIn" id="steps_contenido_tab5">
                                                 <div class="multisteps-form__content">
-                                                    <form enctype="multipart/form-data" method="post" name="form_responsables" id="form_responsables">
-                                                        <div class="row justify-content-center align-items-center">
-                                                            <div class="col-12">
-                                                                {!! csrf_field() !!}
-                                                            </div>
-                                                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                                                <ol class="breadcrumb m-b-10 text-light">
-                                                                    Responsables del informe de reconocimiento sensorial
-                                                                </ol>
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Nombre del responsable Técnico del informe</label>
-                                                                            <input type="text" class="form-control" id="NOMBRE_TECNICO" name="NOMBRE_TECNICO" required>
-                                                                        </div>
-                                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE']))
 
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Nombre del responsable del Contrato/Proyecto </label>
-                                                                            <input type="text" class="form-control" id="NOMBRE_CONTRATO" name="NOMBRE_CONTRATO" required>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Cargo del responsable Técnico del informe</label>
-                                                                            <select class="custom-select form-control" id="CARGO_TECNICO" name="CARGO_TECNICO" required>
-                                                                                <option value=""></option>
-
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Cargo del responsable del Contrato/Proyecto</label>
-                                                                            <select class="custom-select form-control" id="CARGO_CONTRATO" name="CARGO_CONTRATO" required>
-                                                                                <option value=""></option>
-
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Documento del responsable Técnico del informe</label>
-                                                                            <style type="text/css" media="screen">
-                                                                                .dropify-wrapper {
-                                                                                    height: 296px !important;
-                                                                                    /*tamaño estatico del campo foto*/
-                                                                                }
-                                                                            </style>
-                                                                            <input type="file" class="dropify" accept="image/jpeg,image/x-png" id="TECNICO_DOC_IMG" name="TECNICO_DOC_IMG" data-allowed-file-extensions="jpg png JPG PNG" data-height="296" data-default-file="" required>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <label> Documento del responsable del Contrato/Proyecto</label>
-                                                                            <style type="text/css" media="screen">
-                                                                                .dropify-wrapper {
-                                                                                    height: 296px !important;
-                                                                                    /*tamaño estatico del campo foto*/
-                                                                                }
-                                                                            </style>
-                                                                            <input type="file" class="dropify" accept="image/jpeg,image/x-png" id="CONTRATO_DOC_IMG" name="CONTRATO_DOC_IMG" data-allowed-file-extensions="jpg png JPG PNG" data-height="296" data-default-file="" required>
-                                                                        </div>
-                                                                    </div>
-
-
-
-
-
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div class="col-sm-8">
-                                                                <div class="form-group" style="text-align: right;">
-                                                                    <button type="submit" class="btn btn-danger botonguardar_modulorecsensorial w-100 p-3" id="boton_guardar_responsables">
-                                                                        Guardar responsables <i class="fa fa-save"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
+                                                            <ol class="breadcrumb m-b-10">
+                                                                <h2 style="color: #ffff; margin: 0;"><i class="fa fa-folder-open"></i> Planos</h2>
+                                                                <button type="button" class="btn btn-secondary waves-effect waves-light   botonnuevo_modulorecsensorial" data-toggle="tooltip" title="Nuevo mapa" id="boton_nuevo_mapa" style="margin-left: auto;">
+                                                                    Nueva <i class="fa fa-plus"></i>
+                                                                </button>
+                                                            </ol>
+                                                            @else
+                                                            <ol class="breadcrumb m-b-10">
+                                                                <h2 style="color: #ffff; margin: 0;"><i class="fa fa-folder-open"></i> Planos </h2>
+                                                            </ol>
+                                                            @endif
+                                                            <div class="row" id="galeria_planos"></div>
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
                                             </div>
+
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -1065,9 +1040,10 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     <a href="#7" class="list-group-item">7.- Resultados fichas <i class="fa " id="menureporte_7"></i></a>
                                     <a href="#7_1" class="list-group-item submenu">7.1.- Resultados de la evaluación conforme a las fichas de la ISO 12995-2014 <i class="fa " id="menureporte_7_1"></i></a>
                                     <a href="#7_2" class="list-group-item submenu">7.2.- Mapeo de Peligros/Riesgos Ergonómicos<i class="fa " id="menureporte_7_2"></i></a>
-                                    <a href="#8" class="list-group-item">8.- Conclusiones <i class="fa" id="menureporte_8"></i></a>
-                                    <a href="#10" class="list-group-item">9.- Responsables del informe <i class="fa" id="menureporte_9"></i></a>
-                                    <a href="#10" class="list-group-item">10.- Generar informe <i class="fa" id="menureporte_10"></i></a>
+                                    <a href="#8" class="list-group-item">8.- Peligro /Riesgo Ergonómico en Áreas de Trabajo de la Planta <i class="fa" id="menureporte_8"></i></a>
+                                    <a href="#9" class="list-group-item">9.- Conclusiones <i class="fa" id="menureporte_9"></i></a>
+                                    <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
+                                    <a href="#11" class="list-group-item">11.- Generar informe <i class="fa" id="menureporte_11"></i></a>
 
                                     <!-- <a href="#6_2" class="list-group-item submenu">6.2.- Método empleado y criterio de selección <i class="fa fa-times" id="menureporte_6_2"></i></a>
                                     <a href="#6_2_1" class="list-group-item subsubmenu">6.2.1.- Índice de área <i class="fa fa-times" id="menureporte_6_2_1"></i></a>
@@ -1623,9 +1599,13 @@ DESCRIPCIONACTIVIDAD
                                             <div id="TABLE_MAPEOPELIGRO"></div>
                                         </div>
                                     </div>
-
-
-                                    <h4 class="card-title" id="8">8.- Conclusiones</h4>
+                                    <h4 class="card-title" id="8">8.- Peligro /Riesgo Ergonómico en Áreas de Trabajo de la Planta</h4>
+                                    <div class="row">
+                                        <div class="col-12" style="padding-top: 10px;">
+                                            <p class="justificado"><b style="color: #333333; font-weight: bold;">Nota del software:</b> Se encontraron <span id="memoriafotografica_total">0</span> fotos de los planos con las Áreas evaluadas que se agregaran al informe</p>
+                                        </div>
+                                    </div>
+                                    <h4 class="card-title mt-5" id="9">9.- Conclusiones</h4>
                                     <form method="post" enctype="multipart/form-data" name="form_informe_conclusiones" id="form_informe_conclusiones">
                                         <div class="row">
                                             <div class="col-12">
@@ -1657,7 +1637,7 @@ DESCRIPCIONACTIVIDAD
                                     </form>
 
 
-                                    <h4 class="card-title" id="9">9.- Responsables del informe</h4>
+                                    <h4 class="card-title" id="10">10.- Responsables del informe</h4>
                                     <form enctype="multipart/form-data" method="post" name="form_informe_responsablesinforme" id="form_informe_responsablesinforme">
                                         <div class="row">
                                             <div class="col-6">
@@ -1717,7 +1697,7 @@ DESCRIPCIONACTIVIDAD
                                     </form>
 
 
-                                    <h4 class="card-title" id="10">Generar informe .docx</h4>
+                                    <h4 class="card-title" id="11">Generar informe .docx</h4>
                                     <div class="row">
                                         <div class="col-12">
                                             <ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
@@ -2523,6 +2503,45 @@ DESCRIPCIONACTIVIDAD
         </div>
     </div>
 </div>
+
+<!-- ============================================================== -->
+<!-- MODALES PLANO  -->
+<!-- ============================================================== -->
+
+
+<div id="modal_evidencia_planos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg" style="min-width: 900px!important;">
+        <form method="post" enctype="multipart/form-data" name="form_evidencia_planos" id="form_evidencia_planos">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Planos evidencia</h4>
+                </div>
+                <div class="modal-body">
+                    {!! csrf_field() !!}
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Planos *</label>
+                                <input type="file" multiple class="form-control" accept=".jpg, .jpeg, .png, .gif" placeholder="Maximo 20 planos" id="INPUTEVIDENCIAPLANOS" name="INPUTEVIDENCIAPLANOS[]" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                    @if (auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador']))
+                    <button type="submit" class="btn btn-danger botonguardar_moduloproyecto" id="boton_guardar_evidencia_planos">
+                        Guardar <i class="fa fa-save"></i>
+                    </button>
+                    @endif
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 
 <!-- ============================================================== -->

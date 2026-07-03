@@ -2143,17 +2143,22 @@ Route::get('mostraplanoergo/{archivo_opcion}/{recsensorial_id}', ['as' => 'mostr
 Route::get('mostrafotoinstalacionergo/{archivo_opcion}/{recsensorial_id}', ['as' => 'mostrarmapa', 'uses' => 'ERGO\reconocimientoergoController@mostrafotoinstalacionergo']);
 Route::get('mostrarmapariesgoergo/{archivo_opcion}/{recsensorial_id}', ['as' => 'mostrarmapa', 'uses' => 'ERGO\reconocimientoergoController@mostrarmapariesgoergo']);
 
+//// PLANOS 
+Route::resource('planosergo', 'ERGO\planosergoController');
+Route::get('mostrarplanosergo/{archivo_opcion}/{reco_id}', ['as' => 'mostrarplanosergo', 'uses' => 'ERGO\planosergoController@mostrarplanosergo']);
+
 //// INFORME
 Route::get('getGraficaErgo/{reco_id}', ['as' => 'getGraficaErgo', 'uses' => 'ERGO\reconocimientoergoController@getGraficaErgo']);
 Route::get('obtenerDatosInformesRecoergo/{ID}', ['as' => 'obtenerDatosInformesRecoergo', 'uses' => 'ERGO\reconocimientoergoController@obtenerDatosInformesRecoergo']);
-
 Route::post('obtenerDatosPlantilla', ['as' => 'obtenerDatosPlantilla', 'uses' => 'ERGO\reconocimientoergoController@obtenerDatosPlantilla']);
-
 
 //// portada
 Route::post('guardarPortadaRecoErgo',['as' => 'guardarPortadaRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarPortadaRecoErgo']);
-Route::get('mostrarportadarecoergo/{archivo_opcion}/{reco_id}',['as' => 'mostrarportadarecoergo','uses' => 'ERGO\reconocimientoergoController@mostrarportadarecoergo']);
 
+Route::get('/mostrarplanosergo/{opcion}/{id}', 'ERGO\planosergoController@mostrarplanosergo')->name('mostrarplanosergo');
+Route::get('/proyectoevidenciaplanos/{id}', 'ERGO\planosergoController@proyectoevidenciaplanos');
+
+Route::get('/totalplanosergo/{reco_id}', 'ERGO\planosergoController@totalplanosergo');
 /// DATOS GENERALES
 Route::get('obtenerDatosGeneralesInformeReco/{RECO_ID}',['as' => 'obtenerDatosGeneralesInformeReco','uses' => 'ERGO\reconocimientoergoController@obtenerDatosGeneralesInformeReco']);
 

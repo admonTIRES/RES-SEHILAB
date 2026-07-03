@@ -56,11 +56,9 @@ use App\modelos\reconocimientoergo\catergo_recomendacionesModel;
 use App\modelos\reconocimientoergo\recomendacionesinformeergoModel;
 use App\modelos\reconocimientoergo\versionesrecoergoModel;
 use App\modelos\clientes\clientecontratoModel;
-
 use App\modelos\reconocimientoergo\datosgeneralesinformeRecoModel;
-
 use App\modelos\reconocimientoergo\recoergofichastecnicasModel;
-
+use App\modelos\reconocimientoergo\planosergoModel;
 
 
 class reconocimientoergoController extends Controller
@@ -3722,8 +3720,65 @@ class reconocimientoergoController extends Controller
 
             $plantillaword->setComplexBlock('TABLA_7_2',$table);
 
+            ///// PUNTO 8 INSERCION DE LOS MAPAS 
 
 
+
+            $planos = planosergoModel::where('RECO_ID', $RECO_ID)
+                ->where('ACTIVO', 1)
+                ->get();
+
+            if ($planos->count() > 0) {
+
+                $plantillaword->cloneRow(
+                    'FOTOS_PLANOS',
+                    $planos->count()
+                );
+
+                foreach ($planos as $index => $plano) {
+
+                    $numero = $index + 1;
+
+                    $ruta = storage_path(
+                        'app/' . $plano->INPUTEVIDENCIAPLANOS
+                    );
+
+                    if (
+                        $plano->INPUTEVIDENCIAPLANOS &&
+                        file_exists($ruta)
+                    ) {
+
+                        $plantillaword->setImageValue(
+
+                            'FOTOS_PLANOS#' . $numero,
+
+                            [
+                                'path'   => $ruta,
+                                'width'  => 580,
+                                'height' => 400,
+                                'ratio'  => true
+                            ]
+
+                        );
+                    } else {
+
+                        $plantillaword->setValue(
+                            'FOTOS_PLANOS#' . $numero,
+                            'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
+                        );
+                    }
+                }
+            } else {
+
+                $plantillaword->setValue(
+                    'FOTOS_PLANOS',
+                    'NO HAY PLANOS REGISTRADOS.'
+                );
+            }
+
+
+
+            
             //// DESCARGAR INFORME 
 
             $nombreWord = 'Informe_Ergonomia_' . $RECO_ID . '.docx';

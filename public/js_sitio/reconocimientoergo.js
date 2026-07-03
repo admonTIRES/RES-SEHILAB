@@ -17,6 +17,7 @@ var HIGIENE = 1;
 var Tablarecocategoriasergo = null;
 var Tablarecoareasergo = null;
 var Tablarecofichasergo = null;
+var Tablaplanoergo = null;
 
 var tabla_reporte_categoria = null;
 var tabla_reporte_area = null;
@@ -26,6 +27,7 @@ var tabla_reporte_revisiones  = null
 ID_CATEGORIA_ERGO = 0;
 ID_AREA_ERGO = 0;
 ID_FICHAS_TECNICAS = 0;
+ID_PLANOS_ERGO = 0;
 
 //--------------------------------------------------CARGA PRINCIPAL---------------------------------------------------------//
 $(document).ready(function () {
@@ -164,7 +166,8 @@ $('.link_menuprincipal').click(function () {
 			cargarDefinicionesInformeErgo();
 			cargarGraficas();
 			tablaReporteCategoriasErgo();
-			tablaReporteAreasErgo();
+            tablaReporteAreasErgo();
+            totalPlanosErgo();
 			cargarRecomendacionesInformeErgo();
 			tablaVersionesRecoErgo();
 			validarEdicionRecoErgo();
@@ -354,6 +357,10 @@ $('.multisteps-form__progress-btn').click(function () {
 		case "steps_menu_tab4":
 			recsensorial = $("#recsensorial_id").val(); 
             mostrarTablarecofichasergo();
+            break;
+        case "steps_menu_tab5":
+			recsensorial = $("#recsensorial_id").val(); 
+            cargarGaleriaPlanos();
 		break;
 		default:
 		break;
@@ -4908,6 +4915,246 @@ function activarLogicaFichas() {
     evaluarFicha_4_2();
 }
 
+
+///////// PLANOS
+
+
+$("#boton_nuevo_mapa").click(function (e) {
+    e.preventDefault();
+
+    ID_PLANOS_ERGO = 0;
+       
+    $('#form_evidencia_planos').each(function(){
+        this.reset();
+    });
+
+    $("#modal_evidencia_planos").modal("show");
+
+});
+
+
+
+$("#boton_guardar_evidencia_planos").click(function (e) {
+    e.preventDefault();
+
+
+    formularioValido = validarFormulario3($('#form_evidencia_planos'))
+
+    if (formularioValido) {
+
+    if (ID_PLANOS_ERGO == 0) {
+        
+        alertMensajeConfirm({
+            title: "¿Desea guardar la información?",
+            text: "Al guardarla, se podra usar",
+            icon: "question",
+        },async function () { 
+
+            await loaderbtn('boton_guardar_evidencia_planos')
+            await ajaxAwaitFormData({ api: 1,RECO_ID: recsensorial, ID_PLANOS_ERGO: ID_PLANOS_ERGO }, 'planosergo', 'form_evidencia_planos', 'boton_guardar_evidencia_planos', { callbackAfter: true, callbackBefore: true }, () => {
+        
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Espere un momento',
+                    text: 'Estamos guardando la información',
+                    showConfirmButton: false
+                })
+
+                $('.swal2-popup').addClass('ld ld-breath')
+        
+                
+            }, function (data) {
+                    
+                    ID_PLANOS_ERGO = data.planos.ID_PLANOS_ERGO
+                    alertMensaje('success','Información guardada correctamente', 'Esta información esta lista para usarse',null,null, 1500)
+                     $('#modal_evidencia_planos').modal('hide')
+                    document.getElementById('form_evidencia_planos').reset();
+                    cargarGaleriaPlanos();                
+            })
+            
+            
+            
+        }, 1)
+        
+    } else {
+            alertMensajeConfirm({
+            title: "¿Desea editar la información de este formulario?",
+            text: "Al guardarla, se podra usar",
+            icon: "question",
+        },async function () { 
+
+            await loaderbtn('boton_guardar_evidencia_planos')
+            await ajaxAwaitFormData({ api: 1, RECO_ID: recsensorial, ID_PLANOS_ERGO: ID_PLANOS_ERGO }, 'planosergo', 'form_evidencia_planos', 'boton_guardar_evidencia_planos', { callbackAfter: true, callbackBefore: true }, () => {
+        
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Espere un momento',
+                    text: 'Estamos guardando la información',
+                    showConfirmButton: false
+                })
+
+                $('.swal2-popup').addClass('ld ld-breath')
+        
+                
+            }, function (data) {
+                    
+                setTimeout(() => {
+
+                    ID_PLANOS_ERGO = data.planos.ID_PLANOS_ERGO
+                    alertMensaje('success', 'Información editada correctamente', 'Información guardada')
+                     $('#modal_evidencia_planos').modal('hide')
+                    document.getElementById('form_evidencia_planos').reset();
+                    cargarGaleriaPlanos();
+
+                }, 300);  
+            })
+        }, 1)
+    }
+
+} else {
+    alertToast('Por favor, complete todos los campos del formulario.', 'error', 2000)
+
+}
+    
+});
+
+
+
+
+function cargarGaleriaPlanos(){
+
+    $.ajax({
+
+        url:'/proyectoevidenciaplanos/'+recsensorial,
+        type:'GET',
+        dataType:'json',
+
+        beforeSend:function(){
+
+            $('#galeria_planos').html(
+                '<div class="col-12 text-center">'+
+                '<i class="fa fa-spinner fa-spin fa-4x"></i>'+
+                '</div>'
+            );
+
+        },
+
+        success:function(resp){
+
+            if(resp.planos_total > 0){
+
+                $('#galeria_planos').html(resp.planos);
+
+                $('#galeria_planos').magnificPopup({
+                    delegate: 'a',
+                    type: 'image',
+                    gallery: {
+                        enabled: true
+                    },
+                    removalDelay: 300,
+                    mainClass: 'mfp-3d-unfold'
+                });
+
+            }else{
+
+                $('#galeria_planos').html(
+                    '<div class="col-12 text-center">No hay imágenes</div>'
+                );
+
+            }
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+}
+
+    });
+
+}
+
+
+function eliminarPlano(id) {
+
+    alertMensajeConfirm({
+        title: "¿Desea eliminar esta imagen?",
+        text: "Esta acción no se puede deshacer.",
+        icon: "warning"
+    }, async function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/planosergo",
+            data: {
+                _token: $('input[name="_token"]').val(),
+                api: 1,
+                ELIMINAR: 1,
+                ID_PLANOS_ERGO: id
+            },
+            dataType: "json",
+            success: function (data) {
+
+                if (data.code == 1) {
+
+                    alertMensaje(
+                        'success',
+                        'Imagen eliminada correctamente',
+                        'La imagen fue eliminada'
+                    );
+
+                    cargarGaleriaPlanos();
+                    totalPlanosErgo();
+
+                } else {
+
+                    alertMensaje(
+                        'error',
+                        'Error',
+                        'No fue posible eliminar la imagen'
+                    );
+
+                }
+
+            },
+            error: function () {
+
+                alertMensaje(
+                    'error',
+                    'Error',
+                    'Ocurrió un error al eliminar la imagen'
+                );
+
+            }
+
+        });
+
+    }, 1);
+
+}
+
+function totalPlanosErgo() {
+
+    $.ajax({
+        url: '/totalplanosergo/' + recsensorial,
+        type: 'GET',
+        dataType: 'json',
+        cache: false,
+
+        success: function(resp) {
+
+            if (resp.code == 1) {
+                $('#memoriafotografica_total').text(resp.total);
+            } else {
+                $('#memoriafotografica_total').text(0);
+            }
+
+        },
+
+        error: function() {
+            $('#memoriafotografica_total').text(0);
+        }
+
+    });
+
+}
 
 
 ///////////// INFORME DE RECONOCIMIENTO  /////////////

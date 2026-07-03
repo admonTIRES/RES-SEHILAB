@@ -1,73 +1,85 @@
-function mostrarTablarecofichasergo() {
-	try {
-		var ruta = "/Tablarecofichasergo";
 
-		if (Tablarecofichasergo != null) {
-			Tablarecofichasergo.destroy();
-		}
+$("#boton_guardar_evidencia_planos").click(function (e) {
+    e.preventDefault();
 
-		Tablarecofichasergo = $('#Tablarecofichasergo').DataTable({
-			"ajax": {
-				"url": ruta,
-				"type": "get",
-				"cache": false,
-				"data": {
-					ergoid: recsensorial 
-				},
-				"error": function (xhr, error, code) {
-					console.log('error en Tablarecofichasergo');
-				}
-			},
-			"columns": [
-				{
-					data: null,
-					render: function (data, type, row, meta) {
-						return meta.row + 1;
-					}
-				},
-				{
-					"data": "NOMBRE_EMPLEADO_FICHA",
-					"defaultContent": "-"
-				},
-				{
-					"data": "NO_EMPLEADO_FICHA",
-					"defaultContent": "-"
-				},
-				{ 
-					data: 'BTN_EDITAR',
-					orderable: false,
-					searchable: false
-				},
-			],
-			"lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
-			"order": [[0, "DESC"]],
-			"ordering": true,
-			"processing": true,
-			"responsive": true,
-			"language": {
-				"lengthMenu": "Mostrar _MENU_ Registros",
-				"zeroRecords": "No se encontraron registros",
-				"info": "Página _PAGE_ de _PAGES_ (Total _MAX_ registros)",
-				"infoEmpty": "No se encontraron registros",
-				"infoFiltered": "(Filtrado de _MAX_ registros)",
-				"emptyTable": "No hay datos disponibles en la tabla",
-				"loadingRecords": "Cargando datos....",
-				"processing": "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
-				"search": "Buscar",
-				"paginate": {
-					"first": "Primera",
-					"last": "Última",
-					"next": "Siguiente",
-					"previous": "Anterior"
-				}
-			}
-		});
 
-		Tablarecofichasergo.on('draw', function () {
-			$('[data-toggle="tooltip"]').tooltip();
-		});
+    formularioValido = validarFormulario3($('#form_evidencia_planos'))
 
-	} catch (exception) {
-		console.error("Error en Tablarecofichasergo:", exception);
-	}
+    if (formularioValido) {
+
+    if (ID_PLANOS_ERGO == 0) {
+        
+        alertMensajeConfirm({
+            title: "¿Desea guardar la información?",
+            text: "Al guardarla, se podra usar",
+            icon: "question",
+        },async function () { 
+
+            await loaderbtn('boton_guardar_evidencia_planos')
+            await ajaxAwaitFormData({ api: 1,RECO_ID: recsensorial, ID_PLANOS_ERGO: ID_PLANOS_ERGO }, 'planosergo', 'form_evidencia_planos', 'boton_guardar_evidencia_planos', { callbackAfter: true, callbackBefore: true }, () => {
+        
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Espere un momento',
+                    text: 'Estamos guardando la información',
+                    showConfirmButton: false
+                })
+
+                $('.swal2-popup').addClass('ld ld-breath')
+        
+                
+            }, function (data) {
+                    
+                    ID_PLANOS_ERGO = data.planos.ID_PLANOS_ERGO
+                    alertMensaje('success','Información guardada correctamente', 'Esta información esta lista para usarse',null,null, 1500)
+                     $('#modal_evidencia_planos').modal('hide')
+                    document.getElementById('form_evidencia_planos').reset();
+                    Tablaplanoergo.ajax.reload()
+                
+            })
+            
+            
+            
+        }, 1)
+        
+    } else {
+            alertMensajeConfirm({
+            title: "¿Desea editar la información de este formulario?",
+            text: "Al guardarla, se podra usar",
+            icon: "question",
+        },async function () { 
+
+            await loaderbtn('boton_guardar_evidencia_planos')
+            await ajaxAwaitFormData({ api: 1, RECO_ID: recsensorial, ID_PLANOS_ERGO: ID_PLANOS_ERGO }, 'planosergoplanosergo', 'form_evidencia_planos', 'boton_guardar_evidencia_planos', { callbackAfter: true, callbackBefore: true }, () => {
+        
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Espere un momento',
+                    text: 'Estamos guardando la información',
+                    showConfirmButton: false
+                })
+
+                $('.swal2-popup').addClass('ld ld-breath')
+        
+                
+            }, function (data) {
+                    
+                setTimeout(() => {
+
+                    ID_PLANOS_ERGO = data.planos.ID_PLANOS_ERGO
+                    alertMensaje('success', 'Información editada correctamente', 'Información guardada')
+                     $('#modal_evidencia_planos').modal('hide')
+                    document.getElementById('form_evidencia_planos').reset();
+                    Tablaplanoergo.ajax.reload()
+
+                }, 300);  
+            })
+        }, 1)
+    }
+
+} else {
+    alertToast('Por favor, complete todos los campos del formulario.', 'error', 2000)
+
 }
+    
+});
