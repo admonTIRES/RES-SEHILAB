@@ -5716,18 +5716,19 @@ function cargarDatosInformesRecoErgo()
         // LLENAR SELECTS
         //-----------------------------------------
 
-        $('#NIVEL1').html(response.checks);
-        $('#NIVEL2').html(response.checks);
-        $('#NIVEL3').html(response.checks);
-        $('#NIVEL4').html(response.checks);
-        $('#NIVEL5').html(response.checks);
 
-        $('#OPCION_PORTADA1').html(response.opciones);
-        $('#OPCION_PORTADA2').html(response.opciones);
-        $('#OPCION_PORTADA3').html(response.opciones);
-        $('#OPCION_PORTADA4').html(response.opciones);
-        $('#OPCION_PORTADA5').html(response.opciones);
-        $('#OPCION_PORTADA6').html(response.opciones);
+            $('#NIVEL1').html(response.opciones);
+            $('#NIVEL2').html(response.opciones);
+            $('#NIVEL3').html(response.opciones);
+            $('#NIVEL4').html(response.opciones);
+            $('#NIVEL5').html(response.opciones);
+
+            $('#OPCION_PORTADA1').html(response.checks);
+            $('#OPCION_PORTADA2').html(response.checks);
+            $('#OPCION_PORTADA3').html(response.checks);
+            $('#OPCION_PORTADA4').html(response.checks);
+            $('#OPCION_PORTADA5').html(response.checks);
+            $('#OPCION_PORTADA6').html(response.checks);
 
 
         $('#INFORME_MES').val("");

@@ -1539,9 +1539,6 @@ class reconocimientoergoController extends Controller
     }
 
 
-
-
-
     public function guardarPortadaRecoErgo(Request $request)
     {
         try {
@@ -1608,7 +1605,8 @@ class reconocimientoergoController extends Controller
         }
     }
 
-    public function mostrarportadarecoergo($archivo_opcion, $reco_id)
+
+    public function mostrarportadarecoergo($archivo_opcion, $reco_id,  $extension)
     {
         $recurso = recursosPortadaRecoErgoModel::where(
             'RECO_ID',

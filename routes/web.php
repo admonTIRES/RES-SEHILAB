@@ -2161,6 +2161,9 @@ Route::get('/proyectoevidenciaplanos/{id}', 'ERGO\planosergoController@proyectoe
 Route::get('/totalplanosergo/{reco_id}', 'ERGO\planosergoController@totalplanosergo');
 /// DATOS GENERALES
 Route::get('obtenerDatosGeneralesInformeReco/{RECO_ID}',['as' => 'obtenerDatosGeneralesInformeReco','uses' => 'ERGO\reconocimientoergoController@obtenerDatosGeneralesInformeReco']);
+Route::get('mostrarportadarecoergo/{archivo_opcion}/{reco_id}.{extension}', ['as' => 'mostrarportadarecoergo', 'uses' => 'ERGO\reconocimientoergoController@mostrarportadarecoergo']);
+
+
 
 /// introducción
 Route::post('guardarIntroduccionRecoErgo',['as' => 'guardarIntroduccionRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarIntroduccionRecoErgo']);
