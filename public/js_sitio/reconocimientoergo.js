@@ -6860,6 +6860,8 @@ function tablaReporteAreasErgo()
 			"responsive": true,
 			"autoWidth": false,
 
+            
+
 			"drawCallback": function () {
 				var api = this.api();
 				var rows = api.rows({
@@ -6892,19 +6894,18 @@ function tablaReporteAreasErgo()
 			},
 
 			"language": {
-				"lengthMenu": "Mostrar _MENU_ Registros",
+				"lengthMenu": "Mostrar _MENU_ registros",
 				"zeroRecords": "No se encontraron registros",
-				"info": "Página _PAGE_ de _PAGES_ (Total _MAX_ registros)",
-				"infoEmpty": "No se encontraron registros",
+				"info": "Página _PAGE_ de _PAGES_",
+				"infoEmpty": "No hay registros",
 				"infoFiltered": "(Filtrado de _MAX_ registros)",
 				"emptyTable": "No hay datos disponibles en la tabla",
-				"loadingRecords": "Cargando datos....",
-				"processing":
-					"Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
-				"search": "Buscar",
+				"loadingRecords": "Cargando...",
+				"processing": "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+				"search": "Buscar:",
 				"paginate": {
-					"first": "Primera",
-					"last": "Última",
+					"first": "Primero",
+					"last": "Último",
 					"next": "Siguiente",
 					"previous": "Anterior"
 				}

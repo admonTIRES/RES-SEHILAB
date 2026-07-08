@@ -157,7 +157,7 @@
         <tr>
 
             <td width="20%" class="text-center">
-                <img src="{{ public_path('assets/images/Colorancho.png') }}" class="logo" style="margin-top: 10px;">
+                <img src="{{ public_path('assets/images/MARCAREGISTRADA.png') }}" class="logo" style="margin-top: 10px;">
 
             </td>
 
@@ -220,165 +220,97 @@
             <table>
 
                 <tr>
+                    <td width="20%">
+                        <b>Puesto evaluado</b>
+                        <div class="linea"></div>
+                    </td>
 
-                    <td width="70%">
-
+                    <td width="60%">
                         <b>Nombre del empleado</b>
-
                         <div class="linea"></div>
-
                     </td>
 
-                    <td width="30%">
-
+                    <td width="20%">
                         <b>Ficha / No empleado</b>
-
                         <div class="linea"></div>
-
                     </td>
-
                 </tr>
 
-
-
-
-
                 <tr>
-
-                    <td>
-
+                    <td width="30%">
                         <b>Sexo</b>
-
                         <div class="linea"></div>
-
                     </td>
-
-                    <td>
-
+                    <td width="50%">
                         <b>Fecha de nacimiento</b>
-
                         <div class="linea"></div>
-
                     </td>
-
-                </tr>
-
-
-
-
-
-                <tr>
-
-                    <td>
-                        <b>Categoría</b>
-
-
-                        <div class="linea"></div>
-
-                    </td>
-
-                    <td>
+                    <td width="20%">
                         <b>Edad</b>
-
-
                         <div class="linea"></div>
-
                     </td>
-
                 </tr>
 
-
-
-
-
                 <tr>
-
-                    <td>
-
-                        <b>Peso (kg)</b>
-
+                    <td width="100%" colspan="3">
+                        <b>Área</b>
                         <div class="linea"></div>
-
                     </td>
-
-                    <td>
-
-                        <b>Talla (cm)</b>
-
-                        <div class="linea"></div>
-
-                    </td>
-
                 </tr>
 
-
-
-
-
                 <tr>
-
-                    <td>
-
-                        <b>Régimen Contractual</b>
-
+                    <td width="100%" colspan="3">
+                        <b>Categoría</b>
                         <div class="linea"></div>
-
                     </td>
-
-                    <td>
-
-                        <b>Jornada</b>
-
-                        <div class="linea"></div>
-
-                    </td>
-
                 </tr>
 
-
-
-
-
                 <tr>
-
-                    <td>
-
-                        <b>Turno</b>
-
-                        <div class="linea"></div>
-
-                    </td>
-
-                    <td>
-
-                        <b>Tiempo en la empresa</b>
-
-                        <div class="linea"></div>
-
-                    </td>
-
-                </tr>
-
-
-
-
-
-                <tr>
-
-                    <td colspan="2">
-
+                    <td width="10%">
                         <b>Antigüedad en la categoría</b>
-
                         <div class="linea"></div>
+                    </td>
+                    <td width="50%">
+                        <b>Peso (kg)</b>
+                        <div class="linea"></div>
+                    </td>
+                    <td width="50%">
+                        <b>Talla (cm)</b>
+                        <div class="linea"></div>
+                    </td>
 
+                </tr>
+
+                <tr>
+
+                    <td width="50%" colspan="2">
+                        <b>Régimen Contractual</b>
+                        <div class="linea"></div>
+                    </td>
+
+                    <td width="50%">
+                        <b>Jornada</b>
+                        <div class="linea"></div>
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td width="50%" colspan="2">
+                        <b>Turno</b>
+                        <div class="linea"></div>
+                    </td>
+
+                    <td width="50%">
+                        <b>Tiempo en la empresa</b>
+                        <div class="linea"></div>
                     </td>
 
                 </tr>
 
             </table>
-
         </div>
-
     </div>
 
 

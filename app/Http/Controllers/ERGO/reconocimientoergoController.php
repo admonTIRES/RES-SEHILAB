@@ -1937,45 +1937,126 @@ class reconocimientoergoController extends Controller
         ]);
     }
 
-    public function tablaReporteAreasErgo(Request $request)
-    {
-        $categorias = recoergocategoriasModel::where(
-            'RECO_ID',
-            $request->ergoid
-        )
-            ->where('ACTIVO', 1)
-            ->get();
 
-        $data = [];
+   
 
-        $numero = 1;
+        public function tablaReporteAreasErgo(Request $request)
+        {
+            $categorias = recoergocategoriasModel::where(
+                'RECO_ID',
+                $request->ergoid
+            )
+                ->where('ACTIVO', 1)
+                ->get();
 
-        foreach ($categorias as $categoria) {
-            if ($categoria->CATEGORIA_AREAS_ID) {
+            $fichas = recoergofichastecnicasModel::where(
+                'RECO_ID',
+                $request->ergoid
+            )->get();
+
+            $areasAgrupadas = [];
+
+            foreach ($categorias as $categoria) {
+
+                if (!$categoria->CATEGORIA_AREAS_ID || !is_array($categoria->CATEGORIA_AREAS_ID)) {
+                    continue;
+                }
+
                 foreach ($categoria->CATEGORIA_AREAS_ID as $area_id) {
+
                     $area = recoergoareasModel::find($area_id);
-                    if ($area) {
-                        $obj = new \stdClass();
-                        $obj->NUMERO = $numero;
-                        $obj->AREA = trim($area->NOMBRE_AREA_ERGO);
-                        $obj->CATEGORIA =$categoria->NOMBRE_CATEGORIA_ERGO;
-                        $data[] = $obj;
-                        $numero++;
+
+                    if (!$area) {
+                        continue;
+                    }
+
+                    if (!isset($areasAgrupadas[$area_id])) {
+
+                        $areasAgrupadas[$area_id] = [
+                            'AREA' => trim($area->NOMBRE_AREA_ERGO),
+                            'CATEGORIAS' => []
+                        ];
+                    }
+
+                    if (!isset($areasAgrupadas[$area_id]['CATEGORIAS'][$categoria->ID_CATEGORIA_ERGO])) {
+
+                        $areasAgrupadas[$area_id]['CATEGORIAS'][$categoria->ID_CATEGORIA_ERGO] = [
+                            'NOMBRE' => $categoria->NOMBRE_CATEGORIA_ERGO,
+                            'PUESTOS' => []
+                        ];
+                    }
+
+                
+                    foreach ($fichas as $ficha) {
+
+                        if (
+                            $ficha->CATEGORIA_ID_FICHA == $categoria->ID_CATEGORIA_ERGO &&
+                            is_array($ficha->CAT_AREAS_FICHA) &&
+                            in_array($area_id, $ficha->CAT_AREAS_FICHA)
+                        ) {
+
+                            if (!empty($ficha->PE_EVALUADAS)) {
+
+                                $areasAgrupadas[$area_id]['CATEGORIAS'][$categoria->ID_CATEGORIA_ERGO]['PUESTOS'][] =
+                                    trim($ficha->PE_EVALUADAS);
+                            }
+                        }
                     }
                 }
             }
+
+        
+
+            $data = [];
+            $numero = 1;
+
+            foreach ($areasAgrupadas as $area) {
+
+                $primeraCategoria = true;
+
+                ksort($area['CATEGORIAS']);
+
+                foreach ($area['CATEGORIAS'] as $categoria) {
+
+                    $obj = new \stdClass();
+
+                    $obj->NUMERO = $numero++;
+
+                    if ($primeraCategoria) {
+                        $obj->AREA = $area['AREA'];
+                        $primeraCategoria = false;
+                    } else {
+                        $obj->AREA = $area['AREA'];
+                    }
+
+                    $obj->CATEGORIA = $categoria['NOMBRE'];
+
+                    $puestos = array_unique($categoria['PUESTOS']);
+                    sort($puestos);
+
+                    $obj->PUESTOS_EVALUADOS = count($puestos)
+                        ? '<ul class="mb-0 ps-3"><li>' .
+                        implode('</li><li>', $puestos) .
+                        '</li></ul>'
+                        : '-';
+
+                    $data[] = $obj;
+                }
+            }
+
+            usort($data, function ($a, $b) {
+
+                if ($a->AREA == $b->AREA) {
+                    return strcmp($a->CATEGORIA, $b->CATEGORIA);
+                }
+
+                return strcmp($a->AREA, $b->AREA);
+            });
+
+            return response()->json([
+                'data' => $data
+            ]);
         }
-
-        usort($data, function ($a, $b) {
-
-            return strcmp($a->AREA, $b->AREA);
-        });
-
-        return response()->json([
-            'data' => $data
-        ]);
-    }
-
 
 
 
@@ -2391,6 +2472,7 @@ class reconocimientoergoController extends Controller
             'finalizado' => 0,
             'cancelado' => 0
         ]);
+    
     }
 
     public function crearRevisionRecoErgo(Request $request)
@@ -2879,7 +2961,6 @@ class reconocimientoergoController extends Controller
 
             $categorias = recoergocategoriasModel::select(
                 'recoergocategorias.ID_CATEGORIA_ERGO',
-                'recoergocategorias.PT_CATEGORIA',
                 'recoergocategorias.NOMBRE_CATEGORIA_ERGO',
                 DB::raw('COUNT(recoergo_fichastecnicas.ID_FICHAS_TECNICAS) AS TOTAL_EVALUADOS')
             )
@@ -2893,7 +2974,6 @@ class reconocimientoergoController extends Controller
                 ->where('recoergocategorias.ACTIVO', 1)
                 ->groupBy(
                     'recoergocategorias.ID_CATEGORIA_ERGO',
-                    'recoergocategorias.PT_CATEGORIA',
                     'recoergocategorias.NOMBRE_CATEGORIA_ERGO'
                 )
                 ->orderBy('recoergocategorias.ID_CATEGORIA_ERGO', 'ASC')
@@ -2958,7 +3038,7 @@ class reconocimientoergoController extends Controller
                 $ancho_col_1,
                 $encabezado_celda
             )->addTextRun($centrado)->addText(
-                'PT',
+                'No.',
                 $encabezado_texto
             );
 
@@ -2979,8 +3059,9 @@ class reconocimientoergoController extends Controller
             );
 
             $totalPersonas = 0;
+            $numero = 1;
 
-            if (count($categorias) > 0) {
+            if ($categorias->count() > 0) {
 
                 foreach ($categorias as $categoria) {
 
@@ -2992,7 +3073,7 @@ class reconocimientoergoController extends Controller
                         $ancho_col_1,
                         $celda
                     )->addTextRun($centrado)->addText(
-                        $categoria->PT_CATEGORIA,
+                        $numero++,
                         $texto
                     );
 
@@ -3012,7 +3093,6 @@ class reconocimientoergoController extends Controller
                         $texto
                     );
                 }
-
 
                 $table->addRow();
 
@@ -3039,127 +3119,284 @@ class reconocimientoergoController extends Controller
 
                 $table->addCell(
                     $ancho_col_1 + $ancho_col_2 + $ancho_col_3,
-                    $celda
+                    array_merge($celda, [
+                        'gridSpan' => 3
+                    ])
                 )->addTextRun($centrado)->addText(
                     'No hay categorías registradas',
                     $texto
                 );
             }
 
-            $plantillaword->setComplexBlock('TABLA_5_3',$table);
+            $plantillaword->setComplexBlock('TABLA_5_3', $table);
+
+
 
             //// AREAS - CATEGORIAS
 
+
+
+
+
+            // $categorias = recoergocategoriasModel::where('RECO_ID', $RECO_ID)
+            //     ->where('ACTIVO', 1)
+            //     ->get();
+
+            // $fichas = recoergofichastecnicasModel::where('RECO_ID', $RECO_ID)
+            //     ->get();
+
+            // $areasAgrupadas = [];
+
+            // foreach ($categorias as $categoria) {
+
+            //     if ($categoria->CATEGORIA_AREAS_ID && is_array($categoria->CATEGORIA_AREAS_ID)) {
+
+            //         foreach ($categoria->CATEGORIA_AREAS_ID as $area_id) {
+
+            //             $area = recoergoareasModel::find($area_id);
+
+            //             if (!$area) {
+            //                 continue;
+            //             }
+
+            //             if (!isset($areasAgrupadas[$area_id])) {
+
+            //                 $areasAgrupadas[$area_id] = [
+            //                     'AREA' => trim($area->NOMBRE_AREA_ERGO),
+            //                     'CATEGORIAS' => [],
+            //                     'PUESTOS' => []
+            //                 ];
+            //             }
+
+            //             // Categorías
+            //             $areasAgrupadas[$area_id]['CATEGORIAS'][] = $categoria->NOMBRE_CATEGORIA_ERGO;
+
+            //             // Puestos evaluados
+            //             foreach ($fichas as $ficha) {
+
+            //                 if (
+            //                     is_array($ficha->CAT_AREAS_FICHA) &&
+            //                     in_array($area_id, $ficha->CAT_AREAS_FICHA)
+            //                 ) {
+
+            //                     if (!empty($ficha->PE_EVALUADAS)) {
+            //                         $areasAgrupadas[$area_id]['PUESTOS'][] = trim($ficha->PE_EVALUADAS);
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
 
             $categorias = recoergocategoriasModel::where('RECO_ID', $RECO_ID)
                 ->where('ACTIVO', 1)
                 ->get();
 
-            $data = [];
+            $fichas = recoergofichastecnicasModel::where('RECO_ID', $RECO_ID)
+                ->get();
+
+            $areasAgrupadas = [];
 
             foreach ($categorias as $categoria) {
 
+                if (
+                    !$categoria->CATEGORIA_AREAS_ID ||
+                    !is_array($categoria->CATEGORIA_AREAS_ID)
+                ) {
+                    continue;
+                }
 
-                if ($categoria->CATEGORIA_AREAS_ID && is_array($categoria->CATEGORIA_AREAS_ID)) {
-                    foreach (
-                        $categoria->CATEGORIA_AREAS_ID as $area_id
-                    ) {
-                        $area = recoergoareasModel::find($area_id);
-                        if ($area) {
-                            $obj = new \stdClass();
-                            $obj->AREA = $area->NOMBRE_AREA_ERGO;
-                            $obj->CATEGORIA = $categoria->NOMBRE_CATEGORIA_ERGO;
-                            $data[] = $obj;
+                foreach ($categoria->CATEGORIA_AREAS_ID as $area_id) {
+
+                    $area = recoergoareasModel::find($area_id);
+
+                    if (!$area) {
+                        continue;
+                    }
+
+                    // Crear el área
+                    if (!isset($areasAgrupadas[$area_id])) {
+
+                        $areasAgrupadas[$area_id] = [
+                            'AREA' => trim($area->NOMBRE_AREA_ERGO),
+                            'CATEGORIAS' => []
+                        ];
+                    }
+
+                    // Crear la categoría dentro del área
+                    if (!isset($areasAgrupadas[$area_id]['CATEGORIAS'][$categoria->ID_CATEGORIA_ERGO])) {
+
+                        $areasAgrupadas[$area_id]['CATEGORIAS'][$categoria->ID_CATEGORIA_ERGO] = [
+                            'NOMBRE' => $categoria->NOMBRE_CATEGORIA_ERGO,
+                            'PUESTOS' => []
+                        ];
+                    }
+
+                    // Buscar únicamente las fichas de ESTA categoría y ESTA área
+                    foreach ($fichas as $ficha) {
+
+                        if (
+                            $ficha->CATEGORIA_ID_FICHA == $categoria->ID_CATEGORIA_ERGO &&
+                            is_array($ficha->CAT_AREAS_FICHA) &&
+                            in_array($area_id, $ficha->CAT_AREAS_FICHA)
+                        ) {
+
+                            if (!empty($ficha->PE_EVALUADAS)) {
+
+                                $areasAgrupadas[$area_id]['CATEGORIAS'][$categoria->ID_CATEGORIA_ERGO]['PUESTOS'][] =
+                                    trim($ficha->PE_EVALUADAS);
+                            }
                         }
                     }
                 }
             }
 
 
-            usort($data, function ($a, $b) {
-                return strcmp(
-                    $a->AREA,
-                    $b->AREA
-                );
-            });
-
             $fuente = 'Poppins';
-            $encabezado_texto = array(
+
+            $encabezado_texto = [
                 'name' => $fuente,
                 'size' => 11,
                 'bold' => true,
                 'color' => 'FFFFFF'
-            );
+            ];
 
-            $texto = array(
+            $texto = [
                 'name' => $fuente,
                 'size' => 10,
                 'color' => '000000'
-            );
-            $centrado = array('alignment' => 'center', 'valign' => 'center');
-            $encabezado_celda = array('bgColor' => '0F3D63', 'valign' => 'center');
-            $celda = array('valign' => 'center');
+            ];
 
+            $centrado = [
+                'alignment' => 'center',
+                'valign' => 'center'
+            ];
 
-            $ancho_area = 4500;
-            $ancho_categoria = 4700;
+            $encabezado_celda = [
+                'bgColor' => '0F3D63',
+                'valign' => 'center'
+            ];
 
-            $table = new Table(array(
+            $celda = [
+                'valign' => 'center'
+            ];
+
+            $ancho_area = 3200;
+            $ancho_categoria = 3200;
+            $ancho_puestos = 3200;
+
+            $table = new Table([
                 'name' => $fuente,
                 'borderSize' => 1,
                 'borderColor' => '000000',
                 'cellMargin' => 80,
                 'unit' => TblWidth::TWIP
-            ));
+            ]);
 
             $table->addRow(500);
-            $table->addCell($ancho_area, $encabezado_celda)->addTextRun($centrado)->addText('Área', $encabezado_texto);
-            $table->addCell($ancho_categoria, $encabezado_celda)->addTextRun($centrado)->addText('Categoría', $encabezado_texto);
 
+            $table->addCell($ancho_area, $encabezado_celda)
+                ->addTextRun($centrado)
+                ->addText('Área', $encabezado_texto);
 
-            $areasAgrupadas = [];
+            $table->addCell($ancho_categoria, $encabezado_celda)
+                ->addTextRun($centrado)
+                ->addText('Categoría', $encabezado_texto);
 
-
-            foreach ($data as $fila) {
-                if (!isset($areasAgrupadas[$fila->AREA])) {
-                    $areasAgrupadas[$fila->AREA] = [];
-                }
-                $areasAgrupadas[$fila->AREA][] = $fila->CATEGORIA;
-            }
-
+            $table->addCell($ancho_puestos, $encabezado_celda)
+                ->addTextRun($centrado)
+                ->addText('Puestos evaluados', $encabezado_texto);
 
             if (count($areasAgrupadas) > 0) {
-                foreach ($areasAgrupadas as $area => $categoriasArea) {
-                    foreach ($categoriasArea as $index => $categoria) {
+
+                uasort($areasAgrupadas, function ($a, $b) {
+                    return strcmp($a['AREA'], $b['AREA']);
+                });
+
+                foreach ($areasAgrupadas as $area) {
+
+                    ksort($area['CATEGORIAS']);
+
+                    $primeraCategoria = true;
+
+                    foreach ($area['CATEGORIAS'] as $categoria) {
+
+                        $puestos = array_unique($categoria['PUESTOS']);
+                        sort($puestos);
+
                         $table->addRow();
 
-                        if ($index == 0) {
-                            $table->addCell($ancho_area, array('vMerge' => 'restart', 'valign' => 'center'))->addTextRun($centrado)->addText($area, $texto);
+                      
+                        if ($primeraCategoria) {
+
+                            $table->addCell(
+                                $ancho_area,
+                                [
+                                    'vMerge' => 'restart',
+                                    'valign' => 'center'
+                                ]
+                            )->addTextRun($centrado)->addText(
+                                $area['AREA'],
+                                $texto
+                            );
+
+                            $primeraCategoria = false;
                         } else {
 
                             $table->addCell(
                                 $ancho_area,
-                                array(
+                                [
                                     'vMerge' => 'continue',
                                     'valign' => 'center'
-                                )
+                                ]
                             );
                         }
-                        $table->addCell($ancho_categoria, $celda)->addTextRun($centrado)->addText($categoria, $texto);
+
+                      
+                        $table->addCell(
+                            $ancho_categoria,
+                            $celda
+                        )->addTextRun($centrado)->addText(
+                            $categoria['NOMBRE'],
+                            $texto
+                        );
+
+                        if (count($puestos) > 0) {
+
+                            $table->addCell(
+                                $ancho_puestos,
+                                $celda
+                            )->addTextRun($centrado)->addText(
+                                implode("\n", $puestos),
+                                $texto
+                            );
+                        } else {
+
+                            $table->addCell(
+                                $ancho_puestos,
+                                $celda
+                            )->addTextRun($centrado)->addText(
+                                '-',
+                                $texto
+                            );
+                        }
                     }
                 }
             } else {
 
                 $table->addRow();
+
                 $table->addCell(
                     null,
-                    array(
-                        'gridSpan' => 2,
+                    [
+                        'gridSpan' => 3,
                         'valign' => 'center'
-                    )
-                )->addTextRun($centrado)->addText('No hay áreas registradas', $texto);
+                    ]
+                )->addTextRun($centrado)->addText(
+                    'No hay áreas registradas',
+                    $texto
+                );
             }
-
 
             $plantillaword->setComplexBlock('TABLA_5_3_1', $table);
 
