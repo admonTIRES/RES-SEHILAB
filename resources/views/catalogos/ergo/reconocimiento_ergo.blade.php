@@ -766,6 +766,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                             <th>#</th>
                                                                             <th>P.Trabajo</th>
                                                                             <th>Categoría</th>
+                                                                            <th>Área</th>
                                                                             <th>Descripcion</th>
                                                                             <th style="width: 100px!important;">Editar</th>
                                                                             <th style="width: 100px!important;">Activo</th>
@@ -810,6 +811,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                         <tr>
                                                                             <th style="width: 60px!important;">No.</th>
                                                                             <th>No.PE</th>
+                                                                            <th>Área</th>
                                                                             <th>Categoría</th>
                                                                             <th>Nombre del empleado </th>
                                                                             <th>Ficha / No empleado</th>
@@ -1485,7 +1487,7 @@ DESCRIPCIONACTIVIDAD
                                             <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_categoria">
                                                 <thead>
                                                     <tr>
-                                                        <th>PT</th>
+                                                        <th>No.</th>
                                                         <th>Categoría</th>
                                                         <th>Número de evaluados</th>
                                                     </tr>
@@ -1508,6 +1510,8 @@ DESCRIPCIONACTIVIDAD
                                                     <tr>
                                                         <th width="130">Área</th>
                                                         <th width="">Categoría</th>
+                                                        <th width="">Puestos evaluados</th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>

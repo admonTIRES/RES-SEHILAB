@@ -14,6 +14,7 @@ use Artisan;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use App\modelos\reconocimientoergo\recoergocategoriasModel;
+use App\modelos\reconocimientoergo\recoergoareasModel;
 
 use App\modelos\reconocimientoergo\recoergofichastecnicasModel;
 
@@ -26,6 +27,8 @@ class fichasergoController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
+
+
 
 
 
@@ -48,8 +51,27 @@ class fichasergoController extends Controller
                 ->where('recoergo_fichastecnicas.RECO_ID', $ergo)
                 ->get();
 
+            $areas = recoergoareasModel::pluck('NOMBRE_AREA_ERGO', 'ID_AREA_ERGO')->toArray();
+
             foreach ($tabla as $value) {
 
+             
+                $idsAreas = $value->CAT_AREAS_FICHA ?? [];
+
+                $listaAreas = [];
+
+                foreach ($idsAreas as $idArea) {
+                    if (isset($areas[$idArea])) {
+                        $listaAreas[] = '<li>' . e($areas[$idArea]) . '</li>';
+                    }
+                }
+
+                $value->NOMBRE_AREA = count($listaAreas)
+                    ? '<ul class="mb-0 ps-3">' . implode('', $listaAreas) . '</ul>'
+                    : '';
+
+               
+                // ==========================
                 if ($value->ACTIVO == 0) {
 
                     $value->BTN_EDITAR = '
@@ -67,6 +89,8 @@ class fichasergoController extends Controller
                     <button type="button" class="btn btn-warning btn-circle editar">
                         <i class="fa fa-pencil"></i>
                     </button>';
+
+                    $value->BTN_VISUALIZAR = '';
                 }
             }
 
@@ -77,11 +101,15 @@ class fichasergoController extends Controller
         } catch (Exception $e) {
 
             return response()->json([
-                'msj' => 'Error ' . $e->getMessage(),
-                'data' => 0
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => []
             ]);
         }
     }
+
+
+
+
 
     public function getCategoriasErgo(Request $request)
     {

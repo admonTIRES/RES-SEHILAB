@@ -2068,6 +2068,10 @@ function mostrartablarecocategoriasergo() {
 				{
 					"data": "NOMBRE_CATEGORIA_ERGO",
 					"defaultContent": "-"
+                },
+                {
+					"data": "NOMBRE_AREA",
+					"defaultContent": "-"
 				},
 				{
 					"data": "DESCRIPCION_CATEGORIA_ERGO",
@@ -4538,6 +4542,10 @@ function mostrarTablarecofichasergo() {
                 {
 					"data": "PE_EVALUADAS",
 					"defaultContent": "-"
+                },
+                {
+					"data": "NOMBRE_AREA",
+					"defaultContent": "-"
 				},
 				{
 					"data": "NOMBRE_CATEGORIA",
@@ -6728,30 +6736,10 @@ function tablaReporteCategoriasErgo()
 			},
 
 			"columns": [
-				{
-                    "data": "PT_CATEGORIA",
-                    "defaultContent": "-",
-
-                    "render": function (data, type, row) {
-
-                        if (!data) {
-
-                            if (type === 'sort' || type === 'type') {
-                                return 999999;
-                            }
-
-                            return '-';
-                        }
-
-                        let numero = parseInt(
-                            data.toString().replace('PT', '')
-                        );
-
-                        if (type === 'sort' || type === 'type') {
-                            return numero;
-                        }
-
-                        return data;
+				 { 
+                    data: null,
+                    render: function(data, type, row, meta) {
+                        return meta.row + 1; 
                     }
                 },
 				{
@@ -6824,8 +6812,6 @@ function tablaReporteCategoriasErgo()
 }
 
 
-
-
 function tablaReporteAreasErgo()
 {
 	try {
@@ -6859,8 +6845,13 @@ function tablaReporteAreasErgo()
 				{
 					"data": "CATEGORIA",
 					"defaultContent": "-"
-				}
+                },
+                {
+					"data": "PUESTOS_EVALUADOS",
+					"defaultContent": "-"
+                }
 			],
+
 			"paging": false,
 			"searching": false,
 			"info": false,
@@ -6868,6 +6859,7 @@ function tablaReporteAreasErgo()
 			"processing": true,
 			"responsive": true,
 			"autoWidth": false,
+
 			"drawCallback": function () {
 				var api = this.api();
 				var rows = api.rows({
@@ -6876,17 +6868,22 @@ function tablaReporteAreasErgo()
 				var lastArea = null;
 				var rowspan = 1;
 				var firstRow = null;
+
 				api.column(0, {
 					page: 'current'
 				}).data().each(function (area, i) {
+
 					var row = rows[i];
 					var cell = $('td:eq(0)', row);
+
 					if (lastArea === area) {
+
 						rowspan++;
 						cell.remove();
 						$('td:eq(0)', firstRow).attr('rowspan', rowspan);
 
 					} else {
+
 						lastArea = area;
 						rowspan = 1;
 						firstRow = row;
@@ -6921,8 +6918,6 @@ function tablaReporteAreasErgo()
 
 	}
 }
-
-
 
 
 

@@ -32,33 +32,68 @@ class categoriasergoController extends Controller
      */
 
 
+   
+
     public function Tablarecocategoriasergo(Request $request)
     {
         try {
+
             $ergo = $request->get('ergoid');
 
             $tabla = recoergocategoriasModel::where('RECO_ID', $ergo)
                 ->orderBy('ID_CATEGORIA_ERGO', 'ASC')
                 ->get();
 
+            $areas = recoergoareasModel::pluck('NOMBRE_AREA_ERGO', 'ID_AREA_ERGO')->toArray();
+
             foreach ($tabla as $value) {
+
+                $idsAreas = $value->CATEGORIA_AREAS_ID ?? [];
+
+                $listaAreas = [];
+
+                foreach ($idsAreas as $idArea) {
+
+                    if (isset($areas[$idArea])) {
+                        $listaAreas[] = '<li>' . e($areas[$idArea]) . '</li>';
+                    }
+                }
+
+                $value->NOMBRE_AREA = count($listaAreas)
+                    ? '<ul class="mb-0 ps-3">' . implode('', $listaAreas) . '</ul>'
+                    : '-';
+
+                // ==========================
+                // BOTONES
+                // ==========================
                 if ($value->ACTIVO == 0) {
-                    $value->BTN_EDITAR = '<button type="button" class="btn btn-secondary btn-circle " ><i class="fa fa-ban"></i></button>';
-                    $value->BTN_ELIMINAR = 
-                    '<div class="switch"> 
-                        <label>
-                            <input type="checkbox" class="ELIMINAR" data-id="' . $value->ID_CATEGORIA_ERGO . '"><span class="lever switch-col-light-blue"></span>
-                        </label>
-                    </div>';
-                } else {
+
+                    $value->BTN_EDITAR = '
+                <button type="button" class="btn btn-secondary btn-circle">
+                    <i class="fa fa-ban"></i>
+                </button>';
+
                     $value->BTN_ELIMINAR = '
-                    <div class="switch">
-                        <label>
-                            <input  type="checkbox" class="ELIMINAR" data-id="' . $value->ID_CATEGORIA_ERGO . '" checked ><span class="lever switch-col-light-blue"></span>
-                        </label>
-                    </div>';
-                    $value->BTN_EDITAR = '<button type="button" class="btn btn-warning btn-circle editar"><i class="fa fa-pencil"></i></button>';
-                   
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" class="ELIMINAR" data-id="' . $value->ID_CATEGORIA_ERGO . '">
+                        <span class="lever switch-col-light-blue"></span>
+                    </label>
+                </div>';
+                } else {
+
+                    $value->BTN_ELIMINAR = '
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" class="ELIMINAR" data-id="' . $value->ID_CATEGORIA_ERGO . '" checked>
+                        <span class="lever switch-col-light-blue"></span>
+                    </label>
+                </div>';
+
+                    $value->BTN_EDITAR = '
+                <button type="button" class="btn btn-warning btn-circle editar">
+                    <i class="fa fa-pencil"></i>
+                </button>';
                 }
             }
 
@@ -67,6 +102,7 @@ class categoriasergoController extends Controller
                 'msj' => 'Información consultada correctamente'
             ]);
         } catch (Exception $e) {
+
             return response()->json([
                 'msj' => 'Error ' . $e->getMessage(),
                 'data' => 0
