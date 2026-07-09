@@ -19,22 +19,23 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use PhpOffice\PhpWord\Element\TextRun;
 use PhpOffice\PhpWord\Shared\Html;
 
-
-
-
-
 // Plugins
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Element\Chart;
-
 use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\SimpleType\TblWidth;
 use PhpOffice\PhpWord\Shared\Converter;
 use PhpOffice\PhpWord\Style\TablePosition;
-
 use ZipArchive;
 
 
+// plugins PDF
+use PDFMerger;
+
+
+
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\File;
 
 
 //MODELOS
@@ -4036,4 +4037,141 @@ class reconocimientoergoController extends Controller
             ], 500);
         }
     }
+
+
+
+    public function reporteFichasZip($RECO_ID)
+    {
+
+        $reco = reconocimientoergoModel::findOrFail($RECO_ID);
+
+        $fichas = recoergofichastecnicasModel::where('RECO_ID', $RECO_ID)
+            ->where('ACTIVO', 1)
+            ->get();
+
+        if ($fichas->count() == 0) {
+            abort(404, 'No hay fichas registradas.');
+        }
+
+        $carpetaTemp = storage_path('app/temp');
+
+        if (!File::exists($carpetaTemp)) {
+            File::makeDirectory($carpetaTemp, 0755, true);
+        }
+
+        $nombreZip = 'Fichas ISO-TR 12295'." ".$reco->instalacion . '.zip';
+
+        $rutaZip = $carpetaTemp . '/' . $nombreZip;
+
+        $zip = new ZipArchive();
+
+        if ($zip->open($rutaZip, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+            abort(500, 'No se pudo crear el archivo ZIP.');
+        }
+
+        foreach ($fichas as $ficha) {
+
+            $sexo = '';
+
+            if ($ficha->SEXO_EMPLEADO_FICHA == 'M') {
+                $sexo = 'Masculino';
+            } elseif ($ficha->SEXO_EMPLEADO_FICHA == 'F') {
+                $sexo = 'Femenino';
+            }
+
+
+            $categoria = recoergocategoriasModel::find($ficha->CATEGORIA_ID_FICHA);
+            $nombreCategoria = $categoria ? $categoria->NOMBRE_CATEGORIA_ERGO : '';
+
+
+            $areas = recoergoareasModel::whereIn('ID_AREA_ERGO',$ficha->CAT_AREAS_FICHA ?? [])
+                ->pluck('NOMBRE_AREA_ERGO')
+                ->toArray();
+
+            $nombreAreas = implode(', ', $areas);
+
+            $regimen = catergo_regimencontractualModel::find($ficha->REGIMEN_CONTRACTUAL_FICHA);
+
+            $nombreRegimen = $regimen ? $regimen->NOMBRE_REGIMEN_CONTRACTUAL : '';
+
+            $jornada = catergo_jornada::find( $ficha->JORNADA_EMPLEADO_FICHA);
+
+            $nombreJornada = $jornada ? $jornada->NOMBRE_JORNADA : '';
+
+
+            $turnos = catergo_turnoModel::whereIn(
+                'ID_TURNO',
+                $ficha->TURNO_EMPLEADO_FICHA ?? []
+            )
+                ->pluck('NOMBRE_TURNO')
+                ->toArray();
+
+            $nombreTurnos = implode(', ', $turnos);
+
+            $datos = [
+                'ficha' => $ficha,
+                'sexo' => $sexo,
+                'areas' => $nombreAreas,
+                'categoria' => $nombreCategoria,
+                'regimen' => $nombreRegimen,
+                'jornada' => $nombreJornada,
+                'turnos' => $nombreTurnos
+            ];
+
+
+            $pdf = PDF::loadView(
+                'catalogos.ergo.pdf.fichas_pdf',
+                $datos
+            );
+
+            $pdf->setPaper('A4', 'portrait');
+
+            $pdf->getDomPDF()->set_option('isHtml5ParserEnabled', true);
+            $pdf->getDomPDF()->set_option('isRemoteEnabled', true);
+            $pdf->getDomPDF()->set_option('isPhpEnabled', true);
+
+            $nombrePdf = $ficha->PE_EVALUADAS . ' ' .
+                $ficha->NOMBRE_EMPLEADO_FICHA . ' ' .
+                $ficha->NO_EMPLEADO_FICHA . '.pdf';
+
+            $nombrePdf = preg_replace('/[\\\\\/:*?"<>|]/', '', $nombrePdf);
+
+            $rutaPdf = $carpetaTemp . DIRECTORY_SEPARATOR . $nombrePdf;
+
+            file_put_contents(
+                $rutaPdf,
+                $pdf->output()
+            );
+
+            $zip->addFile(
+                $rutaPdf,
+                $nombrePdf
+            );
+        }
+
+       
+
+        $zip->close();
+
+
+
+        foreach ($fichas as $ficha) {
+
+            $nombrePdf = $ficha->PE_EVALUADAS . " " .$ficha->NOMBRE_EMPLEADO_FICHA . " " .$ficha->NO_EMPLEADO_FICHA . ".pdf";
+            $nombrePdf = preg_replace('/[\\\\\/:*?"<>|]/', '', $nombrePdf);
+            $rutaPdf = $carpetaTemp . '/' . $nombrePdf;
+            if (File::exists($rutaPdf)) {
+                File::delete($rutaPdf);
+            }
+        }
+
+        return response()->download(
+            $rutaZip,
+            $nombreZip,
+            [
+                'Content-Type' => 'application/zip'
+            ]
+        )->deleteFileAfterSend(true);
+    }
+
 }

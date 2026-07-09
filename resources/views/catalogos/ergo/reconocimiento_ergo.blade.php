@@ -1045,7 +1045,10 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     <a href="#8" class="list-group-item">8.- Peligro /Riesgo Ergonómico en Áreas de Trabajo de la Planta <i class="fa" id="menureporte_8"></i></a>
                                     <a href="#9" class="list-group-item">9.- Conclusiones <i class="fa" id="menureporte_9"></i></a>
                                     <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
-                                    <a href="#11" class="list-group-item">11.- Generar informe <i class="fa" id="menureporte_11"></i></a>
+                                    <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
+                                    <a href="#11" class="list-group-item">11.- Anexo 1: Fichas ISO-TR 12295 <i class="fa" id="menureporte_11"></i></a>
+                                    <a href="#12" class="list-group-item">12.- Generar informe <i class="fa" id="menureporte_12"></i></a>
+
 
                                     <!-- <a href="#6_2" class="list-group-item submenu">6.2.- Método empleado y criterio de selección <i class="fa fa-times" id="menureporte_6_2"></i></a>
                                     <a href="#6_2_1" class="list-group-item subsubmenu">6.2.1.- Índice de área <i class="fa fa-times" id="menureporte_6_2_1"></i></a>
@@ -1699,9 +1702,16 @@ DESCRIPCIONACTIVIDAD
                                             </div>
                                         </div>
                                     </form>
+                                    <h4 class="card-title" id="11">11.- Anexo 1: Fichas ISO-TR 12295</h4>
+                                    <div class="row mb-5">
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-info waves-effect" data-toggle="tooltip" title="Generar zip de fichas aplicadas" id="boton_reporte_fichas">
+                                                <span class="btn-label"><i class="fa fa-file-excel-o"></i></span> Descargar fichas
+                                            </button>
+                                        </div>
+                                    </div>
 
-
-                                    <h4 class="card-title" id="11">Generar informe .docx</h4>
+                                    <h4 class="card-title" id="12">Generar informe .docx</h4>
                                     <div class="row">
                                         <div class="col-12">
                                             <ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
@@ -2363,7 +2373,6 @@ DESCRIPCIONACTIVIDAD
                                         <b>7.Posturas dinámicas forzadas</b><br>
                                     </div>
                                 </div>
-
 
                                 <div id="contenido7" style="display:none;">
                                     <div class="card-body">

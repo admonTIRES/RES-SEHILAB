@@ -2256,6 +2256,10 @@ Route::get('ergoconsultacatalogo/{num_catalogo}', ['as' => 'ERGO.ergoconsultacat
 Route::get('ergocatalogodesactiva/{catalogo}/{registro}/{estado}', ['as' => 'ERGO.ergocatalogodesactiva', 'uses' => 'ERGO\catergoController@ergocatalogodesactiva']);
 
 
+////// DESCARGAR FICHAS EN ZIP 
+
+
+Route::get('reporteFichasZip/{RECO_ID}', ['as' => 'reporteFichasZip', 'uses' => 'ERGO\reconocimientoergoController@reporteFichasZip']);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

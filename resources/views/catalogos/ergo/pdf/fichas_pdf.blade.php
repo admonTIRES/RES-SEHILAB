@@ -4,15 +4,30 @@
 <head>
     <meta charset="UTF-8">
 
-    <style>
-        @page {
-            margin: 20px;
+    <!-- <style>
+        @font-face {
+            font-family: 'Poppins';
+            src: url("{{ public_path('fonts/poppins/Poppins-Regular.ttf') }}") format('truetype');
         }
 
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             font-size: 11px;
             color: #000;
+
+        }
+
+        table,
+        tr,
+        td,
+        b {
+            font-family: 'Poppins', sans-serif !important;
+        }
+
+
+        @page {
+            margin: 20px;
         }
 
         table {
@@ -129,8 +144,9 @@
             display: block;
             margin-left: auto;
             margin-right: auto;
-            max-width: 70px;
+            max-width: 50px;
         }
+
 
         .check-box {
 
@@ -142,6 +158,137 @@
             vertical-align: middle;
 
         }
+    </style> -->
+
+
+
+    <style>
+        @font-face {
+            font-family: 'Poppins';
+            src: url("{{ public_path('fonts/poppins/Poppins-Regular.ttf') }}") format('truetype');
+        }
+
+        @page {
+            margin: 20px !important;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+        }
+
+        table,
+        tr,
+        td,
+        b,
+        strong,
+        p {
+            font-family: 'Poppins', sans-serif !important;
+        }
+
+        table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            border-spacing: 0 !important;
+            table-layout: fixed !important;
+            font-size: 10px !important;
+        }
+
+        td {
+            border: 1px solid #000 !important;
+            padding: 4px !important;
+            vertical-align: top !important;
+            font-size: 10px !important;
+            font-family: 'Poppins', sans-serif !important;
+        }
+
+        b,
+        strong {
+            font-family: 'Poppins', sans-serif !important;
+            font-weight: bold !important;
+        }
+
+        p {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: 'Poppins', sans-serif !important;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .fw-bold {
+            font-weight: bold !important;
+        }
+
+        .card {
+            margin-top: 10px !important;
+        }
+
+        .card-header {
+            border: 1px solid #000 !important;
+            padding: 6px !important;
+            font-size: 10px !important;
+            font-weight: bold !important;
+        }
+
+        .card-body {
+            border-left: 1px solid #000 !important;
+            border-right: 1px solid #000 !important;
+            border-bottom: 1px solid #000 !important;
+            padding: 0 !important;
+        }
+
+        .header-res {
+            background: #007DBA !important;
+        }
+
+        .header-verde {
+            background: #A4D65E !important;
+        }
+
+        .header-azul {
+            background: #B7C7D6 !important;
+        }
+
+        .header-rojo {
+            background: #F28B82 !important;
+        }
+
+        .linea {
+            border-bottom: 1px solid #000 !important;
+            height: 20px !important;
+            width: 100% !important;
+            margin-top: 5px !important;
+        }
+
+        .texto-pregunta {
+            font-size: 10px !important;
+            line-height: 1.5 !important;
+        }
+
+        .col-check {
+            width: 55px !important;
+            text-align: center !important;
+        }
+
+        .logo {
+            display: block !important;
+            margin: auto !important;
+            width: 130px !important;
+            max-width: 120px !important;
+            height: auto !important;
+        }
+
+        .check-box {
+            display: inline-block !important;
+            width: 12px !important;
+            height: 12px !important;
+            border: 1px solid #000 !important;
+            margin-right: 5px !important;
+            vertical-align: middle !important;
+        }
     </style>
 
 </head>
@@ -151,47 +298,24 @@
 
 
 
-
     <table>
 
         <tr>
 
             <td width="20%" class="text-center">
-                <img src="{{ public_path('assets/images/MARCAREGISTRADA.png') }}" class="logo" style="margin-top: 10px;">
-
+                <img src="{{ public_path('assets/images/IMAGENFONDOBLANCO.jpg') }}" class="logo" style="margin-top:0px;">
             </td>
 
             <td width="60%" class="text-center">
 
-                <div style="font-size:18px;font-weight:bold;">
-                    <br>
-                    <br>
-
+                <div style="font-size:12px;font-weight:bold;">
+                    <br><br>
                     FORMATO DE EVALUACIÓN ERGONÓMICA
                 </div>
-
-
 
             </td>
 
             <td width="20%">
-
-                <table>
-
-                    <tr>
-
-                    </tr>
-
-                    <tr>
-
-                    </tr>
-
-                    <tr>
-                        <td><b>Fecha</b></td>
-                        <td>_____/_____/______</td>
-                    </tr>
-
-                </table>
 
             </td>
 
@@ -221,94 +345,69 @@
 
                 <tr>
                     <td width="20%">
-                        <b>Puesto evaluado</b>
-                        <div class="linea"></div>
+                        Puesto evaluado: {{ $ficha->PE_EVALUADAS }}
                     </td>
 
                     <td width="60%">
-                        <b>Nombre del empleado</b>
-                        <div class="linea"></div>
+                        Nombre del empleado: {{ $ficha->NOMBRE_EMPLEADO_FICHA }}
                     </td>
 
                     <td width="20%">
-                        <b>Ficha / No empleado</b>
-                        <div class="linea"></div>
+                        Ficha / No empleado: {{ $ficha->NO_EMPLEADO_FICHA }}
                     </td>
                 </tr>
 
                 <tr>
+
                     <td width="30%">
-                        <b>Sexo</b>
-                        <div class="linea"></div>
+                        Sexo: {{ $sexo }}
                     </td>
+
                     <td width="50%">
-                        <b>Fecha de nacimiento</b>
-                        <div class="linea"></div>
+                        Fecha de nacimiento: {{ $ficha->FECHA_NACIMIENTO }}
                     </td>
+
                     <td width="20%">
-                        <b>Edad</b>
-                        <div class="linea"></div>
+                        Edad: {{ $ficha->EDAD_EMPLEADO_FICHA }}
                     </td>
                 </tr>
-
                 <tr>
-                    <td width="100%" colspan="3">
-                        <b>Área</b>
-                        <div class="linea"></div>
+                    <td colspan="3">
+                        Área: {{ $areas }}
                     </td>
                 </tr>
-
                 <tr>
-                    <td width="100%" colspan="3">
-                        <b>Categoría</b>
-                        <div class="linea"></div>
+                    <td colspan="3">
+                        Categoría: {{ $categoria }}
                     </td>
                 </tr>
-
                 <tr>
-                    <td width="10%">
-                        <b>Antigüedad en la categoría</b>
-                        <div class="linea"></div>
+                    <td width="33%">
+                        Antigüedad en la categoría: {{ $ficha->ANTIGUEDAD_CATEOGORIA_FICHA }}
                     </td>
-                    <td width="50%">
-                        <b>Peso (kg)</b>
-                        <div class="linea"></div>
+                    <td width="33%">
+                        Peso (kg): {{ $ficha->PESO_FICHA }}
                     </td>
-                    <td width="50%">
-                        <b>Talla (cm)</b>
-                        <div class="linea"></div>
+                    <td width="34%">
+                        Talla (cm): {{ $ficha->TALLA_FICHA }}
                     </td>
-
                 </tr>
-
                 <tr>
-
-                    <td width="50%" colspan="2">
-                        <b>Régimen Contractual</b>
-                        <div class="linea"></div>
+                    <td colspan="2">
+                        Régimen Contractual: {{ $regimen }}
                     </td>
-
-                    <td width="50%">
-                        <b>Jornada</b>
-                        <div class="linea"></div>
+                    <td>
+                        Jornada: {{ $jornada }}
                     </td>
-
                 </tr>
-
                 <tr>
-
-                    <td width="50%" colspan="2">
-                        <b>Turno</b>
-                        <div class="linea"></div>
+                    <td colspan="2">
+                        Turno: {{ $turnos }}
                     </td>
-
-                    <td width="50%">
-                        <b>Tiempo en la empresa</b>
-                        <div class="linea"></div>
+                    <td>
+                        Tiempo en la empresa: {{ $ficha->TIEMPO_EMPRESA_FICHA }}
                     </td>
-
                 </tr>
-
             </table>
         </div>
     </div>
@@ -330,77 +429,105 @@
         </div>
 
         <div class="card-body">
-
             <table>
 
                 <tr>
-
                     <td class="texto-pregunta" width="70%">
-
                         1. Durante su jornada laboral,
                         ¿levanta, baja, manipula objetos o materiales
                         con un peso mayor a 3 Kg?
-
                     </td>
 
                     <td class="col-check">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ $ficha->P1_CARGA_MAYOR_3KG == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
 
                     <td class="col-check">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ $ficha->P1_CARGA_MAYOR_3KG == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                 </tr>
 
-
-
-
-
                 <tr>
-
                     <td class="texto-pregunta">
-
                         2. ¿Con qué frecuencia realiza actividades
                         que involucren el manejo manual de cargas
                         (más de una vez al día)?
-
                     </td>
 
                     <td class="col-check">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ $ficha->P2_FRECUENCIA_CARGA == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
 
                     <td class="col-check">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ $ficha->P2_FRECUENCIA_CARGA == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                 </tr>
 
-
-
-
-
                 <tr>
-
                     <td class="texto-pregunta">
-
                         3. ¿Tiene que levantar, bajar, transportar,
                         empujar, jalar y/o estibar objetos o materiales
                         como parte de su trabajo?
-
                     </td>
 
                     <td class="col-check">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ $ficha->P3_MANIPULACION_CARGA == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
 
                     <td class="col-check">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ $ficha->P3_MANIPULACION_CARGA == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                 </tr>
 
+            </table>
+        </div>
+
+    </div>
+
+
+    @php
+    $mostrarNom036 = ($ficha->P1_CARGA_MAYOR_3KG == 'SI');
+    @endphp
+
+    <div class="card" id="TEXTO_CONTESTADO" style="display:{{ $mostrarNom036 ? 'none' : 'block' }}">
+
+        <div class="card-header header-rojo text-center">
+            <b>AVISO</b>
+        </div>
+
+        <div class="card-body">
+
+            <table>
+                <tr>
+                    <td style="padding:25px; text-align:center; vertical-align:middle; line-height:1.8;">
+
+                        Si la respuesta a la pregunta 1 fue "NO".
+
+                        <br><br>
+
+                        Por lo tanto, <b>no aplica</b> la evaluación correspondiente a los criterios de:
+
+                        <br><br>
+
+                        Manipulación manual de cargas.<br>
+                        Levantamiento de cargas.<br>
+                        Transporte de cargas.<br>
+                        Empuje y tracción de cargas.
+
+                    </td>
+                </tr>
             </table>
 
         </div>
@@ -410,12 +537,12 @@
 
 
 
+
     {{-- ===================================================== --}}
     {{-- TEXTO MANIPULACIÓN --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-2">
-
+    <div class="card" id="TEXTO_MANIPULACION" style="display:{{ $mostrarNom036 ? 'block' : 'none' }}">
         <div class="card-header header-verde">
 
             <div class="text-center">
@@ -424,7 +551,7 @@
 
         </div>
 
-        <div class="card-body p-2" style="line-height:1.6;">
+        <div class="card-body p-2" style="line-height:1.6 !important;">
 
             Cualquier operación de transporte o sujeción de una carga mayor a 3 kg
             por parte de uno o varios trabajadores,
@@ -450,8 +577,7 @@
     {{-- LEVANTAMIENTO DE CARGAS --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-2">
-
+    <div class="card" id="LEVANTAMIENTO_CARGA" style="display:{{ $mostrarNom036 ? 'block' : 'none' }}">
         <div class="card-header header-res">
 
             <div class="text-center">
@@ -466,206 +592,235 @@
 
 
 
+    @php
 
+    $jsonFichas = json_decode($ficha->JSON_FICHAS, true);
+
+    $fichasJson = [];
+
+    if (is_array($jsonFichas)) {
+
+    foreach ($jsonFichas as $item) {
+
+    if (!empty($item['ficha'])) {
+
+    $fichasJson[$item['ficha']] = $item;
+
+    }
+
+    }
+
+    }
+
+    @endphp
+
+
+
+
+    @php
+
+    $ficha11 = $fichasJson['1.1'] ?? null;
+
+    $respuestas11 = [];
+
+    if ($ficha11 && isset($ficha11['preguntas'])) {
+
+    foreach ($ficha11['preguntas'] as $pregunta) {
+
+    $respuestas11[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+    }
+
+    @endphp
 
 
     {{-- ===================================================== --}}
     {{-- FICHA 1.1 --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-3">
-
-        <div class="card-header header-verde">
-
+    <div class="card" id="ficha_1_1" style="display:{{ $mostrarNom036 ? 'block' : 'none' }}">
+        <div class="card-header header-verde text-center">
             <b>
                 FICHA 1.1.- Evaluación Rápida para Identificar la presencia
                 de condiciones aceptables (Zona verde)
                 por LEVANTAMIENTO DE CARGAS.
             </b>
-
-            <br><br>
-
+            <br>
             NOTA:
             Señale con una "X",
             cuando la condición verificada está presente
             (columna "SI")
             y cuando no está presente
             (columna "NO")
-
         </div>
 
         <div class="card-body">
-
             <table>
-
                 <tr>
-
                     <td width="40" class="text-center fw-bold">
                         a.
                     </td>
-
                     <td class="texto-pregunta">
 
                         ¿Todas las cargas levantadas pesan 10 kg o menos?
 
                     </td>
-
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas11['a'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas11['a'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
 
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         b.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El peso máximo de la carga está entre 3 kg y 5 kg
                         y la frecuencia de levantamientos
                         no excede de 5 levantamientos/minuto?
-
-                        <br><br>
-
+                        <br>
                         O bien,
-
-                        <br><br>
-
+                        <br>
                         ¿El peso máximo de la carga es de más de 5 kg
                         e inferior a los 10 kg
                         y la frecuencia no excede de 1 levantamiento/minuto?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas11['b'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas11['b'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
 
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         c.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El desplazamiento vertical se realiza
                         entre la cadera y los hombros?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas11['c'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas11['c'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
 
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         d.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El tronco está erguido,
                         sin flexión ni rotación?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas11['d'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas11['d'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
 
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         e.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La carga se mantiene muy cerca del cuerpo
                         (no más de 10 cm de la parte frontal del torso)?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas11['e'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas11['e'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
             </table>
 
-            <div class="p-2" style="line-height:1.6;">
-
+            <div class="p-2" style="line-height:1.6 !important;">
                 Si a todas las preguntas ha contestado “SI”
                 entonces la tarea tiene un riesgo aceptable
                 y está en la Zona Verde.
-
-                <br><br>
-
+                <br>
                 Si alguna de las respuestas es “NO”,
                 compruebe si se trata de una tarea
                 con un nivel de riesgo inaceptable
                 según la ficha 1.4.
-
             </div>
-
         </div>
-
     </div>
 
 
 
 
 
-    <br><br>
-    <br>
+
+
+    @php
+
+    $mostrarFicha14 = false;
+
+    if ($ficha11) {
+
+    $mostrarFicha14 =
+    ($respuestas11['a'] ?? '') == 'SI' &&
+    ($respuestas11['b'] ?? '') == 'SI' &&
+    ($respuestas11['c'] ?? '') == 'SI' &&
+    ($respuestas11['d'] ?? '') == 'SI' &&
+    ($respuestas11['e'] ?? '') == 'SI';
+    }
+
+    $ficha14 = $fichasJson['1.4'] ?? null;
+
+    $respuestas14 = [];
+
+    if ($ficha14 && isset($ficha14['preguntas'])) {
+
+    foreach ($ficha14['preguntas'] as $pregunta) {
+
+    $respuestas14[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+    }
+
+    @endphp
+
 
 
 
@@ -674,149 +829,7 @@
     {{-- FICHA 1.4 --}}
     {{-- ===================================================== --}}
 
-    <!-- <div class="card mt-3">
-
-        <div class="card-header header-rojo text-center">
-
-            <b>
-                FICHA 1.4.
-                Evaluación Rápida para identificar
-                la presencia de condiciones inaceptables
-                (Zona roja)
-                por LEVANTAMIENTO DE CARGAS
-            </b>
-
-            <br><br>
-
-            NOTA:
-            Señale con una "X",
-            cuando la condición verificada está presente
-            (columna "SI")
-            y cuando no está presente
-            (columna "NO")
-
-        </div>
-
-        <div class="card-body">
-
-            <table>
-
-                <tr>
-
-                    <td width="40" class="text-center fw-bold">
-                        a.
-                    </td>
-
-                    <td class="texto-pregunta">
-
-                        ¿La distancia vertical es superior a 175 cm
-                        o está por debajo del nivel del suelo?
-
-                    </td>
-
-                    <td width="55" class="text-center">
-                        <span class="check-box"></span> NO
-                    </td>
-
-                    <td width="55" class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
-                </tr>
-
-
-
-
-
-                <tr>
-
-                    <td class="text-center fw-bold">
-                        b.
-                    </td>
-
-                    <td class="texto-pregunta">
-
-                        ¿El desplazamiento vertical es superior a 175 cm?
-
-                    </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> NO
-                    </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
-                </tr>
-
-
-
-
-
-                <tr>
-
-                    <td class="text-center fw-bold">
-                        c.
-                    </td>
-
-                    <td class="texto-pregunta">
-
-                        ¿La distancia horizontal es superior a 63 cm
-                        fuera del alcance máximo
-                        (brazo completamente estirado hacia delante)?
-
-                    </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> NO
-                    </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
-                </tr>
-
-
-
-
-
-                <tr>
-
-                    <td class="text-center fw-bold">
-                        d.
-                    </td>
-
-                    <td class="texto-pregunta">
-
-                        ¿El ángulo de asimetría es superior a 135°?
-
-                    </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> NO
-                    </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
-                </tr>
-
-            </table>
-
-        </div>
-
-    </div>
-
-
-
- -->
-
-
-    <div class="card mt-3">
-
+    <div class="card" id="ficha_1_4" style="display:{{ ($mostrarNom036 && !$mostrarFicha14) ? 'block' : 'none' }}">
         <div class="card-header header-rojo text-center">
             <b>
                 FICHA 1.4.
@@ -825,7 +838,7 @@
                 (Zona roja)
                 por LEVANTAMIENTO DE CARGAS
             </b>
-            <br><br>
+            <br>
             NOTA:
             Señale con una "X",
             cuando la condición verificada está presente
@@ -844,10 +857,15 @@
                         o está por debajo del nivel del suelo?
                     </td>
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r1'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r1'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -859,10 +877,15 @@
                         es superior a 175 cm?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -876,10 +899,15 @@
                         (brazo completamente estirado hacia delante)?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r3'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r3'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -891,10 +919,15 @@
                         es superior a 135°?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r4'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r4'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -904,7 +937,7 @@
                     <td class="texto-pregunta">
                         ¿Se realizan más de 15 levantamientos/min
                         en duración corta?
-                        <br><br>
+                        <br>
                         (La tarea de manipulación manual
                         no dura más de 60 min consecutivos
                         y viene seguida
@@ -912,10 +945,15 @@
                         de duración mínima de 60 min)
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r5'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r5'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -925,7 +963,7 @@
                     <td class="texto-pregunta">
                         ¿Se realizan más de 12 levantamientos/min
                         en duración media?
-                        <br><br>
+                        <br>
                         (La tarea de manipulación manual
                         no dura más de 120 min consecutivos
                         y viene seguida
@@ -933,10 +971,15 @@
                         de duración mínima de 30 min)
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r6'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r6'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -946,15 +989,20 @@
                     <td class="texto-pregunta">
                         ¿Se realizan más de 8 levantamientos/min
                         en duración larga?
-                        <br><br>
+                        <br>
                         (La tarea de manipulación manual
                         que no es de duración corta ni media)
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r7'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r7'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -968,10 +1016,15 @@
                         y la carga pesa más de 20 kg?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r8'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r8'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -986,10 +1039,15 @@
                         y la carga pesa más de 15 kg?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r9'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r9'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1003,10 +1061,15 @@
                         y la carga pesa más de 25 kg?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r10'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r10'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1021,10 +1084,15 @@
                         y la carga pesa más de 20 kg?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas14['r11'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas14['r11'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
             </table>
@@ -1032,25 +1100,41 @@
     </div>
 
 
+
+    @php
+
+    $ficha13 = $fichasJson['1.3'] ?? null;
+
+    $respuestas13 = [];
+
+    if ($ficha13 && isset($ficha13['preguntas'])) {
+
+    foreach ($ficha13['preguntas'] as $pregunta) {
+
+    $respuestas13[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+    }
+
+    @endphp
+
     {{-- ===================================================== --}}
     {{-- FICHA 1.3 --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-3">
+    <div class="card" id="ficha_1_3" style="display:{{ $mostrarNom036 ? 'block' : 'none' }}">
         <div class="card-header header-azul text-center">
             <b>
                 FICHA 1.3.- Aspectos adicionales a considerar
             </b>
-            <br><br>
+            <br>
             A cada una de las preguntas de cada apartado
             marque una "X"
             en la columna SI o NO
         </div>
         <div class="card-body">
             <table>
-                {{-- ===================================================== --}}
-                {{-- CONDICIONES AMBIENTALES --}}
-                {{-- ===================================================== --}}
                 <tr class="header-gris">
                     <td colspan="2" class="texto-pregunta fw-bold">
                         Condiciones ambientales de trabajo
@@ -1068,10 +1152,15 @@
                         de baja o altas temperaturas?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas13['f1'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas13['f1'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1084,10 +1173,15 @@
                         desigual o inestable?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas13['f2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas13['f2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1100,15 +1194,17 @@
                         en el puesto de trabajo?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas13['f3'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas13['f3'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
-                {{-- ===================================================== --}}
-                {{-- CARACTERÍSTICAS OBJETOS --}}
-                {{-- ===================================================== --}}
                 <tr class="header-gris">
                     <td colspan="2" class="texto-pregunta fw-bold">
                         Características de los objetos
@@ -1127,10 +1223,15 @@
                         y el movimiento?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas13['f4'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas13['f4'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1140,16 +1241,21 @@
                     <td class="texto-pregunta">
                         ¿El centro de gravedad
                         de la carga es inestable?
-                        <br><br>
+                        <br>
                         P.ej. líquidos
                         o cosas que se mueven
                         dentro del objeto.
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas13['f5'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas13['f5'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1164,10 +1270,15 @@
                         o protuberancias?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas13['f6'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas13['f6'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1179,10 +1290,15 @@
                         es frío?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas13['f7'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas13['f7'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1194,10 +1310,14 @@
                         es caliente?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas13['f8'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas13['f8'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1211,242 +1331,232 @@
                         por más de 8 horas al día?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas13['f9'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas13['f9'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
             </table>
         </div>
     </div>
 
+
+
+
+
+
     {{-- ===================================================== --}}
     {{-- TRANSPORTE DE CARGAS --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-2">
-
+    <div class="card" id="TRANSPORTE_CARGAS" style="display:{{ $mostrarNom036 ? 'block' : 'none' }}">
         <div class="card-header header-res">
-
             <div class="text-center">
                 <b>3. Transporte de cargas</b>
             </div>
-
         </div>
-
     </div>
 
 
 
+    @php
 
+    $ficha12 = $fichasJson['1.2'] ?? null;
 
+    $respuestas12 = [];
 
+    if ($ficha12 && isset($ficha12['preguntas'])) {
 
+    foreach ($ficha12['preguntas'] as $pregunta) {
+
+    $respuestas12[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+    }
+
+    @endphp
 
 
     {{-- ===================================================== --}}
     {{-- FICHA 1.2 --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-3">
-
-        <div class="card-header header-verde">
-
+    <div class="card " id="ficha_1_2" style="display:{{ $mostrarNom036 ? 'block' : 'none' }}">
+        <div class="card-header header-verde text-center">
             <b>
                 FICHA 1.2.- Evaluación Rápida para Identificar
                 la presencia de condiciones aceptables
                 (Zona verde)
                 por TRANSPORTE DE CARGAS.
             </b>
-
-            <br><br>
-
+            <br>
             NOTA:
             Señale con una "X",
             cuando la condición verificada está presente
             (columna "SI")
             y cuando no está presente
             (columna "NO")
-
         </div>
-
-        <div class="card-body">
-
-            <table>
-
+        <div class="card-body" style="padding:0">
+            <table style="page-break-inside:auto;">
                 <tr>
-
                     <td width="40" class="text-center fw-bold">
                         a.
                     </td>
-
                     <td class="texto-pregunta">
-
                         Si se requiere que una carga sea transportada manualmente
                         a una distancia inferior o igual a 10 m, responda:
-
-                        <br><br>
-
+                        <br>
                         ¿La masa acumulada transportada manualmente
                         (peso total de todas las cargas)
                         es menor de 10.000 kg en 8 horas?
-
-                        <br><br>
-
-                        Y
-
-                        <br><br>
-
-                        ¿La masa acumulada transportada manualmente
+                        &nbsp; Y
+                        &nbsp; ¿La masa acumulada transportada manualmente
                         (peso total de todas las cargas)
                         es menor de 1.500 kg en 1 hora?
-
-                        <br><br>
-
-                        Y
-
-                        <br><br>
-
-                        ¿La masa acumulada transportada manualmente
+                        &nbsp; Y
+                        &nbsp; ¿La masa acumulada transportada manualmente
                         (peso total de todas las cargas)
                         es menor de 30 kg en 1 minuto?
-
+                    </td>
+                    <td width="55" class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas12['a2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas12['a2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td width="55" class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         b.
                     </td>
-
                     <td class="texto-pregunta">
-
                         Si se requiere que una carga sea transportada manualmente
                         a una distancia superior a 10 m, responda:
-
-                        <br><br>
-
+                        <br>
                         ¿La masa acumulada transportada manualmente
                         (peso total de todas las cargas)
                         es menor de 6.000 kg en 8 horas?
-
-                        <br><br>
-
+                        <br>
                         Y
-
-                        <br><br>
-
+                        <br>
                         ¿La masa acumulada transportada manualmente
                         (peso total de todas las cargas)
                         es menor de 750 kg en 1 hora?
-
-                        <br><br>
-
+                        <br>
                         Y
-
-                        <br><br>
-
+                        <br>
                         ¿La masa acumulada transportada manualmente
                         (peso total de todas las cargas)
                         es menor de 15 kg en 1 minuto?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas12['b2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas12['b2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         c.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El transporte de la carga
                         se realiza sin posturas forzadas?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas12['c2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas12['c2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
             </table>
-
-            <div class="p-2" style="line-height:1.6;">
-
+            <div class="p-2" style="line-height:1.6 !important;">
                 Si a las preguntas “a” o “b”,
                 y a la pregunta “c”
                 ha contestado “SI”
                 entonces la tarea tiene un riesgo aceptable
                 y está en la Zona Verde.
-
-                <br><br>
-
+                <br>
                 Si alguna de las respuestas es “NO”,
                 compruebe si se trata de una tarea
                 con un nivel de riesgo inaceptable
                 según la ficha 1.5.
-
             </div>
-
         </div>
-
     </div>
 
 
 
 
+    @php
 
+    $ficha15 = $fichasJson['1.5'] ?? null;
 
+    $respuestas15 = [];
 
+    if ($ficha15 && isset($ficha15['preguntas'])) {
 
+    foreach ($ficha15['preguntas'] as $pregunta) {
+
+    $respuestas15[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+    }
+
+    $mostrarFicha15 = false;
+
+    if ($ficha12) {
+
+    $mostrarFicha15 =
+    (
+    (
+    ($respuestas12['a2'] ?? '') == 'SI' ||
+    ($respuestas12['b2'] ?? '') == 'SI'
+    )
+    &&
+    ($respuestas12['c2'] ?? '') == 'SI'
+    );
+
+    }
+
+    @endphp
 
     {{-- ===================================================== --}}
     {{-- FICHA 1.5 --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-3">
+
+
+
+    <div class="card" id="ficha_1_5" style="display:{{ ($mostrarNom036 && !$mostrarFicha15) ? 'block' : 'none' }}">
 
         <div class="card-header header-rojo text-center">
-
             <b>
                 FICHA 1.5.
                 Evaluación Rápida para identificar
@@ -1454,288 +1564,234 @@
                 (Zona roja)
                 por TRANSPORTE DE CARGAS
             </b>
-
-            <br><br>
-
+            <br>
             NOTA:
             Señale con una "X",
             cuando la condición verificada está presente
             (columna "SI")
             y cuando no está presente
             (columna "NO")
-
         </div>
 
         <div class="card-body">
-
             <table>
-
                 <tr>
-
                     <td width="40" class="text-center fw-bold">
                         a.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Se manipula una masa acumulada
                         (peso total de todas las cargas)
                         de más de 10.000 kg en 8 horas,
                         en una distancia menor a 20 metros?
-
+                    </td>
+                    <td width="55" class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas15['t1'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas15['t1'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td width="55" class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         b.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Se manipula una masa acumulada
                         (peso total de todas las cargas)
                         de más de 6.000 kg en 8 horas,
                         en una distancia igual o superior a 20 metros?
 
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas15['t2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas15['t2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
             </table>
-
         </div>
-
     </div>
 
 
 
-
+    <br>
     {{-- ===================================================== --}}
     {{-- EMPUJE Y TRACCIÓN DE CARGAS --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-2">
-
+    <div class="card" id="EMPUJE_TRACCION" style="display:{{ $mostrarNom036 ? 'block' : 'none' }}">
         <div class="card-header header-res">
-
             <div class="text-center">
                 <b>4. Empuje y tracción de cargas</b>
             </div>
-
         </div>
-
     </div>
+
+
+    @php
+
+    $ficha21 = $fichasJson['2.1'] ?? null;
+
+    $respuestas21 = [];
+
+    if ($ficha21 && isset($ficha21['preguntas'])) {
+
+    foreach ($ficha21['preguntas'] as $pregunta) {
+
+    $respuestas21[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+    }
+
+    @endphp
+
 
 
     {{-- ===================================================== --}}
     {{-- FICHA 2.1 --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-3">
-
-        <div class="card-header header-verde">
-
+    <div class="card" id="ficha_2_1" style="display:{{ $mostrarNom036 ? 'block' : 'none' }}">
+        <div class="card-header header-verde text-center">
             <b>
                 FICHA 2.1.- Evaluación Rápida para Identificar
                 la presencia de condiciones aceptables
                 (Zona verde)
                 por EMPUJE Y TRACCIÓN DE CARGAS.
             </b>
-
-            <br><br>
-
+            <br>
             NOTA:
             Señale con una "X",
             cuando la condición verificada está presente
             (columna "SI")
             y cuando no está presente
             (columna "NO")
-
         </div>
-
         <div class="card-body">
-
             <table>
-
                 <tr>
-
                     <td width="40" class="text-center fw-bold">
                         a.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La fuerza requerida en el empuje o tracción
                         es inferior a “Moderada”
                         (en la Escala de Borg menor a 3)?
-
-                        <br><br>
-
+                        <br>
                         O
-
-                        <br><br>
-
+                        <br>
                         ¿La fuerza requerida en el empuje o tracción
                         no supera los 30 N en fuerza continua (sostenida)
                         y no supera los 100 N en los picos de fuerza?
-
-                        <br><br>
-
+                        <br>
                         O
-
-                        <br><br>
-
+                        <br>
                         ¿La fuerza requerida en el empuje o tracción
                         no supera los 50 N
                         cuando la frecuencia es menor
                         1 acción cada 5 minutos
                         en una distancia de recorrido inferior a 50 m?
-
+                    </td>
+                    <td width="55" class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas21['a21'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas21['a21'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td width="55" class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         b.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La fuerza de empuje o tracción
                         se aplica a una altura de agarre
                         entre la cadera y la mitad del pecho?
 
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas21['b21'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas21['b21'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         c.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La acción de empuje o tracción
                         se realiza con el tronco erguido
                         (sin torsión ni flexión)?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas21['c21'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas21['c21'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         d.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La tarea de empuje o tracción
                         se realiza durante menos de 8 horas al día?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas21['d21'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas21['d21'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
             </table>
-
-            <div class="p-2" style="line-height:1.6;">
-
+            <div class="p-2" style="line-height:1.6 !important;">
                 Si a todas las preguntas ha contestado “SI”
                 entonces la tarea tiene un riesgo aceptable
                 y está en la Zona Verde.
-
-                <br><br>
-
+                <br>
                 Si alguna de las respuestas es “NO”,
                 compruebe si se trata de una tarea
                 con un nivel de riesgo inaceptable
                 según la ficha 2.3.
-
             </div>
-
         </div>
-
     </div>
 
 
@@ -1744,13 +1800,52 @@
 
 
 
+    @php
+
+    //=========================================
+    // MOSTRAR FICHA 2.3
+    //=========================================
+
+    $mostrarFicha23 = false;
+
+    if ($ficha21) {
+
+    $mostrarFicha23 =
+    ($respuestas21['a21'] ?? '') == 'SI' &&
+    ($respuestas21['b21'] ?? '') == 'SI' &&
+    ($respuestas21['c21'] ?? '') == 'SI' &&
+    ($respuestas21['d21'] ?? '') == 'SI';
+
+    }
+
+    @endphp
 
 
+
+    @php
+
+    $ficha23 = $fichasJson['2.3'] ?? null;
+
+    $respuestas23 = [];
+
+    if ($ficha23 && isset($ficha23['preguntas'])) {
+
+    foreach ($ficha23['preguntas'] as $pregunta) {
+
+    $respuestas23[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+
+
+    }
+
+    @endphp
     {{-- ===================================================== --}}
     {{-- FICHA 2.3 --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-3">
+    <div class="card" id="ficha_2_3" style="display:{{ ($mostrarNom036 && !$mostrarFicha23) ? 'block' : 'none' }}">
         <div class="card-header header-rojo text-center">
             <b>
                 FICHA 2.3.
@@ -1759,7 +1854,7 @@
                 (Zona roja)
                 por EMPUJE Y TRACCIÓN DE CARGAS
             </b>
-            <br><br>
+            <br>
             NOTA:
             Señale con una "X",
             cuando la condición verificada está presente
@@ -1777,17 +1872,16 @@
                         ¿La fuerza requerida en el empuje o tracción
                         es “Muy intensa” o superior
                         (Escala de Borg mayor o igual a 8)?
-                        <br><br>
-
+                        <br>
                         O
-                        <br><br>
+                        <br>
                         ¿La fuerza requerida en el empuje o tracción
                         para iniciar el movimiento
                         es 360 N o más para hombres,
                         o de 240 N o más para mujeres?
-                        <br><br>
+                        <br>
                         O
-                        <br><br>
+                        <br>
                         ¿La fuerza requerida
                         para el empuje o tracción
                         para mantener el movimiento
@@ -1795,10 +1889,15 @@
                         o de 150 N o más mujeres?
                     </td>
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas23['r23_1'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas23['r23_1'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1812,10 +1911,15 @@
                         o menor a 60 cm?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas23['r23_2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas23['r23_2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1828,10 +1932,15 @@
                         o en torsión?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas23['r23_3'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas23['r23_3'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1844,10 +1953,15 @@
                         durante más de 8 horas al día?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas23['r23_4'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas23['r23_4'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
             </table>
@@ -1859,7 +1973,23 @@
 
 
 
-    <br><br><br><br>
+    @php
+
+    $ficha22 = $fichasJson['2.2'] ?? null;
+
+    $respuestas22 = [];
+
+    if ($ficha22 && isset($ficha22['preguntas'])) {
+
+    foreach ($ficha22['preguntas'] as $pregunta) {
+
+    $respuestas22[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+    }
+
+    @endphp
 
 
     {{-- ===================================================== --}}
@@ -1868,21 +1998,16 @@
 
 
 
-    <div class="card mt-3">
-
+    <div class="card" id="ficha_2_2" style="display:{{ $mostrarNom036 ? 'block' : 'none' }}">
         <div class="card-header header-azul text-center">
-
             <b>
                 FICHA 2.2.- Aspectos adicionales a considerar
             </b>
-
             <br><br>
-
             A cada una de las preguntas
             de cada apartado
             marque una "X"
             en la columna SI o NO
-
         </div>
         <div class="card-body">
             <table>
@@ -1911,10 +2036,15 @@
                         o están rotas?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_1'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_1'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1927,10 +2057,15 @@
                         para desplazarse?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1943,10 +2078,15 @@
                         con mucha pendiente?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_3'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_3'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1959,10 +2099,15 @@
                         (por frío o calor)?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_4'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_4'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -1975,15 +2120,17 @@
                         puertas estrechas, etc.?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_5'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_5'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
-                {{-- ===================================================== --}}
-                {{-- CARACTERÍSTICAS OBJETOS --}}
-                {{-- ===================================================== --}}
                 <tr class="header-gris">
                     <td colspan="2" class="texto-pregunta fw-bold">
                         Características de los objetos
@@ -2002,10 +2149,15 @@
                         u obstaculiza el movimiento?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_6'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_6'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -2016,10 +2168,15 @@
                         ¿El objeto carece de asas?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_7'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_7'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -2030,10 +2187,15 @@
                         ¿El objeto es inestable?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_8'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_8'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -2048,10 +2210,15 @@
                         que puedan dañar al trabajador?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_9'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_9'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -2064,10 +2231,15 @@
                         o sin mantenimiento?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_10'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_10'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -2079,15 +2251,17 @@
                         para las condiciones de trabajo?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_11'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_11'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
-                {{-- ===================================================== --}}
-                {{-- CARACTERÍSTICAS TAREA --}}
-                {{-- ===================================================== --}}
                 <tr class="header-gris">
                     <td colspan="2" class="texto-pregunta fw-bold">
                         Características de la tarea
@@ -2106,10 +2280,15 @@
                         por más de 8 horas al día?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_12'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_12'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -2123,10 +2302,15 @@
                         o mover la carga?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_13'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_13'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
                 <tr>
@@ -2140,10 +2324,15 @@
                         para transportar la carga?
                     </td>
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_14'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
+
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas22['f22_14'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
                 </tr>
             </table>
@@ -2151,32 +2340,19 @@
     </div>
 
 
-
-
-    {{-- ===================================================== --}}
-    {{-- MOVIMIENTO REPETITIVO --}}
-    {{-- ===================================================== --}}
-
-    <div class="card mt-5">
-
+    <div class="card mt-1">
         <div class="card-header header-verde">
-
             <div class="text-center">
                 <b>Movimiento repetitivo</b>
             </div>
-
         </div>
-
-        <div class="card-body p-2" style="line-height:1.6;">
-
+        <div class="card-body p-2" style="line-height:1.6 !important;">
             Tarea caracterizada por tener un ciclo de trabajo que se repite.
             Está caracterizada por la presencia de ciclos
             con acciones técnicas
             que deben ser realizadas
             por las extremidades superiores.
-
         </div>
-
     </div>
 
 
@@ -2191,16 +2367,12 @@
     {{-- MOVIMIENTOS REPETITIVOS --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-2">
-
+    <div class="card mt-1">
         <div class="card-header header-res">
-
             <div class="text-center">
                 <b>5. Movimientos repetitivos de la extremidad superior</b>
             </div>
-
         </div>
-
     </div>
 
 
@@ -2210,15 +2382,31 @@
 
 
 
+    @php
+
+    $ficha31 = $fichasJson['3.1'] ?? null;
+
+    $respuestas31 = [];
+
+    if ($ficha31 && isset($ficha31['preguntas'])) {
+
+    foreach ($ficha31['preguntas'] as $pregunta) {
+
+    $respuestas31[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+    }
+
+    @endphp
+
 
     {{-- ===================================================== --}}
     {{-- FICHA 3.1 --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-3">
-
+    <div class="card mt-1" id="ficha_3_1" style="display: block !important;">
         <div class="card-header header-verde text-center">
-
             <b>
                 FICHA 3.1.- Evaluación Rápida para Identificar
                 la presencia de condiciones aceptables
@@ -2226,30 +2414,22 @@
                 por MOVIMIENTOS REPETITIVOS
                 DE LA EXTREMIDAD SUPERIOR.
             </b>
-
-            <br><br>
-
+            <br>
             NOTA:
             Señale con una "X",
             cuando la condición verificada está presente
             (columna "SI")
             y cuando no está presente
             (columna "NO")
-
         </div>
 
         <div class="card-body">
-
             <table>
-
                 <tr>
-
                     <td width="40" class="text-center fw-bold">
                         a.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Las extremidades superiores están inactivas
                         por más del 50% del tiempo total
                         del trabajo repetitivo
@@ -2259,214 +2439,186 @@
                         o lee,
                         o hace control visual,
                         o espera que la máquina concluya el trabajo, etc.)?
-
                     </td>
-
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas31['m1'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas31['m1'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         b.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Ninguno de los brazos trabaja
                         con el codo casi a la altura del hombro
                         por más del 10%
                         del tiempo de trabajo repetitivo?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas31['m2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas31['m2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         c.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La fuerza necesaria para realizar el trabajo
                         es menor a moderada (es ligera)?
-
-                        <br><br>
-
+                        <br>
                         O bien,
-
-                        <br><br>
-
+                        <br>
                         ¿Si la fuerza es moderada,
                         no supera el 25%
                         del tiempo de trabajo repetitivo?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas31['m3'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas31['m3'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         d.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Están ausentes los picos de fuerza
                         (más que Moderada en la Escala Borg)?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas31['m4'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas31['m4'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         e.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Hay pausas de duración
                         al menos 8 min cada 2 horas?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas31['m5'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas31['m5'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         f.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La(s) tarea(s)
                         de trabajo repetitivo
                         se realiza durante menos de 8 horas al día?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas31['m6'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas31['m6'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
             </table>
-
-            <div class="p-2" style="line-height:1.6;">
-
+            <div class="p-2" style="line-height:1.6 !important;">
                 Si a todas las preguntas ha contestado “SI”
                 entonces la tarea tiene un riesgo aceptable
                 y está en la Zona Verde.
-
-                <br><br>
-
+                <br>
                 Si alguna de las respuestas es “NO”,
                 compruebe si se trata de una tarea
                 con un nivel de riesgo inaceptable
                 según la ficha 3.2.
-
             </div>
-
         </div>
-
     </div>
 
 
+    @php
 
+    //=========================================
+    // MOSTRAR FICHA 3.2
+    //=========================================
 
+    $mostrarFicha32 = false;
 
+    if ($ficha31) {
 
+    $mostrarFicha32 =
+    ($respuestas31['m1'] ?? '') == 'SI' &&
+    ($respuestas31['m2'] ?? '') == 'SI' &&
+    ($respuestas31['m3'] ?? '') == 'SI' &&
+    ($respuestas31['m4'] ?? '') == 'SI' &&
+    ($respuestas31['m5'] ?? '') == 'SI' &&
+    ($respuestas31['m6'] ?? '') == 'SI';
 
+    }
 
+    @endphp
 
     {{-- ===================================================== --}}
     {{-- FICHA 3.2 --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-3">
 
+
+    @php
+
+    $ficha32 = $fichasJson['3.2'] ?? null;
+
+    $respuestas32 = [];
+
+    if ($ficha32 && isset($ficha32['preguntas'])) {
+
+    foreach ($ficha32['preguntas'] as $pregunta) {
+
+    $respuestas32[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+
+    }
+
+    @endphp
+    <div class="card mt-1" id="ficha_3_2" style="display:{{ $mostrarFicha32 ? 'none' : 'block' }}">
         <div class="card-header header-rojo text-center">
-
             <b>
                 FICHA 3.2.
                 Evaluación Rápida para identificar
@@ -2475,203 +2627,141 @@
                 por MOVIMIENTOS REPETITIVOS
                 DE LA EXTREMIDAD SUPERIOR
             </b>
-
-            <br><br>
-
+            <br>
             NOTA:
             Señale con una "X",
             cuando la condición verificada está presente
             (columna "SI")
             y cuando no está presente
             (columna "NO")
-
         </div>
-
         <div class="card-body">
-
             <table>
-
                 <tr>
-
                     <td width="40" class="text-center fw-bold">
                         a.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Las acciones técnicas
                         de una extremidad
                         son tan rápidas
                         que no es posible contarlas?
-
                     </td>
-
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_1'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_1'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         b.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Un brazo o ambos trabajan
                         con el codo casi a la altura del hombro
                         por la mitad o más
                         del tiempo de trabajo repetitivo?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         c.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Se realizan picos de fuerza
                         (Fuerza intensa o más en la escala Borg)
                         durante el 5% o más
                         del tiempo de trabajo repetitivo?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_3'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_3'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         d.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Se requiere el agarre de objetos
                         con los dedos
                         (agarre de precisión)
                         durante más del 80%
                         del tiempo de trabajo repetitivo?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_4'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_4'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         e.
                     </td>
-
                     <td class="texto-pregunta">
-
                         En turnos de 6 horas o más,
                         ¿sólo tiene una pausa o ninguna?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_5'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_5'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         f.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El tiempo de trabajo repetitivo
                         es superior a 8 horas en el turno?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_6'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas32['r32_6'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
             </table>
-
         </div>
-
     </div>
 
 
@@ -2679,50 +2769,32 @@
     {{-- POSTURA ESTÁTICA --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-5">
-
+    <div class="card mt-1">
         <div class="card-header header-verde">
-
             <div class="text-center">
                 <b>Postura estática</b>
             </div>
-
         </div>
-
-        <div class="card-body p-2" style="line-height:1.6;">
-
+        <div class="card-body p-2" style="line-height:1.6 !important;">
             Posición que se realiza
             con una contracción muscular prolongada
             sin producir movimiento
             durante por lo menos 4 segundos
             de manera consecutiva.
-
         </div>
-
     </div>
-
-
-
-
-
-
-
 
 
     {{-- ===================================================== --}}
     {{-- POSTURAS ESTÁTICAS FORZADAS --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-2">
-
+    <div class="card mt-1">
         <div class="card-header header-res">
-
             <div class="text-center">
                 <b>6. Posturas estáticas forzadas</b>
             </div>
-
         </div>
-
     </div>
 
 
@@ -2731,431 +2803,292 @@
 
 
 
+    @php
 
+    $ficha41 = $fichasJson['4.1'] ?? null;
+
+    $respuestas41 = [];
+
+    if ($ficha41 && isset($ficha41['preguntas'])) {
+
+    foreach ($ficha41['preguntas'] as $pregunta) {
+
+    $respuestas41[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+    }
+
+    @endphp
 
     {{-- ===================================================== --}}
     {{-- FICHA 4.1 --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-3">
-
+    <div class="card mt-1" id="ficha_4_1" style="display: block !important;">
         <div class="card-header header-verde text-center">
-
             <b>
                 FICHA 4.1.- Evaluación Rápida para Identificar
                 la presencia de condiciones aceptables
                 (Zona verde)
                 por POSTURAS ESTÁTICAS FORZADAS
             </b>
-
-            <br><br>
-
+            <br>
             NOTA:
             Señale con una "X",
             cuando la condición verificada está presente
             (columna "SI")
             y cuando no está presente
             (columna "NO")
-
         </div>
-
         <div class="card-body">
-
             <table>
-
                 <tr class="header-gris">
-
                     <td colspan="2" class="texto-pregunta fw-bold">
-
                         Cabeza y tronco
-
                     </td>
-
                     <td width="80"></td>
-
                     <td width="80"></td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td width="40" class="text-center fw-bold">
                         a.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El tronco está erguido,
                         o si está flexionado o en extensión
                         el ángulo no supera los 20°?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas41['p1'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p1'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         b.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El cuello está recto,
                         o si está flexionado o en extensión
                         el ángulo no supera los 25°?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas41['p2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         c.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La cabeza está recta,
                         o si está inclinada lateralmente
                         el ángulo no supera los 25°?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p3'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas41['p3'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
-
-
                 <tr class="header-gris">
-
                     <td colspan="2" class="texto-pregunta fw-bold">
-
                         Extremidad Superior
-
                     </td>
-
                     <td></td>
-
                     <td></td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         d.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El brazo está sin apoyo
                         y la flexión no supera el ángulo de 20°?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p4'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas41['p4'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         e.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El brazo está con apoyo
                         y la flexión no supera el ángulo de 60°?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p5'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas41['p5'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         f.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El codo realiza flexo-extensiones
                         o prono-supinaciones
                         no extremas (pequeñas)?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p6'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas41['p6'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         g.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La muñeca está en posición neutra
                         o no realiza desviaciones extremas
                         (flexión,
                         extensión,
                         desviación radial
                         o ulnar)?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p7'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas41['p7'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
-
-
                 <tr class="header-gris">
-
                     <td colspan="2" class="texto-pregunta fw-bold">
-
                         Extremidad Inferior
-
                     </td>
-
                     <td></td>
-
                     <td></td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         h.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Las flexiones extremas
                         de rodilla
                         están ausentes?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p8'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas41['p8'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         i.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Las dorsiflexiones
                         y flexiones plantares de tobillo extremas
                         están ausentes?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p9'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas41['p9'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         j.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Las posturas de rodillas
                         y cuclillas
                         están ausentes?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p10'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas41['p10'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         k.
                     </td>
-
                     <td class="texto-pregunta">
-
                         Si la postura es sentado,
                         ¿el ángulo de rodilla
                         está entre 55° y 135°?
-
+                    </td>
+                    <td class="text-center">
+                        <span class="check-box">
+                            {{ ($respuestas41['p11'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
 
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas41['p11'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
-                    <td class="text-center">
-                        <span class="check-box"></span> SI
-                    </td>
-
                 </tr>
-
             </table>
-
         </div>
-
     </div>
 
 
@@ -3166,18 +3099,13 @@
     {{-- POSTURA DINÁMICA --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-5">
-
+    <div class="card mt-1">
         <div class="card-header header-verde">
-
             <div class="text-center">
                 <b>Postura dinámica</b>
             </div>
-
         </div>
-
-        <div class="card-body p-2" style="line-height:1.6;">
-
+        <div class="card-body p-2" style="line-height:1.6 !important;">
             Posición corporal
             que se realiza
             con una contracción
@@ -3185,250 +3113,189 @@
             y con cambios
             en los movimientos
             de las articulaciones.
-
         </div>
-
     </div>
-
-
-
-
-
-
-
 
 
     {{-- ===================================================== --}}
     {{-- POSTURAS DINÁMICAS FORZADAS --}}
     {{-- ===================================================== --}}
-    <div class="card mt-2">
-
+    <div class="card mt-1">
         <div class="card-header header-res">
-
             <div class="text-center">
                 <b>7. Posturas dinámicas forzadas</b>
             </div>
-
         </div>
-
     </div>
-
-
-
-
-
-
 
 
     {{-- ===================================================== --}}
     {{-- FICHA 4.2 --}}
     {{-- ===================================================== --}}
 
-    <div class="card mt-3">
 
+    @php
+
+    $ficha42 = $fichasJson['4.2'] ?? null;
+
+    $respuestas42 = [];
+
+    if ($ficha42 && isset($ficha42['preguntas'])) {
+
+    foreach ($ficha42['preguntas'] as $pregunta) {
+
+    $respuestas42[$pregunta['name']] = $pregunta['respuesta'];
+
+    }
+
+
+
+
+    }
+
+    @endphp
+
+    <div class="card mt-1" id="ficha_4_2" style="display: block !important;">
         <div class="card-header header-verde text-center">
-
             <b>
                 FICHA 4.2.- Evaluación Rápida para Identificar
                 la presencia de condiciones aceptables
                 (Zona verde)
                 por POSTURAS DINÁMICAS FORZADAS
             </b>
-
-            <br><br>
-
+            <br>
             NOTA:
             Señale con una "X",
             cuando la condición verificada está presente
             (columna "SI")
             y cuando no está presente
             (columna "NO")
-
         </div>
-
         <div class="card-body">
-
             <table>
-
                 <tr>
-
                     <td width="40" class="text-center fw-bold">
                         a.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El tronco está erguido,
                         o realiza flexiones o extensiones
                         sin superar el ángulo de 20°?
-
                     </td>
-
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas42['d1'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td width="55" class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas42['d1'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         b.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El tronco está erguido,
                         o realiza inclinaciones laterales
                         o torsión
                         sin superar el ángulo de 10°?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas42['d2'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas42['d2'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         c.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La cabeza está recta,
                         o realiza inclinaciones laterales
                         sin superar el ángulo de 10°?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas42['d3'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas42['d3'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         d.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿La cabeza está recta,
                         o realiza torsión del cuello
                         sin superar el ángulo de 45°?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas42['d4'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas42['d4'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         e.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿El cuello está recto
                         o realiza flexiones
                         entre 0° y 40°?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas42['d5'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas42['d5'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
-
-
-
-
-
-
                 <tr>
-
                     <td class="text-center fw-bold">
                         f.
                     </td>
-
                     <td class="texto-pregunta">
-
                         ¿Los brazos están neutros,
                         o realizan flexión o abducción
                         sin superar el ángulo de 20°?
-
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> NO
+                        <span class="check-box">
+                            {{ ($respuestas42['d6'] ?? '') == 'NO' ? 'X' : '' }}
+                        </span> NO
                     </td>
-
                     <td class="text-center">
-                        <span class="check-box"></span> SI
+                        <span class="check-box">
+                            {{ ($respuestas42['d6'] ?? '') == 'SI' ? 'X' : '' }}
+                        </span> SI
                     </td>
-
                 </tr>
-
             </table>
-
         </div>
-
     </div>
 </body>
 

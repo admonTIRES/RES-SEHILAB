@@ -8242,3 +8242,14 @@ $('#boton_sincronizar_higiene').click(function () {
 
 
 
+////// DESCARGAR ZIP  DE FICHAS
+
+
+$("#boton_reporte_fichas").click(function () {
+
+    window.open(
+        "/reporteFichasZip/" + recsensorial,
+        "_blank"
+    );
+
+});
