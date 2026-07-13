@@ -17,6 +17,7 @@ use App\modelos\reportes\reporterevisionesModel;
 
 use App\modelos\reportes\reporte_calificacionesModel;
 
+use PhpOffice\PhpWord\TemplateProcessor;
 
 // Catalogos
 use App\modelos\recsensorial\catregionModel;
@@ -24,15 +25,17 @@ use App\modelos\recsensorial\catsubdireccionModel;
 use App\modelos\recsensorial\catgerenciaModel;
 use App\modelos\recsensorial\catactivoModel;
 use App\modelos\recsensorial\catConclusionesModel;
-
 use App\modelos\reportes\recursosPortadasInformesModel;
-
 use App\modelos\reportes\reportenom0353Model;
 use App\modelos\reportes\reportenom0353catalogoModel;
 use App\modelos\reportes\reporterecomendacionescontrolModel;
 use App\modelos\reportes\reporterecomendacionescategoriaModel;
 use App\modelos\reconocimientopsico\catdefiniciones_psicoModel;
 use App\modelos\reconocimientopsico\catrecomendacionescontrol_psicoModel;
+use App\modelos\clientes\clientecontratoModel;
+use App\modelos\clientes\clienteModel;
+
+use App\modelos\reconocimientopsico\recopsicotrabajadoresModel;
 
 //Recursos para el Excel
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -2672,7 +2675,6 @@ class reportenom0353Controller extends Controller
     }
 
 
-
     public function obtenerDatosGeneralesInformePsico($PROYECTO_ID)
     {
         try {
@@ -2818,8 +2820,6 @@ class reportenom0353Controller extends Controller
 
 
 
-
-
     public function guardarObjetivoEspecificoinformepsico(Request $request)
     {
         try {
@@ -2854,7 +2854,6 @@ class reportenom0353Controller extends Controller
             ], 500);
         }
     }
-
 
     public function guardarUbicacioninformepsico(Request $request)
     {
@@ -2922,8 +2921,6 @@ class reportenom0353Controller extends Controller
             return Storage::download($recurso->RUTA_IMAGEN_UBICACION);
         }
     }
-
-
 
 
     public function guardarProcesoInstalacioninformepsico(Request $request)
@@ -3057,9 +3054,6 @@ class reportenom0353Controller extends Controller
         }
     }
 
-
-
-
     public function guardarRecomendacionesInformepsico(Request $request)
      {
 
@@ -3101,8 +3095,6 @@ class reportenom0353Controller extends Controller
         }
     }
 
-
-
     public function obtenerRecomendacionesInformepsico($PROYECTO_ID)
     {
         $datos =
@@ -3112,7 +3104,6 @@ class reportenom0353Controller extends Controller
             )->get();
         return response()->json($datos);
     }
-
 
     public function guardarResponsablesInformepsico(Request $request)
     {
@@ -3180,8 +3171,6 @@ class reportenom0353Controller extends Controller
         }
     }
 
-
-
     public function mostrarresponsable1infopsico($archivo_opcion, $proyecto_id, $extension)
     {
 
@@ -3198,8 +3187,6 @@ class reportenom0353Controller extends Controller
         }
     }
 
-
-
     public function mostrarresponsable2infopsico($archivo_opcion, $proyecto_id, $extension)
     {
 
@@ -3214,10 +3201,6 @@ class reportenom0353Controller extends Controller
             return Storage::download($recurso->INFORME_RESPONSABLE2DOCUMENTO);
         }
     }
-
-
-
-
 
     public function validarEdicioninfopsico($proyecto_id)
     {
@@ -3328,9 +3311,6 @@ class reportenom0353Controller extends Controller
         }
     }
 
-
-
-
     public function cancelarRevisionpsicoinfo(Request $request)
     {
 
@@ -3363,8 +3343,6 @@ class reportenom0353Controller extends Controller
             ], 500);
         }
     }
-
-
 
     public function tablaVersionesinfopsico($proyecto_id)
     {
@@ -3424,7 +3402,7 @@ class reportenom0353Controller extends Controller
                     </div>';
 
             $value->BOTON_DESCARGAR = '
-                    <button type="button" class="btn btn-success btn-circle" data-toggle="tooltip" title="Descargar informe" onclick="descargarRevisionRecoErgo(' . $value->PROYECTO_ID . ')">
+                    <button type="button" class="btn btn-success btn-circle" data-toggle="tooltip" title="Descargar informe" onclick="descargarRevisioninfopsico(' . $value->PROYECTO_ID . ')">
                     <i class="fa fa-download"></i></button>';
         }
 
@@ -3435,4 +3413,619 @@ class reportenom0353Controller extends Controller
 
 
 
-}
+    public function descargarRevisioninfopsico(Request $request, $PROYECTO_ID)
+    {
+
+
+        try {
+
+            //  $reco = reconocimientoergoModel::findOrFail($RECO_ID);
+            $proyecto = proyectoModel::where('id', $PROYECTO_ID)->first();
+            $contrato = clientecontratoModel::find($proyecto->contrato_id);
+
+
+            $recursos = recursosPortadasInformePsicoModel::where('PROYECTO_ID', $PROYECTO_ID)->get();
+            $rutaPlantilla = storage_path('app/plantillas_reportes/proyecto_infomes/Plantilla_informe_nom0353.docx');
+            $plantillaword = new TemplateProcessor($rutaPlantilla);
+
+
+            $numeroContrato = $contrato->NUMERO_CONTRATO ?? 'No cargado';
+            $plantillaword->setValue('proyecto_portada', 'Evaluación de los Factores de Riesgo Psicosocial - NOM-035-STPS-2018 "Factores de riesgo psicosocial en el trabajoidentificación, análisis y prevención."' . ' - Contrato: '  . $numeroContrato);
+            $plantillaword->setValue('folio_portada', $proyecto->proyecto_folio ?? 'No cargado');
+            $plantillaword->setValue('razon_social_portada', $proyecto->proyecto_clienterazonsocial ?? 'No cargado');
+            $plantillaword->setValue('instalación_portada', $proyecto->proyecto_clienteinstalacion ?? 'No cargado');
+
+
+            $mes = $recursos[0]->INFORME_MES ?? 'No cargado';
+            $anio = $recursos[0]->INFORME_ANIO ?? 'No cargado';
+            $direccion = $proyecto->proyecto_clientedireccionservicio ?? 'No cargado';
+            $plantillaword->setValue('lugar_fecha_portada', $direccion . ', ' . $mes . ' del ' . $anio);
+
+
+            if ($proyecto->requiereContrato == 1) {
+
+                $contratoId = $proyecto->contrato_id;
+
+                $clienteInfo = DB::table('contratos_clientes as cc')
+                    ->leftJoin('cliente as c', 'c.id', '=', 'cc.CLIENTE_ID')
+                    ->where('cc.ID_CONTRATO', $contratoId)
+                    ->select(
+                        'cc.NUMERO_CONTRATO',
+                        'cc.DESCRIPCION_CONTRATO',
+                        'cc.CONTRATO_PLANTILLA_LOGODERECHO',
+                        'cc.CONTRATO_PLANTILLA_LOGOIZQUIERDO',
+                        'cc.CONTRATO_PLANTILLA_PIEPAGINA',
+                        'c.cliente_RazonSocial'
+                    )
+                    ->get();
+            } else {
+                $clienteInfo = clienteModel::where('id', $proyecto->cliente_id)->get();
+            }
+
+
+
+
+            $NIVEL_PORTADA1 = is_null($recursos[0]->OPCION_PORTADA1) ? "" : $recursos[0]->OPCION_PORTADA1 . "<w:br />";
+            $NIVEL_PORTADA2 = is_null($recursos[0]->OPCION_PORTADA2) ? "" : $recursos[0]->OPCION_PORTADA2 . "<w:br />";
+            $NIVEL_PORTADA3 = is_null($recursos[0]->OPCION_PORTADA3) ? "" : $recursos[0]->OPCION_PORTADA3 . "<w:br />";
+            $NIVEL_PORTADA4 = is_null($recursos[0]->OPCION_PORTADA4) ? "" : $recursos[0]->OPCION_PORTADA4 . "<w:br />";
+            $NIVEL_PORTADA5 = is_null($recursos[0]->OPCION_PORTADA5) ? "" : $recursos[0]->OPCION_PORTADA5 . "<w:br />";
+            $NIVEL_PORTADA6 = is_null($recursos[0]->OPCION_PORTADA6) ? "" : $recursos[0]->OPCION_PORTADA6 . "<w:br />";
+            $plantillaword->setValue('ESTRUCTURA', $NIVEL_PORTADA1 . $NIVEL_PORTADA2 . $NIVEL_PORTADA3 . $NIVEL_PORTADA4 . $NIVEL_PORTADA5 . $NIVEL_PORTADA6);
+
+            if (
+                $proyecto->requiereContrato == 1
+            ) {
+
+                $plantillaword->setValue('TITULO_CONTRATO', "Contrato:");
+                $plantillaword->setValue('CONTRATO', $clienteInfo[0]->NUMERO_CONTRATO);
+                $plantillaword->setValue('DESCRIPCION_CONTRATO', $clienteInfo[0]->DESCRIPCION_CONTRATO);
+
+                $plantillaword->setValue(
+                    'PIE_PAGINA',
+                    $clienteInfo[0]->CONTRATO_PLANTILLA_PIEPAGINA
+                );
+                $plantillaword->setValue('INFORME_REVISION', "");
+            } else {
+
+                $plantillaword->setValue(
+                    'CONTRATO',
+                    ""
+                );
+                $plantillaword->setValue('DESCRIPCION_CONTRATO', "");
+                $plantillaword->setValue('TITULO_CONTRATO', "");
+
+                $plantillaword->setValue(
+                    'PIE_PAGINA',
+                    ""
+                );
+                $plantillaword->setValue('INFORME_REVISION', "");
+            }
+
+            //============= ENCABEZADOS TITULOS
+            $NIVEL1 = is_null($recursos[0]->NIVEL1) ? "" : $recursos[0]->NIVEL1 . "<w:br />";
+            $NIVEL2 = is_null($recursos[0]->NIVEL2) ? "" : $recursos[0]->NIVEL2 . "<w:br />";
+            $NIVEL3 = is_null($recursos[0]->NIVEL3) ? "" : $recursos[0]->NIVEL3 . "<w:br />";
+            $NIVEL4 = is_null($recursos[0]->NIVEL4) ? "" : $recursos[0]->NIVEL4 . "<w:br />";
+            $NIVEL5 = is_null($recursos[0]->NIVEL5) ? "" : $recursos[0]->NIVEL5;
+
+            $plantillaword->setValue(
+                'ENCABEZADO',
+                $NIVEL1 . $NIVEL2 . $NIVEL3 . $NIVEL4 . $NIVEL5
+            );
+            $plantillaword->setValue('INSTALACION_NOMBRE', $NIVEL1 . $NIVEL2 . $NIVEL3 . $NIVEL4 . $NIVEL5);
+
+            $plantillaword->setValue('INSTALACION_NOMBRE_TEXTO', $proyecto->proyecto_clienteinstalacion);
+
+            $plantillaword->setValue('PORTADA_FECHA',$mes . ' del ' . $anio);
+
+
+
+
+
+            if (isset($recursos[0]) && $recursos[0]->RUTA_IMAGEN_PORTADA) {
+                if (
+                    file_exists(
+                        storage_path('app/' . $recursos[0]->RUTA_IMAGEN_PORTADA)
+                    )
+                ) {
+                    $plantillaword->setImageValue(
+                        'foto_portada',
+                        array(
+                            'path' => storage_path('app/' . $recursos[0]->RUTA_IMAGEN_PORTADA),
+                            'width' => 969,
+                            'height' => 689,
+                            'ratio' => true,
+                            'borderColor' => '000000'
+                        )
+
+                    );
+                } else {
+                    $plantillaword->setValue('foto_portada', 'LA IMAGEN NO HA SIDO ENCONTRADA');
+                }
+            } else {
+                $plantillaword->setValue('foto_portada', 'LA IMAGEN DE LA PORTADA NO HA SIDO CARGADA');
+            }
+
+
+            if ($contrato && $contrato->CONTRATO_PLANTILLA_LOGOIZQUIERDO) {
+                if (
+                    file_exists(
+                        storage_path('app/' . $contrato->CONTRATO_PLANTILLA_LOGOIZQUIERDO)
+                    )
+                ) {
+                    $plantillaword->setImageValue(
+                        'LOGO_IZQUIERDO',
+                        array(
+                            'path' => storage_path('app/' . $contrato->CONTRATO_PLANTILLA_LOGOIZQUIERDO),
+                            'width' => 120,
+                            'height' => 150,
+                            'ratio' => true,
+                            'borderColor' => '000000'
+                        )
+                    );
+                } else {
+                    $plantillaword->setValue('LOGO_IZQUIERDO', 'IMAGEN NO ENCONTRADA');
+                }
+            } else {
+                $plantillaword->setValue('LOGO_IZQUIERDO', 'SIN FOTO');
+            }
+
+
+            if ($contrato && $contrato->CONTRATO_PLANTILLA_LOGODERECHO) {
+                if (
+                    file_exists(
+                        storage_path('app/' . $contrato->CONTRATO_PLANTILLA_LOGODERECHO)
+                    )
+                ) {
+                    $plantillaword->setImageValue(
+                        'LOGO_DERECHO',
+                        array(
+                            'path' => storage_path('app/' . $contrato->CONTRATO_PLANTILLA_LOGODERECHO),
+                            'width' => 120,
+                            'height' => 150,
+                            'ratio' => true,
+                            'borderColor' => '000000'
+                        )
+
+                    );
+                } else {
+                    $plantillaword->setValue('LOGO_DERECHO', 'IMAGEN NO ENCONTRADA');
+                }
+            } else {
+                $plantillaword->setValue('LOGO_DERECHO', 'SIN FOTO');
+            }
+
+            $plantillaword->setValue('PIE_PAGINA', $contrato->CONTRATO_PLANTILLA_PIEPAGINA ?? 'SIN PIE DE PAGINA');
+
+            $niveles = [];
+            if (isset($recursos[0])) {
+                if (!empty($recursos[0]->NIVEL1)) {
+                    $niveles[] = $recursos[0]->NIVEL1;
+                }
+                if (!empty($recursos[0]->NIVEL2)) {
+                    $niveles[] = $recursos[0]->NIVEL2;
+                }
+                if (!empty($recursos[0]->NIVEL3)) {
+                    $niveles[] = $recursos[0]->NIVEL3;
+                }
+                if (!empty($recursos[0]->NIVEL4)) {
+                    $niveles[] = $recursos[0]->NIVEL4;
+                }
+                if (!empty($recursos[0]->NIVEL5)) {
+                    $niveles[] = $recursos[0]->NIVEL5;
+                }
+            }
+
+
+            $textoInstalacion = count($niveles)
+                ? implode(
+                    '</w:t><w:br/><w:t>',
+                    $niveles
+                )
+                : 'No cargado';
+            $plantillaword->setValue(
+                'INSTALACION_NOMBRE',
+                $textoInstalacion
+
+            );
+
+            $datosGenerales = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $PROYECTO_ID
+            )
+                ->first();
+
+            //// INTRODUCCION
+
+            $introduccion = $datosGenerales->INFORME_INTRODUCCION;
+            $introduccion = preg_replace('/<\/p>/i', "¶", $introduccion);
+            $introduccion = strip_tags($introduccion);
+            $introduccion = html_entity_decode($introduccion);
+            $introduccion = str_replace('¶', "\n\n", $introduccion);
+
+            $plantillaword->setValue('INTRODUCCION', $introduccion);
+
+            //// DEFINICIONES
+            $definiciones = DB::table('definicionesinformepsico as di')
+                ->join(
+                'psicocat_definiciones as cd',
+                'cd.ID_DEFINICION_INFORME',
+                    '=',
+                    'di.CATALOGO_DEFINICIONES_ID'
+                )
+                ->where(
+                    'di.PROYECTO_ID',
+                $PROYECTO_ID
+                )
+                ->orderBy(
+                'cd.CONCEPTO',
+                    'ASC'
+                )
+                ->select(
+                'cd.CONCEPTO',
+                'cd.DESCRIPCION',
+                'cd.FUENTE'
+                )
+                ->get();
+
+            $textoDefiniciones = '';
+
+            $fuentes = [];
+
+
+            foreach ($definiciones as $key => $value) {
+
+                $textoDefiniciones .=
+                    '<w:p>
+                        <w:r>
+                            <w:rPr>
+                                <w:b/>
+                            </w:rPr>
+                            <w:t>' .
+                    htmlspecialchars($value->CONCEPTO) .
+                    ':</w:t>
+                        </w:r>
+                        <w:r>
+                            <w:t xml:space="preserve">
+                                ' . htmlspecialchars($value->DESCRIPCION) . '
+                            </w:t>
+                        </w:r>
+                    </w:p>';
+
+
+                if (
+                    $value->FUENTE
+                    &&
+                    !in_array(
+                        $value->FUENTE,
+                        $fuentes
+                    )
+                ) {
+                    $fuentes[] = $value->FUENTE;
+                }
+            }
+
+
+            if ($textoDefiniciones == '') {
+                $textoDefiniciones = 'No cargado';
+            }
+
+            $textoFuentes = count($fuentes)
+                ? implode(
+                    '</w:t><w:br/><w:t>',
+                    $fuentes
+                )
+                : 'No cargado';
+
+
+            $plantillaword->setValue('DEFINICIONES', $textoDefiniciones);
+            $plantillaword->setValue('DEFINICIONES_FUENTES', $textoFuentes);
+
+
+            //// OBEJTIVO GENERAL
+            $plantillaword->setValue('OBJETIVO_GENERAL', $datosGenerales->INFORME_OBJETIVOGENERALES ?? 'No cargado');
+
+            //// OBEJTIVO ESPECIFICOS
+            $textoObjetivos = '';
+
+            if (!empty($datosGenerales->INFORME_OBJETIVOSESPECIFICOS)) {
+                $objetivos = preg_split(
+                    "/\r\n|\n|\r/",
+                    $datosGenerales->INFORME_OBJETIVOSESPECIFICOS
+                );
+                foreach ($objetivos as $objetivo) {
+                    $objetivo = trim($objetivo);
+                    $objetivo = ltrim($objetivo, '•- ');
+
+                    if ($objetivo != '') {
+                        $textoObjetivos .= '• ' . $objetivo . '</w:t><w:br/><w:t>';
+                    }
+                }
+            } else {
+                $textoObjetivos = 'No cargado';
+            }
+
+
+            $plantillaword->setValue('OBJETIVOS_ESPECIFICOS', $textoObjetivos);
+
+            /// NUMERO TRABAJADORES
+
+
+            $NUMERO_TRABAJADORES = recopsicotrabajadoresModel::where(
+                'RECPSICO_ID',
+                $proyecto->reconocimiento_psico_id
+            )->count();
+
+
+            $plantillaword->setValue('NUMERO_TRABAJADORES', $NUMERO_TRABAJADORES);
+
+            //// UBICACION INSTALACION
+            $plantillaword->setValue('UBICACION_TEXTO', $datosGenerales->INFORME_UBICACIONINSTALACION ?? 'No cargado');
+
+            //// UBICACION INSTALACION FOTO 
+            if ($datosGenerales->RUTA_IMAGEN_UBICACION) {
+                if (
+                    file_exists(storage_path('app/' . $datosGenerales->RUTA_IMAGEN_UBICACION))
+                ) {
+                    $plantillaword->setImageValue(
+                        'UBICACION_FOTO',
+                        array(
+                            'path' => storage_path('app/' . $datosGenerales->RUTA_IMAGEN_UBICACION),
+                            'width' => 580,
+                            'height' => 400,
+                            'ratio' => true,
+                            'borderColor' => '000000'
+                        )
+                    );
+                } else {
+                    $plantillaword->setValue('UBICACION_FOTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                }
+            } else {
+                $plantillaword->setValue('UBICACION_FOTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+            }
+
+
+            //// PROCESO DE LA INSTALACION
+            $plantillaword->setValue('PROCESO_INSTALACION', $datosGenerales->INFORME_PROCESOINSTALACION ?? 'No cargado');
+
+
+            //// ACTIVIDAD PRINCIPAL DE LA INSTALACION 
+            $plantillaword->setValue('ACTIVIDAD_INSTALACION', $datosGenerales->INFORME_ACTIVIDADPRINCIPAL ?? 'No cargado');
+
+
+            /// Descripción del método realizado para la evaluación de los Factores de Riesgo Psicosocial
+            $plantillaword->setValue('DESCRIPCION_METODO', $datosGenerales->DESCRIPCION_METODO ?? 'No cargado');
+
+
+            //// CONCLUSIONES
+            $plantillaword->setValue('CONCLUSION_1', $datosGenerales->REPORTE_ACONTECIMIENTOS_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_ACONTECIMIENTOS_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_2', $datosGenerales->REPORTE_AMBIENTE_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_AMBIENTE_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_3', $datosGenerales->REPORTE_CONDICIONES_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_CONDICIONES_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_4', $datosGenerales->REPORTE_FACTORES_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_FACTORES_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_5', $datosGenerales->REPORTE_CARGA_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_CARGA_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_6', $datosGenerales->REPORTE_FALTA_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_FALTA_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_7', $datosGenerales->REPORTE_ORGANIZACION_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_ORGANIZACION_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_8', $datosGenerales->REPORTE_JORNADA_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_JORNADA_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_9', $datosGenerales->REPORTE_INTERFERENCIA_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_INTERFERENCIA_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_10', $datosGenerales->REPORTE_LIDERAZGORELACIONES_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_LIDERAZGORELACIONES_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_11', $datosGenerales->REPORTE_LIDERAZGO_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_LIDERAZGO_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_12', $datosGenerales->REPORTE_RELACIONES_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_RELACIONES_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_13', $datosGenerales->REPORTE_VIOLENCIA_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_VIOLENCIA_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_14', $datosGenerales->REPORTE_ENTORNO_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_ENTORNO_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_15', $datosGenerales->REPORTE_RECONOCIMIENTO_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_RECONOCIMIENTO_CONCLUSIONES) : 'No cargado');
+            $plantillaword->setValue('CONCLUSION_16', $datosGenerales->REPORTE_INSUFICIENTE_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_INSUFICIENTE_CONCLUSIONES) : 'No cargado');
+
+
+            //// RESPONSABLE 1
+            if ($datosGenerales->INFORME_RESPONSABLE1DOCUMENTO) {
+                if (
+                    file_exists(
+                        storage_path('app/' . $datosGenerales->INFORME_RESPONSABLE1DOCUMENTO)
+                    )
+                ) {
+                    $plantillaword->setImageValue(
+                        'REPONSABLE1_DOCUMENTO',
+                        array(
+                            'path' => storage_path('app/' . $datosGenerales->INFORME_RESPONSABLE1DOCUMENTO),
+                            'height' => 300,
+                            'width' => 580,
+                            'ratio' => true,
+                            'borderColor' => '000000'
+                        )
+                    );
+                } else {
+                    $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                }
+            } else {
+                $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+            }
+
+
+            $plantillaword->setValue(
+                'REPONSABLE1',
+                htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE1 ? $datosGenerales->INFORME_RESPONSABLE1 : 'No cargado'))
+                    .
+                    '</w:t><w:br/><w:t>'
+                    .
+                    htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE1CARGO ? $datosGenerales->INFORME_RESPONSABLE1CARGO : 'No cargado'))
+            );
+
+
+            //// RESPONSABLE 2
+            if ($datosGenerales->INFORME_RESPONSABLE2DOCUMENTO) {
+                if (
+                    file_exists(
+                        storage_path('app/' . $datosGenerales->INFORME_RESPONSABLE2DOCUMENTO)
+                    )
+                ) {
+                    $plantillaword->setImageValue(
+                        'REPONSABLE2_DOCUMENTO',
+                        array(
+                            'path' => storage_path('app/' . $datosGenerales->INFORME_RESPONSABLE2DOCUMENTO),
+                            'height' => 300,
+                            'width' => 580,
+                            'ratio' => true,
+                            'borderColor' => '000000'
+                        )
+                    );
+                } else {
+                    $plantillaword->setValue('REPONSABLE2_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                }
+            } else {
+                $plantillaword->setValue(
+                    'REPONSABLE2_DOCUMENTO',
+                    'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
+                );
+            }
+
+            $plantillaword->setValue(
+                'REPONSABLE2',
+                htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2 ? $datosGenerales->INFORME_RESPONSABLE2 : 'No cargado'))
+                    .
+                    '</w:t><w:br/><w:t>'
+                    .
+                    htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2CARGO ? $datosGenerales->INFORME_RESPONSABLE2CARGO : 'No cargado'))
+            );
+
+
+            ///// RECOMENDACIONES 
+
+            $recomendaciones = DB::table(
+                'recomendacionesinformepsico as ri'
+            )
+
+                ->join(
+                'psicocat_recomendacionescontrol as cr',
+                'cr.ID_RECOMENDACION_CONTROL_INFORME',
+                    '=',
+                    'ri.CATALOGO_RECOMENDACIONES_ID'
+                )
+
+                ->where(
+                    'ri.PROYECTO_ID',
+                $PROYECTO_ID
+                )
+
+                ->select(
+                'cr.RECOMENDACION_CONTROL'
+                )
+
+                ->get();
+
+
+            $texto_recomendaciones = '';
+
+            if (count($recomendaciones) > 0) {
+
+                $romanos = [
+                    'I',
+                    'II',
+                    'III',
+                    'IV',
+                    'V',
+                    'VI',
+                    'VII',
+                    'VIII',
+                    'IX',
+                    'X',
+                    'XI',
+                    'XII',
+                    'XIII',
+                    'XIV',
+                    'XV',
+                    'XVI',
+                    'XVII',
+                    'XVIII',
+                    'XIX',
+                    'XX',
+                    'XXI',
+                    'XXII',
+                    'XXIII',
+                    'XXIV',
+                    'XXV',
+                    'XXVI',
+                    'XXVII',
+                    'XXVIII',
+                    'XXIX',
+                    'XXX'
+                ];
+
+                foreach ($recomendaciones as $index => $recomendacion) {
+
+                    $texto_recomendaciones .=
+                        $romanos[$index] . '. ' .
+                        trim(strip_tags($recomendacion->RECOMENDACION_CONTROL)) .
+                        PHP_EOL . PHP_EOL;
+                }
+            } else {
+
+                $texto_recomendaciones = 'No cargado';
+            }
+
+            $plantillaword->setValue('RECOMENDACIONES',htmlspecialchars($texto_recomendaciones));
+
+
+            //// DESCARGAR INFORME 
+
+
+          
+
+            $nombreWord = 'Informe de FRP ' . $proyecto->proyecto_folio . '-' . $proyecto->proyecto_clienteinstalacion . '.docx';
+
+            $nombreWord = preg_replace('/[<>:"\/\\\\|?*]/', '', $nombreWord);
+
+            $rutaWord = storage_path('app/temp/' . $nombreWord);
+
+            $plantillaword->saveAs($rutaWord);
+
+            
+            return response()->download(
+                $rutaWord
+            )->deleteFileAfterSend(true);
+        } catch (Exception $e) {
+
+            return response()->json([
+
+                'msj' =>
+                'Error: ' .
+                    $e->getMessage()
+
+            ], 500);
+        }
+    }
+
+
+
+    public function obtenerNumeroTrabajadoresPsico($proyecto_id)
+    {
+        try {
+
+            $proyecto = proyectoModel::find($proyecto_id);
+
+            if (!$proyecto) {
+                return response()->json([
+                    'numero_trabajadores' => 0
+                ]);
+            }
+
+            $total = recopsicotrabajadoresModel::where(
+                'RECPSICO_ID',
+                $proyecto->reconocimiento_psico_id
+            )->count();
+
+            return response()->json([
+                'numero_trabajadores' => $total
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
+
+    }

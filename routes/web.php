@@ -2178,6 +2178,11 @@ Route::get('mostrarresponsable1infopsico/{archivo_opcion}/{proyecto_id}.{extensi
 
 Route::get('mostrarresponsable2infopsico/{archivo_opcion}/{proyecto_id}.{extension}', ['as' => 'mostrarresponsable2infopsico', 'uses' => 'reportes\reportenom0353Controller@mostrarresponsable2infopsico']);
 
+//// ADICIONALES
+
+Route::get('obtenerNumeroTrabajadoresPsico/{proyecto_id}', ['as' => 'obtenerNumeroTrabajadoresPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerNumeroTrabajadoresPsico']);
+
+
 
 ////////   VERSIONES 
 
@@ -2189,8 +2194,7 @@ Route::post('cancelarRevisionpsicoinfo', ['as' => 'cancelarRevisionpsicoinfo', '
 
 Route::get('tablaVersionesinfopsico/{proyecto_id}', ['as' => 'tablaVersionesinfopsico', 'uses' => 'reportes\reportenom0353Controller@tablaVersionesinfopsico']);
 
-
-
+Route::post('descargarRevisioninfopsico/{PROYECTO_ID}', ['as' => 'descargarRevisioninfopsico', 'uses' => 'reportes\reportenom0353Controller@descargarRevisioninfopsico']);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

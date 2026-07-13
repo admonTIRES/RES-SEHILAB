@@ -973,6 +973,68 @@ DESCRIPCIONACTIVIDAD
                 <h4 class="card-title" id="9_1">9.1.- Registro de los resultados. Número de puntos evaluados.</h4>
                 <div class="row">
                     <div class="col-12">
+                        <p class="justificado">De acuerdo con la NOM-035-STPS-2018 se seleccionó la guía de referencia I y guía de referencia III, los cuales se describen en la tabla citada a continuación.</p><br>
+                        <table class="table-hover tabla_info_centrado" width="100%">
+                            <tbody>
+
+                                <tr>
+                                    <td class="text-center">
+                                        Guía de Referencia I
+                                    </td>
+
+                                    <td class="text-center">
+                                        No.<br>Preguntas
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">
+                                        Identificar a los trabajadores que fueron sujetos a acontecimientos traumáticos severos.
+                                    </td>
+
+                                    <td class="text-center">
+                                        15
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">
+                                        Guía de Referencia III
+                                    </td>
+
+                                    <td class="text-center">
+                                        No.<br>Preguntas
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">
+                                        Identificación y análisis de los factores de riesgo psicosocial y entorno organizacional.
+                                    </td>
+
+                                    <td class="text-center">
+                                        72
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">
+                                        Total de preguntas evaluadas en el centro de trabajo.
+                                    </td>
+
+                                    <td class="text-center">
+                                        87
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <br>
+                        <p class="justificado"> De conformidad de lo contenido en la NOM-035-STPS-2018, se evaluaron a <span id="NUMERO_TRABAJADORES">0</span> trabajadores
+                        </p>
+                        <br>
+                        <p class="justificado">El procesamiento de los datos obtenidos de la aplicación de cada uno de los cuestionarios, se califican e interpretan apegándose a los criterios normativos estipulados en la NOM-035-STPS-2018.</p><br>
+
                     </div>
                 </div>
                 <h4 class="card-title" id="9_2">9.2.- Resultados obtenidos, concentrado de calificaciones globales.</h4>
@@ -1498,7 +1560,7 @@ DESCRIPCIONACTIVIDAD
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js_sitio/reportes/reportenom0353v1.js"></script>
+<script src="/js_sitio/reportes/reportenom0353v1.js?v=1"></script>
 <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
 
