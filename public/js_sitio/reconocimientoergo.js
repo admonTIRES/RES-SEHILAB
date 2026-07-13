@@ -7424,7 +7424,7 @@ function validarEdicionRecoErgo()
                 #botonguardar_reporte_introduccionnom036,
                 #botonguardar_reporte_conclusionnom036,
                 #botonguardar_reporte_introduccioniso12995,
-                #botonguardar_reporte_conclusioniso12995,
+                #botonguardar_reporte_conclusioniso12995
             `;
 
 

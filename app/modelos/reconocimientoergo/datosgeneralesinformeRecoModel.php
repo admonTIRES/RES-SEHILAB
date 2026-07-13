@@ -34,4 +34,5 @@ class datosgeneralesinformeRecoModel extends Model
         'INTRODUCCION_GRAFICASISO12995',
         'CONCLUSION_GRAFICASISO12995'
     ];
+    
 }

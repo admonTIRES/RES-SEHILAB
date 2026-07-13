@@ -294,7 +294,7 @@ class reporteBeiController extends Controller{
 
 
             $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-                ->where('agente_id', 4) //Iluminación
+                ->where('agente_id', 22) 
                 ->orderBy('reporterevisiones_revision', 'DESC')
                 ->get();
 
@@ -733,7 +733,7 @@ class reporteBeiController extends Controller{
         try {
            
             $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-                ->where('agente_id', 4)
+                ->where('agente_id', 22)
                 ->orderBy('reporterevisiones_revision', 'DESC')
                 ->get();
 
@@ -1122,7 +1122,7 @@ class reporteBeiController extends Controller{
             } else {
                
                 $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-                    ->where('agente_id', 4)
+                    ->where('agente_id', 22)
                     ->orderBy('reporterevisiones_revision', 'DESC')
                     ->get();
 
@@ -1357,7 +1357,7 @@ class reporteBeiController extends Controller{
 
 
                 $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-                    ->where('agente_id', 4)
+                    ->where('agente_id', 22)
                     ->orderBy('reporterevisiones_revision', 'DESC')
                     ->get();
 
@@ -2080,7 +2080,7 @@ class reporteBeiController extends Controller{
 
 
             $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-                ->where('agente_id', 1)
+                ->where('agente_id', 22)
                 ->orderBy('reporterevisiones_revision', 'DESC')
                 ->get();
 
@@ -2146,7 +2146,7 @@ class reporteBeiController extends Controller{
 
 
             $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-                ->where('agente_id', 4)
+                ->where('agente_id', 22)
                 ->orderBy('reporterevisiones_revision', 'DESC')
                 ->get();
 

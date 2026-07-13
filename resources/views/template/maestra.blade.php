@@ -1002,7 +1002,7 @@ use Illuminate\Support\Str;
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
     {{-- pagina --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js_sitio/reconocimientoergo.js?v=55"></script>
+    <script src="/js_sitio/reconocimientoergo.js?v=56"></script>
     <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 
@@ -1233,6 +1233,8 @@ use Illuminate\Support\Str;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
     @endif
 

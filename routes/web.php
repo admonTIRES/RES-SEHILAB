@@ -2127,6 +2127,69 @@ Route::get('vereppfotodocumento/{id}', ['as' => 'vereppfotodocumento', 'uses' =>
 
 Route::get('verepictograma/{id}', ['as' => 'verepictograma', 'uses' => 'SEGURIDADINDUSTRIAL\eppcatalogosController@verepictograma']);
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////// INFORME PSICO V1 //////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Route::get('obtenerDatosInformesPsico/{ID}', ['as' => 'obtenerDatosInformesPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerDatosInformesPsico']);
+Route::get('mostrarportadainfopsico/{archivo_opcion}/{proyecto_id}.{extension}', ['as' => 'mostrarportadainfopsico', 'uses' => 'reportes\reportenom0353Controller@mostrarportadainfopsico']);
+Route::post('guardarPortadaInfopsico', ['as' => 'guardarPortadaInfopsico', 'uses' => 'reportes\reportenom0353Controller@guardarPortadaInfopsico']);
+
+
+Route::post('obtenerDatosPlantillaPsico', ['as' => 'obtenerDatosPlantillaPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerDatosPlantillaPsico']);
+Route::get('obtenerDatosGeneralesInformePsico/{PROYECTO_ID}', ['as' => 'obtenerDatosGeneralesInformePsico', 'uses' => 'reportes\reportenom0353Controller@obtenerDatosGeneralesInformePsico']);
+
+//// INTRODUCCION 
+Route::post('guardarIntroduccioninfopsico', ['as' => 'guardarIntroduccioninfopsico', 'uses' => 'reportes\reportenom0353Controller@guardarIntroduccioninfopsico']);
+
+//// DEFINICIONES
+Route::post('guardarDefinicionesInformepsico', ['as' => 'guardarDefinicionesInformepsico', 'uses' => 'reportes\reportenom0353Controller@guardarDefinicionesInformepsico']);
+Route::get('obtenerDefinicionesInformepsico/{PROYECTO_ID}', ['as' => 'obtenerDefinicionesInformepsico', 'uses' => 'reportes\reportenom0353Controller@obtenerDefinicionesInformepsico']);
+
+///// OBJETIVO GENERAL Y ESPECIFICO
+Route::post('guardarObjetivoGeneralinformepsico', ['as' => 'guardarObjetivoGeneralinformepsico', 'uses' => 'reportes\reportenom0353Controller@guardarObjetivoGeneralinformepsico']);
+
+Route::post('guardarObjetivoEspecificoinformepsico', ['as' => 'guardarObjetivoEspecificoinformepsico', 'uses' => 'reportes\reportenom0353Controller@guardarObjetivoEspecificoinformepsico']);
+
+//// RECONOCIMIENTO 
+Route::post('guardarUbicacioninformepsico', ['as' => 'guardarUbicacioninformepsico', 'uses' => 'reportes\reportenom0353Controller@guardarUbicacioninformepsico']);
+
+Route::get('mostrarubicacioninformepsico/{archivo_opcion}/{proyecto_id}.{extension}', ['as' => 'mostrarubicacioninformepsico', 'uses' => 'reportes\reportenom0353Controller@mostrarubicacioninformepsico']);
+
+//// DESCRIPCION DEL PROCESO DE INSTALACION
+Route::post('guardarProcesoInstalacioninformepsico', ['as' => 'guardarProcesoInstalacioninformepsico', 'uses' => 'reportes\reportenom0353Controller@guardarProcesoInstalacioninformepsico']);
+
+//// DESCRIPCION METODO REALIZADO PARA LA EVALUACION
+Route::post('guardardescripcionmetodoinformepsicio', ['as' => 'guardardescripcionmetodoinformepsicio', 'uses' => 'reportes\reportenom0353Controller@guardardescripcionmetodoinformepsicio']);
+
+//// CONCLUSIONES 
+Route::post('guardarconclusionesinformepsicio', ['as' => 'guardarconclusionesinformepsicio', 'uses' => 'reportes\reportenom0353Controller@guardarconclusionesinformepsicio']);
+
+//// RECOMENDACIONES 
+Route::post('guardarRecomendacionesInformepsico', ['as' => 'guardarRecomendacionesInformepsico', 'uses' => 'reportes\reportenom0353Controller@guardarRecomendacionesInformepsico']);
+
+Route::get('obtenerRecomendacionesInformepsico/{RECO_ID}', ['as' => 'obtenerRecomendacionesInformepsico', 'uses' => 'reportes\reportenom0353Controller@obtenerRecomendacionesInformepsico']);
+
+//// RESPONSABLES 
+Route::post('guardarResponsablesInformepsico', ['as' => 'guardarResponsablesInformepsico', 'uses' => 'reportes\reportenom0353Controller@guardarResponsablesInformepsico']);
+
+Route::get('mostrarresponsable1infopsico/{archivo_opcion}/{proyecto_id}.{extension}', ['as' => 'mostrarresponsable1infopsico', 'uses' => 'reportes\reportenom0353Controller@mostrarresponsable1infopsico']);
+
+Route::get('mostrarresponsable2infopsico/{archivo_opcion}/{proyecto_id}.{extension}', ['as' => 'mostrarresponsable2infopsico', 'uses' => 'reportes\reportenom0353Controller@mostrarresponsable2infopsico']);
+
+
+////////   VERSIONES 
+
+Route::get('validarEdicioninfopsico/{proyecto_id}', ['as' => 'validarEdicioninfopsico', 'uses' => 'reportes\reportenom0353Controller@validarEdicioninfopsico']);
+
+Route::post('crearRevisioninfopsico', ['as' => 'crearRevisioninfopsico', 'uses' => 'reportes\reportenom0353Controller@crearRevisioninfopsico']);
+
+Route::post('cancelarRevisionpsicoinfo', ['as' => 'cancelarRevisionpsicoinfo', 'uses' => 'reportes\reportenom0353Controller@cancelarRevisionpsicoinfo']);
+
+Route::get('tablaVersionesinfopsico/{proyecto_id}', ['as' => 'tablaVersionesinfopsico', 'uses' => 'reportes\reportenom0353Controller@tablaVersionesinfopsico']);
+
+
 
 
 
