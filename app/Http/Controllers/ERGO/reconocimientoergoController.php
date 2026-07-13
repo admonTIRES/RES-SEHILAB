@@ -4014,11 +4014,19 @@ class reconocimientoergoController extends Controller
 
 
 
-            
+
             //// DESCARGAR INFORME 
 
-            $nombreWord = 'Informe_Ergonomia_' . $RECO_ID . '.docx';
+
+
+
+
+            $nombreWord = 'Informe de FRE ' . $proyecto->proyecto_folio . '-' . $proyecto->proyecto_clienteinstalacion . '.docx';
+
+            $nombreWord = preg_replace('/[<>:"\/\\\\|?*]/', '', $nombreWord);
+
             $rutaWord = storage_path('app/temp/' . $nombreWord);
+
             $plantillaword->saveAs($rutaWord);
 
             return response()->download(

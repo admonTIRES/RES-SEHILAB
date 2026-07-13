@@ -231,7 +231,7 @@
 	<div class="col-xlg-10 col-lg-9 col-md-7">
 		<div class="card">
 
-			<div class="evluaraire mt-4">
+			<!-- <div class="evluaraire mt-4">
 				<h3 class="card-title" style="padding: 0px!important;" id="0_1">Seleccione las características a evaluar de aire</h3>
 				<form method="post" enctype="multipart/form-data" name="form_reporte_evaluaraire" id="form_reporte_evaluaraire">
 					<div class="col-12">
@@ -286,7 +286,7 @@
 				</form>
 			</div>
 
-
+ -->
 
 
 			<div class="card-body" style="display: block">
@@ -705,34 +705,34 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr id="TEM_AIRE_1" style="display: none">
+									<tr id="TEM_AIRE_1">
 										<td>Temperatura del aire</td>
 										<td>22-24.5°C</td>
 										<td rowspan="3" style="text-align: justify!important;">NOM-001-STPS-2008, Edificios, locales, instalaciones y áreas en los centros de trabajo - Condiciones de seguridad.</td>
 									</tr>
-									<tr id="HUMEDAD_AIRE_1" style="display: none">
+									<tr id="HUMEDAD_AIRE_1" >
 										<td>Humedad relativa</td>
 										<td>20-60%</td>
 										{{-- <td style="text-align: justify!important;">NOM-001-STPS-2008, Edificios, locales, instalaciones y áreas en los centros de trabajo - Condiciones de seguridad.</td> --}}
 									</tr>
-									<tr id="VELOCIDAD_AIRE_1" style="display: none">
+									<tr id="VELOCIDAD_AIRE_1" >
 										<td>Velocidad del aire</td>
 										<td>0.15-0.25 m/s</td>
 										{{-- <td style="text-align: justify!important;">NOM-001-STPS-2008, Edificios, locales, instalaciones y áreas en los centros de trabajo - Condiciones de seguridad.</td> --}}
 									</tr>
-									<tr id="CO_AIRE_1" style="display: none">
+									<tr id="CO_AIRE_1" >
 										<td>Concentración de monóxido de carbono (CO)</td>
 										<td>25 ppm</td>
 										<td rowspan="1" style="text-align: justify!important;">NOM-010-STPS-2014, Agentes químicos contaminantes del ambiente laboral - Reconocimiento, evaluación y control.</td>
 									</tr>
-									<tr id="CO2_AIRE_1" style="display: none">
+									<tr id="CO2_AIRE_1" >
 										<td>Concentración de dióxido de carbono (CO₂)</td>
 										<td>5000 ppm</td>
 										<td rowspan="1" style="text-align: justify!important;">NOM-010-STPS-2014, Agentes químicos contaminantes del ambiente laboral - Reconocimiento, evaluación y control.</td>
 
 										{{-- <td style="text-align: justify!important;">NOM-010-STPS-2014, Agentes químicos contaminantes del ambiente laboral - Reconocimiento, evaluación y control.</td> --}}
 									</tr>
-									<tr id="SO2_AIRE_1" style="display: none">
+									<tr id="SO2_AIRE_1" >
 										<td>Concentración de dióxido de azufre (SO₂)</td>
 										<td>0.25 ppm</td>
 										<td rowspan="1" style="text-align: justify!important;">NOM-010-STPS-2014, Agentes químicos contaminantes del ambiente laboral - Reconocimiento, evaluación y control.</td>
@@ -749,7 +749,7 @@
 										<td>500 UFC</td>
 										{{-- <td style="text-align: justify!important;">Referencias publicadas por la EPA, INSST y OMS</td> --}}
 									</tr>
-									<tr id="BIOAEROSOLES_AIRE_1" style="display: none">
+									<tr id="BIOAEROSOLES_AIRE_1">
 										<td>Hongos y Levaduras</td>
 										<td>500 UFC</td>
 										{{-- <td style="text-align: justify!important;">Referencias publicadas por la EPA, INSST y OMS</td> --}}
@@ -943,32 +943,32 @@
 									<td>NOM-111-SSA1-1994</td>
 									<td>500 UFC</td>
 								</tr> --}}
-								<tr id="TEM_AIRE_2" style="display: none">
+								<tr id="TEM_AIRE_2" >
 									<td>Temperatura del aire</td>
 									<td>Sin Método</td>
 									<td>22-24.5°C</td>
 								</tr>
-								<tr id="HUMEDAD_AIRE_2" style="display: none">
+								<tr id="HUMEDAD_AIRE_2">
 									<td>Humedad relativa</td>
 									<td>Sin Método</td>
 									<td>20-60%</td>
 								</tr>
-								<tr id="VELOCIDAD_AIRE_2" style="display: none">
+								<tr id="VELOCIDAD_AIRE_2">
 									<td>Velocidad del aire</td>
 									<td>Sin Método</td>
 									<td>0.15-0.25 m/s</td>
 								</tr>
-								<tr id="CO_AIRE_2" style="display: none">
+								<tr id="CO_AIRE_2">
 									<td>Concentración de monóxido de carbono (CO)</td>
 									<td>NIOSH 6604</td>
 									<td>25 ppm</td>
 								</tr>
-								<tr id="CO2_AIRE_2" style="display: none">
+								<tr id="CO2_AIRE_2" >
 									<td>Concentración de dióxido de carbono (CO₂)</td>
 									<td>AL-38-CO2</td>
 									<td>5000 ppm</td>
 								</tr>
-								<tr id="SO2_AIRE_2" style="display: none">
+								<tr id="SO2_AIRE_2" >
 									<td>Concentración de dióxido de azufre (SO₂)</td>
 									<td>NIOSH-6004 1994
 									</td>
@@ -2367,4 +2367,4 @@
 	var areas_poe = <?php echo json_encode($areas_poe); ?>;
 </script>
 <script src="/js_sitio/html2canvas.js"></script>
-<script src="/js_sitio/reportes/reporteaire.js?v=5.0"></script>
+<script src="/js_sitio/reportes/reporteaire.js?v=9"></script>

@@ -112,7 +112,7 @@ $(document).ready(function()
 	$('#modal_cargando').modal(); // Abrir modal
 	updateClock(); // Ejecutar tiempo de espera
 
-	obtenerCaracteristica(proyecto.id)
+	// obtenerCaracteristica(proyecto.id)
 	validarPermisosAsignados(proyecto.id) //Validacion de permisos
 	datosgenerales(); // Cargar datos
 	portadaInfo() // Info portada
@@ -434,7 +434,7 @@ function botoninforme_estado(boton_estado)
 }
 
 
-function menureporte_estado(menu_nombre, menu_estado)
+function 	menureporte_estado(menu_nombre, menu_estado)
 {
 	if (parseInt(menu_estado) > 0)
 	{
@@ -501,116 +501,116 @@ function instalacion_nombre(reporte_instalacion)
 
 
 
-$("#botonguardar_reporte_evaluaraire").click(function(event) {
-    event.preventDefault(); 
+// $("#botonguardar_reporte_evaluaraire").click(function(event) {
+//     event.preventDefault(); 
 
-    var valida = this.form.checkValidity(); 
-    if (valida) {
-        swal({
-            title: "¡Confirme guardar las características de aire!",
-            text: "",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Guardar!",
-            cancelButtonText: "Cancelar!",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        }, function(isConfirm) {
-            if (isConfirm) {
-                swal.close(); 
+//     var valida = this.form.checkValidity(); 
+//     if (valida) {
+//         swal({
+//             title: "¡Confirme guardar las características de aire!",
+//             text: "",
+//             type: "warning",
+//             showCancelButton: true,
+//             confirmButtonColor: "#DD6B55",
+//             confirmButtonText: "Guardar!",
+//             cancelButtonText: "Cancelar!",
+//             closeOnConfirm: false,
+//             closeOnCancel: false
+//         }, function(isConfirm) {
+//             if (isConfirm) {
+//                 swal.close(); 
 
-                var jsonchecks = {
-                    bioaerosoles: $('#bioaerosoles').is(':checked') ? 1 : 0,
-                    co: $('#co').is(':checked') ? 1 : 0,
-                    co2: $('#co2').is(':checked') ? 1 : 0,
-                    temperatura: $('#temperatura').is(':checked') ? 1 : 0,
-                    velocidad: $('#velocidad').is(':checked') ? 1 : 0,
-                    caudal: $('#caudal').is(':checked') ? 1 : 0,
-                    humedad: $('#humedad').is(':checked') ? 1 : 0 ,
-                    SO2: $('#SO2').is(':checked') ? 1 : 0 ,
-                    Formaldehídos: $('#Formaldehídos').is(':checked') ? 1 : 0
-
-
-                };
-
-                $('#form_reporte_evaluaraire').ajaxForm({
-                    dataType: 'json',
-                    type: 'POST',
-                    url: ''+ruta_storage_guardar, 
-                    data: {
-                        opcion: 21,
-                        proyecto_id: proyecto.id, 
-						ID_CAI_INFORMES: $('#ID_CAI_INFORMES').val(), 
-                        caracteristicas_aire: JSON.stringify(jsonchecks) 
-                    },
-                    resetForm: false,
-                    success: function(dato) {
-                        swal({
-                            title: "Correcto",
-                            text: ""+dato.msj,
-                            type: "success", 
-                            buttons: {
-                                visible: false, 
-                            },
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
+//                 var jsonchecks = {
+//                     bioaerosoles: $('#bioaerosoles').is(':checked') ? 1 : 0,
+//                     co: $('#co').is(':checked') ? 1 : 0,
+//                     co2: $('#co2').is(':checked') ? 1 : 0,
+//                     temperatura: $('#temperatura').is(':checked') ? 1 : 0,
+//                     velocidad: $('#velocidad').is(':checked') ? 1 : 0,
+//                     caudal: $('#caudal').is(':checked') ? 1 : 0,
+//                     humedad: $('#humedad').is(':checked') ? 1 : 0 ,
+//                     SO2: $('#SO2').is(':checked') ? 1 : 0 ,
+//                     Formaldehídos: $('#Formaldehídos').is(':checked') ? 1 : 0
 
 
-						if ($('#bioaerosoles').is(':checked')) {
-                            $('#BIOAEROSOLES_AIRE_1').css('display', 'inline-block');
-                            $('#BIOAEROSOLES_AIRE_3').css('display', 'inline-block');
-                        } else {
-                            menureporte_estado('menureporte_7_1', 1);
-                            $('#BIOAEROSOLES_AIRE_1').css('display', 'none');
-                            $('#BIOAEROSOLES_AIRE_3').css('display', 'none');
-                        }
+//                 };
+
+//                 $('#form_reporte_evaluaraire').ajaxForm({
+//                     dataType: 'json',
+//                     type: 'POST',
+//                     url: ''+ruta_storage_guardar, 
+//                     data: {
+//                         opcion: 21,
+//                         proyecto_id: proyecto.id, 
+// 						ID_CAI_INFORMES: $('#ID_CAI_INFORMES').val(), 
+//                         caracteristicas_aire: JSON.stringify(jsonchecks) 
+//                     },
+//                     resetForm: false,
+//                     success: function(dato) {
+//                         swal({
+//                             title: "Correcto",
+//                             text: ""+dato.msj,
+//                             type: "success", 
+//                             buttons: {
+//                                 visible: false, 
+//                             },
+//                             timer: 1500,
+//                             showConfirmButton: false
+//                         });
+
+
+// 						if ($('#bioaerosoles').is(':checked')) {
+//                             $('#BIOAEROSOLES_AIRE_1').css('display', 'inline-block');
+//                             $('#BIOAEROSOLES_AIRE_3').css('display', 'inline-block');
+//                         } else {
+//                             menureporte_estado('menureporte_7_1', 1);
+//                             $('#BIOAEROSOLES_AIRE_1').css('display', 'none');
+//                             $('#BIOAEROSOLES_AIRE_3').css('display', 'none');
+//                         }
 
 
 						
 
-                        $('#botonguardar_reporte_evaluaraire').html('Guardar características de aire <i class="fa fa-save"></i>');
-                        $('#botonguardar_reporte_evaluaraire').attr('disabled', false);
-                    },
-                    beforeSend: function() {
-                        $('#botonguardar_reporte_evaluaraire').html('Guardar características de aire <i class="fa fa-spin fa-spinner"></i>');
-                        $('#botonguardar_reporte_evaluaraire').attr('disabled', true);
-                    },
-                    error: function(dato) {
-                        swal({
-                            title: "Error",
-                            text: ""+dato.msj,
-                            type: "error", 
-                            buttons: {
-                                visible: false, 
-                            },
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
+//                         $('#botonguardar_reporte_evaluaraire').html('Guardar características de aire <i class="fa fa-save"></i>');
+//                         $('#botonguardar_reporte_evaluaraire').attr('disabled', false);
+//                     },
+//                     beforeSend: function() {
+//                         $('#botonguardar_reporte_evaluaraire').html('Guardar características de aire <i class="fa fa-spin fa-spinner"></i>');
+//                         $('#botonguardar_reporte_evaluaraire').attr('disabled', true);
+//                     },
+//                     error: function(dato) {
+//                         swal({
+//                             title: "Error",
+//                             text: ""+dato.msj,
+//                             type: "error", 
+//                             buttons: {
+//                                 visible: false, 
+//                             },
+//                             timer: 1500,
+//                             showConfirmButton: false
+//                         });
 
-                        $('#botonguardar_reporte_evaluaraire').html('Guardar características de aire <i class="fa fa-save"></i>');
-                        $('#botonguardar_reporte_evaluaraire').attr('disabled', false);
-                        return false;
-                    }
-                }).submit(); 
-                return false;
-            } else {
-                swal({
-                    title: "Cancelado",
-                    text: "Acción cancelada",
-                    type: "error", 
-                    buttons: {
-                        visible: false, 
-                    },
-                    timer: 500,
-                    showConfirmButton: false
-                });
-            }
-        });
-        return false;
-    }
-});
+//                         $('#botonguardar_reporte_evaluaraire').html('Guardar características de aire <i class="fa fa-save"></i>');
+//                         $('#botonguardar_reporte_evaluaraire').attr('disabled', false);
+//                         return false;
+//                     }
+//                 }).submit(); 
+//                 return false;
+//             } else {
+//                 swal({
+//                     title: "Cancelado",
+//                     text: "Acción cancelada",
+//                     type: "error", 
+//                     buttons: {
+//                         visible: false, 
+//                     },
+//                     timer: 500,
+//                     showConfirmButton: false
+//                 });
+//             }
+//         });
+//         return false;
+//     }
+// });
 
 
 
@@ -745,249 +745,249 @@ $("#botonguardar_reporte_evaluaraire").click(function(event) {
 
 
 
-function aplicarConfiguracionCheckbox(idCheckbox, elementos, idReadonlyInputs, idDisabledInput, menureporte, estado) {
-    $(idCheckbox).prop('checked', estado === 1);
+// function aplicarConfiguracionCheckbox(idCheckbox, elementos, idReadonlyInputs, idDisabledInput, menureporte, estado) {
+//     $(idCheckbox).prop('checked', estado === 1);
 
-    function actualizarEstadoCheckbox(estadoActivo) {
-        if (estadoActivo) {
-            elementos.forEach(function(elemento) {
-                $(elemento.id).css('display', elemento.display);
-            });
-            $(idReadonlyInputs).prop('readonly', false).prop('required', true);
-            $(idDisabledInput).prop('disabled', false).prop('required', true);
+//     function actualizarEstadoCheckbox(estadoActivo) {
+//         if (estadoActivo) {
+//             elementos.forEach(function(elemento) {
+//                 $(elemento.id).css('display', elemento.display);
+//             });
+//             $(idReadonlyInputs).prop('readonly', false).prop('required', true);
+//             $(idDisabledInput).prop('disabled', false).prop('required', true);
 
-            // menureporte_estado(menureporte, 0); // Activado
-        } else {
-            elementos.forEach(function(elemento) {
-                $(elemento.id).css('display', 'none');
-            });
-            $(idReadonlyInputs).prop('readonly', true).prop('required', false);
-            $(idDisabledInput).prop('disabled', true).prop('required', false);
+//             // menureporte_estado(menureporte, 0); // Activado
+//         } else {
+//             elementos.forEach(function(elemento) {
+//                 $(elemento.id).css('display', 'none');
+//             });
+//             $(idReadonlyInputs).prop('readonly', true).prop('required', false);
+//             $(idDisabledInput).prop('disabled', true).prop('required', false);
 
-            menureporte_estado(menureporte, 1); // Desactivado
-        }
-    }
+//             menureporte_estado(menureporte, 1); // Desactivado
+//         }
+//     }
 
-    actualizarEstadoCheckbox(estado === 1);
+//     actualizarEstadoCheckbox(estado === 1);
 
-    $(idCheckbox).change(function() {
-        const isChecked = $(this).is(':checked');
-        actualizarEstadoCheckbox(isChecked ? 1 : 0);
-    });
-}
+//     $(idCheckbox).change(function() {
+//         const isChecked = $(this).is(':checked');
+//         actualizarEstadoCheckbox(isChecked ? 1 : 0);
+//     });
+// }
 
-function inicializarCheckboxes() {
-    aplicarConfiguracionCheckbox(
-        '#bioaerosoles',
-        [
-            {id: '#BIOAEROSOLES_AIRE_1', display: 'table-row'},
-            {id: '#BIOAEROSOLES_AIRE_3', display: 'inline-block'}
-        ],
-        '#reporteaireevaluacion_ct, #reporteaireevaluacion_ctma, #reporteaireevaluacion_hongos, #reporteaireevaluacion_levaduras',
-        '', 
-        'menureporte_7_1',
-        $('#bioaerosoles').is(':checked') ? 1 : 0
-    );
+// function inicializarCheckboxes() {
+//     aplicarConfiguracionCheckbox(
+//         '#bioaerosoles',
+//         [
+//             {id: '#BIOAEROSOLES_AIRE_1', display: 'table-row'},
+//             {id: '#BIOAEROSOLES_AIRE_3', display: 'inline-block'}
+//         ],
+//         '#reporteaireevaluacion_ct, #reporteaireevaluacion_ctma, #reporteaireevaluacion_hongos, #reporteaireevaluacion_levaduras',
+//         '', 
+//         'menureporte_7_1',
+//         $('#bioaerosoles').is(':checked') ? 1 : 0
+//     );
 
-    aplicarConfiguracionCheckbox(
-        '#velocidad',
-        [
-            {id: '#VELOCIDAD_AIRE_1', display: 'table-row'},
-            {id: '#VELOCIDAD_AIRE_2', display: 'table-row'},
-            {id: '#VELOCIDAD_AIRE_3', display: 'inline-block'}
-        ],
-        '#reporteaireevaluacion_velocidad', 
-        '#reporteaireevaluacion_velocidadlimite', 
-        'menureporte_7_3',
-        $('#velocidad').is(':checked') ? 1 : 0
-    );
+//     aplicarConfiguracionCheckbox(
+//         '#velocidad',
+//         [
+//             {id: '#VELOCIDAD_AIRE_1', display: 'table-row'},
+//             {id: '#VELOCIDAD_AIRE_2', display: 'table-row'},
+//             {id: '#VELOCIDAD_AIRE_3', display: 'inline-block'}
+//         ],
+//         '#reporteaireevaluacion_velocidad', 
+//         '#reporteaireevaluacion_velocidadlimite', 
+//         'menureporte_7_3',
+//         $('#velocidad').is(':checked') ? 1 : 0
+//     );
 
-    aplicarConfiguracionCheckbox(
-        '#co',
-        [
-            {id: '#CO_AIRE_1', display: 'table-row'},
-            {id: '#CO_AIRE_2', display: 'table-row'},
-            {id: '#CO_AIRE_3', display: 'inline-block'}
-        ],
-        '#reporteaireevaluacion_co',
-        '', 
-        'menureporte_7_5',
-        $('#co').is(':checked') ? 1 : 0
-    );
+//     aplicarConfiguracionCheckbox(
+//         '#co',
+//         [
+//             {id: '#CO_AIRE_1', display: 'table-row'},
+//             {id: '#CO_AIRE_2', display: 'table-row'},
+//             {id: '#CO_AIRE_3', display: 'inline-block'}
+//         ],
+//         '#reporteaireevaluacion_co',
+//         '', 
+//         'menureporte_7_5',
+//         $('#co').is(':checked') ? 1 : 0
+//     );
 
-    aplicarConfiguracionCheckbox(
-        '#co2',
-        [
-            {id: '#CO2_AIRE_1', display: 'table-row'},
-            {id: '#CO2_AIRE_2', display: 'table-row'},
-            {id: '#CO2_AIRE_3', display: 'inline-block'}
-        ],
-        '#reporteaireevaluacion_co2',
-        '', 
-        'menureporte_7_6',
-        $('#co2').is(':checked') ? 1 : 0
-    );
+//     aplicarConfiguracionCheckbox(
+//         '#co2',
+//         [
+//             {id: '#CO2_AIRE_1', display: 'table-row'},
+//             {id: '#CO2_AIRE_2', display: 'table-row'},
+//             {id: '#CO2_AIRE_3', display: 'inline-block'}
+//         ],
+//         '#reporteaireevaluacion_co2',
+//         '', 
+//         'menureporte_7_6',
+//         $('#co2').is(':checked') ? 1 : 0
+//     );
 
-    aplicarConfiguracionCheckbox(
-        '#temperatura',
-        [
-            {id: '#TEM_AIRE_1', display: 'table-row'},
-            {id: '#TEM_AIRE_2', display: 'table-row'},
-            {id: '#TEM_AIRE_3', display: 'inline-block'}
-        ],
-        '#reporteaireevaluacion_temperatura',
-        '', 
-        'menureporte_7_2',
-        $('#temperatura').is(':checked') ? 1 : 0
-    );
+//     aplicarConfiguracionCheckbox(
+//         '#temperatura',
+//         [
+//             {id: '#TEM_AIRE_1', display: 'table-row'},
+//             {id: '#TEM_AIRE_2', display: 'table-row'},
+//             {id: '#TEM_AIRE_3', display: 'inline-block'}
+//         ],
+//         '#reporteaireevaluacion_temperatura',
+//         '', 
+//         'menureporte_7_2',
+//         $('#temperatura').is(':checked') ? 1 : 0
+//     );
 
-    aplicarConfiguracionCheckbox(
-        '#humedad',
-        [
-            {id: '#HUMEDAD_AIRE_1', display: 'table-row'},
-            {id: '#HUMEDAD_AIRE_2', display: 'table-row'},
-            {id: '#HUMEDAD_AIRE_3', display: 'inline-block'}
-        ],
-        '#reporteaireevaluacion_humedad',
-        '', 
-        'menureporte_7_4',
-        $('#humedad').is(':checked') ? 1 : 0
-    );
+//     aplicarConfiguracionCheckbox(
+//         '#humedad',
+//         [
+//             {id: '#HUMEDAD_AIRE_1', display: 'table-row'},
+//             {id: '#HUMEDAD_AIRE_2', display: 'table-row'},
+//             {id: '#HUMEDAD_AIRE_3', display: 'inline-block'}
+//         ],
+//         '#reporteaireevaluacion_humedad',
+//         '', 
+//         'menureporte_7_4',
+//         $('#humedad').is(':checked') ? 1 : 0
+//     );
 
-    aplicarConfiguracionCheckbox(
-        '#SO2',
-        [
-            {id: '#SO2_AIRE_1', display: 'table-row'},
-            {id: '#SO2_AIRE_2', display: 'table-row'},
-            {id: '#SO2_AIRE_3', display: 'inline-block'}
-        ],
-        '#reporteaireevaluacion_so2',
-        '', 
-        'menureporte_7_7',
-        $('#SO2').is(':checked') ? 1 : 0
-    );
+//     aplicarConfiguracionCheckbox(
+//         '#SO2',
+//         [
+//             {id: '#SO2_AIRE_1', display: 'table-row'},
+//             {id: '#SO2_AIRE_2', display: 'table-row'},
+//             {id: '#SO2_AIRE_3', display: 'inline-block'}
+//         ],
+//         '#reporteaireevaluacion_so2',
+//         '', 
+//         'menureporte_7_7',
+//         $('#SO2').is(':checked') ? 1 : 0
+//     );
 
-    // Simplemente obtenemos los valores de caudal y Formaldehídos
-    $('#caudal').prop('checked', $('#caudal').is(':checked'));
-    $('#Formaldehídos').prop('checked', $('#Formaldehídos').is(':checked'));
-}
+//     // Simplemente obtenemos los valores de caudal y Formaldehídos
+//     $('#caudal').prop('checked', $('#caudal').is(':checked'));
+//     $('#Formaldehídos').prop('checked', $('#Formaldehídos').is(':checked'));
+// }
 
-function obtenerCaracteristica() {
-    $.ajax({
-        url: "/obtenerCAI/" + proyecto.id,
-        type: 'GET',
-        success: function(response) {
-            if (response.status === 'success') {
-                var caracteristicas = response.caracteristicas;
+// function obtenerCaracteristica() {
+//     $.ajax({
+//         url: "/obtenerCAI/" + proyecto.id,
+//         type: 'GET',
+//         success: function(response) {
+//             if (response.status === 'success') {
+//                 var caracteristicas = response.caracteristicas;
 
-                aplicarConfiguracionCheckbox(
-                    '#bioaerosoles',
-                    [
-                        {id: '#BIOAEROSOLES_AIRE_1', display: 'table-row'},
-                        {id: '#BIOAEROSOLES_AIRE_3', display: 'inline-block'}
-                    ],
-                    '#reporteaireevaluacion_ct, #reporteaireevaluacion_ctma, #reporteaireevaluacion_hongos, #reporteaireevaluacion_levaduras',
-                    '', 
-                    'menureporte_7_1',
-                    caracteristicas.bioaerosoles || 0
-                );
+//                 aplicarConfiguracionCheckbox(
+//                     '#bioaerosoles',
+//                     [
+//                         {id: '#BIOAEROSOLES_AIRE_1', display: 'table-row'},
+//                         {id: '#BIOAEROSOLES_AIRE_3', display: 'inline-block'}
+//                     ],
+//                     '#reporteaireevaluacion_ct, #reporteaireevaluacion_ctma, #reporteaireevaluacion_hongos, #reporteaireevaluacion_levaduras',
+//                     '', 
+//                     'menureporte_7_1',
+//                     caracteristicas.bioaerosoles || 0
+//                 );
 
-                aplicarConfiguracionCheckbox(
-                    '#velocidad',
-                    [
-                        {id: '#VELOCIDAD_AIRE_1', display: 'table-row'},
-                        {id: '#VELOCIDAD_AIRE_2', display: 'table-row'},
-                        {id: '#VELOCIDAD_AIRE_3', display: 'inline-block'}
-                    ],
-                    '#reporteaireevaluacion_velocidad',
-                    '#reporteaireevaluacion_velocidadlimite',
-                    'menureporte_7_3',
-                    caracteristicas.velocidad || 0
-                );
+//                 aplicarConfiguracionCheckbox(
+//                     '#velocidad',
+//                     [
+//                         {id: '#VELOCIDAD_AIRE_1', display: 'table-row'},
+//                         {id: '#VELOCIDAD_AIRE_2', display: 'table-row'},
+//                         {id: '#VELOCIDAD_AIRE_3', display: 'inline-block'}
+//                     ],
+//                     '#reporteaireevaluacion_velocidad',
+//                     '#reporteaireevaluacion_velocidadlimite',
+//                     'menureporte_7_3',
+//                     caracteristicas.velocidad || 0
+//                 );
 
-                aplicarConfiguracionCheckbox(
-                    '#co',
-                    [
-                        {id: '#CO_AIRE_1', display: 'table-row'},
-                        {id: '#CO_AIRE_2', display: 'table-row'},
-                        {id: '#CO_AIRE_3', display: 'inline-block'}
-                    ],
-                    '#reporteaireevaluacion_co',
-                    '', 
-                    'menureporte_7_5',
-                    caracteristicas.co || 0
-                );
+//                 aplicarConfiguracionCheckbox(
+//                     '#co',
+//                     [
+//                         {id: '#CO_AIRE_1', display: 'table-row'},
+//                         {id: '#CO_AIRE_2', display: 'table-row'},
+//                         {id: '#CO_AIRE_3', display: 'inline-block'}
+//                     ],
+//                     '#reporteaireevaluacion_co',
+//                     '', 
+//                     'menureporte_7_5',
+//                     caracteristicas.co || 0
+//                 );
 
-                aplicarConfiguracionCheckbox(
-                    '#co2',
-                    [
-                        {id: '#CO2_AIRE_1', display: 'table-row'},
-                        {id: '#CO2_AIRE_2', display: 'table-row'},
-                        {id: '#CO2_AIRE_3', display: 'inline-block'}
-                    ],
-                    '#reporteaireevaluacion_co2',
-                    '', 
-                    'menureporte_7_6',
-                    caracteristicas.co2 || 0
-                );
+//                 aplicarConfiguracionCheckbox(
+//                     '#co2',
+//                     [
+//                         {id: '#CO2_AIRE_1', display: 'table-row'},
+//                         {id: '#CO2_AIRE_2', display: 'table-row'},
+//                         {id: '#CO2_AIRE_3', display: 'inline-block'}
+//                     ],
+//                     '#reporteaireevaluacion_co2',
+//                     '', 
+//                     'menureporte_7_6',
+//                     caracteristicas.co2 || 0
+//                 );
 
-                aplicarConfiguracionCheckbox(
-                    '#temperatura',
-                    [
-                        {id: '#TEM_AIRE_1', display: 'table-row'},
-                        {id: '#TEM_AIRE_2', display: 'table-row'},
-                        {id: '#TEM_AIRE_3', display: 'inline-block'}
-                    ],
-                    '#reporteaireevaluacion_temperatura',
-                    '', 
-                    'menureporte_7_2',
-                    caracteristicas.temperatura || 0
-                );
+//                 aplicarConfiguracionCheckbox(
+//                     '#temperatura',
+//                     [
+//                         {id: '#TEM_AIRE_1', display: 'table-row'},
+//                         {id: '#TEM_AIRE_2', display: 'table-row'},
+//                         {id: '#TEM_AIRE_3', display: 'inline-block'}
+//                     ],
+//                     '#reporteaireevaluacion_temperatura',
+//                     '', 
+//                     'menureporte_7_2',
+//                     caracteristicas.temperatura || 0
+//                 );
 
-                aplicarConfiguracionCheckbox(
-                    '#humedad',
-                    [
-                        {id: '#HUMEDAD_AIRE_1', display: 'table-row'},
-                        {id: '#HUMEDAD_AIRE_2', display: 'table-row'},
-                        {id: '#HUMEDAD_AIRE_3', display: 'inline-block'}
-                    ],
-                    '#reporteaireevaluacion_humedad',
-                    '', 
-                    'menureporte_7_4',
-                    caracteristicas.humedad || 0
-                );
+//                 aplicarConfiguracionCheckbox(
+//                     '#humedad',
+//                     [
+//                         {id: '#HUMEDAD_AIRE_1', display: 'table-row'},
+//                         {id: '#HUMEDAD_AIRE_2', display: 'table-row'},
+//                         {id: '#HUMEDAD_AIRE_3', display: 'inline-block'}
+//                     ],
+//                     '#reporteaireevaluacion_humedad',
+//                     '', 
+//                     'menureporte_7_4',
+//                     caracteristicas.humedad || 0
+//                 );
 
-                aplicarConfiguracionCheckbox(
-                    '#SO2',
-                    [
-                        {id: '#SO2_AIRE_1', display: 'table-row'},
-                        {id: '#SO2_AIRE_2', display: 'table-row'},
-                        {id: '#SO2_AIRE_3', display: 'inline-block'}
-                    ],
-                    '#reporteaireevaluacion_so2',
-                    '', 
-                    'menureporte_7_7',
-                    caracteristicas.SO2 || 0
-                );
+//                 aplicarConfiguracionCheckbox(
+//                     '#SO2',
+//                     [
+//                         {id: '#SO2_AIRE_1', display: 'table-row'},
+//                         {id: '#SO2_AIRE_2', display: 'table-row'},
+//                         {id: '#SO2_AIRE_3', display: 'inline-block'}
+//                     ],
+//                     '#reporteaireevaluacion_so2',
+//                     '', 
+//                     'menureporte_7_7',
+//                     caracteristicas.SO2 || 0
+//                 );
 
-                $('#caudal').prop('checked', caracteristicas.caudal === 1);
-                $('#Formaldehídos').prop('checked', caracteristicas.Formaldehídos === 1);
+//                 $('#caudal').prop('checked', caracteristicas.caudal === 1);
+//                 $('#Formaldehídos').prop('checked', caracteristicas.Formaldehídos === 1);
 
-                if (response.ID_CAI_INFORMES) {
-                    $('#ID_CAI_INFORMES').val(response.ID_CAI_INFORMES);  
-                } else {
-                    $('#ID_CAI_INFORMES').val('');  
-                }
-            }
-        },
-        error: function() {
-        }
-    });
-}
+//                 if (response.ID_CAI_INFORMES) {
+//                     $('#ID_CAI_INFORMES').val(response.ID_CAI_INFORMES);  
+//                 } else {
+//                     $('#ID_CAI_INFORMES').val('');  
+//                 }
+//             }
+//         },
+//         error: function() {
+//         }
+//     });
+// }
 
-$(document).ready(function() {
-    inicializarCheckboxes(); 
-});
+// $(document).ready(function() {
+//     inicializarCheckboxes(); 
+// });
 
 
 
@@ -3600,6 +3600,14 @@ function tabla_reporte_puntos(proyecto_id, reporteregistro_id) {
                             actualizarMenureporteEstado(id, tablaReporte ? 1 : 0);
                         });
 
+						menureporte_estado("menureporte_7_1", parseInt(json.total));
+						menureporte_estado("menureporte_7_2", parseInt(json.total));
+						menureporte_estado("menureporte_7_3", parseInt(json.total));
+						menureporte_estado("menureporte_7_4", parseInt(json.total));
+						menureporte_estado("menureporte_7_5", parseInt(json.total));
+						menureporte_estado("menureporte_7_6", parseInt(json.total));
+						menureporte_estado("menureporte_7_7", parseInt(json.total));
+						
                         // Llama a las funciones para cada tabla según los datos de json
                         tabla_reporte_7_1(json.tabla_reporte_7_1);
                         tabla_reporte_7_2(json.tabla_reporte_7_2);
