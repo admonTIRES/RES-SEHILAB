@@ -2182,6 +2182,26 @@ Route::get('mostrarresponsable2infopsico/{archivo_opcion}/{proyecto_id}.{extensi
 
 Route::get('obtenerNumeroTrabajadoresPsico/{proyecto_id}', ['as' => 'obtenerNumeroTrabajadoresPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerNumeroTrabajadoresPsico']);
 
+//// GRAFICAS
+
+// GENERO
+Route::get('obtenerGraficaGeneroPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficaGeneroPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaGeneroPsico']);
+
+// EDADES
+Route::get('obtenerGraficaEdadesPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficaEdadesPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaEdadesPsico']);
+
+// ESCOLARIDAD
+Route::get('obtenerGraficaEscolaridadPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficaEscolaridadPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaEscolaridadPsico']);
+
+// ESTADO CIVIL 
+Route::get('obtenerGraficaEstadoCivilPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficaEstadoCivilPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaEstadoCivilPsico']);
+
+// REGIMEN
+Route::get('obtenerGraficaRegimenPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficaRegimenPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaRegimenPsico']);
+
+// EXPERIENCIA LABORAL
+Route::get('obtenerGraficaExperienciaPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficaExperienciaPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaExperienciaPsico']);
+
 
 
 ////////   VERSIONES 

@@ -2,11 +2,6 @@
 var opciones_catepp = "";
 var ambientechart = null;
 var chartPngs = {};
-var edadeschart = null;
-var escolaridadchart = null;
-var estadocivilchart = null;
-var regimenchart = null;
-var experienciachart = null;
 var generoschart = null;
 var categoriaschart = null;
 var dominioschart = null;
@@ -241,6 +236,12 @@ $(document).ready(function () {
             tablaVersionesinfopsico();
             validarEdicioninfopsico();
             obtenerNumeroTrabajadoresPsico();
+            cargarGraficaGeneroPsico();
+            cargarGraficaEdadesPsico();
+            cargarGraficaEscolaridadPsico();
+            cargarGraficaEstadoCivilPsico();
+            cargarGraficaRegimenPsico();
+            cargarGraficaExperienciaPsico();
     
             $.ajax({
                     url: 'obtenerDatosPlantillaPsico',
@@ -1758,95 +1759,38 @@ function validarEdicioninfopsico()
             `;
 
 
-
-            //---------------------------------------
-            // SI NO PERMITE GUARDAR
-            //---------------------------------------
-
             if(response.permite_guardar == 0)
             {
 
-                //---------------------------------------
-                // DESACTIVAR BOTONES
-                //---------------------------------------
-
-                $(botones)
-                    .prop('disabled', true);
-
-
-
-                //---------------------------------------
-                // INPUTS
-                //---------------------------------------
-
-               $('input, textarea, select')
-				.not('.checkbox_cancelado_revision')
-				.prop('disabled', true);
-
-
-                //---------------------------------------
-                // MENSAJE
-                //---------------------------------------
+                $(botones).prop('disabled', true);
+                $('input, textarea, select').not('.checkbox_cancelado_revision').prop('disabled', true);
 
                 Swal.fire({
-
                     icon: 'warning',
-
                     title: 'Informe finalizado',
-
-                    text:
-                        'La revisión fue finalizada y ya no puede editarse'
-
+                    text:'La revisión fue finalizada y ya no puede editarse'
                 });
-
             }
             else
             {
 
-                //---------------------------------------
-                // ACTIVAR BOTONES
-                //---------------------------------------
-
-                $(botones)
-                    .prop('disabled', false);
-
-
-
-                //---------------------------------------
-                // INPUTS
-                //---------------------------------------
-
-                $('input, textarea, select')
-                    .prop('disabled', false);
+                $(botones).prop('disabled', false);
+                $('input, textarea, select').prop('disabled', false);
 
             }
 
-
-
-            //---------------------------------------
-            // SI ESTA CANCELADO
-            //---------------------------------------
 
             if(response.cancelado == 1)
             {
 
                 Swal.fire({
-
                     icon: 'info',
-
                     title: 'Revisión cancelada',
-
-                    text:
-                        'La última revisión fue cancelada, puede continuar editando'
-
+                    text: 'La última revisión fue cancelada, puede continuar editando'
                 });
-
             }
-
         }
-
     );
-
 }
 
 //// ADICIONAL
@@ -1868,62 +1812,170 @@ function obtenerNumeroTrabajadoresPsico()
 
 async function descargarRevisioninfopsico(PROYECTO_ID)
 {
+    try {
+
+        const dashboard =
+            document.querySelector(
+                '#tabla_dashboard'
+            );
+
+        if (!dashboard) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se encontró el dashboard para generar la imagen'
+            });
+
+            return;
+        }
 
 
-  
+        if (document.fonts && document.fonts.ready) {
 
-    let form = $('<form>', {
+            await document.fonts.ready;
+        }
 
-        action:
-            '/descargarRevisioninfopsico/' +
-            proyecto.id,
-
-        method:
-            'POST',
-
-        target:
-            '_blank'
-
-    });
+        window.dispatchEvent(
+            new Event('resize')
+        );
 
 
-
-    form.append(
-
-        $('<input>', {
-
-            type: 'hidden',
-
-            name: '_token',
-
-            value:
-                $('meta[name="csrf-token"]')
-                .attr('content')
-
-        })
-
-    );
+        await new Promise(function(resolve)
+        {
+            setTimeout(resolve, 1000);
+        });
 
 
+        const canvas = await html2canvas(
+            dashboard,
+            {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#FFFFFF',
+                logging: false,
+                scrollX: 0,
+                scrollY: -window.scrollY,
+                width: dashboard.scrollWidth,
+                height: dashboard.scrollHeight,
+                windowWidth: document.documentElement.scrollWidth,
+                windowHeight: document.documentElement.scrollHeight
+            }
+        );
 
-   
 
 
-    $('body').append(form);
 
-  
+        const dashboardBase64 =
+            canvas.toDataURL(
+                'image/jpeg',
+                0.95
+            );
 
-    form.submit();
+
+        if (
+            !dashboardBase64 ||
+            dashboardBase64.length < 100
+        ) {
+
+            throw new Error(
+                'No fue posible generar la imagen del dashboard'
+            );
+        }
 
 
-    setTimeout(function () {
+        let form = $('<form>', {
 
-        form.remove();
+            action:
+                '/descargarRevisioninfopsico/' + proyecto.id,
+            method:'POST',
+            target:'_blank',
+            style: 'display:none;'
 
-     
-    }, 1000);
+        });
 
+
+        form.append(
+            $('<input>', {
+                type:'hidden',
+                name:'_token',
+                value:
+                    $('meta[name="csrf-token"]')
+                    .attr('content')
+
+            })
+
+        );
+
+        form.append(
+            $('<input>', {
+                type:'hidden',
+                name:'DASHBOARD_FOTO',
+                value:  dashboardBase64
+
+            })
+
+        );
+
+
+        $('body').append(form);
+
+        form.submit();
+
+        setTimeout(function()
+        {
+            form.remove();
+
+        }, 2000);
+
+    } catch (error) {
+
+        console.error(
+            'Error al capturar el dashboard:',
+            error
+        );
+
+        Swal.fire({
+            icon:'error',
+            title: 'Error',
+            text: 'No fue posible generar la imagen del dashboard'
+        });
+    }
 }
+
+
+// async function descargarRevisioninfopsico(PROYECTO_ID)
+// {
+
+
+//     let form = $('<form>', {
+
+//         action: '/descargarRevisioninfopsico/' + proyecto.id,
+//         method: 'POST',
+//         target: '_blank'
+//     });
+
+
+
+//     form.append(
+
+//         $('<input>', {
+//             type: 'hidden',
+//             name: '_token',
+//             value: $('meta[name="csrf-token"]').attr('content')
+//         })
+//     );
+
+//     $('body').append(form);
+
+//     form.submit();
+
+//     setTimeout(function () {
+//         form.remove();
+//     }, 1000);
+
+// }
 
 
 
@@ -1931,8 +1983,1365 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
 ////// GRAFICAS
 
 
+// GENERO
 
 
+function cargarGraficaGeneroPsico()
+{
+    $.get(
+        '/obtenerGraficaGeneroPsico/' + proyecto.id,
+        function(response)
+        {
+           let hombres = parseInt(response.hombres);
+            let mujeres = parseInt(response.mujeres);
+
+            let total = hombres + mujeres;
+
+            let porcentajeHombres = total > 0 ? ((hombres * 100) / total).toFixed(2) : 0;
+            let porcentajeMujeres = total > 0 ? ((mujeres * 100) / total).toFixed(2) : 0;
+
+            $('#lblHombres').html('Hombres: ' + hombres + ' (' + porcentajeHombres + '%)');
+            $('#lblMujeres').html('Mujeres: ' + mujeres + ' (' + porcentajeMujeres + '%)');
+            $('#stopHombreColor').attr('offset', porcentajeHombres + '%');
+            $('#stopHombreBlanco').attr('offset', porcentajeHombres + '%');
+            $('#stopMujerColor').attr('offset', porcentajeMujeres + '%');
+            $('#stopMujerBlanco').attr('offset', porcentajeMujeres + '%');
+
+        }
+    );
+}
+
+// EDADES
+
+let chartEdades = null;
+let edadeschart = null;
+
+function cargarGraficaEdadesPsico()
+{
+    $.get(
+        '/obtenerGraficaEdadesPsico/' + proyecto.id,
+        function(response)
+        {
+            generarGraficaEdadesPsico(
+                response.data,
+                response.maximo
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar las edades'
+        });
+    });
+}
+
+
+
+function generarGraficaEdadesPsico(edadData, maximo)
+{
+    if (!Array.isArray(edadData)) {
+        edadData = [];
+    }
+
+    if (chartEdades) {
+        chartEdades.destroy();
+        chartEdades = null;
+    }
+
+    $('#grafica_edad').empty();
+
+
+    const categoriasEdad = edadData.map(function(item) {
+        return item.categoria;
+    });
+
+    const valoresEdad = edadData.map(function(item) {
+        return parseInt(item.total) || 0;
+    });
+
+    const coloresEdad = edadData.map(function(item) {
+        return item.color;
+    });
+
+
+    const totalTrabajadores = valoresEdad.reduce(
+        function(acumulado, valor)
+        {
+            return acumulado + valor;
+        },
+        0
+    );
+
+
+    let maximoEscala = parseInt(maximo) || 1;
+
+    maximoEscala = maximoEscala + 1;
+
+
+    const optionsEdades = {
+
+        series: [
+            {
+                name: 'Trabajadores',
+                data: valoresEdad
+            }
+        ],
+
+        chart: {
+            type: 'bar',
+            height: 250,
+            toolbar: {
+                show: false
+            },
+            animations: {
+                enabled: true
+            }
+        },
+
+        colors: coloresEdad,
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                distributed: true,
+                barHeight: '58%',
+                borderRadius: 4,
+                dataLabels: {
+                    position: 'center'
+                }
+            }
+        },
+
+        dataLabels: {
+            enabled: true,
+
+            formatter: function(valor)
+            {
+                let cantidad = parseInt(valor) || 0;
+
+                let porcentaje = totalTrabajadores > 0
+                    ? (
+                        cantidad * 100 /
+                        totalTrabajadores
+                    ).toFixed(2)
+                    : '0.00';
+
+                return cantidad +
+                    ' (' +
+                    porcentaje +
+                    '%)';
+            },
+            style: {
+                fontSize: '11px',
+                fontWeight: 'bold',
+                colors: ['#FFFFFF']
+            },
+            dropShadow: {
+                enabled: true,
+                left: 1,
+                top: 1,
+                opacity: 0.5
+            }
+        },
+
+        xaxis: {
+            categories: categoriasEdad,
+            min: 0,
+            max: maximoEscala,
+            tickAmount: Math.min(
+                maximoEscala,
+                10
+            ),
+            labels: {
+                formatter: function(valor) {
+                    return Math.round(valor);
+                },
+                style: {
+                    fontSize: '12px'
+                }
+            }
+        },
+
+        yaxis: {
+            labels: {
+                maxWidth: 190,
+                style: {
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    colors: coloresEdad
+                }
+            }
+        },
+
+        grid: {
+            borderColor: '#E5E5E5',
+            strokeDashArray: 3,
+            padding: {
+                left: 10,
+                right: 20,
+                top: 10,
+                bottom: 5
+            }
+        },
+
+        legend: {
+            show: false
+        },
+
+
+        tooltip: {
+            y: {
+                formatter: function(valor)
+                {
+                    let cantidad = parseInt(valor) || 0;
+                    let porcentaje = totalTrabajadores > 0
+                        ? (
+                            cantidad * 100 /
+                            totalTrabajadores
+                        ).toFixed(2)
+                        : '0.00';
+                    return cantidad +
+                        (
+                            cantidad === 1
+                                ? ' trabajador'
+                                : ' trabajadores'
+                        ) +
+                        ' (' +
+                        porcentaje +
+                        '%)';
+                }
+            }
+        }
+    };
+
+
+    chartEdades = new ApexCharts(
+        document.querySelector('#grafica_edad'),
+        optionsEdades
+    );
+
+    chartEdades.render()
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                chartEdades.dataURI()
+                    .then(function(uri)
+                    {
+                        edadeschart = uri;
+                    })
+                    .catch(function(error)
+                    {
+                      console.error('Error al exportar gráfica de edades:',error);
+                    });
+            }, 1000);
+        });
+}
+
+// ESCOLARIDAD
+
+let chartEscolaridad = null;
+let escolaridadchart = null;
+
+
+
+function cargarGraficaEscolaridadPsico()
+{
+    $.get(
+        '/obtenerGraficaEscolaridadPsico/' + proyecto.id,
+        function(response)
+        {
+            generarGraficaEscolaridadPsico(
+                response.data,
+                response.total_trabajadores,
+                response.maximo
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar la escolaridad'
+        });
+    });
+}
+
+
+
+function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores,maximo)
+{
+
+    if (!Array.isArray(datosEscolaridad)) {
+        datosEscolaridad = [];
+    }
+
+    if (chartEscolaridad) {
+        chartEscolaridad.destroy();
+        chartEscolaridad = null;
+    }
+
+    $('#grafica_escolaridad').empty();
+
+    const datosFiltrados =
+        datosEscolaridad.filter(function(item)
+        {
+            return parseInt(item.valor) > 0;
+        });
+
+
+    if (datosFiltrados.length === 0) {
+
+        $('#grafica_escolaridad').html(`
+            <div
+                style="
+                    width:100%;
+                    padding:40px 10px;
+                    text-align:center;
+                    font-weight:bold;
+                    color:#777;
+                "
+            >
+                No hay información de escolaridad
+            </div>
+        `);
+
+        escolaridadchart = null;
+
+        return;
+    }
+
+
+    const categorias =
+        datosFiltrados.map(function(item)
+        {
+            return item.categoria;
+        });
+
+    const valores =
+        datosFiltrados.map(function(item)
+        {
+            return parseInt(item.valor) || 0;
+        });
+
+
+    let total = parseInt(totalTrabajadores) || 0;
+
+   
+    if (total === 0) {
+
+        total = valores.reduce(
+            function(acumulado, valor)
+            {
+                return acumulado + valor;
+            },
+            0
+        );
+    }
+
+    let maximoEscala = parseInt(maximo) || 1;
+
+    maximoEscala = maximoEscala + 1;
+
+    const alturaGrafica =
+        Math.max(
+            240,
+            datosFiltrados.length * 48
+        );
+
+    const optionsEscolaridad = {
+
+        chart: {
+            type: 'bar',
+            height: alturaGrafica,
+            toolbar: {
+                show: false
+            },
+            animations: {
+                enabled: true
+            }
+
+        },
+
+        series: [
+            {
+                name: 'Escolaridad',
+                data: valores
+            }
+        ],
+
+        colors: ['#98c11d'],
+
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                borderRadius: 4,
+                barHeight: '70%',
+                dataLabels: { position: 'center'}
+            }
+        },
+
+
+
+
+        dataLabels: {
+            enabled: true,
+            formatter: function(valor)
+            {
+                const cantidad =
+                    parseInt(valor) || 0;
+
+                const porcentaje =
+                    total > 0
+                        ? (
+                            cantidad *
+                            100 /
+                            total
+                        ).toFixed(2)
+                        : '0.00';
+
+                return cantidad +
+                    ' (' +
+                    porcentaje +
+                    '%)';
+            },
+
+            style: {
+                fontSize: '12px',
+                fontWeight: 'bold',
+                colors: ['#FFFFFF']
+            },
+
+            dropShadow: {
+                enabled: true,
+                left: 1,
+                top: 1,
+                opacity: 0.5
+            }
+        },
+
+        xaxis: {
+            categories: categorias,
+            min: 0,
+            max: maximoEscala,
+            tickAmount: Math.min(
+                maximoEscala,
+                10
+            ),
+            labels: {
+                formatter: function(valor)
+                {
+                    return Math.round(valor);
+                },
+                style: { fontSize: '12px'
+                }
+            }
+        },
+
+        yaxis: {
+            labels: {
+                maxWidth: 180,
+                style: {
+                    fontSize: '12px',
+                    fontWeight: 'bold'
+                }
+            }
+        },
+
+        grid: {
+            borderColor: '#E5E5E5',
+            strokeDashArray: 3,
+            padding: {
+                left: 10,
+                right: 20,
+                top: 5,
+                bottom: 5
+            }
+        },
+
+        legend: { show: false },
+
+        tooltip: {
+            theme: 'dark',
+            y: {
+                formatter: function(valor)
+                {
+                    const cantidad =
+                        parseInt(valor) || 0;
+
+                    const porcentaje =
+                        total > 0
+                            ? (
+                                cantidad *
+                                100 /
+                                total
+                            ).toFixed(2)
+                            : '0.00';
+
+                    return cantidad +
+                        (
+                            cantidad === 1
+                                ? ' trabajador'
+                                : ' trabajadores'
+                        ) +
+                        ' (' +
+                        porcentaje +
+                        '%)';
+                }
+            }
+        }
+    };
+
+
+    chartEscolaridad = new ApexCharts(
+        document.querySelector('#grafica_escolaridad'),
+        optionsEscolaridad
+    );
+
+    chartEscolaridad.render()
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                chartEscolaridad.dataURI()
+                    .then(function(uri)
+                    {
+                        escolaridadchart = uri;
+                    })
+                    .catch(function(error)
+                    {
+                        console.error(
+                            'Error al exportar gráfica de escolaridad:',
+                            error
+                        );
+                    });
+
+            }, 1000);
+        });
+}
+
+// ESTADO CIVIL
+
+
+let chartEstadoCivil = null;
+let estadocivilchart = null;
+
+
+
+function cargarGraficaEstadoCivilPsico()
+{
+    $.get(
+        '/obtenerGraficaEstadoCivilPsico/' + proyecto.id,
+        function(response)
+        {
+            generarGraficaEstadoCivilPsico(
+                response.data,
+                response.total_trabajadores,
+                response.maximo
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar el estado civil'
+        });
+    });
+}
+
+
+
+function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maximo)
+{
+
+
+
+    if (!Array.isArray(estadoCivilData)) {
+        estadoCivilData = [];
+    }
+
+
+    if (chartEstadoCivil) {
+        chartEstadoCivil.destroy();
+        chartEstadoCivil = null;
+    }
+
+    $('#grafica_estadocivil').empty();
+
+
+    const datosFiltrados =
+        estadoCivilData.filter(function(item)
+        {
+            return parseInt(item.total) > 0;
+        });
+
+   
+    if (datosFiltrados.length === 0) {
+
+        $('#grafica_estadocivil').html(`
+            <div
+                style="
+                    width:100%;
+                    padding:40px 10px;
+                    text-align:center;
+                    font-weight:bold;
+                    color:#777;
+                "
+            >
+                No hay información de estado civil
+            </div>
+        `);
+
+        estadocivilchart = null;
+
+        return;
+    }
+
+    const categoriasEstadoCivil =
+        datosFiltrados.map(function(item)
+        {
+            return item.categoria;
+        });
+
+    const valoresEstadoCivil =
+        datosFiltrados.map(function(item)
+        {
+            return parseInt(item.total) || 0;
+        });
+
+    const coloresEstadoCivil =
+        datosFiltrados.map(function(item)
+        {
+            return item.color;
+        });
+
+
+    let total = parseInt(totalTrabajadores) || 0;
+
+    if (total === 0) {
+
+        total = valoresEstadoCivil.reduce(
+            function(acumulado, valor)
+            {
+                return acumulado + valor;
+            },
+            0
+        );
+    }
+
+
+    let maximoEscala = parseInt(maximo) || 1;
+
+    maximoEscala = maximoEscala + 1;
+
+    const optionsEstadoCivil = {
+        series: [
+            {
+                name: 'Trabajadores',
+                data: valoresEstadoCivil
+            }
+        ],
+
+      chart: {
+            type: 'bar',
+            height: 250,
+            offsetY: -8,
+            toolbar: {
+                show: false
+            },
+            animations: {
+                enabled: true
+            }
+        },
+
+        colors: coloresEstadoCivil,
+
+        plotOptions: {
+            bar: {
+                columnWidth: '65%',
+                distributed: true,
+                borderRadius: 3,
+                dataLabels: {
+                    position: 'top'
+                }
+            }
+        },
+
+        dataLabels: {
+            enabled: true,
+            offsetY: -24,
+            formatter: function(valor)
+            {
+                const cantidad =
+                    parseInt(valor) || 0;
+
+                const porcentaje =
+                    total > 0
+                        ? (
+                            cantidad *
+                            100 /
+                            total
+                        ).toFixed(2)
+                        : '0.00';
+
+                return cantidad +
+                    ' (' +
+                    porcentaje +
+                    '%)';
+            },
+
+            style: {
+                fontSize: '12px',
+                fontWeight: 'bold',
+                colors: [
+                    '#000000'
+                ]
+            },
+            dropShadow: {
+                enabled: false
+            }
+        },
+
+     xaxis: {
+            categories: categoriasEstadoCivil,
+
+            labels: {
+                offsetY: -3,
+                trim: false,
+                rotate: 0,
+
+                style: {
+                    colors: coloresEstadoCivil,
+                    fontSize: '12px',
+                    fontWeight: 600
+                }
+            }
+        },
+
+        yaxis: {
+            min: 0,
+            max: maximoEscala,
+            tickAmount: Math.min(
+                maximoEscala,
+                10
+            ),
+            labels: {
+                formatter: function(valor)
+                {
+                    return Math.round(valor);
+                },
+                style: {fontSize: '11px'}
+            }
+        },
+
+      grid: {
+            padding: {
+                left: 5,
+                right: 10,
+                top: 10,
+                bottom: 0
+            }
+        },
+
+
+        legend: {show: false},
+
+        tooltip: {
+            theme: 'dark',
+            y: {
+                formatter: function(valor)
+                {
+                    const cantidad =
+                        parseInt(valor) || 0;
+
+                    const porcentaje =
+                        total > 0
+                            ? (
+                                cantidad *
+                                100 /
+                                total
+                            ).toFixed(2)
+                            : '0.00';
+
+                    return cantidad +
+                        (
+                            cantidad === 1
+                                ? ' trabajador'
+                                : ' trabajadores'
+                        ) +
+                        ' (' +
+                        porcentaje +
+                        '%)';
+                }
+            }
+        }
+    };
+
+    chartEstadoCivil = new ApexCharts(
+        document.querySelector('#grafica_estadocivil'),
+        optionsEstadoCivil
+    );
+
+
+    chartEstadoCivil.render()
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                chartEstadoCivil.dataURI()
+                    .then(function(uri)
+                    {
+                        estadocivilchart = uri;
+                    })
+                    .catch(function(error)
+                    {
+                        console.error(
+                            'Error al exportar gráfica de estado civil:',
+                            error
+                        );
+                    });
+
+            }, 1000);
+        });
+}
+
+
+// REGIMEN
+
+let chartRegimen = null;
+let regimenchart = null;
+
+
+
+function cargarGraficaRegimenPsico()
+{
+    $.get(
+        '/obtenerGraficaRegimenPsico/' + proyecto.id,
+        function(response)
+        {
+            generarGraficaRegimenPsico(
+                response.data,
+                response.total_trabajadores
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar el régimen'
+        });
+    });
+}
+
+
+
+function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
+{
+
+    if (!Array.isArray(regimenData)) {
+        regimenData = [];
+    }
+
+    if (chartRegimen) {
+
+        chartRegimen.destroy();
+
+        chartRegimen = null;
+    }
+
+    $('#grafica_regimen').empty();
+
+    const datosFiltrados =
+        regimenData.filter(function(item)
+        {
+            return parseInt(item.valor) > 0;
+        });
+
+
+
+    if (datosFiltrados.length === 0) {
+
+        $('#grafica_regimen').html(`
+            <div
+                style="
+                    width:100%;
+                    padding:40px 10px;
+                    text-align:center;
+                    font-weight:bold;
+                    color:#777;
+                "
+            >
+                No hay información de régimen
+            </div>
+        `);
+        regimenchart = null;
+        return;
+    }
+
+
+
+    const valoresRegimen =
+        datosFiltrados.map(function(item)
+        {
+            return parseInt(item.valor) || 0;
+        });
+
+    const coloresRegimen =
+        datosFiltrados.map(function(item)
+        {
+            return item.color;
+        });
+
+    const categoriasRegimen =
+        datosFiltrados.map(function(item)
+        {
+            return item.categoria;
+        });
+
+    let total = parseInt(totalTrabajadores) || 0;
+    if (total === 0) {
+        total = valoresRegimen.reduce(
+            function(acumulado, valor)
+            {
+                return acumulado + valor;
+            },
+            0
+        );
+    }
+
+    const optionsRegimen = {
+
+        series: valoresRegimen,
+
+        chart: {
+            type: 'donut',
+            height: 240,
+            toolbar: {
+                show: false
+            },
+            animations: {
+                enabled: true
+            }
+        },
+
+        colors: coloresRegimen,
+        labels: categoriasRegimen,
+
+        dataLabels: {
+            enabled: false
+        },
+
+
+        plotOptions: {
+            pie: {
+                offsetY: 2,
+                donut: {
+                    size: '45%',
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true,
+                            fontSize: '12px'
+                        },
+                        value: {
+                            show: true,
+                            fontSize: '18px',
+                            fontWeight: 'bold'
+                        },
+                        total: {
+                            show: true,
+                            label: 'Total',
+                            fontSize: '12px',
+                            formatter: function()
+                            {
+                                return total;
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+
+        legend: {
+            show: true,
+            position: 'bottom',
+            fontSize: '10px',
+            horizontalAlign: 'center',
+
+            offsetY: -4,
+            itemMargin: {
+                horizontal: 5,
+                vertical: 1
+            },
+
+            formatter: function(seriesName, opts)
+            {
+                const cantidad =
+                    opts.w.globals.series[
+                        opts.seriesIndex
+                    ];
+
+                const porcentaje =
+                    total > 0
+                        ? (
+                            cantidad *
+                            100 /
+                            total
+                        ).toFixed(2)
+                        : '0.00';
+
+                return seriesName +
+                    ': ' +
+                    cantidad +
+                    ' (' +
+                    porcentaje +
+                    '%)';
+            }
+
+        },
+
+
+        tooltip: {
+            theme: 'dark',
+            y: {
+                formatter: function(valor)
+                {
+                    const cantidad =
+                        parseInt(valor) || 0;
+                    const porcentaje =
+                        total > 0
+                            ? (
+                                cantidad *
+                                100 /
+                                total
+                            ).toFixed(2)
+                            : '0.00';
+                    return cantidad +
+                        (
+                            cantidad === 1
+                                ? ' trabajador'
+                                : ' trabajadores'
+                        ) +
+                        ' (' +
+                        porcentaje +
+                        '%)';
+                }
+            }
+        },
+
+        responsive: [
+
+            {
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        height: 230
+                    },
+                    plotOptions: {
+                        pie: {
+                            offsetY: 0
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        offsetY: -3
+                    }
+                }
+            }
+        ]
+    };
+    
+    chartRegimen = new ApexCharts(
+        document.querySelector('#grafica_regimen'),
+        optionsRegimen
+    );
+
+    chartRegimen.render()
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                chartRegimen.dataURI()
+                    .then(function(uri)
+                    {
+                        regimenchart = uri;
+                    })
+                    .catch(function(error)
+                    {
+                        console.error(
+                            'Error al exportar gráfica de régimen:',
+                            error
+                        );
+                    });
+
+            }, 1000);
+        });
+}
+
+// EXPERIENCIA LABORAL
+
+let chartExperiencia = null;
+let experienciachart = null;
+
+
+
+function cargarGraficaExperienciaPsico()
+{
+    $.get(
+        '/obtenerGraficaExperienciaPsico/' + proyecto.id,
+        function(response)
+        {
+            generarGraficaExperienciaPsico(
+                response.data,
+                response.total_trabajadores
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar la experiencia laboral'
+        });
+    });
+}
+
+
+
+function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
+{
+
+    if (!Array.isArray(experienciaData)) {
+        experienciaData = [];
+    }
+
+    if (chartExperiencia) {
+        chartExperiencia.destroy();
+        chartExperiencia = null;
+    }
+
+    $('#grafica_experiencia').empty();
+
+    const datosFiltrados =
+        experienciaData.filter(function(item)
+        {
+            return parseInt(item.valor) > 0;
+        });
+
+
+
+    if (datosFiltrados.length === 0) {
+
+        $('#grafica_experiencia').html(`
+            <div
+                style="
+                    width:100%;
+                    padding:40px 10px;
+                    text-align:center;
+                    font-weight:bold;
+                    color:#777;
+                "
+            >
+                No hay información de experiencia laboral
+            </div>
+        `);
+
+        experienciachart = null;
+
+        return;
+    }
+
+    const valoresExperiencia =
+        datosFiltrados.map(function(item)
+        {
+            return parseInt(item.valor) || 0;
+        });
+
+    const coloresExperiencia =
+        datosFiltrados.map(function(item)
+        {
+            return item.color;
+        });
+
+    const rangosExperiencia =
+        datosFiltrados.map(function(item)
+        {
+            return item.rango;
+        });
+
+
+    let total = parseInt(totalTrabajadores) || 0;
+
+    if (total === 0) {
+
+        total = valoresExperiencia.reduce(
+            function(acumulado, valor)
+            {
+                return acumulado + valor;
+            },
+            0
+        );
+    }
+
+    const optionsExperiencia = {
+
+        series: valoresExperiencia,
+        chart: {
+            type: 'pie',
+            height: 240,
+            toolbar: {
+                show: false
+            },
+
+            animations: {
+                enabled: false
+            }
+        },
+
+
+
+        labels: rangosExperiencia,
+
+
+        colors: coloresExperiencia,
+
+        dataLabels: {
+            enabled: false
+        },
+
+        legend: {
+            show: true,
+            position: 'bottom',
+            horizontalAlign: 'center',
+            fontSize: '9px',
+            offsetY: -3,
+            itemMargin: {
+                horizontal: 4,
+                vertical: 1
+
+            },
+
+            formatter: function(
+                seriesName,
+                opts
+            ) {
+
+                const cantidad =
+                    opts.w.globals.series[
+                        opts.seriesIndex
+                    ];
+
+                const porcentaje =
+                    total > 0
+                        ? (
+                            cantidad *
+                            100 /
+                            total
+                        ).toFixed(2)
+                        : '0.00';
+
+                return seriesName +
+                    ': ' +
+                    cantidad +
+                    ' (' +
+                    porcentaje +
+                    '%)';
+            }
+        },
+
+
+        tooltip: {
+            theme: 'dark',
+            y: {
+
+                formatter: function(valor)
+                {
+                    const cantidad =
+                        parseInt(valor) || 0;
+
+                    const porcentaje =
+                        total > 0
+                            ? (
+                                cantidad *
+                                100 /
+                                total
+                            ).toFixed(2)
+                            : '0.00';
+
+                    return cantidad +
+                        (
+                            cantidad === 1
+                                ? ' trabajador'
+                                : ' trabajadores'
+                        ) +
+                        ' (' +
+                        porcentaje +
+                        '%)';
+                }
+            }
+        },
+
+
+        responsive: [
+            {
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        height: 230
+                    },
+                    legend: {
+                        position: 'bottom',
+                        fontSize: '8px',
+                        offsetY: -2
+                    }
+                }
+            }
+        ]
+    };
+
+    chartExperiencia = new ApexCharts(
+        document.querySelector('#grafica_experiencia'),optionsExperiencia
+    );
+
+    chartExperiencia.render()
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                chartExperiencia.dataURI()
+                    .then(function(uri)
+                    {
+                        experienciachart = uri;
+                    })
+                    .catch(function(error)
+                    {
+                        console.error(
+                            'Error al exportar gráfica de experiencia:',
+                            error
+                        );
+                    });
+            }, 1000);
+        });
+}
 
 am5.ready(function () {
 	function createChart(containerId, titleText, subtitleText, data, chartName) {
@@ -2884,434 +4293,10 @@ seriesNamesConsolidado1.forEach((seriesName, index) => {
 // }));
 
 // Crear la leyenda
-var legendConsolidado1 = chartConsolidado1.children.push(am5.Legend.new(rootConsolidadoChart1, {
-	centerX: am5.p50, // Centrar horizontalmente
-	x: am5.p50,
-	y: am5.p100, // Colocarla en la parte inferior del gráfico
-	layout: rootConsolidadoChart1.horizontalLayout, // Cambiar a disposición horizontal
-	marginTop: 3
-}));
-
-// Vincular colores y nombres de las series a la leyenda
-seriesNamesConsolidado1.forEach((seriesName, index) => {
-	var series = chartConsolidado1.series.getIndex(index); // Obtener la serie actual
-	series.legendSettings = {
-		labelText: `Factor ${seriesName}`, // Nombre que aparecerá en la leyenda
-		fill: seriesColorsConsolidado1[index] // Color de la serie en la leyenda
-	};
-});
-
-// Agregar leyenda con los datos correctos
-legendConsolidado1.data.setAll(chartConsolidado1.series.values);
-
-chartConsolidado1.appear(1000, 100).then(() => {
-	setTimeout(() => {
-		if (typeof am5plugins_exporting !== 'undefined') {
-			var exporting = am5plugins_exporting.Exporting.new(rootConsolidadoChart1, {
-				menu: am5plugins_exporting.ExportingMenu.new(rootConsolidadoChart1, {}),
-				dpi: 300, // Ajusta el DPI para mejorar la calidad de la imagen exportada
-				// También puedes ajustar el tamaño de la imagen, si lo deseas
-				maxWidth: 2000, // Ancho máximo en píxeles
-				maxHeight: 2000,
-			});
-			exporting.export("png").then(function (data) {
-				categoriaschart = data;
-				console.log("dominios chart consolidado exportado exitosamente");
-			}).catch(error => console.error('Error al exportar:', error));
-		} else {
-			console.log('Plugin de exportación no disponible');
-		}
-	}, 1000); // Aumenté el timeout
-});
-
-const edadData = [
-	{ categoria: "Menos de 18 años", total: 10, color: "#98c11d" },
-	{ categoria: "18 a 24 años", total: 9, color: "#2c6e49" },
-	{ categoria: "25 a 34 años", total: 6, color: "#154b75" },
-	{ categoria: "35 a 44 años", total: 5, color: "#0098c7" },
-	{ categoria: "45 a 54 años", total: 4, color: "#171738" },
-	{ categoria: "55 a 64 años", total: 3, color: "#6F4F98" },
-	{ categoria: "65 años o más", total: 1, color: "#9A33B2" }
-];
-
-// Extraer categorías, valores y colores
-const categoriasEdad = edadData.map(item => item.categoria);
-const valoresEdad = edadData.map(item => item.total);
-const coloresEdad = edadData.map(item => item.color);
-
-// Configuración del gráfico con Distributed Columns
-const optionsEdades = {
-	series: [{
-		data: valoresEdad
-	}],
-	chart: {
-		type: 'bar',
-		height: 220
-	},
-	colors: coloresEdad, // Colores personalizados para cada barra
-	plotOptions: {
-		bar: {
-			columnWidth: '65%',
-			distributed: true,
-			borderRadius: 3
-		}
-	},
-	dataLabels: {
-		enabled: true,
-		style: {
-			fontSize: '18px',
-			fontWeight: 'bold',
-			colors: ['#ffffff']
-		},
-		dropShadow: {
-			enabled: true,
-			left: 0,
-			top: -2,
-			opacity: 0.5
-		},
-		formatter: function (val) {
-			return val; // Mostrar el valor absoluto en la barra
-		}
-	},
-	legend: {
-		show: false // Ocultar la leyenda
-	},
-	xaxis: {
-		categories: categoriasEdad, // Categorías en el eje X
-		labels: {
-			style: {
-				colors: coloresEdad,
-				fontSize: '0px',
-			}
-		}
-	}
-};
-
-// Crear y renderizar el gráfico de Rango de Edades
-const chartEdades = new ApexCharts(document.querySelector("#grafica_edad"), optionsEdades);
-chartEdades.render().then(() => {
-	setTimeout(function () {
-		chartEdades.dataURI().then(uri => {
-			//console.log(uri);
-			edadeschart = uri;
-		});
-	}, 4000);
-});
-
-const estadoCivilData = [
-	{ categoria: "Soltero(a)", total: 11, color: "#98c11d" },
-	{ categoria: "Casado(a)", total: 54, color: "#2c6e49" },
-	{ categoria: "Divorciado(a)", total: 10, color: "#154b75" },
-	{ categoria: "Viudo(a)", total: 2, color: "#0098c7" }
-];
-
-// Extraer categorías, valores y colores
-const categoriasEstadoCivil = estadoCivilData.map(item => item.categoria);
-const valoresEstadoCivil = estadoCivilData.map(item => item.total);
-const coloresEstadoCivil = estadoCivilData.map(item => item.color);
-
-// Configuración del gráfico con Distributed Columns
-const optionsEstadoCivil = {
-	series: [{
-		data: valoresEstadoCivil
-	}],
-	chart: {
-		type: 'bar',
-		height: 220,
-		events: {
-			click: function (chart, w, e) {
-				// Acción al hacer clic (si es necesario)
-			}
-		}
-	},
-	colors: coloresEstadoCivil, // Colores personalizados para cada barra
-	plotOptions: {
-		bar: {
-			columnWidth: '65%',
-			distributed: true,
-			borderRadius: 3,
-			dataLabels: {
-				position: 'top' // Coloca los números arriba de las barras
-			}
-		}
-	},
-	dataLabels: {
-		enabled: true, // Mostrar valores en las barras
-		offsetY: -20,
-		style: {
-			fontSize: '15px',
-			fontWeight: 'bold',
-			colors: ['#000']
-		},
-		formatter: function (val) {
-			return val; // Mostrar el valor absoluto en la barra
-		}
-	},
-	legend: {
-		show: false // Ocultar la leyenda
-	},
-	xaxis: {
-		categories: categoriasEstadoCivil, // Categorías en el eje X
-		labels: {
-			style: {
-				colors: coloresEstadoCivil,
-				fontSize: '0px',
-			}
-		}
-	}
-};
-
-// Crear y renderizar el gráfico de Estado Civil
-const chartEstadoCivil = new ApexCharts(document.querySelector("#grafica_estadocivil"), optionsEstadoCivil);
-chartEstadoCivil.render().then(() => {
-	setTimeout(function () {
-		chartEstadoCivil.dataURI().then(uri => {
-			//console.log(uri);
-			estadocivilchart = uri;
-		});
-	}, 4000);
-});
-
-const datosEscolaridad = [
-	{ categoria: "Primaria", valor: 2 },
-	{ categoria: "Secundaria", valor: 60 },
-	{ categoria: "Preparatoria", valor: 9 },
-	{ categoria: "Licenciatura", valor: 0 },
-	{ categoria: "Especialidad", valor: 0 },
-	{ categoria: "Maestría", valor: 0 },
-	{ categoria: "Doctorado", valor: 0 },
-	{ categoria: "Postdoctorado", valor: 0 },
-];
-
-const datosFiltrados = datosEscolaridad.filter(item => item.valor > 0);
-
-// Extraer categorías y valores de los datos filtrados
-const categorias = datosFiltrados.map(item => item.categoria);
-const valores = datosFiltrados.map(item => item.valor);
-// Extraer categorías y valores
-//   const categorias = datosEscolaridad.map(item => item.categoria);
-//   const valores = datosEscolaridad.map(item => item.valor);
-
-// Configuración de la gráfica
-const options = {
-	chart: {
-		type: 'bar',
-		height: 240,
-		toolbar: {
-			show: false // Ocultar herramientas de zoom y exportación
-		}
-	},
-	plotOptions: {
-		bar: {
-			horizontal: true, // Barras horizontales
-			borderRadius: 4, // Bordes redondeados
-			barHeight: '70%', // Ajustar altura de las barras
-		}
-	},
-	dataLabels: {
-		enabled: true, // Mostrar etiquetas con valores
-		style: {
-			fontSize: '15px',
-			fontWeight: 'bold',
-			colors: ['#ffffff']
-		},
-		dropShadow: {
-			enabled: true,
-			left: 2,
-			top: 2,
-			opacity: 0.5
-		},
-	},
-	xaxis: {
-		categories: categorias, // Categorías en el eje Y
-		labels: {
-			style: {
-				fontSize: '12px',
-				fontWeight: 'bold',
-			}
-		}
-	},
-	yaxis: {
-		labels: {
-			style: {
-				fontSize: '12px',
-				fontWeight: 'bold',
-			}
-		}
-	},
-	series: [
-		{
-			name: "Escolaridad",
-			data: valores, // Valores de las categorías
-		}
-	],
-	colors: [
-		"#98c11d",
-	],
-	tooltip: {
-		theme: 'dark', // Tema oscuro para el tooltip
-	}
-};
-
-// Renderizar la gráfica
-const chart = new ApexCharts(document.querySelector("#grafica_escolaridad"), options);
-chart.render().then(() => {
-	setTimeout(function () {
-		chart.dataURI().then(uri => {
-			//console.log(uri);
-			escolaridadchart = uri;
-		});
-	}, 4000);
-});
-
-// Crear un nuevo objeto root para el gráfico de régimen
-const regimenData = [
-	{ categoria: "Planta", valor: 53, color: "#98c11d" },
-	{ categoria: "Sindicalizado", valor: 12, color: "#2c6e49" },
-	{ categoria: "NA", valor: 6, color: "#154b75" },
-	{ categoria: "Otros", valor: 5, color: "#0098c7" }
-];
-
-// Extraer valores y colores
-const valoresRegimen = regimenData.map(item => item.valor);
-const coloresRegimen = regimenData.map(item => item.color);
-const categoriasRegimen = regimenData.map(item => item.categoria);
-
-// Configuración del gráfico donut
-const optionsRegimen = {
-	series: valoresRegimen, // Valores para cada sección
-	chart: {
-		type: 'donut', // Tipo de gráfico donut
-		height: 240,
-	},
-	colors: coloresRegimen, // Colores personalizados
-	labels: categoriasRegimen, // Etiquetas para cada sección
-	dataLabels: {
-		enabled: true,
-		style: {
-			fontSize: '15px',
-			fontWeight: 'bold',
-		},
-		formatter: function (val, opts) {
-			return opts.w.config.series[opts.seriesIndex]; // Muestra el valor original
-		}
-	},
-	plotOptions: {
-		pie: {
-			donut: {
-				size: '40%', // Reducir el tamaño del hueco para líneas más gruesas
-			}
-		}
-	},
-	legend: {
-		show: false, // Mostrar la leyenda
-		position: 'right',
-		fontSize: '10px',
-		itemMargin: { // Reducir el espacio entre los elementos de la leyenda
-			horizontal: 2, // Espacio horizontal entre elementos
-			vertical: 4 // Espacio vertical entre elementos
-		}
-	},
-	responsive: [{
-		breakpoint: 480,
-		options: {
-			chart: {
-				width: 170 // Ajustar el tamaño en pantallas pequeñas
-			},
-			legend: {
-				position: 'bottom' // Colocar la leyenda abajo en pantallas pequeñas
-			}
-		}
-	}]
-};
 
 
-const experienciaData = [
-	{ rango: "Menos de 6 meses", valor: 10, color: "#98c11d" },
-	{ rango: "6 meses a 1 año", valor: 20, color: "#2c6e49" },
-	{ rango: "1 a 4 años", valor: 12, color: "#154b75" },
-	{ rango: "5 a 9 años", valor: 8, color: "#0098c7" },
-	{ rango: "10 a 14 años", valor: 12, color: "#9A33B2" },
-	{ rango: "15 a 19 años", valor: 5, color: "#6F4F98" },
-	{ rango: "20 a 24 años", valor: 4, color: "#4C7F97" },
-	{ rango: "25 años o más", valor: 4, color: "#21D19F" }
-];
-
-// Extraer valores y colores
-const valoresExperiencia = experienciaData.map(item => item.valor);
-const coloresExperiencia = experienciaData.map(item => item.color);
-const rangosExperiencia = experienciaData.map(item => item.rango);
-
-// Configuración del gráfico de tipo pie
-const optionsExperiencia = {
-	series: valoresExperiencia, // Valores para cada sección
-	chart: {
-		type: 'pie',
-		height: 240, // Ancho del gráfico
-		toolbar: {
-			show: false
-		},
-		animations: {
-			enabled: false // Deshabilitar animaciones para la exportación
-		},
-	},
-	labels: rangosExperiencia, // Etiquetas para cada sección
-	colors: coloresExperiencia, // Colores personalizados
-	dataLabels: {
-		enabled: true,
-		style: {
-			fontSize: '16px', // Tamaño de texto para los números
-			fontWeight: 'bold', // Peso de la fuente
-			colors: ['#FFFFFF'] // Color del texto (puedes personalizarlo)
-		},
-		formatter: function (val, opts) {
-			return opts.w.config.series[opts.seriesIndex]; // Muestra el valor original
-		}
-	},
-	legend: {
-		show: false, // Mostrar la leyenda
-		position: 'left',
-		fontSize: '15px',
-		itemMargin: { // Reducir el espacio entre los elementos de la leyenda
-			horizontal: 2, // Espacio horizontal entre elementos
-			vertical: 2 // Espacio vertical entre elementos
-		}
-	},
-	responsive: [{
-		breakpoint: 480,
-		options: {
-			chart: {
-				width: 120 // Ajustar el tamaño en pantallas pequeñas
-			},
-			legend: {
-				position: 'bottom',
-				fontSize: '15px' // Colocar la leyenda abajo en pantallas pequeñas
-			}
-		}
-	}]
-};
-
-// Crear y renderizar el gráfico
-var chartExperiencia = new ApexCharts(document.querySelector("#grafica_experiencia"), optionsExperiencia);
-chartExperiencia.render().then(() => {
-	setTimeout(function () {
-		chartExperiencia.dataURI().then(uri => {
-			//console.log(uri);
-			experienciachart = uri;
-		});
-	}, 4000);
-});
 
 
-// Crear y renderizar el gráfico
-var chartRegimen = new ApexCharts(document.querySelector("#grafica_regimen"), optionsRegimen);
-chartRegimen.render().then(() => {
-	setTimeout(function () {
-		chartRegimen.dataURI().then(uri => {
-			//console.log(uri);
-			regimenchart = uri;
-		});
-	}, 4000);
-});
+
 
 

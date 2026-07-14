@@ -89,6 +89,179 @@ class reportenom0353Controller extends Controller
                     </div>';
         } else {
 
+
+
+
+            //CREA LAS CALIFICACIONES
+            //-------------------------------------
+            
+            $reporte_calificaciones = reporte_calificacionesModel::where('proyecto_id', $proyecto_id)
+                ->orderBy('TRABAJADOR_ID', 'DESC')
+                ->get();
+            $trabajadores_respuestas = respuestastrabajadorespsicoModel::where('RECPSICO_ID', $proyecto->reconocimiento_psico_id)
+                ->orderBy('RECPSICO_TRABAJADOR', 'DESC')
+                ->get();
+
+            function getValue($array, $index, $default = 0)
+            {
+                return isset($array[$index]) ? (int)$array[$index] : $default;
+            }
+
+            function sumarItems($array)
+            {
+                $suma = 0;
+                foreach ($array as $value) {
+                    if (is_numeric($value)) {
+                        $suma += (int)$value;
+                    }
+                }
+                return $suma;
+            }
+
+            if (count($reporte_calificaciones) == 0) {
+                foreach ($trabajadores_respuestas as $trabajador) {
+
+                    $jsonCalificacionesGuia1 = $trabajador->RECPSICO_GUIAI_RESPUESTAS;
+                    $arrayCalificacionesGuia1 = json_decode($jsonCalificacionesGuia1, true) ?? [];
+
+
+
+                    $ACONTECIMIENTO_CALIFICACION = getValue($arrayCalificacionesGuia1, 0);
+
+                    $RECUERDOS_CALIFICACION = getValue($arrayCalificacionesGuia1, 2) + getValue($arrayCalificacionesGuia1, 3);
+
+                    $ESFUERZO_CALIFICACION = getValue($arrayCalificacionesGuia1, 4) + getValue($arrayCalificacionesGuia1, 5) +
+                        getValue($arrayCalificacionesGuia1, 6) + getValue($arrayCalificacionesGuia1, 7) +
+                        getValue($arrayCalificacionesGuia1, 8) + getValue($arrayCalificacionesGuia1, 9) +
+                        getValue($arrayCalificacionesGuia1, 10);
+
+
+                    $AFECTACION_CALIFICACION = getValue($arrayCalificacionesGuia1, 11) + getValue($arrayCalificacionesGuia1, 12) +
+                        getValue($arrayCalificacionesGuia1, 13) + getValue($arrayCalificacionesGuia1, 14) +
+                        getValue($arrayCalificacionesGuia1, 15);
+
+
+                    $GUIA1_CALIFICACION = ($ACONTECIMIENTO_CALIFICACION == 1 &&
+                        ($RECUERDOS_CALIFICACION >= 1 || $ESFUERZO_CALIFICACION >= 3 || $AFECTACION_CALIFICACION >= 2)) ? 1 : 0;
+
+
+                    $jsonCalificacionesGuia3 = $trabajador->RECPSICO_GUIAIII_RESPUESTAS;
+                    $arrayCalificacionesGuia3 = json_decode($jsonCalificacionesGuia3, true) ?? [];
+
+
+                    //seccion 1 de guia 3
+                    $D_CONDICIONES_CALIFICACION = getValue($arrayCalificacionesGuia3, 0) + getValue($arrayCalificacionesGuia3, 1) + getValue($arrayCalificacionesGuia3, 2) + getValue($arrayCalificacionesGuia3, 3) + getValue($arrayCalificacionesGuia3, 4);
+                    $C_AMBIENTE_CALIFICACION = $D_CONDICIONES_CALIFICACION;
+                    //1 es nulo, 2 es bajo, 3 es medio, 4 es alto, 5 es muy alto
+                    $C_AMBIENTE_NIVEL =  ($C_AMBIENTE_CALIFICACION < 5 ? 1 : ($C_AMBIENTE_CALIFICACION >= 5 && $C_AMBIENTE_CALIFICACION < 9   ? 2 : ($C_AMBIENTE_CALIFICACION >= 9 && $C_AMBIENTE_CALIFICACION < 11   ? 3 : ($C_AMBIENTE_CALIFICACION >= 11 && $C_AMBIENTE_CALIFICACION < 14 ? 4 : ($C_AMBIENTE_CALIFICACION >= 14 ? 5 : 0)))));
+                    $D_CONDICIONES_NIVEL =  ($D_CONDICIONES_CALIFICACION < 5 ? 1 : ($D_CONDICIONES_CALIFICACION >= 5 && $D_CONDICIONES_CALIFICACION < 9   ? 2 : ($D_CONDICIONES_CALIFICACION >= 9 && $D_CONDICIONES_CALIFICACION < 11   ? 3 : ($D_CONDICIONES_CALIFICACION >= 11 && $D_CONDICIONES_CALIFICACION < 14 ? 4 : ($D_CONDICIONES_CALIFICACION >= 14 ? 5 : 0)))));
+
+                    //seccion 2 de guia 3
+                    $D_CARGA_CALIFICACION = getValue($arrayCalificacionesGuia3, 5) + getValue($arrayCalificacionesGuia3, 6) +
+                        getValue($arrayCalificacionesGuia3, 7) + getValue($arrayCalificacionesGuia3, 8) +
+                        getValue($arrayCalificacionesGuia3, 9) + getValue($arrayCalificacionesGuia3, 10) +
+                        getValue($arrayCalificacionesGuia3, 11) + getValue($arrayCalificacionesGuia3, 64) +
+                        getValue($arrayCalificacionesGuia3, 65) + getValue($arrayCalificacionesGuia3, 66) +
+                        getValue($arrayCalificacionesGuia3, 67) + getValue($arrayCalificacionesGuia3, 12) +
+                        getValue($arrayCalificacionesGuia3, 13) + getValue($arrayCalificacionesGuia3, 14) +
+                        getValue($arrayCalificacionesGuia3, 15);
+
+                    $D_FALTA_CALIFICACION = getValue($arrayCalificacionesGuia3, 24) + getValue($arrayCalificacionesGuia3, 25) +
+                        getValue($arrayCalificacionesGuia3, 26) + getValue($arrayCalificacionesGuia3, 27) +
+                        getValue($arrayCalificacionesGuia3, 22) + getValue($arrayCalificacionesGuia3, 23) +
+                        getValue($arrayCalificacionesGuia3, 28) + getValue($arrayCalificacionesGuia3, 29) +
+                        getValue($arrayCalificacionesGuia3, 34) + getValue($arrayCalificacionesGuia3, 35);
+
+                    $C_FACTORES_CALIFICACION = $D_CARGA_CALIFICACION + $D_FALTA_CALIFICACION;
+
+                    $D_CARGA_NIVEL =  ($D_CARGA_CALIFICACION < 15 ? 1 : ($D_CARGA_CALIFICACION >= 15 && $D_CARGA_CALIFICACION < 21   ? 2 : ($D_CARGA_CALIFICACION >= 21 && $D_CARGA_CALIFICACION < 27   ? 3 : ($D_CARGA_CALIFICACION >= 27 && $D_CARGA_CALIFICACION < 37 ? 4 : ($D_CARGA_CALIFICACION >= 37 ? 5 : 0)))));
+                    $D_FALTA_NIVEL =  ($D_FALTA_CALIFICACION < 11 ? 1 : ($D_FALTA_CALIFICACION >= 11 && $D_FALTA_CALIFICACION < 16   ? 2 : ($D_FALTA_CALIFICACION >= 16 && $D_FALTA_CALIFICACION < 21   ? 3 : ($D_FALTA_CALIFICACION >= 21 && $D_FALTA_CALIFICACION < 25 ? 4 : ($D_FALTA_CALIFICACION >= 25 ? 5 : 0)))));
+                    $C_FACTORES_NIVEL =  ($C_FACTORES_CALIFICACION < 15 ? 1 : ($C_FACTORES_CALIFICACION >= 15 && $C_FACTORES_CALIFICACION < 30   ? 2 : ($C_FACTORES_CALIFICACION >= 30 && $C_FACTORES_CALIFICACION < 45   ? 3 : ($C_FACTORES_CALIFICACION >= 45 && $C_FACTORES_CALIFICACION < 60 ? 4 : ($C_FACTORES_CALIFICACION >= 60 ? 5 : 0)))));
+
+                    //seccion 3 de guia 3
+                    $D_JORNADA_CALIFICACION = getValue($arrayCalificacionesGuia3, 16) + getValue($arrayCalificacionesGuia3, 17);
+                    $D_INTERFERENCIA_CALIFICACION = getValue($arrayCalificacionesGuia3, 18) + getValue($arrayCalificacionesGuia3, 19) + getValue($arrayCalificacionesGuia3, 20) + getValue($arrayCalificacionesGuia3, 21);
+                    $C_ORGANIZACION_CALIFICACION = $D_JORNADA_CALIFICACION + $D_INTERFERENCIA_CALIFICACION;
+
+                    $D_JORNADA_NIVEL =  ($D_JORNADA_CALIFICACION < 1 ? 1 : ($D_JORNADA_CALIFICACION >= 1 && $D_JORNADA_CALIFICACION < 2   ? 2 : ($D_JORNADA_CALIFICACION >= 2 && $D_JORNADA_CALIFICACION < 4   ? 3 : ($D_JORNADA_CALIFICACION >= 4 && $D_JORNADA_CALIFICACION < 6 ? 4 : ($D_JORNADA_CALIFICACION >= 6 ? 5 : 0)))));
+                    $D_INTERFERENCIA_NIVEL =  ($D_INTERFERENCIA_CALIFICACION < 4 ? 1 : ($D_INTERFERENCIA_CALIFICACION >= 4 && $D_INTERFERENCIA_CALIFICACION < 6   ? 2 : ($D_INTERFERENCIA_CALIFICACION >= 6 && $D_INTERFERENCIA_CALIFICACION < 8   ? 3 : ($D_INTERFERENCIA_CALIFICACION >= 8 && $D_INTERFERENCIA_CALIFICACION < 10 ? 4 : ($D_INTERFERENCIA_CALIFICACION >= 10 ? 5 : 0)))));
+                    $C_ORGANIZACION_NIVEL =  ($C_ORGANIZACION_CALIFICACION < 5 ? 1 : ($C_ORGANIZACION_CALIFICACION >= 5 && $C_ORGANIZACION_CALIFICACION < 7   ? 2 : ($C_ORGANIZACION_CALIFICACION >= 7 && $C_ORGANIZACION_CALIFICACION < 10   ? 3 : ($C_ORGANIZACION_CALIFICACION >= 10 && $C_ORGANIZACION_CALIFICACION < 13 ? 4 : ($C_ORGANIZACION_CALIFICACION >= 13 ? 5 : 0)))));
+
+                    //seccion 4 de guia 3
+                    $D_LIDERAZGO_CALIFICACION = getValue($arrayCalificacionesGuia3, 30) + getValue($arrayCalificacionesGuia3, 31) + getValue($arrayCalificacionesGuia3, 32) + getValue($arrayCalificacionesGuia3, 33) + getValue($arrayCalificacionesGuia3, 36) + getValue($arrayCalificacionesGuia3, 37) + getValue($arrayCalificacionesGuia3, 38) + getValue($arrayCalificacionesGuia3, 39) + getValue($arrayCalificacionesGuia3, 40);
+                    $D_RELACIONES_CALIFICACION = getValue($arrayCalificacionesGuia3, 41) + getValue($arrayCalificacionesGuia3, 42) + getValue($arrayCalificacionesGuia3, 43) + getValue($arrayCalificacionesGuia3, 44) + getValue($arrayCalificacionesGuia3, 45) + getValue($arrayCalificacionesGuia3, 68) + getValue($arrayCalificacionesGuia3, 69) + getValue($arrayCalificacionesGuia3, 70) + getValue($arrayCalificacionesGuia3, 71);
+                    $D_VIOLENCIA_CALIFICACION = getValue($arrayCalificacionesGuia3, 56) + getValue($arrayCalificacionesGuia3, 57) + getValue($arrayCalificacionesGuia3, 58) + getValue($arrayCalificacionesGuia3, 59) + getValue($arrayCalificacionesGuia3, 60) + getValue($arrayCalificacionesGuia3, 61) + getValue($arrayCalificacionesGuia3, 62) + getValue($arrayCalificacionesGuia3, 63);
+                    $C_LIDERAZGO_CALIFICACION = $D_LIDERAZGO_CALIFICACION + $D_RELACIONES_CALIFICACION + $D_VIOLENCIA_CALIFICACION;
+
+
+                    $D_LIDERAZGO_NIVEL =  ($D_LIDERAZGO_CALIFICACION < 9 ? 1 : ($D_LIDERAZGO_CALIFICACION >= 9 && $D_LIDERAZGO_CALIFICACION < 12   ? 2 : ($D_LIDERAZGO_CALIFICACION >= 12 && $D_LIDERAZGO_CALIFICACION < 16   ? 3 : ($D_LIDERAZGO_CALIFICACION >= 16 && $D_LIDERAZGO_CALIFICACION < 20 ? 4 : ($D_LIDERAZGO_CALIFICACION >= 20 ? 5 : 0)))));
+                    $D_RELACIONES_NIVEL =  ($D_RELACIONES_CALIFICACION < 10 ? 1 : ($D_RELACIONES_CALIFICACION >= 10 && $D_RELACIONES_CALIFICACION < 13   ? 2 : ($D_RELACIONES_CALIFICACION >= 13 && $D_RELACIONES_CALIFICACION < 17   ? 3 : ($D_RELACIONES_CALIFICACION >= 17 && $D_RELACIONES_CALIFICACION < 21 ? 4 : ($D_RELACIONES_CALIFICACION >= 21 ? 5 : 0)))));
+                    $D_VIOLENCIA_NIVEL =  ($D_VIOLENCIA_CALIFICACION < 7 ? 1 : ($D_VIOLENCIA_CALIFICACION >= 7 && $D_VIOLENCIA_CALIFICACION < 10   ? 2 : ($D_VIOLENCIA_CALIFICACION >= 10 && $D_VIOLENCIA_CALIFICACION < 13   ? 3 : ($D_VIOLENCIA_CALIFICACION >= 13 && $D_VIOLENCIA_CALIFICACION < 16 ? 4 : ($D_VIOLENCIA_CALIFICACION >= 16 ? 5 : 0)))));
+                    $C_LIDERAZGO_NIVEL =  ($C_LIDERAZGO_CALIFICACION < 14 ? 1 : ($C_LIDERAZGO_CALIFICACION >= 14 && $C_LIDERAZGO_CALIFICACION < 29   ? 2 : ($C_LIDERAZGO_CALIFICACION >= 29 && $C_LIDERAZGO_CALIFICACION < 42   ? 3 : ($C_LIDERAZGO_CALIFICACION >= 42 && $C_LIDERAZGO_CALIFICACION < 58 ? 4 : ($C_LIDERAZGO_CALIFICACION >= 58 ? 5 : 0)))));
+
+                    //seccion 5 de guia 3
+                    $D_RECONOCIMIENTO_CALIFICACION = getValue($arrayCalificacionesGuia3, 46) + getValue($arrayCalificacionesGuia3, 47) + getValue($arrayCalificacionesGuia3, 48) + getValue($arrayCalificacionesGuia3, 49) + getValue($arrayCalificacionesGuia3, 50) + getValue($arrayCalificacionesGuia3, 51);
+                    $D_INSUFICIENTE_CALIFICACION = getValue($arrayCalificacionesGuia3, 54) + getValue($arrayCalificacionesGuia3, 55) + getValue($arrayCalificacionesGuia3, 52) + getValue($arrayCalificacionesGuia3, 53);
+                    $C_ENTORNO_CALIFICACION = $D_RECONOCIMIENTO_CALIFICACION + $D_INSUFICIENTE_CALIFICACION;
+
+
+                    $D_RECONOCIMIENTO_NIVEL =  ($D_RECONOCIMIENTO_CALIFICACION < 6 ? 1 : ($D_RECONOCIMIENTO_CALIFICACION >= 6 && $D_RECONOCIMIENTO_CALIFICACION < 10   ? 2 : ($D_RECONOCIMIENTO_CALIFICACION >= 10 && $D_RECONOCIMIENTO_CALIFICACION < 14   ? 3 : ($D_RECONOCIMIENTO_CALIFICACION >= 14 && $D_RECONOCIMIENTO_CALIFICACION < 18 ? 4 : ($D_RECONOCIMIENTO_CALIFICACION >= 18 ? 5 : 0)))));
+                    $D_INSUFICIENTE_NIVEL =  ($D_INSUFICIENTE_CALIFICACION < 4 ? 1 : ($D_INSUFICIENTE_CALIFICACION >= 4 && $D_INSUFICIENTE_CALIFICACION < 6   ? 2 : ($D_INSUFICIENTE_CALIFICACION >= 6 && $D_INSUFICIENTE_CALIFICACION < 8   ? 3 : ($D_INSUFICIENTE_CALIFICACION >= 8 && $D_INSUFICIENTE_CALIFICACION < 10 ? 4 : ($D_INSUFICIENTE_CALIFICACION >= 10 ? 5 : 0)))));
+                    $C_ENTORNO_NIVEL =  ($C_ENTORNO_CALIFICACION < 10 ? 1 : ($C_ENTORNO_CALIFICACION >= 10 && $C_ENTORNO_CALIFICACION < 14   ? 2 : ($C_ENTORNO_CALIFICACION >= 14 && $C_ENTORNO_CALIFICACION < 18   ? 3 : ($C_ENTORNO_CALIFICACION >= 18 && $C_ENTORNO_CALIFICACION < 23 ? 4 : ($C_ENTORNO_CALIFICACION >= 23 ? 5 : 0)))));
+
+                    //calif y nivel global + suma de todo los item
+
+                    $GLOBAL_CALIFICACION = sumarItems($arrayCalificacionesGuia3);
+                    $GLOBAL_NIVEL =  ($GLOBAL_CALIFICACION < 50 ? 1 : ($GLOBAL_CALIFICACION >= 50 && $GLOBAL_CALIFICACION < 75   ? 2 : ($GLOBAL_CALIFICACION >= 75 && $GLOBAL_CALIFICACION < 99   ? 3 : ($GLOBAL_CALIFICACION >= 99 && $GLOBAL_CALIFICACION < 140 ? 4 : ($GLOBAL_CALIFICACION >= 140 ? 5 : 0)))));
+
+                    reporte_calificacionesModel::create([
+                        'proyecto_id' => $proyecto_id,
+                        'TRABAJADOR_ID' => $trabajador->RECPSICO_TRABAJADOR,
+                        'ACONTECIMIENTO_CALIFICACION' => $ACONTECIMIENTO_CALIFICACION,
+                        'RECUERDOS_CALIFICACION' => $RECUERDOS_CALIFICACION,
+                        'ESFUERZO_CALIFICACION' => $ESFUERZO_CALIFICACION,
+                        'AFECTACION_CALIFICACION' => $AFECTACION_CALIFICACION,
+                        'GUIA1_CALIFICACION' => $GUIA1_CALIFICACION,
+                        'C_AMBIENTE_CALIFICACION' => $C_AMBIENTE_CALIFICACION,
+                        'D_CONDICIONES_CALIFICACION' => $D_CONDICIONES_CALIFICACION,
+                        'C_AMBIENTE_NIVEL' => $C_AMBIENTE_NIVEL,
+                        'D_CONDICIONES_NIVEL' => $D_CONDICIONES_NIVEL,
+                        'C_FACTORES_CALIFICACION' => $C_FACTORES_CALIFICACION,
+                        'D_CARGA_CALIFICACION' => $D_CARGA_CALIFICACION,
+                        'D_FALTA_CALIFICACION' => $D_FALTA_CALIFICACION,
+                        'C_FACTORES_NIVEL' => $C_FACTORES_NIVEL,
+                        'D_CARGA_NIVEL' => $D_CARGA_NIVEL,
+                        'D_FALTA_NIVEL' => $D_FALTA_NIVEL,
+                        'C_FALTA_CALIFICACION' => null,
+                        'C_FALTA_NIVEL' => null,
+                        'C_ORGANIZACION_CALIFICACION' => $D_JORNADA_CALIFICACION,
+                        'D_JORNADA_CALIFICACION' => $D_JORNADA_CALIFICACION,
+                        'D_INTERFERENCIA_CALIFICACION' => $D_INTERFERENCIA_CALIFICACION,
+                        'C_ORGANIZACION_NIVEL' => $C_ORGANIZACION_NIVEL,
+                        'D_JORNADA_NIVEL' => $D_JORNADA_NIVEL,
+                        'D_INTERFERENCIA_NIVEL' => $D_INTERFERENCIA_NIVEL,
+                        'C_LIDERAZGO_CALIFICACION' => $C_LIDERAZGO_CALIFICACION,
+                        'D_LIDERAZGO_CALIFICACION' => $D_LIDERAZGO_CALIFICACION,
+                        'D_RELACIONES_CALIFICACION' => $D_RELACIONES_CALIFICACION,
+                        'D_VIOLENCIA_CALIFICACION' => $D_VIOLENCIA_CALIFICACION,
+                        'C_LIDERAZGO_NIVEL' => $C_LIDERAZGO_NIVEL,
+                        'D_LIDERAZGO_NIVEL' => $D_LIDERAZGO_NIVEL,
+                        'D_RELACIONES_NIVEL' => $D_RELACIONES_NIVEL,
+                        'D_VIOLENCIA_NIVEL' => $D_VIOLENCIA_NIVEL,
+                        'C_ENTORNO_CALIFICACION' => $C_ENTORNO_CALIFICACION,
+                        'D_RECONOCIMIENTO_CALIFICACION' => $D_RECONOCIMIENTO_CALIFICACION,
+                        'D_INSUFICIENTE_CALIFICACION' => $D_INSUFICIENTE_CALIFICACION,
+                        'C_ENTORNO_NIVEL' => $C_ENTORNO_NIVEL,
+                        'D_RECONOCIMIENTO_NIVEL' => $D_RECONOCIMIENTO_NIVEL,
+                        'D_INSUFICIENTE_NIVEL' => $D_INSUFICIENTE_NIVEL,
+                        'GLOBAL_CALIFICACION' => $GLOBAL_CALIFICACION,
+                        'GLOBAL_NIVEL' => $GLOBAL_NIVEL,
+                    ]);
+                }
+            }
+         
+
+
             $recsensorial = reconocimientopsicoModel::findOrFail($proyecto->reconocimiento_psico_id);
 
             // Catalogos
@@ -3966,6 +4139,96 @@ class reportenom0353Controller extends Controller
             $plantillaword->setValue('RECOMENDACIONES',htmlspecialchars($texto_recomendaciones));
 
 
+            ////  DASHBOARD_FOTO
+
+     
+
+            $rutaDashboardTemporal = null;
+
+            if ( $request->has('DASHBOARD_FOTO') &&!empty($request->DASHBOARD_FOTO)) 
+            {
+            
+                $imagenBase64 = $request->DASHBOARD_FOTO;
+
+                $imagenBase64 = preg_replace(
+                    '#^data:image/(jpeg|jpg|png);base64,#i',
+                    '',
+                    $imagenBase64
+                );
+
+                $imagenBase64 = str_replace(
+                    ' ',
+                    '+',
+                    $imagenBase64
+                );
+
+                $imagenBinaria = base64_decode($imagenBase64,true);
+
+                if ($imagenBinaria !== false) {
+
+                    $folioLimpio = preg_replace(
+                        '/[<>:"\/\\\\|?*]/',
+                        '',
+                        $proyecto->proyecto_folio
+                    );
+
+                    $rutaDashboardStorage =
+                        'reportes/informes/dashboard_psico_' .
+                        $folioLimpio .
+                        '_' .
+                        uniqid() .
+                        '.jpg';
+
+                    Storage::put(
+                        $rutaDashboardStorage,
+                        $imagenBinaria
+                    );
+
+
+                    $rutaDashboardTemporal =
+                        storage_path(
+                            'app/' .
+                            $rutaDashboardStorage
+                        );
+
+
+                    if (
+                        Storage::exists(
+                            $rutaDashboardStorage
+                        )
+                    ) {
+
+                        $plantillaword->setImageValue(
+
+                            'DASHBOARD_FOTO',
+                            [
+                                'path' => $rutaDashboardTemporal, 'width' => 860, 'height' => 500, 'ratio' => false, 'borderColor' => '000000'
+                            ]
+                        );
+
+                    } else {
+                        $plantillaword->setValue(
+                            'DASHBOARD_FOTO',
+                            'NO SE ENCONTRÓ EL DASHBOARD PARA ESTE INFORME.'
+                        );
+                    }
+                } else {
+                    $plantillaword->setValue(
+                        'DASHBOARD_FOTO',
+                        'NO FUE POSIBLE PROCESAR LA IMAGEN DEL DASHBOARD.'
+                    );
+                }
+
+            } else {
+
+                $plantillaword->setValue(
+                    'DASHBOARD_FOTO',
+                    'NO SE ENCONTRÓ EL DASHBOARD PARA ESTE INFORME.'
+                );
+
+            }
+
+
             //// DESCARGAR INFORME 
 
 
@@ -3979,6 +4242,10 @@ class reportenom0353Controller extends Controller
 
             $plantillaword->saveAs($rutaWord);
 
+            if ($rutaDashboardTemporal &&file_exists($rutaDashboardTemporal))
+            {
+                unlink($rutaDashboardTemporal);
+            }
             
             return response()->download(
                 $rutaWord
@@ -4026,6 +4293,813 @@ class reportenom0353Controller extends Controller
     }
 
 
+    //// GRAFICAS
 
 
+    public function obtenerGraficaGeneroPsico($PROYECTO_ID)
+    {
+        try {
+
+            $proyecto = proyectoModel::where(
+                'id',
+                $PROYECTO_ID
+            )->first();
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'hombres' => 0,
+                    'mujeres' => 0,
+                    'total' => 0,
+                    'porcentaje_hombres' => 0,
+                    'porcentaje_mujeres' => 0
+                ]);
+            }
+
+            $reconocimientoPsicoId = $proyecto->reconocimiento_psico_id;
+
+
+            $hombres = DB::table('recopsicoguia_5')
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereRaw(
+                    'UPPER(TRIM(RECPSICOTRABAJADOR_GENERO)) = ?',
+                    ['MASCULINO']
+                )
+                ->count();
+
+
+            $mujeres = DB::table('recopsicoguia_5')
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereRaw(
+                    'UPPER(TRIM(RECPSICOTRABAJADOR_GENERO)) = ?',
+                    ['FEMENINO']
+                )
+                ->count();
+
+
+            $total = $hombres + $mujeres;
+
+
+            $porcentajeHombres = 0;
+            $porcentajeMujeres = 0;
+
+            if ($total > 0) {
+
+                $porcentajeHombres = round(($hombres / $total) * 100,2);
+                $porcentajeMujeres = round(($mujeres / $total) * 100,2);
+            }
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'hombres' => $hombres,
+                'mujeres' => $mujeres,
+                'total' => $total,
+                'porcentaje_hombres' =>
+                $porcentajeHombres,
+                'porcentaje_mujeres' =>
+                $porcentajeMujeres
+
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'hombres' => 0,
+                'mujeres' => 0,
+                'total' => 0,
+                'porcentaje_hombres' => 0,
+                'porcentaje_mujeres' => 0
+
+            ], 500);
+        }
     }
+
+    public function obtenerGraficaEdadesPsico($PROYECTO_ID)
+    {
+        try {
+
+    
+
+            $proyecto = proyectoModel::where(
+                'id',
+                $PROYECTO_ID
+            )->first();
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => [],
+                    'maximo' => 1
+                ], 404);
+            }
+
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => [],
+                    'maximo' => 1
+                ]);
+            }
+
+            $conteos = DB::table('recopsicoguia_5')
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->selectRaw('
+                SUM(
+                    CASE
+                        WHEN CAST(RECPSICOTRABAJADOR_EDAD AS UNSIGNED) < 18
+                        THEN 1 ELSE 0
+                    END
+                ) AS MENOR_18,
+
+                SUM(
+                    CASE
+                        WHEN CAST(RECPSICOTRABAJADOR_EDAD AS UNSIGNED)
+                            BETWEEN 18 AND 24
+                        THEN 1 ELSE 0
+                    END
+                ) AS EDAD_18_24,
+
+                SUM(
+                    CASE
+                        WHEN CAST(RECPSICOTRABAJADOR_EDAD AS UNSIGNED)
+                            BETWEEN 25 AND 34
+                        THEN 1 ELSE 0
+                    END
+                ) AS EDAD_25_34,
+
+                SUM(
+                    CASE
+                        WHEN CAST(RECPSICOTRABAJADOR_EDAD AS UNSIGNED)
+                            BETWEEN 35 AND 44
+                        THEN 1 ELSE 0
+                    END
+                ) AS EDAD_35_44,
+
+                SUM(
+                    CASE
+                        WHEN CAST(RECPSICOTRABAJADOR_EDAD AS UNSIGNED)
+                            BETWEEN 45 AND 54
+                        THEN 1 ELSE 0
+                    END
+                ) AS EDAD_45_54,
+
+                SUM(
+                    CASE
+                        WHEN CAST(RECPSICOTRABAJADOR_EDAD AS UNSIGNED)
+                            BETWEEN 55 AND 64
+                        THEN 1 ELSE 0
+                    END
+                ) AS EDAD_55_64,
+
+                SUM(
+                    CASE
+                        WHEN CAST(RECPSICOTRABAJADOR_EDAD AS UNSIGNED) >= 65
+                        THEN 1 ELSE 0
+                    END
+                ) AS EDAD_65_MAS
+            ')
+                ->first();
+
+
+            $data = [
+                [
+                    'categoria' => 'Menos de 18 años',
+                    'total' => (int) ($conteos->MENOR_18 ?? 0),
+                    'color' => '#98c11d'
+                ],
+                [
+                    'categoria' => '18 a 24 años',
+                    'total' => (int) ($conteos->EDAD_18_24 ?? 0),
+                    'color' => '#2c6e49'
+                ],
+                [
+                    'categoria' => '25 a 34 años',
+                    'total' => (int) ($conteos->EDAD_25_34 ?? 0),
+                    'color' => '#154b75'
+                ],
+                [
+                    'categoria' => '35 a 44 años',
+                    'total' => (int) ($conteos->EDAD_35_44 ?? 0),
+                    'color' => '#0098c7'
+                ],
+                [
+                    'categoria' => '45 a 54 años',
+                    'total' => (int) ($conteos->EDAD_45_54 ?? 0),
+                    'color' => '#171738'
+                ],
+                [
+                    'categoria' => '55 a 64 años',
+                    'total' => (int) ($conteos->EDAD_55_64 ?? 0),
+                    'color' => '#6F4F98'
+                ],
+                [
+                    'categoria' => '65 años o más',
+                    'total' => (int) ($conteos->EDAD_65_MAS ?? 0),
+                    'color' => '#9A33B2'
+                ]
+            ];
+
+
+            $maximo = collect($data)->max('total');
+
+            if (!$maximo || $maximo < 1) {
+                $maximo = 1;
+            }
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'data' => $data,
+                'maximo' => $maximo
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => [],
+                'maximo' => 1
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaEscolaridadPsico($PROYECTO_ID)
+    {
+        try {
+
+
+            $proyecto = proyectoModel::find(
+                $PROYECTO_ID
+            );
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => [],
+                    'total_trabajadores' => 0,
+                    'maximo' => 1
+                ], 404);
+            }
+
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => [],
+                    'total_trabajadores' => 0,
+                    'maximo' => 1
+                ]);
+            }
+
+
+            $totalTrabajadores =
+                recopsicotrabajadoresModel::where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )->count();
+
+
+            $conteos = DB::table('recopsicoguia_5')
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->selectRaw('
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTUDIOS)) = "PRIMARIA"
+                        THEN 1 ELSE 0
+                    END
+                ) AS PRIMARIA,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTUDIOS)) = "SECUNDARIA"
+                        THEN 1 ELSE 0
+                    END
+                ) AS SECUNDARIA,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTUDIOS)) = "PREPARATORIA"
+                        THEN 1 ELSE 0
+                    END
+                ) AS PREPARATORIA,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTUDIOS)) = "LICENCIATURA"
+                        THEN 1 ELSE 0
+                    END
+                ) AS LICENCIATURA,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTUDIOS)) = "MAESTRÍA"
+                             OR UPPER(TRIM(RECPSICOTRABAJADOR_ESTUDIOS)) = "MAESTRIA"
+                        THEN 1 ELSE 0
+                    END
+                ) AS MAESTRIA,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTUDIOS)) = "DOCTORADO"
+                        THEN 1 ELSE 0
+                    END
+                ) AS DOCTORADO
+            ')
+                ->first();
+
+
+            $data = [
+                [
+                    'categoria' => 'Primaria',
+                    'valor' => (int) ($conteos->PRIMARIA ?? 0)
+                ],
+                [
+                    'categoria' => 'Secundaria',
+                    'valor' => (int) ($conteos->SECUNDARIA ?? 0)
+                ],
+                [
+                    'categoria' => 'Preparatoria',
+                    'valor' => (int) ($conteos->PREPARATORIA ?? 0)
+                ],
+                [
+                    'categoria' => 'Licenciatura',
+                    'valor' => (int) ($conteos->LICENCIATURA ?? 0)
+                ],
+                [
+                    'categoria' => 'Maestría',
+                    'valor' => (int) ($conteos->MAESTRIA ?? 0)
+                ],
+                [
+                    'categoria' => 'Doctorado',
+                    'valor' => (int) ($conteos->DOCTORADO ?? 0)
+                ]
+            ];
+
+            $maximo = collect($data)->max('valor');
+
+            if (!$maximo || $maximo < 1) {
+                $maximo = 1;
+            }
+
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'data' => $data,
+                'total_trabajadores' => $totalTrabajadores,
+                'maximo' => $maximo
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => [],
+                'total_trabajadores' => 0,
+                'maximo' => 1
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaEstadoCivilPsico($PROYECTO_ID)
+    {
+        try {
+
+           
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => [],
+                    'total_trabajadores' => 0,
+                    'maximo' => 1
+                ], 404);
+            }
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => [],
+                    'total_trabajadores' => 0,
+                    'maximo' => 1
+                ]);
+            }
+
+
+            $totalTrabajadores = DB::table('recopsicoguia_5')
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICOTRABAJADOR_ESTADOCIVIL'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICOTRABAJADOR_ESTADOCIVIL) <> ""'
+                )
+                ->count();
+
+
+            $conteos = DB::table('recopsicoguia_5')
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->selectRaw('
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTADOCIVIL)) = "SOLTERO"
+                        THEN 1 ELSE 0
+                    END
+                ) AS SOLTERO,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTADOCIVIL)) = "CASADO"
+                        THEN 1 ELSE 0
+                    END
+                ) AS CASADO,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTADOCIVIL)) = "DIVORCIADO"
+                        THEN 1 ELSE 0
+                    END
+                ) AS DIVORCIADO,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTADOCIVIL)) = "VIUDO"
+                        THEN 1 ELSE 0
+                    END
+                ) AS VIUDO,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_ESTADOCIVIL)) IN (
+                            "UNIÓN LIBRE",
+                            "UNION LIBRE"
+                        )
+                        THEN 1 ELSE 0
+                    END
+                ) AS UNION_LIBRE
+            ')
+                ->first();
+
+
+
+            $data = [
+                [
+                    'categoria' => 'Soltero(a)',
+                    'total' => (int) ($conteos->SOLTERO ?? 0),
+                    'color' => '#98c11d'
+                ],
+                [
+                    'categoria' => 'Casado(a)',
+                    'total' => (int) ($conteos->CASADO ?? 0),
+                    'color' => '#2c6e49'
+                ],
+                [
+                    'categoria' => 'Divorciado(a)',
+                    'total' => (int) ($conteos->DIVORCIADO ?? 0),
+                    'color' => '#154b75'
+                ],
+                [
+                    'categoria' => 'Viudo(a)',
+                    'total' => (int) ($conteos->VIUDO ?? 0),
+                    'color' => '#0098c7'
+                ],
+                [
+                    'categoria' => 'Unión Libre',
+                    'total' => (int) ($conteos->UNION_LIBRE ?? 0),
+                    'color' => '#6F4F98'
+                ]
+            ];
+
+
+            $maximo = collect($data)->max('total');
+
+            if (!$maximo || $maximo < 1) {
+                $maximo = 1;
+            }
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'data' => $data,
+                'total_trabajadores' => $totalTrabajadores,
+                'maximo' => $maximo
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => [],
+                'total_trabajadores' => 0,
+                'maximo' => 1
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaRegimenPsico($PROYECTO_ID)
+    {
+        try {
+
+
+
+            $proyecto = proyectoModel::find(
+                $PROYECTO_ID
+            );
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => [],
+                    'total_trabajadores' => 0
+                ], 404);
+            }
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => [],
+                    'total_trabajadores' => 0
+                ]);
+            }
+
+
+            $conteos = DB::table('recopsicoguia_5')
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->selectRaw('
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_TIPOPERSONAL))
+                            = "PLANTA CONFIANZA"
+                        THEN 1 ELSE 0
+                    END
+                ) AS PLANTA_CONFIANZA,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_TIPOPERSONAL))
+                            = "PLANTA SINDICALIZADO"
+                        THEN 1 ELSE 0
+                    END
+                ) AS PLANTA_SINDICALIZADO,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_TIPOPERSONAL))
+                            = "TRANSITORIO CONFIANZA"
+                        THEN 1 ELSE 0
+                    END
+                ) AS TRANSITORIO_CONFIANZA,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_TIPOPERSONAL))
+                            IN (
+                                "TRANSITORIO SINDICALIZADO",
+                                "TRANSITORIO SINDICALIZADO "
+                            )
+                        THEN 1 ELSE 0
+                    END
+                ) AS TRANSITORIO_SINDICALIZADO,
+
+                SUM(
+                    CASE
+                        WHEN UPPER(TRIM(RECPSICOTRABAJADOR_TIPOPERSONAL))
+                            IN (
+                                "OTROS",
+                                "OTRO",
+                                "N/A",
+                                "NA",
+                                "NP"
+                            )
+                        THEN 1 ELSE 0
+                    END
+                ) AS OTROS
+            ')
+                ->first();
+
+
+            $data = [
+                [
+                    'categoria' => 'Planta Confianza',
+                    'valor' => (int) ($conteos->PLANTA_CONFIANZA ?? 0),
+                    'color' => '#98c11d'
+                ],
+                [
+                    'categoria' => 'Planta Sindicalizado',
+                    'valor' => (int) ($conteos->PLANTA_SINDICALIZADO ?? 0),
+                    'color' => '#2c6e49'
+                ],
+                [
+                    'categoria' => 'Transitorio Confianza',
+                    'valor' => (int) ($conteos->TRANSITORIO_CONFIANZA ?? 0),
+                    'color' => '#154b75'
+                ],
+                [
+                    'categoria' => 'Transitorio Sindicalizado',
+                    'valor' => (int) ($conteos->TRANSITORIO_SINDICALIZADO ?? 0),
+                    'color' => '#0098c7'
+                ],
+                [
+                    'categoria' => 'Otros',
+                    'valor' => (int) ($conteos->OTROS ?? 0),
+                    'color' => '#6F4F98'
+                ]
+            ];
+
+
+            $totalTrabajadores = collect($data)->sum('valor');
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'data' => $data,
+                'total_trabajadores' => $totalTrabajadores
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => [],
+                'total_trabajadores' => 0
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaExperienciaPsico($PROYECTO_ID)
+    {
+        try {
+
+
+
+            $proyecto = proyectoModel::find(
+                $PROYECTO_ID
+            );
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => [],
+                    'total_trabajadores' => 0
+                ], 404);
+            }
+
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => [],
+                    'total_trabajadores' => 0
+                ]);
+            }
+
+
+            $resultados = DB::table('recopsicoguia_5')
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICOTRABAJADOR_TIEMPOPUESTO'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICOTRABAJADOR_TIEMPOPUESTO) <> ""'
+                )
+                ->selectRaw('
+                TRIM(RECPSICOTRABAJADOR_TIEMPOPUESTO) AS rango,
+                COUNT(*) AS total
+            ')
+                ->groupBy(
+                    DB::raw(
+                        'TRIM(RECPSICOTRABAJADOR_TIEMPOPUESTO)'
+                    )
+                )
+                ->get();
+
+
+            $colores = [
+                '#98c11d',
+                '#2c6e49',
+                '#154b75',
+                '#0098c7',
+                '#9A33B2',
+                '#6F4F98',
+                '#4C7F97',
+                '#21D19F',
+                '#E67E22',
+                '#D35400',
+                '#7F8C8D',
+                '#34495E'
+            ];
+
+
+            $orden = [
+                'MENOS DE 6 MESES' => 1,
+                '6 MESES A 1 AÑO' => 2,
+                'ENTRE 6 MESES A 1 AÑO' => 2,
+
+                '1 A 4 AÑOS' => 3,
+                'ENTRE 1 A 4 AÑOS' => 3,
+
+                '5 A 9 AÑOS' => 4,
+                'ENTRE 5 A 9 AÑOS' => 4,
+
+                '10 A 14 AÑOS' => 5,
+                'ENTRE 10 A 14 AÑOS' => 5,
+
+                '15 A 19 AÑOS' => 6,
+                'ENTRE 15 A 19 AÑOS' => 6,
+
+                '20 A 24 AÑOS' => 7,
+                'ENTRE 20 A 24 AÑOS' => 7,
+
+                '25 AÑOS O MÁS' => 8,
+                '25 AÑOS O MAS' => 8
+            ];
+
+
+            $resultados = $resultados->sortBy(function ($item) use ($orden) {
+
+                $texto = strtoupper(
+                    trim(
+                        $item->rango
+                    )
+                );
+
+                return isset($orden[$texto])
+                    ? $orden[$texto]
+                    : 999;
+            })->values();
+
+
+            $data = [];
+
+            foreach ($resultados as $index => $resultado) {
+
+                $data[] = [
+                    'rango' => $resultado->rango,
+                    'valor' => (int) $resultado->total,
+                    'color' => $colores[$index % count($colores)]
+                ];
+            }
+
+            $totalTrabajadores = collect($data)->sum('valor');
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'data' => $data,
+                'total_trabajadores' => $totalTrabajadores
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => [],
+                'total_trabajadores' => 0
+            ], 500);
+        }
+    }
+
+}
