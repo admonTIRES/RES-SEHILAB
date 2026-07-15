@@ -242,6 +242,16 @@ $(document).ready(function () {
             cargarGraficaEstadoCivilPsico();
             cargarGraficaRegimenPsico();
             cargarGraficaExperienciaPsico();
+            cargarGraficaCalificacionPsico();
+            cargarGraficaCategoriasGuiaIII();
+            cargarGraficaDominiosGuiaIII();
+            cargarGraficaGuiaIPsico();
+            cargarGraficaAmbienteGuiaIII();
+            cargarGraficaFactoresGuiaIII();
+            cargarGraficaOrganizacionGuiaIII();
+            cargarGraficaLiderazgoGuiaIII();
+            cargarGraficaEntornoGuiaIII();
+
     
             $.ajax({
                     url: 'obtenerDatosPlantillaPsico',
@@ -1814,13 +1824,9 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
 {
     try {
 
-        const dashboard =
-            document.querySelector(
-                '#tabla_dashboard'
-            );
+        const dashboard = document.querySelector('#tabla_dashboard');
 
         if (!dashboard) {
-
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -1830,22 +1836,47 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
             return;
         }
 
-
         if (document.fonts && document.fonts.ready) {
-
             await document.fonts.ready;
         }
 
-        window.dispatchEvent(
-            new Event('resize')
-        );
-
+        window.dispatchEvent(new Event('resize'));
 
         await new Promise(function(resolve)
         {
-            setTimeout(resolve, 1000);
+            setTimeout(resolve, 1500);
         });
 
+        var graficasRequeridas = [
+            'calificacionChart',
+            'consolidadoChart',
+            'consolidadoChart2',
+            'guia1Chart',
+            'ambienteChart',
+            'factoresChart',
+            'organizacionChart',
+            'liderazgoChart',
+            'entornoChart'
+        ];
+
+        var graficasFaltantes = [];
+
+        graficasRequeridas.forEach(function(nombreGrafica)
+        {
+            if (
+                !chartPngs[nombreGrafica] ||
+                chartPngs[nombreGrafica].length < 100
+            ) {
+                graficasFaltantes.push(nombreGrafica);
+            }
+        });
+
+        if (graficasFaltantes.length > 0) {
+            console.warn(
+                'Las siguientes gráficas no están disponibles:',
+                graficasFaltantes
+            );
+        }
 
         const canvas = await html2canvas(
             dashboard,
@@ -1864,60 +1895,127 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
             }
         );
 
-
-
-
-        const dashboardBase64 =
-            canvas.toDataURL(
-                'image/jpeg',
-                0.95
-            );
-
+        const dashboardBase64 = canvas.toDataURL(
+            'image/jpeg',
+            0.95
+        );
 
         if (
             !dashboardBase64 ||
             dashboardBase64.length < 100
         ) {
-
             throw new Error(
                 'No fue posible generar la imagen del dashboard'
             );
         }
 
-
-        let form = $('<form>', {
-
+        var form = $('<form>', {
             action:
-                '/descargarRevisioninfopsico/' + proyecto.id,
-            method:'POST',
-            target:'_blank',
+                '/descargarRevisioninfopsico/' +
+                PROYECTO_ID,
+            method: 'POST',
+            target: '_blank',
             style: 'display:none;'
-
         });
 
-
         form.append(
             $('<input>', {
-                type:'hidden',
-                name:'_token',
+                type: 'hidden',
+                name: '_token',
                 value:
                     $('meta[name="csrf-token"]')
-                    .attr('content')
-
+                        .attr('content')
             })
-
         );
 
         form.append(
             $('<input>', {
-                type:'hidden',
-                name:'DASHBOARD_FOTO',
-                value:  dashboardBase64
-
+                type: 'hidden',
+                name: 'DASHBOARD_FOTO',
+                value: dashboardBase64
             })
-
         );
 
+        form.append(
+            $('<input>', {
+                type: 'hidden',
+                name: 'GRAFICA_CALIFICACION',
+                value:
+                    chartPngs['calificacionChart'] || ''
+            })
+        );
+
+        form.append(
+            $('<input>', {
+                type: 'hidden',
+                name: 'GRAFICA_CATEGORIAS',
+                value:
+                    chartPngs['consolidadoChart'] || ''
+            })
+        );
+
+        form.append(
+            $('<input>', {
+                type: 'hidden',
+                name: 'GRAFICA_DOMINIOS',
+                value:
+                    chartPngs['consolidadoChart2'] || ''
+            })
+        );
+
+        form.append(
+            $('<input>', {
+                type: 'hidden',
+                name: 'GRAFICA_1',
+                value:
+                    chartPngs['guia1Chart'] || ''
+            })
+        );
+
+        form.append(
+            $('<input>', {
+                type: 'hidden',
+                name: 'GRAFICA_2',
+                value:
+                    chartPngs['ambienteChart'] || ''
+            })
+        );
+
+        form.append(
+            $('<input>', {
+                type: 'hidden',
+                name: 'GRAFICA_3',
+                value:
+                    chartPngs['factoresChart'] || ''
+            })
+        );
+
+        form.append(
+            $('<input>', {
+                type: 'hidden',
+                name: 'GRAFICA_4',
+                value:
+                    chartPngs['organizacionChart'] || ''
+            })
+        );
+
+        form.append(
+            $('<input>', {
+                type: 'hidden',
+                name: 'GRAFICA_5',
+                value:
+                    chartPngs['liderazgoChart'] || ''
+            })
+        );
+
+        form.append(
+            $('<input>', {
+                type: 'hidden',
+                name: 'GRAFICA_6',
+                value:
+                    chartPngs['entornoChart'] || ''
+            })
+        );
 
         $('body').append(form);
 
@@ -1926,64 +2024,157 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
         setTimeout(function()
         {
             form.remove();
-
-        }, 2000);
+        }, 5000);
 
     } catch (error) {
 
         console.error(
-            'Error al capturar el dashboard:',
+            'Error al generar el informe:',
             error
         );
 
         Swal.fire({
-            icon:'error',
+            icon: 'error',
             title: 'Error',
-            text: 'No fue posible generar la imagen del dashboard'
+            text: 'No fue posible generar las imágenes del informe'
         });
     }
 }
 
-
 // async function descargarRevisioninfopsico(PROYECTO_ID)
 // {
+//     try {
+
+//         const dashboard =
+//             document.querySelector(
+//                 '#tabla_dashboard'
+//             );
+
+//         if (!dashboard) {
+
+//             Swal.fire({
+//                 icon: 'error',
+//                 title: 'Error',
+//                 text: 'No se encontró el dashboard para generar la imagen'
+//             });
+
+//             return;
+//         }
 
 
-//     let form = $('<form>', {
+//         if (document.fonts && document.fonts.ready) {
 
-//         action: '/descargarRevisioninfopsico/' + proyecto.id,
-//         method: 'POST',
-//         target: '_blank'
-//     });
+//             await document.fonts.ready;
+//         }
+
+//         window.dispatchEvent(
+//             new Event('resize')
+//         );
+
+
+//         await new Promise(function(resolve)
+//         {
+//             setTimeout(resolve, 1000);
+//         });
+
+
+//         const canvas = await html2canvas(
+//             dashboard,
+//             {
+//                 scale: 2,
+//                 useCORS: true,
+//                 allowTaint: true,
+//                 backgroundColor: '#FFFFFF',
+//                 logging: false,
+//                 scrollX: 0,
+//                 scrollY: -window.scrollY,
+//                 width: dashboard.scrollWidth,
+//                 height: dashboard.scrollHeight,
+//                 windowWidth: document.documentElement.scrollWidth,
+//                 windowHeight: document.documentElement.scrollHeight
+//             }
+//         );
 
 
 
-//     form.append(
 
-//         $('<input>', {
-//             type: 'hidden',
-//             name: '_token',
-//             value: $('meta[name="csrf-token"]').attr('content')
-//         })
-//     );
+//         const dashboardBase64 =
+//             canvas.toDataURL(
+//                 'image/jpeg',
+//                 0.95
+//             );
 
-//     $('body').append(form);
 
-//     form.submit();
+//         if (
+//             !dashboardBase64 ||
+//             dashboardBase64.length < 100
+//         ) {
 
-//     setTimeout(function () {
-//         form.remove();
-//     }, 1000);
+//             throw new Error(
+//                 'No fue posible generar la imagen del dashboard'
+//             );
+//         }
 
+
+//         let form = $('<form>', {
+
+//             action:
+//                 '/descargarRevisioninfopsico/' + proyecto.id,
+//             method:'POST',
+//             target:'_blank',
+//             style: 'display:none;'
+
+//         });
+
+
+//         form.append(
+//             $('<input>', {
+//                 type:'hidden',
+//                 name:'_token',
+//                 value:
+//                     $('meta[name="csrf-token"]')
+//                     .attr('content')
+
+//             })
+
+//         );
+
+//         form.append(
+//             $('<input>', {
+//                 type:'hidden',
+//                 name:'DASHBOARD_FOTO',
+//                 value:  dashboardBase64
+
+//             })
+
+//         );
+
+
+//         $('body').append(form);
+
+//         form.submit();
+
+//         setTimeout(function()
+//         {
+//             form.remove();
+
+//         }, 2000);
+
+//     } catch (error) {
+
+//         console.error(
+//             'Error al capturar el dashboard:',
+//             error
+//         );
+
+//         Swal.fire({
+//             icon:'error',
+//             title: 'Error',
+//             text: 'No fue posible generar la imagen del dashboard'
+//         });
+//     }
 // }
 
-
-
-
-////// GRAFICAS
-
-
-// GENERO
 
 
 function cargarGraficaGeneroPsico()
@@ -3343,6 +3534,5787 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
         });
 }
 
+/// CALIFICACION GLOBAL
+
+
+function cargarGraficaCalificacionPsico()
+{
+    $.get(
+        '/obtenerGraficaCalificacionPsico/' + proyecto.id,
+        function(response)
+        {
+            generarGraficaCalificacionPsico(
+                response.data,
+                response.total_trabajadores
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar las calificaciones'
+        });
+    });
+}
+
+
+
+function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
+{
+
+
+
+    if (!Array.isArray(datosCalificacion)) {
+        datosCalificacion = [];
+    }
+
+    if (window.calificacionesRootPsico) {
+        window.calificacionesRootPsico.dispose();
+        window.calificacionesRootPsico = null;
+    }
+
+
+    $('#calificacionChart').empty();
+
+
+    var datosFiltrados =
+        datosCalificacion.filter(function(item)
+        {
+            return parseInt(item.value) > 0;
+        });
+
+
+    if (datosFiltrados.length === 0) {
+
+        $('#calificacionChart').html(`
+            <div
+                style="
+                    width:100%;
+                    padding:60px 10px;
+                    text-align:center;
+                    font-weight:bold;
+                    color:#777;
+                "
+            >
+                No hay respuestas válidas de la Guía III
+            </div>
+        `);
+
+        calificacionchart = null;
+
+        return;
+    }
+
+
+
+    window.calificacionesRootPsico = am5.Root.new('calificacionChart');
+    var calificacionesRoot =window.calificacionesRootPsico;
+
+
+    calificacionesRoot.setThemes([
+        am5themes_Animated.new(
+            calificacionesRoot
+        )
+    ]);
+
+    var calificacionesChart =
+        calificacionesRoot
+            .container
+            .children
+            .push(
+                am5percent.PieChart.new(
+                    calificacionesRoot,
+                    {
+                        startAngle: 180,
+                        endAngle: 360,
+                        layout:calificacionesRoot.verticalLayout,
+                        innerRadius:am5.percent(50),
+                        paddingTop: 10,
+                        paddingBottom: 0
+                    }
+                )
+
+            );
+
+
+
+    var calificacionesSeries =
+        calificacionesChart
+            .series
+            .push(
+                am5percent.PieSeries.new(
+                    calificacionesRoot,
+                    {
+                        startAngle: 180,
+                        endAngle: 360,
+                        valueField: 'value',
+                        categoryField:'category',
+                        alignLabels: false
+                    }
+                )
+
+            );
+
+    calificacionesSeries
+        .slices
+        .template
+        .adapters
+        .add(
+            'fill',
+            function(fill, target)
+            {
+                if (
+                    target.dataItem &&
+                    target.dataItem.dataContext &&
+                    target.dataItem.dataContext.color
+                ) {
+
+                    return am5.color(
+                        target.dataItem
+                            .dataContext
+                            .color
+                    );
+                }
+
+                return fill;
+            }
+        );
+
+
+
+    calificacionesSeries
+        .slices
+        .template
+        .adapters
+        .add(
+            'stroke',
+            function(stroke, target)
+            {
+                if (
+                    target.dataItem &&
+                    target.dataItem.dataContext &&
+                    target.dataItem.dataContext.color
+                ) {
+                    return am5.color(
+                        target.dataItem
+                            .dataContext
+                            .color
+                    );
+                }
+                return stroke;
+            }
+        );
+
+
+    calificacionesSeries.slices.template.setAll({cornerRadius: 5,strokeWidth: 2});
+
+    calificacionesSeries.labels.template
+        .setAll({
+            fontSize: 14,
+            fontWeight: 'bold',
+            text:'{value} ({valuePercentTotal.formatNumber("0.00")}%)',radius: 8
+        });
+
+    calificacionesSeries.ticks.template.setAll({visible: false});
+
+    var leyendaCalificaciones =
+        calificacionesChart
+            .children
+            .push(
+
+                am5.Legend.new(
+                    calificacionesRoot,
+                    {
+                        centerX:am5.percent(50),
+                        x:am5.percent(50),
+                        layout:calificacionesRoot.horizontalLayout,
+                        marginTop: -15,
+                        dy: -10
+                    }
+                )
+            );
+
+
+    leyendaCalificaciones
+        .labels
+        .template
+        .setAll({
+            fontSize: 14,
+            fontWeight: 'bold',
+
+            text:
+                '{category}: {value} ({valuePercentTotal.formatNumber("0.00")}%)'
+        });
+
+    leyendaCalificaciones.valueLabels.template.setAll({forceHidden: true});
+    leyendaCalificaciones.markers.template.setAll({width: 18,height: 18});
+
+    calificacionesChart
+        .seriesContainer
+        .children
+        .push(
+
+            am5.Label.new(
+                calificacionesRoot,
+                {
+                    text:
+                        'Total\n' +
+                        (
+                            parseInt(
+                                totalTrabajadores
+                            ) || 0
+                        ),
+                    centerX: am5.percent(50),
+                    centerY: am5.percent(35),
+                    textAlign:'center',
+                    fontSize: 18,
+                    fontWeight: 'bold'
+                }
+            )
+        );
+
+    calificacionesSeries.data.setAll(datosFiltrados);
+
+    leyendaCalificaciones.data.setAll(calificacionesSeries.dataItems);
+    
+    calificacionesSeries
+        .appear(1000, 100)
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                if (
+                    typeof am5plugins_exporting
+                    !== 'undefined'
+                ) {
+                    var exporting =
+                        am5plugins_exporting
+                            .Exporting
+                            .new(
+                                calificacionesRoot,
+                                {
+                                    dpi: 300,
+                                    maxWidth: 2000,
+                                    maxHeight: 2000
+                                }
+                            );
+                    exporting
+                        .export('png')
+                        .then(function(data)
+                        {
+                            calificacionchart =
+                                data;
+
+                            console.log(
+                                'Gráfica de calificación exportada correctamente'
+                            );
+                        })
+                        .catch(function(error)
+                        {
+                            console.error(
+                                'Error al exportar gráfica de calificación:',
+                                error
+                            );
+                        });
+
+                } else {
+                    console.log(
+                        'Plugin de exportación no disponible'
+                    );
+                }
+            }, 1000);
+        });
+}
+
+/// GRAFICA DE CATEGORIAS
+
+
+
+
+function cargarGraficaCategoriasGuiaIII()
+{
+    $.get(
+        '/obtenerGraficaCategoriasGuiaIIIPsicologia/' + proyecto.id,
+        function(response)
+        {
+            generarGraficaCategoriasGuiaIII(
+                response.data
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar las categorías de la Guía III'
+        });
+    });
+}
+
+
+
+function generarGraficaCategoriasGuiaIII(dataConsolidado1)
+{
+    if (!Array.isArray(dataConsolidado1)) {
+        dataConsolidado1 = [];
+    }
+
+    if (
+        window.rootConsolidadoChart1 &&
+        !window.rootConsolidadoChart1.isDisposed()
+    ) {
+
+        window.rootConsolidadoChart1.dispose();
+
+        window.rootConsolidadoChart1 = null;
+    }
+
+    $('#consolidadoChart').empty();
+
+
+    if (dataConsolidado1.length === 0) {
+
+        $('#consolidadoChart').html(`
+            <div
+                style="
+                    width: 100%;
+                    height: 600px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                    font-weight: bold;
+                    color: #777;
+                "
+            >
+                No hay información disponible
+            </div>
+        `);
+
+        categoriaschart = null;
+
+        return;
+    }
+
+
+    window.rootConsolidadoChart1 =
+        am5.Root.new(
+            'consolidadoChart'
+        );
+
+    var rootConsolidadoChart1 =
+        window.rootConsolidadoChart1;
+
+
+    const customThemeConsolidado1 =
+        am5.Theme.new(
+            rootConsolidadoChart1
+        );
+
+
+
+    customThemeConsolidado1
+        .rule('Label')
+        .set(
+            'fontSize',
+            17
+        );
+
+
+
+    customThemeConsolidado1
+        .rule('Grid')
+        .set(
+            'strokeOpacity',
+            0
+        );
+
+    customThemeConsolidado1
+        .rule('AxisRenderer')
+        .setAll({
+
+            background:
+                am5.Rectangle.new(
+                    rootConsolidadoChart1,
+                    {
+                        fill:
+                            am5.color(0x000000),
+
+                        fillOpacity:
+                            0.7
+                    }
+                )
+
+        });
+
+
+    rootConsolidadoChart1.setThemes([
+
+        am5themes_Animated.new(
+            rootConsolidadoChart1
+        ),
+
+        customThemeConsolidado1
+
+    ]);
+
+    rootConsolidadoChart1
+        .numberFormatter
+        .set(
+            'numberFormat',
+            '0%'
+        );
+
+    var chartConsolidado1 =
+        rootConsolidadoChart1
+            .container
+            .children
+            .push(
+
+                am5radar.RadarChart.new(
+                    rootConsolidadoChart1,
+                    {
+                        panX:
+                            false,
+
+                        panY:
+                            false,
+
+                        wheelX:
+                            'none',
+
+                        wheelY:
+                            'none',
+
+                        innerRadius:
+                            am5.percent(10),
+
+                        radius:
+                            am5.percent(85)
+                    }
+                )
+
+            );
+
+
+
+    chartConsolidado1
+        .zoomOutButton
+        .set(
+            'forceHidden',
+            true
+        );
+
+
+    var categoryAxisRendererConsolidado1 =
+        am5radar.AxisRendererCircular.new(
+            rootConsolidadoChart1,
+            {
+                innerRadius:
+                    am5.percent(10)
+            }
+        );
+
+
+
+    var categoryAxisConsolidado1 =
+        chartConsolidado1
+            .xAxes
+            .push(
+
+                am5xy.CategoryAxis.new(
+                    rootConsolidadoChart1,
+                    {
+                        categoryField:
+                            'category',
+
+                        renderer:
+                            categoryAxisRendererConsolidado1
+                    }
+                )
+
+            );
+
+    categoryAxisRendererConsolidado1
+        .labels
+        .template
+        .setAll({
+
+            fill:
+                am5.color(0x000000),
+
+            fontSize:
+                20,
+
+            fontWeight:
+                'bold',
+
+            paddingLeft:
+                5,
+
+            paddingRight:
+                5,
+
+            paddingTop:
+                2,
+
+            paddingBottom:
+                2
+
+        });
+
+
+    categoryAxisConsolidado1
+        .data
+        .setAll(
+            dataConsolidado1
+        );
+
+
+
+    var valueAxisConsolidado1 =
+        chartConsolidado1
+            .yAxes
+            .push(
+
+                am5xy.ValueAxis.new(
+                    rootConsolidadoChart1,
+                    {
+                        renderer:
+                            am5radar
+                                .AxisRendererRadial
+                                .new(
+                                    rootConsolidadoChart1,
+                                    {}
+                                ),
+
+                        min:
+                            0,
+
+                        max:
+                            1,
+
+                        strictMinMax:
+                            true,
+
+                        extraMax:
+                            0.1
+                    }
+                )
+
+            );
+
+
+    valueAxisConsolidado1
+        .get('renderer')
+        .labels
+        .template
+        .setAll({
+            visible:
+                false
+        });
+
+
+    var seriesNamesConsolidado1 = [
+        'Nulo',
+        'Bajo',
+        'Medio',
+        'Alto',
+        'Muy alto'
+    ];
+
+
+    var seriesColorsConsolidado1 = [
+
+        am5.color(0x00B0F0),
+
+        am5.color(0x00B050),
+
+        am5.color(0xFFFF00),
+
+        am5.color(0xF7AA32),
+
+        am5.color(0xFF0000)
+
+    ];
+
+    seriesNamesConsolidado1.forEach(
+        function(seriesName, index)
+        {
+
+            var series =
+                chartConsolidado1
+                    .series
+                    .push(
+
+                        am5radar
+                            .RadarColumnSeries
+                            .new(
+                                rootConsolidadoChart1,
+                                {
+                                    stacked:
+                                        true,
+
+                                    name:
+                                        seriesName,
+
+                                    xAxis:
+                                        categoryAxisConsolidado1,
+
+                                    yAxis:
+                                        valueAxisConsolidado1,
+
+                                    valueYField:
+                                        seriesName,
+
+                                    categoryXField:
+                                        'category'
+                                }
+                            )
+
+                    );
+
+            series
+                .columns
+                .template
+                .setAll({
+
+                    cornerRadius:
+                        0,
+
+                    strokeOpacity:
+                        1,
+
+                    stroke:
+                        am5.color(0x000000),
+
+                    strokeWidth:
+                        0.5,
+
+                    fill:
+                        seriesColorsConsolidado1[index],
+
+                    width:
+                        am5.percent(100),
+
+                    tooltipText:
+                        seriesName
+
+                });
+
+
+            series
+                .columns
+                .template
+                .adapters
+                .add(
+                    'tooltipText',
+
+                    function(text, target)
+                    {
+                        if (
+                            !target.dataItem ||
+                            target.dataItem.get('valueY') === undefined
+                        ) {
+
+                            return seriesName;
+                        }
+
+
+
+                        var valor =
+                            parseFloat(
+                                target.dataItem.get('valueY')
+                            ) || 0;
+
+
+
+                        var porcentaje =
+                            Math.round(
+                                valor * 100
+                            );
+
+
+
+                        return seriesName +
+                            ': ' +
+                            porcentaje +
+                            '%';
+                    }
+                );
+
+
+            series
+                .bullets
+                .push(function(
+                    root,
+                    serie,
+                    dataItem
+                ) {
+
+                    var valor =
+                        parseFloat(
+                            dataItem.get('valueY')
+                        ) || 0;
+
+                    if (valor <= 0) {
+                        return undefined;
+                    }
+
+                    var porcentaje =
+                        Math.round(
+                            valor * 100
+                        ) + '%';
+
+
+                    return am5.Bullet.new(
+                        rootConsolidadoChart1,
+                        {
+                            locationY:
+                                0.5,
+
+                            sprite:
+                                am5.Label.new(
+                                    rootConsolidadoChart1,
+                                    {
+                                        text:
+                                            porcentaje,
+
+                                        centerX:
+                                            am5.p50,
+
+                                        centerY:
+                                            am5.p50,
+
+                                        fill:
+                                            am5.color(0x000000),
+
+                                        fontSize:
+                                            12,
+
+                                        fontWeight:
+                                            'bold',
+
+                                        textAlign:
+                                            'center'
+                                    }
+                                )
+                        }
+                    );
+
+                });
+
+            series
+                .data
+                .setAll(
+                    dataConsolidado1
+                );
+
+        }
+    );
+
+    var legendConsolidado1 =
+        chartConsolidado1
+            .children
+            .push(
+
+                am5.Legend.new(
+                    rootConsolidadoChart1,
+                    {
+                        centerX:
+                            am5.p50,
+
+                        x:
+                            am5.p50,
+
+                        y:
+                            am5.p100,
+
+                        layout:
+                            rootConsolidadoChart1
+                                .horizontalLayout,
+
+                        marginTop:
+                            1
+                    }
+                )
+
+            );
+
+    seriesNamesConsolidado1.forEach(
+        function(seriesName, index)
+        {
+
+            var series =
+                chartConsolidado1
+                    .series
+                    .getIndex(index);
+
+            series.legendSettings = {
+
+                labelText:
+                    seriesName,
+
+                fill:
+                    seriesColorsConsolidado1[index]
+
+            };
+
+        }
+    );
+
+
+    legendConsolidado1
+        .markers
+        .template
+        .setAll({
+
+            width:
+                20,
+
+            height:
+                20
+
+        });
+
+
+    legendConsolidado1
+        .labels
+        .template
+        .setAll({
+
+            fontSize:
+                14,
+
+            fontWeight:
+                'bold'
+
+        });
+
+
+    legendConsolidado1
+        .data
+        .setAll(
+            chartConsolidado1
+                .series
+                .values
+        );
+
+
+    chartConsolidado1
+        .appear(
+            1000,
+            100
+        )
+        .then(function()
+        {
+
+            setTimeout(function()
+            {
+
+
+
+                if (
+                    typeof am5plugins_exporting !==
+                    'undefined'
+                ) {
+
+                    console.log(
+                        'Plugin de exportación disponible'
+                    );
+
+
+
+                    var exporting =
+                        am5plugins_exporting
+                            .Exporting
+                            .new(
+                                rootConsolidadoChart1,
+                                {
+                                    menu:
+                                        am5plugins_exporting
+                                            .ExportingMenu
+                                            .new(
+                                                rootConsolidadoChart1,
+                                                {}
+                                            ),
+
+                                    dpi:
+                                        300,
+
+                                    maxWidth:
+                                        2000,
+
+                                    maxHeight:
+                                        2000
+                                }
+                            );
+
+
+
+                    exporting
+                        .export('png')
+                        .then(function(data)
+                        {
+
+                            categoriaschart =
+                                data;
+
+                            console.log(
+                                'Gráfica de categorías exportada exitosamente'
+                            );
+
+                        })
+                        .catch(function(error)
+                        {
+
+                            console.error(
+                                'Error al exportar:',
+                                error
+                            );
+
+                        });
+
+                } else {
+
+                    console.log(
+                        'Plugin de exportación no disponible'
+                    );
+
+                }
+
+            }, 1000);
+
+        });
+}
+
+
+// DOMINIOS
+
+function cargarGraficaDominiosGuiaIII()
+{
+    $.get(
+        '/obtenerGraficaDominiosGuiaIIIPsicologia/' + proyecto.id,
+
+        function(response)
+        {
+            generarGraficaDominiosGuiaIII(
+                response.data
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar los dominios de la Guía III'
+        });
+    });
+}
+
+
+
+function generarGraficaDominiosGuiaIII(dataConsolidado2)
+{
+   
+
+    if (!Array.isArray(dataConsolidado2)) {
+        dataConsolidado2 = [];
+    }
+
+
+
+    if (
+        window.rootConsolidadoChart2 &&
+        !window.rootConsolidadoChart2.isDisposed()
+    ) {
+
+        window.rootConsolidadoChart2.dispose();
+
+        window.rootConsolidadoChart2 = null;
+    }
+
+
+
+    $('#consolidadoChart2').empty();
+
+
+
+    if (dataConsolidado2.length === 0) {
+
+        $('#consolidadoChart2').html(`
+            <div
+                style="
+                    width:100%;
+                    height:750px;
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    text-align:center;
+                    font-weight:bold;
+                    color:#777;
+                "
+            >
+                No hay información disponible
+            </div>
+        `);
+
+        dominioschart = null;
+
+        return;
+    }
+
+
+    window.rootConsolidadoChart2 =
+        am5.Root.new(
+            'consolidadoChart2'
+        );
+
+    var rootConsolidadoChart2 =
+        window.rootConsolidadoChart2;
+
+
+    const customThemeConsolidado2 =
+        am5.Theme.new(
+            rootConsolidadoChart2
+        );
+
+
+
+    customThemeConsolidado2
+        .rule('Label')
+        .set(
+            'fontSize',
+            20
+        );
+
+
+
+    customThemeConsolidado2
+        .rule('Grid')
+        .set(
+            'strokeOpacity',
+            0
+        );
+
+
+
+    customThemeConsolidado2
+        .rule('AxisRenderer')
+        .setAll({
+
+            background:
+                am5.Rectangle.new(
+                    rootConsolidadoChart2,
+                    {
+                        fill:
+                            am5.color(0x000000),
+
+                        fillOpacity:
+                            0.7
+                    }
+                )
+
+        });
+
+
+    rootConsolidadoChart2.setThemes([
+
+        am5themes_Animated.new(
+            rootConsolidadoChart2
+        ),
+
+        customThemeConsolidado2
+
+    ]);
+
+
+
+    rootConsolidadoChart2
+        .numberFormatter
+        .set(
+            'numberFormat',
+            '0%'
+        );
+
+    var chartConsolidado2 =
+        rootConsolidadoChart2
+            .container
+            .children
+            .push(
+
+                am5radar.RadarChart.new(
+                    rootConsolidadoChart2,
+                    {
+                        panX:
+                            false,
+
+                        panY:
+                            false,
+
+                        wheelX:
+                            'none',
+
+                        wheelY:
+                            'none',
+
+                        innerRadius:
+                            am5.percent(10),
+
+                        radius:
+                            am5.percent(82)
+                    }
+                )
+
+            );
+
+
+
+    chartConsolidado2
+        .zoomOutButton
+        .set(
+            'forceHidden',
+            true
+        );
+
+
+    var categoryAxisRendererConsolidado2 =
+        am5radar.AxisRendererCircular.new(
+            rootConsolidadoChart2,
+            {
+                innerRadius:
+                    am5.percent(10)
+            }
+        );
+
+
+
+    var categoryAxisConsolidado2 =
+        chartConsolidado2
+            .xAxes
+            .push(
+
+                am5xy.CategoryAxis.new(
+                    rootConsolidadoChart2,
+                    {
+                        categoryField:
+                            'category',
+
+                        renderer:
+                            categoryAxisRendererConsolidado2
+                    }
+                )
+
+            );
+
+
+    categoryAxisRendererConsolidado2
+        .labels
+        .template
+        .setAll({
+
+            fill:
+                am5.color(0x000000),
+
+            fontSize:
+                16,
+
+            fontWeight:
+                'bold',
+
+            paddingLeft:
+                5,
+
+            paddingRight:
+                5,
+
+            paddingTop:
+                2,
+
+            paddingBottom:
+                2,
+
+            radius:
+                5,
+
+            centerX:
+                am5.p50,
+
+            centerY:
+                am5.p50,
+
+            textAlign:
+                'center',
+
+            oversizedBehavior:
+                'wrap',
+
+            maxWidth:
+                170
+        });
+
+
+    categoryAxisConsolidado2
+        .data
+        .setAll(
+            dataConsolidado2
+        );
+
+
+
+    var valueAxisConsolidado2 =
+        chartConsolidado2
+            .yAxes
+            .push(
+
+                am5xy.ValueAxis.new(
+                    rootConsolidadoChart2,
+                    {
+                        renderer:
+                            am5radar
+                                .AxisRendererRadial
+                                .new(
+                                    rootConsolidadoChart2,
+                                    {}
+                                ),
+
+                        min:
+                            0,
+
+                        max:
+                            1,
+
+                        strictMinMax:
+                            true,
+
+                        extraMax:
+                            0.1
+                    }
+                )
+
+            );
+
+
+
+    valueAxisConsolidado2
+        .get('renderer')
+        .labels
+        .template
+        .setAll({
+            visible:
+                false
+        });
+
+
+    var seriesNamesConsolidado2 = [
+        'Nulo',
+        'Bajo',
+        'Medio',
+        'Alto',
+        'Muy alto'
+    ];
+
+
+
+    var seriesColorsConsolidado2 = [
+
+        am5.color(0x00B0F0),
+
+        am5.color(0x00B050),
+
+        am5.color(0xFFFF00),
+
+        am5.color(0xF7AA32),
+
+        am5.color(0xFF0000)
+
+    ];
+
+
+    seriesNamesConsolidado2.forEach(
+        function(seriesName, index)
+        {
+
+            var series =
+                chartConsolidado2
+                    .series
+                    .push(
+
+                        am5radar
+                            .RadarColumnSeries
+                            .new(
+                                rootConsolidadoChart2,
+                                {
+                                    stacked:
+                                        true,
+
+                                    name:
+                                        seriesName,
+
+                                    xAxis:
+                                        categoryAxisConsolidado2,
+
+                                    yAxis:
+                                        valueAxisConsolidado2,
+
+                                    valueYField:
+                                        seriesName,
+
+                                    categoryXField:
+                                        'category'
+                                }
+                            )
+
+                    );
+
+
+
+            series
+                .columns
+                .template
+                .setAll({
+
+                    cornerRadius:
+                        0,
+
+                    strokeOpacity:
+                        1,
+
+                    stroke:
+                        am5.color(0x000000),
+
+                    strokeWidth:
+                        0.5,
+
+                    fill:
+                        seriesColorsConsolidado2[index],
+
+                    width:
+                        am5.percent(100),
+
+                    tooltipText:
+                        seriesName
+
+                });
+
+
+            series
+                .columns
+                .template
+                .adapters
+                .add(
+                    'tooltipText',
+
+                    function(text, target)
+                    {
+                        if (
+                            !target.dataItem ||
+                            target.dataItem.get('valueY') === undefined
+                        ) {
+
+                            return seriesName;
+                        }
+
+
+
+                        var valor =
+                            parseFloat(
+                                target.dataItem.get('valueY')
+                            ) || 0;
+
+
+
+                        var porcentaje =
+                            Math.round(
+                                valor * 100
+                            );
+
+
+
+                        return seriesName +
+                            ': ' +
+                            porcentaje +
+                            '%';
+                    }
+                );
+
+            series
+                .bullets
+                .push(function(
+                    root,
+                    serie,
+                    dataItem
+                ) {
+
+                    var valor =
+                        parseFloat(
+                            dataItem.get('valueY')
+                        ) || 0;
+
+
+
+                    if (valor <= 0) {
+                        return undefined;
+                    }
+
+
+
+                    var porcentaje =
+                        Math.round(
+                            valor * 100
+                        ) + '%';
+
+
+
+                    return am5.Bullet.new(
+                        rootConsolidadoChart2,
+                        {
+                            locationY:
+                                0.5,
+
+                            sprite:
+                                am5.Label.new(
+                                    rootConsolidadoChart2,
+                                    {
+                                        text:
+                                            porcentaje,
+
+                                        centerX:
+                                            am5.p50,
+
+                                        centerY:
+                                            am5.p50,
+
+                                        fill:
+                                            am5.color(0x000000),
+
+                                        fontSize:
+                                            10,
+
+                                        fontWeight:
+                                            'bold',
+
+                                        textAlign:
+                                            'center'
+                                    }
+                                )
+                        }
+                    );
+
+                });
+
+
+            series
+                .data
+                .setAll(
+                    dataConsolidado2
+                );
+
+        }
+    );
+
+
+    var legendConsolidado2 =
+        chartConsolidado2
+            .children
+            .push(
+
+                am5.Legend.new(
+                    rootConsolidadoChart2,
+                    {
+                        centerX:
+                            am5.p50,
+
+                        x:
+                            am5.p50,
+
+                        y:
+                            am5.p100,
+
+                        layout:
+                            rootConsolidadoChart2
+                                .horizontalLayout,
+
+                        marginTop:
+                            1
+                    }
+                )
+
+            );
+
+
+    seriesNamesConsolidado2.forEach(
+        function(seriesName, index)
+        {
+
+            var series =
+                chartConsolidado2
+                    .series
+                    .getIndex(index);
+
+            series.legendSettings = {
+
+                labelText:
+                    seriesName,
+
+                fill:
+                    seriesColorsConsolidado2[index]
+
+            };
+
+        }
+    );
+
+
+
+    legendConsolidado2
+        .markers
+        .template
+        .setAll({
+
+            width:
+                20,
+
+            height:
+                20
+
+        });
+
+
+
+    legendConsolidado2
+        .labels
+        .template
+        .setAll({
+
+            fontSize:
+                14,
+
+            fontWeight:
+                'bold'
+
+        });
+
+
+
+    legendConsolidado2
+        .data
+        .setAll(
+            chartConsolidado2
+                .series
+                .values
+        );
+
+    chartConsolidado2
+        .appear(
+            1000,
+            100
+        )
+        .then(function()
+        {
+
+            setTimeout(function()
+            {
+
+                if (
+                    typeof am5plugins_exporting !==
+                    'undefined'
+                ) {
+
+                    var exporting =
+                        am5plugins_exporting
+                            .Exporting
+                            .new(
+                                rootConsolidadoChart2,
+                                {
+                                    menu:
+                                        am5plugins_exporting
+                                            .ExportingMenu
+                                            .new(
+                                                rootConsolidadoChart2,
+                                                {}
+                                            ),
+
+                                    dpi:
+                                        300,
+
+                                    maxWidth:
+                                        2000,
+
+                                    maxHeight:
+                                        2000
+                                }
+                            );
+
+
+
+                    exporting
+                        .export('png')
+                        .then(function(data)
+                        {
+
+                            dominioschart =
+                                data;
+
+                            console.log(
+                                'Gráfica de dominios exportada correctamente'
+                            );
+
+                        })
+                        .catch(function(error)
+                        {
+
+                            console.error(
+                                'Error al exportar gráfica de dominios:',
+                                error
+                            );
+
+                        });
+
+                } else {
+
+                    console.log(
+                        'Plugin de exportación no disponible'
+                    );
+
+                }
+
+            }, 1000);
+
+        });
+}
+
+/// GUIA I
+
+
+function cargarGraficaGuiaIPsico()
+{
+    $.get(
+        '/obtenerGraficaGuiaIPsico/' + proyecto.id,
+
+        function(response)
+        {
+            generarGraficaGuiaIPsico(
+                response.data,
+                response.total_trabajadores
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar los resultados de la Guía I'
+        });
+    });
+}
+
+
+
+function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
+{
+
+    if (!Array.isArray(guia1Data)) {
+        guia1Data = [];
+    }
+
+
+
+    if (
+        window.guia1Root &&
+        !window.guia1Root.isDisposed()
+    ) {
+
+        window.guia1Root.dispose();
+
+        window.guia1Root = null;
+    }
+
+
+
+    $('#guia1Chart').empty();
+
+    var datosFiltrados =
+        guia1Data.filter(function(item)
+        {
+            return parseInt(item.value) > 0;
+        });
+
+
+
+    if (datosFiltrados.length === 0) {
+
+        $('#guia1Chart').html(`
+            <div
+                style="
+                    width:100%;
+                    height:500px;
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    text-align:center;
+                    font-weight:bold;
+                    color:#777;
+                "
+            >
+                No hay información disponible de la Guía I
+            </div>
+        `);
+
+        acontecimientoschart = null;
+
+        return;
+    }
+
+
+
+    var total =
+        parseInt(totalTrabajadores) || 0;
+
+    if (total === 0) {
+
+        total = datosFiltrados.reduce(
+            function(acumulado, item)
+            {
+                return acumulado +
+                    (parseInt(item.value) || 0);
+            },
+            0
+        );
+    }
+
+
+    window.guia1Root =
+        am5.Root.new(
+            'guia1Chart'
+        );
+
+    var guia1_root =
+        window.guia1Root;
+
+
+
+    guia1_root.setThemes([
+        am5themes_Animated.new(
+            guia1_root
+        )
+    ]);
+
+
+    var guia1_chart =
+        guia1_root
+            .container
+            .children
+            .push(
+
+                am5percent.PieChart.new(
+                    guia1_root,
+                    {
+                        startAngle:
+                            180,
+
+                        endAngle:
+                            360,
+
+                        layout:
+                            guia1_root.verticalLayout,
+
+                        innerRadius:
+                            am5.percent(50),
+
+                        paddingBottom:
+                            0
+                    }
+                )
+
+            );
+
+
+    var guia1_series =
+        guia1_chart
+            .series
+            .push(
+
+                am5percent.PieSeries.new(
+                    guia1_root,
+                    {
+                        startAngle:
+                            180,
+
+                        endAngle:
+                            360,
+
+                        valueField:
+                            'value',
+
+                        categoryField:
+                            'category',
+
+                        alignLabels:
+                            false
+                    }
+                )
+
+            );
+
+
+    guia1_series
+        .slices
+        .template
+        .adapters
+        .add(
+            'fill',
+
+            function(fill, target)
+            {
+                if (
+                    target.dataItem &&
+                    target.dataItem.dataContext &&
+                    target.dataItem.dataContext.color
+                ) {
+
+                    return am5.color(
+                        target.dataItem
+                            .dataContext
+                            .color
+                    );
+                }
+
+                return fill;
+            }
+        );
+
+
+
+    guia1_series
+        .slices
+        .template
+        .adapters
+        .add(
+            'stroke',
+
+            function(stroke, target)
+            {
+                if (
+                    target.dataItem &&
+                    target.dataItem.dataContext &&
+                    target.dataItem.dataContext.color
+                ) {
+
+                    return am5.color(
+                        target.dataItem
+                            .dataContext
+                            .color
+                    );
+                }
+
+                return stroke;
+            }
+        );
+
+
+    guia1_series
+        .slices
+        .template
+        .setAll({
+            cornerRadius:
+                5,
+
+            stroke:
+                am5.color(0xFFFFFF),
+
+            strokeWidth:
+                2,
+
+            tooltipText:
+                '{category}: {value}'
+        });
+
+
+    guia1_series
+        .labels
+        .template
+        .setAll({
+            fontSize:
+                19,
+
+            fontWeight:
+                'bold',
+
+            text:
+                '{value}'
+        });
+
+
+
+    guia1_series
+        .ticks
+        .template
+        .setAll({
+            visible:
+                false
+        });
+
+    var legend3 =
+        guia1_chart
+            .children
+            .push(
+
+                am5.Legend.new(
+                    guia1_root,
+                    {
+                        centerX:
+                            am5.percent(50),
+
+                        x:
+                            am5.percent(50),
+
+                        layout:
+                            guia1_root.verticalLayout,
+
+                        fontSize:
+                            19,
+
+                        fontWeight:
+                            'bold',
+
+                        marginTop:
+                            -10,
+
+                        dy:
+                            -10
+                    }
+                )
+
+            );
+
+    legend3
+        .labels
+        .template
+        .setAll({
+            fontSize:
+                19,
+
+            fontWeight:
+                'bold'
+        });
+
+
+
+    legend3
+        .valueLabels
+        .template
+        .setAll({
+            fontSize:
+                19,
+
+            fontWeight:
+                'bold'
+        });
+
+
+    legend3
+        .markers
+        .template
+        .setAll({
+            width:
+                20,
+
+            height:
+                20
+        });
+
+    guia1_series
+        .data
+        .setAll(
+            datosFiltrados
+        );
+
+
+    legend3
+        .data
+        .setAll(
+            guia1_series.dataItems
+        );
+
+
+    guia1_series
+        .appear(
+            1000,
+            100
+        )
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                if (
+                    typeof am5plugins_exporting !==
+                    'undefined'
+                ) {
+
+                    var exporting =
+                        am5plugins_exporting
+                            .Exporting
+                            .new(
+                                guia1_root,
+                                {
+                                    menu:
+                                        am5plugins_exporting
+                                            .ExportingMenu
+                                            .new(
+                                                guia1_root,
+                                                {}
+                                            ),
+
+                                    dpi:
+                                        300,
+
+                                    maxWidth:
+                                        2000,
+
+                                    maxHeight:
+                                        2000
+                                }
+                            );
+
+
+
+                    exporting
+                        .export('png')
+                        .then(function(data)
+                        {
+                            acontecimientoschart =
+                                data;
+
+                            console.log(
+                                'Gráfica de Guía I exportada correctamente'
+                            );
+                        })
+                        .catch(function(error)
+                        {
+                            console.error(
+                                'Error al exportar gráfica de Guía I:',
+                                error
+                            );
+                        });
+
+                } else {
+
+                    console.log(
+                        'Plugin de exportación no disponible'
+                    );
+                }
+
+            }, 1000);
+        });
+}
+
+
+// CATEGORIA AMBIENTE DE TRABAJO
+
+function cargarGraficaAmbienteGuiaIII()
+{
+    $.get(
+        '/obtenerGraficaAmbienteGuiaIII/' + proyecto.id,
+        function(response)
+        {
+            crearGraficaAmbienteGuiaIII(response.data);
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.error(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar la gráfica de ambiente de trabajo'
+        });
+    });
+}
+
+function crearGraficaAmbienteGuiaIII(data)
+    {
+    if (!Array.isArray(data)) {
+        data = [];
+    }
+
+    if (
+        window.ambienteChartRoot &&
+        !window.ambienteChartRoot.isDisposed()
+    ) {
+        window.ambienteChartRoot.dispose();
+        window.ambienteChartRoot = null;
+    }
+
+    var contenedor = document.getElementById('ambienteChart');
+
+    if (!contenedor) {
+        console.error('No existe el contenedor #ambienteChart');
+        return;
+    }
+
+    contenedor.innerHTML = '';
+
+    if (data.length === 0) {
+        contenedor.innerHTML = `
+            <div style="
+                width:100%;
+                height:500px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                text-align:center;
+                font-weight:bold;
+                color:#777;
+            ">
+                No hay información disponible
+            </div>
+        `;
+
+        if (typeof chartPngs !== 'undefined') {
+            chartPngs['ambienteChart'] = null;
+        }
+
+        return;
+    }
+
+    window.ambienteChartRoot =
+        am5.Root.new('ambienteChart');
+
+    var root =
+        window.ambienteChartRoot;
+
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    var chart =
+        root.container.children.push(
+            am5xy.XYChart.new(
+                root,
+                {
+                    panX: false,
+                    panY: false,
+                    wheelX: 'none',
+                    wheelY: 'none',
+                    layout: root.verticalLayout,
+                    paddingLeft: 0,
+                    paddingRight: 20
+                }
+            )
+        );
+
+    chart.children.unshift(
+        am5.Label.new(
+            root,
+            {
+                text: "Categoría\n\n\n",
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                x: am5.p50,
+                centerX: am5.p50
+            }
+        )
+    );
+
+    var legend =
+        chart.children.push(
+            am5.Legend.new(
+                root,
+                {
+                    centerX: am5.p50,
+                    x: am5.p50
+                }
+            )
+        );
+
+    legend.labels.template.setAll({
+        fontSize: 20,
+        fontWeight: 'bold'
+    });
+
+    legend.valueLabels.template.setAll({
+        forceHidden: true,
+        visible: false
+    });
+
+    legend.markers.template.setAll({
+        width: 20,
+        height: 20
+    });
+
+    var yAxisRenderer =
+        am5xy.AxisRendererY.new(
+            root,
+            {
+                inversed: true,
+                cellStartLocation: 0.05,
+                cellEndLocation: 0.90,
+                minGridDistance: 0
+            }
+        );
+
+    var yAxis =
+        chart.yAxes.push(
+            am5xy.CategoryAxis.new(
+                root,
+                {
+                    categoryField: 'category',
+                    renderer: yAxisRenderer,
+                    tooltip: am5.Tooltip.new(root, {})
+                }
+            )
+        );
+
+    yAxisRenderer.grid.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    yAxisRenderer.ticks.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    yAxisRenderer.labels.template.setAll({
+        fontSize: 18,
+        fontWeight: 'bold',
+        centerY: am5.p50,
+        centerX: am5.p0,
+        textAlign: 'center',
+        inside: true,
+        rotation: 0,
+        paddingTop: -100,
+        oversizedBehavior: 'wrap',
+        maxWidth: 330
+    });
+
+    yAxisRenderer
+        .labels
+        .template
+        .adapters
+        .add(
+            'text',
+            function(text, target)
+            {
+                if (!target.dataItem) {
+                    return text;
+                }
+
+                var category =
+                    target.dataItem.get('category') || '';
+
+                if (
+                    category.indexOf('g1-') === 0 ||
+                    category.indexOf('g2-') === 0 ||
+                    category.indexOf('g3-') === 0
+                ) {
+                    return '[bold]' +
+                        category.substring(3) +
+                        '[/]';
+                }
+
+                return category;
+            }
+        );
+
+    yAxis.data.setAll(data);
+
+    var xAxisRenderer =
+        am5xy.AxisRendererX.new(
+            root,
+            {
+                minGridDistance: 50
+            }
+        );
+
+    var xAxis =
+        chart.xAxes.push(
+            am5xy.ValueAxis.new(
+                root,
+                {
+                    renderer: xAxisRenderer,
+                    min: 0,
+                    max: 100,
+                    strictMinMax: true,
+                    maxDeviation: 0
+                }
+            )
+        );
+
+    xAxisRenderer.grid.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    xAxisRenderer.labels.template.setAll({
+        forceHidden: true,
+        visible: false
+    });
+
+    xAxisRenderer.ticks.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    if (xAxisRenderer.baseGrid) {
+        xAxisRenderer.baseGrid.setAll({
+            forceHidden: true,
+            visible: false,
+            strokeOpacity: 0
+        });
+    }
+
+    function obtenerPorcentajesEnteros(valores)
+    {
+        var total =
+            valores.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
+
+        if (total <= 0) {
+            return [0, 0, 0, 0, 0];
+        }
+
+        var porcentajesExactos =
+            valores.map(function(valor)
+            {
+                return (valor / total) * 100;
+            });
+
+        var porcentajesEnteros =
+            porcentajesExactos.map(function(valor)
+            {
+                return Math.floor(valor);
+            });
+
+        var sumaEnteros =
+            porcentajesEnteros.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
+
+        var faltantes =
+            100 - sumaEnteros;
+
+        var residuos =
+            porcentajesExactos.map(
+                function(valor, indice)
+                {
+                    return {
+                        indice: indice,
+                        residuo:
+                            valor -
+                            porcentajesEnteros[indice]
+                    };
+                }
+            );
+
+        residuos.sort(function(a, b)
+        {
+            return b.residuo - a.residuo;
+        });
+
+        for (
+            var indice = 0;
+            indice < faltantes;
+            indice++
+        ) {
+            porcentajesEnteros[
+                residuos[indice].indice
+            ]++;
+        }
+
+        return porcentajesEnteros;
+    }
+
+    function calcularDatos(datos)
+    {
+        return datos.map(function(item)
+        {
+            if (
+                item.category &&
+                item.category.indexOf('g3-') === 0
+            ) {
+                return {
+                    category: item.category,
+                    s1: null,
+                    s2: null,
+                    s3: null,
+                    s4: null,
+                    s5: null,
+                    percentage_s1: null,
+                    percentage_s2: null,
+                    percentage_s3: null,
+                    percentage_s4: null,
+                    percentage_s5: null,
+                    visual_s1: null,
+                    visual_s2: null,
+                    visual_s3: null,
+                    visual_s4: null,
+                    visual_s5: null
+                };
+            }
+
+            var s1 =
+                parseInt(item.s1, 10) || 0;
+
+            var s2 =
+                parseInt(item.s2, 10) || 0;
+
+            var s3 =
+                parseInt(item.s3, 10) || 0;
+
+            var s4 =
+                parseInt(item.s4, 10) || 0;
+
+            var s5 =
+                parseInt(item.s5, 10) || 0;
+
+            var valores = [
+                s1,
+                s2,
+                s3,
+                s4,
+                s5
+            ];
+
+            var total =
+                valores.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
+
+            if (total <= 0) {
+                return {
+                    category: item.category,
+                    s1: s1,
+                    s2: s2,
+                    s3: s3,
+                    s4: s4,
+                    s5: s5,
+                    percentage_s1: 0,
+                    percentage_s2: 0,
+                    percentage_s3: 0,
+                    percentage_s4: 0,
+                    percentage_s5: 0,
+                    visual_s1: 0,
+                    visual_s2: 0,
+                    visual_s3: 0,
+                    visual_s4: 0,
+                    visual_s5: 0
+                };
+            }
+
+            var porcentajesEnteros =
+                obtenerPorcentajesEnteros(valores);
+
+            var porcentajesExactos =
+                valores.map(function(valor)
+                {
+                    return (valor / total) * 100;
+                });
+
+            var minimoVisual = 8;
+
+            var valoresVisuales =
+                porcentajesExactos.map(
+                    function(porcentaje, indice)
+                    {
+                        if (valores[indice] <= 0) {
+                            return 0;
+                        }
+
+                        return Math.max(
+                            porcentaje,
+                            minimoVisual
+                        );
+                    }
+                );
+
+            var totalVisual =
+                valoresVisuales.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
+
+            if (totalVisual > 0) {
+                valoresVisuales =
+                    valoresVisuales.map(
+                        function(valor)
+                        {
+                            return (
+                                valor /
+                                totalVisual
+                            ) * 100;
+                        }
+                    );
+            }
+
+            return {
+                category: item.category,
+                s1: s1,
+                s2: s2,
+                s3: s3,
+                s4: s4,
+                s5: s5,
+                percentage_s1:
+                    porcentajesEnteros[0],
+                percentage_s2:
+                    porcentajesEnteros[1],
+                percentage_s3:
+                    porcentajesEnteros[2],
+                percentage_s4:
+                    porcentajesEnteros[3],
+                percentage_s5:
+                    porcentajesEnteros[4],
+                visual_s1:
+                    valoresVisuales[0],
+                visual_s2:
+                    valoresVisuales[1],
+                visual_s3:
+                    valoresVisuales[2],
+                visual_s4:
+                    valoresVisuales[3],
+                visual_s5:
+                    valoresVisuales[4]
+            };
+        });
+    }
+
+    var processedData =
+        calcularDatos(data);
+
+    function makeSeries(
+        name,
+        cantidadField,
+        porcentajeField,
+        visualField,
+        color
+    ) {
+        var series =
+            chart.series.push(
+                am5xy.ColumnSeries.new(
+                    root,
+                    {
+                        name: name,
+                        xAxis: xAxis,
+                        yAxis: yAxis,
+                        stacked: true,
+                        valueXField: visualField,
+                        categoryYField: 'category',
+                        stroke: color,
+                        fill: color
+                    }
+                )
+            );
+
+        series.columns.template.setAll({
+            height: am5.percent(85),
+            tooltipY: 0,
+            stroke: am5.color(0x000000),
+            strokeWidth: 0.5,
+            tooltipText:
+                '{name}: {cantidad} trabajadores ({porcentaje}%)'
+        });
+
+        series.columns.template.adapters.add(
+            'forceHidden',
+            function(forceHidden, target)
+            {
+                if (
+                    target.dataItem &&
+                    target.dataItem.dataContext
+                ) {
+                    var category =
+                        target.dataItem
+                            .dataContext
+                            .category || '';
+
+                    if (
+                        category.indexOf('g3-') === 0
+                    ) {
+                        return true;
+                    }
+                }
+
+                return forceHidden;
+            }
+        );
+
+        series.bullets.push(function(
+            rootBullet,
+            serie,
+            dataItem
+        ) {
+            var contexto =
+                dataItem.dataContext || {};
+
+            var category =
+                contexto.category || '';
+
+            if (
+                category.indexOf('g3-') === 0
+            ) {
+                return undefined;
+            }
+
+            var cantidad =
+                parseInt(
+                    contexto.cantidad,
+                    10
+                ) || 0;
+
+            if (cantidad <= 0) {
+                return undefined;
+            }
+
+            var porcentaje =
+                parseInt(
+                    contexto.porcentaje,
+                    10
+                ) || 0;
+
+            var tamanioLetra = 17;
+
+            if (porcentaje <= 3) {
+                tamanioLetra = 13;
+            } else if (porcentaje <= 5) {
+                tamanioLetra = 14;
+            } else if (porcentaje <= 10) {
+                tamanioLetra = 15;
+            }
+
+            return am5.Bullet.new(
+                root,
+                {
+                    locationX: 0.5,
+                    locationY: 0.5,
+                    sprite:
+                        am5.Label.new(
+                            root,
+                            {
+                                text:
+                                    cantidad +
+                                    ' (' +
+                                    porcentaje +
+                                    '%)',
+
+                                centerX: am5.p50,
+                                centerY: am5.p50,
+                                populateText: false,
+                                fontSize: tamanioLetra,
+                                fill:
+                                    am5.color(
+                                        0x000000
+                                    ),
+                                fontWeight: 'bold',
+                                textAlign: 'center',
+                                paddingLeft: 1,
+                                paddingRight: 1
+                            }
+                        )
+                }
+            );
+        });
+
+        var datosSerie =
+            processedData.map(function(item)
+            {
+                if (
+                    item.category &&
+                    item.category.indexOf('g3-') === 0
+                ) {
+                    var filaVacia = {
+                        category: item.category,
+                        cantidad: null,
+                        porcentaje: null
+                    };
+
+                    filaVacia[visualField] =
+                        null;
+
+                    return filaVacia;
+                }
+
+                var fila = {
+                    category: item.category,
+                    cantidad:
+                        item[cantidadField],
+                    porcentaje:
+                        item[porcentajeField]
+                };
+
+                fila[visualField] =
+                    item[visualField];
+
+                return fila;
+            });
+
+        series.data.setAll(datosSerie);
+
+        series.appear();
+
+        legend.data.push(series);
+    }
+
+    makeSeries(
+        'Muy alto',
+        's1',
+        'percentage_s1',
+        'visual_s1',
+        am5.color(0xFF0000)
+    );
+
+    makeSeries(
+        'Alto',
+        's2',
+        'percentage_s2',
+        'visual_s2',
+        am5.color(0xF7AA32)
+    );
+
+    makeSeries(
+        'Medio',
+        's3',
+        'percentage_s3',
+        'visual_s3',
+        am5.color(0xFFFF00)
+    );
+
+    makeSeries(
+        'Bajo',
+        's4',
+        'percentage_s4',
+        'visual_s4',
+        am5.color(0x00B050)
+    );
+
+    makeSeries(
+        'Nulo',
+        's5',
+        'percentage_s5',
+        'visual_s5',
+        am5.color(0x00B0F0)
+    );
+
+    chart
+        .appear(1000, 100)
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                if (
+                    typeof am5plugins_exporting !==
+                    'undefined'
+                ) {
+                    var exporting =
+                        am5plugins_exporting
+                            .Exporting
+                            .new(
+                                root,
+                                {
+                                    menu:
+                                        am5plugins_exporting
+                                            .ExportingMenu
+                                            .new(root, {}),
+
+                                    dpi: 300,
+
+                                    maxWidth: 2000,
+
+                                    maxHeight: 2000
+                                }
+                            );
+
+                    exporting
+                        .export('png')
+                        .then(function(imagen)
+                        {
+                            chartPngs[
+                                'ambienteChart'
+                            ] = imagen;
+
+                            console.log(
+                                'ambienteChart exportado exitosamente'
+                            );
+                        })
+                        .catch(function(error)
+                        {
+                            console.error(
+                                'Error al exportar ambienteChart:',
+                                error
+                            );
+                        });
+
+                } else {
+                    console.log(
+                        'Plugin de exportación no disponible'
+                    );
+                }
+
+            }, 1000);
+        });
+}
+
+// CATEGORIA FACTORES PROPIOS DE LA ACTIVIDAD
+
+function cargarGraficaFactoresGuiaIII()
+{
+    $.get(
+        '/obtenerGraficaFactoresGuiaIII/' + proyecto.id,
+        function(response)
+        {
+            crearGraficaFactoresGuiaIII(response.data);
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.error(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar la gráfica de factores propios de la actividad'
+        });
+    });
+}
+
+function crearGraficaFactoresGuiaIII(data)
+    {
+    if (!Array.isArray(data)) {
+        data = [];
+    }
+
+    if (
+        window.factoresChartRoot &&
+        !window.factoresChartRoot.isDisposed()
+    ) {
+        window.factoresChartRoot.dispose();
+        window.factoresChartRoot = null;
+    }
+
+    var contenedor = document.getElementById('factoresChart');
+
+    if (!contenedor) {
+        console.error('No existe el contenedor #factoresChart');
+        return;
+    }
+
+    contenedor.innerHTML = '';
+
+    if (data.length === 0) {
+        contenedor.innerHTML = `
+            <div style="
+                width:100%;
+                height:650px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                text-align:center;
+                font-weight:bold;
+                color:#777;
+            ">
+                No hay información disponible
+            </div>
+        `;
+
+        if (typeof chartPngs !== 'undefined') {
+            chartPngs['factoresChart'] = null;
+        }
+
+        return;
+    }
+
+    window.factoresChartRoot =
+        am5.Root.new('factoresChart');
+
+    var root =
+        window.factoresChartRoot;
+
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    var chart =
+        root.container.children.push(
+            am5xy.XYChart.new(
+                root,
+                {
+                    panX: false,
+                    panY: false,
+                    wheelX: 'none',
+                    wheelY: 'none',
+                    layout: root.verticalLayout,
+                    paddingLeft: 0,
+                    paddingRight: 20
+                }
+            )
+        );
+
+    chart.children.unshift(
+        am5.Label.new(
+            root,
+            {
+                text: "Categoría\n\n\n",
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                x: am5.p50,
+                centerX: am5.p50
+            }
+        )
+    );
+
+    var legend =
+        chart.children.push(
+            am5.Legend.new(
+                root,
+                {
+                    centerX: am5.p50,
+                    x: am5.p50
+                }
+            )
+        );
+
+    legend.labels.template.setAll({
+        fontSize: 20,
+        fontWeight: 'bold'
+    });
+
+    legend.valueLabels.template.setAll({
+        forceHidden: true,
+        visible: false
+    });
+
+    legend.markers.template.setAll({
+        width: 20,
+        height: 20
+    });
+
+    var yAxisRenderer =
+        am5xy.AxisRendererY.new(
+            root,
+            {
+                inversed: true,
+                cellStartLocation: 0.05,
+                cellEndLocation: 0.90,
+                minGridDistance: 0
+            }
+        );
+
+    var yAxis =
+        chart.yAxes.push(
+            am5xy.CategoryAxis.new(
+                root,
+                {
+                    categoryField: 'category',
+                    renderer: yAxisRenderer,
+                    tooltip: am5.Tooltip.new(root, {})
+                }
+            )
+        );
+
+    yAxisRenderer.grid.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    yAxisRenderer.ticks.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    yAxisRenderer.labels.template.setAll({
+        fontSize: 18,
+        fontWeight: 'bold',
+        centerY: am5.p50,
+        centerX: am5.p0,
+        textAlign: 'center',
+        inside: true,
+        rotation: 0,
+        paddingTop: -100,
+        oversizedBehavior: 'wrap',
+        maxWidth: 330
+    });
+
+    yAxisRenderer
+        .labels
+        .template
+        .adapters
+        .add(
+            'text',
+            function(text, target)
+            {
+                if (!target.dataItem) {
+                    return text;
+                }
+
+                var category =
+                    target.dataItem.get('category') || '';
+
+                if (
+                    category.indexOf('g1-') === 0 ||
+                    category.indexOf('g2-') === 0 ||
+                    category.indexOf('g3-') === 0
+                ) {
+                    return '[bold]' +
+                        category.substring(3) +
+                        '[/]';
+                }
+
+                return category;
+            }
+        );
+
+    yAxis.data.setAll(data);
+
+    var xAxisRenderer =
+        am5xy.AxisRendererX.new(
+            root,
+            {
+                minGridDistance: 50
+            }
+        );
+
+    var xAxis =
+        chart.xAxes.push(
+            am5xy.ValueAxis.new(
+                root,
+                {
+                    renderer: xAxisRenderer,
+                    min: 0,
+                    max: 100,
+                    strictMinMax: true,
+                    maxDeviation: 0
+                }
+            )
+        );
+
+    xAxisRenderer.grid.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    xAxisRenderer.labels.template.setAll({
+        forceHidden: true,
+        visible: false
+    });
+
+    xAxisRenderer.ticks.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    if (xAxisRenderer.baseGrid) {
+        xAxisRenderer.baseGrid.setAll({
+            forceHidden: true,
+            visible: false,
+            strokeOpacity: 0
+        });
+    }
+
+    function obtenerPorcentajesEnteros(valores)
+    {
+        var total =
+            valores.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
+
+        if (total <= 0) {
+            return [0, 0, 0, 0, 0];
+        }
+
+        var porcentajesExactos =
+            valores.map(function(valor)
+            {
+                return (valor / total) * 100;
+            });
+
+        var porcentajesEnteros =
+            porcentajesExactos.map(function(valor)
+            {
+                return Math.floor(valor);
+            });
+
+        var sumaEnteros =
+            porcentajesEnteros.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
+
+        var faltantes =
+            100 - sumaEnteros;
+
+        var residuos =
+            porcentajesExactos.map(
+                function(valor, indice)
+                {
+                    return {
+                        indice: indice,
+                        residuo:
+                            valor -
+                            porcentajesEnteros[indice]
+                    };
+                }
+            );
+
+        residuos.sort(function(a, b)
+        {
+            return b.residuo - a.residuo;
+        });
+
+        for (
+            var indice = 0;
+            indice < faltantes;
+            indice++
+        ) {
+            porcentajesEnteros[
+                residuos[indice].indice
+            ]++;
+        }
+
+        return porcentajesEnteros;
+    }
+
+    function calcularDatos(datos)
+    {
+        return datos.map(function(item)
+        {
+            if (
+                item.category &&
+                item.category.indexOf('g3-') === 0
+            ) {
+                return {
+                    category: item.category,
+                    s1: null,
+                    s2: null,
+                    s3: null,
+                    s4: null,
+                    s5: null,
+                    percentage_s1: null,
+                    percentage_s2: null,
+                    percentage_s3: null,
+                    percentage_s4: null,
+                    percentage_s5: null,
+                    visual_s1: null,
+                    visual_s2: null,
+                    visual_s3: null,
+                    visual_s4: null,
+                    visual_s5: null
+                };
+            }
+
+            var s1 =
+                parseInt(item.s1, 10) || 0;
+
+            var s2 =
+                parseInt(item.s2, 10) || 0;
+
+            var s3 =
+                parseInt(item.s3, 10) || 0;
+
+            var s4 =
+                parseInt(item.s4, 10) || 0;
+
+            var s5 =
+                parseInt(item.s5, 10) || 0;
+
+            var valores = [
+                s1,
+                s2,
+                s3,
+                s4,
+                s5
+            ];
+
+            var total =
+                valores.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
+
+            if (total <= 0) {
+                return {
+                    category: item.category,
+                    s1: s1,
+                    s2: s2,
+                    s3: s3,
+                    s4: s4,
+                    s5: s5,
+                    percentage_s1: 0,
+                    percentage_s2: 0,
+                    percentage_s3: 0,
+                    percentage_s4: 0,
+                    percentage_s5: 0,
+                    visual_s1: 0,
+                    visual_s2: 0,
+                    visual_s3: 0,
+                    visual_s4: 0,
+                    visual_s5: 0
+                };
+            }
+
+            var porcentajesEnteros =
+                obtenerPorcentajesEnteros(valores);
+
+            var porcentajesExactos =
+                valores.map(function(valor)
+                {
+                    return (valor / total) * 100;
+                });
+
+            var minimoVisual = 8;
+
+            var valoresVisuales =
+                porcentajesExactos.map(
+                    function(porcentaje, indice)
+                    {
+                        if (valores[indice] <= 0) {
+                            return 0;
+                        }
+
+                        return Math.max(
+                            porcentaje,
+                            minimoVisual
+                        );
+                    }
+                );
+
+            var totalVisual =
+                valoresVisuales.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
+
+            if (totalVisual > 0) {
+                valoresVisuales =
+                    valoresVisuales.map(
+                        function(valor)
+                        {
+                            return (
+                                valor /
+                                totalVisual
+                            ) * 100;
+                        }
+                    );
+            }
+
+            return {
+                category: item.category,
+                s1: s1,
+                s2: s2,
+                s3: s3,
+                s4: s4,
+                s5: s5,
+                percentage_s1:
+                    porcentajesEnteros[0],
+                percentage_s2:
+                    porcentajesEnteros[1],
+                percentage_s3:
+                    porcentajesEnteros[2],
+                percentage_s4:
+                    porcentajesEnteros[3],
+                percentage_s5:
+                    porcentajesEnteros[4],
+                visual_s1:
+                    valoresVisuales[0],
+                visual_s2:
+                    valoresVisuales[1],
+                visual_s3:
+                    valoresVisuales[2],
+                visual_s4:
+                    valoresVisuales[3],
+                visual_s5:
+                    valoresVisuales[4]
+            };
+        });
+    }
+
+    var processedData =
+        calcularDatos(data);
+
+    function makeSeries(
+        name,
+        cantidadField,
+        porcentajeField,
+        visualField,
+        color
+    ) {
+        var series =
+            chart.series.push(
+                am5xy.ColumnSeries.new(
+                    root,
+                    {
+                        name: name,
+                        xAxis: xAxis,
+                        yAxis: yAxis,
+                        stacked: true,
+                        valueXField: visualField,
+                        categoryYField: 'category',
+                        stroke: color,
+                        fill: color
+                    }
+                )
+            );
+
+        series.columns.template.setAll({
+            height: am5.percent(85),
+            tooltipY: 0,
+            stroke: am5.color(0x000000),
+            strokeWidth: 0.5,
+            tooltipText:
+                '{name}: {cantidad} trabajadores ({porcentaje}%)'
+        });
+
+        series.columns.template.adapters.add(
+            'forceHidden',
+            function(forceHidden, target)
+            {
+                if (
+                    target.dataItem &&
+                    target.dataItem.dataContext
+                ) {
+                    var category =
+                        target.dataItem
+                            .dataContext
+                            .category || '';
+
+                    if (
+                        category.indexOf('g3-') === 0
+                    ) {
+                        return true;
+                    }
+                }
+
+                return forceHidden;
+            }
+        );
+
+        series.bullets.push(function(
+            rootBullet,
+            serie,
+            dataItem
+        ) {
+            var contexto =
+                dataItem.dataContext || {};
+
+            var category =
+                contexto.category || '';
+
+            if (
+                category.indexOf('g3-') === 0
+            ) {
+                return undefined;
+            }
+
+            var cantidad =
+                parseInt(
+                    contexto.cantidad,
+                    10
+                ) || 0;
+
+            if (cantidad <= 0) {
+                return undefined;
+            }
+
+            var porcentaje =
+                parseInt(
+                    contexto.porcentaje,
+                    10
+                ) || 0;
+
+            var tamanioLetra = 17;
+
+            if (porcentaje <= 3) {
+                tamanioLetra = 13;
+            } else if (porcentaje <= 5) {
+                tamanioLetra = 14;
+            } else if (porcentaje <= 10) {
+                tamanioLetra = 15;
+            }
+
+            return am5.Bullet.new(
+                root,
+                {
+                    locationX: 0.5,
+                    locationY: 0.5,
+                    sprite:
+                        am5.Label.new(
+                            root,
+                            {
+                                text:
+                                    cantidad +
+                                    ' (' +
+                                    porcentaje +
+                                    '%)',
+
+                                centerX: am5.p50,
+                                centerY: am5.p50,
+                                populateText: false,
+                                fontSize: tamanioLetra,
+                                fill:
+                                    am5.color(
+                                        0x000000
+                                    ),
+                                fontWeight: 'bold',
+                                textAlign: 'center',
+                                paddingLeft: 1,
+                                paddingRight: 1
+                            }
+                        )
+                }
+            );
+        });
+
+        var datosSerie =
+            processedData.map(function(item)
+            {
+                if (
+                    item.category &&
+                    item.category.indexOf('g3-') === 0
+                ) {
+                    var filaVacia = {
+                        category: item.category,
+                        cantidad: null,
+                        porcentaje: null
+                    };
+
+                    filaVacia[visualField] =
+                        null;
+
+                    return filaVacia;
+                }
+
+                var fila = {
+                    category: item.category,
+                    cantidad:
+                        item[cantidadField],
+                    porcentaje:
+                        item[porcentajeField]
+                };
+
+                fila[visualField] =
+                    item[visualField];
+
+                return fila;
+            });
+
+        series.data.setAll(datosSerie);
+
+        series.appear();
+
+        legend.data.push(series);
+    }
+
+    makeSeries(
+        'Muy alto',
+        's1',
+        'percentage_s1',
+        'visual_s1',
+        am5.color(0xFF0000)
+    );
+
+    makeSeries(
+        'Alto',
+        's2',
+        'percentage_s2',
+        'visual_s2',
+        am5.color(0xF7AA32)
+    );
+
+    makeSeries(
+        'Medio',
+        's3',
+        'percentage_s3',
+        'visual_s3',
+        am5.color(0xFFFF00)
+    );
+
+    makeSeries(
+        'Bajo',
+        's4',
+        'percentage_s4',
+        'visual_s4',
+        am5.color(0x00B050)
+    );
+
+    makeSeries(
+        'Nulo',
+        's5',
+        'percentage_s5',
+        'visual_s5',
+        am5.color(0x00B0F0)
+    );
+
+    chart
+        .appear(1000, 100)
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                if (
+                    typeof am5plugins_exporting !==
+                    'undefined'
+                ) {
+                    var exporting =
+                        am5plugins_exporting
+                            .Exporting
+                            .new(
+                                root,
+                                {
+                                    menu:
+                                        am5plugins_exporting
+                                            .ExportingMenu
+                                            .new(root, {}),
+
+                                    dpi: 300,
+
+                                    maxWidth: 2000,
+
+                                    maxHeight: 2000
+                                }
+                            );
+
+                    exporting
+                        .export('png')
+                        .then(function(imagen)
+                        {
+                            chartPngs[
+                                'factoresChart'
+                            ] = imagen;
+
+                            console.log(
+                                'factoresChart exportado exitosamente'
+                            );
+                        })
+                        .catch(function(error)
+                        {
+                            console.error(
+                                'Error al exportar factoresChart:',
+                                error
+                            );
+                        });
+
+                } else {
+                    console.log(
+                        'Plugin de exportación no disponible'
+                    );
+                }
+
+            }, 1000);
+        });
+}
+
+// ORGANIZACION DEL TIEMPO DE TRABAJO
+
+function cargarGraficaOrganizacionGuiaIII()
+{
+    $.get(
+        '/obtenerGraficaOrganizacionGuiaIII/' + proyecto.id,
+        function(response)
+        {
+            crearGraficaOrganizacionGuiaIII(response.data);
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.error(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar la gráfica de organización del tiempo de trabajo'
+        });
+    });
+}
+
+function crearGraficaOrganizacionGuiaIII(data)
+{
+    if (!Array.isArray(data)) {
+        data = [];
+    }
+
+    if (
+        window.organizacionChartRoot &&
+        !window.organizacionChartRoot.isDisposed()
+    ) {
+        window.organizacionChartRoot.dispose();
+        window.organizacionChartRoot = null;
+    }
+
+    var contenedor = document.getElementById('organizacionChart');
+
+    if (!contenedor) {
+        console.error('No existe el contenedor #organizacionChart');
+        return;
+    }
+
+    contenedor.innerHTML = '';
+
+    if (data.length === 0) {
+        contenedor.innerHTML = `
+            <div style="
+                width:100%;
+                height:650px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                text-align:center;
+                font-weight:bold;
+                color:#777;
+            ">
+                No hay información disponible
+            </div>
+        `;
+
+        if (typeof chartPngs !== 'undefined') {
+            chartPngs['organizacionChart'] = null;
+        }
+
+        return;
+    }
+
+    window.organizacionChartRoot = am5.Root.new('organizacionChart');
+
+    var root = window.organizacionChartRoot;
+
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    var chart = root.container.children.push(
+        am5xy.XYChart.new(root, {
+            panX: false,
+            panY: false,
+            wheelX: 'none',
+            wheelY: 'none',
+            layout: root.verticalLayout,
+            paddingLeft: 0,
+            paddingRight: 20
+        })
+    );
+
+    chart.children.unshift(
+        am5.Label.new(root, {
+            text: "Categoría\n\n\n",
+            fontSize: 18,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            x: am5.p50,
+            centerX: am5.p50
+        })
+    );
+
+    var legend = chart.children.push(
+        am5.Legend.new(root, {
+            centerX: am5.p50,
+            x: am5.p50
+        })
+    );
+
+    legend.labels.template.setAll({
+        fontSize: 20,
+        fontWeight: 'bold'
+    });
+
+    legend.valueLabels.template.setAll({
+        forceHidden: true,
+        visible: false
+    });
+
+    legend.markers.template.setAll({
+        width: 20,
+        height: 20
+    });
+
+    var yAxisRenderer = am5xy.AxisRendererY.new(root, {
+        inversed: true,
+        cellStartLocation: 0.05,
+        cellEndLocation: 0.90,
+        minGridDistance: 0
+    });
+
+    var yAxis = chart.yAxes.push(
+        am5xy.CategoryAxis.new(root, {
+            categoryField: 'category',
+            renderer: yAxisRenderer,
+            tooltip: am5.Tooltip.new(root, {})
+        })
+    );
+
+    yAxisRenderer.grid.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    yAxisRenderer.ticks.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    yAxisRenderer.labels.template.setAll({
+        fontSize: 18,
+        fontWeight: 'bold',
+        centerY: am5.p50,
+        centerX: am5.p0,
+        textAlign: 'center',
+        inside: true,
+        rotation: 0,
+        paddingTop: -100,
+        oversizedBehavior: 'wrap',
+        maxWidth: 330
+    });
+
+    yAxisRenderer.labels.template.adapters.add(
+        'text',
+        function(text, target)
+        {
+            if (!target.dataItem) {
+                return text;
+            }
+
+            var category = target.dataItem.get('category') || '';
+
+            if (
+                category.indexOf('g1-') === 0 ||
+                category.indexOf('g2-') === 0 ||
+                category.indexOf('g3-') === 0
+            ) {
+                return '[bold]' + category.substring(3) + '[/]';
+            }
+
+            return category;
+        }
+    );
+
+    yAxis.data.setAll(data);
+
+    var xAxisRenderer = am5xy.AxisRendererX.new(root, {
+        minGridDistance: 50
+    });
+
+    var xAxis = chart.xAxes.push(
+        am5xy.ValueAxis.new(root, {
+            renderer: xAxisRenderer,
+            min: 0,
+            max: 100,
+            strictMinMax: true,
+            maxDeviation: 0
+        })
+    );
+
+    xAxisRenderer.grid.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    xAxisRenderer.labels.template.setAll({
+        forceHidden: true,
+        visible: false
+    });
+
+    xAxisRenderer.ticks.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    if (xAxisRenderer.baseGrid) {
+        xAxisRenderer.baseGrid.setAll({
+            forceHidden: true,
+            visible: false,
+            strokeOpacity: 0
+        });
+    }
+
+    function obtenerPorcentajesEnteros(valores)
+    {
+        var total = valores.reduce(function(acumulado, valor)
+        {
+            return acumulado + valor;
+        }, 0);
+
+        if (total <= 0) {
+            return [0, 0, 0, 0, 0];
+        }
+
+        var porcentajesExactos = valores.map(function(valor)
+        {
+            return (valor / total) * 100;
+        });
+
+        var porcentajesEnteros = porcentajesExactos.map(function(valor)
+        {
+            return Math.floor(valor);
+        });
+
+        var sumaEnteros = porcentajesEnteros.reduce(function(acumulado, valor)
+        {
+            return acumulado + valor;
+        }, 0);
+
+        var faltantes = 100 - sumaEnteros;
+
+        var residuos = porcentajesExactos.map(function(valor, indice)
+        {
+            return {
+                indice: indice,
+                residuo: valor - porcentajesEnteros[indice]
+            };
+        });
+
+        residuos.sort(function(a, b)
+        {
+            return b.residuo - a.residuo;
+        });
+
+        for (var indice = 0; indice < faltantes; indice++) {
+            porcentajesEnteros[residuos[indice].indice]++;
+        }
+
+        return porcentajesEnteros;
+    }
+
+    function calcularDatos(datos)
+    {
+        return datos.map(function(item)
+        {
+            if (
+                item.category &&
+                item.category.indexOf('g3-') === 0
+            ) {
+                return {
+                    category: item.category,
+                    s1: null,
+                    s2: null,
+                    s3: null,
+                    s4: null,
+                    s5: null,
+                    percentage_s1: null,
+                    percentage_s2: null,
+                    percentage_s3: null,
+                    percentage_s4: null,
+                    percentage_s5: null,
+                    visual_s1: null,
+                    visual_s2: null,
+                    visual_s3: null,
+                    visual_s4: null,
+                    visual_s5: null
+                };
+            }
+
+            var s1 = parseInt(item.s1, 10) || 0;
+            var s2 = parseInt(item.s2, 10) || 0;
+            var s3 = parseInt(item.s3, 10) || 0;
+            var s4 = parseInt(item.s4, 10) || 0;
+            var s5 = parseInt(item.s5, 10) || 0;
+
+            var valores = [s1, s2, s3, s4, s5];
+
+            var total = valores.reduce(function(acumulado, valor)
+            {
+                return acumulado + valor;
+            }, 0);
+
+            if (total <= 0) {
+                return {
+                    category: item.category,
+                    s1: s1,
+                    s2: s2,
+                    s3: s3,
+                    s4: s4,
+                    s5: s5,
+                    percentage_s1: 0,
+                    percentage_s2: 0,
+                    percentage_s3: 0,
+                    percentage_s4: 0,
+                    percentage_s5: 0,
+                    visual_s1: 0,
+                    visual_s2: 0,
+                    visual_s3: 0,
+                    visual_s4: 0,
+                    visual_s5: 0
+                };
+            }
+
+            var porcentajesEnteros = obtenerPorcentajesEnteros(valores);
+
+            var porcentajesExactos = valores.map(function(valor)
+            {
+                return (valor / total) * 100;
+            });
+
+            var minimoVisual = 8;
+
+            var valoresVisuales = porcentajesExactos.map(function(porcentaje, indice)
+            {
+                if (valores[indice] <= 0) {
+                    return 0;
+                }
+
+                return Math.max(porcentaje, minimoVisual);
+            });
+
+            var totalVisual = valoresVisuales.reduce(function(acumulado, valor)
+            {
+                return acumulado + valor;
+            }, 0);
+
+            if (totalVisual > 0) {
+                valoresVisuales = valoresVisuales.map(function(valor)
+                {
+                    return (valor / totalVisual) * 100;
+                });
+            }
+
+            return {
+                category: item.category,
+                s1: s1,
+                s2: s2,
+                s3: s3,
+                s4: s4,
+                s5: s5,
+                percentage_s1: porcentajesEnteros[0],
+                percentage_s2: porcentajesEnteros[1],
+                percentage_s3: porcentajesEnteros[2],
+                percentage_s4: porcentajesEnteros[3],
+                percentage_s5: porcentajesEnteros[4],
+                visual_s1: valoresVisuales[0],
+                visual_s2: valoresVisuales[1],
+                visual_s3: valoresVisuales[2],
+                visual_s4: valoresVisuales[3],
+                visual_s5: valoresVisuales[4]
+            };
+        });
+    }
+
+    var processedData = calcularDatos(data);
+
+    function makeSeries(
+        name,
+        cantidadField,
+        porcentajeField,
+        visualField,
+        color
+    ) {
+        var series = chart.series.push(
+            am5xy.ColumnSeries.new(root, {
+                name: name,
+                xAxis: xAxis,
+                yAxis: yAxis,
+                stacked: true,
+                valueXField: visualField,
+                categoryYField: 'category',
+                stroke: color,
+                fill: color
+            })
+        );
+
+        series.columns.template.setAll({
+            height: am5.percent(85),
+            tooltipY: 0,
+            stroke: am5.color(0x000000),
+            strokeWidth: 0.5,
+            tooltipText: '{name}: {cantidad} trabajadores ({porcentaje}%)'
+        });
+
+        series.columns.template.adapters.add(
+            'forceHidden',
+            function(forceHidden, target)
+            {
+                if (
+                    target.dataItem &&
+                    target.dataItem.dataContext
+                ) {
+                    var category =
+                        target.dataItem.dataContext.category || '';
+
+                    if (category.indexOf('g3-') === 0) {
+                        return true;
+                    }
+                }
+
+                return forceHidden;
+            }
+        );
+
+        series.bullets.push(function(rootBullet, serie, dataItem)
+        {
+            var contexto = dataItem.dataContext || {};
+
+            var category = contexto.category || '';
+
+            if (category.indexOf('g3-') === 0) {
+                return undefined;
+            }
+
+            var cantidad =
+                parseInt(contexto.cantidad, 10) || 0;
+
+            if (cantidad <= 0) {
+                return undefined;
+            }
+
+            var porcentaje =
+                parseInt(contexto.porcentaje, 10) || 0;
+
+            var tamanioLetra = 17;
+
+            if (porcentaje <= 3) {
+                tamanioLetra = 13;
+            } else if (porcentaje <= 5) {
+                tamanioLetra = 14;
+            } else if (porcentaje <= 10) {
+                tamanioLetra = 15;
+            }
+
+            return am5.Bullet.new(root, {
+                locationX: 0.5,
+                locationY: 0.5,
+                sprite: am5.Label.new(root, {
+                    text: cantidad + ' (' + porcentaje + '%)',
+                    centerX: am5.p50,
+                    centerY: am5.p50,
+                    populateText: false,
+                    fontSize: tamanioLetra,
+                    fill: am5.color(0x000000),
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    paddingLeft: 1,
+                    paddingRight: 1
+                })
+            });
+        });
+
+        var datosSerie = processedData.map(function(item)
+        {
+            if (
+                item.category &&
+                item.category.indexOf('g3-') === 0
+            ) {
+                var filaVacia = {
+                    category: item.category,
+                    cantidad: null,
+                    porcentaje: null
+                };
+
+                filaVacia[visualField] = null;
+
+                return filaVacia;
+            }
+
+            var fila = {
+                category: item.category,
+                cantidad: item[cantidadField],
+                porcentaje: item[porcentajeField]
+            };
+
+            fila[visualField] = item[visualField];
+
+            return fila;
+        });
+
+        series.data.setAll(datosSerie);
+
+        series.appear();
+
+        legend.data.push(series);
+    }
+
+    makeSeries(
+        'Muy alto',
+        's1',
+        'percentage_s1',
+        'visual_s1',
+        am5.color(0xFF0000)
+    );
+
+    makeSeries(
+        'Alto',
+        's2',
+        'percentage_s2',
+        'visual_s2',
+        am5.color(0xF7AA32)
+    );
+
+    makeSeries(
+        'Medio',
+        's3',
+        'percentage_s3',
+        'visual_s3',
+        am5.color(0xFFFF00)
+    );
+
+    makeSeries(
+        'Bajo',
+        's4',
+        'percentage_s4',
+        'visual_s4',
+        am5.color(0x00B050)
+    );
+
+    makeSeries(
+        'Nulo',
+        's5',
+        'percentage_s5',
+        'visual_s5',
+        am5.color(0x00B0F0)
+    );
+
+    chart
+        .appear(1000, 100)
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                if (
+                    typeof am5plugins_exporting !==
+                    'undefined'
+                ) {
+                    var exporting =
+                        am5plugins_exporting.Exporting.new(
+                            root,
+                            {
+                                menu:
+                                    am5plugins_exporting
+                                        .ExportingMenu
+                                        .new(root, {}),
+
+                                dpi: 300,
+
+                                maxWidth: 2000,
+
+                                maxHeight: 2000
+                            }
+                        );
+
+                    exporting
+                        .export('png')
+                        .then(function(imagen)
+                        {
+                            chartPngs['organizacionChart'] =
+                                imagen;
+
+                            console.log(
+                                'organizacionChart exportado exitosamente'
+                            );
+                        })
+                        .catch(function(error)
+                        {
+                            console.error(
+                                'Error al exportar organizacionChart:',
+                                error
+                            );
+                        });
+
+                } else {
+                    console.log(
+                        'Plugin de exportación no disponible'
+                    );
+                }
+
+            }, 1000);
+        });
+}
+
+// CATEGORIA LIDERAZGO Y RELACIONES EN EL TRABAJO 
+
+function cargarGraficaLiderazgoGuiaIII()
+{
+    $.get(
+        '/obtenerGraficaLiderazgoGuiaIII/' + proyecto.id,
+        function(response)
+        {
+            crearGraficaLiderazgoGuiaIII(response.data);
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.error(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar la gráfica de liderazgo y relaciones en el trabajo'
+        });
+    });
+}
+
+function crearGraficaLiderazgoGuiaIII(data)
+{
+    if (!Array.isArray(data)) {
+        data = [];
+    }
+
+    if (
+        window.liderazgoChartRoot &&
+        !window.liderazgoChartRoot.isDisposed()
+    ) {
+        window.liderazgoChartRoot.dispose();
+        window.liderazgoChartRoot = null;
+    }
+
+    var contenedor =
+        document.getElementById('liderazgoChart');
+
+    if (!contenedor) {
+        console.error(
+            'No existe el contenedor #liderazgoChart'
+        );
+
+        return;
+    }
+
+    contenedor.innerHTML = '';
+
+    if (data.length === 0) {
+
+        contenedor.innerHTML = `
+            <div style="
+                width:100%;
+                height:750px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                text-align:center;
+                font-weight:bold;
+                color:#777;
+            ">
+                No hay información disponible
+            </div>
+        `;
+
+        if (typeof chartPngs !== 'undefined') {
+            chartPngs['liderazgoChart'] = null;
+        }
+
+        return;
+    }
+
+    window.liderazgoChartRoot =
+        am5.Root.new('liderazgoChart');
+
+    var root =
+        window.liderazgoChartRoot;
+
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    var chart =
+        root.container.children.push(
+            am5xy.XYChart.new(
+                root,
+                {
+                    panX: false,
+                    panY: false,
+                    wheelX: 'none',
+                    wheelY: 'none',
+                    layout: root.verticalLayout,
+                    paddingLeft: 0,
+                    paddingRight: 20
+                }
+            )
+        );
+
+    chart.children.unshift(
+        am5.Label.new(
+            root,
+            {
+                text: "Categoría\n\n\n",
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                x: am5.p50,
+                centerX: am5.p50
+            }
+        )
+    );
+
+    var legend =
+        chart.children.push(
+            am5.Legend.new(
+                root,
+                {
+                    centerX: am5.p50,
+                    x: am5.p50
+                }
+            )
+        );
+
+    legend.labels.template.setAll({
+        fontSize: 20,
+        fontWeight: 'bold'
+    });
+
+    legend.valueLabels.template.setAll({
+        forceHidden: true,
+        visible: false
+    });
+
+    legend.markers.template.setAll({
+        width: 20,
+        height: 20
+    });
+
+    var yAxisRenderer =
+        am5xy.AxisRendererY.new(
+            root,
+            {
+                inversed: true,
+                cellStartLocation: 0.05,
+                cellEndLocation: 0.90,
+                minGridDistance: 0
+            }
+        );
+
+    var yAxis =
+        chart.yAxes.push(
+            am5xy.CategoryAxis.new(
+                root,
+                {
+                    categoryField: 'category',
+                    renderer: yAxisRenderer,
+                    tooltip: am5.Tooltip.new(root, {})
+                }
+            )
+        );
+
+    yAxisRenderer.grid.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    yAxisRenderer.ticks.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    yAxisRenderer.labels.template.setAll({
+        fontSize: 18,
+        fontWeight: 'bold',
+        centerY: am5.p50,
+        centerX: am5.p0,
+        textAlign: 'center',
+        inside: true,
+        rotation: 0,
+        paddingTop: -100,
+        oversizedBehavior: 'wrap',
+        maxWidth: 340
+    });
+
+    yAxisRenderer
+        .labels
+        .template
+        .adapters
+        .add(
+            'text',
+            function(text, target)
+            {
+                if (!target.dataItem) {
+                    return text;
+                }
+
+                var category =
+                    target.dataItem.get('category') || '';
+
+                if (
+                    category.indexOf('g1-') === 0 ||
+                    category.indexOf('g2-') === 0 ||
+                    category.indexOf('g3-') === 0
+                ) {
+                    return '[bold]' +
+                        category.substring(3) +
+                        '[/]';
+                }
+
+                return category;
+            }
+        );
+
+    yAxis.data.setAll(data);
+
+    var xAxisRenderer =
+        am5xy.AxisRendererX.new(
+            root,
+            {
+                minGridDistance: 50
+            }
+        );
+
+    var xAxis =
+        chart.xAxes.push(
+            am5xy.ValueAxis.new(
+                root,
+                {
+                    renderer: xAxisRenderer,
+                    min: 0,
+                    max: 100,
+                    strictMinMax: true,
+                    maxDeviation: 0
+                }
+            )
+        );
+
+    xAxisRenderer.grid.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    xAxisRenderer.labels.template.setAll({
+        forceHidden: true,
+        visible: false
+    });
+
+    xAxisRenderer.ticks.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    if (xAxisRenderer.baseGrid) {
+        xAxisRenderer.baseGrid.setAll({
+            forceHidden: true,
+            visible: false,
+            strokeOpacity: 0
+        });
+    }
+
+    function obtenerPorcentajesEnteros(valores)
+    {
+        var total =
+            valores.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
+
+        if (total <= 0) {
+            return [0, 0, 0, 0, 0];
+        }
+
+        var porcentajesExactos =
+            valores.map(function(valor)
+            {
+                return (valor / total) * 100;
+            });
+
+        var porcentajesEnteros =
+            porcentajesExactos.map(function(valor)
+            {
+                return Math.floor(valor);
+            });
+
+        var sumaEnteros =
+            porcentajesEnteros.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
+
+        var faltantes =
+            100 - sumaEnteros;
+
+        var residuos =
+            porcentajesExactos.map(
+                function(valor, indice)
+                {
+                    return {
+                        indice: indice,
+                        residuo:
+                            valor -
+                            porcentajesEnteros[indice]
+                    };
+                }
+            );
+
+        residuos.sort(function(a, b)
+        {
+            return b.residuo - a.residuo;
+        });
+
+        for (
+            var indice = 0;
+            indice < faltantes;
+            indice++
+        ) {
+            porcentajesEnteros[
+                residuos[indice].indice
+            ]++;
+        }
+
+        return porcentajesEnteros;
+    }
+
+    function calcularDatos(datos)
+    {
+        return datos.map(function(item)
+        {
+            if (
+                item.category &&
+                item.category.indexOf('g3-') === 0
+            ) {
+                return {
+                    category: item.category,
+                    s1: null,
+                    s2: null,
+                    s3: null,
+                    s4: null,
+                    s5: null,
+                    percentage_s1: null,
+                    percentage_s2: null,
+                    percentage_s3: null,
+                    percentage_s4: null,
+                    percentage_s5: null,
+                    visual_s1: null,
+                    visual_s2: null,
+                    visual_s3: null,
+                    visual_s4: null,
+                    visual_s5: null
+                };
+            }
+
+            var s1 =
+                parseInt(item.s1, 10) || 0;
+
+            var s2 =
+                parseInt(item.s2, 10) || 0;
+
+            var s3 =
+                parseInt(item.s3, 10) || 0;
+
+            var s4 =
+                parseInt(item.s4, 10) || 0;
+
+            var s5 =
+                parseInt(item.s5, 10) || 0;
+
+            var valores = [
+                s1,
+                s2,
+                s3,
+                s4,
+                s5
+            ];
+
+            var total =
+                valores.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
+
+            if (total <= 0) {
+                return {
+                    category: item.category,
+                    s1: s1,
+                    s2: s2,
+                    s3: s3,
+                    s4: s4,
+                    s5: s5,
+                    percentage_s1: 0,
+                    percentage_s2: 0,
+                    percentage_s3: 0,
+                    percentage_s4: 0,
+                    percentage_s5: 0,
+                    visual_s1: 0,
+                    visual_s2: 0,
+                    visual_s3: 0,
+                    visual_s4: 0,
+                    visual_s5: 0
+                };
+            }
+
+            var porcentajesEnteros =
+                obtenerPorcentajesEnteros(valores);
+
+            var porcentajesExactos =
+                valores.map(function(valor)
+                {
+                    return (valor / total) * 100;
+                });
+
+            var minimoVisual = 8;
+
+            var valoresVisuales =
+                porcentajesExactos.map(
+                    function(porcentaje, indice)
+                    {
+                        if (valores[indice] <= 0) {
+                            return 0;
+                        }
+
+                        return Math.max(
+                            porcentaje,
+                            minimoVisual
+                        );
+                    }
+                );
+
+            var totalVisual =
+                valoresVisuales.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
+
+            if (totalVisual > 0) {
+                valoresVisuales =
+                    valoresVisuales.map(
+                        function(valor)
+                        {
+                            return (
+                                valor /
+                                totalVisual
+                            ) * 100;
+                        }
+                    );
+            }
+
+            return {
+                category: item.category,
+                s1: s1,
+                s2: s2,
+                s3: s3,
+                s4: s4,
+                s5: s5,
+                percentage_s1:
+                    porcentajesEnteros[0],
+                percentage_s2:
+                    porcentajesEnteros[1],
+                percentage_s3:
+                    porcentajesEnteros[2],
+                percentage_s4:
+                    porcentajesEnteros[3],
+                percentage_s5:
+                    porcentajesEnteros[4],
+                visual_s1:
+                    valoresVisuales[0],
+                visual_s2:
+                    valoresVisuales[1],
+                visual_s3:
+                    valoresVisuales[2],
+                visual_s4:
+                    valoresVisuales[3],
+                visual_s5:
+                    valoresVisuales[4]
+            };
+        });
+    }
+
+    var processedData =
+        calcularDatos(data);
+
+    function makeSeries(
+        name,
+        cantidadField,
+        porcentajeField,
+        visualField,
+        color
+    ) {
+        var series =
+            chart.series.push(
+                am5xy.ColumnSeries.new(
+                    root,
+                    {
+                        name: name,
+                        xAxis: xAxis,
+                        yAxis: yAxis,
+                        stacked: true,
+                        valueXField: visualField,
+                        categoryYField: 'category',
+                        stroke: color,
+                        fill: color
+                    }
+                )
+            );
+
+        series.columns.template.setAll({
+            height: am5.percent(85),
+            tooltipY: 0,
+            stroke: am5.color(0x000000),
+            strokeWidth: 0.5,
+            tooltipText:
+                '{name}: {cantidad} trabajadores ({porcentaje}%)'
+        });
+
+        series.columns.template.adapters.add(
+            'forceHidden',
+            function(forceHidden, target)
+            {
+                if (
+                    target.dataItem &&
+                    target.dataItem.dataContext
+                ) {
+                    var category =
+                        target.dataItem
+                            .dataContext
+                            .category || '';
+
+                    if (
+                        category.indexOf('g3-') === 0
+                    ) {
+                        return true;
+                    }
+                }
+
+                return forceHidden;
+            }
+        );
+
+        series.bullets.push(function(
+            rootBullet,
+            serie,
+            dataItem
+        ) {
+            var contexto =
+                dataItem.dataContext || {};
+
+            var category =
+                contexto.category || '';
+
+            if (
+                category.indexOf('g3-') === 0
+            ) {
+                return undefined;
+            }
+
+            var cantidad =
+                parseInt(
+                    contexto.cantidad,
+                    10
+                ) || 0;
+
+            if (cantidad <= 0) {
+                return undefined;
+            }
+
+            var porcentaje =
+                parseInt(
+                    contexto.porcentaje,
+                    10
+                ) || 0;
+
+            var tamanioLetra = 17;
+
+            if (porcentaje <= 3) {
+                tamanioLetra = 13;
+            } else if (porcentaje <= 5) {
+                tamanioLetra = 14;
+            } else if (porcentaje <= 10) {
+                tamanioLetra = 15;
+            }
+
+            return am5.Bullet.new(
+                root,
+                {
+                    locationX: 0.5,
+                    locationY: 0.5,
+                    sprite:
+                        am5.Label.new(
+                            root,
+                            {
+                                text:
+                                    cantidad +
+                                    ' (' +
+                                    porcentaje +
+                                    '%)',
+
+                                centerX: am5.p50,
+                                centerY: am5.p50,
+                                populateText: false,
+                                fontSize: tamanioLetra,
+                                fill:
+                                    am5.color(
+                                        0x000000
+                                    ),
+                                fontWeight: 'bold',
+                                textAlign: 'center',
+                                paddingLeft: 1,
+                                paddingRight: 1
+                            }
+                        )
+                }
+            );
+        });
+
+        var datosSerie =
+            processedData.map(function(item)
+            {
+                if (
+                    item.category &&
+                    item.category.indexOf('g3-') === 0
+                ) {
+                    var filaVacia = {
+                        category: item.category,
+                        cantidad: null,
+                        porcentaje: null
+                    };
+
+                    filaVacia[visualField] =
+                        null;
+
+                    return filaVacia;
+                }
+
+                var fila = {
+                    category: item.category,
+                    cantidad:
+                        item[cantidadField],
+                    porcentaje:
+                        item[porcentajeField]
+                };
+
+                fila[visualField] =
+                    item[visualField];
+
+                return fila;
+            });
+
+        series.data.setAll(datosSerie);
+
+        series.appear();
+
+        legend.data.push(series);
+    }
+
+    makeSeries(
+        'Muy alto',
+        's1',
+        'percentage_s1',
+        'visual_s1',
+        am5.color(0xFF0000)
+    );
+
+    makeSeries(
+        'Alto',
+        's2',
+        'percentage_s2',
+        'visual_s2',
+        am5.color(0xF7AA32)
+    );
+
+    makeSeries(
+        'Medio',
+        's3',
+        'percentage_s3',
+        'visual_s3',
+        am5.color(0xFFFF00)
+    );
+
+    makeSeries(
+        'Bajo',
+        's4',
+        'percentage_s4',
+        'visual_s4',
+        am5.color(0x00B050)
+    );
+
+    makeSeries(
+        'Nulo',
+        's5',
+        'percentage_s5',
+        'visual_s5',
+        am5.color(0x00B0F0)
+    );
+
+    chart
+        .appear(1000, 100)
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                if (
+                    typeof am5plugins_exporting !==
+                    'undefined'
+                ) {
+                    var exporting =
+                        am5plugins_exporting
+                            .Exporting
+                            .new(
+                                root,
+                                {
+                                    menu:
+                                        am5plugins_exporting
+                                            .ExportingMenu
+                                            .new(root, {}),
+
+                                    dpi: 300,
+
+                                    maxWidth: 2000,
+
+                                    maxHeight: 2000
+                                }
+                            );
+
+                    exporting
+                        .export('png')
+                        .then(function(imagen)
+                        {
+                            chartPngs[
+                                'liderazgoChart'
+                            ] = imagen;
+
+                            console.log(
+                                'liderazgoChart exportado exitosamente'
+                            );
+                        })
+                        .catch(function(error)
+                        {
+                            console.error(
+                                'Error al exportar liderazgoChart:',
+                                error
+                            );
+                        });
+
+                } else {
+                    console.log(
+                        'Plugin de exportación no disponible'
+                    );
+                }
+
+            }, 1000);
+        });
+}
+
+
+// CATEGORIA ENTORNO ORGANIZACIONAL 
+
+function cargarGraficaEntornoGuiaIII()
+{
+    $.get(
+        '/obtenerGraficaEntornoGuiaIII/' + proyecto.id,
+        function(response)
+        {
+            crearGraficaEntornoGuiaIII(response.data);
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.error(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar la gráfica de entorno organizacional'
+        });
+    });
+}
+
+function crearGraficaEntornoGuiaIII(data)
+{
+    if (!Array.isArray(data)) {
+        data = [];
+    }
+
+    if (
+        window.entornoChartRoot &&
+        !window.entornoChartRoot.isDisposed()
+    ) {
+        window.entornoChartRoot.dispose();
+        window.entornoChartRoot = null;
+    }
+
+    var contenedor =
+        document.getElementById('entornoChart');
+
+    if (!contenedor) {
+        console.error(
+            'No existe el contenedor #entornoChart'
+        );
+
+        return;
+    }
+
+    contenedor.innerHTML = '';
+
+    if (data.length === 0) {
+
+        contenedor.innerHTML = `
+            <div style="
+                width:100%;
+                height:650px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                text-align:center;
+                font-weight:bold;
+                color:#777;
+            ">
+                No hay información disponible
+            </div>
+        `;
+
+        if (typeof chartPngs !== 'undefined') {
+            chartPngs['entornoChart'] = null;
+        }
+
+        return;
+    }
+
+    window.entornoChartRoot =
+        am5.Root.new('entornoChart');
+
+    var root =
+        window.entornoChartRoot;
+
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    var chart =
+        root.container.children.push(
+            am5xy.XYChart.new(
+                root,
+                {
+                    panX: false,
+                    panY: false,
+                    wheelX: 'none',
+                    wheelY: 'none',
+                    layout: root.verticalLayout,
+                    paddingLeft: 0,
+                    paddingRight: 20
+                }
+            )
+        );
+
+    chart.children.unshift(
+        am5.Label.new(
+            root,
+            {
+                text: "Categoría\n\n\n",
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                x: am5.p50,
+                centerX: am5.p50
+            }
+        )
+    );
+
+    var legend =
+        chart.children.push(
+            am5.Legend.new(
+                root,
+                {
+                    centerX: am5.p50,
+                    x: am5.p50
+                }
+            )
+        );
+
+    legend.labels.template.setAll({
+        fontSize: 20,
+        fontWeight: 'bold'
+    });
+
+    legend.valueLabels.template.setAll({
+        forceHidden: true,
+        visible: false
+    });
+
+    legend.markers.template.setAll({
+        width: 20,
+        height: 20
+    });
+
+    var yAxisRenderer =
+        am5xy.AxisRendererY.new(
+            root,
+            {
+                inversed: true,
+                cellStartLocation: 0.05,
+                cellEndLocation: 0.90,
+                minGridDistance: 0
+            }
+        );
+
+    var yAxis =
+        chart.yAxes.push(
+            am5xy.CategoryAxis.new(
+                root,
+                {
+                    categoryField: 'category',
+                    renderer: yAxisRenderer,
+                    tooltip: am5.Tooltip.new(root, {})
+                }
+            )
+        );
+
+    yAxisRenderer.grid.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    yAxisRenderer.ticks.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    yAxisRenderer.labels.template.setAll({
+        fontSize: 18,
+        fontWeight: 'bold',
+        centerY: am5.p50,
+        centerX: am5.p0,
+        textAlign: 'center',
+        inside: true,
+        rotation: 0,
+        paddingTop: -100,
+        oversizedBehavior: 'wrap',
+        maxWidth: 380
+    });
+
+    yAxisRenderer
+        .labels
+        .template
+        .adapters
+        .add(
+            'text',
+            function(text, target)
+            {
+                if (!target.dataItem) {
+                    return text;
+                }
+
+                var category =
+                    target.dataItem.get('category') || '';
+
+                if (
+                    category.indexOf('g1-') === 0 ||
+                    category.indexOf('g2-') === 0 ||
+                    category.indexOf('g3-') === 0
+                ) {
+                    return '[bold]' +
+                        category.substring(3) +
+                        '[/]';
+                }
+
+                return category;
+            }
+        );
+
+    yAxis.data.setAll(data);
+
+    var xAxisRenderer =
+        am5xy.AxisRendererX.new(
+            root,
+            {
+                minGridDistance: 50
+            }
+        );
+
+    var xAxis =
+        chart.xAxes.push(
+            am5xy.ValueAxis.new(
+                root,
+                {
+                    renderer: xAxisRenderer,
+                    min: 0,
+                    max: 100,
+                    strictMinMax: true,
+                    maxDeviation: 0
+                }
+            )
+        );
+
+    xAxisRenderer.grid.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    xAxisRenderer.labels.template.setAll({
+        forceHidden: true,
+        visible: false
+    });
+
+    xAxisRenderer.ticks.template.setAll({
+        forceHidden: true,
+        visible: false,
+        strokeOpacity: 0
+    });
+
+    if (xAxisRenderer.baseGrid) {
+        xAxisRenderer.baseGrid.setAll({
+            forceHidden: true,
+            visible: false,
+            strokeOpacity: 0
+        });
+    }
+
+    function obtenerPorcentajesEnteros(valores)
+    {
+        var total =
+            valores.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
+
+        if (total <= 0) {
+            return [0, 0, 0, 0, 0];
+        }
+
+        var porcentajesExactos =
+            valores.map(function(valor)
+            {
+                return (valor / total) * 100;
+            });
+
+        var porcentajesEnteros =
+            porcentajesExactos.map(function(valor)
+            {
+                return Math.floor(valor);
+            });
+
+        var sumaEnteros =
+            porcentajesEnteros.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
+
+        var faltantes =
+            100 - sumaEnteros;
+
+        var residuos =
+            porcentajesExactos.map(
+                function(valor, indice)
+                {
+                    return {
+                        indice: indice,
+                        residuo:
+                            valor -
+                            porcentajesEnteros[indice]
+                    };
+                }
+            );
+
+        residuos.sort(function(a, b)
+        {
+            return b.residuo - a.residuo;
+        });
+
+        for (
+            var indice = 0;
+            indice < faltantes;
+            indice++
+        ) {
+            porcentajesEnteros[
+                residuos[indice].indice
+            ]++;
+        }
+
+        return porcentajesEnteros;
+    }
+
+    function calcularDatos(datos)
+    {
+        return datos.map(function(item)
+        {
+            if (
+                item.category &&
+                item.category.indexOf('g3-') === 0
+            ) {
+                return {
+                    category: item.category,
+                    s1: null,
+                    s2: null,
+                    s3: null,
+                    s4: null,
+                    s5: null,
+                    percentage_s1: null,
+                    percentage_s2: null,
+                    percentage_s3: null,
+                    percentage_s4: null,
+                    percentage_s5: null,
+                    visual_s1: null,
+                    visual_s2: null,
+                    visual_s3: null,
+                    visual_s4: null,
+                    visual_s5: null
+                };
+            }
+
+            var s1 =
+                parseInt(item.s1, 10) || 0;
+
+            var s2 =
+                parseInt(item.s2, 10) || 0;
+
+            var s3 =
+                parseInt(item.s3, 10) || 0;
+
+            var s4 =
+                parseInt(item.s4, 10) || 0;
+
+            var s5 =
+                parseInt(item.s5, 10) || 0;
+
+            var valores = [
+                s1,
+                s2,
+                s3,
+                s4,
+                s5
+            ];
+
+            var total =
+                valores.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
+
+            if (total <= 0) {
+                return {
+                    category: item.category,
+                    s1: s1,
+                    s2: s2,
+                    s3: s3,
+                    s4: s4,
+                    s5: s5,
+                    percentage_s1: 0,
+                    percentage_s2: 0,
+                    percentage_s3: 0,
+                    percentage_s4: 0,
+                    percentage_s5: 0,
+                    visual_s1: 0,
+                    visual_s2: 0,
+                    visual_s3: 0,
+                    visual_s4: 0,
+                    visual_s5: 0
+                };
+            }
+
+            var porcentajesEnteros =
+                obtenerPorcentajesEnteros(valores);
+
+            var porcentajesExactos =
+                valores.map(function(valor)
+                {
+                    return (valor / total) * 100;
+                });
+
+            var minimoVisual = 8;
+
+            var valoresVisuales =
+                porcentajesExactos.map(
+                    function(porcentaje, indice)
+                    {
+                        if (valores[indice] <= 0) {
+                            return 0;
+                        }
+
+                        return Math.max(
+                            porcentaje,
+                            minimoVisual
+                        );
+                    }
+                );
+
+            var totalVisual =
+                valoresVisuales.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
+
+            if (totalVisual > 0) {
+                valoresVisuales =
+                    valoresVisuales.map(
+                        function(valor)
+                        {
+                            return (
+                                valor /
+                                totalVisual
+                            ) * 100;
+                        }
+                    );
+            }
+
+            return {
+                category: item.category,
+                s1: s1,
+                s2: s2,
+                s3: s3,
+                s4: s4,
+                s5: s5,
+                percentage_s1:
+                    porcentajesEnteros[0],
+                percentage_s2:
+                    porcentajesEnteros[1],
+                percentage_s3:
+                    porcentajesEnteros[2],
+                percentage_s4:
+                    porcentajesEnteros[3],
+                percentage_s5:
+                    porcentajesEnteros[4],
+                visual_s1:
+                    valoresVisuales[0],
+                visual_s2:
+                    valoresVisuales[1],
+                visual_s3:
+                    valoresVisuales[2],
+                visual_s4:
+                    valoresVisuales[3],
+                visual_s5:
+                    valoresVisuales[4]
+            };
+        });
+    }
+
+    var processedData =
+        calcularDatos(data);
+
+    function makeSeries(
+        name,
+        cantidadField,
+        porcentajeField,
+        visualField,
+        color
+    ) {
+        var series =
+            chart.series.push(
+                am5xy.ColumnSeries.new(
+                    root,
+                    {
+                        name: name,
+                        xAxis: xAxis,
+                        yAxis: yAxis,
+                        stacked: true,
+                        valueXField: visualField,
+                        categoryYField: 'category',
+                        stroke: color,
+                        fill: color
+                    }
+                )
+            );
+
+        series.columns.template.setAll({
+            height: am5.percent(85),
+            tooltipY: 0,
+            stroke: am5.color(0x000000),
+            strokeWidth: 0.5,
+            tooltipText:
+                '{name}: {cantidad} trabajadores ({porcentaje}%)'
+        });
+
+        series.columns.template.adapters.add(
+            'forceHidden',
+            function(forceHidden, target)
+            {
+                if (
+                    target.dataItem &&
+                    target.dataItem.dataContext
+                ) {
+                    var category =
+                        target.dataItem
+                            .dataContext
+                            .category || '';
+
+                    if (
+                        category.indexOf('g3-') === 0
+                    ) {
+                        return true;
+                    }
+                }
+
+                return forceHidden;
+            }
+        );
+
+        series.bullets.push(function(
+            rootBullet,
+            serie,
+            dataItem
+        ) {
+            var contexto =
+                dataItem.dataContext || {};
+
+            var category =
+                contexto.category || '';
+
+            if (
+                category.indexOf('g3-') === 0
+            ) {
+                return undefined;
+            }
+
+            var cantidad =
+                parseInt(
+                    contexto.cantidad,
+                    10
+                ) || 0;
+
+            if (cantidad <= 0) {
+                return undefined;
+            }
+
+            var porcentaje =
+                parseInt(
+                    contexto.porcentaje,
+                    10
+                ) || 0;
+
+            var tamanioLetra = 17;
+
+            if (porcentaje <= 3) {
+                tamanioLetra = 13;
+            } else if (porcentaje <= 5) {
+                tamanioLetra = 14;
+            } else if (porcentaje <= 10) {
+                tamanioLetra = 15;
+            }
+
+            return am5.Bullet.new(
+                root,
+                {
+                    locationX: 0.5,
+                    locationY: 0.5,
+                    sprite:
+                        am5.Label.new(
+                            root,
+                            {
+                                text:
+                                    cantidad +
+                                    ' (' +
+                                    porcentaje +
+                                    '%)',
+
+                                centerX: am5.p50,
+                                centerY: am5.p50,
+                                populateText: false,
+                                fontSize: tamanioLetra,
+                                fill:
+                                    am5.color(
+                                        0x000000
+                                    ),
+                                fontWeight: 'bold',
+                                textAlign: 'center',
+                                paddingLeft: 1,
+                                paddingRight: 1
+                            }
+                        )
+                }
+            );
+        });
+
+        var datosSerie =
+            processedData.map(function(item)
+            {
+                if (
+                    item.category &&
+                    item.category.indexOf('g3-') === 0
+                ) {
+                    var filaVacia = {
+                        category: item.category,
+                        cantidad: null,
+                        porcentaje: null
+                    };
+
+                    filaVacia[visualField] =
+                        null;
+
+                    return filaVacia;
+                }
+
+                var fila = {
+                    category: item.category,
+                    cantidad:
+                        item[cantidadField],
+                    porcentaje:
+                        item[porcentajeField]
+                };
+
+                fila[visualField] =
+                    item[visualField];
+
+                return fila;
+            });
+
+        series.data.setAll(datosSerie);
+
+        series.appear();
+
+        legend.data.push(series);
+    }
+
+    makeSeries(
+        'Muy alto',
+        's1',
+        'percentage_s1',
+        'visual_s1',
+        am5.color(0xFF0000)
+    );
+
+    makeSeries(
+        'Alto',
+        's2',
+        'percentage_s2',
+        'visual_s2',
+        am5.color(0xF7AA32)
+    );
+
+    makeSeries(
+        'Medio',
+        's3',
+        'percentage_s3',
+        'visual_s3',
+        am5.color(0xFFFF00)
+    );
+
+    makeSeries(
+        'Bajo',
+        's4',
+        'percentage_s4',
+        'visual_s4',
+        am5.color(0x00B050)
+    );
+
+    makeSeries(
+        'Nulo',
+        's5',
+        'percentage_s5',
+        'visual_s5',
+        am5.color(0x00B0F0)
+    );
+
+    chart
+        .appear(1000, 100)
+        .then(function()
+        {
+            setTimeout(function()
+            {
+                if (
+                    typeof am5plugins_exporting !==
+                    'undefined'
+                ) {
+                    var exporting =
+                        am5plugins_exporting
+                            .Exporting
+                            .new(
+                                root,
+                                {
+                                    menu:
+                                        am5plugins_exporting
+                                            .ExportingMenu
+                                            .new(root, {}),
+
+                                    dpi: 300,
+
+                                    maxWidth: 2000,
+
+                                    maxHeight: 2000
+                                }
+                            );
+
+                    exporting
+                        .export('png')
+                        .then(function(imagen)
+                        {
+                            chartPngs[
+                                'entornoChart'
+                            ] = imagen;
+
+                            console.log(
+                                'entornoChart exportado exitosamente'
+                            );
+                        })
+                        .catch(function(error)
+                        {
+                            console.error(
+                                'Error al exportar entornoChart:',
+                                error
+                            );
+                        });
+
+                } else {
+                    console.log(
+                        'Plugin de exportación no disponible'
+                    );
+                }
+
+            }, 1000);
+        });
+}
+
+
+
 am5.ready(function () {
 	function createChart(containerId, titleText, subtitleText, data, chartName) {
 		// Crear root
@@ -3547,215 +9519,6 @@ am5.ready(function () {
 
 
 
-	// Crear gráficos
-	createChart(
-		"ambienteChart",
-		"Categoría\n\n\n",
-		"(Nivel de riesgo/NOM-035-STPS-2018)\n\n",
-		[{
-			category: "g1-Ambiente de trabajo\n",
-			s1: 2, s2: 3, s3: 1, s4: 3, s5: 1
-		}, {
-			category: "g3-\n\n\nDominios:"
-		}, {
-			category: "g2-Condiciones del ambiente de trabajo\n",
-			s1: 3, s2: 2, s3: 2, s4: 2, s5: 1
-		}],
-		'ambienteChart'
-	);
-
-	createChart(
-		"factoresChart",
-		"Categoría\n\n\n",
-		"(Nivel de riesgo/NOM-035-STPS-2018)\n\n",
-		[{
-			category: "g1-Factores propios de la actividad\n",
-			s1: 2, s2: 3, s3: 1, s4: 3, s5: 1
-		}, {
-			category: "g3-\n\n\nDominios:"
-		}, {
-			category: "g2-Carga de trabajo\n",
-			s1: 5, s2: 1, s3: 2, s4: 1, s5: 1
-		}, {
-			category: "g2-Falta de control sobre el trabajo\n",
-			s1: 3, s2: 2, s3: 2, s4: 2, s5: 1
-		}],
-		'factoresChart'
-	);
-
-	createChart(
-		"organizacionChart",
-		"Categoría\n\n\n",
-		"(Nivel de riesgo/NOM-035-STPS-2018)\n\n",
-		[{
-			category: "g1-Organización del tiempo de trabajo\n",
-			s1: 2, s2: 3, s3: 1, s4: 3, s5: 1
-		}, {
-			category: "g3-\n\n\nDominios:"
-		}, {
-			category: "g2-Jornada de trabajo\n",
-			s1: 5, s2: 1, s3: 2, s4: 1, s5: 1
-		},  {
-			category: "g2-Interferencia trabajo/familia\n",
-			s1: 3, s2: 2, s3: 2, s4: 2, s5: 1
-		}],
-		'organizacionChart'
-	);
-
-	createChart(
-		"liderazgoChart",
-		"Categoría\n\n\n",
-		"(Nivel de riesgo/NOM-035-STPS-2018)\n\n",
-		[{
-			category: "g1-Liderazgo y relaciones en el trabajo\n",
-			s1: 2, s2: 3, s3: 1, s4: 3, s5: 1
-		}, {
-			category: "g3-\n\n\nDominios:"
-		},
-		{
-			category: "g2-Liderazgo\n",
-			s1: 5, s2: 1, s3: 2, s4: 1, s5: 1
-		},
-		 {
-			category: "g2-Relaciones en el trabajo\n",
-			s1: 3, s2: 2, s3: 2, s4: 2, s5: 1
-		},
-		{
-			category: "g2-Violencia\n",
-			s1: 3, s2: 2, s3: 2, s4: 2, s5: 1
-		}],
-		'liderazgoChart'
-	);
-
-	createChart(
-		"entornoChart",
-		"Categoría\n\n\n",
-		"(Nivel de riesgo/NOM-035-STPS-2018)\n\n",
-		[{
-			category: "g1-Entorno organizacional\n",
-			s1: 2, s2: 3, s3: 1, s4: 3, s5: 1
-		}, {
-			category: "g3-\n\n\nDominios:"
-		}, {
-			category: "g2-Reconocimiento del desempeño\n",
-			s1: 5, s2: 1, s3: 2, s4: 1, s5: 1
-		},
-		 {
-			category: "g2-Insuficiente sentido de pertenencia e inestabilidad\n",
-			s1: 3, s2: 2, s3: 2, s4: 2, s5: 1
-		}],
-		'entornoChart'
-	);
-	// dashboard
-
-	var guia1_root = am5.Root.new("guia1Chart");
-
-	// Establecer temas
-	guia1_root.setThemes([
-		am5themes_Animated.new(guia1_root)
-	]);
-	
-	// Crear gráfico
-	var guia1_chart = guia1_root.container.children.push(am5percent.PieChart.new(guia1_root, {
-		startAngle: 180,
-		endAngle: 360,
-		layout: guia1_root.verticalLayout,
-		innerRadius: am5.percent(50),
-		paddingBottom: 0
-	}));
-	
-	// Definir los colores primero
-	const colors2 = {
-		"Requiere valoración clinica": 0xFF0000,
-		"No requiere valoración clinica": 0x00B0F0
-	};
-	
-	// Crear leyenda con texto más grande y grueso
-	let legend3 = guia1_chart.children.push(
-		am5.Legend.new(guia1_root, {
-			centerX: am5.percent(50),
-			x: am5.percent(50),
-			layout: guia1_root.verticalLayout,
-			fontSize: 19,
-			fontWeight: "bold",
-			marginTop: -10,  // Reducir el margen superior
-			dy: -10 // Mover la leyenda hacia arriba
-		})
-	);
-	
-	// Crear serie
-	var guia1_series = guia1_chart.series.push(am5percent.PieSeries.new(guia1_root, {
-		startAngle: 180,
-		endAngle: 360,
-		valueField: "value",
-		categoryField: "category",
-		alignLabels: false
-	}));
-	
-	// Configurar etiquetas
-	guia1_series.labels.template.setAll({
-		fontSize: 19,
-		fontWeight: "bold",
-		text: "{value}"
-	});
-	
-	// Configurar los colores y estilos de la leyenda
-	legend3.labels.template.setAll({
-		fontSize: 19,
-		fontWeight: "bold"
-	});
-	
-	legend3.valueLabels.template.setAll({
-		fontSize: 19,
-		fontWeight: "bold"
-	});
-	
-	legend3.markers.template.setAll({
-		width: 20,
-		height: 20
-	});
-	
-	// Estilo de las rebanadas
-	guia1_series.slices.template.setAll({
-		cornerRadius: 5,
-		stroke: am5.color(0xFFFFFF)
-	});
-	
-	guia1_series.slices.template.adapters.add("fill", function(fill, target) {
-		var category = target.dataItem.get("category");
-		return am5.color(colors2[category] || fill);
-	});
-	
-	// Establecer datos
-	guia1_series.data.setAll([
-		{ value: 2, category: "Requiere valoración clinica" },
-		{ value: 69, category: "No requiere valoración clinica" },
-	]);
-	
-	// Conectar la leyenda con la serie
-	legend3.data.setAll(guia1_series.dataItems);
-	
-	// Animación
-	guia1_series.appear(1000, 100).then(() => {
-		setTimeout(() => {
-			if (typeof am5plugins_exporting !== 'undefined') {
-				var exporting = am5plugins_exporting.Exporting.new(guia1_root, {
-					menu: am5plugins_exporting.ExportingMenu.new(guia1_root, {}),
-					dpi: 300,
-					maxWidth: 2000,
-					maxHeight: 2000,
-				});
-	
-				exporting.export("png").then(function (data) {
-					acontecimientoschart = data;
-					console.log("guia1_chart exportado exitosamente");
-				}).catch(error => console.error('Error al exportar:', error));
-			} else {
-				console.log('Plugin de exportación no disponible');
-			}
-		}, 1000);
-	});
-	
 
 // 	// Crear un nuevo objeto root para el gráfico de régimen
 // 	var rootGraficoGuia1 = am5.Root.new("guia1Chart"); // Cambié root a rootGraficoRegimen
@@ -3845,138 +9608,6 @@ am5.ready(function () {
 // 	});
 
 });
-var rootConsolidadoChart2 = am5.Root.new("consolidadoChart2");
-
-// Crear tema personalizado
-const customThemeConsolidado2 = am5.Theme.new(rootConsolidadoChart2);
-customThemeConsolidado2.rule("Label").set("fontSize", 20);
-customThemeConsolidado2.rule("Grid").set("strokeOpacity", 0); // Ocultar las líneas de porcentaje
-
-// Definir los estilos para los ejes dentro del tema
-customThemeConsolidado2.rule("AxisRenderer").setAll({
-	background: am5.Rectangle.new(rootConsolidadoChart2, {
-		fill: am5.color(0x000000),
-		fillOpacity: 0.7
-	})
-});
-
-// Establecer temas
-rootConsolidadoChart2.setThemes([am5themes_Animated.new(rootConsolidadoChart2), customThemeConsolidado2]);
-
-// Datos (con valores fijos para las 5 series)
-var dataConsolidado2 = [
-	{ "category": "Interferencia en la\n relacion\n trabajo-familia", "Nulo": 0.16, "Bajo": 0.20, "Medio": 0.24, "Alto": 0.29, "Muy alto": 0.11 },
-	{ "category": "Jornada de\n trabajo", "Nulo": 0.14, "Bajo": 0.19, "Medio": 0.23, "Alto": 0.27, "Muy alto": 0.17 },
-		{ "category": "Condiciones en el \nambiente de trabajo", "Nulo": 0.10, "Bajo": 0.15, "Medio": 0.20, "Alto": 0.25, "Muy alto": 0.30 },
-		{ "category": "Liderazgo", "Nulo": 0.11, "Bajo": 0.16, "Medio": 0.19, "Alto": 0.24, "Muy alto": 0.30 },
-		
-		{ "category": "Carga de trabajo", "Nulo": 0.09, "Bajo": 0.36, "Medio": 0.21, "Alto": 0.26, "Muy alto": 0.08 },
-		{ "category": "Relaciones en el trabajo", "Nulo": 0.14, "Bajo": 0.17, "Medio": 0.22, "Alto": 0.27, "Muy alto": 0.20 },
-		{ "category": "Falta de control \nsobre el trabajo", "Nulo": 0.35, "Bajo": 0.18, "Medio": 0.22, "Alto": 0.15, "Muy alto": 0.10 },
-
-		{ "category": "Violencia", "Nulo": 0.25, "Bajo": 0.10, "Medio": 0.20, "Alto": 0.40, "Muy alto": 0.05 }
-	];
-
-var colorSetConsolidado2 = am5.ColorSet.new(rootConsolidadoChart2, {});
-
-// Modificar formato de números
-rootConsolidadoChart2.numberFormatter.set("numberFormat", "#%");
-
-// Crear gráfico
-var chartConsolidado2 = rootConsolidadoChart2.container.children.push(am5radar.RadarChart.new(rootConsolidadoChart2, {
-	panX: false,
-	panY: false,
-	wheelX: "none", // Removed zoom functionality
-    wheelY: "none",
-	innerRadius: am5.percent(10),
-	radius: am5.percent(85)
-}));
-
-// Crear ejes
-var categoryAxisRendererConsolidado2 = am5radar.AxisRendererCircular.new(rootConsolidadoChart2, {
-	innerRadius: am5.percent(10)
-});
-var categoryAxisConsolidado2 = chartConsolidado2.xAxes.push(am5xy.CategoryAxis.new(rootConsolidadoChart2, {
-	categoryField: "category",
-	renderer: categoryAxisRendererConsolidado2
-}));
-
-categoryAxisRendererConsolidado2.labels.template.setAll({
-	fill: am5.color(0x000000),
-	fontSize: 24,
-	fontWeight: "bold",
-	paddingLeft: 5,
-	paddingRight: 5,
-	paddingTop: 2,
-	paddingBottom: 2,
-	radius: 5,
-	centerX: am5.p50,
-    centerY: am5.p50,
-	 textAlign: "center"
-});
-
-categoryAxisConsolidado2.data.setAll(dataConsolidado2);
-
-// Crear eje de valor
-var valueAxisConsolidado2 = chartConsolidado2.yAxes.push(am5xy.ValueAxis.new(rootConsolidadoChart2, {
-	renderer: am5radar.AxisRendererRadial.new(rootConsolidadoChart2, {}),
-	min: 0,
-	max: 1,
-	strictMinMax: true,
-	extraMax: 0.1
-}));
-
-valueAxisConsolidado2.get("renderer").labels.template.setAll({
-	visible: false
-});
-
-// Crear series apiladas
-var seriesNamesConsolidado2 = ["Nulo", "Bajo", "Medio", "Alto", "Muy alto"];
-var seriesColorsConsolidado2 = [
-	am5.color(0x00B0F0),
-	am5.color(0x00B050),
-	am5.color(0xFFFF00),
-	am5.color(0xF7AA32),
-	am5.color(0xFF0000)
-];
-
-seriesNamesConsolidado2.forEach((seriesName, index) => {
-	var series = chartConsolidado2.series.push(am5radar.RadarColumnSeries.new(rootConsolidadoChart2, {
-		stacked: true,
-		name: seriesName,
-		xAxis: categoryAxisConsolidado2,
-		yAxis: valueAxisConsolidado2,
-		valueYField: seriesName,
-		categoryXField: "category"
-	}));
-
-	series.columns.template.setAll({
-		tooltipText: "{name}: {valueY.formatNumber('#.##%')}",
-		cornerRadius: 0,
-		strokeOpacity: 1, // Changed from 0 to 1 to show borders
-        stroke: am5.color(0x000000), // Added black border
-        strokeWidth: 0.5, // Added border width
-		fill: seriesColorsConsolidado2[index],
-		width: am5.percent(100)
-	});
-
-	// Agregar etiquetas con porcentajes
-	series.bullets.push(function () {
-		return am5.Bullet.new(rootConsolidadoChart2, {
-			sprite: am5.Label.new(rootConsolidadoChart2, {
-				text: "{valueY.formatNumber('#.##%')}",
-				populateText: true,
-				centerX: am5.p50,
-				centerY: am5.p50,
-				fill: am5.color(0x000000),
-				fontWeight: "bold"
-			})
-		});
-	});
-
-	// Asignar datos
-	series.data.setAll(dataConsolidado2);
-});
 
 // Añadir un título al gráfico
 // var title = chartConsolidado2.children.unshift(am5.Label.new(rootConsolidadoChart2, {
@@ -3991,294 +9622,9 @@ seriesNamesConsolidado2.forEach((seriesName, index) => {
 // }));
 
 // Crear la leyenda
-var legendConsolidado2 = chartConsolidado2.children.push(am5.Legend.new(rootConsolidadoChart2, {
-	centerX: am5.p50,
-	x: am5.p50,
-	y: am5.p100,
-	layout: rootConsolidadoChart2.horizontalLayout,
-	marginTop: 1
-}));
-
-// Vincular colores y nombres de las series a la leyenda
-seriesNamesConsolidado2.forEach((seriesName, index) => {
-	var series = chartConsolidado2.series.getIndex(index);
-	series.legendSettings = {
-		labelText: `Factor ${seriesName}`,
-		fill: seriesColorsConsolidado2[index]
-	};
-});
-
-// Agregar leyenda con los datos correctos
-legendConsolidado2.data.setAll(chartConsolidado2.series.values);
-
-chartConsolidado2.appear(1000, 100).then(() => {
-		setTimeout(() => {
-			if (typeof am5plugins_exporting !== 'undefined') {
-				console.log('Plugin de exportación dispo');
-	
-				var exporting = am5plugins_exporting.Exporting.new(rootConsolidadoChart2, {
-					menu: am5plugins_exporting.ExportingMenu.new(rootConsolidadoChart2, {}),
-					dpi: 300, // Ajusta el DPI para mejorar la calidad de la imagen exportada
-					// También puedes ajustar el tamaño de la imagen, si lo deseas
-					maxWidth: 2000, // Ancho máximo en píxeles
-					maxHeight: 2000,
-				});
-				console.log('si creo el exporting');
-	
-				exporting.export("png").then(function (data) {
-					dominioschart = data;
-					console.log("consolidado1 categorias exportado exitosamente");
-				}).catch(error => console.error('Error al exportar:', error));
-			} else {
-				console.log('Plugin de exportación no disponible');
-			}
-		}, 1000); // Aumenté el timeout
-	});
-
-var calificaciones_root = am5.Root.new("calificacionChart");
-
-// Establecer temas
-calificaciones_root.setThemes([
-    am5themes_Animated.new(calificaciones_root)
-]);
-
-// Crear gráfico
-var calificaciones_chart = calificaciones_root.container.children.push(am5percent.PieChart.new(calificaciones_root, {
-    startAngle: 180,
-    endAngle: 360,
-    layout: calificaciones_root.verticalLayout,
-    innerRadius: am5.percent(50),
-	paddingBottom: 0 
-}));
-
-// Definir los colores primero
-const colors = {
-    "Muy Alto": 0xFF0000,
-    "Alto": 0xF7AA32,
-    "Medio": 0xFFFF00,
-    "Bajo": 0x00B050,
-    "Nulo": 0x00B0F0
-};
-
-// Crear leyenda con texto más grande y grueso
-let legend2 = calificaciones_chart.children.push(
-    am5.Legend.new(calificaciones_root, {
-        centerX: am5.percent(50),
-        x: am5.percent(50),
-        layout: calificaciones_root.verticalLayout,
-        fontSize: 14,
-        fontWeight: "bold",
-		marginTop: -10,  // Reducir el margen superior
-        dy: -10 // Mover la leyenda hacia arriba
-    })
-);
-
-// Crear serie
-var calificaciones_series = calificaciones_chart.series.push(am5percent.PieSeries.new(calificaciones_root, {
-    startAngle: 180,
-    endAngle: 360,
-    valueField: "value",
-    categoryField: "category",
-    alignLabels: false
-}));
-
-// Configurar etiquetas
-calificaciones_series.labels.template.setAll({
-    fontSize: 14,
-    fontWeight: "bold",
-    text: "{value}"
-});
-
-// Configurar los colores y estilos de la leyenda
-legend2.labels.template.setAll({
-    fontSize: 14,
-    fontWeight: "bold"
-});
-
-legend2.valueLabels.template.setAll({
-    fontSize: 14,
-    fontWeight: "bold"
-});
-
-legend2.markers.template.setAll({
-    width: 20,
-    height: 20
-});
-
-// Estilo de las rebanadas
-calificaciones_series.slices.template.setAll({
-    cornerRadius: 5,
-    stroke: am5.color(0xFFFFFF)
-});
-
-calificaciones_series.slices.template.adapters.add("fill", function(fill, target) {
-    var category = target.dataItem.get("category");
-    return am5.color(colors[category] || fill);
-});
-
-// Establecer datos
-calificaciones_series.data.setAll([
-    { value: 1, category: "Muy Alto" },
-    { value: 31, category: "Alto" },
-    { value: 75, category: "Medio" },
-    { value: 89, category: "Bajo" },
-    { value: 55, category: "Nulo" }
-]);
-
-// Conectar la leyenda con la serie
-legend2.data.setAll(calificaciones_series.dataItems);
-
-// Animación
-calificaciones_series.appear(1000, 100).then(() => {
-    setTimeout(() => {
-        if (typeof am5plugins_exporting !== 'undefined') {
-            var exporting = am5plugins_exporting.Exporting.new(calificaciones_root, {
-                menu: am5plugins_exporting.ExportingMenu.new(calificaciones_root, {}),
-                dpi: 300,
-                maxWidth: 2000,
-                maxHeight: 2000,
-            });
-
-            exporting.export("png").then(function (data) {
-                calificacionchart = data;
-                console.log("calificacion chart exportado exitosamente");
-            }).catch(error => console.error('Error al exportar:', error));
-        } else {
-            console.log('Plugin de exportación no disponible');
-        }
-    }, 1000);
-});
 
 
 
-var rootConsolidadoChart1 = am5.Root.new("consolidadoChart");
-
-// Crear tema personalizado
-const customThemeConsolidado1 = am5.Theme.new(rootConsolidadoChart1);
-customThemeConsolidado1.rule("Label").set("fontSize", 17);
-customThemeConsolidado1.rule("Grid").set("strokeOpacity", 0); // Ocultar las líneas de porcentaje
-
-// Definir los estilos para los ejes dentro del tema
-customThemeConsolidado1.rule("AxisRenderer").setAll({
-	background: am5.Rectangle.new(rootConsolidadoChart1, {
-		fill: am5.color(0x000000),
-		fillOpacity: 0.7
-	})
-});
-
-// Establecer temas
-rootConsolidadoChart1.setThemes([am5themes_Animated.new(rootConsolidadoChart1), customThemeConsolidado1]);
-
-// Datos (con valores fijos para las 5 series)
-var dataConsolidado1 = [
-	{ "category": "Ambiente de\n trabajo", "Nulo": 0.35, "Bajo": 0.18, "Medio": 0.22, "Alto": 0.15, "Muy alto": 0.10 },
-	{ "category": "Factores Propios\n de la actividad", "Nulo": 0.09, "Bajo": 0.36, "Medio": 0.21, "Alto": 0.26, "Muy alto": 0.08 },
-	{ "category": "Entorno organizacional", "Nulo": 0.11, "Bajo": 0.16, "Medio": 0.19, "Alto": 0.24, "Muy alto": 0.30 },
-	{ "category": "Liderazgo y relaciones\n en el trabajo", "Nulo": 0.16, "Bajo": 0.20, "Medio": 0.24, "Alto": 0.29, "Muy alto": 0.11 },
-	{ "category": "Organización del \ntiempo de trabajo", "Nulo": 0.14, "Bajo": 0.19, "Medio": 0.23, "Alto": 0.27, "Muy alto": 0.17 },
-
-];
-
-var colorSetConsolidado1 = am5.ColorSet.new(rootConsolidadoChart1, {});
-
-// Modificar formato de números
-rootConsolidadoChart1.numberFormatter.set("numberFormat", "#%");
-
-// Crear gráfico
-var chartConsolidado1 = rootConsolidadoChart1.container.children.push(am5radar.RadarChart.new(rootConsolidadoChart1, {
-	panX: false,
-	panY: false,
-	wheelX: "none", // Removed zoom functionality
-    wheelY: "none",
-	innerRadius: am5.percent(10),
-	radius: am5.percent(85)
-}));
-
-chartConsolidado1.zoomOutButton.set("forceHidden", true);
-
-// Crear ejes
-var categoryAxisRendererConsolidado1 = am5radar.AxisRendererCircular.new(rootConsolidadoChart1, {
-	innerRadius: am5.percent(10)
-});
-
-
-var categoryAxisConsolidado1 = chartConsolidado1.xAxes.push(am5xy.CategoryAxis.new(rootConsolidadoChart1, {
-	categoryField: "category",
-	renderer: categoryAxisRendererConsolidado1
-}));
-
-categoryAxisRendererConsolidado1.labels.template.setAll({
-	fill: am5.color(0x000000),
-	fontSize: 20,
-	fontWeight: "bold",
-	paddingLeft: 5,
-	paddingRight: 5,
-	paddingTop: 2,
-	paddingBottom: 2
-});
-
-categoryAxisConsolidado1.data.setAll(dataConsolidado1);
-
-// Crear eje de valor
-var valueAxisConsolidado1 = chartConsolidado1.yAxes.push(am5xy.ValueAxis.new(rootConsolidadoChart1, {
-	renderer: am5radar.AxisRendererRadial.new(rootConsolidadoChart1, {}),
-	min: 0,
-	max: 1,
-	strictMinMax: true,
-	extraMax: 0.1
-}));
-
-valueAxisConsolidado1.get("renderer").labels.template.setAll({
-	visible: false
-});
-
-// Crear series apiladas
-var seriesNamesConsolidado1 = ["Nulo", "Bajo", "Medio", "Alto", "Muy alto"];
-var seriesColorsConsolidado1 = [
-	am5.color(0x00B0F0),
-	am5.color(0x00B050),
-	am5.color(0xFFFF00),
-	am5.color(0xF7AA32),
-	am5.color(0xFF0000)
-];
-
-seriesNamesConsolidado1.forEach((seriesName, index) => {
-	var series = chartConsolidado1.series.push(am5radar.RadarColumnSeries.new(rootConsolidadoChart1, {
-		stacked: true,
-		name: seriesName,
-		xAxis: categoryAxisConsolidado1,
-		yAxis: valueAxisConsolidado1,
-		valueYField: seriesName,
-		categoryXField: "category"
-	}));
-
-	series.columns.template.setAll({
-		tooltipText: "{name}: {valueY.formatNumber('#.##%')}",
-		cornerRadius: 0,
-		strokeOpacity: 1, // Changed from 0 to 1 to show borders
-        stroke: am5.color(0x000000), // Added black border
-        strokeWidth: 0.5, // Added border width
-		fill: seriesColorsConsolidado1[index],
-		width: am5.percent(100)
-	});
-
-	// Agregar etiquetas con porcentajes
-	series.bullets.push(function () {
-		return am5.Bullet.new(rootConsolidadoChart1, {
-			sprite: am5.Label.new(rootConsolidadoChart1, {
-				text: "{valueY.formatNumber('#.##%')}",
-				populateText: true,
-				centerX: am5.p50,
-				centerY: am5.p50,
-				fill: am5.color(0x000000),
-				fontWeight: "bold"
-			})
-		});
-	});
-
-	// Asignar datos
-	series.data.setAll(dataConsolidado1);
-});
 
 // Añadir un título al gráfico
 // var title = chartConsolidado1.children.unshift(am5.Label.new(rootConsolidadoChart1, {

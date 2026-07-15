@@ -2202,6 +2202,34 @@ Route::get('obtenerGraficaRegimenPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficaR
 // EXPERIENCIA LABORAL
 Route::get('obtenerGraficaExperienciaPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficaExperienciaPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaExperienciaPsico']);
 
+// CALIFICACION GLOBAL 
+Route::get('obtenerGraficaCalificacionPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficaCalificacionPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaCalificacionPsico']);
+
+// CATEGORIA
+Route::get('obtenerGraficaCategoriasGuiaIIIPsicologia/{PROYECTO_ID}', ['as' => 'obtenerGraficaCategoriasGuiaIIIPsicologia', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaCategoriasGuiaIIIPsicologia']);
+
+// DOMINIO  
+Route::get('obtenerGraficaDominiosGuiaIIIPsicologia/{PROYECTO_ID}', ['as' => 'obtenerGraficaDominiosGuiaIIIPsicologia', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaDominiosGuiaIIIPsicologia']);
+
+// GUIA I
+Route::get('obtenerGraficaGuiaIPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficaGuiaIPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaGuiaIPsico']);
+
+// CATEGORIA AMBIENTE DE TRABAJO 
+Route::get('obtenerGraficaAmbienteGuiaIII/{PROYECTO_ID}', ['as' => 'obtenerGraficaAmbienteGuiaIII', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaAmbienteGuiaIII']);
+
+// CATEGORIA FACTORES PROPIOS DE LA ACTIVIDAD 
+Route::get('obtenerGraficaFactoresGuiaIII/{PROYECTO_ID}', ['as' => 'obtenerGraficaFactoresGuiaIII', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaFactoresGuiaIII']);
+
+// CATEGORIA ORGANIZACION DEL TIEMPO DE TRABAJO 
+Route::get('obtenerGraficaOrganizacionGuiaIII/{PROYECTO_ID}', ['as' => 'obtenerGraficaOrganizacionGuiaIII', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaOrganizacionGuiaIII']);
+
+// CATEGORIA LIDERAZGO Y RELACIONES EN EL TRABAJO 
+Route::get('obtenerGraficaLiderazgoGuiaIII/{PROYECTO_ID}', ['as' => 'obtenerGraficaLiderazgoGuiaIII', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaLiderazgoGuiaIII']);
+
+// CATEGORIA ENTORNO ORGANIZACIONAL 
+Route::get('obtenerGraficaEntornoGuiaIII/{PROYECTO_ID}', ['as' => 'obtenerGraficaEntornoGuiaIII', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficaEntornoGuiaIII']);
+
+
 
 
 ////////   VERSIONES 

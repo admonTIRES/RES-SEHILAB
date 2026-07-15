@@ -71,8 +71,8 @@ class reportenom0353Controller extends Controller
 {
    
       //
-    
-       /**
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $proyecto_id
@@ -94,10 +94,11 @@ class reportenom0353Controller extends Controller
 
             //CREA LAS CALIFICACIONES
             //-------------------------------------
-            
+
             $reporte_calificaciones = reporte_calificacionesModel::where('proyecto_id', $proyecto_id)
                 ->orderBy('TRABAJADOR_ID', 'DESC')
                 ->get();
+
             $trabajadores_respuestas = respuestastrabajadorespsicoModel::where('RECPSICO_ID', $proyecto->reconocimiento_psico_id)
                 ->orderBy('RECPSICO_TRABAJADOR', 'DESC')
                 ->get();
@@ -259,7 +260,7 @@ class reportenom0353Controller extends Controller
                     ]);
                 }
             }
-         
+
 
 
             $recsensorial = reconocimientopsicoModel::findOrFail($proyecto->reconocimiento_psico_id);
@@ -279,7 +280,7 @@ class reportenom0353Controller extends Controller
         }
     }
 
-      /**
+    /**
      * Display the specified resource.
      *
      * @param  int $proyecto_id
@@ -443,9 +444,9 @@ class reportenom0353Controller extends Controller
             //------------------------------
 
             $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-            ->where('agente_id', 353) //nom0353
-            ->orderBy('reporterevisiones_revision', 'DESC')
-            ->get();
+                ->where('agente_id', 353) //nom0353
+                ->orderBy('reporterevisiones_revision', 'DESC')
+                ->get();
 
 
             if (count($revision) > 0) {
@@ -460,7 +461,7 @@ class reportenom0353Controller extends Controller
             }
 
 
-    
+
 
             // PORTADA
             //===================================================
@@ -519,8 +520,8 @@ class reportenom0353Controller extends Controller
                 $introduccion = $reporte->reportenom0353_introduccion;
             } else {
                 $dato['reporte_introduccion_guardado'] = 0;
-               
-                    $introduccion = $reportecatalogo[0]->reportenom0353catalogo_introduccion;
+
+                $introduccion = $reportecatalogo[0]->reportenom0353catalogo_introduccion;
             }
 
             $dato['reporte_introduccion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $introduccion);
@@ -621,7 +622,7 @@ class reportenom0353Controller extends Controller
             if ($dato['reporteregistro_id'] >= 0 && $reporte->reportenom0353_procesoinstalacion != NULL && $reporte->proyecto_id == $proyecto_id) {
                 $dato['reporte_procesoinstalacion_guardado'] = 1;
                 $procesoinstalacion = $reporte->reportenom0353_procesoinstalacion;
-            }else if ($dato['reporteregistro_id'] >= 0 && $recoHigiene->recsensorial_descripcionproceso != NULL) {
+            } else if ($dato['reporteregistro_id'] >= 0 && $recoHigiene->recsensorial_descripcionproceso != NULL) {
                 $dato['reporte_procesoinstalacion_guardado'] = 0;
                 $procesoinstalacion = $recoHigiene->recsensorial_descripcionproceso;
             } else {
@@ -645,7 +646,7 @@ class reportenom0353Controller extends Controller
             $dato['reporte_actividadprincipal'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $procesoinstalacion);
 
 
-           // MÉTODO DE EVALUACIÓN
+            // MÉTODO DE EVALUACIÓN
             // ===================================================
 
             $tipoAplicacion = 0; // 1 es Online, 2 es Offline (Presencial), y 3 es Mixta
@@ -653,14 +654,15 @@ class reportenom0353Controller extends Controller
             // MODELO DE LA MODALIDAD DE LOS TRABAJADORES
             $proyectoTrabajadores = proyectotrabajadoresModel::where('proyecto_id', $proyecto_id)->get();
 
-            if ($dato['reporteregistro_id'] >= 0 && 
-                $reporte->reportenom0353_metodoevaluacion != NULL && 
-                $reporte->proyecto_id == $proyecto_id) {
-                
+            if (
+                $dato['reporteregistro_id'] >= 0 &&
+                $reporte->reportenom0353_metodoevaluacion != NULL &&
+                $reporte->proyecto_id == $proyecto_id
+            ) {
+
                 // Método de evaluación ya guardado previamente
                 $dato['reporte_metodoevaluacion_guardado'] = 1;
                 $metodoevaluacion = $reporte->reportenom0353_metodoevaluacion;
-                
             } else {
                 $dato['reporte_metodoevaluacion_guardado'] = 0;
 
@@ -705,28 +707,28 @@ class reportenom0353Controller extends Controller
 
             if ($dato['reporteregistro_id'] >= 0 && $reporte->reportenom0353_conclusiones != NULL && $reporte->proyecto_id == $proyecto_id) {
                 $dato['reporte_conclusion_guardado'] = 1;
-                    $conclusionesJson = json_decode($reporte->reportenom0353_conclusiones, true);
+                $conclusionesJson = json_decode($reporte->reportenom0353_conclusiones, true);
 
-                    // Asignar valores desde el JSON a los campos correspondientes
-                    $dato['reporte_acontecimientos_conclusiones'] = $conclusionesJson['acontecimientos_traumaticos'] ?? null;
-                    $dato['reporte_ambiente_conclusiones'] = $conclusionesJson['ambiente_trabajo'] ?? null;
-                    $dato['reporte_condiciones_conclusiones'] = $conclusionesJson['condiciones_ambiente'] ?? null;
-                    $dato['reporte_factores_conclusiones'] = $conclusionesJson['factores_actividad'] ?? null;
-                    $dato['reporte_carga_conclusiones'] = $conclusionesJson['carga_trabajo'] ?? null;
-                    $dato['reporte_falta_conclusiones'] = $conclusionesJson['falta_control'] ?? null;
-                    $dato['reporte_organizacion_conclusiones'] = $conclusionesJson['organizacion_tiempo'] ?? null;
-                    $dato['reporte_jornada_conclusiones'] = $conclusionesJson['jornada_trabajo'] ?? null;
-                    $dato['reporte_interferencia_conclusiones'] = $conclusionesJson['interferencia_trabajo_familia'] ?? null;
-                    $dato['reporte_liderazgorelaciones_conclusiones'] = $conclusionesJson['liderazgo_relaciones'] ?? null;
-                    $dato['reporte_liderazgo_conclusiones'] = $conclusionesJson['liderazgo'] ?? null;
-                    $dato['reporte_relaciones_conclusiones'] = $conclusionesJson['relaciones_trabajo'] ?? null;
-                    $dato['reporte_violencia_conclusiones'] = $conclusionesJson['violencia'] ?? null;
-                    $dato['reporte_entorno_conclusiones'] = $conclusionesJson['entorno_organizacional'] ?? null;
-                    $dato['reporte_reconocimiento_conclusiones'] = $conclusionesJson['reconocimiento_desempeno'] ?? null;
-                    $dato['reporte_insuficiente_conclusiones'] = $conclusionesJson['insuficiente_pertenencia'] ?? null;
+                // Asignar valores desde el JSON a los campos correspondientes
+                $dato['reporte_acontecimientos_conclusiones'] = $conclusionesJson['acontecimientos_traumaticos'] ?? null;
+                $dato['reporte_ambiente_conclusiones'] = $conclusionesJson['ambiente_trabajo'] ?? null;
+                $dato['reporte_condiciones_conclusiones'] = $conclusionesJson['condiciones_ambiente'] ?? null;
+                $dato['reporte_factores_conclusiones'] = $conclusionesJson['factores_actividad'] ?? null;
+                $dato['reporte_carga_conclusiones'] = $conclusionesJson['carga_trabajo'] ?? null;
+                $dato['reporte_falta_conclusiones'] = $conclusionesJson['falta_control'] ?? null;
+                $dato['reporte_organizacion_conclusiones'] = $conclusionesJson['organizacion_tiempo'] ?? null;
+                $dato['reporte_jornada_conclusiones'] = $conclusionesJson['jornada_trabajo'] ?? null;
+                $dato['reporte_interferencia_conclusiones'] = $conclusionesJson['interferencia_trabajo_familia'] ?? null;
+                $dato['reporte_liderazgorelaciones_conclusiones'] = $conclusionesJson['liderazgo_relaciones'] ?? null;
+                $dato['reporte_liderazgo_conclusiones'] = $conclusionesJson['liderazgo'] ?? null;
+                $dato['reporte_relaciones_conclusiones'] = $conclusionesJson['relaciones_trabajo'] ?? null;
+                $dato['reporte_violencia_conclusiones'] = $conclusionesJson['violencia'] ?? null;
+                $dato['reporte_entorno_conclusiones'] = $conclusionesJson['entorno_organizacional'] ?? null;
+                $dato['reporte_reconocimiento_conclusiones'] = $conclusionesJson['reconocimiento_desempeno'] ?? null;
+                $dato['reporte_insuficiente_conclusiones'] = $conclusionesJson['insuficiente_pertenencia'] ?? null;
             } else {
                 $dato['reporte_conclusion_guardado'] = 0;
-                
+
                 // Contar trabajadores con y sin acontecimientos
                 foreach ($respuestasTrabajadores as $respuesta) {
                     $respuestasJson = json_decode($respuesta->RECPSICO_GUIAI_RESPUESTAS, true);
@@ -737,14 +739,14 @@ class reportenom0353Controller extends Controller
                         $cantSinAcontecimientos++;
                     }
                 }
-                
+
                 // Calcular porcentajes
-                $porcentajeAcontecimientos = $totalTrabajadores > 0 ? 
+                $porcentajeAcontecimientos = $totalTrabajadores > 0 ?
                     round(($cantAcontecimientos / $totalTrabajadores) * 100, 2) : 0;
-                $porcentajeSinAcontecimientos = $totalTrabajadores > 0 ? 
+                $porcentajeSinAcontecimientos = $totalTrabajadores > 0 ?
                     round(($cantSinAcontecimientos / $totalTrabajadores) * 100, 2) : 0;
-                
-                if($acontecimiento == 1) { //si hay acontecimiento traumático
+
+                if ($acontecimiento == 1) { //si hay acontecimiento traumático
                     $acontecimientotraumatico = DB::select('SELECT 
                                                             psicocat_conclusiones.CONCLUSION 
                                                         FROM 
@@ -752,7 +754,7 @@ class reportenom0353Controller extends Controller
                                                         WHERE 
                                                             psicocat_conclusiones.NIVEL = 6');
                     $dato['reporte_acontecimientos_conclusiones'] = "El " . $porcentajeAcontecimientos . "% (" . $cantAcontecimientos . ") " .
-                                            $acontecimientotraumatico[0]->CONCLUSION;
+                        $acontecimientotraumatico[0]->CONCLUSION;
                 } else {
                     $acontecimientotraumatico = DB::select('SELECT 
                                                             psicocat_conclusiones.CONCLUSION 
@@ -761,7 +763,7 @@ class reportenom0353Controller extends Controller
                                                         WHERE 
                                                             psicocat_conclusiones.NIVEL = 7');
                     $dato['reporte_acontecimientos_conclusiones'] = "El " . $porcentajeSinAcontecimientos . "% (" . $cantSinAcontecimientos . ") " .
-                                            $acontecimientotraumatico[0]->CONCLUSION;
+                        $acontecimientotraumatico[0]->CONCLUSION;
                 }
 
                 $dato['reporte_ambiente_conclusiones'] = "El 50% (1) de los trabajadores percibe como un riesgo alto, las condiciones del ambiente de trabajo son peligrosas, inseguras, deficientes o insalubres, lo cual puede generar o aumentar el nivel de estrés laboral y ansiedad.";
@@ -779,7 +781,6 @@ class reportenom0353Controller extends Controller
                 $dato['reporte_entorno_conclusiones'] = "El 50% (1) de los trabajadores percibe como un riesgo alto, las condiciones del ambiente de trabajo son peligrosas, inseguras, deficientes o insalubres, lo cual puede generar o aumentar el nivel de estrés laboral y ansiedad.";
                 $dato['reporte_reconocimiento_conclusiones'] = "El 50% (1) de los trabajadores percibe como un riesgo alto, las condiciones del ambiente de trabajo son peligrosas, inseguras, deficientes o insalubres, lo cual puede generar o aumentar el nivel de estrés laboral y ansiedad.";
                 $dato['reporte_insuficiente_conclusiones'] = "El 50% (1) de los trabajadores percibe como un riesgo alto, las condiciones del ambiente de trabajo son peligrosas, inseguras, deficientes o insalubres, lo cual puede generar o aumentar el nivel de estrés laboral y ansiedad.";
-    
             }
 
 
@@ -787,40 +788,38 @@ class reportenom0353Controller extends Controller
             $ambiente = 0;
             $cantambiente = 0;
 
-          
 
-               // RECOMENDACIONES
+
+            // RECOMENDACIONES
             //===================================================
 
             if ($dato['reporteregistro_id'] >= 0 && $reporte->reportenom0353_recomendaciones != NULL && $reporte->proyecto_id == $proyecto_id) {
                 $dato['reporte_recomendacion_guardado'] = 1;
-                 // Decodificar el JSON guardado
+                // Decodificar el JSON guardado
                 $recomendacionesJson = json_decode($reporte->reportenom0353_recomendaciones, true);
 
                 // Asignar valores desde el JSON a los campos correspondientes
                 $dato['reporte_acontecimientos_recomendaciones'] = $recomendacionesJson['acontecimientos_traumaticos'] ?? null;
                 $dato['reporte_ambiente_recomendaciones'] = $recomendacionesJson['ambiente_trabajo'] ?? null;
-              
+
                 $dato['reporte_factores_recomendaciones'] = $recomendacionesJson['factores_actividad'] ?? null;
-              
+
                 $dato['reporte_organizacion_recomendaciones'] = $recomendacionesJson['organizacion_tiempo'] ?? null;
-               
+
                 $dato['reporte_liderazgorelaciones_recomendaciones'] = $recomendacionesJson['liderazgo_relaciones'] ?? null;
-              
+
                 $dato['reporte_entorno_recomendaciones'] = $recomendacionesJson['entorno_organizacional'] ?? null;
-              
             } else {
                 $dato['reporte_recomendacion_guardado'] = 0;
-              
+
                 $dato['reporte_acontecimientos_recomendaciones'] =  "Realizar evaluaciones específicas y desarrollar estrategias para abordar las consecuencias de eventos traumáticos, priorizando la salud mental.";
 
-                
-            $dato['reporte_ambiente_recomendaciones'] = "Realizar una renovación integral del entorno laboral, integrando diseños innovadores que fomenten la seguridad y el bienestar.";
-            $dato['reporte_factores_recomendaciones'] = "Diseñar un programa integral de intervención para reestructurar roles y responsabilidades, disminuyendo significativamente el estrés laboral.";
-            $dato['reporte_organizacion_recomendaciones'] = "Revisar y reestructurar los turnos y horarios para minimizar las horas extras y garantizar suficientes períodos de descanso y días libres.";
-            $dato['reporte_liderazgorelaciones_recomendaciones'] = "Reestructurar equipos y liderazgos para resolver conflictos crónicos y mejorar el ambiente laboral.";
-            $dato['reporte_entorno_recomendaciones'] = "Transformar profundamente las políticas organizacionales para garantizar equidad y seguridad para todos.";
 
+                $dato['reporte_ambiente_recomendaciones'] = "Realizar una renovación integral del entorno laboral, integrando diseños innovadores que fomenten la seguridad y el bienestar.";
+                $dato['reporte_factores_recomendaciones'] = "Diseñar un programa integral de intervención para reestructurar roles y responsabilidades, disminuyendo significativamente el estrés laboral.";
+                $dato['reporte_organizacion_recomendaciones'] = "Revisar y reestructurar los turnos y horarios para minimizar las horas extras y garantizar suficientes períodos de descanso y días libres.";
+                $dato['reporte_liderazgorelaciones_recomendaciones'] = "Reestructurar equipos y liderazgos para resolver conflictos crónicos y mejorar el ambiente laboral.";
+                $dato['reporte_entorno_recomendaciones'] = "Transformar profundamente las políticas organizacionales para garantizar equidad y seguridad para todos.";
             }
 
             // RESPONSABLES DEL INFORME
@@ -846,17 +845,16 @@ class reportenom0353Controller extends Controller
                 );
             } else {
                 $dato['reporte_responsablesinforme_guardado'] = 0;
-                    $dato['reporte_responsablesinforme'] = array(
-                        'responsable1' => $recsensorial->NOMBRE_TECNICO,
-                        'responsable1cargo' => $recsensorial->CARGO_TECNICO,
-                        'responsable1documento' => $recsensorial->TECNICO_DOC,
-                        'responsable2' => $recsensorial->NOMBRE_CONTRATO,
-                        'responsable2cargo' => $recsensorial->CARGO_CONTRATO,
-                        'responsable2documento' => $recsensorial->CONTRATO_DOC,
-                        'proyecto_id' => $reporte->proyecto_id,
-                        'registro_id' => $recsensorial->id
-                    );
-              
+                $dato['reporte_responsablesinforme'] = array(
+                    'responsable1' => $recsensorial->NOMBRE_TECNICO,
+                    'responsable1cargo' => $recsensorial->CARGO_TECNICO,
+                    'responsable1documento' => $recsensorial->TECNICO_DOC,
+                    'responsable2' => $recsensorial->NOMBRE_CONTRATO,
+                    'responsable2cargo' => $recsensorial->CARGO_CONTRATO,
+                    'responsable2documento' => $recsensorial->CONTRATO_DOC,
+                    'proyecto_id' => $reporte->proyecto_id,
+                    'registro_id' => $recsensorial->id
+                );
             }
 
 
@@ -867,7 +865,8 @@ class reportenom0353Controller extends Controller
 
             $recoid = $proyecto->reconocimiento_psico_id;
 
-            $memoriafotografica = DB::select("SELECT
+            $memoriafotografica = DB::select(
+                "SELECT
                         -- Conteo total de fotopreguia (si no son NULL)
                         SUM(CASE WHEN recopsicoFotosTrabajadores.RECPSICO_FOTOPREGUIA IS NOT NULL THEN 1 ELSE 0 END) AS total_fotopreguia,
                         -- Conteo total de fotopostguia (si no son NULL)
@@ -884,10 +883,11 @@ class reportenom0353Controller extends Controller
                         recopsicoFotosTrabajadores
                     WHERE
                         recopsicoFotosTrabajadores.RECPSICO_ID = ?",
-            [$recoid]);
-                                   
+                [$recoid]
+            );
+
             //count($memoriafotografica);
-            
+
 
             if (count($memoriafotografica) > 0) {
                 $dato['reporte_memoriafotografica_guardado'] = $memoriafotografica[0]->total_fotos;
@@ -906,7 +906,7 @@ class reportenom0353Controller extends Controller
     }
 
 
-       /**
+    /**
      * Display the specified resource.
      *
      * @param  int $proyecto_id
@@ -919,25 +919,25 @@ class reportenom0353Controller extends Controller
             //=============================================================== FUNCIONES GENERALES ===============================================================
 
             function pintarCelda($sheet, $columna, $fila, $nivel)
-                {
-                    $colores = [
-                        'NULO' => '00B0F0', // Azul para nulo
-                        'NO' => '00B0F0', // Azul para NO
-                        'BAJO' => '92D050', // Verde limón
-                        'MEDIO' => 'FFFF00', // Verde bandera
-                        'ALTO' => 'ED7D31', // Rojo
-                        'MUY ALTO' => 'FF0000', // Vino
-                        'SI' => 'FF0000' // Vino
-                    ];
+            {
+                $colores = [
+                    'NULO' => '00B0F0', // Azul para nulo
+                    'NO' => '00B0F0', // Azul para NO
+                    'BAJO' => '92D050', // Verde limón
+                    'MEDIO' => 'FFFF00', // Verde bandera
+                    'ALTO' => 'ED7D31', // Rojo
+                    'MUY ALTO' => 'FF0000', // Vino
+                    'SI' => 'FF0000' // Vino
+                ];
 
-                    $color = isset($colores[$nivel]) ? $colores[$nivel] : 'D3D3D3'; // Gris por defecto
+                $color = isset($colores[$nivel]) ? $colores[$nivel] : 'D3D3D3'; // Gris por defecto
 
-                    $style = $sheet->getStyle($columna . $fila);
-                    $style->getFill()
-                        ->setFillType(Fill::FILL_SOLID)
-                        ->getStartColor()
-                        ->setRGB($color);
-                }
+                $style = $sheet->getStyle($columna . $fila);
+                $style->getFill()
+                    ->setFillType(Fill::FILL_SOLID)
+                    ->getStartColor()
+                    ->setRGB($color);
+            }
 
             //=============================================================== CARGAMOS EL EXCEL ===============================================================
             $ruta = storage_path('app/plantillas_reportes/proyecto_infomes/plantilla_mel_0353.xlsx');
@@ -1147,67 +1147,67 @@ class reportenom0353Controller extends Controller
                                     INNER JOIN recopsicoguia_5 ON reporte_calificacionestrabajadornom035.TRABAJADOR_ID = recopsicoguia_5.RECPSICOTRABAJADOR_ID
                                     INNER JOIN proyectotrabajadores ON recopsicoguia_5.RECPSICOTRABAJADOR_ID = proyectotrabajadores.TRABAJADOR_ID
                                     WHERE reporte_calificacionestrabajadornom035.proyecto_id = ?", [$proyecto_id]);
-                     
-                     
-            
-                     $fila = 8; // Inicia en la fila 8
 
-                     foreach ($datosMEL as $dato) {
-                         $HOJA_MEL->setCellValue('C' . $fila, strtoupper($dato->TRABAJADOR_NOMBRE));
-                         $HOJA_MEL->setCellValue('D' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_GENERO));
-                         $HOJA_MEL->setCellValue('E' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_EDAD));
-                         $HOJA_MEL->setCellValue('F' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_ESTADOCIVIL));
-                         $HOJA_MEL->setCellValue('G' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_ESTUDIOS));
-                         $HOJA_MEL->setCellValue('H' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_TIPOPUESTO));
-                         $HOJA_MEL->setCellValue('I' . $fila, strtoupper($dato->AREA));
-                         $HOJA_MEL->setCellValue('J' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_TIPOCONTRATACION));
-                         $HOJA_MEL->setCellValue('K' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_TIPOJORNADA));
-                         $HOJA_MEL->setCellValue('L' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_ROTACIONTURNOS));
-                         $HOJA_MEL->setCellValue('M' . $fila, $dato->GUIA1_CALIFICACION);
-                         $HOJA_MEL->setCellValue('N' . $fila, $dato->GLOBAL_NIVEL);
-                         $HOJA_MEL->setCellValue('O' . $fila, $dato->C_AMBIENTE_NIVEL);
-                         $HOJA_MEL->setCellValue('P' . $fila, $dato->D_CONDICIONES_NIVEL);
-                         $HOJA_MEL->setCellValue('Q' . $fila, $dato->C_FACTORES_NIVEL);
-                         $HOJA_MEL->setCellValue('R' . $fila, $dato->D_CARGA_NIVEL);
-                         $HOJA_MEL->setCellValue('S' . $fila, $dato->D_FALTA_NIVEL);
-                         $HOJA_MEL->setCellValue('T' . $fila, $dato->C_ORGANIZACION_NIVEL);
-                         $HOJA_MEL->setCellValue('U' . $fila, $dato->D_JORNADA_NIVEL);
-                         $HOJA_MEL->setCellValue('V' . $fila, $dato->D_INTERFERENCIA_NIVEL);
-                         $HOJA_MEL->setCellValue('W' . $fila, $dato->C_LIDERAZGO_NIVEL);
-                         $HOJA_MEL->setCellValue('X' . $fila, $dato->D_LIDERAZGO_NIVEL);
-                         $HOJA_MEL->setCellValue('Y' . $fila, $dato->D_RELACIONES_NIVEL);
-                         $HOJA_MEL->setCellValue('Z' . $fila, $dato->D_VIOLENCIA_NIVEL);
-                         $HOJA_MEL->setCellValue('AA' . $fila, $dato->C_ENTORNO_NIVEL);
-                         $HOJA_MEL->setCellValue('AB' . $fila, $dato->D_RECONOCIMIENTO_NIVEL);
-                         $HOJA_MEL->setCellValue('AC' . $fila, $dato->D_INSUFICIENTE_NIVEL);
-                     
-                         $columnasNiveles = [
-                            'M' => $dato->GUIA1_CALIFICACION,
-                            'N' => $dato->GLOBAL_NIVEL,
-                            'O' => $dato->C_AMBIENTE_NIVEL,
-                            'P' => $dato->D_CONDICIONES_NIVEL,
-                            'Q' => $dato->C_FACTORES_NIVEL,
-                            'R' => $dato->D_CARGA_NIVEL,
-                            'S' => $dato->D_FALTA_NIVEL,
-                            'T' => $dato->C_ORGANIZACION_NIVEL,
-                            'U' => $dato->D_JORNADA_NIVEL,
-                            'V' => $dato->D_INTERFERENCIA_NIVEL,
-                            'W' => $dato->C_LIDERAZGO_NIVEL,
-                            'X' => $dato->D_LIDERAZGO_NIVEL,
-                            'Y' => $dato->D_RELACIONES_NIVEL,
-                            'Z' => $dato->D_VIOLENCIA_NIVEL,
-                            'AA' => $dato->C_ENTORNO_NIVEL,
-                            'AB' => $dato->D_RECONOCIMIENTO_NIVEL,
-                            'AC' => $dato->D_INSUFICIENTE_NIVEL
-                        ];
-                    
-                        foreach ($columnasNiveles as $columna => $valorNivel) {
-                            $HOJA_MEL->setCellValue($columna . $fila, $valorNivel);
-                            pintarCelda($HOJA_MEL, $columna, $fila, $valorNivel);
-                        }
 
-                         $fila++; // Mueve a la siguiente fila
-                     }
+
+            $fila = 8; // Inicia en la fila 8
+
+            foreach ($datosMEL as $dato) {
+                $HOJA_MEL->setCellValue('C' . $fila, strtoupper($dato->TRABAJADOR_NOMBRE));
+                $HOJA_MEL->setCellValue('D' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_GENERO));
+                $HOJA_MEL->setCellValue('E' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_EDAD));
+                $HOJA_MEL->setCellValue('F' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_ESTADOCIVIL));
+                $HOJA_MEL->setCellValue('G' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_ESTUDIOS));
+                $HOJA_MEL->setCellValue('H' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_TIPOPUESTO));
+                $HOJA_MEL->setCellValue('I' . $fila, strtoupper($dato->AREA));
+                $HOJA_MEL->setCellValue('J' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_TIPOCONTRATACION));
+                $HOJA_MEL->setCellValue('K' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_TIPOJORNADA));
+                $HOJA_MEL->setCellValue('L' . $fila, strtoupper($dato->RECPSICOTRABAJADOR_ROTACIONTURNOS));
+                $HOJA_MEL->setCellValue('M' . $fila, $dato->GUIA1_CALIFICACION);
+                $HOJA_MEL->setCellValue('N' . $fila, $dato->GLOBAL_NIVEL);
+                $HOJA_MEL->setCellValue('O' . $fila, $dato->C_AMBIENTE_NIVEL);
+                $HOJA_MEL->setCellValue('P' . $fila, $dato->D_CONDICIONES_NIVEL);
+                $HOJA_MEL->setCellValue('Q' . $fila, $dato->C_FACTORES_NIVEL);
+                $HOJA_MEL->setCellValue('R' . $fila, $dato->D_CARGA_NIVEL);
+                $HOJA_MEL->setCellValue('S' . $fila, $dato->D_FALTA_NIVEL);
+                $HOJA_MEL->setCellValue('T' . $fila, $dato->C_ORGANIZACION_NIVEL);
+                $HOJA_MEL->setCellValue('U' . $fila, $dato->D_JORNADA_NIVEL);
+                $HOJA_MEL->setCellValue('V' . $fila, $dato->D_INTERFERENCIA_NIVEL);
+                $HOJA_MEL->setCellValue('W' . $fila, $dato->C_LIDERAZGO_NIVEL);
+                $HOJA_MEL->setCellValue('X' . $fila, $dato->D_LIDERAZGO_NIVEL);
+                $HOJA_MEL->setCellValue('Y' . $fila, $dato->D_RELACIONES_NIVEL);
+                $HOJA_MEL->setCellValue('Z' . $fila, $dato->D_VIOLENCIA_NIVEL);
+                $HOJA_MEL->setCellValue('AA' . $fila, $dato->C_ENTORNO_NIVEL);
+                $HOJA_MEL->setCellValue('AB' . $fila, $dato->D_RECONOCIMIENTO_NIVEL);
+                $HOJA_MEL->setCellValue('AC' . $fila, $dato->D_INSUFICIENTE_NIVEL);
+
+                $columnasNiveles = [
+                    'M' => $dato->GUIA1_CALIFICACION,
+                    'N' => $dato->GLOBAL_NIVEL,
+                    'O' => $dato->C_AMBIENTE_NIVEL,
+                    'P' => $dato->D_CONDICIONES_NIVEL,
+                    'Q' => $dato->C_FACTORES_NIVEL,
+                    'R' => $dato->D_CARGA_NIVEL,
+                    'S' => $dato->D_FALTA_NIVEL,
+                    'T' => $dato->C_ORGANIZACION_NIVEL,
+                    'U' => $dato->D_JORNADA_NIVEL,
+                    'V' => $dato->D_INTERFERENCIA_NIVEL,
+                    'W' => $dato->C_LIDERAZGO_NIVEL,
+                    'X' => $dato->D_LIDERAZGO_NIVEL,
+                    'Y' => $dato->D_RELACIONES_NIVEL,
+                    'Z' => $dato->D_VIOLENCIA_NIVEL,
+                    'AA' => $dato->C_ENTORNO_NIVEL,
+                    'AB' => $dato->D_RECONOCIMIENTO_NIVEL,
+                    'AC' => $dato->D_INSUFICIENTE_NIVEL
+                ];
+
+                foreach ($columnasNiveles as $columna => $valorNivel) {
+                    $HOJA_MEL->setCellValue($columna . $fila, $valorNivel);
+                    pintarCelda($HOJA_MEL, $columna, $fila, $valorNivel);
+                }
+
+                $fila++; // Mueve a la siguiente fila
+            }
 
 
 
@@ -1220,7 +1220,6 @@ class reportenom0353Controller extends Controller
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 'Content-Disposition' => "attachment; filename=\"{$nombre_descarga}\"",
             ]);
-            
         } catch (Exception $e) {
 
             $dato["msj"] = 'Error ' . $e->getMessage();
@@ -1370,7 +1369,6 @@ class reportenom0353Controller extends Controller
 
                         $recusros->update(['RUTA_IMAGEN_PORTADA' => $imgGuardada]);
                     }
-                    
                 } else {
 
                     foreach ($proyectoRecursos as $recurso) {
@@ -1747,22 +1745,22 @@ class reportenom0353Controller extends Controller
                     'reconocimiento_desempeno' => $request->input('reporte_reconocimiento_conclusiones'),
                     'insuficiente_pertenencia' => $request->input('reporte_insuficiente_conclusiones'),
                 ];
-            
+
                 // Convertir el array a JSON
                 $jsonConclusiones = json_encode($form_conclusiones);
-            
+
                 // Actualizar el registro en la base de datos
                 $reporte->update([
                     'reportenom0353_conclusiones' => $jsonConclusiones,
                 ]);
-            
+
 
                 // Mensaje
                 $dato["msj"] = 'Datos guardados correctamente';
             }
 
-             // RECOMENDACIONES
-             if (($request->opcion + 0) == 30) {
+            // RECOMENDACIONES
+            if (($request->opcion + 0) == 30) {
                 if ($request->recomendacion_checkbox) {
                     $eliminar_recomendaciones = reporterecomendacionescontrolModel::where('proyecto_id', $request->proyecto_id)
                         ->where('registro_id', $reporte->id)
@@ -1808,7 +1806,7 @@ class reportenom0353Controller extends Controller
             }
 
 
-              // recomendaciones
+            // recomendaciones
             if (($request->opcion + 0) == 20) {
                 if ($request->recomendacion_categoria_checkbox) {
                     $eliminar_recomendaciones_categoria = reporterecomendacionescategoriaModel::where('proyecto_id', $request->proyecto_id)
@@ -2137,7 +2135,7 @@ class reportenom0353Controller extends Controller
         }
     }
 
-      /**
+    /**
      * Display the specified resource.
      *
      * @param  int $proyecto_id
@@ -2183,15 +2181,15 @@ class reportenom0353Controller extends Controller
                                                             psicocat_definiciones.CONCEPTO ASC'));
 
             foreach ($definiciones_catalogo as $key => $value) {
-                    $value->descripcion_fuente = $value->DESCRIPCION . '<br><span style="color: #999999; font-style: italic;">Fuente: ' . $value->FUENTE . '</span>';
-                    $value->boton_editar = '<button type="button" class="btn btn-warning waves-effect btn-circle"><i class="fa fa-pencil fa-1x"></i></button>';
-                    if ($edicion == 1) {
-                        $value->boton_eliminar = '<button type="button" class="btn btn-danger waves-effect btn-circle eliminar"><i class="fa fa-trash fa-1x"></i></button>';
-                    } else {
-                        $value->boton_eliminar = '<button type="button" class="btn btn-default waves-effect btn-circle" data-toggle="tooltip" title="No disponible"><i class="fa fa-eye fa-1x"></i></button>';
-                    }
+                $value->descripcion_fuente = $value->DESCRIPCION . '<br><span style="color: #999999; font-style: italic;">Fuente: ' . $value->FUENTE . '</span>';
+                $value->boton_editar = '<button type="button" class="btn btn-warning waves-effect btn-circle"><i class="fa fa-pencil fa-1x"></i></button>';
+                if ($edicion == 1) {
+                    $value->boton_eliminar = '<button type="button" class="btn btn-danger waves-effect btn-circle eliminar"><i class="fa fa-trash fa-1x"></i></button>';
+                } else {
+                    $value->boton_eliminar = '<button type="button" class="btn btn-default waves-effect btn-circle" data-toggle="tooltip" title="No disponible"><i class="fa fa-eye fa-1x"></i></button>';
                 }
-            
+            }
+
 
             // respuesta
             $dato['data'] = $definiciones_catalogo;
@@ -2204,7 +2202,7 @@ class reportenom0353Controller extends Controller
         }
     }
 
-       /**
+    /**
      * Display the specified resource.
      *
      * @param  int $proyecto_id
@@ -2303,7 +2301,7 @@ class reportenom0353Controller extends Controller
                     $value->checkbox = '<input type="checkbox" class="recomendacionadicional_checkbox" name="recomendacionadicional_checkbox[]" value="0" checked/>
                                         <button type="button" class="btn btn-danger waves-effect btn-circle eliminar" data-toggle="tooltip" title="Eliminar recomendación"><i class="fa fa-trash fa-1x"></i></button>';
 
-                    
+
 
                     $value->descripcion = '
                                             <div class="form-group">
@@ -2329,7 +2327,7 @@ class reportenom0353Controller extends Controller
         }
     }
 
-          /**
+    /**
      * Display the specified resource.
      *
      * @param  int $proyecto_id
@@ -2433,7 +2431,7 @@ class reportenom0353Controller extends Controller
                     $value->checkbox = '<input type="checkbox" class="recomendacionadicional_categoria_checkbox" name="recomendacionadicional_categoria_checkbox[]" value="0" checked/>
                                         <button type="button" class="btn btn-danger waves-effect btn-circle eliminar" data-toggle="tooltip" title="Eliminar recomendación"><i class="fa fa-trash fa-1x"></i></button>';
 
-                    
+
 
                     $value->descripcion = '
                                             <div class="form-group">
@@ -2511,7 +2509,7 @@ class reportenom0353Controller extends Controller
         return $texto;
     }
 
-        /**
+    /**
      * Display the specified resource.
      *
      * @param  int  $reporteregistro_id
@@ -2529,7 +2527,7 @@ class reportenom0353Controller extends Controller
         }
     }
 
-    
+
     /**
      * Display the specified resource.
      *
@@ -2557,7 +2555,7 @@ class reportenom0353Controller extends Controller
         }
     }
 
-     /**
+    /**
      * Display the specified resource.
      *
      * @param int $proyecto_id
@@ -2583,25 +2581,25 @@ class reportenom0353Controller extends Controller
             } else {
                 return Storage::download($ruta_nulo);
             }
-        }else if($nivel == 2){
+        } else if ($nivel == 2) {
             if ($opcion == 0) {
                 return Storage::response($ruta_bajo);
             } else {
                 return Storage::download($ruta_bajo);
             }
-        }else if($nivel == 3){
+        } else if ($nivel == 3) {
             if ($opcion == 0) {
                 return Storage::response($ruta_medio);
             } else {
                 return Storage::download($ruta_medio);
             }
-        }else if($nivel == 4){
+        } else if ($nivel == 4) {
             if ($opcion == 0) {
                 return Storage::response($ruta_alto);
             } else {
                 return Storage::download($ruta_alto);
             }
-        }else if($nivel == 5){
+        } else if ($nivel == 5) {
             if ($opcion == 0) {
                 return Storage::response($ruta_muyalto);
             } else {
@@ -3228,7 +3226,7 @@ class reportenom0353Controller extends Controller
     }
 
     public function guardarRecomendacionesInformepsico(Request $request)
-     {
+    {
 
         try {
 
@@ -3350,7 +3348,7 @@ class reportenom0353Controller extends Controller
         $recurso =
             datosgeneralesinformePsicoModel::where(
                 'PROYECTO_ID',
-            $proyecto_id
+                $proyecto_id
             )->firstOrFail();
 
         if (($archivo_opcion + 0) == 0) {
@@ -3366,7 +3364,7 @@ class reportenom0353Controller extends Controller
         $recurso =
             datosgeneralesinformePsicoModel::where(
                 'PROYECTO_ID',
-            $proyecto_id
+                $proyecto_id
             )->firstOrFail();
         if (($archivo_opcion + 0) == 0) {
             return Storage::response($recurso->INFORME_RESPONSABLE2DOCUMENTO);
@@ -3381,7 +3379,7 @@ class reportenom0353Controller extends Controller
         $revision =
             versionesinfopsicoModel::where(
                 'PROYECTO_ID',
-            $proyecto_id
+                $proyecto_id
             )
             ->orderByDesc('NUMERO_REVISION')
             ->first();
@@ -3690,7 +3688,7 @@ class reportenom0353Controller extends Controller
 
             $plantillaword->setValue('INSTALACION_NOMBRE_TEXTO', $proyecto->proyecto_clienteinstalacion);
 
-            $plantillaword->setValue('PORTADA_FECHA',$mes . ' del ' . $anio);
+            $plantillaword->setValue('PORTADA_FECHA', $mes . ' del ' . $anio);
 
 
 
@@ -3822,23 +3820,23 @@ class reportenom0353Controller extends Controller
             //// DEFINICIONES
             $definiciones = DB::table('definicionesinformepsico as di')
                 ->join(
-                'psicocat_definiciones as cd',
-                'cd.ID_DEFINICION_INFORME',
+                    'psicocat_definiciones as cd',
+                    'cd.ID_DEFINICION_INFORME',
                     '=',
                     'di.CATALOGO_DEFINICIONES_ID'
                 )
                 ->where(
                     'di.PROYECTO_ID',
-                $PROYECTO_ID
+                    $PROYECTO_ID
                 )
                 ->orderBy(
-                'cd.CONCEPTO',
+                    'cd.CONCEPTO',
                     'ASC'
                 )
                 ->select(
-                'cd.CONCEPTO',
-                'cd.DESCRIPCION',
-                'cd.FUENTE'
+                    'cd.CONCEPTO',
+                    'cd.DESCRIPCION',
+                    'cd.FUENTE'
                 )
                 ->get();
 
@@ -4069,19 +4067,19 @@ class reportenom0353Controller extends Controller
             )
 
                 ->join(
-                'psicocat_recomendacionescontrol as cr',
-                'cr.ID_RECOMENDACION_CONTROL_INFORME',
+                    'psicocat_recomendacionescontrol as cr',
+                    'cr.ID_RECOMENDACION_CONTROL_INFORME',
                     '=',
                     'ri.CATALOGO_RECOMENDACIONES_ID'
                 )
 
                 ->where(
                     'ri.PROYECTO_ID',
-                $PROYECTO_ID
+                    $PROYECTO_ID
                 )
 
                 ->select(
-                'cr.RECOMENDACION_CONTROL'
+                    'cr.RECOMENDACION_CONTROL'
                 )
 
                 ->get();
@@ -4136,18 +4134,17 @@ class reportenom0353Controller extends Controller
                 $texto_recomendaciones = 'No cargado';
             }
 
-            $plantillaword->setValue('RECOMENDACIONES',htmlspecialchars($texto_recomendaciones));
+            $plantillaword->setValue('RECOMENDACIONES', htmlspecialchars($texto_recomendaciones));
 
 
             ////  DASHBOARD_FOTO
 
-     
+
 
             $rutaDashboardTemporal = null;
 
-            if ( $request->has('DASHBOARD_FOTO') &&!empty($request->DASHBOARD_FOTO)) 
-            {
-            
+            if ($request->has('DASHBOARD_FOTO') && !empty($request->DASHBOARD_FOTO)) {
+
                 $imagenBase64 = $request->DASHBOARD_FOTO;
 
                 $imagenBase64 = preg_replace(
@@ -4162,7 +4159,7 @@ class reportenom0353Controller extends Controller
                     $imagenBase64
                 );
 
-                $imagenBinaria = base64_decode($imagenBase64,true);
+                $imagenBinaria = base64_decode($imagenBase64, true);
 
                 if ($imagenBinaria !== false) {
 
@@ -4188,7 +4185,7 @@ class reportenom0353Controller extends Controller
                     $rutaDashboardTemporal =
                         storage_path(
                             'app/' .
-                            $rutaDashboardStorage
+                                $rutaDashboardStorage
                         );
 
 
@@ -4202,10 +4199,13 @@ class reportenom0353Controller extends Controller
 
                             'DASHBOARD_FOTO',
                             [
-                                'path' => $rutaDashboardTemporal, 'width' => 860, 'height' => 500, 'ratio' => false, 'borderColor' => '000000'
+                                'path' => $rutaDashboardTemporal,
+                                'width' => 860,
+                                'height' => 500,
+                                'ratio' => false,
+                                'borderColor' => '000000'
                             ]
                         );
-
                     } else {
                         $plantillaword->setValue(
                             'DASHBOARD_FOTO',
@@ -4218,38 +4218,266 @@ class reportenom0353Controller extends Controller
                         'NO FUE POSIBLE PROCESAR LA IMAGEN DEL DASHBOARD.'
                     );
                 }
-
             } else {
 
                 $plantillaword->setValue(
                     'DASHBOARD_FOTO',
                     'NO SE ENCONTRÓ EL DASHBOARD PARA ESTE INFORME.'
                 );
-
             }
 
+
+            ////  GRAFICAS 
+
+            $graficasWord = [
+                [
+                    'request' => 'GRAFICA_CALIFICACION',
+                    'marcador' => 'GRAFICA_CALIFICACION',
+                    'archivo' => 'grafica_calificacion',
+                    'width' => 860,
+                    'height' => 500
+                ],
+                [
+                    'request' => 'GRAFICA_CATEGORIAS',
+                    'marcador' => 'GRAFICA_CATEGORIAS',
+                    'archivo' => 'grafica_categorias',
+                    'width' => 860,
+                    'height' => 500
+                ],
+                [
+                    'request' => 'GRAFICA_DOMINIOS',
+                    'marcador' => 'GRAFICA_DOMINIOS',
+                    'archivo' => 'grafica_dominios',
+                    'width' => 860,
+                    'height' => 500
+                ],
+                [
+                    'request' => 'GRAFICA_1',
+                    'marcador' => 'GRAFICA_1',
+                    'archivo' => 'grafica_1',
+                    'width' => 860,
+                    'height' => 500
+                ],
+                [
+                    'request' => 'GRAFICA_2',
+                    'marcador' => 'GRAFICA_2',
+                    'archivo' => 'grafica_2',
+                    'width' => 860,
+                    'height' => 500
+                ],
+                [
+                    'request' => 'GRAFICA_3',
+                    'marcador' => 'GRAFICA_3',
+                    'archivo' => 'grafica_3',
+                    'width' => 860,
+                    'height' => 500
+                ],
+                [
+                    'request' => 'GRAFICA_4',
+                    'marcador' => 'GRAFICA_4',
+                    'archivo' => 'grafica_4',
+                    'width' => 860,
+                    'height' => 500
+                ],
+                [
+                    'request' => 'GRAFICA_5',
+                    'marcador' => 'GRAFICA_5',
+                    'archivo' => 'grafica_5',
+                    'width' => 860,
+                    'height' => 550
+                ],
+                [
+                    'request' => 'GRAFICA_6',
+                    'marcador' => 'GRAFICA_6',
+                    'archivo' => 'grafica_6',
+                    'width' => 860,
+                    'height' => 500
+                ]
+            ];
+
+            $rutasGraficasTemporales = [];
+
+            $folioLimpio = preg_replace(
+                '/[<>:"\/\\\\|?*]/',
+                '',
+                $proyecto->proyecto_folio
+            );
+
+            $marcadoresPlantilla = $plantillaword->getVariables();
+
+            foreach ($graficasWord as $graficaWord) {
+
+                $nombreRequest = $graficaWord['request'];
+                $marcadorWord = $graficaWord['marcador'];
+
+                if (!in_array($marcadorWord, $marcadoresPlantilla)) {
+                    continue;
+                }
+
+                $imagenBase64 = $request->input($nombreRequest, '');
+
+                if (
+                    !is_string($imagenBase64) ||
+                    trim($imagenBase64) === ''
+                ) {
+                    $plantillaword->setValue(
+                        $marcadorWord,
+                        'NO SE ENCONTRÓ LA GRÁFICA PARA ESTE INFORME.'
+                    );
+
+                    continue;
+                }
+
+                $imagenBase64 = preg_replace(
+                    '#^data:image/[^;]+;base64,#i',
+                    '',
+                    $imagenBase64
+                );
+
+                $imagenBase64 = str_replace(
+                    ' ',
+                    '+',
+                    $imagenBase64
+                );
+
+                $imagenBase64 = preg_replace(
+                    '/\s+/',
+                    '',
+                    $imagenBase64
+                );
+
+                $imagenBinaria = base64_decode(
+                    $imagenBase64,
+                    true
+                );
+
+                if (
+                    $imagenBinaria === false ||
+                    strlen($imagenBinaria) < 100
+                ) {
+                    $plantillaword->setValue(
+                        $marcadorWord,
+                        'NO FUE POSIBLE PROCESAR LA GRÁFICA.'
+                    );
+
+                    continue;
+                }
+
+                $rutaStorage =
+                    'reportes/informes/' .
+                    $graficaWord['archivo'] .
+                    '_' .
+                    $folioLimpio .
+                    '_' .
+                    uniqid() .
+                    '.png';
+
+                Storage::put(
+                    $rutaStorage,
+                    $imagenBinaria
+                );
+
+                $rutaTemporal = storage_path(
+                    'app/' . $rutaStorage
+                );
+
+                if (
+                    !Storage::exists($rutaStorage) ||
+                    !file_exists($rutaTemporal)
+                ) {
+                    $plantillaword->setValue(
+                        $marcadorWord,
+                        'NO SE ENCONTRÓ LA GRÁFICA PARA ESTE INFORME.'
+                    );
+
+                    continue;
+                }
+
+                $datosImagen = getimagesize($rutaTemporal);
+
+                if ($datosImagen === false) {
+
+                    Storage::delete($rutaStorage);
+
+                    $plantillaword->setValue(
+                        $marcadorWord,
+                        'NO FUE POSIBLE PROCESAR LA GRÁFICA.'
+                    );
+
+                    continue;
+                }
+
+                $rutasGraficasTemporales[] = $rutaStorage;
+
+                $plantillaword->setImageValue(
+                    $marcadorWord,
+                    [
+                        'path' => $rutaTemporal,
+                        'width' => $graficaWord['width'],
+                        'height' => $graficaWord['height'],
+                        'ratio' => false
+                    ]
+                );
+            }
 
             //// DESCARGAR INFORME 
 
 
-          
 
-            $nombreWord = 'Informe de FRP ' . $proyecto->proyecto_folio . '-' . $proyecto->proyecto_clienteinstalacion . '.docx';
+            $nombreWord =
+                'Informe de FRP ' .
+                $proyecto->proyecto_folio .
+                '-' .
+                $proyecto->proyecto_clienteinstalacion .
+                '.docx';
 
-            $nombreWord = preg_replace('/[<>:"\/\\\\|?*]/', '', $nombreWord);
+            $nombreWord = preg_replace(
+                '/[<>:"\/\\\\|?*]/',
+                '',
+                $nombreWord
+            );
 
-            $rutaWord = storage_path('app/temp/' . $nombreWord);
+            $rutaCarpetaTemp = storage_path('app/temp');
+
+            if (!file_exists($rutaCarpetaTemp)) {
+                mkdir(
+                    $rutaCarpetaTemp,
+                    0777,
+                    true
+                );
+            }
+
+            $rutaWord =
+                $rutaCarpetaTemp .
+                DIRECTORY_SEPARATOR .
+                $nombreWord;
 
             $plantillaword->saveAs($rutaWord);
 
-            if ($rutaDashboardTemporal &&file_exists($rutaDashboardTemporal))
-            {
+            if (
+                $rutaDashboardTemporal &&
+                file_exists($rutaDashboardTemporal)
+            ) {
                 unlink($rutaDashboardTemporal);
             }
-            
-            return response()->download(
-                $rutaWord
-            )->deleteFileAfterSend(true);
+
+            foreach ($rutasGraficasTemporales as $rutaGraficaStorage) {
+
+                if (Storage::exists($rutaGraficaStorage)) {
+                    Storage::delete($rutaGraficaStorage);
+                }
+            }
+
+            return response()
+                ->download(
+                    $rutaWord,
+                    $nombreWord
+                )
+                ->deleteFileAfterSend(true);
+
+
+
+
         } catch (Exception $e) {
 
             return response()->json([
@@ -4352,8 +4580,8 @@ class reportenom0353Controller extends Controller
 
             if ($total > 0) {
 
-                $porcentajeHombres = round(($hombres / $total) * 100,2);
-                $porcentajeMujeres = round(($mujeres / $total) * 100,2);
+                $porcentajeHombres = round(($hombres / $total) * 100, 2);
+                $porcentajeMujeres = round(($mujeres / $total) * 100, 2);
             }
 
             return response()->json([
@@ -4385,7 +4613,7 @@ class reportenom0353Controller extends Controller
     {
         try {
 
-    
+
 
             $proyecto = proyectoModel::where(
                 'id',
@@ -4685,7 +4913,7 @@ class reportenom0353Controller extends Controller
     {
         try {
 
-           
+
 
             $proyecto = proyectoModel::find($PROYECTO_ID);
 
@@ -5102,4 +5330,3482 @@ class reportenom0353Controller extends Controller
         }
     }
 
+    public function obtenerGraficaCalificacionPsico($PROYECTO_ID)
+    {
+        try {
+
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => [],
+                    'total_trabajadores' => 0
+                ], 404);
+            }
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => [],
+                    'total_trabajadores' => 0
+                ]);
+            }
+
+
+
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->get();
+
+
+
+            $nulo = 0;
+            $bajo = 0;
+            $medio = 0;
+            $alto = 0;
+            $muyAlto = 0;
+
+            $totalValidos = 0;
+
+
+            foreach ($registros as $registro) {
+
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAIII_RESPUESTAS,
+                    true
+                );
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+                $respuestas = array_slice($respuestas, 0, 72);
+
+
+                $calificacionFinal = 0;
+
+                foreach ($respuestas as $respuesta) {
+
+                    if (
+                        $respuesta !== null &&
+                        $respuesta !== '' &&
+                        is_numeric($respuesta)
+                    ) {
+
+                        $calificacionFinal +=
+                            (float) $respuesta;
+                    }
+                }
+
+
+
+                if ($calificacionFinal < 50) {
+
+                    $nulo++;
+                } elseif (
+                    $calificacionFinal >= 50 &&
+                    $calificacionFinal < 75
+                ) {
+
+                    $bajo++;
+                } elseif (
+                    $calificacionFinal >= 75 &&
+                    $calificacionFinal < 99
+                ) {
+
+                    $medio++;
+                } elseif (
+                    $calificacionFinal >= 99 &&
+                    $calificacionFinal < 140
+                ) {
+
+                    $alto++;
+                } else {
+
+                    $muyAlto++;
+                }
+
+                $totalValidos++;
+            }
+
+            $data = [
+                [
+                    'category' => 'Muy alto',
+                    'value' => $muyAlto,
+                    'color' => '#FF0000'
+                ],
+                [
+                    'category' => 'Alto',
+                    'value' => $alto,
+                    'color' => '#F7AA32'
+                ],
+                [
+                    'category' => 'Medio',
+                    'value' => $medio,
+                    'color' => '#FFFF00'
+                ],
+                [
+                    'category' => 'Bajo',
+                    'value' => $bajo,
+                    'color' => '#00B050'
+                ],
+                [
+                    'category' => 'Nulo o despreciable',
+                    'value' => $nulo,
+                    'color' => '#00B0F0'
+                ]
+            ];
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'data' => $data,
+                'total_trabajadores' => $totalValidos
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => [],
+                'total_trabajadores' => 0
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaCategoriasGuiaIIIPsicologia($PROYECTO_ID)
+    {
+        try {
+
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => []
+                ], 404);
+            }
+
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => []
+                ]);
+            }
+
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->get();
+
+
+            $preguntasCategorias = [
+
+                'Ambiente de trabajo' => [
+                    1,
+                    3,
+                    2,
+                    4,
+                    5
+                ],
+
+                'Factores propios de la actividad' => [
+                    6,
+                    12,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    65,
+                    66,
+                    67,
+                    68,
+                    13,
+                    14,
+                    15,
+                    16,
+                    25,
+                    26,
+                    27,
+                    28,
+                    23,
+                    24,
+                    29,
+                    30,
+                    35,
+                    36
+                ],
+
+                'Organización del tiempo de trabajo' => [
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22
+                ],
+
+                'Liderazgo y relaciones en el trabajo' => [
+                    31,
+                    32,
+                    33,
+                    34,
+                    37,
+                    38,
+                    39,
+                    40,
+                    41,
+                    42,
+                    43,
+                    44,
+                    45,
+                    46,
+                    69,
+                    70,
+                    71,
+                    72,
+                    57,
+                    58,
+                    59,
+                    60,
+                    61,
+                    62,
+                    63,
+                    64
+                ],
+
+                'Entorno organizacional' => [
+                    47,
+                    48,
+                    49,
+                    50,
+                    51,
+                    52,
+                    55,
+                    56,
+                    53,
+                    54
+                ]
+
+            ];
+
+
+            $resultados = [];
+
+            foreach ($preguntasCategorias as $categoria => $preguntas) {
+
+                $resultados[$categoria] = [
+                    'Nulo' => 0,
+                    'Bajo' => 0,
+                    'Medio' => 0,
+                    'Alto' => 0,
+                    'Muy alto' => 0
+                ];
+            }
+
+
+
+
+
+            $clasificarCategoria = function ($categoria, $calificacion) {
+
+
+
+                if ($categoria === 'Ambiente de trabajo') {
+
+                    if ($calificacion < 5) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 9) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 11) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 14) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+                if ($categoria === 'Factores propios de la actividad') {
+
+                    if ($calificacion < 15) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 30) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 45) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 60) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+
+                if ($categoria === 'Organización del tiempo de trabajo') {
+
+                    if ($calificacion < 5) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 7) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 10) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 13) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+
+                if ($categoria === 'Liderazgo y relaciones en el trabajo') {
+
+                    if ($calificacion < 14) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 29) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 42) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 58) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+
+
+
+                if ($categoria === 'Entorno organizacional') {
+
+                    if ($calificacion < 10) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 14) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 18) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 23) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+
+                return null;
+            };
+
+
+
+            foreach ($registros as $registro) {
+
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAIII_RESPUESTAS,
+                    true
+                );
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+                $respuestas = array_slice(
+                    $respuestas,
+                    0,
+                    72
+                );
+
+
+                foreach ($preguntasCategorias as $categoria => $preguntas) {
+
+                    $sumaCategoria = 0;
+
+                    $totalPreguntasConRespuesta = 0;
+
+
+                    foreach ($preguntas as $numeroPregunta) {
+
+                        $indice = $numeroPregunta - 1;
+
+                        if (
+                            array_key_exists($indice, $respuestas) &&
+                            $respuestas[$indice] !== null &&
+                            $respuestas[$indice] !== '' &&
+                            is_numeric($respuestas[$indice])
+                        ) {
+
+                            $sumaCategoria +=
+                                (float) $respuestas[$indice];
+
+                            $totalPreguntasConRespuesta++;
+                        }
+                    }
+
+
+                    if ($totalPreguntasConRespuesta === 0) {
+                        continue;
+                    }
+
+
+                    $nivel = $clasificarCategoria(
+                        $categoria,
+                        $sumaCategoria
+                    );
+
+                    if (
+                        $nivel !== null &&
+                        isset($resultados[$categoria][$nivel])
+                    ) {
+
+                        $resultados[$categoria][$nivel]++;
+                    }
+                }
+            }
+
+
+
+            $nombresGrafica = [
+
+                'Ambiente de trabajo' =>
+                "Ambiente de\ntrabajo",
+
+                'Factores propios de la actividad' =>
+                "Factores propios\nde la actividad",
+
+                'Organización del tiempo de trabajo' =>
+                "Organización del\ntiempo de trabajo",
+
+                'Liderazgo y relaciones en el trabajo' =>
+                "Liderazgo y relaciones\nen el trabajo",
+
+                'Entorno organizacional' =>
+                "Entorno\norganizacional"
+
+            ];
+
+
+
+            $data = [];
+
+            foreach ($resultados as $categoria => $conteos) {
+
+
+
+                $conteoNulo =
+                    (int) $conteos['Nulo'];
+
+                $conteoBajo =
+                    (int) $conteos['Bajo'];
+
+                $conteoMedio =
+                    (int) $conteos['Medio'];
+
+                $conteoAlto =
+                    (int) $conteos['Alto'];
+
+                $conteoMuyAlto =
+                    (int) $conteos['Muy alto'];
+
+
+
+                $totalCategoria =
+                    $conteoNulo +
+                    $conteoBajo +
+                    $conteoMedio +
+                    $conteoAlto +
+                    $conteoMuyAlto;
+
+
+                $porcentajeNulo = 0;
+                $porcentajeBajo = 0;
+                $porcentajeMedio = 0;
+                $porcentajeAlto = 0;
+                $porcentajeMuyAlto = 0;
+
+                if ($totalCategoria > 0) {
+
+                    $porcentajeNulo =
+                        $conteoNulo /
+                        $totalCategoria;
+
+                    $porcentajeBajo =
+                        $conteoBajo /
+                        $totalCategoria;
+
+                    $porcentajeMedio =
+                        $conteoMedio /
+                        $totalCategoria;
+
+                    $porcentajeAlto =
+                        $conteoAlto /
+                        $totalCategoria;
+
+
+
+
+                    $porcentajeMuyAlto =
+                        1 - (
+                            $porcentajeNulo +
+                            $porcentajeBajo +
+                            $porcentajeMedio +
+                            $porcentajeAlto
+                        );
+
+                    if ($porcentajeMuyAlto < 0) {
+                        $porcentajeMuyAlto = 0;
+                    }
+                }
+
+
+
+                $sumaPorcentajes =
+                    $porcentajeNulo +
+                    $porcentajeBajo +
+                    $porcentajeMedio +
+                    $porcentajeAlto +
+                    $porcentajeMuyAlto;
+
+
+                $data[] = [
+
+                    'category' =>
+                    $nombresGrafica[$categoria],
+
+                    'Nulo' =>
+                    $porcentajeNulo,
+
+                    'Bajo' =>
+                    $porcentajeBajo,
+
+                    'Medio' =>
+                    $porcentajeMedio,
+
+                    'Alto' =>
+                    $porcentajeAlto,
+
+                    'Muy alto' =>
+                    $porcentajeMuyAlto,
+
+                    'conteo_nulo' =>
+                    $conteoNulo,
+
+                    'conteo_bajo' =>
+                    $conteoBajo,
+
+                    'conteo_medio' =>
+                    $conteoMedio,
+
+                    'conteo_alto' =>
+                    $conteoAlto,
+
+                    'conteo_muy_alto' =>
+                    $conteoMuyAlto,
+
+                    'total_validos' =>
+                    $totalCategoria,
+
+                    'suma_porcentajes' =>
+                    round(
+                        $sumaPorcentajes,
+                        6
+                    )
+                ];
+            }
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'data' => $data
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => []
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaDominiosGuiaIIIPsicologia($PROYECTO_ID)
+    {
+        try {
+
+
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => []
+                ], 404);
+            }
+
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => []
+                ]);
+            }
+
+
+
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->get();
+
+
+            $preguntasDominios = [
+
+                'Condiciones en el ambiente de trabajo' => [
+                    1,
+                    3,
+                    2,
+                    4,
+                    5
+                ],
+
+                'Carga de trabajo' => [
+                    6,
+                    12,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    65,
+                    66,
+                    67,
+                    68,
+                    13,
+                    14,
+                    15,
+                    16
+                ],
+
+                'Falta de control sobre el trabajo' => [
+                    25,
+                    26,
+                    27,
+                    28,
+                    23,
+                    24,
+                    29,
+                    30,
+                    35,
+                    36
+                ],
+
+                'Jornada de trabajo' => [
+                    17,
+                    18
+                ],
+
+                'Interferencia en la relación trabajo-familia' => [
+                    19,
+                    20,
+                    21,
+                    22
+                ],
+
+                'Liderazgo' => [
+                    31,
+                    32,
+                    33,
+                    34,
+                    37,
+                    38,
+                    39,
+                    40,
+                    41
+                ],
+
+                'Relaciones en el trabajo' => [
+                    42,
+                    43,
+                    44,
+                    45,
+                    46,
+                    69,
+                    70,
+                    71,
+                    72
+                ],
+
+                'Violencia' => [
+                    57,
+                    58,
+                    59,
+                    60,
+                    61,
+                    62,
+                    63,
+                    64
+                ],
+
+                'Reconocimiento del desempeño' => [
+                    47,
+                    48,
+                    49,
+                    50,
+                    51,
+                    52
+                ],
+
+                'Insuficiente sentido de pertenencia e inestabilidad' => [
+                    55,
+                    56,
+                    53,
+                    54
+                ]
+
+            ];
+
+            $resultados = [];
+
+            foreach ($preguntasDominios as $dominio => $preguntas) {
+
+                $resultados[$dominio] = [
+                    'Nulo' => 0,
+                    'Bajo' => 0,
+                    'Medio' => 0,
+                    'Alto' => 0,
+                    'Muy alto' => 0
+                ];
+            }
+
+
+            $clasificarDominio = function (
+                $dominio,
+                $calificacion
+            ) {
+
+                if (
+                    $dominio ===
+                    'Condiciones en el ambiente de trabajo'
+                ) {
+
+                    if ($calificacion < 5) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 9) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 11) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 14) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+                if ($dominio === 'Carga de trabajo') {
+
+                    if ($calificacion < 15) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 21) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 27) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 37) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+                if (
+                    $dominio ===
+                    'Falta de control sobre el trabajo'
+                ) {
+
+                    if ($calificacion < 11) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 16) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 21) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 25) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+                if ($dominio === 'Jornada de trabajo') {
+
+                    if ($calificacion < 1) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 2) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 4) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 6) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+                if (
+                    $dominio ===
+                    'Interferencia en la relación trabajo-familia'
+                ) {
+
+                    if ($calificacion < 4) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 6) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 8) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 10) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+                if ($dominio === 'Liderazgo') {
+
+                    if ($calificacion < 9) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 12) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 16) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 20) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+                if (
+                    $dominio ===
+                    'Relaciones en el trabajo'
+                ) {
+
+                    if ($calificacion < 10) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 13) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 17) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 21) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+                if ($dominio === 'Violencia') {
+
+                    if ($calificacion < 7) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 10) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 13) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 16) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+                if (
+                    $dominio ===
+                    'Reconocimiento del desempeño'
+                ) {
+
+                    if ($calificacion < 6) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 10) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 14) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 18) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+                if (
+                    $dominio ===
+                    'Insuficiente sentido de pertenencia e inestabilidad'
+                ) {
+
+                    if ($calificacion < 4) {
+                        return 'Nulo';
+                    }
+
+                    if ($calificacion < 6) {
+                        return 'Bajo';
+                    }
+
+                    if ($calificacion < 8) {
+                        return 'Medio';
+                    }
+
+                    if ($calificacion < 10) {
+                        return 'Alto';
+                    }
+
+                    return 'Muy alto';
+                }
+
+
+
+                return null;
+            };
+
+
+            foreach ($registros as $registro) {
+
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAIII_RESPUESTAS,
+                    true
+                );
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+
+                $respuestas = array_slice(
+                    $respuestas,
+                    0,
+                    72
+                );
+
+
+                foreach ($preguntasDominios as $dominio => $preguntas) {
+
+                    $sumaDominio = 0;
+                    $respuestasValidas = 0;
+
+
+                    foreach ($preguntas as $numeroPregunta) {
+
+                        $indice = $numeroPregunta - 1;
+
+                        if (
+                            array_key_exists($indice, $respuestas) &&
+                            $respuestas[$indice] !== null &&
+                            $respuestas[$indice] !== '' &&
+                            is_numeric($respuestas[$indice])
+                        ) {
+
+                            $sumaDominio +=
+                                (float) $respuestas[$indice];
+
+                            $respuestasValidas++;
+                        }
+                    }
+
+                    if ($respuestasValidas === 0) {
+                        continue;
+                    }
+
+
+                    $nivel = $clasificarDominio(
+                        $dominio,
+                        $sumaDominio
+                    );
+
+                    if (
+                        $nivel !== null &&
+                        isset($resultados[$dominio][$nivel])
+                    ) {
+
+                        $resultados[$dominio][$nivel]++;
+                    }
+                }
+            }
+
+
+            $nombresGrafica = [
+
+                'Condiciones en el ambiente de trabajo' =>
+                "Condiciones en el\nambiente de trabajo",
+
+                'Carga de trabajo' =>
+                "Carga de\ntrabajo",
+
+                'Falta de control sobre el trabajo' =>
+                "Falta de control\nsobre el trabajo",
+
+                'Jornada de trabajo' =>
+                "Jornada de\ntrabajo",
+
+                'Interferencia en la relación trabajo-familia' =>
+                "Interferencia en la\nrelación\ntrabajo-familia",
+
+                'Liderazgo' =>
+                "Liderazgo",
+
+                'Relaciones en el trabajo' =>
+                "Relaciones en el\ntrabajo",
+
+                'Violencia' =>
+                "Violencia",
+
+                'Reconocimiento del desempeño' =>
+                "Reconocimiento del\ndesempeño",
+
+                'Insuficiente sentido de pertenencia e inestabilidad' =>
+                "Insuficiente sentido de\npertenencia e\ninestabilidad"
+
+            ];
+
+            $data = [];
+
+            foreach ($resultados as $dominio => $conteos) {
+
+                $conteoNulo =
+                    (int) $conteos['Nulo'];
+
+                $conteoBajo =
+                    (int) $conteos['Bajo'];
+
+                $conteoMedio =
+                    (int) $conteos['Medio'];
+
+                $conteoAlto =
+                    (int) $conteos['Alto'];
+
+                $conteoMuyAlto =
+                    (int) $conteos['Muy alto'];
+
+
+                $totalDominio =
+                    $conteoNulo +
+                    $conteoBajo +
+                    $conteoMedio +
+                    $conteoAlto +
+                    $conteoMuyAlto;
+
+                $porcentajeNulo = 0;
+                $porcentajeBajo = 0;
+                $porcentajeMedio = 0;
+                $porcentajeAlto = 0;
+                $porcentajeMuyAlto = 0;
+
+                if ($totalDominio > 0) {
+
+                    $porcentajeNulo =
+                        $conteoNulo /
+                        $totalDominio;
+
+                    $porcentajeBajo =
+                        $conteoBajo /
+                        $totalDominio;
+
+                    $porcentajeMedio =
+                        $conteoMedio /
+                        $totalDominio;
+
+                    $porcentajeAlto =
+                        $conteoAlto /
+                        $totalDominio;
+
+                    $porcentajeMuyAlto =
+                        $conteoMuyAlto /
+                        $totalDominio;
+                }
+
+                $data[] = [
+
+                    'category' =>
+                    $nombresGrafica[$dominio],
+
+                    'Nulo' =>
+                    $porcentajeNulo,
+
+                    'Bajo' =>
+                    $porcentajeBajo,
+
+                    'Medio' =>
+                    $porcentajeMedio,
+
+                    'Alto' =>
+                    $porcentajeAlto,
+
+                    'Muy alto' =>
+                    $porcentajeMuyAlto,
+
+                    'conteo_nulo' =>
+                    $conteoNulo,
+
+                    'conteo_bajo' =>
+                    $conteoBajo,
+
+                    'conteo_medio' =>
+                    $conteoMedio,
+
+                    'conteo_alto' =>
+                    $conteoAlto,
+
+                    'conteo_muy_alto' =>
+                    $conteoMuyAlto,
+
+                    'total_validos' =>
+                    $totalDominio
+                ];
+            }
+
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'data' => $data
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => []
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaGuiaIPsico($PROYECTO_ID)
+    {
+        try {
+
+
+
+            $proyecto = proyectoModel::find(
+                $PROYECTO_ID
+            );
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => [],
+                    'requiere_valoracion' => 0,
+                    'no_requiere_valoracion' => 0,
+                    'total_trabajadores' => 0
+                ], 404);
+            }
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => [],
+                    'requiere_valoracion' => 0,
+                    'no_requiere_valoracion' => 0,
+                    'total_trabajadores' => 0
+                ]);
+            }
+
+
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAI_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAI_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAI_RESPUESTAS'
+                )
+                ->get();
+
+
+            $requiereValoracion = 0;
+
+            $noRequiereValoracion = 0;
+
+            $totalValidos = 0;
+
+            foreach ($registros as $registro) {
+
+
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAI_RESPUESTAS,
+                    true
+                );
+
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+
+                $respuestas = array_slice(
+                    $respuestas,
+                    0,
+                    15
+                );
+
+
+
+                if (!array_key_exists(0, $respuestas)) {
+                    continue;
+                }
+
+
+                if (
+                    $respuestas[0] !== null &&
+                    $respuestas[0] !== '' &&
+                    is_numeric($respuestas[0])
+                ) {
+
+                    $seccionI =
+                        ((int) $respuestas[0] === 1)
+                        ? 1
+                        : 0;
+                } else {
+
+
+                    continue;
+                }
+
+
+
+                if ($seccionI === 0) {
+
+                    $noRequiereValoracion++;
+
+                    $totalValidos++;
+
+                    continue;
+                }
+
+
+                $respuestasNormalizadas = [];
+
+                for ($indice = 0; $indice < 15; $indice++) {
+
+                    if (
+                        array_key_exists($indice, $respuestas) &&
+                        $respuestas[$indice] !== null &&
+                        $respuestas[$indice] !== '' &&
+                        is_numeric($respuestas[$indice])
+                    ) {
+
+                        $respuestasNormalizadas[$indice] =
+                            ((int) $respuestas[$indice] === 1)
+                            ? 1
+                            : 0;
+                    } else {
+
+                        $respuestasNormalizadas[$indice] = 0;
+                    }
+                }
+
+
+                $totalSeccionII =
+                    $respuestasNormalizadas[1] +
+                    $respuestasNormalizadas[2];
+
+
+
+                $totalSeccionIII = 0;
+
+                for ($indice = 3; $indice <= 9; $indice++) {
+
+                    $totalSeccionIII +=
+                        $respuestasNormalizadas[$indice];
+                }
+
+
+                $totalSeccionIV = 0;
+
+                for ($indice = 10; $indice <= 14; $indice++) {
+
+                    $totalSeccionIV +=
+                        $respuestasNormalizadas[$indice];
+                }
+
+
+                $requiere =
+                    $totalSeccionII >= 1 ||
+                    $totalSeccionIII >= 3 ||
+                    $totalSeccionIV >= 2;
+
+
+                if ($requiere) {
+
+                    $requiereValoracion++;
+                } else {
+
+                    $noRequiereValoracion++;
+                }
+
+
+
+                $totalValidos++;
+            }
+
+
+
+            $data = [
+                [
+                    'category' =>
+                    'Requiere valoración clínica',
+
+                    'value' =>
+                    $requiereValoracion,
+
+                    'color' =>
+                    '#FF0000'
+                ],
+                [
+                    'category' =>
+                    'No requiere valoración clínica',
+
+                    'value' =>
+                    $noRequiereValoracion,
+
+                    'color' =>
+                    '#00B0F0'
+                ]
+            ];
+
+
+
+
+            return response()->json([
+                'msj' =>
+                'Información consultada correctamente',
+
+                'data' =>
+                $data,
+
+                'requiere_valoracion' =>
+                $requiereValoracion,
+
+                'no_requiere_valoracion' =>
+                $noRequiereValoracion,
+
+                'total_trabajadores' =>
+                $totalValidos
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' =>
+                'Error: ' . $e->getMessage(),
+
+                'data' =>
+                [],
+
+                'requiere_valoracion' =>
+                0,
+
+                'no_requiere_valoracion' =>
+                0,
+
+                'total_trabajadores' =>
+                0
+
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaAmbienteGuiaIII($PROYECTO_ID)
+    {
+        try {
+
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => []
+                ], 404);
+            }
+
+
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => []
+                ]);
+            }
+
+
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->get();
+
+
+
+            $preguntas = [
+                1,
+                3,
+                2,
+                4,
+                5
+            ];
+
+
+            $categoria = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+
+
+            $dominio = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+
+
+
+            $clasificar = function ($calificacion) {
+
+                if ($calificacion < 5) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 9) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 11) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 14) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+
+
+
+            foreach ($registros as $registro) {
+
+
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAIII_RESPUESTAS,
+                    true
+                );
+
+
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+
+                $respuestas = array_slice(
+                    $respuestas,
+                    0,
+                    72
+                );
+
+                $calificacion = 0;
+
+                $respuestasValidas = 0;
+
+                foreach ($preguntas as $numeroPregunta) {
+
+                    $indice =
+                        $numeroPregunta - 1;
+
+                    if (
+                        array_key_exists($indice, $respuestas) &&
+                        $respuestas[$indice] !== null &&
+                        $respuestas[$indice] !== '' &&
+                        is_numeric($respuestas[$indice])
+                    ) {
+
+                        $calificacion +=
+                            (float) $respuestas[$indice];
+
+                        $respuestasValidas++;
+                    }
+                }
+
+
+                if ($respuestasValidas === 0) {
+                    continue;
+                }
+
+
+
+
+                $nivel =
+                    $clasificar($calificacion);
+                if (isset($categoria[$nivel])) {
+
+                    $categoria[$nivel]++;
+                }
+
+                if (isset($dominio[$nivel])) {
+
+                    $dominio[$nivel]++;
+                }
+            }
+
+
+            $data = [
+                [
+                    'category' =>
+                    "g1-Ambiente de trabajo\n",
+
+                    's1' =>
+                    (int) $categoria['Muy alto'],
+
+                    's2' =>
+                    (int) $categoria['Alto'],
+
+                    's3' =>
+                    (int) $categoria['Medio'],
+
+                    's4' =>
+                    (int) $categoria['Bajo'],
+
+                    's5' =>
+                    (int) $categoria['Nulo']
+                ],
+                [
+                    'category' =>
+                    "g3-\n\n\nDominios:",
+
+                    's1' => 0,
+                    's2' => 0,
+                    's3' => 0,
+                    's4' => 0,
+                    's5' => 0
+                ],
+                [
+                    'category' =>
+                    "g2-Condiciones del ambiente de trabajo\n",
+
+                    's1' =>
+                    (int) $dominio['Muy alto'],
+
+                    's2' =>
+                    (int) $dominio['Alto'],
+
+                    's3' =>
+                    (int) $dominio['Medio'],
+
+                    's4' =>
+                    (int) $dominio['Bajo'],
+
+                    's5' =>
+                    (int) $dominio['Nulo']
+                ]
+            ];
+
+            return response()->json([
+                'msj' =>
+                'Información consultada correctamente',
+
+                'data' =>
+                $data,
+
+                'categoria' =>
+                $categoria,
+
+                'dominio' =>
+                $dominio,
+
+                'total_categoria' =>
+                array_sum($categoria),
+
+                'total_dominio' =>
+                array_sum($dominio)
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' =>
+                'Error: ' . $e->getMessage(),
+
+                'data' =>
+                []
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaFactoresGuiaIII($PROYECTO_ID)
+    {
+        try {
+
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => []
+                ], 404);
+            }
+
+
+
+
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => []
+                ]);
+            }
+
+
+
+
+
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->get();
+
+
+
+
+
+            $preguntasCategoria = [
+                6,
+                12,
+                7,
+                8,
+                9,
+                10,
+                11,
+                65,
+                66,
+                67,
+                68,
+                13,
+                14,
+                15,
+                16,
+                25,
+                26,
+                27,
+                28,
+                23,
+                24,
+                29,
+                30,
+                35,
+                36
+            ];
+
+
+
+
+            $preguntasCargaTrabajo = [
+                6,
+                12,
+                7,
+                8,
+                9,
+                10,
+                11,
+                65,
+                66,
+                67,
+                68,
+                13,
+                14,
+                15,
+                16
+            ];
+
+
+
+
+            $preguntasFaltaControl = [
+                25,
+                26,
+                27,
+                28,
+                23,
+                24,
+                29,
+                30,
+                35,
+                36
+            ];
+
+
+
+
+
+            $categoria = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+
+
+            $cargaTrabajo = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+
+
+            $faltaControl = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+            $sumarPreguntas = function (
+                $respuestas,
+                $preguntas
+            ) {
+
+                $calificacion = 0;
+
+                $respuestasValidas = 0;
+
+                foreach ($preguntas as $numeroPregunta) {
+
+                    $indice =
+                        $numeroPregunta - 1;
+
+                    if (
+                        array_key_exists($indice, $respuestas) &&
+                        $respuestas[$indice] !== null &&
+                        $respuestas[$indice] !== '' &&
+                        is_numeric($respuestas[$indice])
+                    ) {
+
+                        $calificacion +=
+                            (float) $respuestas[$indice];
+
+                        $respuestasValidas++;
+                    }
+                }
+
+                return [
+                    'calificacion' => $calificacion,
+                    'validas' => $respuestasValidas
+                ];
+            };
+
+
+
+            $clasificarCategoria = function ($calificacion) {
+
+                if ($calificacion < 15) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 30) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 45) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 60) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+
+            $clasificarCargaTrabajo = function ($calificacion) {
+
+                if ($calificacion < 15) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 21) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 27) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 37) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+
+            $clasificarFaltaControl = function ($calificacion) {
+
+                if ($calificacion < 11) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 16) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 21) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 25) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+            foreach ($registros as $registro) {
+
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAIII_RESPUESTAS,
+                    true
+                );
+
+
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+                $respuestas = array_slice(
+                    $respuestas,
+                    0,
+                    72
+                );
+
+                $resultadoCategoria =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasCategoria
+                    );
+
+
+
+                if ($resultadoCategoria['validas'] > 0) {
+
+                    $nivelCategoria =
+                        $clasificarCategoria(
+                            $resultadoCategoria['calificacion']
+                        );
+
+                    if (isset($categoria[$nivelCategoria])) {
+
+                        $categoria[$nivelCategoria]++;
+                    }
+                }
+
+
+                $resultadoCarga =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasCargaTrabajo
+                    );
+
+
+
+                if ($resultadoCarga['validas'] > 0) {
+
+                    $nivelCarga =
+                        $clasificarCargaTrabajo(
+                            $resultadoCarga['calificacion']
+                        );
+
+                    if (isset($cargaTrabajo[$nivelCarga])) {
+
+                        $cargaTrabajo[$nivelCarga]++;
+                    }
+                }
+
+
+                $resultadoFaltaControl =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasFaltaControl
+                    );
+
+
+
+                if ($resultadoFaltaControl['validas'] > 0) {
+
+                    $nivelFaltaControl =
+                        $clasificarFaltaControl(
+                            $resultadoFaltaControl['calificacion']
+                        );
+
+                    if (isset($faltaControl[$nivelFaltaControl])) {
+
+                        $faltaControl[$nivelFaltaControl]++;
+                    }
+                }
+            }
+
+
+            $data = [
+                [
+                    'category' =>
+                    "g1-Factores propios de la actividad\n",
+
+                    's1' =>
+                    (int) $categoria['Muy alto'],
+
+                    's2' =>
+                    (int) $categoria['Alto'],
+
+                    's3' =>
+                    (int) $categoria['Medio'],
+
+                    's4' =>
+                    (int) $categoria['Bajo'],
+
+                    's5' =>
+                    (int) $categoria['Nulo']
+                ],
+
+                [
+                    'category' =>
+                    "g3-\n\n\nDominios:",
+
+                    's1' => null,
+                    's2' => null,
+                    's3' => null,
+                    's4' => null,
+                    's5' => null
+                ],
+
+                [
+                    'category' =>
+                    "g2-Carga de trabajo\n",
+
+                    's1' =>
+                    (int) $cargaTrabajo['Muy alto'],
+
+                    's2' =>
+                    (int) $cargaTrabajo['Alto'],
+
+                    's3' =>
+                    (int) $cargaTrabajo['Medio'],
+
+                    's4' =>
+                    (int) $cargaTrabajo['Bajo'],
+
+                    's5' =>
+                    (int) $cargaTrabajo['Nulo']
+                ],
+
+                [
+                    'category' =>
+                    "g2-Falta de control sobre el trabajo\n",
+
+                    's1' =>
+                    (int) $faltaControl['Muy alto'],
+
+                    's2' =>
+                    (int) $faltaControl['Alto'],
+
+                    's3' =>
+                    (int) $faltaControl['Medio'],
+
+                    's4' =>
+                    (int) $faltaControl['Bajo'],
+
+                    's5' =>
+                    (int) $faltaControl['Nulo']
+                ]
+            ];
+
+            return response()->json([
+                'msj' =>
+                'Información consultada correctamente',
+
+                'data' =>
+                $data,
+
+                'categoria' =>
+                $categoria,
+
+                'carga_trabajo' =>
+                $cargaTrabajo,
+
+                'falta_control' =>
+                $faltaControl,
+
+                'total_categoria' =>
+                array_sum($categoria),
+
+                'total_carga_trabajo' =>
+                array_sum($cargaTrabajo),
+
+                'total_falta_control' =>
+                array_sum($faltaControl)
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' =>
+                'Error: ' . $e->getMessage(),
+
+                'data' =>
+                []
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaOrganizacionGuiaIII($PROYECTO_ID)
+    {
+        try {
+
+    
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => []
+                ], 404);
+            }
+
+
+
+      
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => []
+                ]);
+            }
+
+
+
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->get();
+
+            $preguntasCategoria = [
+                17,
+                18,
+                19,
+                20,
+                21,
+                22
+            ];
+
+
+            $preguntasJornada = [
+                17,
+                18
+            ];
+
+            $preguntasInterferencia = [
+                19,
+                20,
+                21,
+                22
+            ];
+
+
+
+            $categoria = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+            $jornada = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+
+
+            $interferencia = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+
+            $sumarPreguntas = function (
+                $respuestas,
+                $preguntas
+            ) {
+
+                $calificacion = 0;
+
+                $respuestasValidas = 0;
+
+                foreach ($preguntas as $numeroPregunta) {
+
+                    $indice =
+                        $numeroPregunta - 1;
+
+                    if (
+                        array_key_exists($indice, $respuestas) &&
+                        $respuestas[$indice] !== null &&
+                        $respuestas[$indice] !== '' &&
+                        is_numeric($respuestas[$indice])
+                    ) {
+
+                        $calificacion +=
+                            (float) $respuestas[$indice];
+
+                        $respuestasValidas++;
+                    }
+                }
+
+                return [
+                    'calificacion' => $calificacion,
+                    'validas' => $respuestasValidas
+                ];
+            };
+
+
+            $clasificarCategoria = function ($calificacion) {
+
+                if ($calificacion < 5) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 7) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 10) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 13) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+
+            $clasificarJornada = function ($calificacion) {
+
+                if ($calificacion < 1) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 2) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 4) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 6) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+
+            $clasificarInterferencia = function ($calificacion) {
+
+                if ($calificacion < 4) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 6) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 8) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 10) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+
+            foreach ($registros as $registro) {
+
+            
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAIII_RESPUESTAS,
+                    true
+                );
+
+
+
+        
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+
+                $respuestas = array_slice(
+                    $respuestas,
+                    0,
+                    72
+                );
+
+
+                $resultadoCategoria =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasCategoria
+                    );
+
+                if ($resultadoCategoria['validas'] > 0) {
+
+                    $nivelCategoria =
+                        $clasificarCategoria(
+                            $resultadoCategoria['calificacion']
+                        );
+
+                    if (isset($categoria[$nivelCategoria])) {
+
+                        $categoria[$nivelCategoria]++;
+                    }
+                }
+
+
+                $resultadoJornada =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasJornada
+                    );
+
+                if ($resultadoJornada['validas'] > 0) {
+
+                    $nivelJornada =
+                        $clasificarJornada(
+                            $resultadoJornada['calificacion']
+                        );
+
+                    if (isset($jornada[$nivelJornada])) {
+
+                        $jornada[$nivelJornada]++;
+                    }
+                }
+
+
+                $resultadoInterferencia =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasInterferencia
+                    );
+
+                if ($resultadoInterferencia['validas'] > 0) {
+
+                    $nivelInterferencia =
+                        $clasificarInterferencia(
+                            $resultadoInterferencia['calificacion']
+                        );
+
+                    if (isset($interferencia[$nivelInterferencia])) {
+
+                        $interferencia[$nivelInterferencia]++;
+                    }
+                }
+            }
+
+
+            $data = [
+                [
+                    'category' =>
+                    "g1-Organización del tiempo de trabajo\n",
+
+                    's1' =>
+                    (int) $categoria['Muy alto'],
+
+                    's2' =>
+                    (int) $categoria['Alto'],
+
+                    's3' =>
+                    (int) $categoria['Medio'],
+
+                    's4' =>
+                    (int) $categoria['Bajo'],
+
+                    's5' =>
+                    (int) $categoria['Nulo']
+                ],
+
+
+                [
+                    'category' =>
+                    "g3-\n\n\nDominios:",
+
+                    's1' => null,
+                    's2' => null,
+                    's3' => null,
+                    's4' => null,
+                    's5' => null
+                ],
+
+                [
+                    'category' =>
+                    "g2-Jornada de trabajo\n",
+
+                    's1' =>
+                    (int) $jornada['Muy alto'],
+
+                    's2' =>
+                    (int) $jornada['Alto'],
+
+                    's3' =>
+                    (int) $jornada['Medio'],
+
+                    's4' =>
+                    (int) $jornada['Bajo'],
+
+                    's5' =>
+                    (int) $jornada['Nulo']
+                ],
+
+                [
+                    'category' =>
+                    "g2-Interferencia en la relación trabajo-familia\n",
+
+                    's1' =>
+                    (int) $interferencia['Muy alto'],
+
+                    's2' =>
+                    (int) $interferencia['Alto'],
+
+                    's3' =>
+                    (int) $interferencia['Medio'],
+
+                    's4' =>
+                    (int) $interferencia['Bajo'],
+
+                    's5' =>
+                    (int) $interferencia['Nulo']
+                ]
+            ];
+            return response()->json([
+                'msj' =>
+                'Información consultada correctamente',
+
+                'data' =>
+                $data,
+
+                'categoria' =>
+                $categoria,
+
+                'jornada_trabajo' =>
+                $jornada,
+
+                'interferencia_trabajo_familia' =>
+                $interferencia,
+
+                'total_categoria' =>
+                array_sum($categoria),
+
+                'total_jornada' =>
+                array_sum($jornada),
+
+                'total_interferencia' =>
+                array_sum($interferencia)
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' =>
+                'Error: ' . $e->getMessage(),
+
+                'data' =>
+                []
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaLiderazgoGuiaIII($PROYECTO_ID)
+    {
+        try {
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => []
+                ], 404);
+            }
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => []
+                ]);
+            }
+
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->get();
+
+            $preguntasCategoria = [
+                31,
+                32,
+                33,
+                34,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46,
+                69,
+                70,
+                71,
+                72,
+                57,
+                58,
+                59,
+                60,
+                61,
+                62,
+                63,
+                64
+            ];
+
+            $preguntasLiderazgo = [
+                31,
+                32,
+                33,
+                34,
+                37,
+                38,
+                39,
+                40,
+                41
+            ];
+
+            $preguntasRelaciones = [
+                42,
+                43,
+                44,
+                45,
+                46,
+                69,
+                70,
+                71,
+                72
+            ];
+
+            $preguntasViolencia = [
+                57,
+                58,
+                59,
+                60,
+                61,
+                62,
+                63,
+                64
+            ];
+
+            $categoria = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+            $liderazgo = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+            $relaciones = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+            $violencia = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+            $sumarPreguntas = function (
+                $respuestas,
+                $preguntas
+            ) {
+                $calificacion = 0;
+                $respuestasValidas = 0;
+
+                foreach ($preguntas as $numeroPregunta) {
+
+                    $indice =
+                        $numeroPregunta - 1;
+
+                    if (
+                        array_key_exists($indice, $respuestas) &&
+                        $respuestas[$indice] !== null &&
+                        $respuestas[$indice] !== '' &&
+                        is_numeric($respuestas[$indice])
+                    ) {
+                        $calificacion +=
+                            (float) $respuestas[$indice];
+
+                        $respuestasValidas++;
+                    }
+                }
+
+                return [
+                    'calificacion' => $calificacion,
+                    'validas' => $respuestasValidas
+                ];
+            };
+
+            $clasificarCategoria = function ($calificacion) {
+
+                if ($calificacion < 14) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 29) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 42) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 58) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+            $clasificarLiderazgo = function ($calificacion) {
+
+                if ($calificacion < 9) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 12) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 16) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 20) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+            $clasificarRelaciones = function ($calificacion) {
+
+                if ($calificacion < 10) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 13) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 17) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 21) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+            $clasificarViolencia = function ($calificacion) {
+
+                if ($calificacion < 7) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 10) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 13) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 16) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+            foreach ($registros as $registro) {
+
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAIII_RESPUESTAS,
+                    true
+                );
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+                $respuestas = array_slice(
+                    $respuestas,
+                    0,
+                    72
+                );
+
+                $resultadoCategoria =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasCategoria
+                    );
+
+                if ($resultadoCategoria['validas'] > 0) {
+
+                    $nivel =
+                        $clasificarCategoria(
+                            $resultadoCategoria['calificacion']
+                        );
+
+                    if (isset($categoria[$nivel])) {
+                        $categoria[$nivel]++;
+                    }
+                }
+
+                $resultadoLiderazgo =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasLiderazgo
+                    );
+
+                if ($resultadoLiderazgo['validas'] > 0) {
+
+                    $nivel =
+                        $clasificarLiderazgo(
+                            $resultadoLiderazgo['calificacion']
+                        );
+
+                    if (isset($liderazgo[$nivel])) {
+                        $liderazgo[$nivel]++;
+                    }
+                }
+
+                $resultadoRelaciones =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasRelaciones
+                    );
+
+                if ($resultadoRelaciones['validas'] > 0) {
+
+                    $nivel =
+                        $clasificarRelaciones(
+                            $resultadoRelaciones['calificacion']
+                        );
+
+                    if (isset($relaciones[$nivel])) {
+                        $relaciones[$nivel]++;
+                    }
+                }
+
+                $resultadoViolencia =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasViolencia
+                    );
+
+                if ($resultadoViolencia['validas'] > 0) {
+
+                    $nivel =
+                        $clasificarViolencia(
+                            $resultadoViolencia['calificacion']
+                        );
+
+                    if (isset($violencia[$nivel])) {
+                        $violencia[$nivel]++;
+                    }
+                }
+            }
+
+            $data = [
+                [
+                    'category' =>
+                    "g1-Liderazgo y relaciones en el trabajo\n",
+
+                    's1' =>
+                    (int) $categoria['Muy alto'],
+
+                    's2' =>
+                    (int) $categoria['Alto'],
+
+                    's3' =>
+                    (int) $categoria['Medio'],
+
+                    's4' =>
+                    (int) $categoria['Bajo'],
+
+                    's5' =>
+                    (int) $categoria['Nulo']
+                ],
+                [
+                    'category' =>
+                    "g3-\n\n\nDominios:",
+
+                    's1' => null,
+                    's2' => null,
+                    's3' => null,
+                    's4' => null,
+                    's5' => null
+                ],
+                [
+                    'category' =>
+                    "g2-Liderazgo\n",
+
+                    's1' =>
+                    (int) $liderazgo['Muy alto'],
+
+                    's2' =>
+                    (int) $liderazgo['Alto'],
+
+                    's3' =>
+                    (int) $liderazgo['Medio'],
+
+                    's4' =>
+                    (int) $liderazgo['Bajo'],
+
+                    's5' =>
+                    (int) $liderazgo['Nulo']
+                ],
+                [
+                    'category' =>
+                    "g2-Relaciones en el trabajo\n",
+
+                    's1' =>
+                    (int) $relaciones['Muy alto'],
+
+                    's2' =>
+                    (int) $relaciones['Alto'],
+
+                    's3' =>
+                    (int) $relaciones['Medio'],
+
+                    's4' =>
+                    (int) $relaciones['Bajo'],
+
+                    's5' =>
+                    (int) $relaciones['Nulo']
+                ],
+                [
+                    'category' =>
+                    "g2-Violencia\n",
+
+                    's1' =>
+                    (int) $violencia['Muy alto'],
+
+                    's2' =>
+                    (int) $violencia['Alto'],
+
+                    's3' =>
+                    (int) $violencia['Medio'],
+
+                    's4' =>
+                    (int) $violencia['Bajo'],
+
+                    's5' =>
+                    (int) $violencia['Nulo']
+                ]
+            ];
+
+            return response()->json([
+                'msj' =>
+                'Información consultada correctamente',
+
+                'data' =>
+                $data,
+
+                'categoria' =>
+                $categoria,
+
+                'liderazgo' =>
+                $liderazgo,
+
+                'relaciones_trabajo' =>
+                $relaciones,
+
+                'violencia' =>
+                $violencia,
+
+                'total_categoria' =>
+                array_sum($categoria),
+
+                'total_liderazgo' =>
+                array_sum($liderazgo),
+
+                'total_relaciones' =>
+                array_sum($relaciones),
+
+                'total_violencia' =>
+                array_sum($violencia)
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' =>
+                'Error: ' . $e->getMessage(),
+
+                'data' =>
+                []
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficaEntornoGuiaIII($PROYECTO_ID)
+    {
+        try {
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => []
+                ], 404);
+            }
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'data' => []
+                ]);
+            }
+
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->get();
+
+            $preguntasCategoria = [
+                47,
+                48,
+                49,
+                50,
+                51,
+                52,
+                55,
+                56,
+                53,
+                54
+            ];
+
+            $preguntasReconocimiento = [
+                47,
+                48,
+                49,
+                50,
+                51,
+                52
+            ];
+
+            $preguntasPertenencia = [
+                55,
+                56,
+                53,
+                54
+            ];
+
+            $categoria = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+            $reconocimiento = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+            $pertenencia = [
+                'Muy alto' => 0,
+                'Alto' => 0,
+                'Medio' => 0,
+                'Bajo' => 0,
+                'Nulo' => 0
+            ];
+
+            $sumarPreguntas = function (
+                $respuestas,
+                $preguntas
+            ) {
+                $calificacion = 0;
+                $respuestasValidas = 0;
+
+                foreach ($preguntas as $numeroPregunta) {
+
+                    $indice =
+                        $numeroPregunta - 1;
+
+                    if (
+                        array_key_exists($indice, $respuestas) &&
+                        $respuestas[$indice] !== null &&
+                        $respuestas[$indice] !== '' &&
+                        is_numeric($respuestas[$indice])
+                    ) {
+                        $calificacion +=
+                            (float) $respuestas[$indice];
+
+                        $respuestasValidas++;
+                    }
+                }
+
+                return [
+                    'calificacion' => $calificacion,
+                    'validas' => $respuestasValidas
+                ];
+            };
+
+            $clasificarCategoria = function ($calificacion) {
+
+                if ($calificacion < 10) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 14) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 18) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 23) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+            $clasificarReconocimiento = function ($calificacion) {
+
+                if ($calificacion < 6) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 10) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 14) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 18) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+            $clasificarPertenencia = function ($calificacion) {
+
+                if ($calificacion < 4) {
+                    return 'Nulo';
+                }
+
+                if ($calificacion < 6) {
+                    return 'Bajo';
+                }
+
+                if ($calificacion < 8) {
+                    return 'Medio';
+                }
+
+                if ($calificacion < 10) {
+                    return 'Alto';
+                }
+
+                return 'Muy alto';
+            };
+
+            foreach ($registros as $registro) {
+
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAIII_RESPUESTAS,
+                    true
+                );
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+                $respuestas = array_slice(
+                    $respuestas,
+                    0,
+                    72
+                );
+
+                $resultadoCategoria =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasCategoria
+                    );
+
+                if ($resultadoCategoria['validas'] > 0) {
+
+                    $nivelCategoria =
+                        $clasificarCategoria(
+                            $resultadoCategoria['calificacion']
+                        );
+
+                    if (isset($categoria[$nivelCategoria])) {
+                        $categoria[$nivelCategoria]++;
+                    }
+                }
+
+                $resultadoReconocimiento =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasReconocimiento
+                    );
+
+                if ($resultadoReconocimiento['validas'] > 0) {
+
+                    $nivelReconocimiento =
+                        $clasificarReconocimiento(
+                            $resultadoReconocimiento['calificacion']
+                        );
+
+                    if (isset($reconocimiento[$nivelReconocimiento])) {
+                        $reconocimiento[$nivelReconocimiento]++;
+                    }
+                }
+
+                $resultadoPertenencia =
+                    $sumarPreguntas(
+                        $respuestas,
+                        $preguntasPertenencia
+                    );
+
+                if ($resultadoPertenencia['validas'] > 0) {
+
+                    $nivelPertenencia =
+                        $clasificarPertenencia(
+                            $resultadoPertenencia['calificacion']
+                        );
+
+                    if (isset($pertenencia[$nivelPertenencia])) {
+                        $pertenencia[$nivelPertenencia]++;
+                    }
+                }
+            }
+
+            $data = [
+                [
+                    'category' =>
+                    "g1-Entorno organizacional\n",
+
+                    's1' =>
+                    (int) $categoria['Muy alto'],
+
+                    's2' =>
+                    (int) $categoria['Alto'],
+
+                    's3' =>
+                    (int) $categoria['Medio'],
+
+                    's4' =>
+                    (int) $categoria['Bajo'],
+
+                    's5' =>
+                    (int) $categoria['Nulo']
+                ],
+                [
+                    'category' =>
+                    "g3-\n\n\nDominios:",
+
+                    's1' => null,
+                    's2' => null,
+                    's3' => null,
+                    's4' => null,
+                    's5' => null
+                ],
+                [
+                    'category' =>
+                    "g2-Reconocimiento del desempeño\n",
+
+                    's1' =>
+                    (int) $reconocimiento['Muy alto'],
+
+                    's2' =>
+                    (int) $reconocimiento['Alto'],
+
+                    's3' =>
+                    (int) $reconocimiento['Medio'],
+
+                    's4' =>
+                    (int) $reconocimiento['Bajo'],
+
+                    's5' =>
+                    (int) $reconocimiento['Nulo']
+                ],
+                [
+                    'category' =>
+                    "g2-Insuficiente sentido de pertenencia e inestabilidad\n",
+
+                    's1' =>
+                    (int) $pertenencia['Muy alto'],
+
+                    's2' =>
+                    (int) $pertenencia['Alto'],
+
+                    's3' =>
+                    (int) $pertenencia['Medio'],
+
+                    's4' =>
+                    (int) $pertenencia['Bajo'],
+
+                    's5' =>
+                    (int) $pertenencia['Nulo']
+                ]
+            ];
+
+            return response()->json([
+                'msj' =>
+                'Información consultada correctamente',
+
+                'data' =>
+                $data,
+
+                'categoria' =>
+                $categoria,
+
+                'reconocimiento_desempeno' =>
+                $reconocimiento,
+
+                'sentido_pertenencia' =>
+                $pertenencia,
+
+                'total_categoria' =>
+                array_sum($categoria),
+
+                'total_reconocimiento' =>
+                array_sum($reconocimiento),
+
+                'total_pertenencia' =>
+                array_sum($pertenencia)
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' =>
+                'Error: ' . $e->getMessage(),
+
+                'data' =>
+                []
+            ], 500);
+        }
+    }
 }

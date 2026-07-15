@@ -6445,42 +6445,6 @@ am5.ready(function () {
 
 
 
-	// Crear gráficos
-	createChart(
-		"ambienteChart",
-		"Categoría\n\n\n",
-		"(Nivel de riesgo/NOM-035-STPS-2018)\n\n",
-		[{
-			category: "g1-Ambiente de trabajo\n",
-			s1: 2, s2: 3, s3: 1, s4: 3, s5: 1
-		}, {
-			category: "g3-\n\n\nDominios:"
-		}, {
-			category: "g2-Condiciones del ambiente de trabajo\n",
-			s1: 3, s2: 2, s3: 2, s4: 2, s5: 1
-		}],
-		'ambienteChart'
-	);
-
-	createChart(
-		"factoresChart",
-		"Categoría\n\n\n",
-		"(Nivel de riesgo/NOM-035-STPS-2018)\n\n",
-		[{
-			category: "g1-Factores propios de la actividad\n",
-			s1: 2, s2: 3, s3: 1, s4: 3, s5: 1
-		}, {
-			category: "g3-\n\n\nDominios:"
-		}, {
-			category: "g2-Carga de trabajo\n",
-			s1: 5, s2: 1, s3: 2, s4: 1, s5: 1
-		}, {
-			category: "g2-Falta de control sobre el trabajo\n",
-			s1: 3, s2: 2, s3: 2, s4: 2, s5: 1
-		}],
-		'factoresChart'
-	);
-
 	createChart(
 		"organizacionChart",
 		"Categoría\n\n\n",
@@ -6743,6 +6707,7 @@ am5.ready(function () {
 // 	});
 
 });
+
 var rootConsolidadoChart2 = am5.Root.new("consolidadoChart2");
 
 // Crear tema personalizado
@@ -6934,6 +6899,7 @@ chartConsolidado2.appear(1000, 100).then(() => {
 	});
 
 var calificaciones_root = am5.Root.new("calificacionChart");
+
 
 // Establecer temas
 calificaciones_root.setThemes([

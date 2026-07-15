@@ -1592,7 +1592,7 @@ DESCRIPCIONACTIVIDAD
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js_sitio/reportes/reportenom0353v1.js?v=3"></script>
+<script src="/js_sitio/reportes/reportenom0353v1.js?v=5"></script>
 <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
 
