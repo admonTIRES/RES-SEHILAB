@@ -2840,6 +2840,7 @@ class reportenom0353Controller extends Controller
                 'COORDENADAS' => $reco->coordenadas,
                 'DESCRIPCIONPROCESO' => $reco->descripcionproceso,
                 'DESCRIPCIONACTIVIDAD' => $reco->actividadprincipal,
+                'NOMBRE_EMPRESA' => $reco->empresa,
 
             ]
         ]);
@@ -3988,6 +3989,7 @@ class reportenom0353Controller extends Controller
             $plantillaword->setValue('CONCLUSION_16', $datosGenerales->REPORTE_INSUFICIENTE_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_INSUFICIENTE_CONCLUSIONES) : 'No cargado');
 
 
+
             //// RESPONSABLE 1
             if ($datosGenerales->INFORME_RESPONSABLE1DOCUMENTO) {
                 if (
@@ -4136,10 +4138,21 @@ class reportenom0353Controller extends Controller
 
             $plantillaword->setValue('RECOMENDACIONES', htmlspecialchars($texto_recomendaciones));
 
+            /// ANALISIS GRAFICA 
+            $plantillaword->setValue('ANALISIS_GRAFICAGLOBAL', $datosGenerales->ANALISIS_GRAFICACALIFICACIONES ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICACALIFICACIONES) : 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATEGORIA', $datosGenerales->ANALISIS_GRAFICA_CATEGORIAS ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATEGORIAS) : 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMINIO', $datosGenerales->ANALISIS_GRAFICA_DOMINIOS ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMINIOS) : 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_GUIA1', $datosGenerales->ANALISIS_GRAFICA_GUIA1 ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_GUIA1) : 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATAMBIENTE', $datosGenerales->ANALISIS_GRAFICA_CATAMBIENTE ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATAMBIENTE) : 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATFACTORES', $datosGenerales->ANALISIS_GRAFICA_CATFACTORES ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATFACTORES) : 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATORGANIZACION', $datosGenerales->ANALISIS_GRAFICA_CATORGANIZACION ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATORGANIZACION) : 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATLIDERAZGO', $datosGenerales->ANALISIS_GRAFICA_CATLIDERAZGO ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATLIDERAZGO) : 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATENTORNO', $datosGenerales->ANALISIS_GRAFICA_CATENTORNO ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATENTORNO) : 'No cargado');
+
+
+
 
             ////  DASHBOARD_FOTO
-
-
 
             $rutaDashboardTemporal = null;
 
@@ -4234,66 +4247,76 @@ class reportenom0353Controller extends Controller
                     'request' => 'GRAFICA_CALIFICACION',
                     'marcador' => 'GRAFICA_CALIFICACION',
                     'archivo' => 'grafica_calificacion',
-                    'width' => 860,
-                    'height' => 500
+                    'width' => 320,
+                    'height' => 250,
+                    'ratio' => false
                 ],
                 [
                     'request' => 'GRAFICA_CATEGORIAS',
                     'marcador' => 'GRAFICA_CATEGORIAS',
                     'archivo' => 'grafica_categorias',
-                    'width' => 860,
-                    'height' => 500
+                    'width' => 620,
+                    'height' => 620,
+                    'ratio' => false
                 ],
                 [
                     'request' => 'GRAFICA_DOMINIOS',
                     'marcador' => 'GRAFICA_DOMINIOS',
                     'archivo' => 'grafica_dominios',
-                    'width' => 860,
-                    'height' => 500
+                    'width' => 620,
+                    'height' => 660,
+                    'ratio' => false
                 ],
                 [
                     'request' => 'GRAFICA_1',
                     'marcador' => 'GRAFICA_1',
                     'archivo' => 'grafica_1',
-                    'width' => 860,
-                    'height' => 500
+                    'width' => 320,
+                    'height' => 250,
+                    'ratio' => false
                 ],
                 [
                     'request' => 'GRAFICA_2',
                     'marcador' => 'GRAFICA_2',
                     'archivo' => 'grafica_2',
-                    'width' => 860,
-                    'height' => 500
+                    'width' => 650,
+                    'height' => 410,
+                    'ratio' => false
                 ],
                 [
                     'request' => 'GRAFICA_3',
                     'marcador' => 'GRAFICA_3',
                     'archivo' => 'grafica_3',
-                    'width' => 860,
-                    'height' => 500
+                    'width' => 650,
+                    'height' => 410,
+                    'ratio' => false
                 ],
                 [
                     'request' => 'GRAFICA_4',
                     'marcador' => 'GRAFICA_4',
                     'archivo' => 'grafica_4',
-                    'width' => 860,
-                    'height' => 500
+                    'width' => 650,
+                    'height' => 410,
+                    'ratio' => false
                 ],
                 [
                     'request' => 'GRAFICA_5',
                     'marcador' => 'GRAFICA_5',
                     'archivo' => 'grafica_5',
-                    'width' => 860,
-                    'height' => 550
+                    'width' => 650,
+                    'height' => 480,
+                    'ratio' => false
                 ],
                 [
                     'request' => 'GRAFICA_6',
                     'marcador' => 'GRAFICA_6',
                     'archivo' => 'grafica_6',
-                    'width' => 860,
-                    'height' => 500
+                    'width' => 650,
+                    'height' => 410,
+                    'ratio' => false
                 ]
             ];
+
 
             $rutasGraficasTemporales = [];
 
@@ -4409,14 +4432,23 @@ class reportenom0353Controller extends Controller
 
                 $rutasGraficasTemporales[] = $rutaStorage;
 
+                $opcionesImagen = [
+                    'path' => $rutaTemporal,
+                    'width' => $graficaWord['width'],
+                    'ratio' => $graficaWord['ratio']
+                ];
+
+                if (
+                    isset($graficaWord['height']) &&
+                    $graficaWord['ratio'] === false
+                ) {
+                    $opcionesImagen['height'] =
+                        $graficaWord['height'];
+                }
+
                 $plantillaword->setImageValue(
                     $marcadorWord,
-                    [
-                        'path' => $rutaTemporal,
-                        'width' => $graficaWord['width'],
-                        'height' => $graficaWord['height'],
-                        'ratio' => false
-                    ]
+                    $opcionesImagen
                 );
             }
 
@@ -8808,4 +8840,318 @@ class reportenom0353Controller extends Controller
             ], 500);
         }
     }
+
+
+    //// ANALISIS GRAFICA 
+
+    public function guardaranalisisgraficaglobal(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICACALIFICACIONES = $request->ANALISIS_GRAFICACALIFICACIONES;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficacategoria(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATEGORIAS = $request->ANALISIS_GRAFICA_CATEGORIAS;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadominio(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_DOMINIOS = $request->ANALISIS_GRAFICA_DOMINIOS;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficaguia1(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_GUIA1 = $request->ANALISIS_GRAFICA_GUIA1;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficatambiente(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATAMBIENTE = $request->ANALISIS_GRAFICA_CATAMBIENTE;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficatfactores(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATFACTORES = $request->ANALISIS_GRAFICA_CATFACTORES;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficatorganizacion(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATORGANIZACION = $request->ANALISIS_GRAFICA_CATORGANIZACION;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficatliderazgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATLIDERAZGO = $request->ANALISIS_GRAFICA_CATLIDERAZGO;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficatentorno(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATENTORNO = $request->ANALISIS_GRAFICA_CATENTORNO;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
+
 }
+

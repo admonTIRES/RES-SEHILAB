@@ -619,7 +619,7 @@ function cargarDatosGeneralesInformePsico()
                 $('#INFORME_OBJETIVOGENERALES')
                     .val(`Es un hecho que los Factores de Riesgo Psicosocial (FRPS) inherentes a las diversas actividades que se desarrollan en la industria petrolera no son la excepción. La forma en que las personas se desenvuelven en los ámbitos social y económico encuentra una de sus principales expresiones en el trabajo. Su vida cotidiana, su proyecto de vida y sus experiencias emocionales, cognitivas y sociales se desarrollan, en gran medida, dentro del entorno laboral, considerando el tiempo que se dedica al desempeño de las actividades propias de cada puesto.
                         
-Tomando en cuenta la importancia de la evaluación e intervención sobre los Factores de Riesgo Psicosocial para promover un estado de bienestar entre las personas trabajadoras, de conformidad con lo establecido en la Norma Oficial Mexicana NOM-035-STPS-2018, Factores de riesgo psicosocial en el trabajo–Identificación, análisis y prevención, "NOMBRE EMPRESA" mantiene su compromiso con el cumplimiento de los estándares en materia de seguridad y salud en el trabajo, verificando que la salud de las personas trabajadoras expuestas a Factores de Riesgo Psicosocial no se vea afectada por las condiciones existentes en el centro de trabajo. Para ello, realiza de manera periódica las evaluaciones correspondientes, en apego a la normatividad aplicable y a sus procedimientos internos.
+Tomando en cuenta la importancia de la evaluación e intervención sobre los Factores de Riesgo Psicosocial para promover un estado de bienestar entre las personas trabajadoras, de conformidad con lo establecido en la Norma Oficial Mexicana NOM-035-STPS-2018, Factores de riesgo psicosocial en el trabajo–Identificación, análisis y prevención, NOMBRE_EMPRESA mantiene su compromiso con el cumplimiento de los estándares en materia de seguridad y salud en el trabajo, verificando que la salud de las personas trabajadoras expuestas a Factores de Riesgo Psicosocial no se vea afectada por las condiciones existentes en el centro de trabajo. Para ello, realiza de manera periódica las evaluaciones correspondientes, en apego a la normatividad aplicable y a sus procedimientos internos.
 
 En el presente estudio se describen los resultados obtenidos durante la evaluación de Factores de Riesgo Psicosocial en el ambiente laboral, de acuerdo con lo establecido en la Norma Oficial Mexicana NOM-035-STPS2018, Factores de riesgo psicosocial en el trabajo–Identificación, análisis y prevención, realizada en las áreas de la INSTALACION, los días del XX al XX de MES de AÑO."`);
             }
@@ -685,74 +685,50 @@ Se localiza en las coordenadas  COORDENADAS.`);
             $('#DESCRIPCION_METODO')
                 .val(response.DESCRIPCION_METODO);
             
-            $('#REPORTE_ACONTECIMIENTOS_CONCLUSIONES')
-                .val(response.REPORTE_ACONTECIMIENTOS_CONCLUSIONES);
-
-            $('#REPORTE_AMBIENTE_CONCLUSIONES')
-                .val(response.REPORTE_AMBIENTE_CONCLUSIONES);
-
-            $('#REPORTE_CONDICIONES_CONCLUSIONES')
-                .val(response.REPORTE_CONDICIONES_CONCLUSIONES);
-
-            $('#REPORTE_FACTORES_CONCLUSIONES')
-                .val(response.REPORTE_FACTORES_CONCLUSIONES);
-
-            $('#REPORTE_CARGA_CONCLUSIONES')
-                .val(response.REPORTE_CARGA_CONCLUSIONES);
-
-            $('#REPORTE_FALTA_CONCLUSIONES')
-                .val(response.REPORTE_FALTA_CONCLUSIONES);
-
-            $('#REPORTE_ORGANIZACION_CONCLUSIONES')
-                .val(response.REPORTE_ORGANIZACION_CONCLUSIONES);
-
-            $('#REPORTE_JORNADA_CONCLUSIONES')
-                .val(response.REPORTE_JORNADA_CONCLUSIONES);
-
-            $('#REPORTE_INTERFERENCIA_CONCLUSIONES')
-                .val(response.REPORTE_INTERFERENCIA_CONCLUSIONES);
-
-            $('#REPORTE_LIDERAZGORELACIONES_CONCLUSIONES')
-                .val(response.REPORTE_LIDERAZGORELACIONES_CONCLUSIONES);
-
-            $('#REPORTE_LIDERAZGO_CONCLUSIONES')
-                .val(response.REPORTE_LIDERAZGO_CONCLUSIONES);
-
-            $('#REPORTE_RELACIONES_CONCLUSIONES')
-                .val(response.REPORTE_RELACIONES_CONCLUSIONES);
-
-            $('#REPORTE_VIOLENCIA_CONCLUSIONES')
-                .val(response.REPORTE_VIOLENCIA_CONCLUSIONES);
-
-            $('#REPORTE_ENTORNO_CONCLUSIONES')
-                .val(response.REPORTE_ENTORNO_CONCLUSIONES);
-
-            $('#REPORTE_RECONOCIMIENTO_CONCLUSIONES')
-                .val(response.REPORTE_RECONOCIMIENTO_CONCLUSIONES);
-
-            $('#REPORTE_INSUFICIENTE_CONCLUSIONES')
-                .val(response.REPORTE_INSUFICIENTE_CONCLUSIONES);
-			
+          
 			$('#INFORME_RESPONSABLE1')
 				.val(response.INFORME_RESPONSABLE1);
-
 
 			$('#INFORME_RESPONSABLE1CARGO')
 				.val(response.INFORME_RESPONSABLE1CARGO);
 
-
-
 			$('#INFORME_RESPONSABLE2')
 				.val(response.INFORME_RESPONSABLE2);
 
-
-
 		    $('#INFORME_RESPONSABLE2CARGO')
                 .val(response.INFORME_RESPONSABLE2CARGO);
-            
-            
-            
+                        
+            //// ANALISIS GRAFICA 
+            $('#ANALISIS_GRAFICACALIFICACIONES')
+                .val(response.ANALISIS_GRAFICACALIFICACIONES);
                     
+             $('#ANALISIS_GRAFICA_CATEGORIAS')
+                .val(response.ANALISIS_GRAFICA_CATEGORIAS);
+                    
+            $('#ANALISIS_GRAFICA_DOMINIOS')
+                .val(response.ANALISIS_GRAFICA_DOMINIOS);
+                         
+            $('#ANALISIS_GRAFICA_GUIA1')
+                .val(response.ANALISIS_GRAFICA_GUIA1);       
+            
+            $('#ANALISIS_GRAFICA_CATAMBIENTE')
+                .val(response.ANALISIS_GRAFICA_CATAMBIENTE); 
+            
+            $('#ANALISIS_GRAFICA_CATFACTORES')
+                .val(response.ANALISIS_GRAFICA_CATFACTORES); 
+            
+            $('#ANALISIS_GRAFICA_CATORGANIZACION')
+                .val(response.ANALISIS_GRAFICA_CATORGANIZACION); 
+
+            $('#ANALISIS_GRAFICA_CATLIDERAZGO')
+                .val(response.ANALISIS_GRAFICA_CATLIDERAZGO); 
+            
+            $('#ANALISIS_GRAFICA_CATENTORNO')
+                .val(response.ANALISIS_GRAFICA_CATENTORNO); 
+            
+            
+            
+            
 			   if(response.RUTA_IMAGEN_UBICACION)
             {
 
@@ -1352,9 +1328,7 @@ $("#form_reporte_procesoinstalacion").on(
 //// DESCRIPCION METODO REALIZADO PARA LA EVALUACION
 
 
-$("#form_reporte_descripcionmetodo").on(
-    "submit",
-    function(e)
+$("#form_reporte_descripcionmetodo").on("submit",function(e)
 {
 
     e.preventDefault();
@@ -1402,9 +1376,7 @@ $("#form_reporte_descripcionmetodo").on(
 /// CONCLUSIONES
 
 
-$("#form_reporte_conclusion").on(
-    "submit",
-    function(e)
+$("#form_reporte_conclusion").on("submit",function(e)
 {
 
     e.preventDefault();
@@ -1451,9 +1423,7 @@ $("#form_reporte_conclusion").on(
 
 /// RECOMENDACIONES
 
-$("#form_reporte_recomendaciones_control").on(
-    "submit",
-    function(e)
+$("#form_reporte_recomendaciones_control").on("submit",function(e)
 {
 
     e.preventDefault();
@@ -1524,9 +1494,7 @@ function cargarRecomendacionesInformepsico()
 /// RESPONSABLE
 
 
-$("#form_reporte_responsablesinforme").on(
-    "submit",
-    function(e)
+$("#form_reporte_responsablesinforme").on("submit",function(e)
 {
 
     e.preventDefault();
@@ -1646,8 +1614,7 @@ function tablaVersionesinfopsico()
 }
 
 
-$("#boton_reporte_nuevarevision")
-.on("click", function()
+$("#boton_reporte_nuevarevision").on("click", function()
 {
 
     $.ajax({
@@ -1743,7 +1710,6 @@ function cancelarRevisioninfopsico(ID_VERSION_INFO_PSICO,checkbox)
     });
 }
 
-
 function validarEdicioninfopsico()
 {
 
@@ -1805,7 +1771,6 @@ function validarEdicioninfopsico()
 
 //// ADICIONAL
 
-
 function obtenerNumeroTrabajadoresPsico()
 {
     $.get(
@@ -1820,11 +1785,451 @@ function obtenerNumeroTrabajadoresPsico()
 ///// DESCARGAR INFO
 
 
+function recortarEspacioBlancoBase64(imagenBase64, padding)
+{
+    return new Promise(function(resolve)
+    {
+        if (!imagenBase64) {
+            resolve('');
+            return;
+        }
+
+        var imagen = new Image();
+
+        imagen.onload = function()
+        {
+            var canvas = document.createElement('canvas');
+            var contexto = canvas.getContext('2d');
+
+            canvas.width = imagen.naturalWidth;
+            canvas.height = imagen.naturalHeight;
+
+            contexto.drawImage(imagen, 0, 0);
+
+            var datos = contexto.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            var pixeles = datos.data;
+
+            var minimoX = canvas.width;
+            var minimoY = canvas.height;
+            var maximoX = 0;
+            var maximoY = 0;
+            var encontrado = false;
+
+            for (var y = 0; y < canvas.height; y++) {
+
+                for (var x = 0; x < canvas.width; x++) {
+
+                    var indice =
+                        (y * canvas.width + x) * 4;
+
+                    var rojo = pixeles[indice];
+                    var verde = pixeles[indice + 1];
+                    var azul = pixeles[indice + 2];
+                    var alfa = pixeles[indice + 3];
+
+                    var esBlanco =
+                        rojo >= 248 &&
+                        verde >= 248 &&
+                        azul >= 248;
+
+                    var esTransparente =
+                        alfa <= 10;
+
+                    if (!esBlanco && !esTransparente) {
+
+                        encontrado = true;
+
+                        if (x < minimoX) {
+                            minimoX = x;
+                        }
+
+                        if (x > maximoX) {
+                            maximoX = x;
+                        }
+
+                        if (y < minimoY) {
+                            minimoY = y;
+                        }
+
+                        if (y > maximoY) {
+                            maximoY = y;
+                        }
+                    }
+                }
+            }
+
+            if (!encontrado) {
+                resolve(imagenBase64);
+                return;
+            }
+
+            padding = parseInt(padding, 10) || 0;
+
+            minimoX = Math.max(0, minimoX - padding);
+            minimoY = Math.max(0, minimoY - padding);
+
+            maximoX = Math.min(
+                canvas.width - 1,
+                maximoX + padding
+            );
+
+            maximoY = Math.min(
+                canvas.height - 1,
+                maximoY + padding
+            );
+
+            var anchoRecorte =
+                maximoX - minimoX + 1;
+
+            var altoRecorte =
+                maximoY - minimoY + 1;
+
+            var canvasRecortado =
+                document.createElement('canvas');
+
+            canvasRecortado.width =
+                anchoRecorte;
+
+            canvasRecortado.height =
+                altoRecorte;
+
+            var contextoRecortado =
+                canvasRecortado.getContext('2d');
+
+            contextoRecortado.fillStyle = '#FFFFFF';
+
+            contextoRecortado.fillRect(
+                0,
+                0,
+                anchoRecorte,
+                altoRecorte
+            );
+
+            contextoRecortado.drawImage(
+                canvas,
+                minimoX,
+                minimoY,
+                anchoRecorte,
+                altoRecorte,
+                0,
+                0,
+                anchoRecorte,
+                altoRecorte
+            );
+
+            resolve(
+                canvasRecortado.toDataURL(
+                    'image/png'
+                )
+            );
+        };
+
+        imagen.onerror = function()
+        {
+            resolve(imagenBase64);
+        };
+
+        imagen.src = imagenBase64;
+    });
+}
+
+
+
+
+function recortarImagenBase64(imagenBase64, padding)
+{
+    return new Promise(function(resolve)
+    {
+        if (
+            !imagenBase64 ||
+            typeof imagenBase64 !== 'string'
+        ) {
+            resolve('');
+            return;
+        }
+
+        var imagen = new Image();
+
+        imagen.onload = function()
+        {
+            var canvas = document.createElement('canvas');
+            var contexto = canvas.getContext('2d');
+
+            canvas.width =
+                imagen.naturalWidth || imagen.width;
+
+            canvas.height =
+                imagen.naturalHeight || imagen.height;
+
+            contexto.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            contexto.drawImage(
+                imagen,
+                0,
+                0
+            );
+
+            var informacion = contexto.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            var pixeles = informacion.data;
+
+            var minimoX = canvas.width;
+            var minimoY = canvas.height;
+            var maximoX = 0;
+            var maximoY = 0;
+            var encontrado = false;
+
+            var anchoZonaLogo = Math.round(
+                canvas.width * 0.12
+            );
+
+            var altoZonaLogo = Math.round(
+                canvas.height * 0.12
+            );
+
+            var inicioZonaLogoY =
+                canvas.height - altoZonaLogo;
+
+            for (var y = 0; y < canvas.height; y++) {
+
+                for (var x = 0; x < canvas.width; x++) {
+
+                    var estaEnZonaLogo =
+                        x <= anchoZonaLogo &&
+                        y >= inicioZonaLogoY;
+
+                    if (estaEnZonaLogo) {
+                        continue;
+                    }
+
+                    var indice =
+                        (y * canvas.width + x) * 4;
+
+                    var rojo =
+                        pixeles[indice];
+
+                    var verde =
+                        pixeles[indice + 1];
+
+                    var azul =
+                        pixeles[indice + 2];
+
+                    var alfa =
+                        pixeles[indice + 3];
+
+                    var transparente =
+                        alfa <= 10;
+
+                    var blanco =
+                        rojo >= 245 &&
+                        verde >= 245 &&
+                        azul >= 245;
+
+                    if (
+                        !transparente &&
+                        !blanco
+                    ) {
+                        encontrado = true;
+
+                        if (x < minimoX) {
+                            minimoX = x;
+                        }
+
+                        if (x > maximoX) {
+                            maximoX = x;
+                        }
+
+                        if (y < minimoY) {
+                            minimoY = y;
+                        }
+
+                        if (y > maximoY) {
+                            maximoY = y;
+                        }
+                    }
+                }
+            }
+
+            if (!encontrado) {
+                resolve(imagenBase64);
+                return;
+            }
+
+            padding =
+                parseInt(padding, 10);
+
+            if (isNaN(padding)) {
+                padding = 15;
+            }
+
+            minimoX = Math.max(
+                0,
+                minimoX - padding
+            );
+
+            minimoY = Math.max(
+                0,
+                minimoY - padding
+            );
+
+            maximoX = Math.min(
+                canvas.width - 1,
+                maximoX + padding
+            );
+
+            maximoY = Math.min(
+                canvas.height - 1,
+                maximoY + padding
+            );
+
+            var anchoRecorte =
+                maximoX - minimoX + 1;
+
+            var altoRecorte =
+                maximoY - minimoY + 1;
+
+            if (
+                anchoRecorte <= 0 ||
+                altoRecorte <= 0
+            ) {
+                resolve(imagenBase64);
+                return;
+            }
+
+            var escalaSalida = 3;
+
+            var canvasRecortado =
+                document.createElement('canvas');
+
+            var contextoRecortado =
+                canvasRecortado.getContext('2d');
+
+            canvasRecortado.width =
+                anchoRecorte * escalaSalida;
+
+            canvasRecortado.height =
+                altoRecorte * escalaSalida;
+
+            contextoRecortado.clearRect(
+                0,
+                0,
+                canvasRecortado.width,
+                canvasRecortado.height
+            );
+
+            contextoRecortado.imageSmoothingEnabled =
+                true;
+
+            contextoRecortado.imageSmoothingQuality =
+                'high';
+
+            contextoRecortado.drawImage(
+                canvas,
+                minimoX,
+                minimoY,
+                anchoRecorte,
+                altoRecorte,
+                0,
+                0,
+                canvasRecortado.width,
+                canvasRecortado.height
+            );
+
+            resolve(
+                canvasRecortado.toDataURL(
+                    'image/png'
+                )
+            );
+        };
+
+        imagen.onerror = function()
+        {
+            resolve(imagenBase64);
+        };
+
+        imagen.src = imagenBase64;
+    });
+}
+
 async function descargarRevisioninfopsico(PROYECTO_ID)
 {
     try {
 
-        const dashboard = document.querySelector('#tabla_dashboard');
+        window.chartPngs =
+            window.chartPngs || {};
+
+        if (
+            !window.chartPngs[
+                'calificacionChart'
+            ] &&
+            typeof calificacionchart !==
+                'undefined' &&
+            calificacionchart
+        ) {
+            window.chartPngs[
+                'calificacionChart'
+            ] = calificacionchart;
+        }
+
+        if (
+            !window.chartPngs[
+                'consolidadoChart'
+            ] &&
+            typeof categoriaschart !==
+                'undefined' &&
+            categoriaschart
+        ) {
+            window.chartPngs[
+                'consolidadoChart'
+            ] = categoriaschart;
+        }
+
+        if (
+            !window.chartPngs[
+                'consolidadoChart2'
+            ] &&
+            typeof dominioschart !==
+                'undefined' &&
+            dominioschart
+        ) {
+            window.chartPngs[
+                'consolidadoChart2'
+            ] = dominioschart;
+        }
+
+        if (
+            !window.chartPngs[
+                'guia1Chart'
+            ] &&
+            typeof acontecimientoschart !==
+                'undefined' &&
+            acontecimientoschart
+        ) {
+            window.chartPngs[
+                'guia1Chart'
+            ] = acontecimientoschart;
+        }
+
+        const dashboard =
+            document.querySelector(
+                '#tabla_dashboard'
+            );
 
         if (!dashboard) {
             Swal.fire({
@@ -1836,69 +2241,166 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
             return;
         }
 
-        if (document.fonts && document.fonts.ready) {
+        if (
+            document.fonts &&
+            document.fonts.ready
+        ) {
             await document.fonts.ready;
         }
 
-        window.dispatchEvent(new Event('resize'));
+        window.dispatchEvent(
+            new Event('resize')
+        );
 
-        await new Promise(function(resolve)
-        {
-            setTimeout(resolve, 1500);
-        });
-
-        var graficasRequeridas = [
-            'calificacionChart',
-            'consolidadoChart',
-            'consolidadoChart2',
-            'guia1Chart',
-            'ambienteChart',
-            'factoresChart',
-            'organizacionChart',
-            'liderazgoChart',
-            'entornoChart'
-        ];
-
-        var graficasFaltantes = [];
-
-        graficasRequeridas.forEach(function(nombreGrafica)
-        {
-            if (
-                !chartPngs[nombreGrafica] ||
-                chartPngs[nombreGrafica].length < 100
-            ) {
-                graficasFaltantes.push(nombreGrafica);
+        await new Promise(
+            function(resolve)
+            {
+                setTimeout(
+                    resolve,
+                    1800
+                );
             }
-        });
+        );
 
-        if (graficasFaltantes.length > 0) {
+        var imagenesGraficas = {
+            GRAFICA_CALIFICACION:
+                window.chartPngs[
+                    'calificacionChart'
+                ] || '',
+
+            GRAFICA_CATEGORIAS:
+                window.chartPngs[
+                    'consolidadoChart'
+                ] || '',
+
+            GRAFICA_DOMINIOS:
+                window.chartPngs[
+                    'consolidadoChart2'
+                ] || '',
+
+            GRAFICA_1:
+                window.chartPngs[
+                    'guia1Chart'
+                ] || '',
+
+            GRAFICA_2:
+                window.chartPngs[
+                    'ambienteChart'
+                ] || '',
+
+            GRAFICA_3:
+                window.chartPngs[
+                    'factoresChart'
+                ] || '',
+
+            GRAFICA_4:
+                window.chartPngs[
+                    'organizacionChart'
+                ] || '',
+
+            GRAFICA_5:
+                window.chartPngs[
+                    'liderazgoChart'
+                ] || '',
+
+            GRAFICA_6:
+                window.chartPngs[
+                    'entornoChart'
+                ] || ''
+        };
+
+       var graficasParaRecortar = [
+        'GRAFICA_CALIFICACION',
+        'GRAFICA_CATEGORIAS',
+        'GRAFICA_DOMINIOS',
+        'GRAFICA_1'
+    ];
+
+    for (
+        var indice = 0;
+        indice < graficasParaRecortar.length;
+        indice++
+    ) {
+        var nombreGrafica =
+            graficasParaRecortar[indice];
+
+        if (
+            imagenesGraficas[nombreGrafica] &&
+            imagenesGraficas[nombreGrafica].length > 100
+        ) {
+            imagenesGraficas[nombreGrafica] =
+                await recortarImagenBase64(
+                    imagenesGraficas[nombreGrafica],
+                    10
+                );
+        }
+    }
+
+        var graficasFaltantes =
+            [];
+
+        Object.keys(
+            imagenesGraficas
+        ).forEach(
+            function(nombreGrafica)
+            {
+                if (
+                    !imagenesGraficas[
+                        nombreGrafica
+                    ] ||
+                    imagenesGraficas[
+                        nombreGrafica
+                    ].length < 100
+                ) {
+                    graficasFaltantes.push(
+                        nombreGrafica
+                    );
+                }
+            }
+        );
+
+        if (
+            graficasFaltantes.length > 0
+        ) {
             console.warn(
                 'Las siguientes gráficas no están disponibles:',
                 graficasFaltantes
             );
         }
 
-        const canvas = await html2canvas(
-            dashboard,
-            {
-                scale: 2,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: '#FFFFFF',
-                logging: false,
-                scrollX: 0,
-                scrollY: -window.scrollY,
-                width: dashboard.scrollWidth,
-                height: dashboard.scrollHeight,
-                windowWidth: document.documentElement.scrollWidth,
-                windowHeight: document.documentElement.scrollHeight
-            }
-        );
+        const canvas =
+            await html2canvas(
+                dashboard,
+                {
+                    scale: 4,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor:
+                        '#FFFFFF',
+                    logging: false,
+                    scrollX: 0,
+                    scrollY:
+                        -window.scrollY,
+                    width:
+                        dashboard.scrollWidth,
+                    height:
+                        dashboard.scrollHeight,
+                    windowWidth:
+                        document
+                            .documentElement
+                            .scrollWidth,
+                    windowHeight:
+                        document
+                            .documentElement
+                            .scrollHeight
+                }
+            );
 
-        const dashboardBase64 = canvas.toDataURL(
-            'image/jpeg',
-            0.95
-        );
+        const dashboardBase64 =
+            canvas.toDataURL(
+                'image/png',
+                1
+            );
 
         if (
             !dashboardBase64 ||
@@ -1909,122 +2411,78 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
             );
         }
 
-        var form = $('<form>', {
-            action:
-                '/descargarRevisioninfopsico/' +
-                PROYECTO_ID,
-            method: 'POST',
-            target: '_blank',
-            style: 'display:none;'
-        });
+        var form =
+            $('<form>', {
+                action:
+                    '/descargarRevisioninfopsico/' +
+                    PROYECTO_ID,
+
+                method:
+                    'POST',
+
+                target:
+                    '_blank',
+
+                style:
+                    'display:none;'
+            });
 
         form.append(
             $('<input>', {
                 type: 'hidden',
                 name: '_token',
                 value:
-                    $('meta[name="csrf-token"]')
-                        .attr('content')
+                    $(
+                        'meta[name="csrf-token"]'
+                    ).attr(
+                        'content'
+                    )
             })
         );
 
         form.append(
             $('<input>', {
                 type: 'hidden',
-                name: 'DASHBOARD_FOTO',
-                value: dashboardBase64
-            })
-        );
-
-        form.append(
-            $('<input>', {
-                type: 'hidden',
-                name: 'GRAFICA_CALIFICACION',
+                name:
+                    'DASHBOARD_FOTO',
                 value:
-                    chartPngs['calificacionChart'] || ''
+                    dashboardBase64
             })
         );
 
-        form.append(
-            $('<input>', {
-                type: 'hidden',
-                name: 'GRAFICA_CATEGORIAS',
-                value:
-                    chartPngs['consolidadoChart'] || ''
-            })
-        );
+        Object.keys(
+            imagenesGraficas
+        ).forEach(
+            function(nombreInput)
+            {
+                form.append(
+                    $('<input>', {
+                        type:
+                            'hidden',
 
-        form.append(
-            $('<input>', {
-                type: 'hidden',
-                name: 'GRAFICA_DOMINIOS',
-                value:
-                    chartPngs['consolidadoChart2'] || ''
-            })
-        );
+                        name:
+                            nombreInput,
 
-        form.append(
-            $('<input>', {
-                type: 'hidden',
-                name: 'GRAFICA_1',
-                value:
-                    chartPngs['guia1Chart'] || ''
-            })
-        );
-
-        form.append(
-            $('<input>', {
-                type: 'hidden',
-                name: 'GRAFICA_2',
-                value:
-                    chartPngs['ambienteChart'] || ''
-            })
-        );
-
-        form.append(
-            $('<input>', {
-                type: 'hidden',
-                name: 'GRAFICA_3',
-                value:
-                    chartPngs['factoresChart'] || ''
-            })
-        );
-
-        form.append(
-            $('<input>', {
-                type: 'hidden',
-                name: 'GRAFICA_4',
-                value:
-                    chartPngs['organizacionChart'] || ''
-            })
-        );
-
-        form.append(
-            $('<input>', {
-                type: 'hidden',
-                name: 'GRAFICA_5',
-                value:
-                    chartPngs['liderazgoChart'] || ''
-            })
-        );
-
-        form.append(
-            $('<input>', {
-                type: 'hidden',
-                name: 'GRAFICA_6',
-                value:
-                    chartPngs['entornoChart'] || ''
-            })
+                        value:
+                            imagenesGraficas[
+                                nombreInput
+                            ]
+                    })
+                );
+            }
         );
 
         $('body').append(form);
 
         form.submit();
 
-        setTimeout(function()
-        {
-            form.remove();
-        }, 5000);
+        setTimeout(
+            function()
+            {
+                form.remove();
+            },
+            5000
+        );
 
     } catch (error) {
 
@@ -2041,42 +2499,98 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
     }
 }
 
+
+
 // async function descargarRevisioninfopsico(PROYECTO_ID)
 // {
 //     try {
 
-//         const dashboard =
-//             document.querySelector(
-//                 '#tabla_dashboard'
-//             );
+//         window.chartPngs = window.chartPngs || {};
+
+//         if (
+//             !window.chartPngs['calificacionChart'] &&
+//             typeof calificacionchart !== 'undefined' &&
+//             calificacionchart
+//         ) {
+//             window.chartPngs['calificacionChart'] = calificacionchart;
+//         }
+
+//         if (
+//             !window.chartPngs['consolidadoChart'] &&
+//             typeof categoriaschart !== 'undefined' &&
+//             categoriaschart
+//         ) {
+//             window.chartPngs['consolidadoChart'] = categoriaschart;
+//         }
+
+//         if (
+//             !window.chartPngs['consolidadoChart2'] &&
+//             typeof dominioschart !== 'undefined' &&
+//             dominioschart
+//         ) {
+//             window.chartPngs['consolidadoChart2'] = dominioschart;
+//         }
+
+//         if (
+//             !window.chartPngs['guia1Chart'] &&
+//             typeof acontecimientoschart !== 'undefined' &&
+//             acontecimientoschart
+//         ) {
+//             window.chartPngs['guia1Chart'] = acontecimientoschart;
+//         }
+
+//         const dashboard = document.querySelector('#tabla_dashboard');
 
 //         if (!dashboard) {
-
 //             Swal.fire({
 //                 icon: 'error',
 //                 title: 'Error',
 //                 text: 'No se encontró el dashboard para generar la imagen'
 //             });
-
 //             return;
 //         }
 
-
 //         if (document.fonts && document.fonts.ready) {
-
 //             await document.fonts.ready;
 //         }
 
-//         window.dispatchEvent(
-//             new Event('resize')
-//         );
-
+//         window.dispatchEvent(new Event('resize'));
 
 //         await new Promise(function(resolve)
 //         {
-//             setTimeout(resolve, 1000);
+//             setTimeout(resolve, 1500);
 //         });
 
+//         var imagenesGraficas = {
+//             GRAFICA_CALIFICACION: window.chartPngs['calificacionChart'] || '',
+//             GRAFICA_CATEGORIAS: window.chartPngs['consolidadoChart'] || '',
+//             GRAFICA_DOMINIOS: window.chartPngs['consolidadoChart2'] || '',
+//             GRAFICA_1: window.chartPngs['guia1Chart'] || '',
+//             GRAFICA_2: window.chartPngs['ambienteChart'] || '',
+//             GRAFICA_3: window.chartPngs['factoresChart'] || '',
+//             GRAFICA_4: window.chartPngs['organizacionChart'] || '',
+//             GRAFICA_5: window.chartPngs['liderazgoChart'] || '',
+//             GRAFICA_6: window.chartPngs['entornoChart'] || ''
+//         };
+
+//         var graficasFaltantes = [];
+
+//         Object.keys(imagenesGraficas).forEach(function(nombreGrafica)
+//         {
+//             if (
+//                 !imagenesGraficas[nombreGrafica] ||
+//                 imagenesGraficas[nombreGrafica].length < 100
+//             ) {
+//                 graficasFaltantes.push(nombreGrafica);
+//             }
+//         });
+
+//         if (graficasFaltantes.length > 0) {
+//             console.warn(
+//                 'Las siguientes gráficas no están disponibles:',
+//                 graficasFaltantes
+//             );
+//         }
 
 //         const canvas = await html2canvas(
 //             dashboard,
@@ -2095,60 +2609,53 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
 //             }
 //         );
 
-
-
-
-//         const dashboardBase64 =
-//             canvas.toDataURL(
-//                 'image/jpeg',
-//                 0.95
-//             );
-
+//         const dashboardBase64 = canvas.toDataURL(
+//             'image/jpeg',
+//             0.95
+//         );
 
 //         if (
 //             !dashboardBase64 ||
 //             dashboardBase64.length < 100
 //         ) {
-
 //             throw new Error(
 //                 'No fue posible generar la imagen del dashboard'
 //             );
 //         }
 
-
-//         let form = $('<form>', {
-
-//             action:
-//                 '/descargarRevisioninfopsico/' + proyecto.id,
-//             method:'POST',
-//             target:'_blank',
+//         var form = $('<form>', {
+//             action: '/descargarRevisioninfopsico/' + PROYECTO_ID,
+//             method: 'POST',
+//             target: '_blank',
 //             style: 'display:none;'
-
 //         });
 
-
 //         form.append(
 //             $('<input>', {
-//                 type:'hidden',
-//                 name:'_token',
-//                 value:
-//                     $('meta[name="csrf-token"]')
-//                     .attr('content')
-
+//                 type: 'hidden',
+//                 name: '_token',
+//                 value: $('meta[name="csrf-token"]').attr('content')
 //             })
-
 //         );
 
 //         form.append(
 //             $('<input>', {
-//                 type:'hidden',
-//                 name:'DASHBOARD_FOTO',
-//                 value:  dashboardBase64
-
+//                 type: 'hidden',
+//                 name: 'DASHBOARD_FOTO',
+//                 value: dashboardBase64
 //             })
-
 //         );
 
+//         Object.keys(imagenesGraficas).forEach(function(nombreInput)
+//         {
+//             form.append(
+//                 $('<input>', {
+//                     type: 'hidden',
+//                     name: nombreInput,
+//                     value: imagenesGraficas[nombreInput]
+//                 })
+//             );
+//         });
 
 //         $('body').append(form);
 
@@ -2157,23 +2664,23 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
 //         setTimeout(function()
 //         {
 //             form.remove();
-
-//         }, 2000);
+//         }, 5000);
 
 //     } catch (error) {
 
 //         console.error(
-//             'Error al capturar el dashboard:',
+//             'Error al generar el informe:',
 //             error
 //         );
 
 //         Swal.fire({
-//             icon:'error',
+//             icon: 'error',
 //             title: 'Error',
-//             text: 'No fue posible generar la imagen del dashboard'
+//             text: 'No fue posible generar las imágenes del informe'
 //         });
 //     }
 // }
+
 
 
 
@@ -2203,7 +2710,6 @@ function cargarGraficaGeneroPsico()
 }
 
 // EDADES
-
 let chartEdades = null;
 let edadeschart = null;
 
@@ -2230,8 +2736,6 @@ function cargarGraficaEdadesPsico()
         });
     });
 }
-
-
 
 function generarGraficaEdadesPsico(edadData, maximo)
 {
@@ -2434,11 +2938,8 @@ function generarGraficaEdadesPsico(edadData, maximo)
 }
 
 // ESCOLARIDAD
-
 let chartEscolaridad = null;
 let escolaridadchart = null;
-
-
 
 function cargarGraficaEscolaridadPsico()
 {
@@ -2465,9 +2966,7 @@ function cargarGraficaEscolaridadPsico()
     });
 }
 
-
-
-function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores,maximo)
+function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, maximo)
 {
 
     if (!Array.isArray(datosEscolaridad)) {
@@ -2719,12 +3218,8 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores,maxi
 }
 
 // ESTADO CIVIL
-
-
 let chartEstadoCivil = null;
 let estadocivilchart = null;
-
-
 
 function cargarGraficaEstadoCivilPsico()
 {
@@ -2750,8 +3245,6 @@ function cargarGraficaEstadoCivilPsico()
         });
     });
 }
-
-
 
 function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maximo)
 {
@@ -3013,8 +3506,6 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
 let chartRegimen = null;
 let regimenchart = null;
 
-
-
 function cargarGraficaRegimenPsico()
 {
     $.get(
@@ -3038,8 +3529,6 @@ function cargarGraficaRegimenPsico()
         });
     });
 }
-
-
 
 function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
 {
@@ -3290,8 +3779,6 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
 let chartExperiencia = null;
 let experienciachart = null;
 
-
-
 function cargarGraficaExperienciaPsico()
 {
     $.get(
@@ -3315,8 +3802,6 @@ function cargarGraficaExperienciaPsico()
         });
     });
 }
-
-
 
 function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
 {
@@ -3535,8 +4020,6 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
 }
 
 /// CALIFICACION GLOBAL
-
-
 function cargarGraficaCalificacionPsico()
 {
     $.get(
@@ -3560,8 +4043,6 @@ function cargarGraficaCalificacionPsico()
         });
     });
 }
-
-
 
 function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
 {
@@ -3714,7 +4195,7 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
 
     calificacionesSeries.labels.template
         .setAll({
-            fontSize: 14,
+            fontSize: 25,
             fontWeight: 'bold',
             text:'{value} ({valuePercentTotal.formatNumber("0.00")}%)',radius: 8
         });
@@ -3743,7 +4224,7 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
         .labels
         .template
         .setAll({
-            fontSize: 14,
+            fontSize: 25,
             fontWeight: 'bold',
 
             text:
@@ -3771,7 +4252,7 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
                     centerX: am5.percent(50),
                     centerY: am5.percent(35),
                     textAlign:'center',
-                    fontSize: 18,
+                    fontSize: 25,
                     fontWeight: 'bold'
                 }
             )
@@ -3831,10 +4312,6 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
 }
 
 /// GRAFICA DE CATEGORIAS
-
-
-
-
 function cargarGraficaCategoriasGuiaIII()
 {
     $.get(
@@ -3857,8 +4334,6 @@ function cargarGraficaCategoriasGuiaIII()
         });
     });
 }
-
-
 
 function generarGraficaCategoriasGuiaIII(dataConsolidado1)
 {
@@ -4495,9 +4970,7 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
         });
 }
 
-
 // DOMINIOS
-
 function cargarGraficaDominiosGuiaIII()
 {
     $.get(
@@ -4521,8 +4994,6 @@ function cargarGraficaDominiosGuiaIII()
         });
     });
 }
-
-
 
 function generarGraficaDominiosGuiaIII(dataConsolidado2)
 {
@@ -5195,8 +5666,6 @@ function generarGraficaDominiosGuiaIII(dataConsolidado2)
 }
 
 /// GUIA I
-
-
 function cargarGraficaGuiaIPsico()
 {
     $.get(
@@ -5221,8 +5690,6 @@ function cargarGraficaGuiaIPsico()
         });
     });
 }
-
-
 
 function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
 {
@@ -5449,7 +5916,7 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
         .template
         .setAll({
             fontSize:
-                19,
+                25,
 
             fontWeight:
                 'bold',
@@ -5486,7 +5953,7 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
                             guia1_root.verticalLayout,
 
                         fontSize:
-                            19,
+                            25,
 
                         fontWeight:
                             'bold',
@@ -5506,7 +5973,7 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
         .template
         .setAll({
             fontSize:
-                19,
+                25,
 
             fontWeight:
                 'bold'
@@ -5519,7 +5986,7 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
         .template
         .setAll({
             fontSize:
-                19,
+                25,
 
             fontWeight:
                 'bold'
@@ -5622,9 +6089,7 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
         });
 }
 
-
 // CATEGORIA AMBIENTE DE TRABAJO
-
 function cargarGraficaAmbienteGuiaIII()
 {
     $.get(
@@ -5646,8 +6111,752 @@ function cargarGraficaAmbienteGuiaIII()
     });
 }
 
+// function crearGraficaAmbienteGuiaIII(data)
+//     {
+//     if (!Array.isArray(data)) {
+//         data = [];
+//     }
+
+//     if (
+//         window.ambienteChartRoot &&
+//         !window.ambienteChartRoot.isDisposed()
+//     ) {
+//         window.ambienteChartRoot.dispose();
+//         window.ambienteChartRoot = null;
+//     }
+
+//     var contenedor = document.getElementById('ambienteChart');
+
+//     if (!contenedor) {
+//         console.error('No existe el contenedor #ambienteChart');
+//         return;
+//     }
+
+//     contenedor.innerHTML = '';
+
+//     if (data.length === 0) {
+//         contenedor.innerHTML = `
+
+//          <div style="
+//                 width:100%;
+//                 height:650px;
+//                 display:flex;
+//                 justify-content:center;
+//                 align-items:center;
+//                 text-align:center;
+//                 font-weight:bold;
+//                 color:#777;
+//             ">
+//                 No hay información disponible
+//             </div>
+//         `;
+
+//         if (typeof chartPngs !== 'undefined') {
+//             chartPngs['ambienteChart'] = null;
+//         }
+
+//         return;
+//     }
+
+//     window.ambienteChartRoot =
+//         am5.Root.new('ambienteChart');
+
+//     var root =
+//         window.ambienteChartRoot;
+
+//     root.setThemes([
+//         am5themes_Animated.new(root)
+//     ]);
+
+//     var chart =
+//         root.container.children.push(
+//             am5xy.XYChart.new(
+//                 root,
+//                 {
+//                     panX: false,
+//                     panY: false,
+//                     wheelX: 'none',
+//                     wheelY: 'none',
+//                     layout: root.verticalLayout,
+//                     paddingLeft: 0,
+//                     paddingRight: 20
+//                 }
+//             )
+//         );
+
+//     chart.children.unshift(
+//         am5.Label.new(
+//             root,
+//             {
+//                 text: "Categoría\n\n\n",
+//                 fontSize: 18,
+//                 fontWeight: 'bold',
+//                 textAlign: 'center',
+//                 x: am5.p50,
+//                 centerX: am5.p50
+//             }
+//         )
+//     );
+
+//     var legend =
+//         chart.children.push(
+//             am5.Legend.new(
+//                 root,
+//                 {
+//                     centerX: am5.p50,
+//                     x: am5.p50
+//                 }
+//             )
+//         );
+
+//     legend.labels.template.setAll({
+//         fontSize: 20,
+//         fontWeight: 'bold'
+//     });
+
+//     legend.valueLabels.template.setAll({
+//         forceHidden: true,
+//         visible: false
+//     });
+
+//     legend.markers.template.setAll({
+//         width: 20,
+//         height: 20
+//     });
+
+//     var yAxisRenderer =
+//         am5xy.AxisRendererY.new(
+//             root,
+//             {
+//                 inversed: true,
+//                 cellStartLocation: 0.05,
+//                 cellEndLocation: 0.90,
+//                 minGridDistance: 0
+//             }
+//         );
+
+//     var yAxis =
+//         chart.yAxes.push(
+//             am5xy.CategoryAxis.new(
+//                 root,
+//                 {
+//                     categoryField: 'category',
+//                     renderer: yAxisRenderer,
+//                     tooltip: am5.Tooltip.new(root, {})
+//                 }
+//             )
+//         );
+
+//     yAxisRenderer.grid.template.setAll({
+//         forceHidden: true,
+//         visible: false,
+//         strokeOpacity: 0
+//     });
+
+//     yAxisRenderer.ticks.template.setAll({
+//         forceHidden: true,
+//         visible: false,
+//         strokeOpacity: 0
+//     });
+
+//     yAxisRenderer.labels.template.setAll({
+//         fontSize: 18,
+//         fontWeight: 'bold',
+//         centerY: am5.p50,
+//         centerX: am5.p0,
+//         textAlign: 'center',
+//         inside: true,
+//         rotation: 0,
+//         paddingTop: -100,
+//         oversizedBehavior: 'wrap',
+//         maxWidth: 330
+//     });
+
+//     yAxisRenderer
+//         .labels
+//         .template
+//         .adapters
+//         .add(
+//             'text',
+//             function(text, target)
+//             {
+//                 if (!target.dataItem) {
+//                     return text;
+//                 }
+
+//                 var category =
+//                     target.dataItem.get('category') || '';
+
+//                 if (
+//                     category.indexOf('g1-') === 0 ||
+//                     category.indexOf('g2-') === 0 ||
+//                     category.indexOf('g3-') === 0
+//                 ) {
+//                     return '[bold]' +
+//                         category.substring(3) +
+//                         '[/]';
+//                 }
+
+//                 return category;
+//             }
+//         );
+
+//     yAxis.data.setAll(data);
+
+//     var xAxisRenderer =
+//         am5xy.AxisRendererX.new(
+//             root,
+//             {
+//                 minGridDistance: 50
+//             }
+//         );
+
+//     var xAxis =
+//         chart.xAxes.push(
+//             am5xy.ValueAxis.new(
+//                 root,
+//                 {
+//                     renderer: xAxisRenderer,
+//                     min: 0,
+//                     max: 100,
+//                     strictMinMax: true,
+//                     maxDeviation: 0
+//                 }
+//             )
+//         );
+
+//     xAxisRenderer.grid.template.setAll({
+//         forceHidden: true,
+//         visible: false,
+//         strokeOpacity: 0
+//     });
+
+//     xAxisRenderer.labels.template.setAll({
+//         forceHidden: true,
+//         visible: false
+//     });
+
+//     xAxisRenderer.ticks.template.setAll({
+//         forceHidden: true,
+//         visible: false,
+//         strokeOpacity: 0
+//     });
+
+//     if (xAxisRenderer.baseGrid) {
+//         xAxisRenderer.baseGrid.setAll({
+//             forceHidden: true,
+//             visible: false,
+//             strokeOpacity: 0
+//         });
+//     }
+
+//     function obtenerPorcentajesEnteros(valores)
+//     {
+//         var total =
+//             valores.reduce(
+//                 function(acumulado, valor)
+//                 {
+//                     return acumulado + valor;
+//                 },
+//                 0
+//             );
+
+//         if (total <= 0) {
+//             return [0, 0, 0, 0, 0];
+//         }
+
+//         var porcentajesExactos =
+//             valores.map(function(valor)
+//             {
+//                 return (valor / total) * 100;
+//             });
+
+//         var porcentajesEnteros =
+//             porcentajesExactos.map(function(valor)
+//             {
+//                 return Math.floor(valor);
+//             });
+
+//         var sumaEnteros =
+//             porcentajesEnteros.reduce(
+//                 function(acumulado, valor)
+//                 {
+//                     return acumulado + valor;
+//                 },
+//                 0
+//             );
+
+//         var faltantes =
+//             100 - sumaEnteros;
+
+//         var residuos =
+//             porcentajesExactos.map(
+//                 function(valor, indice)
+//                 {
+//                     return {
+//                         indice: indice,
+//                         residuo:
+//                             valor -
+//                             porcentajesEnteros[indice]
+//                     };
+//                 }
+//             );
+
+//         residuos.sort(function(a, b)
+//         {
+//             return b.residuo - a.residuo;
+//         });
+
+//         for (
+//             var indice = 0;
+//             indice < faltantes;
+//             indice++
+//         ) {
+//             porcentajesEnteros[
+//                 residuos[indice].indice
+//             ]++;
+//         }
+
+//         return porcentajesEnteros;
+//     }
+
+//     function calcularDatos(datos)
+//     {
+//         return datos.map(function(item)
+//         {
+//             if (
+//                 item.category &&
+//                 item.category.indexOf('g3-') === 0
+//             ) {
+//                 return {
+//                     category: item.category,
+//                     s1: null,
+//                     s2: null,
+//                     s3: null,
+//                     s4: null,
+//                     s5: null,
+//                     percentage_s1: null,
+//                     percentage_s2: null,
+//                     percentage_s3: null,
+//                     percentage_s4: null,
+//                     percentage_s5: null,
+//                     visual_s1: null,
+//                     visual_s2: null,
+//                     visual_s3: null,
+//                     visual_s4: null,
+//                     visual_s5: null
+//                 };
+//             }
+
+//             var s1 =
+//                 parseInt(item.s1, 10) || 0;
+
+//             var s2 =
+//                 parseInt(item.s2, 10) || 0;
+
+//             var s3 =
+//                 parseInt(item.s3, 10) || 0;
+
+//             var s4 =
+//                 parseInt(item.s4, 10) || 0;
+
+//             var s5 =
+//                 parseInt(item.s5, 10) || 0;
+
+//             var valores = [
+//                 s1,
+//                 s2,
+//                 s3,
+//                 s4,
+//                 s5
+//             ];
+
+//             var total =
+//                 valores.reduce(
+//                     function(acumulado, valor)
+//                     {
+//                         return acumulado + valor;
+//                     },
+//                     0
+//                 );
+
+//             if (total <= 0) {
+//                 return {
+//                     category: item.category,
+//                     s1: s1,
+//                     s2: s2,
+//                     s3: s3,
+//                     s4: s4,
+//                     s5: s5,
+//                     percentage_s1: 0,
+//                     percentage_s2: 0,
+//                     percentage_s3: 0,
+//                     percentage_s4: 0,
+//                     percentage_s5: 0,
+//                     visual_s1: 0,
+//                     visual_s2: 0,
+//                     visual_s3: 0,
+//                     visual_s4: 0,
+//                     visual_s5: 0
+//                 };
+//             }
+
+//             var porcentajesEnteros =
+//                 obtenerPorcentajesEnteros(valores);
+
+//             var porcentajesExactos =
+//                 valores.map(function(valor)
+//                 {
+//                     return (valor / total) * 100;
+//                 });
+
+//             var minimoVisual = 8;
+
+//             var valoresVisuales =
+//                 porcentajesExactos.map(
+//                     function(porcentaje, indice)
+//                     {
+//                         if (valores[indice] <= 0) {
+//                             return 0;
+//                         }
+
+//                         return Math.max(
+//                             porcentaje,
+//                             minimoVisual
+//                         );
+//                     }
+//                 );
+
+//             var totalVisual =
+//                 valoresVisuales.reduce(
+//                     function(acumulado, valor)
+//                     {
+//                         return acumulado + valor;
+//                     },
+//                     0
+//                 );
+
+//             if (totalVisual > 0) {
+//                 valoresVisuales =
+//                     valoresVisuales.map(
+//                         function(valor)
+//                         {
+//                             return (
+//                                 valor /
+//                                 totalVisual
+//                             ) * 100;
+//                         }
+//                     );
+//             }
+
+//             return {
+//                 category: item.category,
+//                 s1: s1,
+//                 s2: s2,
+//                 s3: s3,
+//                 s4: s4,
+//                 s5: s5,
+//                 percentage_s1:
+//                     porcentajesEnteros[0],
+//                 percentage_s2:
+//                     porcentajesEnteros[1],
+//                 percentage_s3:
+//                     porcentajesEnteros[2],
+//                 percentage_s4:
+//                     porcentajesEnteros[3],
+//                 percentage_s5:
+//                     porcentajesEnteros[4],
+//                 visual_s1:
+//                     valoresVisuales[0],
+//                 visual_s2:
+//                     valoresVisuales[1],
+//                 visual_s3:
+//                     valoresVisuales[2],
+//                 visual_s4:
+//                     valoresVisuales[3],
+//                 visual_s5:
+//                     valoresVisuales[4]
+//             };
+//         });
+//     }
+
+//     var processedData =
+//         calcularDatos(data);
+
+//     function makeSeries(
+//         name,
+//         cantidadField,
+//         porcentajeField,
+//         visualField,
+//         color
+//     ) {
+//         var series =
+//             chart.series.push(
+//                 am5xy.ColumnSeries.new(
+//                     root,
+//                     {
+//                         name: name,
+//                         xAxis: xAxis,
+//                         yAxis: yAxis,
+//                         stacked: true,
+//                         valueXField: visualField,
+//                         categoryYField: 'category',
+//                         stroke: color,
+//                         fill: color
+//                     }
+//                 )
+//             );
+
+//         series.columns.template.setAll({
+//             height: am5.percent(70),
+//             tooltipY: 0,
+//             stroke: am5.color(0x000000),
+//             strokeWidth: 0.5,
+//             tooltipText:
+//                 '{name}: {cantidad} trabajadores ({porcentaje}%)'
+//         });
+
+//         series.columns.template.adapters.add(
+//             'forceHidden',
+//             function(forceHidden, target)
+//             {
+//                 if (
+//                     target.dataItem &&
+//                     target.dataItem.dataContext
+//                 ) {
+//                     var category =
+//                         target.dataItem
+//                             .dataContext
+//                             .category || '';
+
+//                     if (
+//                         category.indexOf('g3-') === 0
+//                     ) {
+//                         return true;
+//                     }
+//                 }
+
+//                 return forceHidden;
+//             }
+//         );
+
+//         series.bullets.push(function(
+//             rootBullet,
+//             serie,
+//             dataItem
+//         ) {
+//             var contexto =
+//                 dataItem.dataContext || {};
+
+//             var category =
+//                 contexto.category || '';
+
+//             if (
+//                 category.indexOf('g3-') === 0
+//             ) {
+//                 return undefined;
+//             }
+
+//             var cantidad =
+//                 parseInt(
+//                     contexto.cantidad,
+//                     10
+//                 ) || 0;
+
+//             if (cantidad <= 0) {
+//                 return undefined;
+//             }
+
+//             var porcentaje =
+//                 parseInt(
+//                     contexto.porcentaje,
+//                     10
+//                 ) || 0;
+
+//             var tamanioLetra = 17;
+
+//             if (porcentaje <= 3) {
+//                 tamanioLetra = 13;
+//             } else if (porcentaje <= 5) {
+//                 tamanioLetra = 14;
+//             } else if (porcentaje <= 10) {
+//                 tamanioLetra = 15;
+//             }
+
+//             return am5.Bullet.new(
+//                 root,
+//                 {
+//                     locationX: 0.5,
+//                     locationY: 0.5,
+//                     sprite:
+//                         am5.Label.new(
+//                             root,
+//                             {
+//                                 text:
+//                                     cantidad +
+//                                     ' (' +
+//                                     porcentaje +
+//                                     '%)',
+
+//                                 centerX: am5.p50,
+//                                 centerY: am5.p50,
+//                                 populateText: false,
+//                                 fontSize: tamanioLetra,
+//                                 fill:
+//                                     am5.color(
+//                                         0x000000
+//                                     ),
+//                                 fontWeight: 'bold',
+//                                 textAlign: 'center',
+//                                 paddingLeft: 1,
+//                                 paddingRight: 1
+//                             }
+//                         )
+//                 }
+//             );
+//         });
+
+//         var datosSerie =
+//             processedData.map(function(item)
+//             {
+//                 if (
+//                     item.category &&
+//                     item.category.indexOf('g3-') === 0
+//                 ) {
+//                     var filaVacia = {
+//                         category: item.category,
+//                         cantidad: null,
+//                         porcentaje: null
+//                     };
+
+//                     filaVacia[visualField] =
+//                         null;
+
+//                     return filaVacia;
+//                 }
+
+//                 var fila = {
+//                     category: item.category,
+//                     cantidad:
+//                         item[cantidadField],
+//                     porcentaje:
+//                         item[porcentajeField]
+//                 };
+
+//                 fila[visualField] =
+//                     item[visualField];
+
+//                 return fila;
+//             });
+
+//         series.data.setAll(datosSerie);
+
+//         series.appear();
+
+//         legend.data.push(series);
+//     }
+
+//     makeSeries(
+//         'Muy alto',
+//         's1',
+//         'percentage_s1',
+//         'visual_s1',
+//         am5.color(0xFF0000)
+//     );
+
+//     makeSeries(
+//         'Alto',
+//         's2',
+//         'percentage_s2',
+//         'visual_s2',
+//         am5.color(0xF7AA32)
+//     );
+
+//     makeSeries(
+//         'Medio',
+//         's3',
+//         'percentage_s3',
+//         'visual_s3',
+//         am5.color(0xFFFF00)
+//     );
+
+//     makeSeries(
+//         'Bajo',
+//         's4',
+//         'percentage_s4',
+//         'visual_s4',
+//         am5.color(0x00B050)
+//     );
+
+//     makeSeries(
+//         'Nulo',
+//         's5',
+//         'percentage_s5',
+//         'visual_s5',
+//         am5.color(0x00B0F0)
+//     );
+
+//     chart
+//         .appear(1000, 100)
+//         .then(function()
+//         {
+//             setTimeout(function()
+//             {
+//                 if (
+//                     typeof am5plugins_exporting !==
+//                     'undefined'
+//                 ) {
+//                     var exporting =
+//                         am5plugins_exporting
+//                             .Exporting
+//                             .new(
+//                                 root,
+//                                 {
+//                                     menu:
+//                                         am5plugins_exporting
+//                                             .ExportingMenu
+//                                             .new(root, {}),
+
+//                                     dpi: 300,
+
+//                                     maxWidth: 2000,
+
+//                                     maxHeight: 2000
+//                                 }
+//                             );
+
+//                     exporting
+//                         .export('png')
+//                         .then(function(imagen)
+//                         {
+//                             chartPngs[
+//                                 'ambienteChart'
+//                             ] = imagen;
+
+//                             console.log(
+//                                 'ambienteChart exportado exitosamente'
+//                             );
+//                         })
+//                         .catch(function(error)
+//                         {
+//                             console.error(
+//                                 'Error al exportar ambienteChart:',
+//                                 error
+//                             );
+//                         });
+
+//                 } else {
+//                     console.log(
+//                         'Plugin de exportación no disponible'
+//                     );
+//                 }
+
+//             }, 1000);
+//         });
+// }
+
 function crearGraficaAmbienteGuiaIII(data)
-    {
+{
     if (!Array.isArray(data)) {
         data = [];
     }
@@ -5673,7 +6882,7 @@ function crearGraficaAmbienteGuiaIII(data)
         contenedor.innerHTML = `
             <div style="
                 width:100%;
-                height:500px;
+                height:650px;
                 display:flex;
                 justify-content:center;
                 align-items:center;
@@ -5685,63 +6894,60 @@ function crearGraficaAmbienteGuiaIII(data)
             </div>
         `;
 
-        if (typeof chartPngs !== 'undefined') {
-            chartPngs['ambienteChart'] = null;
-        }
+        window.chartPngs = window.chartPngs || {};
+        window.chartPngs['ambienteChart'] = null;
 
         return;
     }
 
-    window.ambienteChartRoot =
-        am5.Root.new('ambienteChart');
+    var dataGrafica = data.slice();
 
-    var root =
-        window.ambienteChartRoot;
+    dataGrafica.push({
+        category: 'g0-ESPACIO_OCULTO',
+        s1: null,
+        s2: null,
+        s3: null,
+        s4: null,
+        s5: null
+    });
+
+    window.ambienteChartRoot = am5.Root.new('ambienteChart');
+
+    var root = window.ambienteChartRoot;
 
     root.setThemes([
         am5themes_Animated.new(root)
     ]);
 
-    var chart =
-        root.container.children.push(
-            am5xy.XYChart.new(
-                root,
-                {
-                    panX: false,
-                    panY: false,
-                    wheelX: 'none',
-                    wheelY: 'none',
-                    layout: root.verticalLayout,
-                    paddingLeft: 0,
-                    paddingRight: 20
-                }
-            )
-        );
-
-    chart.children.unshift(
-        am5.Label.new(
-            root,
-            {
-                text: "Categoría\n\n\n",
-                fontSize: 18,
-                fontWeight: 'bold',
-                textAlign: 'center',
-                x: am5.p50,
-                centerX: am5.p50
-            }
-        )
+    var chart = root.container.children.push(
+        am5xy.XYChart.new(root, {
+            panX: false,
+            panY: false,
+            wheelX: 'none',
+            wheelY: 'none',
+            layout: root.verticalLayout,
+            paddingLeft: 0,
+            paddingRight: 20
+        })
     );
 
-    var legend =
-        chart.children.push(
-            am5.Legend.new(
-                root,
-                {
-                    centerX: am5.p50,
-                    x: am5.p50
-                }
-            )
-        );
+    chart.children.unshift(
+        am5.Label.new(root, {
+            text: "Categoría\n\n\n",
+            fontSize: 18,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            x: am5.p50,
+            centerX: am5.p50
+        })
+    );
+
+    var legend = chart.children.push(
+        am5.Legend.new(root, {
+            centerX: am5.p50,
+            x: am5.p50
+        })
+    );
 
     legend.labels.template.setAll({
         fontSize: 20,
@@ -5758,28 +6964,20 @@ function crearGraficaAmbienteGuiaIII(data)
         height: 20
     });
 
-    var yAxisRenderer =
-        am5xy.AxisRendererY.new(
-            root,
-            {
-                inversed: true,
-                cellStartLocation: 0.05,
-                cellEndLocation: 0.90,
-                minGridDistance: 0
-            }
-        );
+    var yAxisRenderer = am5xy.AxisRendererY.new(root, {
+        inversed: true,
+        cellStartLocation: 0.05,
+        cellEndLocation: 0.90,
+        minGridDistance: 0
+    });
 
-    var yAxis =
-        chart.yAxes.push(
-            am5xy.CategoryAxis.new(
-                root,
-                {
-                    categoryField: 'category',
-                    renderer: yAxisRenderer,
-                    tooltip: am5.Tooltip.new(root, {})
-                }
-            )
-        );
+    var yAxis = chart.yAxes.push(
+        am5xy.CategoryAxis.new(root, {
+            categoryField: 'category',
+            renderer: yAxisRenderer,
+            tooltip: am5.Tooltip.new(root, {})
+        })
+    );
 
     yAxisRenderer.grid.template.setAll({
         forceHidden: true,
@@ -5806,58 +7004,65 @@ function crearGraficaAmbienteGuiaIII(data)
         maxWidth: 330
     });
 
-    yAxisRenderer
-        .labels
-        .template
-        .adapters
-        .add(
-            'text',
-            function(text, target)
-            {
-                if (!target.dataItem) {
-                    return text;
-                }
-
-                var category =
-                    target.dataItem.get('category') || '';
-
-                if (
-                    category.indexOf('g1-') === 0 ||
-                    category.indexOf('g2-') === 0 ||
-                    category.indexOf('g3-') === 0
-                ) {
-                    return '[bold]' +
-                        category.substring(3) +
-                        '[/]';
-                }
-
-                return category;
+    yAxisRenderer.labels.template.adapters.add(
+        'text',
+        function(text, target)
+        {
+            if (!target.dataItem) {
+                return text;
             }
-        );
 
-    yAxis.data.setAll(data);
+            var category = target.dataItem.get('category') || '';
 
-    var xAxisRenderer =
-        am5xy.AxisRendererX.new(
-            root,
-            {
-                minGridDistance: 50
+            if (category.indexOf('g0-') === 0) {
+                return '';
             }
-        );
 
-    var xAxis =
-        chart.xAxes.push(
-            am5xy.ValueAxis.new(
-                root,
-                {
-                    renderer: xAxisRenderer,
-                    min: 0,
-                    max: 100,
-                    strictMinMax: true,
-                    maxDeviation: 0
-                }
-            )
-        );
+            if (
+                category.indexOf('g1-') === 0 ||
+                category.indexOf('g2-') === 0 ||
+                category.indexOf('g3-') === 0
+            ) {
+                return '[bold]' + category.substring(3) + '[/]';
+            }
+
+            return category;
+        }
+    );
+
+    yAxisRenderer.labels.template.adapters.add(
+        'forceHidden',
+        function(forceHidden, target)
+        {
+            if (!target.dataItem) {
+                return forceHidden;
+            }
+
+            var category = target.dataItem.get('category') || '';
+
+            if (category.indexOf('g0-') === 0) {
+                return true;
+            }
+
+            return forceHidden;
+        }
+    );
+
+    yAxis.data.setAll(dataGrafica);
+
+    var xAxisRenderer = am5xy.AxisRendererX.new(root, {
+        minGridDistance: 50
+    });
+
+    var xAxis = chart.xAxes.push(
+        am5xy.ValueAxis.new(root, {
+            renderer: xAxisRenderer,
+            min: 0,
+            max: 100,
+            strictMinMax: true,
+            maxDeviation: 0
+        })
+    );
 
     xAxisRenderer.grid.template.setAll({
         forceHidden: true,
@@ -5886,69 +7091,47 @@ function crearGraficaAmbienteGuiaIII(data)
 
     function obtenerPorcentajesEnteros(valores)
     {
-        var total =
-            valores.reduce(
-                function(acumulado, valor)
-                {
-                    return acumulado + valor;
-                },
-                0
-            );
+        var total = valores.reduce(function(acumulado, valor)
+        {
+            return acumulado + valor;
+        }, 0);
 
         if (total <= 0) {
             return [0, 0, 0, 0, 0];
         }
 
-        var porcentajesExactos =
-            valores.map(function(valor)
-            {
-                return (valor / total) * 100;
-            });
+        var porcentajesExactos = valores.map(function(valor)
+        {
+            return (valor / total) * 100;
+        });
 
-        var porcentajesEnteros =
-            porcentajesExactos.map(function(valor)
-            {
-                return Math.floor(valor);
-            });
+        var porcentajesEnteros = porcentajesExactos.map(function(valor)
+        {
+            return Math.floor(valor);
+        });
 
-        var sumaEnteros =
-            porcentajesEnteros.reduce(
-                function(acumulado, valor)
-                {
-                    return acumulado + valor;
-                },
-                0
-            );
+        var sumaEnteros = porcentajesEnteros.reduce(function(acumulado, valor)
+        {
+            return acumulado + valor;
+        }, 0);
 
-        var faltantes =
-            100 - sumaEnteros;
+        var faltantes = 100 - sumaEnteros;
 
-        var residuos =
-            porcentajesExactos.map(
-                function(valor, indice)
-                {
-                    return {
-                        indice: indice,
-                        residuo:
-                            valor -
-                            porcentajesEnteros[indice]
-                    };
-                }
-            );
+        var residuos = porcentajesExactos.map(function(valor, indice)
+        {
+            return {
+                indice: indice,
+                residuo: valor - porcentajesEnteros[indice]
+            };
+        });
 
         residuos.sort(function(a, b)
         {
             return b.residuo - a.residuo;
         });
 
-        for (
-            var indice = 0;
-            indice < faltantes;
-            indice++
-        ) {
-            porcentajesEnteros[
-                residuos[indice].indice
-            ]++;
+        for (var indice = 0; indice < faltantes; indice++) {
+            porcentajesEnteros[residuos[indice].indice]++;
         }
 
         return porcentajesEnteros;
@@ -5958,12 +7141,14 @@ function crearGraficaAmbienteGuiaIII(data)
     {
         return datos.map(function(item)
         {
+            var category = item.category || '';
+
             if (
-                item.category &&
-                item.category.indexOf('g3-') === 0
+                category.indexOf('g3-') === 0 ||
+                category.indexOf('g0-') === 0
             ) {
                 return {
-                    category: item.category,
+                    category: category,
                     s1: null,
                     s2: null,
                     s3: null,
@@ -5982,41 +7167,22 @@ function crearGraficaAmbienteGuiaIII(data)
                 };
             }
 
-            var s1 =
-                parseInt(item.s1, 10) || 0;
+            var s1 = parseInt(item.s1, 10) || 0;
+            var s2 = parseInt(item.s2, 10) || 0;
+            var s3 = parseInt(item.s3, 10) || 0;
+            var s4 = parseInt(item.s4, 10) || 0;
+            var s5 = parseInt(item.s5, 10) || 0;
 
-            var s2 =
-                parseInt(item.s2, 10) || 0;
+            var valores = [s1, s2, s3, s4, s5];
 
-            var s3 =
-                parseInt(item.s3, 10) || 0;
-
-            var s4 =
-                parseInt(item.s4, 10) || 0;
-
-            var s5 =
-                parseInt(item.s5, 10) || 0;
-
-            var valores = [
-                s1,
-                s2,
-                s3,
-                s4,
-                s5
-            ];
-
-            var total =
-                valores.reduce(
-                    function(acumulado, valor)
-                    {
-                        return acumulado + valor;
-                    },
-                    0
-                );
+            var total = valores.reduce(function(acumulado, valor)
+            {
+                return acumulado + valor;
+            }, 0);
 
             if (total <= 0) {
                 return {
-                    category: item.category,
+                    category: category,
                     s1: s1,
                     s2: s2,
                     s3: s3,
@@ -6035,87 +7201,63 @@ function crearGraficaAmbienteGuiaIII(data)
                 };
             }
 
-            var porcentajesEnteros =
-                obtenerPorcentajesEnteros(valores);
+            var porcentajesEnteros = obtenerPorcentajesEnteros(valores);
 
-            var porcentajesExactos =
-                valores.map(function(valor)
-                {
-                    return (valor / total) * 100;
-                });
+            var porcentajesExactos = valores.map(function(valor)
+            {
+                return (valor / total) * 100;
+            });
 
             var minimoVisual = 8;
 
-            var valoresVisuales =
-                porcentajesExactos.map(
-                    function(porcentaje, indice)
-                    {
-                        if (valores[indice] <= 0) {
-                            return 0;
-                        }
-
-                        return Math.max(
-                            porcentaje,
-                            minimoVisual
-                        );
+            var valoresVisuales = porcentajesExactos.map(
+                function(porcentaje, indice)
+                {
+                    if (valores[indice] <= 0) {
+                        return 0;
                     }
-                );
 
-            var totalVisual =
-                valoresVisuales.reduce(
-                    function(acumulado, valor)
-                    {
-                        return acumulado + valor;
-                    },
-                    0
-                );
+                    return Math.max(porcentaje, minimoVisual);
+                }
+            );
+
+            var totalVisual = valoresVisuales.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
 
             if (totalVisual > 0) {
-                valoresVisuales =
-                    valoresVisuales.map(
-                        function(valor)
-                        {
-                            return (
-                                valor /
-                                totalVisual
-                            ) * 100;
-                        }
-                    );
+                valoresVisuales = valoresVisuales.map(function(valor)
+                {
+                    return (valor / totalVisual) * 100;
+                });
             }
 
             return {
-                category: item.category,
+                category: category,
                 s1: s1,
                 s2: s2,
                 s3: s3,
                 s4: s4,
                 s5: s5,
-                percentage_s1:
-                    porcentajesEnteros[0],
-                percentage_s2:
-                    porcentajesEnteros[1],
-                percentage_s3:
-                    porcentajesEnteros[2],
-                percentage_s4:
-                    porcentajesEnteros[3],
-                percentage_s5:
-                    porcentajesEnteros[4],
-                visual_s1:
-                    valoresVisuales[0],
-                visual_s2:
-                    valoresVisuales[1],
-                visual_s3:
-                    valoresVisuales[2],
-                visual_s4:
-                    valoresVisuales[3],
-                visual_s5:
-                    valoresVisuales[4]
+                percentage_s1: porcentajesEnteros[0],
+                percentage_s2: porcentajesEnteros[1],
+                percentage_s3: porcentajesEnteros[2],
+                percentage_s4: porcentajesEnteros[3],
+                percentage_s5: porcentajesEnteros[4],
+                visual_s1: valoresVisuales[0],
+                visual_s2: valoresVisuales[1],
+                visual_s3: valoresVisuales[2],
+                visual_s4: valoresVisuales[3],
+                visual_s5: valoresVisuales[4]
             };
         });
     }
 
-    var processedData =
-        calcularDatos(data);
+    var processedData = calcularDatos(dataGrafica);
 
     function makeSeries(
         name,
@@ -6124,22 +7266,18 @@ function crearGraficaAmbienteGuiaIII(data)
         visualField,
         color
     ) {
-        var series =
-            chart.series.push(
-                am5xy.ColumnSeries.new(
-                    root,
-                    {
-                        name: name,
-                        xAxis: xAxis,
-                        yAxis: yAxis,
-                        stacked: true,
-                        valueXField: visualField,
-                        categoryYField: 'category',
-                        stroke: color,
-                        fill: color
-                    }
-                )
-            );
+        var series = chart.series.push(
+            am5xy.ColumnSeries.new(root, {
+                name: name,
+                xAxis: xAxis,
+                yAxis: yAxis,
+                stacked: true,
+                valueXField: visualField,
+                categoryYField: 'category',
+                stroke: color,
+                fill: color
+            })
+        );
 
         series.columns.template.setAll({
             height: am5.percent(85),
@@ -6159,12 +7297,11 @@ function crearGraficaAmbienteGuiaIII(data)
                     target.dataItem.dataContext
                 ) {
                     var category =
-                        target.dataItem
-                            .dataContext
-                            .category || '';
+                        target.dataItem.dataContext.category || '';
 
                     if (
-                        category.indexOf('g3-') === 0
+                        category.indexOf('g3-') === 0 ||
+                        category.indexOf('g0-') === 0
                     ) {
                         return true;
                     }
@@ -6174,38 +7311,27 @@ function crearGraficaAmbienteGuiaIII(data)
             }
         );
 
-        series.bullets.push(function(
-            rootBullet,
-            serie,
-            dataItem
-        ) {
-            var contexto =
-                dataItem.dataContext || {};
-
-            var category =
-                contexto.category || '';
+        series.bullets.push(function(rootBullet, serie, dataItem)
+        {
+            var contexto = dataItem.dataContext || {};
+            var category = contexto.category || '';
 
             if (
-                category.indexOf('g3-') === 0
+                category.indexOf('g3-') === 0 ||
+                category.indexOf('g0-') === 0
             ) {
                 return undefined;
             }
 
             var cantidad =
-                parseInt(
-                    contexto.cantidad,
-                    10
-                ) || 0;
+                parseInt(contexto.cantidad, 10) || 0;
 
             if (cantidad <= 0) {
                 return undefined;
             }
 
             var porcentaje =
-                parseInt(
-                    contexto.porcentaje,
-                    10
-                ) || 0;
+                parseInt(contexto.porcentaje, 10) || 0;
 
             var tamanioLetra = 17;
 
@@ -6217,71 +7343,57 @@ function crearGraficaAmbienteGuiaIII(data)
                 tamanioLetra = 15;
             }
 
-            return am5.Bullet.new(
-                root,
-                {
-                    locationX: 0.5,
-                    locationY: 0.5,
-                    sprite:
-                        am5.Label.new(
-                            root,
-                            {
-                                text:
-                                    cantidad +
-                                    ' (' +
-                                    porcentaje +
-                                    '%)',
-
-                                centerX: am5.p50,
-                                centerY: am5.p50,
-                                populateText: false,
-                                fontSize: tamanioLetra,
-                                fill:
-                                    am5.color(
-                                        0x000000
-                                    ),
-                                fontWeight: 'bold',
-                                textAlign: 'center',
-                                paddingLeft: 1,
-                                paddingRight: 1
-                            }
-                        )
-                }
-            );
+            return am5.Bullet.new(root, {
+                locationX: 0.5,
+                locationY: 0.5,
+                sprite: am5.Label.new(root, {
+                    text:
+                        cantidad +
+                        ' (' +
+                        porcentaje +
+                        '%)',
+                    centerX: am5.p50,
+                    centerY: am5.p50,
+                    populateText: false,
+                    fontSize: tamanioLetra,
+                    fill: am5.color(0x000000),
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    paddingLeft: 1,
+                    paddingRight: 1
+                })
+            });
         });
 
-        var datosSerie =
-            processedData.map(function(item)
-            {
-                if (
-                    item.category &&
-                    item.category.indexOf('g3-') === 0
-                ) {
-                    var filaVacia = {
-                        category: item.category,
-                        cantidad: null,
-                        porcentaje: null
-                    };
+        var datosSerie = processedData.map(function(item)
+        {
+            var category = item.category || '';
 
-                    filaVacia[visualField] =
-                        null;
-
-                    return filaVacia;
-                }
-
-                var fila = {
-                    category: item.category,
-                    cantidad:
-                        item[cantidadField],
-                    porcentaje:
-                        item[porcentajeField]
+            if (
+                category.indexOf('g3-') === 0 ||
+                category.indexOf('g0-') === 0
+            ) {
+                var filaVacia = {
+                    category: category,
+                    cantidad: null,
+                    porcentaje: null
                 };
 
-                fila[visualField] =
-                    item[visualField];
+                filaVacia[visualField] = null;
 
-                return fila;
-            });
+                return filaVacia;
+            }
+
+            var fila = {
+                category: category,
+                cantidad: item[cantidadField],
+                porcentaje: item[porcentajeField]
+            };
+
+            fila[visualField] = item[visualField];
+
+            return fila;
+        });
 
         series.data.setAll(datosSerie);
 
@@ -6330,67 +7442,61 @@ function crearGraficaAmbienteGuiaIII(data)
         am5.color(0x00B0F0)
     );
 
-    chart
-        .appear(1000, 100)
-        .then(function()
+    chart.appear(1000, 100).then(function()
+    {
+        setTimeout(function()
         {
-            setTimeout(function()
-            {
-                if (
-                    typeof am5plugins_exporting !==
-                    'undefined'
-                ) {
-                    var exporting =
-                        am5plugins_exporting
-                            .Exporting
-                            .new(
-                                root,
-                                {
-                                    menu:
-                                        am5plugins_exporting
-                                            .ExportingMenu
-                                            .new(root, {}),
-
-                                    dpi: 300,
-
-                                    maxWidth: 2000,
-
-                                    maxHeight: 2000
-                                }
-                            );
-
-                    exporting
-                        .export('png')
-                        .then(function(imagen)
+            if (
+                typeof am5plugins_exporting !==
+                'undefined'
+            ) {
+                var exporting =
+                    am5plugins_exporting.Exporting.new(
+                        root,
                         {
-                            chartPngs[
-                                'ambienteChart'
-                            ] = imagen;
-
-                            console.log(
-                                'ambienteChart exportado exitosamente'
-                            );
-                        })
-                        .catch(function(error)
-                        {
-                            console.error(
-                                'Error al exportar ambienteChart:',
-                                error
-                            );
-                        });
-
-                } else {
-                    console.log(
-                        'Plugin de exportación no disponible'
+                            menu:
+                                am5plugins_exporting
+                                    .ExportingMenu
+                                    .new(root, {}),
+                            dpi: 300,
+                            maxWidth: 2000,
+                            maxHeight: 2000
+                        }
                     );
-                }
 
-            }, 1000);
-        });
+                exporting
+                    .export('png')
+                    .then(function(imagen)
+                    {
+                        window.chartPngs =
+                            window.chartPngs || {};
+
+                        window.chartPngs[
+                            'ambienteChart'
+                        ] = imagen;
+
+                        console.log(
+                            'ambienteChart exportado exitosamente'
+                        );
+                    })
+                    .catch(function(error)
+                    {
+                        console.error(
+                            'Error al exportar ambienteChart:',
+                            error
+                        );
+                    });
+
+            } else {
+                console.log(
+                    'Plugin de exportación no disponible'
+                );
+            }
+
+        }, 1000);
+    });
 }
-
 // CATEGORIA FACTORES PROPIOS DE LA ACTIVIDAD
-
 function cargarGraficaFactoresGuiaIII()
 {
     $.get(
@@ -7156,7 +8262,6 @@ function crearGraficaFactoresGuiaIII(data)
 }
 
 // ORGANIZACION DEL TIEMPO DE TRABAJO
-
 function cargarGraficaOrganizacionGuiaIII()
 {
     $.get(
@@ -7771,7 +8876,6 @@ function crearGraficaOrganizacionGuiaIII(data)
 }
 
 // CATEGORIA LIDERAZGO Y RELACIONES EN EL TRABAJO 
-
 function cargarGraficaLiderazgoGuiaIII()
 {
     $.get(
@@ -8541,9 +9645,7 @@ function crearGraficaLiderazgoGuiaIII(data)
         });
 }
 
-
 // CATEGORIA ENTORNO ORGANIZACIONAL 
-
 function cargarGraficaEntornoGuiaIII()
 {
     $.get(
@@ -9315,334 +10417,600 @@ function crearGraficaEntornoGuiaIII(data)
 
 
 
-am5.ready(function () {
-	function createChart(containerId, titleText, subtitleText, data, chartName) {
-		// Crear root
-		var root = am5.Root.new(containerId);
-		root.setThemes([am5themes_Animated.new(root)]);
+////// GUARDAR ANALISIS DE LAS GRAFICAS
 
-		// Crear el gráfico
-		var chart = root.container.children.push(am5xy.XYChart.new(root, {
-			panX: false,
-			panY: false,
-			wheelX: "none",
-			wheelY: "none",
-			layout: root.verticalLayout
-		}));
+$("#form_analisis_graficaglobal").on("submit", function(e)
+{
+    e.preventDefault();
 
-		// Títulos
-		// chart.children.unshift(
-		// 	am5.Label.new(root, {
-		// 		text: subtitleText,
-		// 		fontSize: 20,
-		// 		textAlign: "center",
-		// 		x: am5.p50,
-		// 		centerX: am5.p50,
-		// 		marginTop: 10,
-		// 	})
-		// );
-		chart.children.unshift(
-			am5.Label.new(root, {
-				text: titleText,
-				fontSize: 18,
-				fontWeight: "bold",
-				textAlign: "center",
-				x: am5.p50,
-				centerX: am5.p50
-			})
-		);
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
 
-		// Leyenda
-		var legend = chart.children.push(
-			am5.Legend.new(root, {
-				centerX: am5.p50,
-				x: am5.p50
-			})
-		);
-		legend.labels.template.set("fontSize", 20);
+    $.ajax({
 
-		// Ejes
-		var yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
-			categoryField: "category",
-			renderer: am5xy.AxisRendererY.new(root, {
-				inversed: true,
-				cellStartLocation: 0,
-				cellEndLocation: 0.9,
-				minGridDistance: 0,
-				// opposite: true
-			}),
-			tooltip: am5.Tooltip.new(root, {})
-		}));
+        url: '/guardaranalisisgraficaglobal',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
 
-		yAxis.get("renderer").grid.template.set("forceHidden", true);
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_graficaglobal").prop('disabled', true);
+            $("#botonguardar_analisis_graficaglobal").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
 
-		yAxis.get("renderer").labels.template.setAll({
-            fontSize: 18,
-            fontWeight: "70",
-            centerY: am5.p50,
-            centerX: am5.p0,
-            textAlign: "center",
-            inside: true,  // Poner las etiquetas dentro del área del gráfico
-            rotation: 0,
-            paddingTop: -100  // Ajustar la posición vertical de las etiquetas
-        }); 
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
 
-		yAxis.data.setAll(data);
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
 
-		var xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
-			renderer: am5xy.AxisRendererX.new(root, {
-				minGridDistance: 50
-			}),
-			min: 0,
-			strictMinMax: true,  // Esto fuerza a que solo se muestre hasta el valor máximo real
-			maxDeviation: 0
-		}));
+        },
 
-		xAxis.get("renderer").grid.template.set("forceHidden", true);
-		xAxis.get("renderer").labels.template.setAll({
-			forceHidden: true
-		});
-		// Formatear etiquetas de categorías
-		yAxis.get("renderer").labels.template.adapters.add("text", function (text, target) {
-			if (target.dataItem) {
-				let category = target.dataItem.get("category");
-				if (category.startsWith("g1")) {
-					return "[bold]" + category.split("-")[1] + "[/]";
-				}
-				if (category.startsWith("g3")) {
-					target.set("x", target.get("x") + 28); // Mover la categoría a la derecha
-					//return category.split("-")[1];  // No hace falta modificar el texto, solo moverlo
-				}
-				return "[bold]" + category.split("-")[1] + "[/]";
-			}
-			return text;
-		});
+        complete: function()
+        {
 
-		// Calcular porcentajes y agregar al dataset
-		function calculatePercentages(data) {
-			return data.map(item => {
-				const total = (item.s1 || 0) + (item.s2 || 0) + (item.s3 || 0) + (item.s4 || 0) + (item.s5 || 0);
-				if (total > 0) {
-					return {
-						...item,
-						percentage_s1: ((item.s1 || 0) / total * 100).toFixed(1),
-						percentage_s2: ((item.s2 || 0) / total * 100).toFixed(1),
-						percentage_s3: ((item.s3 || 0) / total * 100).toFixed(1),
-						percentage_s4: ((item.s4 || 0) / total * 100).toFixed(1),
-						percentage_s5: ((item.s5 || 0) / total * 100).toFixed(1),
-					};
-				}
-				return { ...item, percentage_s1: 0, percentage_s2: 0, percentage_s3: 0, percentage_s4: 0, percentage_s5: 0 };
-			});
-		}
-
-		const processedData = calculatePercentages(data);
-
-		// Series
-		function makeSeries(name, fieldName, percentageFieldName, color) {
-			var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-				name: name,
-				xAxis: xAxis,
-				yAxis: yAxis,
-				stacked: true,
-				valueXField: fieldName,
-				categoryYField: "category",
-				stroke: color,
-				fill: color
-			}));
-
-			series.columns.template.setAll({
-				//tooltipText: "{name}, {categoryY}: {valueX} ({percentage}%)",
-				width: am5.percent(100),
-				tooltipY: 0
-			});
-
-			series.bullets.push(function () {
-				return am5.Bullet.new(root, {
-					locationX: 0.5,
-					locationY: 0.5,
-					sprite: am5.Label.new(root, {
-						text: "{valueX} ({percentage}%)",
-						centerX: am5.p50,
-						centerY: am5.p50,
-						populateText: true,
-						fontSize: "18px",
-						fill: am5.color(0x000000),
-						fontWeight: "bold"
-					})
-				});
-			});
-
-			series.data.setAll(
-				processedData.map(item => ({
-					...item,
-					percentage: item[percentageFieldName],
-				}))
-			);
-			series.appear();
-			legend.data.push(series);
-		}
-
-		// Crear series
-		makeSeries("Muy alto", "s1", "percentage_s1", am5.color(0xFF0000));
-		makeSeries("Alto", "s2", "percentage_s2", am5.color(0xF7AA32));
-		makeSeries("Medio", "s3", "percentage_s3", am5.color(0xFFFF00));
-		makeSeries("Bajo", "s4", "percentage_s4", am5.color(0x00B050));
-		makeSeries("Nulo", "s5", "percentage_s5", am5.color(0x00B0F0));
-
-
-		chart.appear(1000, 100).then(() => {
-			setTimeout(() => {
-				if (typeof am5plugins_exporting !== 'undefined') {
-					console.log('Plugin de exportación dispo');
-
-					var exporting = am5plugins_exporting.Exporting.new(root, {
-						menu: am5plugins_exporting.ExportingMenu.new(root, {}),
-						dpi: 300, // Ajusta el DPI para mejorar la calidad de la imagen exportada
-						// También puedes ajustar el tamaño de la imagen, si lo deseas
-						maxWidth: 2000, // Ancho máximo en píxeles
-						maxHeight: 2000,
-					});
-					console.log('si creo el exporting');
-
-					exporting.export("png").then(function (data) {
-						chartPngs[chartName] = data;
-						console.log(chartName + " exportado exitosamente");
-					}).catch(error => console.error('Error al exportar:', error));
-				} else {
-					console.log('Plugin de exportación no disponible');
-				}
-			}, 1000); // Aumenté el timeout
-		});
-	}
-
-
-
-
-
-// 	// Crear un nuevo objeto root para el gráfico de régimen
-// 	var rootGraficoGuia1 = am5.Root.new("guia1Chart"); // Cambié root a rootGraficoRegimen
-
-// 	// Establecer el tema para el gráfico
-// 	rootGraficoGuia1.setThemes([
-// 		am5themes_Animated.new(rootGraficoGuia1)
-// 	]);
-
-// 	// Crear el gráfico de tipo Pie para el régimen
-// 	var graficoguia1 = rootGraficoGuia1.container.children.push(am5percent.PieChart.new(rootGraficoGuia1, {
-// 		layout: rootGraficoGuia1.verticalLayout,
-// 		innerRadius: am5.percent(50)
-// 	}));
-
-// 	// Crear la serie de tipo Pie para el gráfico de régimen
-// 	var seriegrafica1 = graficoguia1.series.push(am5percent.PieSeries.new(rootGraficoGuia1, {
-// 		valueField: "valorgrafica1",  // Personalizado
-// 		categoryField: "categoriagrafica1",  // Personalizado
-// 		alignLabels: false
-// 	}));
-
-// 	// Configuración de las etiquetas en formato circular
-// 	seriegrafica1.labels.template.setAll({
-// 		textType: "circular",
-// 		centerX: 0,
-// 		centerY: 0
-// 	});
-// 	seriegrafica1.slices.template.setAll({
-// 		tooltipText: "{categoryField}: {valueField}%", // Personaliza el texto del tooltip
-// 		stroke: am5.color(0xffffff), // Color del borde
-// 		strokeWidth: 2 // Grosor del borde
-// 	});
-
-// 	// Cambiar colores de las secciones
-// 	seriegrafica1.get("colors").set("colors", [
-// 		am5.color(0xff0000), // Rojo
-// 		am5.color(0x0098c7)  // Verde
-// 	]);
-// 	// Establecer los datos para el gráfico de régimen (por ejemplo, plantas, sindicalizados, etc.)
-// 	seriegrafica1.data.setAll([
-// 		{ valorgrafica1: 2, categoriagrafica1: "Requiere valoración clinica" },
-// 		{ valorgrafica1: 69, categoriagrafica1: "No requiere valoración clinica" },
-// 	]);
-
-// 	// Crear la leyenda para el gráfico de régimen
-// 	var leyendagrafico1 = graficoguia1.children.push(am5.Legend.new(rootGraficoGuia1, {
-// 		centerX: am5.percent(50),
-// 		x: am5.percent(50),
-// 		marginTop: 15,
-// 		marginBottom: 15,
-// 	}));
-// 	leyendagrafico1.labels.template.setAll({
-// 		fontSize: 14, // Tamaño de letra
-// 		fontWeight: "bold", // Peso de la fuente
-// 		fill: am5.color(0x333333) // Color de la letra
-// 	});
-
-// 	leyendagrafico1.markers.template.setAll({
-// 		width: 20, // Ancho del marcador
-// 		height: 20 // Alto del marcador
-// 	});
-// 	leyendagrafico1.data.setAll(seriegrafica1.dataItems);
-
-// 	seriegrafica1.appear(1000, 100).then(() => {
-// 		setTimeout(() => {
-// 			if (typeof am5plugins_exporting !== 'undefined') {
-// 				console.log('Plugin de exportación dispo');
-
-// 				var exporting = am5plugins_exporting.Exporting.new(rootGraficoGuia1, {
-// 					menu: am5plugins_exporting.ExportingMenu.new(rootGraficoGuia1, {}),
-// 					dpi: 300, // Ajusta el DPI para mejorar la calidad de la imagen exportada
-// 					// También puedes ajustar el tamaño de la imagen, si lo deseas
-// 					maxWidth: 2000, // Ancho máximo en píxeles
-// 					maxHeight: 2000,
-// 				});
-// 				console.log('si creo el exporting');
-
-// 				exporting.export("png").then(function (data) {
-// 					acontecimientoschart = data;
-// 					console.log("acontecimientochart exportado exitosamente");
-// 				}).catch(error => console.error('Error al exportar:', error));
-// 			} else {
-// 				console.log('Plugin de exportación no disponible');
-// 			}
-// 		}, 1000); // Aumenté el timeout
-// 	});
+            $("#botonguardar_analisis_graficaglobal").prop('disabled', false);
+            $("#botonguardar_analisis_graficaglobal").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
 
 });
 
-// Añadir un título al gráfico
-// var title = chartConsolidado2.children.unshift(am5.Label.new(rootConsolidadoChart2, {
-// 	text: "FACTORES PSICOSOCIALES NOM-035-STPS-2028\n Dominios",
-// 	fontSize: 14,
-// 	fontWeight: "bold",
-// 	textAlign: "center",
-// 	x: am5.p50,
-// 	centerX: am5.p50,
-// 	y: 0,
-// 	paddingBottom: 1
-// }));
+$("#form_analisis_grafica_categorias").on("submit", function(e)
+{
+    e.preventDefault();
 
-// Crear la leyenda
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+
+        url: '/guardaranalisisgraficacategoria',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_categorias").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_categorias").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_analisis_grafica_categorias").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_categorias").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+
+});
+
+$("#form_analisis_grafica_dominio").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+
+        url: '/guardaranalisisgraficadominio',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_analisis_grafica_dominio").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+
+});
+
+$("#form_analisis_grafica_guia1").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+
+        url: '/guardaranalisisgraficaguia1',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_guia1").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_guia1").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_analisis_grafica_guia1").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_guia1").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+
+});
+
+$("#form_analisis_grafica_ambiente").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+
+        url: '/guardaranalisisgraficatambiente',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_ambiente").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_ambiente").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_analisis_grafica_ambiente").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_ambiente").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+
+});
+
+$("#form_analisis_grafica_factores").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+
+        url: '/guardaranalisisgraficatfactores',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_factores").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_factores").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_analisis_grafica_factores").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_factores").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+
+});
+
+$("#form_analisis_grafica_organizacion").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+
+        url: '/guardaranalisisgraficatorganizacion',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_organizacion").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_organizacion").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_analisis_grafica_organizacion").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_organizacion").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+
+});
+
+$("#form_analisis_grafica_liderazgo").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+
+        url: '/guardaranalisisgraficatliderazgo',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_liderazgo").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_liderazgo").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_analisis_grafica_liderazgo").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_liderazgo").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+
+});
+
+$("#form_analisis_grafica_entorno").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+
+        url: '/guardaranalisisgraficatentorno',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_entorno").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_entorno").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_analisis_grafica_entorno").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_entorno").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+
+});
+
+//// DESCARGAR MEL 
 
 
+$('#boton_reporte_mel').on('click', function (e) {
+	e.preventDefault();
+	
+    swal({
+        title: "¡Confirme para generar MEL!",
+        text: "Matriz de exposición laboral.",
+        type: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Descargar!",
+        cancelButtonText: "Cancelar!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    },
+    function(isConfirm) {
+        if (isConfirm) {
+			// Mostrar mensaje de carga
 
+            $('#boton_reporte_mel').prop('disabled', true);
+            swal({
+                title: "Generando documento MEL...",
+                text: 'Espere un momento, el documento se esta generando...',
+                type: "info",
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
 
-// Añadir un título al gráfico
-// var title = chartConsolidado1.children.unshift(am5.Label.new(rootConsolidadoChart1, {
-// 	text: "FACTORES PSICOSOCIALES NOM-035-STPS-2028\n Categorias",
-// 	fontSize: 14,
-// 	fontWeight: "bold",
-// 	textAlign: "center",
-// 	x: am5.p50,
-// 	centerX: am5.p50,
-// 	y: 0,
-// 	paddingBottom: 1
-// }));
+			url = 'generarMEL0353/' + proyecto.id ;
+			instalacion = $('#reporte_instalacion').val();
 
-// Crear la leyenda
+            $.ajax({
+                url: url,
+                method: 'GET',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function(data) {
+                    var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(data);
+                    a.href = url;
+                    a.download = `MEL NOM 035.xls`;
+                    document.body.append(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
 
+                    // Cerrar mensaje de carga
+                    swal.close();
 
-
-
-
+                    $('#boton_reporte_mel').prop('disabled', false);
+				},
+                error: function() {
+                    swal({
+                        title: "Hubo un problema al generar el documento.",
+                        text: "Intentelo de nuevo, o comuniquelo con el responsable",
+                        type: "error",
+                        showConfirmButton: true
+                    });
+					$('#boton_reporte_mel').prop('disabled', false);
+                }
+            });
+        } else {
+            // mensaje de cancelación
+            swal({
+                title: "Cancelado",
+                text: "Acción cancelada",
+                type: "error",
+                buttons: {
+                    visible: false,
+                },
+                timer: 500,
+                showConfirmButton: false
+            });
+        }
+    });
+    return false;
+})
 
 

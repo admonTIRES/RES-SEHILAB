@@ -164,44 +164,44 @@
     <div class="col-xlg-2 col-lg-3 col-md-5">
         <div class="stickyside">
             <div class="list-group" id="top-menu">
-                <a href="#0" class="list-group-item active">Portada <i class="fa fa-times" id="menureporte_0"></i></a>
-                <a href="#1" class="list-group-item">1.- Introducción <i class="fa fa-times" id="menureporte_1"></i></a>
-                <a href="#2" class="list-group-item">2.- Definiciones <i class="fa fa-times" id="menureporte_2"></i></a>
+                <a href="#0" class="list-group-item active">Portada </a>
+                <a href="#1" class="list-group-item">1.- Introducción </a>
+                <a href="#2" class="list-group-item">2.- Definiciones </a>
                 <a href="#3" class="list-group-item">3.- Objetivos</a>
-                <a href="#3_1" class="list-group-item submenu">3.1.- Objetivo general <i class="fa fa-times" id="menureporte_3_1"></i></a>
-                <a href="#3_2" class="list-group-item submenu">3.2.- Objetivos específicos <i class="fa fa-times" id="menureporte_3_2"></i></a>
+                <a href="#3_1" class="list-group-item submenu">3.1.- Objetivo general </a>
+                <a href="#3_2" class="list-group-item submenu">3.2.- Objetivos específicos </a>
                 <a href="#4" class="list-group-item">4.- Metodología</a>
-                <a href="#4_1" class="list-group-item submenu">4.1.- Instrumentos para la evaluación <i class="fa fa-times" id="menureporte_4_1"></i></a>
+                <a href="#4_1" class="list-group-item submenu">4.1.- Instrumentos para la evaluación </a>
                 <a href="#5" class="list-group-item">5.- Reconocimiento</a>
-                <a href="#5_1" class="list-group-item submenu">5.1.- Ubicación de la instalación <i class="fa fa-times" id="menureporte_5_1"></i></a>
-                <a href="#5_2" class="list-group-item submenu">5.2.- Descripción del proceso en la instalación <i class="fa fa-times" id="menureporte_5_2"></i></a>
-                <a href="#5_3" class="list-group-item submenu">5.3.- Descripción de las actividades del personal expuesto <i class="fa fa-times" id="menureporte_5_3"></i></a>
+                <a href="#5_1" class="list-group-item submenu">5.1.- Ubicación de la instalación </a>
+                <a href="#5_2" class="list-group-item submenu">5.2.- Descripción del proceso en la instalación </a>
+                <a href="#5_3" class="list-group-item submenu">5.3.- Descripción de las actividades del personal expuesto </a>
                 <a href="#6" class="list-group-item">6.- Estrategias de medición</a>
                 <a href="#7" class="list-group-item">7.- Evaluación</a>
-                <a href="#7_1" class="list-group-item submenu">7.1.- Descripción del método realizado para la evaluación de los Factores de Riesgo Psicosocial <i class="fa fa-times" id="menureporte_7_1"></i></a>
-                <a href="#7_2" class="list-group-item submenu">7.2.- Información general del puesto de trabajo <i class="fa fa-times" id="menureporte_7_2"></i></a>
+                <a href="#7_1" class="list-group-item submenu">7.1.- Descripción del método realizado para la evaluación de los Factores de Riesgo Psicosocial </a>
+                <a href="#7_2" class="list-group-item submenu">7.2.- Información general del puesto de trabajo </a>
                 <a href="#8" class="list-group-item">8.- Valores de referencia</a>
                 <a href="#9" class="list-group-item">9.- Resultados</a>
                 <a href="#9_1" class="list-group-item submenu">9.1.- Registro de los resultados. Número de puntos evaluados </a>
-                <a href="#9_2" class="list-group-item submenu">9.2.- Resultados obtenidos, concentrado de calificaciones globales <i class="fa fa-times" id="menureporte_9_2"></i></a>
-                <a href="#9_3" class="list-group-item submenu">9.3.- Resultados obtenidos en la Guía de Referencia I, Identificar a los trabajadores que fueron sujetos a acontecimientos traumáticos severos <i class="fa fa-times" id="menureporte_9_3"></i></a>
+                <a href="#9_2" class="list-group-item submenu">9.2.- Resultados obtenidos, concentrado de calificaciones globales </a>
+                <a href="#9_3" class="list-group-item submenu">9.3.- Resultados obtenidos en la Guía de Referencia I, Identificar a los trabajadores que fueron sujetos a acontecimientos traumáticos severos </a>
                 <a href="#9_4" class="list-group-item submenu">9.4.- Resultados obtenidos en la guía de referencia III, Identificación y análisis de los Factores de Riesgo Psicosocial y Evaluación del entorno organizacional en los centros de trabajo por categoría y dominio conforme a la NOM-035-STPS-2018</a>
-                <a href="#9_4_1" class="list-group-item submenu">9.4.1.- Resultados obtenidos, Categoría ambiente de trabajo <i class="fa fa-times" id="menureporte_9_4_1"></i></a>
-                <a href="#9_4_2" class="list-group-item submenu">9.4.2.- Resultados obtenidos, Categoría factores propios de la actividad <i class="fa fa-times" id="menureporte_9_4_2"></i></a>
-                <a href="#9_4_3" class="list-group-item submenu">9.4.3.- Resultados obtenidos, Categoría organización del tiempo de trabajo <i class="fa fa-times" id="menureporte_9_4_3"></i></a>
-                <a href="#9_4_4" class="list-group-item submenu">9.4.4..- Resultados obtenidos, Categoría liderazgo y relaciones en el trabajo <i class="fa fa-times" id="menureporte_9_4_4"></i></a>
-                <a href="#9_4_5" class="list-group-item submenu">9.4.5.- Resultados obtenidos, Categoría entorno organizacional <i class="fa fa-times" id="menureporte_9_4_5"></i></a>
+                <a href="#9_4_1" class="list-group-item submenu">9.4.1.- Resultados obtenidos, Categoría ambiente de trabajo </a>
+                <a href="#9_4_2" class="list-group-item submenu">9.4.2.- Resultados obtenidos, Categoría factores propios de la actividad </a>
+                <a href="#9_4_3" class="list-group-item submenu">9.4.3.- Resultados obtenidos, Categoría organización del tiempo de trabajo </a>
+                <a href="#9_4_4" class="list-group-item submenu">9.4.4..- Resultados obtenidos, Categoría liderazgo y relaciones en el trabajo </a>
+                <a href="#9_4_5" class="list-group-item submenu">9.4.5.- Resultados obtenidos, Categoría entorno organizacional </a>
                 <a href="#10" class="list-group-item">10.- Conclusiones</a>
-                <a href="#10_1" class="list-group-item submenu">10.1.- Conclusiones de conformidad a la NOM-035-STPS-2018 <i class="fa fa-times" id="menureporte_10_1"></i></a>
+                <a href="#10_1" class="list-group-item submenu">10.1.- Conclusiones de conformidad a la NOM-035-STPS-2018 </a>
                 <a href="#11" class="list-group-item">11.- Recomendaciones</a>
-                <a href="#11_1" class="list-group-item submenu">11.1.- Recomendaciones de control <i class="fa fa-times" id="menureporte_11_1"></i></a>
-                <a href="#11_2" class="list-group-item submenu">11.2.- Recomendaciones por categoria <i class="fa fa-times" id="menureporte_11_2"></i></a>
-                <a href="#12" class="list-group-item">12.- Responsables del informe <i class="fa fa-times" id="menureporte_12"></i></a>
+                <a href="#11_1" class="list-group-item submenu">11.1.- Recomendaciones de control </a>
+                <a href="#11_2" class="list-group-item submenu">11.2.- Recomendaciones por categoria </a>
+                <a href="#12" class="list-group-item">12.- Responsables del informe </a>
                 <a href="#13" class="list-group-item">13.- Anexos</a>
-                <a href="#13_1" class="list-group-item submenu">13.1.- Anexo 1: Memoria fotográfica <i class="fa fa-times" id="menureporte_13_1"></i></a>
+                <a href="#13_1" class="list-group-item submenu">13.1.- Anexo 1: Memoria fotográfica </a>
                 <!-- <a href="#13_2" class="list-group-item submenu">13.2.- Anexo 2: Cuestionarios <i class="fa fa-times" id="menureporte_13_2"></i></a>
                 <a href="#13_3" class="list-group-item submenu">13.3.- Anexo 3: Matriz de exposición laboral MEL <i class="fa fa-times" id="menureporte_13_3"></i></a> -->
-                <a href="#14" class="list-group-item submenu" id="menu_opcion_final">Generar informe <i class="fa fa-download text-success" id="menureporte_14"></i></a>
+                <a href="#14" class="list-group-item submenu" id="menu_opcion_final">Generar informe </a>
             </div>
         </div>
     </div>
@@ -479,7 +479,7 @@
                                 <textarea class="form-control" style="margin-bottom: 0px;" rows="14" id="INFORME_INTRODUCCION" name="INFORME_INTRODUCCION" required>
 Es un hecho que los Factores de Riesgo Psicosocial (FRPS) inherentes a las diversas actividades que se desarrollan en la industria petrolera no son la excepción. La forma en que las personas se desenvuelven en los ámbitos social y económico encuentra una de sus principales expresiones en el trabajo. Su vida cotidiana, su proyecto de vida y sus experiencias emocionales, cognitivas y sociales se desarrollan, en gran medida, dentro del entorno laboral, considerando el tiempo que se dedica al desempeño de las actividades propias de cada puesto.
 
-Tomando en cuenta la importancia de la evaluación e intervención sobre los Factores de Riesgo Psicosocial para promover un estado de bienestar entre las personas trabajadoras, de conformidad con lo establecido en la Norma Oficial Mexicana NOM-035-STPS-2018, Factores de riesgo psicosocial en el trabajo–Identificación, análisis y prevención, "NOMBRE EMPRESA" mantiene su compromiso con el cumplimiento de los estándares en materia de seguridad y salud en el trabajo, verificando que la salud de las personas trabajadoras expuestas a Factores de Riesgo Psicosocial no se vea afectada por las condiciones existentes en el centro de trabajo. Para ello, realiza de manera periódica las evaluaciones correspondientes, en apego a la normatividad aplicable y a sus procedimientos internos.
+Tomando en cuenta la importancia de la evaluación e intervención sobre los Factores de Riesgo Psicosocial para promover un estado de bienestar entre las personas trabajadoras, de conformidad con lo establecido en la Norma Oficial Mexicana NOM-035-STPS-2018, Factores de riesgo psicosocial en el trabajo–Identificación, análisis y prevención, NOMBRE_EMPRESA mantiene su compromiso con el cumplimiento de los estándares en materia de seguridad y salud en el trabajo, verificando que la salud de las personas trabajadoras expuestas a Factores de Riesgo Psicosocial no se vea afectada por las condiciones existentes en el centro de trabajo. Para ello, realiza de manera periódica las evaluaciones correspondientes, en apego a la normatividad aplicable y a sus procedimientos internos.
 
 En el presente estudio se describen los resultados obtenidos durante la evaluación de Factores de Riesgo Psicosocial en el ambiente laboral, de acuerdo con lo establecido en la Norma Oficial Mexicana NOM-035-STPS2018, Factores de riesgo psicosocial en el trabajo–Identificación, análisis y prevención, realizada en las áreas de la INSTALACION, los días del XX al XX de MES de AÑO."
 </textarea>
@@ -1072,6 +1072,7 @@ DESCRIPCIONACTIVIDAD
                 <h4 class="card-title" id="9_2">9.2.- Resultados obtenidos, concentrado de calificaciones globales.</h4>
                 <div class="row">
                     <div class="col-12">
+                        <p class="justificado mt-5">La siguiente gráfica representa la calificación global de riesgo psicosocial de la NOM-035-STPS-2018.</p><br>
                         <style>
                             #calificacionChart {
                                 width: 100%;
@@ -1079,8 +1080,22 @@ DESCRIPCIONACTIVIDAD
                             }
                         </style>
                         <div id="calificacionChart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_graficaglobal" id="form_analisis_graficaglobal">
+                            <div class="form-group mt-3">
+                                <label>Análisis estadístico</label>
+                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICACALIFICACIONES" name="ANALISIS_GRAFICACALIFICACIONES" required></textarea>
+                            </div>
+                            <div class="col-12" style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_graficaglobal">Guardar<i class="fa fa-save"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
+                    <br>
                     <div class="col-12">
+                        <p class="justificado mt-5">La siguiente gráfica representa las <b>categorías</b> de riesgo psicosocial de la Guía III de la NOM-035-STPS-2018, enfocadas en identificar casos de trabajadores afectados por condiciones laborales adversas que pueden impactar su salud mental y emocional.</p><br>
                         <style>
                             #consolidadoChart {
                                 width: 100%;
@@ -1088,8 +1103,22 @@ DESCRIPCIONACTIVIDAD
                             }
                         </style>
                         <div id="consolidadoChart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_categorias" id="form_analisis_grafica_categorias">
+                            <div class="form-group mt-3">
+                                <label>Análisis estadístico</label>
+                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATEGORIAS" name="ANALISIS_GRAFICA_CATEGORIAS" required></textarea>
+                            </div>
+                            <div class="col-12" style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_categorias">Guardar<i class="fa fa-save"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
+                    <br>
                     <div class="col-12">
+                        <p class="justificado mt-5">La siguiente gráfica representa las <b>dominios </b> de riesgo psicosocial de la Guía III de la NOM-035-STPS-2018, enfocadas en identificar casos de trabajadores afectados por condiciones laborales adversas que pueden impactar su salud mental y emocional.</p><br>
                         <style>
                             #consolidadoChart2 {
                                 width: 100%;
@@ -1097,6 +1126,18 @@ DESCRIPCIONACTIVIDAD
                             }
                         </style>
                         <div id="consolidadoChart2"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio" id="form_analisis_grafica_dominio">
+                            <div class="form-group mt-3">
+                                <label>Análisis estadístico</label>
+                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_DOMINIOS" name="ANALISIS_GRAFICA_DOMINIOS" required></textarea>
+                            </div>
+                            <div class="col-12" style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_dominio">Guardar<i class="fa fa-save"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <h4 class="card-title" id="9_3">9.3.- Resultados obtenidos en la Guía de Referencia I, Identificar a los trabajadores que fueron sujetos a acontecimientos traumáticos severos.</h4>
@@ -1109,6 +1150,18 @@ DESCRIPCIONACTIVIDAD
                             }
                         </style>
                         <div id="guia1Chart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_guia1" id="form_analisis_grafica_guia1">
+                            <div class="form-group mt-3">
+                                <label>Análisis estadístico</label>
+                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_GUIA1" name="ANALISIS_GRAFICA_GUIA1" required></textarea>
+                            </div>
+                            <div class="col-12" style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_guia1">Guardar<i class="fa fa-save"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <h4 class="card-title" id="9_4">9.4.- Resultados obtenidos en la guía de referencia III, Identificación y análisis de los Factores de Riesgo Psicosocial y Evaluación del entorno organizacional en los centros de trabajo por categoría y dominio conforme a la NOM-035-STPS-2018.</h4>
@@ -1119,10 +1172,22 @@ DESCRIPCIONACTIVIDAD
                         <style>
                             #ambienteChart {
                                 width: 100%;
-                                height: 500px;
+                                height: 650px;
                             }
                         </style>
                         <div id="ambienteChart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_ambiente" id="form_analisis_grafica_ambiente">
+                            <div class="form-group mt-3">
+                                <label>Análisis estadístico</label>
+                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATAMBIENTE" name="ANALISIS_GRAFICA_CATAMBIENTE" required></textarea>
+                            </div>
+                            <div class="col-12" style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_ambiente">Guardar<i class="fa fa-save"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <h4 class="card-title" id="9_4_2">9.4.2.- Resultados obtenidos, categoría factores propios de la actividad.</h4>
@@ -1135,6 +1200,18 @@ DESCRIPCIONACTIVIDAD
                             }
                         </style>
                         <div id="factoresChart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_factores" id="form_analisis_grafica_factores">
+                            <div class="form-group mt-3">
+                                <label>Análisis estadístico</label>
+                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATFACTORES" name="ANALISIS_GRAFICA_CATFACTORES" required></textarea>
+                            </div>
+                            <div class="col-12" style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_factores">Guardar<i class="fa fa-save"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <h4 class="card-title" id="9_4_3">9.4.3.- Resultados obtenidos, categoría organización del tiempo de trabajo.</h4>
@@ -1147,6 +1224,18 @@ DESCRIPCIONACTIVIDAD
                             }
                         </style>
                         <div id="organizacionChart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_organizacion" id="form_analisis_grafica_organizacion">
+                            <div class="form-group mt-3">
+                                <label>Análisis estadístico</label>
+                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATORGANIZACION" name="ANALISIS_GRAFICA_CATORGANIZACION" required></textarea>
+                            </div>
+                            <div class="col-12" style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_organizacion">Guardar<i class="fa fa-save"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <h4 class="card-title" id="9_4_4">9.4.4.- Resultados obtenidos, categoría liderazgo y relaciones en el trabajo.</h4>
@@ -1159,6 +1248,18 @@ DESCRIPCIONACTIVIDAD
                             }
                         </style>
                         <div id="liderazgoChart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_liderazgo" id="form_analisis_grafica_liderazgo">
+                            <div class="form-group mt-3">
+                                <label>Análisis estadístico</label>
+                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATLIDERAZGO" name="ANALISIS_GRAFICA_CATLIDERAZGO" required></textarea>
+                            </div>
+                            <div class="col-12" style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_liderazgo">Guardar<i class="fa fa-save"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <h4 class="card-title" id="9_4_5">9.4.5.- Resultados obtenidos, categoría entorno organizacional.</h4>
@@ -1171,6 +1272,18 @@ DESCRIPCIONACTIVIDAD
                             }
                         </style>
                         <div id="entornoChart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_entorno" id="form_analisis_grafica_entorno">
+                            <div class="form-group mt-3">
+                                <label>Análisis estadístico</label>
+                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATENTORNO" name="ANALISIS_GRAFICA_CATENTORNO" required></textarea>
+                            </div>
+                            <div class="col-12" style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_entorno">Guardar<i class="fa fa-save"></i></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <h4 class="card-title" id="10">10.- Conclusiones</h4>
@@ -1179,70 +1292,6 @@ DESCRIPCIONACTIVIDAD
                     <div class="row">
                         <div class="col-12">
                             {!! csrf_field() !!}
-                            <div class="form-group">
-                                <label>Acontecimientos traumáticos severos</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_ACONTECIMIENTOS_CONCLUSIONES" name="REPORTE_ACONTECIMIENTOS_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Ambiente de trabajo</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_AMBIENTE_CONCLUSIONES" name="REPORTE_AMBIENTE_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Condiciones del ambiente de trabajo</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_CONDICIONES_CONCLUSIONES" name="REPORTE_CONDICIONES_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Factores propios de la actividad</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_FACTORES_CONCLUSIONES" name="REPORTE_FACTORES_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Carga de trabajo</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_CARGA_CONCLUSIONES" name="REPORTE_CARGA_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Falta de control sobre el trabajo</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_FALTA_CONCLUSIONES" name="REPORTE_FALTA_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Organización del tiempo de trabajo</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_ORGANIZACION_CONCLUSIONES" name="REPORTE_ORGANIZACION_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Jornada de trabajo</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_JORNADA_CONCLUSIONES" name="REPORTE_JORNADA_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Interferencia trabajo-familia</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_INTERFERENCIA_CONCLUSIONES" name="REPORTE_INTERFERENCIA_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Liderazgo y relaciones en el trabajo</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_LIDERAZGORELACIONES_CONCLUSIONES" name="REPORTE_LIDERAZGORELACIONES_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Liderazgo</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_LIDERAZGO_CONCLUSIONES" name="REPORTE_LIDERAZGO_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Relaciones en el trabajo</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_RELACIONES_CONCLUSIONES" name="REPORTE_RELACIONES_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Violencia</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_VIOLENCIA_CONCLUSIONES" name="REPORTE_VIOLENCIA_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Entorno organizacional</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_ENTORNO_CONCLUSIONES" name="REPORTE_ENTORNO_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Reconocimiento del desempeño</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_RECONOCIMIENTO_CONCLUSIONES" name="REPORTE_RECONOCIMIENTO_CONCLUSIONES" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Insuficiente sentido de pertenencia e inestabilidad</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="REPORTE_INSUFICIENTE_CONCLUSIONES" name="REPORTE_INSUFICIENTE_CONCLUSIONES" required></textarea>
-                            </div>
                         </div>
                         <div class="col-12" style="text-align: right;">
                             <div class="form-group">
@@ -1331,41 +1380,6 @@ DESCRIPCIONACTIVIDAD
                     </div>
                 </form>
 
-
-
-                <!-- <div class="col-12">
-								{!! csrf_field() !!}
-								<div class="form-group">
-									<label>Acontecimientos traumáticos severos</label>
-									<textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="reporte_acontecimientos_recomendaciones" name="reporte_acontecimientos_recomendaciones" required></textarea>
-								</div>
-								<div class="form-group">
-									<label>Ambiente de trabajo</label>
-									<textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="reporte_ambiente_recomendaciones" name="reporte_ambiente_recomendaciones" required></textarea>
-								</div>
-								<div class="form-group">
-									<label>Factores propios de la actividad</label>
-									<textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="reporte_factores_recomendaciones" name="reporte_factores_recomendaciones" required></textarea>
-								</div>
-								<div class="form-group">
-									<label>Organización del tiempo de trabajo</label>
-									<textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="reporte_organizacion_recomendaciones" name="reporte_organizacion_recomendaciones" required></textarea>
-								</div>
-								<div class="form-group">
-									<label>Liderazgo y relaciones en el trabajo</label>
-									<textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="reporte_liderazgorelaciones_recomendaciones" name="reporte_liderazgorelaciones_recomendaciones" required></textarea>
-								</div>
-								<div class="form-group">
-									<label>Entorno organizacional</label>
-									<textarea class="form-control" style="margin-bottom: 0px;" rows="5" id="reporte_entorno_recomendaciones" name="reporte_entorno_recomendaciones" required></textarea>
-								</div>
-							</div>
-							<div class="col-12" style="text-align: right;">
-								<div class="form-group">
-									<button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_recomendaciones">Guardar recomendaciones <i class="fa fa-save"></i></button>
-								</div>
-							</div>
-						</div> -->
                 <h4 class="card-title" id="12">12.- Responsables del informe</h4>
                 <form enctype="multipart/form-data" method="post" name="form_reporte_responsablesinforme" id="form_reporte_responsablesinforme">
                     <div class="row">
@@ -1441,18 +1455,18 @@ DESCRIPCIONACTIVIDAD
                             <span class="btn-label"><i class="fa fa-file-excel-o"></i></span> Descargar cuestionarios
                         </button>
                     </div>
-                </div>
+                </div>-->
                 <h4 class="card-title" id="13_3">13.3.- Anexo 3: Matriz de exposición laboral (MEL)</h4>
                 <div class="row">
-                    <div class="col-12" style="padding-top: 10px;"> -->
-                <!-- <p class="justificado"><b style="color: #333333; font-weight: bold;">Nota del software:</b> Se encontraron <span id="">0</span> fotos de los trabajadores evaluados.</p> -->
-                <!-- </div>
+                    <div class="col-12" style="padding-top: 10px;">
+                        <!-- <p class="justificado"><b style="color: #333333; font-weight: bold;">Nota del software:</b> Se encontraron <span id="">0</span> fotos de los trabajadores evaluados.</p> -->
+                    </div>
                     <div class="col-12">
                         <button type="button" class="btn btn-success waves-effect" data-toggle="tooltip" title="Generar Programa de Conservación de la Audición" id="boton_reporte_mel">
                             <span class="btn-label"><i class="fa fa-file-excel-o"></i></span> Generar MEL
                         </button>
                     </div>
-                </div> -->
+                </div>
 
                 <h4 class="card-title" id="14">Generar informe .docx + Anexos .Zip</h4>
                 <div class="row">
@@ -1592,7 +1606,7 @@ DESCRIPCIONACTIVIDAD
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js_sitio/reportes/reportenom0353v1.js?v=5"></script>
+<script src="/js_sitio/reportes/reportenom0353v1.js?v=7"></script>
 <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
 
