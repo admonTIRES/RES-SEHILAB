@@ -1011,7 +1011,7 @@ class recsensorialquimicosreportewordController extends Controller
         $table->addCell(1500, $encabezado_celda)->addTextRun($centrado)->addText('Sistema de extracción de aire <w:br />(general/localizado)', $encabezado_texto);
         $table->addCell(1500, $encabezado_celda)->addTextRun($centrado)->addText('Sistema de inyección de aire <w:br />(general/localizado)', $encabezado_texto);
         $table->addCell(1500, $encabezado_celda)->addTextRun($centrado)->addText('Características del proceso<w:br />(Continuo/Intermitente)', $encabezado_texto);
-        $table->addCell(2000, $encabezado_celda)->addTextRun($centrado)->addText('Condiciones del procesos', $encabezado_texto);
+        $table->addCell(2000, $encabezado_celda)->addTextRun($centrado)->addText('Condiciones de los procesos', $encabezado_texto);
 
         // registros tabla
         foreach ($sql as $key => $value) {
@@ -1117,7 +1117,180 @@ class recsensorialquimicosreportewordController extends Controller
         //================================================================================
 
 
-        // Crear tabla
+        // // Crear tabla
+        // $table = null;
+        // $No = 1;
+        // $total = 0;
+        // $table = new Table(array('name' => 'Poppins', 'width' => 13500, 'borderSize' => 10, 'borderColor' => '000000', 'cellMargin' => 0, 'spaceAfter' => 0, 'unit' => TblWidth::TWIP));
+
+        // $sql = DB::select('CALL sp_obtenerDeterminacionGEH_b(?) ', [$recsensorial_id]);
+
+
+        // // encabezado tabla
+        // // Encabezado de la tabla
+        // $table->addRow(200, array('tblHeader' => true));
+        // $table->addCell(3500, array('vMerge' => 'restart', 'bgColor' => '1A5276', 'valign' => 'center'))->addTextRun($centrado)->addText('Clasificación GEH', $encabezado_texto);
+        // $table->addCell(3500, array('vMerge' => 'restart', 'bgColor' => '1A5276', 'valign' => 'center'))->addTextRun($centrado)->addText(' Componente<w:br />(Sustancia química y/o producto)', $encabezado_texto);
+        // $table->addCell(3500, array('vMerge' => 'restart', 'bgColor' => '1A5276', 'valign' => 'center'))->addTextRun($centrado)->addText('Área/zona', $encabezado_texto);
+        // $table->addCell(3500, array('vMerge' => 'restart', 'bgColor' => '1A5276', 'valign' => 'center'))->addTextRun($centrado)->addText('Grupo de exposición homogénea', $encabezado_texto);
+        // $table->addCell(4500, array('gridSpan' => 3, 'bgColor' => '1A5276', 'valign' => 'center'))->addTextRun($centrado)->addText('Valor de ponderación', $encabezado_texto); // Combina columna
+        // $table->addCell(1500, array('vMerge' => 'restart', 'bgColor' => '1A5276', 'valign' => 'center'))->addTextRun($centrado)->addText('TOTAL<w:br />(Suma de los valores de ponderación)', $encabezado_texto);
+        // $table->addCell(1500, array('vMerge' => 'restart', 'bgColor' => '1A5276', 'valign' => 'center'))->addTextRun($centrado)->addText('Prioridad de muestreo<w:br />(Tabla 14)', $encabezado_texto);
+        // $table->addCell(1500, array('vMerge' => 'restart', 'bgColor' => '1A5276', 'valign' => 'center'))->addTextRun($centrado)->addText('No. de POE a considerar<w:br />(Tabla 15 - 16)', $encabezado_texto);
+
+        // $table->addRow(200, array('tblHeader' => true));
+        // $table->addCell(null, $continua_fila);
+        // $table->addCell(null, $continua_fila);
+        // $table->addCell(null, $continua_fila);
+        // $table->addCell(null, $continua_fila);
+
+        // $table->addCell(1500, $encabezado_celda)->addTextRun($centrado)->addText('Vía(s) de ingreso<w:br />al organismo<w:br />(Tabla 12)', $encabezado_texto);
+        // $table->addCell(1500, $encabezado_celda)->addTextRun($centrado)->addText('Número de<w:br />POE expuesto<w:br />(Tabla 12)', $encabezado_texto);
+        // $table->addCell(1500, $encabezado_celda)->addTextRun($centrado)->addText('Tiempo de<w:br />exposición<w:br />(Tabla 12)', $encabezado_texto);
+        // $table->addCell(null, $continua_fila);
+        // $table->addCell(null, $continua_fila);
+        // $table->addCell(null, $continua_fila);
+        // $table->addCell(null, $continua_fila);
+
+
+
+        // // registros tabla
+        // if (!empty($sql)) {
+        //     $grupo = 'xxx';
+        //     $sustancia = 'xxx';
+        //     $area = 'xxx';
+        //     foreach ($sql as $key => $value) {
+        //         if ($grupo != $value->CLASIFICACION) {
+        //             // Si cambia de area, reinicia la categoria y sustancia
+        //             $sustancia = 'xxx';
+        //             $area = 'xxx';
+
+        //             $table->addRow(); //fila
+        //             $table->addCell(2300, $combinar_fila)->addTextRun($centrado)->addText($value->CLASIFICACION, $texto);
+
+        //             if ($sustancia != $value->SUSTANCIA_PRODUCTO) {
+        //                 $table->addCell(2300, $combinar_fila)->addTextRun($centrado)->addText(sanitizeText($value->SUSTANCIA_PRODUCTO), $textonegrita);
+
+        //                 if ($area != $value->AREA) {
+        //                     $table->addCell(2300, $combinar_fila)->addTextRun($centrado)->addText($value->AREA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->CATEGORIA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_INGRESO, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_POE, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_EXPOSICION, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->SUMA_PONDERACIONES, $texto);
+        //                     $table->addCell(null, array('bgColor' => $value->COLOR, 'valign' => 'center'))->addTextRun($centrado)->addText($value->PRIORIDAD, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->NUM_POE, $texto);
+
+
+        //                     $area = $value->AREA;
+        //                 } else {
+        //                     $table->addCell(2300, $continua_fila);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->CATEGORIA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_INGRESO, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_POE, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_EXPOSICION, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->SUMA_PONDERACIONES, $texto);
+        //                     $table->addCell(null, array('bgColor' => $value->COLOR, 'valign' => 'center'))->addTextRun($centrado)->addText($value->PRIORIDAD, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->NUM_POE, $texto);
+        //                 }
+
+        //                 $sustancia = $value->SUSTANCIA_PRODUCTO;
+        //             } else {
+        //                 $table->addCell(2300, $continua_fila);
+
+        //                 if ($area != $value->AREA) {
+        //                     $table->addCell(2300, $combinar_fila)->addTextRun($centrado)->addText($value->AREA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->CATEGORIA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_INGRESO, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_POE, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_EXPOSICION, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->SUMA_PONDERACIONES, $texto);
+        //                     $table->addCell(null, array('bgColor' => $value->COLOR, 'valign' => 'center'))->addTextRun($centrado)->addText($value->PRIORIDAD, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->NUM_POE, $texto);
+
+
+        //                     $area = $value->AREA;
+        //                 } else {
+        //                     $table->addCell(2300, $continua_fila);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->CATEGORIA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_INGRESO, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_POE, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_EXPOSICION, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->SUMA_PONDERACIONES, $texto);
+        //                     $table->addCell(null, array('bgColor' => $value->COLOR, 'valign' => 'center'))->addTextRun($centrado)->addText($value->PRIORIDAD, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->NUM_POE, $texto);
+        //                 }
+        //             }
+
+        //             $grupo = $value->CLASIFICACION;
+        //         } else {
+        //             $table->addRow(); //fila
+        //             $table->addCell(2300, $continua_fila);
+
+        //             if ($sustancia != $value->SUSTANCIA_PRODUCTO) {
+        //                 $table->addCell(2300, $combinar_fila)->addTextRun($centrado)->addText(sanitizeText($value->SUSTANCIA_PRODUCTO), $textonegrita);
+
+        //                 if ($area != $value->AREA) {
+        //                     $table->addCell(2300, $combinar_fila)->addTextRun($centrado)->addText($value->AREA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->CATEGORIA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_INGRESO, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_POE, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_EXPOSICION, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->SUMA_PONDERACIONES, $texto);
+        //                     $table->addCell(null, array('bgColor' => $value->COLOR, 'valign' => 'center'))->addTextRun($centrado)->addText($value->PRIORIDAD, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->NUM_POE, $texto);
+
+        //                     $area = $value->AREA;
+        //                 } else {
+        //                     $table->addCell(2300, $continua_fila);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->CATEGORIA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_INGRESO, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_POE, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_EXPOSICION, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->SUMA_PONDERACIONES, $texto);
+        //                     $table->addCell(null, array('bgColor' => $value->COLOR, 'valign' => 'center'))->addTextRun($centrado)->addText($value->PRIORIDAD, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->NUM_POE, $texto);
+        //                 }
+
+        //                 $sustancia = $value->SUSTANCIA_PRODUCTO;
+        //             } else {
+        //                 $table->addCell(2300, $continua_fila);
+
+        //                 if ($area != $value->AREA) {
+        //                     $table->addCell(2300, $combinar_fila)->addTextRun($centrado)->addText($value->AREA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->CATEGORIA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_INGRESO, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_POE, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_EXPOSICION, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->SUMA_PONDERACIONES, $texto);
+        //                     $table->addCell(null, array('bgColor' => $value->COLOR, 'valign' => 'center'))->addTextRun($centrado)->addText($value->PRIORIDAD, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->NUM_POE, $texto);
+
+
+        //                     $area = $value->AREA;
+        //                 } else {
+        //                     $table->addCell(2300, $continua_fila);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->CATEGORIA, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_INGRESO, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_POE, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->PONDERACION_EXPOSICION, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->SUMA_PONDERACIONES, $texto);
+        //                     $table->addCell(null, array('bgColor' => $value->COLOR, 'valign' => 'center'))->addTextRun($centrado)->addText($value->PRIORIDAD, $texto);
+        //                     $table->addCell(null, $celda)->addTextRun($centrado)->addText($value->NUM_POE, $texto);
+        //                 }
+        //             }
+        //         }
+        //     };
+        // } else {
+
+        //     // Agrega una fila completa con el mensaje
+        //     $table->addRow(); // Agrega una nueva fila para el mensaje
+        //     $table->addCell(null, array('gridSpan' => 10, 'valign' => 'center'))->addTextRun($centrado)->addText($nota, $texto);
+        // }
+
+        // $plantillaword->setComplexBlock('tabla_quimicos_resumen2', $table);
+
+
         $table = null;
         $No = 1;
         $total = 0;
@@ -1147,7 +1320,6 @@ class recsensorialquimicosreportewordController extends Controller
         $table->addCell(1500, $encabezado_celda)->addTextRun($centrado)->addText('Vía(s) de ingreso<w:br />al organismo<w:br />(Tabla 12)', $encabezado_texto);
         $table->addCell(1500, $encabezado_celda)->addTextRun($centrado)->addText('Número de<w:br />POE expuesto<w:br />(Tabla 12)', $encabezado_texto);
         $table->addCell(1500, $encabezado_celda)->addTextRun($centrado)->addText('Tiempo de<w:br />exposición<w:br />(Tabla 12)', $encabezado_texto);
-        $table->addCell(null, $continua_fila);
         $table->addCell(null, $continua_fila);
         $table->addCell(null, $continua_fila);
         $table->addCell(null, $continua_fila);
@@ -1289,8 +1461,7 @@ class recsensorialquimicosreportewordController extends Controller
         }
 
         $plantillaword->setComplexBlock('tabla_quimicos_resumen2', $table);
-
-
+        
         // TABLA 9.1 - (TABLA DE GRUPO DE EXPOSICION HOMOGENEA) PONDERACION 2
         //================================================================================
 
