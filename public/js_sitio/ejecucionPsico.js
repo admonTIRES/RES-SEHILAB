@@ -21,10 +21,14 @@ $(document).ready(function () {
 
 //======================================NAV==================================//
 // navegar menu Tab principal
+
+
+
 $('.nav-link').click(function () {
 	switch (this.id) {
 		case "tab_tabla_ejecucion":
 			$('#tab_info_ejecucion').css('display', 'none');
+			$('#tab_evidencias_ejecucion').css('display', 'none');
 			break;
 
 		case "tab_evidencias_ejecucion":
@@ -59,7 +63,6 @@ $('.nav-link').click(function () {
 			break;
 	}
 });
-
 //=======================================TABLAS==================================================//
 $('#tabla_ejecucion tbody').on('click', 'td>button.mostrar', function () {
 	var tr = $(this).closest('tr');
