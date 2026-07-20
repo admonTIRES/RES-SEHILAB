@@ -251,7 +251,7 @@ $(document).ready(function () {
             cargarGraficaOrganizacionGuiaIII();
             cargarGraficaLiderazgoGuiaIII();
             cargarGraficaEntornoGuiaIII();
-
+            totalfotospsico();
     
             $.ajax({
                     url: 'obtenerDatosPlantillaPsico',
@@ -726,6 +726,22 @@ Se localiza en las coordenadas  COORDENADAS.`);
             $('#ANALISIS_GRAFICA_CATENTORNO')
                 .val(response.ANALISIS_GRAFICA_CATENTORNO); 
             
+            
+            
+            $('#NIVEL_RIESGO_AMBIENTE')
+                .val(response.NIVEL_RIESGO_AMBIENTE); 
+            
+            $('#NIVEL_RIESGO_FACTORES')
+                .val(response.NIVEL_RIESGO_FACTORES); 
+            
+            $('#NIVEL_RIESGO_ORGANIZACION')
+                .val(response.NIVEL_RIESGO_ORGANIZACION); 
+            
+            $('#NIVEL_RIESGO_LIDERAZGO')
+                .val(response.NIVEL_RIESGO_LIDERAZGO); 
+            
+            $('#NIVEL_RIESGO_ENTORNO')
+                .val(response.NIVEL_RIESGO_ENTORNO); 
             
             
             
@@ -10932,85 +10948,93 @@ $("#form_analisis_grafica_entorno").on("submit", function(e)
 
 });
 
-//// DESCARGAR MEL 
+////  CONTAR CUANTAS FOTOS HAY DE EVIDENCIA
 
 
-$('#boton_reporte_mel').on('click', function (e) {
-	e.preventDefault();
-	
-    swal({
-        title: "¡Confirme para generar MEL!",
-        text: "Matriz de exposición laboral.",
-        type: "info",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Descargar!",
-        cancelButtonText: "Cancelar!",
-        closeOnConfirm: false,
-        closeOnCancel: false
-    },
-    function(isConfirm) {
-        if (isConfirm) {
-			// Mostrar mensaje de carga
+function totalfotospsico() {
 
-            $('#boton_reporte_mel').prop('disabled', true);
-            swal({
-                title: "Generando documento MEL...",
-                text: 'Espere un momento, el documento se esta generando...',
-                type: "info",
-                showConfirmButton: false,
-                allowOutsideClick: false
-            });
+    $.ajax({
+        url: '/totalfotospsico/' + proyecto.id,
+        type: 'GET',
+        dataType: 'json',
+        cache: false,
 
-			url = 'generarMEL0353/' + proyecto.id ;
-			instalacion = $('#reporte_instalacion').val();
+        success: function(resp) {
 
-            $.ajax({
-                url: url,
-                method: 'GET',
-                xhrFields: {
-                    responseType: 'blob'
-                },
-                success: function(data) {
-                    var a = document.createElement('a');
-                    var url = window.URL.createObjectURL(data);
-                    a.href = url;
-                    a.download = `MEL NOM 035.xls`;
-                    document.body.append(a);
-                    a.click();
-                    a.remove();
-                    window.URL.revokeObjectURL(url);
+            if (resp.code == 1) {
+                $('#memoriafotografica_total').text(resp.total);
+            } else {
+                $('#memoriafotografica_total').text(0);
+            }
 
-                    // Cerrar mensaje de carga
-                    swal.close();
+        },
 
-                    $('#boton_reporte_mel').prop('disabled', false);
-				},
-                error: function() {
-                    swal({
-                        title: "Hubo un problema al generar el documento.",
-                        text: "Intentelo de nuevo, o comuniquelo con el responsable",
-                        type: "error",
-                        showConfirmButton: true
-                    });
-					$('#boton_reporte_mel').prop('disabled', false);
-                }
-            });
-        } else {
-            // mensaje de cancelación
-            swal({
-                title: "Cancelado",
-                text: "Acción cancelada",
-                type: "error",
-                buttons: {
-                    visible: false,
-                },
-                timer: 500,
+        error: function() {
+            $('#memoriafotografica_total').text(0);
+        }
+
+    });
+
+}
+
+
+
+/// NIVEL DE RIESGO POR CATEGORIA 
+  
+
+$("#form_nivel_riesgo_categorias").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+
+        url: '/guardarnivelriesgocategorias',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_nivel_riesgo_categorias").prop('disabled', true);
+            $("#botonguardar_nivel_riesgo_categorias").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
                 showConfirmButton: false
             });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_nivel_riesgo_categorias").prop('disabled', false);
+            $("#botonguardar_nivel_riesgo_categorias").html('Guardar <i class="fa fa-save"></i>');
         }
     });
-    return false;
-})
 
-
+});

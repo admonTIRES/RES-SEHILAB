@@ -1002,7 +1002,7 @@ use Illuminate\Support\Str;
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
     {{-- pagina --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js_sitio/reconocimientoergo.js?v=56"></script>
+    <script src="/js_sitio/reconocimientoergo.js?v=57"></script>
     <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 
@@ -1196,7 +1196,8 @@ use Illuminate\Support\Str;
     {{-- Select search filter --}}
     <script src="/assets/plugins/select-search/selectize.js" type="text/javascript"></script>
     {{-- pagina --}}
-    <script src="/js_sitio/ejecucionPsico.js?v=5"></script>
+    <script src="/js_sitio/ejecucionPsico.js?v=6"></script>
+    <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
     @endif
 

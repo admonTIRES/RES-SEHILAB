@@ -6,6 +6,8 @@ var datatable_ejecuciones = null;
 var datatable_trabajadores_presencial = null;
 var datatable_trabajadores_online = null;
 
+ID_FOTOS_EJECUCION = 0;
+
 
 //CARGA INCIIAL
 $(document).ready(function () {
@@ -24,13 +26,36 @@ $('.nav-link').click(function () {
 		case "tab_tabla_ejecucion":
 			$('#tab_info_ejecucion').css('display', 'none');
 			break;
+
 		case "tab_evidencias_ejecucion":
 			consulta_evidencia_fotos(proyecto_id);
+
+			$('#tabmenu_evidencia_3').removeClass('active');
+			$('#tab_evidencia_3').removeClass('active show');
+
 			$('#tabmenu_evidencia_2').addClass('active');
-			$('#tab_evidencia_2').addClass('active show');	
+			$('#tab_evidencia_2').addClass('active show');
 			break;
+
+		case "tabmenu_evidencia_2":
+			$('#tabmenu_evidencia_3').removeClass('active');
+			$('#tab_evidencia_3').removeClass('active show');
+
+			$('#tabmenu_evidencia_2').addClass('active');
+			$('#tab_evidencia_2').addClass('active show');
+			break;
+
+		case "tabmenu_evidencia_3":
+			$('#tabmenu_evidencia_2').removeClass('active');
+			$('#tab_evidencia_2').removeClass('active show');
+
+			$('#tabmenu_evidencia_3').addClass('active');
+			$('#tab_evidencia_3').addClass('active show');
+
+			cargarevidenciafotos();
+			break;
+
 		default:
-			// return true;
 			break;
 	}
 });
@@ -58,10 +83,6 @@ $('#tabla_ejecucion tbody').on('click', 'td>button.mostrar', function () {
 });
 
 //======================================BOTONES===================================================//
-$("#boton_nuevo_fotosevidencia").click(function () {
-	$('#modal_evidencia_fotos').modal({ backdrop: false });
-	cargarTrabajadoresNombres('trabajador_nombre_foto');	
-});
 
 $("#botocargar_respuestas_trabajadores").click(function () {
 	$('#modal_cargarRespuestasTrabajadores').modal({ backdrop: false });
@@ -1702,3 +1723,221 @@ $("#form_cargaRespuestasTrabajadores").submit(function (e) {
 			}
     });
 });
+
+
+//// CARGAR EVIDENCIAS FOTOGRAFICAS
+
+
+$("#boton_nuevo_fotosevidencia").click(function (e) {
+    e.preventDefault();
+
+    ID_FOTOS_EJECUCION = 0;
+       
+    $('#form_evidencia_fotos').each(function(){
+        this.reset();
+    });
+
+    $("#modal_evidencia_fotos").modal("show");
+
+});
+
+
+
+
+$("#boton_guardar_evidencia_fotos").click(function (e) {
+    e.preventDefault();
+
+
+    formularioValido = validarFormulario3($('#form_evidencia_fotos'))
+
+    if (formularioValido) {
+
+    if (ID_FOTOS_EJECUCION == 0) {
+        
+        alertMensajeConfirm({
+            title: "¿Desea guardar la información?",
+            text: "Al guardarla, se podra usar",
+            icon: "question",
+        },async function () { 
+
+            await loaderbtn('boton_guardar_evidencia_fotos')
+            await ajaxAwaitFormData({ api: 1,PROYECTO_ID: proyecto_id, ID_FOTOS_EJECUCION: ID_FOTOS_EJECUCION }, 'ejecucionPsicosocial', 'form_evidencia_fotos', 'boton_guardar_evidencia_fotos', { callbackAfter: true, callbackBefore: true }, () => {
+        
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Espere un momento',
+                    text: 'Estamos guardando la información',
+                    showConfirmButton: false
+                })
+
+                $('.swal2-popup').addClass('ld ld-breath')
+        
+                
+            }, function (data) {
+                    
+                    ID_FOTOS_EJECUCION = data.fotos.ID_FOTOS_EJECUCION
+                    alertMensaje('success','Información guardada correctamente', 'Esta información esta lista para usarse',null,null, 1500)
+                     $('#modal_evidencia_fotos').modal('hide')
+                    document.getElementById('form_evidencia_fotos').reset();
+                    cargarevidenciafotos();                
+            })
+            
+            
+            
+        }, 1)
+        
+    } else {
+            alertMensajeConfirm({
+            title: "¿Desea editar la información de este formulario?",
+            text: "Al guardarla, se podra usar",
+            icon: "question",
+        },async function () { 
+
+            await loaderbtn('boton_guardar_evidencia_fotos')
+            await ajaxAwaitFormData({ api: 1, PROYECTO_ID: proyecto_id, ID_FOTOS_EJECUCION: ID_FOTOS_EJECUCION }, 'ejecucionPsicosocial', 'form_evidencia_fotos', 'boton_guardar_evidencia_fotos', { callbackAfter: true, callbackBefore: true }, () => {
+        
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Espere un momento',
+                    text: 'Estamos guardando la información',
+                    showConfirmButton: false
+                })
+
+                $('.swal2-popup').addClass('ld ld-breath')
+        
+                
+            }, function (data) {
+                    
+                setTimeout(() => {
+
+                    ID_FOTOS_EJECUCION = data.fotos.ID_FOTOS_EJECUCION
+                    alertMensaje('success', 'Información editada correctamente', 'Información guardada')
+                     $('#modal_evidencia_fotos').modal('hide')
+                    document.getElementById('form_evidencia_fotos').reset();
+                    cargarevidenciafotos();
+
+                }, 300);  
+            })
+        }, 1)
+    }
+
+} else {
+    alertToast('Por favor, complete todos los campos del formulario.', 'error', 2000)
+
+}
+    
+});
+
+
+
+
+function cargarevidenciafotos(){
+
+    $.ajax({
+
+        url:'/evidenciafotospsico/'+ proyecto_id,
+        type:'GET',
+        dataType:'json',
+
+        beforeSend:function(){
+
+            $('#galeria_fotos').html(
+                '<div class="col-12 text-center">'+
+                '<i class="fa fa-spinner fa-spin fa-4x"></i>'+
+                '</div>'
+            );
+
+        },
+
+        success:function(resp){
+
+            if(resp.fotos_total > 0){
+
+                $('#galeria_fotos').html(resp.fotos);
+
+                $('#galeria_fotos').magnificPopup({
+                    delegate: 'a',
+                    type: 'image',
+                    gallery: {
+                        enabled: true
+                    },
+                    removalDelay: 300,
+                    mainClass: 'mfp-3d-unfold'
+                });
+
+            }else{
+
+                $('#galeria_fotos').html(
+                    '<div class="col-12 text-center">No hay imágenes</div>'
+                );
+
+            }
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+}
+
+    });
+
+}
+
+
+
+
+function eliminarPlano(id) {
+
+    alertMensajeConfirm({
+        title: "¿Desea eliminar esta imagen?",
+        text: "Esta acción no se puede deshacer.",
+        icon: "warning"
+    }, async function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/ejecucionPsicosocial",
+            data: {
+                _token: $('input[name="_token"]').val(),
+                api: 1,
+                ELIMINAR: 1,
+                ID_FOTOS_EJECUCION: id
+            },
+            dataType: "json",
+            success: function (data) {
+
+                if (data.code == 1) {
+
+                    alertMensaje(
+                        'success',
+                        'Imagen eliminada correctamente',
+                        'La imagen fue eliminada'
+                    );
+
+                    cargarevidenciafotos();
+                    totalPlanosErgo();
+
+                } else {
+
+                    alertMensaje(
+                        'error',
+                        'Error',
+                        'No fue posible eliminar la imagen'
+                    );
+
+                }
+
+            },
+            error: function () {
+
+                alertMensaje(
+                    'error',
+                    'Error',
+                    'Ocurrió un error al eliminar la imagen'
+                );
+
+            }
+
+        });
+
+    }, 1);
+
+}

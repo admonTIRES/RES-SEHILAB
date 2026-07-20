@@ -2026,6 +2026,16 @@ Route::get('mostrarplantillaguia1y3', ['as' => 'PSICO.mostrarplantillaguia1y3', 
 
 Route::post('importarRespuestasTrabajadores',['as' => 'PSICO.importarRespuestasTrabajadores','uses' => 'PSICO\ejecucionPsicoController@importarRespuestasTrabajadores']);
 
+
+
+Route::get('/mostrarevidenciasfotospsico/{opcion}/{id}', 'PSICO\ejecucionPsicoController@mostrarevidenciasfotospsico')->name('mostrarevidenciasfotospsico');
+
+Route::get('/evidenciafotospsico/{id}', 'PSICO\ejecucionPsicoController@evidenciafotospsico');
+
+Route::get('/totalfotospsico/{proyecto_id}', 'PSICO\ejecucionPsicoController@totalfotospsico');
+
+
+
 //================INFORMES
 Route::resource('informesPsicosocial', 'PSICO\informesrecoPsicoController');
 Route::resource('reportenom0353', 'reportes\reportenom0353Controller');
@@ -2248,6 +2258,10 @@ Route::post('guardaranalisisgraficatorganizacion', ['as' => 'guardaranalisisgraf
 Route::post('guardaranalisisgraficatliderazgo', ['as' => 'guardaranalisisgraficatliderazgo', 'uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficatliderazgo']);
 Route::post('guardaranalisisgraficatentorno', ['as' => 'guardaranalisisgraficatentorno', 'uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficatentorno']);
 
+/// NIVEL DE RIESGO POR CATEGORIA 
+Route::post('guardarnivelriesgocategorias', ['as' => 'guardarnivelriesgocategorias', 'uses' => 'reportes\reportenom0353Controller@guardarnivelriesgocategorias']);
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////// ERGONOMIA /////////////////////////////////////////////////////////////////
@@ -2275,7 +2289,7 @@ Route::post('obtenerDatosPlantilla', ['as' => 'obtenerDatosPlantilla', 'uses' =>
 Route::post('guardarPortadaRecoErgo',['as' => 'guardarPortadaRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarPortadaRecoErgo']);
 
 Route::get('/mostrarplanosergo/{opcion}/{id}', 'ERGO\planosergoController@mostrarplanosergo')->name('mostrarplanosergo');
-Route::get('/proyectoevidenciaplanos/{id}', 'ERGO\planosergoController@proyectoevidenciaplanos');
+Route::get('/evidenciaplanosergo/{id}', 'ERGO\planosergoController@evidenciaplanosergo');
 
 Route::get('/totalplanosergo/{reco_id}', 'ERGO\planosergoController@totalplanosergo');
 /// DATOS GENERALES

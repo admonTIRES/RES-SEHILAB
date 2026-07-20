@@ -351,7 +351,7 @@
                                                                         cursor: pointer;
                                                                     }
                                                                 </style>
-                                                                <div class="row" id="evidencia_galeria_fotos_presencial"></div>
+                                                                <div class="row" id="galeria_fotos"></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -380,77 +380,6 @@
 
 <!-- ============================================================== -->
 <!-- Inicio modales -->
-<!-- ============================================================== -->
-<!-- ============================================================== -->
-<!-- MODAL-EVIDENCIA-FOTOS -->
-<!-- ============================================================== -->
-<style type="text/css" media="screen">
-    #modal_evidencia_fotos .modal-body .form-group {
-        margin: 0px 0px 12px 0px !important;
-        padding: 0px !important;
-    }
-
-    #modal_evidencia_fotos .modal-body .form-group label {
-        margin: 0px !important;
-        padding: 0px 0px 3px 0px !important;
-    }
-</style>
-
-
-
-
-<div id="modal_evidencia_fotos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg" style="min-width: 900px!important;">
-        <form method="post" enctype="multipart/form-data" name="form_evidencia_fotos" id="form_evidencia_fotos">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Fotos evidencia</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12">
-                            {!! csrf_field() !!}
-                            <input type="hidden" class="form-control" id="evidenciafotos_id" name="evidenciafotos_id">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 divevidencia_seccion_fotoscarpeta">
-                            <div class="form-group">
-                                <label>Nombre del trabajador*</label>
-                                <select class="custom-select form-control" id="trabajador_nombre_foto" name="trabajador_nombre_foto">
-                                    <option value="" disabled selected>Seleccione un trabajador</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-12 divevidencia_seccion_fotoscarpeta">
-                            <div class="form-group">
-                                <label>Fotos (máximo 2) *</label>
-                                <input type="file" multiple class="form-control" accept=".jpg, .jpeg, .png, .gif" placeholder="Maximo 20 fotos" id="inputevidenciafotosquimicos" name="inputevidenciafotosquimicos[]" onchange="valida_totalfotos_quimicos(this);" required>
-                            </div>
-                        </div>
-                        <div class="col-12 divevidencia_seccion_fotoscarpeta">
-                            <p style="text-align: justify;"><b style="color: #555555;">Nota:</b> Solo se pueden subir máximo 2 fotos por cada trabajador</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12" style="display: none;" id="mensaje_cargando_fotos">
-                            <p class="text-info" style="text-align: center; margin: 0px; padding: 0px;"><i class="fa fa-spin fa-spinner"></i> Cargando fotos, espere un momento por favor...</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-danger botonguardar_moduloproyecto" id="boton_guardar_evidencia_fotos">
-                        Guardar <i class="fa fa-save"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<!-- ============================================================== -->
-<!-- MODAL-EVIDENCIA-FOTOS -->
 <!-- ============================================================== -->
 
 <!-- ============================================================== -->
@@ -4743,6 +4672,48 @@
 <!-- ============================================================== -->
 <!-- MODAL EVALUACION -->
 <!-- ============================================================== -->
+
+
+<!-- ============================================================== -->
+<!-- MODAL FOTORGRAFIAS PRESENCIALES -->
+<!-- ============================================================== -->
+
+
+
+
+<div id="modal_evidencia_fotos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg" style="min-width: 900px!important;">
+        <form method="post" enctype="multipart/form-data" name="form_evidencia_fotos" id="form_evidencia_fotos">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Fotos evidencia</h4>
+                </div>
+                <div class="modal-body">
+                    {!! csrf_field() !!}
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Fotos *</label>
+                                <input type="file" multiple class="form-control" accept=".jpg, .jpeg, .png, .gif" placeholder="Maximo 20 planos" id="INPUTEVIDENCIAFOTOS" name="INPUTEVIDENCIAFOTOS[]" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                    @if (auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador']))
+                    <button type="submit" class="btn btn-danger botonguardar_moduloproyecto" id="boton_guardar_evidencia_fotos">
+                        Guardar <i class="fa fa-save"></i>
+                    </button>
+                    @endif
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 
 <!-- ============================================================== -->

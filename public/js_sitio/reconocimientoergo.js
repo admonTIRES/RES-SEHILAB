@@ -5033,7 +5033,7 @@ function cargarGaleriaPlanos(){
 
     $.ajax({
 
-        url:'/proyectoevidenciaplanos/'+recsensorial,
+        url:'/evidenciaplanosergo/'+recsensorial,
         type:'GET',
         dataType:'json',
 

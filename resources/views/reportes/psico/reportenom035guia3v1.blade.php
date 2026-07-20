@@ -1348,35 +1348,127 @@ DESCRIPCIONACTIVIDAD
                     </div>
                 </form>
                 <h4 class="card-title" id="11_2">11.2.- Recomendaciones por categoría</h4>
-                <div id="divRecomendacionesCategoria" class="col-12">
-                </div>
-                <form method="post" enctype="multipart/form-data" name="form_reporte_recomendaciones_categorias" id="form_reporte_recomendaciones_categorias">
+                <form method="post" enctype="multipart/form-data" name="form_nivel_riesgo_categorias" id="form_nivel_riesgo_categorias">
                     <div class="row">
                         <div class="col-12">
                             {!! csrf_field() !!}
                         </div>
-                        <div class="col-12">
-                            <ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
-                                <button type="button" class="btn btn-default waves-effect botoninforme" data-toggle="tooltip" title="Agregar nueva recomendación" id="boton_reporte_nuevarecomendacion_categoria">
-                                    <span class="btn-label"><i class="fa fa-plus"></i></span>Nueva recomendación
-                                </button>
-                            </ol>
-                            <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_recomendaciones_categoria">
+                        <table class="table-sm" style="width: 96%; table-layout: fixed;">
+
+                            <table class="table table-hover tabla_info_centrado" width="100%">
                                 <thead>
                                     <tr>
-                                        <th width="60">No.</th>
-                                        <th width="60">Activo</th>
-                                        <th>Descripción</th>
+                                        <th width="80">No.</th>
+                                        <th>Categoría</th>
+                                        <th width="300">Nivel de riesgo</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+
+                                <tbody>
+
+                                    <tr>
+                                        <td class="text-center">1</td>
+                                        <td>Ambiente de trabajo</td>
+                                        <td>
+                                            <select
+                                                class="form-control"
+                                                id="NIVEL_RIESGO_AMBIENTE"
+                                                name="NIVEL_RIESGO_AMBIENTE"
+                                                required>
+                                                <option value="">Seleccione una opción</option>
+                                                <option value="1">Riesgo muy alto</option>
+                                                <option value="2">Riesgo alto</option>
+                                                <option value="3">Riesgo medio</option>
+                                                <option value="4">Riesgo bajo</option>
+                                                <option value="5">Riesgo nulo</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-center">2</td>
+                                        <td>Factores propios de la actividad</td>
+                                        <td>
+                                            <select
+                                                class="form-control"
+                                                id="NIVEL_RIESGO_FACTORES"
+                                                name="NIVEL_RIESGO_FACTORES"
+                                                required>
+                                                <option value="">Seleccione una opción</option>
+                                                <option value="1">Riesgo muy alto</option>
+                                                <option value="2">Riesgo alto</option>
+                                                <option value="3">Riesgo medio</option>
+                                                <option value="4">Riesgo bajo</option>
+                                                <option value="5">Riesgo nulo</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-center">3</td>
+                                        <td>Organización del tiempo de trabajo</td>
+                                        <td>
+                                            <select
+                                                class="form-control"
+                                                id="NIVEL_RIESGO_ORGANIZACION"
+                                                name="NIVEL_RIESGO_ORGANIZACION"
+                                                required>
+                                                <option value="">Seleccione una opción</option>
+                                                <option value="1">Riesgo muy alto</option>
+                                                <option value="2">Riesgo alto</option>
+                                                <option value="3">Riesgo medio</option>
+                                                <option value="4">Riesgo bajo</option>
+                                                <option value="5">Riesgo nulo</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-center">4</td>
+                                        <td>Liderazgo y relaciones en el trabajo</td>
+                                        <td>
+                                            <select
+                                                class="form-control"
+                                                id="NIVEL_RIESGO_LIDERAZGO"
+                                                name="NIVEL_RIESGO_LIDERAZGO"
+                                                required>
+                                                <option value="">Seleccione una opción</option>
+                                                <option value="1">Riesgo muy alto</option>
+                                                <option value="2">Riesgo alto</option>
+                                                <option value="3">Riesgo medio</option>
+                                                <option value="4">Riesgo bajo</option>
+                                                <option value="5">Riesgo nulo</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-center">5</td>
+                                        <td>Entorno organizacional</td>
+                                        <td>
+                                            <select
+                                                class="form-control"
+                                                id="NIVEL_RIESGO_ENTORNO"
+                                                name="NIVEL_RIESGO_ENTORNO"
+                                                required>
+                                                <option value="">Seleccione una opción</option>
+                                                <option value="1">Riesgo muy alto</option>
+                                                <option value="2">Riesgo alto</option>
+                                                <option value="3">Riesgo medio</option>
+                                                <option value="4">Riesgo bajo</option>
+                                                <option value="5">Riesgo nulo</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
                             </table>
-                        </div>
-                        <div class="col-12" style="text-align: right;">
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_recomendaciones_categoria">Guardar recomendaciones <i class="fa fa-save"></i></button>
+
+                            <div class="col-12 mt-3" style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_nivel_riesgo_categorias">Guardar <i class="fa fa-save"></i></button>
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </form>
 
@@ -1442,31 +1534,10 @@ DESCRIPCIONACTIVIDAD
                 <h4 class="card-title" id="13_1">13.1.- Anexo 1: Memoria fotográfica</h4>
                 <div class="row">
                     <div class="col-12" style="padding-top: 10px;">
-                        <p class="justificado"><b style="color: #333333; font-weight: bold;">Nota del software:</b> Se encontraron <span id="memoriafotografica_total">0</span> fotos de los trabajadores evaluados.</p>
+                        <p class="justificado"><b style="color: #333333; font-weight: bold;">Nota del software:</b> Se encontraron <span id="memoriafotografica_total">0</span> fotos de las evidencias</p>
                     </div>
                 </div>
-                <!-- <h4 class="card-title" id="13_2">13.2.- Anexo 2: Cuestionarios de trabajadores</h4>
-                <div class="row">
-                    <div class="col-12" style="padding-top: 10px;">
-                        <p class="justificado"><b style="color: #333333; font-weight: bold;">Nota del software:</b> Se encontraron <span id="">0</span> cuestionarios de los trabajadores evaluados.</p>
-                    </div>
-                    <div class="col-12">
-                        <button type="button" class="btn btn-info waves-effect" data-toggle="tooltip" title="Generar zip de cuestionarios aplicados" id="boton_reporte_cuestionarios">
-                            <span class="btn-label"><i class="fa fa-file-excel-o"></i></span> Descargar cuestionarios
-                        </button>
-                    </div>
-                </div>-->
-                <h4 class="card-title" id="13_3">13.3.- Anexo 3: Matriz de exposición laboral (MEL)</h4>
-                <div class="row">
-                    <div class="col-12" style="padding-top: 10px;">
-                        <!-- <p class="justificado"><b style="color: #333333; font-weight: bold;">Nota del software:</b> Se encontraron <span id="">0</span> fotos de los trabajadores evaluados.</p> -->
-                    </div>
-                    <div class="col-12">
-                        <button type="button" class="btn btn-success waves-effect" data-toggle="tooltip" title="Generar Programa de Conservación de la Audición" id="boton_reporte_mel">
-                            <span class="btn-label"><i class="fa fa-file-excel-o"></i></span> Generar MEL
-                        </button>
-                    </div>
-                </div>
+
 
                 <h4 class="card-title" id="14">Generar informe .docx + Anexos .Zip</h4>
                 <div class="row">
@@ -1606,7 +1677,7 @@ DESCRIPCIONACTIVIDAD
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js_sitio/reportes/reportenom0353v1.js?v=7"></script>
+<script src="/js_sitio/reportes/reportenom0353v1.js?v=8"></script>
 <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
 

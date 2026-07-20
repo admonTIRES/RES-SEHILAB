@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\Storage;
 use Image;
 use App\Mail\sendGuiaPsico;
 use Illuminate\Support\Facades\Mail;
+use Exception;
+
 use App\modelos\reconocimientopsico\recopsicotrabajadoresModel;
 use App\modelos\reconocimientopsico\recpsicofotostrabajadoresModel;
 use App\modelos\proyecto\proyectoModel;
 
+use App\modelos\reconocimientopsico\evidenciafotosModel;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -1053,6 +1056,168 @@ class ejecucionPsicoController extends Controller
 
 
 
+
+    public function store(Request $request)
+    {
+        try {
+
+            switch (intval($request->api)) {
+
+                case 1:
+
+                    if (isset($request->ELIMINAR)) {
+
+                        $fotos = evidenciafotosModel::find($request->ID_FOTOS_EJECUCION);
+                        if ($fotos) {
+                            if ($fotos->INPUTEVIDENCIAFOTOS && Storage::exists($fotos->INPUTEVIDENCIAFOTOS)) {
+                                Storage::delete($fotos->INPUTEVIDENCIAFOTOS);
+                            }
+                            $fotos->delete();
+                        }
+
+                        return response()->json([
+                            'code' => 1,
+                            'fotos' => 'Eliminada'
+                        ]);
+                    }
+
+                    if ($request->hasFile('INPUTEVIDENCIAFOTOS')) {
+
+                        DB::statement('ALTER TABLE evidencia_foto_psico AUTO_INCREMENT = 1;');
+
+                        $ultimoRegistro = null;
+
+                        foreach ($request->file('INPUTEVIDENCIAFOTOS') as $file) {
+                            $fotos = evidenciafotosModel::create([
+                                'PROYECTO_ID' => $request->PROYECTO_ID,
+                                'ACTIVO'  => 1
+                            ]);
+
+                            $folder = "Ejecución Psico/{$fotos->PROYECTO_ID}/Evidencias fotos/{$fotos->ID_FOTOS_EJECUCION}";
+
+                            $filename = "evidencia_fotos." . $file->getClientOriginalExtension();
+
+                            $path = $file->storeAs($folder, $filename);
+
+                            $fotos->INPUTEVIDENCIAFOTOS = $path;
+                            $fotos->save();
+
+                            $ultimoRegistro = $fotos;
+                        }
+
+                        return response()->json([
+                            'code' => 1,
+                            'fotos' => $ultimoRegistro
+                        ]);
+                    }
+
+                    return response()->json([
+                        'code' => 0,
+                        'msj' => 'No se recibieron imágenes.'
+                    ]);
+
+                default:
+
+                    return response()->json([
+                        'code' => 0,
+                        'msj' => 'Api no encontrada'
+                    ]);
+            }
+        } catch (Exception $e) {
+
+            return response()->json([
+                'code'  => 0,
+                'msj'   => 'Error al guardar',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+
+
+    public function mostrarevidenciasfotospsico($archivo_opcion, $id)
+    {
+        $recurso = evidenciafotosModel::findOrFail($id);
+
+        if ($archivo_opcion == 0) {
+            return Storage::response($recurso->INPUTEVIDENCIAFOTOS);
+        }
+
+        return Storage::download($recurso->INPUTEVIDENCIAFOTOS);
+    }
+
+
+
+    public function evidenciafotospsico($proyecto_id)
+    {
+        try {
+
+            $fotos = evidenciafotosModel::where('PROYECTO_ID', $proyecto_id)
+                ->orderBy('ID_FOTOS_EJECUCION')
+                ->get();
+
+            $galeria = '';
+
+            foreach ($fotos as $value) {
+
+                $galeria .= '
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 plano_galeria">
+
+                <i class="fa fa-trash text-danger"
+                    style="font-size:26px;
+                    text-shadow:2px 2px 4px #000;
+                    position:absolute;
+                    cursor:pointer;"
+                    data-toggle="tooltip"
+                    title="Eliminar"
+                    onclick="eliminarPlano(' . $value->ID_FOTOS_EJECUCION . ')"></i>
+
+                <a href="' . route('mostrarevidenciasfotospsico', [0, $value->ID_FOTOS_EJECUCION]) . '" data-effect="mfp-3d-unfold">
+
+                    <img
+                        class="d-block img-fluid"
+                        src="' . route('mostrarevidenciasfotospsico', [0, $value->ID_FOTOS_EJECUCION]) . '"
+                        style="margin-bottom:20px;"
+                        data-toggle="tooltip"
+                        title="Click para mostrar">
+
+                </a>
+
+            </div>';
+            }
+
+            return response()->json([
+                'fotos_total' => count($fotos),
+                'fotos' => $galeria
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'fotos_total' => 0,
+                'fotos' => ''
+            ]);
+        }
+    }
+
+    public function totalfotospsico($proyecto_id)
+    {
+        try {
+
+            $total = evidenciafotosModel::where('PROYECTO_ID', $proyecto_id)->count();
+
+            return response()->json([
+                'code' => 1,
+                'total' => $total
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'code' => 0,
+                'total' => 0,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }
 
 

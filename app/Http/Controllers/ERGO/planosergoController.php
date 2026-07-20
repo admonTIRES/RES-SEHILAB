@@ -24,7 +24,7 @@ class planosergoController extends Controller
 
 
 
-    public function proyectoevidenciaplanos($reco_id)
+    public function evidenciaplanosergo($reco_id)
     {
         try {
 

@@ -11,6 +11,8 @@ use App\modelos\reconocimientopsico\proyectotrabajadoresModel;
 use App\modelos\recsensorial\recsensorialModel;
 
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpWord\SimpleType\TblWidth;
+use PhpOffice\PhpWord\Element\Table;
 
 //Tablas revisiones
 use App\modelos\reportes\reporterevisionesModel;
@@ -4451,6 +4453,358 @@ class reportenom0353Controller extends Controller
                     $opcionesImagen
                 );
             }
+
+            /// EVIDENCIA TABLA
+
+            // Crear tabla
+            $fuente = 'Poppins';
+            $font_size = 10;
+
+            $table = null;
+            $table = new Table(array('name' => $fuente, 'borderSize' => 1, 'borderColor' => '000000', 'cellMargin' => 40, 'unit' => TblWidth::TWIP));
+            $centrado = array('align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0, 'lineHeight' => 1.15);
+            $encabezado_texto = array('color' => 'FFFFFF', 'size' => $font_size, 'bold' => false, 'name' => $fuente);
+            $texto = array('color' => '000000', 'size' => $font_size, 'bold' => false, 'name' => $fuente);
+
+            $fotos = DB::table('evidencia_foto_psico')
+                ->where('PROYECTO_ID', $PROYECTO_ID)
+                ->where('ACTIVO', 1)
+                ->whereNotNull('INPUTEVIDENCIAFOTOS')
+                ->whereRaw('TRIM(INPUTEVIDENCIAFOTOS) <> ""')
+                ->orderBy('ID_FOTOS_EJECUCION', 'ASC')
+                ->select(
+                    'ID_FOTOS_EJECUCION',
+                    'PROYECTO_ID',
+                    'INPUTEVIDENCIAFOTOS',
+                    'ACTIVO'
+                )
+                ->get();
+
+            $ancho_col_1 = 4750;
+            $ancho_col_2 = 4750;
+
+            $table = new Table([
+                'name' => $fuente,
+                'borderSize' => 1,
+                'borderColor' => '000000',
+                'cellMargin' => 40,
+                'unit' => TblWidth::TWIP
+            ]);
+
+            $table->addRow(
+                400,
+                [
+                    'tblHeader' => true
+                ]
+            );
+
+            $table->addCell(
+                $ancho_col_1 + $ancho_col_2,
+                [
+                    'gridSpan' => 2,
+                    'valign' => 'center',
+                    'borderTopColor' => 'FFFFFF',
+                    'borderTopSize' => 1,
+                    'borderRightColor' => 'FFFFFF',
+                    'borderRightSize' => 1,
+                    'borderBottomColor' => '000000',
+                    'borderBottomSize' => 1,
+                    'borderLeftColor' => 'FFFFFF',
+                    'borderLeftSize' => 1
+                ]
+            )
+                ->addTextRun($centrado)
+                ->addText(
+                    'Memoria fotográfica',
+                    [
+                        'color' => '000000',
+                        'size' => 12,
+                        'bold' => true,
+                        'name' => $fuente
+                    ]
+                );
+
+            $table->addRow(
+                400,
+                [
+                    'tblHeader' => true
+                ]
+            );
+
+            $table->addCell(
+                $ancho_col_1 + $ancho_col_2,
+                [
+                    'gridSpan' => 2,
+                    'valign' => 'center',
+                    'bgColor' => '0C3F64'
+                ]
+            )
+                ->addTextRun($centrado)
+                ->addText(
+                    'Evaluación de factores de riesgo psicosocial',
+                    $encabezado_texto
+                );
+
+            $totalFotos = count($fotos);
+
+            for ($i = 0; $i < $totalFotos; $i += 2) {
+
+                $indiceFoto1 = $i;
+                $indiceFoto2 = $i + 1;
+
+                $marcadorFoto1 =
+                    '${FOTO_PSICO_' .
+                    $indiceFoto1 .
+                    '}';
+
+                $marcadorFoto2 = '';
+
+                if ($indiceFoto2 < $totalFotos) {
+                    $marcadorFoto2 =
+                        '${FOTO_PSICO_' .
+                        $indiceFoto2 .
+                        '}';
+                }
+
+                $descripcionFoto1 =
+                    'Trabajadores respondiendo el cuestionario';
+
+                $descripcionFoto2 = '';
+
+                if ($indiceFoto2 < $totalFotos) {
+                    $descripcionFoto2 =
+                        'Trabajadores respondiendo el cuestionario';
+                }
+
+                $table->addRow(2800);
+
+                $table->addCell(
+                    $ancho_col_1,
+                    [
+                        'valign' => 'center',
+                        'borderColor' => '000000',
+                        'borderSize' => 1
+                    ]
+                )
+                    ->addTextRun($centrado)
+                    ->addText(
+                        $marcadorFoto1,
+                        $texto
+                    );
+
+                $table->addCell(
+                    $ancho_col_2,
+                    [
+                        'valign' => 'center',
+                        'borderColor' => '000000',
+                        'borderSize' => 1
+                    ]
+                )
+                    ->addTextRun($centrado)
+                    ->addText(
+                        $marcadorFoto2,
+                        $texto
+                    );
+
+                $table->addRow(700);
+
+                $table->addCell(
+                    $ancho_col_1,
+                    [
+                        'valign' => 'center',
+                        'borderColor' => '000000',
+                        'borderSize' => 1
+                    ]
+                )
+                    ->addTextRun($centrado)
+                    ->addText(
+                        $descripcionFoto1,
+                        $texto
+                    );
+
+                $table->addCell(
+                    $ancho_col_2,
+                    [
+                        'valign' => 'center',
+                        'borderColor' => '000000',
+                        'borderSize' => 1
+                    ]
+                )
+                    ->addTextRun($centrado)
+                    ->addText(
+                        $descripcionFoto2,
+                        $texto
+                    );
+            }
+
+            if ($totalFotos > 0) {
+
+                $plantillaword->setComplexBlock(
+                    'TABLA_MEMORIA_FOTOGRAFICA',
+                    $table
+                );
+
+                foreach ($fotos as $indice => $foto) {
+
+                    $rutaRelativa =
+                        str_replace(
+                            '\\',
+                            '/',
+                            trim($foto->INPUTEVIDENCIAFOTOS)
+                        );
+
+                    $rutaFoto = storage_path(
+                        'app/' . $rutaRelativa
+                    );
+
+                    $marcadorFoto =
+                        'FOTO_PSICO_' .
+                        $indice;
+
+                    if (
+                        !empty($rutaRelativa) &&
+                        file_exists($rutaFoto)
+                    ) {
+                        $plantillaword->setImageValue(
+                            $marcadorFoto,
+                            [
+                                'path' => $rutaFoto,
+                                'width' => 420,
+                                'height' => 260,
+                                'ratio' => false
+                            ]
+                        );
+                    } else {
+                        $plantillaword->setValue(
+                            $marcadorFoto,
+                            'IMAGEN NO ENCONTRADA'
+                        );
+                    }
+                }
+            } else {
+
+                $plantillaword->setValue(
+                    'TABLA_MEMORIA_FOTOGRAFICA',
+                    'NO HAY MEMORIA FOTOGRÁFICA QUE MOSTRAR.'
+                );
+            }
+
+
+            /// RECOMENDACION POR CATEGORIA
+
+
+            $categoriasRiesgo = [
+                [
+                    'nivel' => $datosGenerales->NIVEL_RIESGO_AMBIENTE,
+                    'icono' => 'ICONO_1',
+                    'recomendacion' => 'RECOMENDACION_1'
+                ],
+                [
+                    'nivel' => $datosGenerales->NIVEL_RIESGO_FACTORES,
+                    'icono' => 'ICONO_2',
+                    'recomendacion' => 'RECOMENDACION_2'
+                ],
+                [
+                    'nivel' => $datosGenerales->NIVEL_RIESGO_ORGANIZACION,
+                    'icono' => 'ICONO_3',
+                    'recomendacion' => 'RECOMENDACION_3'
+                ],
+                [
+                    'nivel' => $datosGenerales->NIVEL_RIESGO_LIDERAZGO,
+                    'icono' => 'ICONO_4',
+                    'recomendacion' => 'RECOMENDACION_4'
+                ],
+                [
+                    'nivel' => $datosGenerales->NIVEL_RIESGO_ENTORNO,
+                    'icono' => 'ICONO_5',
+                    'recomendacion' => 'RECOMENDACION_5'
+                ]
+            ];
+
+            $imagenesRiesgo = [
+                1 => 'RIESGO_MUYALTO.png',
+                2 => 'RIESGO_ALTO.png',
+                3 => 'RIESGO_MEDIO.png',
+                4 => 'RIESGO_BAJO.png',
+                5 => 'RIESGO_NULO.png'
+            ];
+
+            $recomendacionAlta = 'Se recomienda valoración especializada a través de la institución de seguridad social o privada, médico, psiquiatra o psicólogo dentro del centro de trabajo.
+
+Debe efectuarse de conformidad con lo establecido por las normas oficiales mexicanas que emite la Secretaría de Salud (SS) y la Secretaría del Trabajo y Previsión Social (STPS).';
+
+            $recomendacionBaja = 'Se pueden establecer acciones de mejora continua.';
+
+            $recomendacionNula = 'No se requieren medidas adicionales.';
+
+            foreach ($categoriasRiesgo as $categoriaRiesgo) {
+
+                $nivel = (int) $categoriaRiesgo['nivel'];
+                $marcadorIcono = $categoriaRiesgo['icono'];
+                $marcadorRecomendacion = $categoriaRiesgo['recomendacion'];
+
+                if (!isset($imagenesRiesgo[$nivel])) {
+
+                    $plantillaword->setValue(
+                        $marcadorIcono,
+                        'No cargado'
+                    );
+
+                    $plantillaword->setValue(
+                        $marcadorRecomendacion,
+                        'No cargado'
+                    );
+
+                    continue;
+                }
+
+                $rutaImagen = storage_path(
+                    'app/RIESGO_CAT/' . $imagenesRiesgo[$nivel]
+                );
+
+                if (file_exists($rutaImagen)) {
+
+                    $plantillaword->setImageValue(
+                        $marcadorIcono,
+                        [
+                            'path' => $rutaImagen,
+                            'width' => 100,
+                            'height' => 100,
+                            'ratio' => true
+                        ]
+                    );
+                } else {
+
+                    $plantillaword->setValue(
+                        $marcadorIcono,
+                        'Imagen no encontrada'
+                    );
+                }
+
+                if (
+                    $nivel === 1 ||
+                    $nivel === 2 ||
+                    $nivel === 3
+                ) {
+                    $recomendacion = $recomendacionAlta;
+                } elseif ($nivel === 4) {
+
+                    $recomendacion = $recomendacionBaja;
+                } else {
+
+                    $recomendacion = $recomendacionNula;
+                }
+
+                $plantillaword->setValue(
+                    $marcadorRecomendacion,
+                    htmlspecialchars(
+                        $recomendacion,
+                        ENT_QUOTES,
+                        'UTF-8'
+                    )
+                );
+            }
+
 
             //// DESCARGAR INFORME 
 
@@ -9150,8 +9504,42 @@ class reportenom0353Controller extends Controller
         }
     }
 
+    public function guardarnivelriesgocategorias(Request $request)
+    {
+        try {
 
+            DB::beginTransaction();
 
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
 
+            $dato->NIVEL_RIESGO_AMBIENTE = $request->NIVEL_RIESGO_AMBIENTE;
+            $dato->NIVEL_RIESGO_FACTORES = $request->NIVEL_RIESGO_FACTORES;
+            $dato->NIVEL_RIESGO_ORGANIZACION = $request->NIVEL_RIESGO_ORGANIZACION;
+            $dato->NIVEL_RIESGO_LIDERAZGO = $request->NIVEL_RIESGO_LIDERAZGO;
+            $dato->NIVEL_RIESGO_ENTORNO = $request->NIVEL_RIESGO_ENTORNO;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
 
