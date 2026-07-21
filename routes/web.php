@@ -2261,7 +2261,9 @@ Route::post('guardaranalisisgraficatentorno', ['as' => 'guardaranalisisgraficate
 /// NIVEL DE RIESGO POR CATEGORIA 
 Route::post('guardarnivelriesgocategorias', ['as' => 'guardarnivelriesgocategorias', 'uses' => 'reportes\reportenom0353Controller@guardarnivelriesgocategorias']);
 
+/// CONCLUSION
 
+Route::post('guardarinformeconclusionpsico', ['as' => 'guardarinformeconclusionpsico', 'uses' => 'reportes\reportenom0353Controller@guardarinformeconclusionpsico']);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////// ERGONOMIA /////////////////////////////////////////////////////////////////

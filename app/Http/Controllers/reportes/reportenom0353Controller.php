@@ -3228,12 +3228,50 @@ class reportenom0353Controller extends Controller
         }
     }
 
+
     public function guardarRecomendacionesInformepsico(Request $request)
     {
-
         try {
 
             DB::beginTransaction();
+
+            $recomendaciones =
+                $request->DESCRIPCION_RECOMENDACIONES;
+
+            $prioridades =
+                $request->ES_PRIORITARIA;
+
+            $totalPrioritarias = 0;
+
+            if (is_array($recomendaciones)) {
+
+                foreach ($recomendaciones as $recomendacion) {
+
+                    $esPrioritaria = 0;
+
+                    if (
+                        is_array($prioridades) &&
+                        isset($prioridades[$recomendacion])
+                    ) {
+                        $esPrioritaria =
+                            (int) $prioridades[$recomendacion];
+                    }
+
+                    if ($esPrioritaria === 1) {
+                        $totalPrioritarias++;
+                    }
+                }
+            }
+
+            if ($totalPrioritarias > 3) {
+
+                DB::rollBack();
+
+                return response()->json([
+                    'msj' =>
+                    'Solo puede seleccionar un máximo de 3 recomendaciones prioritarias'
+                ], 422);
+            }
 
             recomendacionesinformepsicoModel::where(
                 'PROYECTO_ID',
@@ -3243,11 +3281,33 @@ class reportenom0353Controller extends Controller
             if ($request->DESCRIPCION_RECOMENDACIONES) {
 
                 foreach (
-                    $request->DESCRIPCION_RECOMENDACIONES as $recomendacion
+                    $request->DESCRIPCION_RECOMENDACIONES
+                    as $recomendacion
                 ) {
-                    $dato = new recomendacionesinformepsicoModel();
-                    $dato->PROYECTO_ID = $request->PROYECTO_ID;
-                    $dato->CATALOGO_RECOMENDACIONES_ID = $recomendacion;
+                    $esPrioritaria = 0;
+
+                    if (
+                        is_array($prioridades) &&
+                        isset($prioridades[$recomendacion])
+                    ) {
+                        $esPrioritaria =
+                            (int) $prioridades[$recomendacion];
+                    }
+
+                    $dato =
+                        new recomendacionesinformepsicoModel();
+
+                    $dato->PROYECTO_ID =
+                        $request->PROYECTO_ID;
+
+                    $dato->CATALOGO_RECOMENDACIONES_ID =
+                        $recomendacion;
+
+                    $dato->ES_PRIORITARIA =
+                        $esPrioritaria === 1
+                        ? 1
+                        : 0;
+
                     $dato->save();
                 }
             }
@@ -3264,7 +3324,8 @@ class reportenom0353Controller extends Controller
 
             return response()->json([
                 'msj' =>
-                'Error: ' . $e->getMessage()
+                'Error: ' .
+                    $e->getMessage()
             ], 500);
         }
     }
@@ -3278,6 +3339,8 @@ class reportenom0353Controller extends Controller
             )->get();
         return response()->json($datos);
     }
+
+
 
     public function guardarResponsablesInformepsico(Request $request)
     {
@@ -4805,6 +4868,87 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
                 );
             }
 
+            /// CONCLUSION 
+
+            $textoConclusiones = new \PhpOffice\PhpWord\Element\TextRun([
+                'alignment' => 'both',
+                'spaceAfter' => 0,
+                'lineHeight' => 1.15
+            ]);
+
+            $conclusiones = [];
+
+            if (
+                isset($datosGenerales->INFORME_CONCLUSION) &&
+                !empty($datosGenerales->INFORME_CONCLUSION)
+            ) {
+                $conclusiones = json_decode(
+                    $datosGenerales->INFORME_CONCLUSION,
+                    true
+                );
+            }
+
+            if (
+                is_array($conclusiones) &&
+                count($conclusiones) > 0
+            ) {
+                foreach ($conclusiones as $conclusion) {
+
+                    $titulo = isset($conclusion['TITULO'])
+                        ? trim($conclusion['TITULO'])
+                        : '';
+
+                    $descripcion = isset($conclusion['DESCRIPCION'])
+                        ? trim($conclusion['DESCRIPCION'])
+                        : '';
+
+                    if (
+                        $titulo === '' &&
+                        $descripcion === ''
+                    ) {
+                        continue;
+                    }
+
+                    if ($titulo !== '') {
+                        $textoConclusiones->addText(
+                            $titulo,
+                            [
+                                'name' => $fuente,
+                                'size' => 11,
+                                'bold' => true,
+                                'color' => '000000'
+                            ]
+                        );
+
+                        $textoConclusiones->addTextBreak();
+                    }
+
+                    if ($descripcion !== '') {
+                        $textoConclusiones->addText(
+                            $descripcion,
+                            [
+                                'name' => $fuente,
+                                'size' => 11,
+                                'bold' => false,
+                                'color' => '000000'
+                            ]
+                        );
+                    }
+
+                    $textoConclusiones->addTextBreak(2);
+                }
+
+                $plantillaword->setComplexValue(
+                    'CONCLUSIONES_JSON',
+                    $textoConclusiones
+                );
+            } else {
+
+                $plantillaword->setValue(
+                    'CONCLUSIONES_JSON',
+                    'No se registraron conclusiones.'
+                );
+            }
 
             //// DESCARGAR INFORME 
 
@@ -9538,6 +9682,131 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
 
             return response()->json([
                 'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    //// CONCLUSION JSON
+
+
+
+    public function guardarinformeconclusionpsico(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            if (
+                !$request->PROYECTO_ID
+            ) {
+                throw new Exception(
+                    'No se recibió el proyecto'
+                );
+            }
+
+            $conclusiones =
+                json_decode(
+                    $request->INFORME_CONCLUSION,
+                    true
+                );
+
+            if (
+                !is_array($conclusiones) ||
+                count($conclusiones) === 0
+            ) {
+                throw new Exception(
+                    'Debe agregar al menos una conclusión'
+                );
+            }
+
+            $conclusionesGuardar = [];
+
+            foreach ($conclusiones as $conclusion) {
+
+                $titulo =
+                    isset($conclusion['TITULO'])
+                    ? trim($conclusion['TITULO'])
+                    : '';
+
+                $descripcion =
+                    isset($conclusion['DESCRIPCION'])
+                    ? trim($conclusion['DESCRIPCION'])
+                    : '';
+
+                if (
+                    $titulo === '' &&
+                    $descripcion === ''
+                ) {
+                    continue;
+                }
+
+                if ($titulo === '') {
+                    throw new Exception(
+                        'Todas las conclusiones deben tener título'
+                    );
+                }
+
+                if ($descripcion === '') {
+                    throw new Exception(
+                        'Todas las conclusiones deben tener descripción'
+                    );
+                }
+
+                $conclusionesGuardar[] = [
+                    'TITULO' => $titulo,
+                    'DESCRIPCION' => $descripcion
+                ];
+            }
+
+            if (
+                count($conclusionesGuardar) === 0
+            ) {
+                throw new Exception(
+                    'Debe agregar al menos una conclusión'
+                );
+            }
+
+            $dato =
+                datosgeneralesinformePsicoModel::where(
+                    'PROYECTO_ID',
+                    $request->PROYECTO_ID
+                )->first();
+
+            if (!$dato) {
+
+                $dato =
+                    new datosgeneralesinformePsicoModel();
+
+                $dato->PROYECTO_ID =
+                    $request->PROYECTO_ID;
+            }
+
+            $dato->INFORME_CONCLUSION =
+                json_encode(
+                    $conclusionesGuardar,
+                    JSON_UNESCAPED_UNICODE
+                );
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' =>
+                'Conclusiones guardadas correctamente',
+
+                'INFORME_CONCLUSION' =>
+                $conclusionesGuardar
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' =>
+                'Error: ' .
+                    $e->getMessage()
             ], 500);
         }
     }

@@ -192,16 +192,17 @@
                 <a href="#9_4_4" class="list-group-item submenu">9.4.4..- Resultados obtenidos, Categoría liderazgo y relaciones en el trabajo </a>
                 <a href="#9_4_5" class="list-group-item submenu">9.4.5.- Resultados obtenidos, Categoría entorno organizacional </a>
                 <a href="#10" class="list-group-item">10.- Conclusiones</a>
-                <a href="#10_1" class="list-group-item submenu">10.1.- Conclusiones de conformidad a la NOM-035-STPS-2018 </a>
-                <a href="#11" class="list-group-item">11.- Recomendaciones</a>
-                <a href="#11_1" class="list-group-item submenu">11.1.- Recomendaciones de control </a>
-                <a href="#11_2" class="list-group-item submenu">11.2.- Recomendaciones por categoria </a>
-                <a href="#12" class="list-group-item">12.- Responsables del informe </a>
-                <a href="#13" class="list-group-item">13.- Anexos</a>
-                <a href="#13_1" class="list-group-item submenu">13.1.- Anexo 1: Memoria fotográfica </a>
+                <a href="#11" class="list-group-item">11.- Dashboard General</a>
+                <a href="#12" class="list-group-item">12.- Recomendaciones</a>
+                <a href="#12_1" class="list-group-item submenu">12.1.- Recomendaciones de control </a>
+                <a href="#12_2" class="list-group-item submenu">12.2.- Recomendaciones por categoria </a>
+
+                <a href="#13" class="list-group-item">13.- Responsables del informe </a>
+                <a href="#14" class="list-group-item">14.- Anexos</a>
+                <a href="#14_1" class="list-group-item submenu">14.1.- Anexo 1: Memoria fotográfica </a>
                 <!-- <a href="#13_2" class="list-group-item submenu">13.2.- Anexo 2: Cuestionarios <i class="fa fa-times" id="menureporte_13_2"></i></a>
                 <a href="#13_3" class="list-group-item submenu">13.3.- Anexo 3: Matriz de exposición laboral MEL <i class="fa fa-times" id="menureporte_13_3"></i></a> -->
-                <a href="#14" class="list-group-item submenu" id="menu_opcion_final">Generar informe </a>
+                <a href="#15" class="list-group-item submenu" id="menu_opcion_final">Generar informe </a>
             </div>
         </div>
     </div>
@@ -1287,67 +1288,119 @@ DESCRIPCIONACTIVIDAD
                     </div>
                 </div>
                 <h4 class="card-title" id="10">10.- Conclusiones</h4>
-                <h4 class="card-title" id="10_1">10.1.- Conclusiones de conformidad a la NOM-035-STPS-2018.</h4>
                 <form method="post" enctype="multipart/form-data" name="form_reporte_conclusion" id="form_reporte_conclusion">
                     <div class="row">
+
                         <div class="col-12">
                             {!! csrf_field() !!}
                         </div>
+
+                        <div class="col-12">
+                            <ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
+                                <button
+                                    type="button"
+                                    class="btn btn-default waves-effect botoninforme"
+                                    data-toggle="tooltip"
+                                    title="Agregar conclusión"
+                                    id="boton_nueva_conclusion">
+                                    <span class="btn-label">
+                                        <i class="fa fa-plus"></i>
+                                    </span>
+                                    Nueva conclusión
+                                </button>
+                            </ol>
+                        </div>
+
+                        <div class="col-12" id="contenedor_conclusiones"></div>
+
                         <div class="col-12" style="text-align: right;">
                             <div class="form-group">
-                                <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_conclusion">Guardar conclusiones <i class="fa fa-save"></i></button>
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger waves-effect waves-light botoninforme"
+                                    id="botonguardar_reporte_conclusion">
+                                    Guardar conclusiones
+                                    <i class="fa fa-save"></i>
+                                </button>
                             </div>
                         </div>
+
                     </div>
                 </form>
-                <h4 class="card-title" id="11">11.- Recomendaciones</h4>
-                <h4 class="card-title" id="11_1">11.1.- Recomendaciones de control</h4>
+                <h4 class="card-title" id="11">11.- Dashboard General</h4>
+
+                <h4 class="card-title" id="12">12.- Recomendaciones</h4>
+                <h4 class="card-title" id="12_1">12.1.- Recomendaciones de control</h4>
                 <form method="post" enctype="multipart/form-data" name="form_reporte_recomendaciones_control" id="form_reporte_recomendaciones_control">
                     <div class="row">
                         <div class="col-12">
                             {!! csrf_field() !!}
                         </div>
-                        <table class="table-sm" style="width: 96%; table-layout: fixed;">
 
+                        <div class="col-12">
                             <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_recomendaciones_control">
                                 <thead>
                                     <tr>
                                         <th>Descripción</th>
                                         <th width="80">Activo</th>
+                                        <th width="150">Prioritaria</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     @foreach ($catrecomendaciones as $dato)
                                     <tr>
                                         <td class="justificado">
                                             {{ $dato->RECOMENDACION_CONTROL }}
-
                                         </td>
+
                                         <td class="text-center">
                                             <div class="switch">
                                                 <label>
-                                                    <input type="checkbox"
+                                                    <input
+                                                        type="checkbox"
                                                         class="recomendacion_checkbox"
                                                         name="DESCRIPCION_RECOMENDACIONES[]"
                                                         value="{{ $dato->ID_RECOMENDACION_CONTROL_INFORME }}"
-                                                        onclick="activa_recomendacion(this);"
-                                                        {{ $dato->ACTIVO == 1 ? '' : '' }}>
+                                                        data-id="{{ $dato->ID_RECOMENDACION_CONTROL_INFORME }}">
+
                                                     <span class="lever switch-col-light-blue"></span>
                                                 </label>
                                             </div>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <select
+                                                class="form-control selector_prioritaria"
+                                                name="ES_PRIORITARIA[{{ $dato->ID_RECOMENDACION_CONTROL_INFORME }}]"
+                                                id="ES_PRIORITARIA_{{ $dato->ID_RECOMENDACION_CONTROL_INFORME }}"
+                                                data-id="{{ $dato->ID_RECOMENDACION_CONTROL_INFORME }}"
+                                                disabled>
+                                                <option value=""></option>
+                                                <option value="0">No</option>
+                                                <option value="1">Sí</option>
+                                            </select>
                                         </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="col-12 mt-3" style="text-align: right;">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_recomendaciones_control">Guardar recomendaciones de control <i class="fa fa-save"></i></button>
-                                </div>
+                        </div>
+
+                        <div class="col-12 mt-3" style="text-align: right;">
+                            <div class="form-group">
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger waves-effect waves-light botoninforme"
+                                    id="botonguardar_reporte_recomendaciones_control">
+                                    Guardar recomendaciones de control
+                                    <i class="fa fa-save"></i>
+                                </button>
                             </div>
+                        </div>
                     </div>
                 </form>
-                <h4 class="card-title" id="11_2">11.2.- Recomendaciones por categoría</h4>
+                <h4 class="card-title" id="12_2">12.2.- Recomendaciones por categoría</h4>
                 <form method="post" enctype="multipart/form-data" name="form_nivel_riesgo_categorias" id="form_nivel_riesgo_categorias">
                     <div class="row">
                         <div class="col-12">
@@ -1471,8 +1524,7 @@ DESCRIPCIONACTIVIDAD
                             </div>
                     </div>
                 </form>
-
-                <h4 class="card-title" id="12">12.- Responsables del informe</h4>
+                <h4 class="card-title" id="13">13.- Responsables del informe</h4>
                 <form enctype="multipart/form-data" method="post" name="form_reporte_responsablesinforme" id="form_reporte_responsablesinforme">
                     <div class="row">
                         <div class="col-6">
@@ -1530,8 +1582,8 @@ DESCRIPCIONACTIVIDAD
                         </div>
                     </div>
                 </form>
-                <h4 class="card-title" id="13">13.- Anexos</h4>
-                <h4 class="card-title" id="13_1">13.1.- Anexo 1: Memoria fotográfica</h4>
+                <h4 class="card-title" id="14">14.- Anexos</h4>
+                <h4 class="card-title" id="14_1">14.1.- Anexo 1: Memoria fotográfica</h4>
                 <div class="row">
                     <div class="col-12" style="padding-top: 10px;">
                         <p class="justificado"><b style="color: #333333; font-weight: bold;">Nota del software:</b> Se encontraron <span id="memoriafotografica_total">0</span> fotos de las evidencias</p>
@@ -1539,7 +1591,7 @@ DESCRIPCIONACTIVIDAD
                 </div>
 
 
-                <h4 class="card-title" id="14">Generar informe .docx + Anexos .Zip</h4>
+                <h4 class="card-title" id="15">Generar informe .docx + Anexos .Zip</h4>
                 <div class="row">
                     <div class="col-12">
                         <ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
@@ -1677,7 +1729,7 @@ DESCRIPCIONACTIVIDAD
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js_sitio/reportes/reportenom0353v1.js?v=8"></script>
+<script src="/js_sitio/reportes/reportenom0353v1.js?v=9"></script>
 <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
 

@@ -743,7 +743,7 @@ Se localiza en las coordenadas  COORDENADAS.`);
             $('#NIVEL_RIESGO_ENTORNO')
                 .val(response.NIVEL_RIESGO_ENTORNO); 
             
-            
+            mostrarConclusiones(response.INFORME_CONCLUSION);
             
 			   if(response.RUTA_IMAGEN_UBICACION)
             {
@@ -1439,50 +1439,157 @@ $("#form_reporte_conclusion").on("submit",function(e)
 
 /// RECOMENDACIONES
 
-$("#form_reporte_recomendaciones_control").on("submit",function(e)
-{
 
+$(document).on("change", ".recomendacion_checkbox", function()
+{
+    var id = $(this).data("id");
+    var selector = $("#ES_PRIORITARIA_" + id);
+
+    if ($(this).is(":checked")) {
+        selector.prop("disabled", false);
+    } else {
+        selector.val("0");
+        selector.prop("disabled", true);
+    }
+});
+
+
+$(document).on("change", ".selector_prioritaria", function()
+{
+    var totalPrioritarias = 0;
+
+    $(".selector_prioritaria").each(function()
+    {
+        var id = $(this).data("id");
+
+        var activa = $(
+            '.recomendacion_checkbox[data-id="' + id + '"]'
+        ).is(":checked");
+
+        if (
+            activa &&
+            $(this).val() == "1"
+        ) {
+            totalPrioritarias++;
+        }
+    });
+
+    if (totalPrioritarias > 3) {
+
+        $(this).val("0");
+
+        Swal.fire({
+            icon: "warning",
+            title: "Límite alcanzado",
+            text: "Solo puede seleccionar un máximo de 3 recomendaciones prioritarias"
+        });
+    }
+});
+
+
+$("#form_reporte_recomendaciones_control").on("submit", function(e)
+{
     e.preventDefault();
+
+    var totalPrioritarias = 0;
+
+    $(".selector_prioritaria").each(function()
+    {
+        var id = $(this).data("id");
+
+        var activa = $(
+            '.recomendacion_checkbox[data-id="' + id + '"]'
+        ).is(":checked");
+
+        if (
+            activa &&
+            $(this).val() == "1"
+        ) {
+            totalPrioritarias++;
+        }
+    });
+
+    if (totalPrioritarias > 3) {
+
+        Swal.fire({
+            icon: "warning",
+            title: "Aviso",
+            text: "Solo puede seleccionar un máximo de 3 recomendaciones prioritarias"
+        });
+
+        return;
+    }
 
     let formData = new FormData(this);
 
-    formData.append('PROYECTO_ID', proyecto.id);
+    formData.append(
+        "PROYECTO_ID",
+        proyecto.id
+    );
 
     $.ajax({
-        url: '/guardarRecomendacionesInformepsico',
-        type: 'POST',
+        url: "/guardarRecomendacionesInformepsico",
+        type: "POST",
         data: formData,
         cache: false,
         contentType: false,
         processData: false,
 
         headers: {
-            'X-CSRF-TOKEN':
+            "X-CSRF-TOKEN":
                 $('meta[name="csrf-token"]')
-                .attr('content')
+                .attr("content")
         },
 
         beforeSend: function()
         {
-            $("#botonguardar_reporte_recomendaciones_control").prop('disabled', true);
-            $("#botonguardar_reporte_recomendaciones_control").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+            $("#botonguardar_reporte_recomendaciones_control")
+                .prop("disabled", true);
+
+            $("#botonguardar_reporte_recomendaciones_control")
+                .html(
+                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
+                );
         },
 
         success: function(response)
         {
             Swal.fire({
-                icon: 'success',
-                title: 'Correcto',
+                icon: "success",
+                title: "Correcto",
                 text: response.msj,
                 timer: 2000,
                 showConfirmButton: false
             });
         },
 
+        error: function(xhr)
+        {
+            var mensaje = "Ocurrió un error al guardar";
+
+            if (
+                xhr.responseJSON &&
+                xhr.responseJSON.msj
+            ) {
+                mensaje = xhr.responseJSON.msj;
+            }
+
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: mensaje
+            });
+        },
+
         complete: function()
         {
-            $("#botonguardar_reporte_recomendaciones_control").prop('disabled', false);
-            $("#botonguardar_reporte_recomendaciones_control").html('Guardar recomendaciones <i class="fa fa-save"></i>');
+            $("#botonguardar_reporte_recomendaciones_control")
+                .prop("disabled", false);
+
+            $("#botonguardar_reporte_recomendaciones_control")
+                .html(
+                    'Guardar recomendaciones <i class="fa fa-save"></i>'
+                );
         }
     });
 });
@@ -1490,21 +1597,37 @@ $("#form_reporte_recomendaciones_control").on("submit",function(e)
 
 function cargarRecomendacionesInformepsico()
 {
-
     $.get(
-        '/obtenerRecomendacionesInformepsico/' + proyecto.id,
+        "/obtenerRecomendacionesInformepsico/" + proyecto.id,
 
         function(response)
-        {  
-            $('input[name="DESCRIPCION_RECOMENDACIONES[]"]').prop('checked', false);
+        {
+            $('input[name="DESCRIPCION_RECOMENDACIONES[]"]')
+                .prop("checked", false);
+
+            $(".selector_prioritaria")
+                .val("0")
+                .prop("disabled", true);
+
             response.forEach(function(item)
             {
-                $('input[name="DESCRIPCION_RECOMENDACIONES[]"][value="' + item.CATALOGO_RECOMENDACIONES_ID + '"]').prop('checked', true);
+                var id =
+                    item.CATALOGO_RECOMENDACIONES_ID;
+
+                $('input[name="DESCRIPCION_RECOMENDACIONES[]"][value="' + id + '"]')
+                    .prop("checked", true);
+
+                $("#ES_PRIORITARIA_" + id)
+                    .prop("disabled", false)
+                    .val(
+                        String(
+                            item.ES_PRIORITARIA || 0
+                        )
+                    );
             });
         }
     );
 }
-
 
 
 /// RESPONSABLE
@@ -1559,9 +1682,6 @@ $("#form_reporte_responsablesinforme").on("submit",function(e)
 });
 
 
-tablaVersionesinfopsico();
-validarEdicioninfopsico();
-            
 /// VERSIONES
 
 function tablaVersionesinfopsico()
@@ -1746,7 +1866,17 @@ function validarEdicioninfopsico()
                 #botonguardar_reporte_conclusion,
                 #botonguardar_reporte_recomendaciones_control,
                 #botonguardar_reporte_recomendaciones_categoria,
-                #botonguardar_reporte_responsablesinforme
+                #botonguardar_reporte_responsablesinforme,
+                #botonguardar_analisis_graficaglobal,
+                #botonguardar_analisis_grafica_categorias,
+                #botonguardar_analisis_grafica_dominio,
+                #botonguardar_analisis_grafica_guia1,
+                #botonguardar_analisis_grafica_ambiente,
+                #botonguardar_analisis_grafica_factores,
+                #botonguardar_analisis_grafica_organizacion,
+                #botonguardar_analisis_grafica_liderazgo,
+                #botonguardar_analisis_grafica_entorno,
+                #botonguardar_nivel_riesgo_categorias
 
             `;
 
@@ -11038,3 +11168,347 @@ $("#form_nivel_riesgo_categorias").on("submit", function(e)
     });
 
 });
+
+
+//// GUARDAR CONCLUSIONES
+
+
+
+var contadorConclusiones = 0;
+
+function agregarConclusion(titulo, descripcion)
+{
+    contadorConclusiones++;
+
+    titulo = titulo || '';
+    descripcion = descripcion || '';
+
+    var html = `
+        <div
+            class="card conclusion-item mb-3"
+            id="conclusion_item_${contadorConclusiones}"
+            data-indice="${contadorConclusiones}"
+        >
+            <div class="card-header" style="background:#F5F5F5;">
+                <div class="row">
+                    <div class="col-10">
+                        <b>
+                            Conclusión
+                            <span class="numero-conclusion"></span>
+                        </b>
+                    </div>
+
+                    <div class="col-2 text-right">
+                        <button
+                            type="button"
+                            class="btn btn-danger btn-sm boton_eliminar_conclusion"
+                            data-indice="${contadorConclusiones}"
+                            title="Eliminar conclusión"
+                        >
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>
+                                Título
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control titulo-conclusion"
+                                name="TITULO_CONCLUSION[]"
+                                value=""
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>
+                                Descripción
+                            </label>
+
+                            <textarea
+                                class="form-control descripcion-conclusion"
+                                name="DESCRIPCION_CONCLUSION[]"
+                                rows="5"
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    `;
+
+    $("#contenedor_conclusiones").append(html);
+
+    var item = $("#conclusion_item_" + contadorConclusiones);
+
+    item.find(".titulo-conclusion").val(titulo);
+    item.find(".descripcion-conclusion").val(descripcion);
+
+    actualizarNumeracionConclusiones();
+}
+
+function actualizarNumeracionConclusiones()
+{
+    $("#contenedor_conclusiones .conclusion-item").each(
+        function(indice)
+        {
+            $(this)
+                .find(".numero-conclusion")
+                .text(indice + 1);
+        }
+    );
+}
+
+function mostrarConclusiones(datos)
+{
+    $("#contenedor_conclusiones").empty();
+
+    contadorConclusiones = 0;
+
+    if (!datos) {
+        agregarConclusion('', '');
+        return;
+    }
+
+    var conclusiones = datos;
+
+    if (typeof conclusiones === "string") {
+
+        conclusiones = conclusiones.trim();
+
+        if (conclusiones === "") {
+            agregarConclusion('', '');
+            return;
+        }
+
+        try {
+            conclusiones = JSON.parse(conclusiones);
+        } catch (error) {
+            console.error(
+                "No fue posible convertir INFORME_CONCLUSION:",
+                error
+            );
+
+            agregarConclusion('', conclusiones);
+            return;
+        }
+    }
+
+    if (
+        !Array.isArray(conclusiones) ||
+        conclusiones.length === 0
+    ) {
+        agregarConclusion('', '');
+        return;
+    }
+
+    conclusiones.forEach(
+        function(conclusion)
+        {
+            agregarConclusion(
+                conclusion.TITULO || '',
+                conclusion.DESCRIPCION || ''
+            );
+        }
+    );
+}
+
+$(document).on(
+    "click",
+    "#boton_nueva_conclusion",
+    function()
+    {
+        agregarConclusion('', '');
+    }
+);
+
+$(document).on(
+    "click",
+    ".boton_eliminar_conclusion",
+    function()
+    {
+        var totalConclusiones =
+            $("#contenedor_conclusiones .conclusion-item").length;
+
+        if (totalConclusiones <= 1) {
+
+            Swal.fire({
+                icon: "warning",
+                title: "Aviso",
+                text: "Debe conservar al menos una conclusión"
+            });
+
+            return;
+        }
+
+        var indice =
+            $(this).data("indice");
+
+        $("#conclusion_item_" + indice).remove();
+
+        actualizarNumeracionConclusiones();
+    }
+);
+
+$("#form_reporte_conclusion").on(
+    "submit",
+    function(e)
+    {
+        e.preventDefault();
+
+        var conclusiones = [];
+
+        $("#contenedor_conclusiones .conclusion-item").each(
+            function()
+            {
+                var titulo =
+                    $(this)
+                        .find(".titulo-conclusion")
+                        .val()
+                        .trim();
+
+                var descripcion =
+                    $(this)
+                        .find(".descripcion-conclusion")
+                        .val()
+                        .trim();
+
+                if (
+                    titulo !== "" ||
+                    descripcion !== ""
+                ) {
+                    conclusiones.push({
+                        TITULO: titulo,
+                        DESCRIPCION: descripcion
+                    });
+                }
+            }
+        );
+
+        if (conclusiones.length === 0) {
+
+            Swal.fire({
+                icon: "warning",
+                title: "Aviso",
+                text: "Debe agregar al menos una conclusión"
+            });
+
+            return;
+        }
+
+        var formData = new FormData();
+
+        formData.append(
+            "_token",
+            $('meta[name="csrf-token"]').attr("content")
+        );
+
+        formData.append(
+            "PROYECTO_ID",
+            proyecto.id
+        );
+
+        formData.append(
+            "INFORME_CONCLUSION",
+            JSON.stringify(conclusiones)
+        );
+
+        $.ajax({
+
+            url: "/guardarinformeconclusionpsico",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            cache: false,
+            headers: {
+                "X-CSRF-TOKEN":
+                    $('meta[name="csrf-token"]').attr("content")
+            },
+
+            beforeSend: function()
+            {
+                $("#botonguardar_reporte_conclusion")
+                    .prop(
+                        "disabled",
+                        true
+                    );
+
+                $("#botonguardar_reporte_conclusion")
+                    .html(
+                        'Guardando... <i class="fa fa-spinner fa-spin"></i>'
+                    );
+            },
+
+            success: function(response)
+            {
+                Swal.fire({
+                    icon: "success",
+                    title: "Correcto",
+                    text: response.msj,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                if (response.INFORME_CONCLUSION) {
+                    mostrarConclusiones(
+                        response.INFORME_CONCLUSION
+                    );
+                }
+            },
+
+            error: function(xhr)
+            {
+                console.log(
+                    xhr.responseText
+                );
+
+                var mensaje =
+                    "Ocurrió un error al guardar";
+
+                if (
+                    xhr.responseJSON &&
+                    xhr.responseJSON.msj
+                ) {
+                    mensaje =
+                        xhr.responseJSON.msj;
+                }
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: mensaje
+                });
+            },
+
+            complete: function()
+            {
+                $("#botonguardar_reporte_conclusion")
+                    .prop(
+                        "disabled",
+                        false
+                    );
+
+                $("#botonguardar_reporte_conclusion")
+                    .html(
+                        'Guardar conclusiones <i class="fa fa-save"></i>'
+                    );
+            }
+        });
+    }
+);

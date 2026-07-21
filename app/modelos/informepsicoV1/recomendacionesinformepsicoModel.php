@@ -10,7 +10,8 @@ class recomendacionesinformepsicoModel extends Model
     protected $primaryKey = 'ID_RECOMENDACIONES_INFORME_PSICO';
     protected $fillable = [
         'PROYECTO_ID',
-        'CATALOGO_RECOMENDACIONES_ID'
+        'CATALOGO_RECOMENDACIONES_ID',
+        'ES_PRIORITARIA'
 
     ];
 }
