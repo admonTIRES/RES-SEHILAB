@@ -2148,6 +2148,8 @@ class reportesController extends Controller
         return response()->json(['success' => true, 'message' => 'Matriz guardada correctamente.']);
     }
 
+    
+
     public function verificarmatrizlab($proyecto_id)
     {
         $existe = DB::table('matriz_laboral')->where('proyecto_id', $proyecto_id)->exists();
