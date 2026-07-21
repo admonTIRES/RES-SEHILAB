@@ -30,7 +30,9 @@
                 </ol>
             </div>
             <div class="col-12 text-center">
-                <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_matriz">
+                <button type="button"
+                    class="btn btn-danger waves-effect waves-light botoninforme"
+                    id="botonguardar_reporte_matriz">
                     Guardar matriz <i class="fa fa-save"></i>
                 </button>
 
@@ -76,5 +78,5 @@
     var estatus = <?php echo json_encode($estatus); ?>;
     var recsensorial = <?php echo json_encode($recsensorial); ?>;
 </script>
-<script src="/js_sitio/reportes/reportematrizlab.js?v=1.7"></script>
+<script src="/js_sitio/reportes/reportematrizlab.js?v=2"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
