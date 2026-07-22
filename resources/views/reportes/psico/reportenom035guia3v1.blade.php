@@ -164,45 +164,45 @@
     <div class="col-xlg-2 col-lg-3 col-md-5">
         <div class="stickyside">
             <div class="list-group" id="top-menu">
-                <a href="#0" class="list-group-item active">Portada </a>
-                <a href="#1" class="list-group-item">1.- Introducción </a>
-                <a href="#2" class="list-group-item">2.- Definiciones </a>
+                <a href="#0" class="list-group-item active">Portada <i class="fa fa-times" id="menureporte_0"></i></a>
+                <a href="#1" class="list-group-item">1.- Introducción <i class="fa fa-times" id="menureporte_1"></i></a>
+                <a href="#2" class="list-group-item">2.- Definiciones <i class="fa fa-times" id="menureporte_2"></i></a>
                 <a href="#3" class="list-group-item">3.- Objetivos</a>
-                <a href="#3_1" class="list-group-item submenu">3.1.- Objetivo general </a>
-                <a href="#3_2" class="list-group-item submenu">3.2.- Objetivos específicos </a>
+                <a href="#3_1" class="list-group-item submenu">3.1.- Objetivo general <i class="fa fa-times" id="menureporte_3_1"></i></a>
+                <a href="#3_2" class="list-group-item submenu">3.2.- Objetivos específicos <i class="fa fa-times" id="menureporte_3_2"></i></a>
                 <a href="#4" class="list-group-item">4.- Metodología</a>
                 <a href="#4_1" class="list-group-item submenu">4.1.- Instrumentos para la evaluación </a>
-                <a href="#5" class="list-group-item">5.- Reconocimiento</a>
-                <a href="#5_1" class="list-group-item submenu">5.1.- Ubicación de la instalación </a>
-                <a href="#5_2" class="list-group-item submenu">5.2.- Descripción del proceso en la instalación </a>
-                <a href="#5_3" class="list-group-item submenu">5.3.- Descripción de las actividades del personal expuesto </a>
+                <a href="#5" class="list-group-item">5.- Reconocimiento </a>
+                <a href="#5_1" class="list-group-item submenu">5.1.- Ubicación de la instalación <i class="fa fa-times" id="menureporte_5_1"></i></a>
+                <a href="#5_2" class="list-group-item submenu">5.2.- Descripción del proceso en la instalación <i class="fa fa-times" id="menureporte_5_2"></i></a>
+                <a href="#5_3" class="list-group-item submenu">5.3.- Descripción de las actividades del personal expuesto <i class="fa fa-times" id="menureporte_5_3"></i></a>
                 <a href="#6" class="list-group-item">6.- Estrategias de medición</a>
                 <a href="#7" class="list-group-item">7.- Evaluación</a>
-                <a href="#7_1" class="list-group-item submenu">7.1.- Descripción del método realizado para la evaluación de los Factores de Riesgo Psicosocial </a>
+                <a href="#7_1" class="list-group-item submenu">7.1.- Descripción del método realizado para la evaluación de los Factores de Riesgo Psicosocial <i class="fa fa-times" id="menureporte_7_1"></i></a>
                 <a href="#7_2" class="list-group-item submenu">7.2.- Información general del puesto de trabajo </a>
                 <a href="#8" class="list-group-item">8.- Valores de referencia</a>
                 <a href="#9" class="list-group-item">9.- Resultados</a>
                 <a href="#9_1" class="list-group-item submenu">9.1.- Registro de los resultados. Número de puntos evaluados </a>
-                <a href="#9_2" class="list-group-item submenu">9.2.- Resultados obtenidos, concentrado de calificaciones globales </a>
-                <a href="#9_3" class="list-group-item submenu">9.3.- Resultados obtenidos en la Guía de Referencia I, Identificar a los trabajadores que fueron sujetos a acontecimientos traumáticos severos </a>
+                <a href="#9_2" class="list-group-item submenu">9.2.- Resultados obtenidos, concentrado de calificaciones globales <i class="fa fa-times" id="menureporte_9_2"></i></a>
+                <a href="#9_3" class="list-group-item submenu">9.3.- Resultados obtenidos en la Guía de Referencia I, Identificar a los trabajadores que fueron sujetos a acontecimientos traumáticos severos <i class="fa fa-times" id="menureporte_9_3"></i></a>
                 <a href="#9_4" class="list-group-item submenu">9.4.- Resultados obtenidos en la guía de referencia III, Identificación y análisis de los Factores de Riesgo Psicosocial y Evaluación del entorno organizacional en los centros de trabajo por categoría y dominio conforme a la NOM-035-STPS-2018</a>
-                <a href="#9_4_1" class="list-group-item submenu">9.4.1.- Resultados obtenidos, Categoría ambiente de trabajo </a>
-                <a href="#9_4_2" class="list-group-item submenu">9.4.2.- Resultados obtenidos, Categoría factores propios de la actividad </a>
-                <a href="#9_4_3" class="list-group-item submenu">9.4.3.- Resultados obtenidos, Categoría organización del tiempo de trabajo </a>
-                <a href="#9_4_4" class="list-group-item submenu">9.4.4..- Resultados obtenidos, Categoría liderazgo y relaciones en el trabajo </a>
-                <a href="#9_4_5" class="list-group-item submenu">9.4.5.- Resultados obtenidos, Categoría entorno organizacional </a>
-                <a href="#10" class="list-group-item">10.- Conclusiones</a>
+                <a href="#9_4_1" class="list-group-item submenu">9.4.1.- Resultados obtenidos, Categoría ambiente de trabajo <i class="fa fa-times" id="menureporte_9_4_1"></i></a>
+                <a href="#9_4_2" class="list-group-item submenu">9.4.2.- Resultados obtenidos, Categoría factores propios de la actividad <i class="fa fa-times" id="menureporte_9_4_2"></i></a>
+                <a href="#9_4_3" class="list-group-item submenu">9.4.3.- Resultados obtenidos, Categoría organización del tiempo de trabajo <i class="fa fa-times" id="menureporte_9_4_3"></i></a>
+                <a href="#9_4_4" class="list-group-item submenu">9.4.4..- Resultados obtenidos, Categoría liderazgo y relaciones en el trabajo <i class="fa fa-times" id="menureporte_9_4_4"></i></a>
+                <a href="#9_4_5" class="list-group-item submenu">9.4.5.- Resultados obtenidos, Categoría entorno organizacional <i class="fa fa-times" id="menureporte_9_4_5"></i></a>
+                <a href="#10" class="list-group-item">10.- Conclusiones <i class="fa fa-times" id="menureporte_10"></i></a>
                 <a href="#11" class="list-group-item">11.- Dashboard General</a>
                 <a href="#12" class="list-group-item">12.- Recomendaciones</a>
-                <a href="#12_1" class="list-group-item submenu">12.1.- Recomendaciones de control </a>
-                <a href="#12_2" class="list-group-item submenu">12.2.- Recomendaciones por categoria </a>
+                <a href="#12_1" class="list-group-item submenu">12.1.- Recomendaciones de control <i class="fa fa-times" id="menureporte_12_1"></i></a>
+                <a href="#12_2" class="list-group-item submenu">12.2.- Recomendaciones por categoria <i class="fa fa-times" id="menureporte_12_2"></i></a>
 
-                <a href="#13" class="list-group-item">13.- Responsables del informe </a>
+                <a href="#13" class="list-group-item">13.- Responsables del informe <i class="fa fa-times" id="menureporte_13"></i></a>
                 <a href="#14" class="list-group-item">14.- Anexos</a>
                 <a href="#14_1" class="list-group-item submenu">14.1.- Anexo 1: Memoria fotográfica </a>
                 <!-- <a href="#13_2" class="list-group-item submenu">13.2.- Anexo 2: Cuestionarios <i class="fa fa-times" id="menureporte_13_2"></i></a>
                 <a href="#13_3" class="list-group-item submenu">13.3.- Anexo 3: Matriz de exposición laboral MEL <i class="fa fa-times" id="menureporte_13_3"></i></a> -->
-                <a href="#15" class="list-group-item submenu" id="menu_opcion_final">Generar informe </a>
+                <a href="#15" class="list-group-item submenu" id="menu_opcion_final">Generar informe <i class="fa fa-download text-success"></i></a>
             </div>
         </div>
     </div>
@@ -1329,6 +1329,1053 @@ DESCRIPCIONACTIVIDAD
                 </form>
                 <h4 class="card-title" id="11">11.- Dashboard General</h4>
 
+                <style>
+                    #dashboard_nom035_captura {
+                        width: 100%;
+                        max-width: 1250px;
+                        margin: 20px auto;
+                        padding: 25px;
+                        background: #fff;
+                        font-family: Arial, sans-serif;
+                        color: #222;
+                    }
+
+                    /* TÍTULO PRINCIPAL */
+                    .dashboard-titulo {
+                        margin-bottom: 20px;
+                        text-align: center;
+                    }
+
+                    .dashboard-titulo h2 {
+                        margin: 0;
+                        color: #000;
+                        font-size: 28px;
+                        font-weight: 800;
+                        line-height: 1.1;
+                    }
+
+                    .dashboard-titulo p {
+                        margin: 3px 0 0;
+                        color: #000;
+                        font-size: 13px;
+                    }
+
+                    /* INDICADORES SUPERIORES */
+                    .indicadores-superiores {
+                        display: grid;
+                        grid-template-columns: repeat(4, minmax(0, 1fr));
+                        gap: 25px;
+                        width: 100%;
+                        margin: 10px 0 40px;
+                    }
+
+                    .indicador-item {
+                        min-width: 0;
+                        min-height: 115px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 14px;
+                    }
+
+                    .indicador-imagen {
+                        width: 95px;
+                        min-width: 95px;
+                        height: 95px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        overflow: hidden;
+                    }
+
+                    .indicador-imagen img {
+                        width: 100%;
+                        height: 100%;
+                        display: block;
+                        object-fit: contain;
+                    }
+
+                    .indicador-imagen-sin-imagen {
+                        border: 2px dashed #bdbdbd;
+                        border-radius: 6px;
+                        color: #999;
+                        font-size: 11px;
+                        font-weight: 400;
+                        line-height: 1.3;
+                        text-align: center;
+                    }
+
+                    .indicador-texto {
+                        min-width: 0;
+                        max-width: 190px;
+                        color: #222;
+                        font-size: 14px;
+                        font-weight: 700;
+                        line-height: 1.35;
+                        text-align: center;
+                    }
+
+                    .indicador-numero {
+                        display: block;
+                        margin-bottom: 2px;
+                        color: #000;
+                        font-size: 15px;
+                        font-weight: 800;
+                    }
+
+                    .texto-verde {
+                        color: #00733f;
+                    }
+
+                    .texto-rojo {
+                        color: #e00017;
+                    }
+
+                    .texto-naranja {
+                        color: #ff8300;
+                    }
+
+                    /* FILAS */
+                    .dashboard-fila {
+                        display: grid;
+                        gap: 25px;
+                        margin-bottom: 35px;
+                    }
+
+                    .dashboard-fila-dos {
+                        grid-template-columns: repeat(2, minmax(0, 1fr));
+                    }
+
+                    .dashboard-fila-general {
+                        grid-template-columns: minmax(0, 2.1fr) minmax(230px, .85fr);
+                    }
+
+                    .dashboard-fila-final {
+                        grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+                        margin-bottom: 0;
+                    }
+
+                    /* PANELES */
+                    .dashboard-panel {
+                        position: relative;
+                        min-width: 0;
+                        min-height: 300px;
+                        padding: 45px 18px 18px;
+                        background: #fff;
+                        border: 1px solid #333;
+                    }
+
+                    .dashboard-panel.panel-alto {
+                        min-height: 330px;
+                    }
+
+                    .dashboard-panel.panel-medio {
+                        min-height: 245px;
+                    }
+
+                    .dashboard-panel-titulo {
+                        position: absolute;
+                        top: -16px;
+                        left: 50%;
+                        z-index: 2;
+                        width: max-content;
+                        max-width: calc(100% - 30px);
+                        padding: 7px 15px;
+                        background: #00733f;
+                        border: 2px solid #00733f;
+                        color: #fff;
+                        font-size: 14px;
+                        font-weight: 700;
+                        line-height: 1.15;
+                        text-align: center;
+                        transform: translateX(-50%);
+                        white-space: normal;
+                    }
+
+                    .dashboard-grafica {
+                        width: 100%;
+                        height: 100%;
+                        min-height: 230px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        overflow: hidden;
+                        color: #999;
+                        font-size: 13px;
+                        text-align: center;
+                    }
+
+                    .panel-medio .dashboard-grafica {
+                        min-height: 175px;
+                    }
+
+                    .dashboard-grafica canvas,
+                    .dashboard-grafica svg,
+                    .dashboard-grafica img {
+                        max-width: 100% !important;
+                    }
+
+                    .dashboard-grafica img {
+                        height: auto;
+                        object-fit: contain;
+                    }
+
+                    .lista-recomendaciones {
+                        min-height: 175px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        gap: 18px;
+                    }
+
+                    .recomendacion-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        font-size: 13px;
+                        line-height: 1.3;
+                    }
+
+                    .recomendacion-icono {
+                        width: 40px;
+                        min-width: 40px;
+                        color: #f15a24;
+                        font-size: 25px;
+                        text-align: center;
+                    }
+
+                    @media (max-width: 1100px) {
+                        .indicadores-superiores {
+                            grid-template-columns: repeat(2, minmax(0, 1fr));
+                        }
+
+                        .indicador-item {
+                            justify-content: flex-start;
+                            padding: 10px 20px;
+                        }
+
+                        .indicador-texto {
+                            flex: 1;
+                            max-width: none;
+                        }
+
+                        .dashboard-fila-general {
+                            grid-template-columns: minmax(0, 1.5fr) minmax(220px, 1fr);
+                        }
+                    }
+
+                    @media (max-width: 767.98px) {
+                        #dashboard_nom035_captura {
+                            padding: 20px 12px;
+                        }
+
+                        .dashboard-titulo h2 {
+                            font-size: 22px;
+                        }
+
+                        .dashboard-titulo p {
+                            font-size: 12px;
+                        }
+
+                        .dashboard-fila-dos,
+                        .dashboard-fila-general,
+                        .dashboard-fila-final {
+                            grid-template-columns: 1fr;
+                        }
+
+                        .dashboard-fila {
+                            gap: 40px;
+                            margin-bottom: 40px;
+                        }
+
+                        .dashboard-panel,
+                        .dashboard-panel.panel-alto,
+                        .dashboard-panel.panel-medio {
+                            min-height: 280px;
+                        }
+
+                        .dashboard-grafica,
+                        .panel-medio .dashboard-grafica {
+                            min-height: 210px;
+                        }
+                    }
+
+                    @media (max-width: 575.98px) {
+                        .indicadores-superiores {
+                            grid-template-columns: 1fr;
+                            gap: 15px;
+                        }
+
+                        .indicador-item {
+                            width: 100%;
+                            min-height: 100px;
+                            justify-content: flex-start;
+                            padding: 10px;
+                        }
+
+                        .indicador-imagen {
+                            width: 85px;
+                            min-width: 85px;
+                            height: 85px;
+                        }
+
+                        .indicador-texto {
+                            flex: 1;
+                            max-width: none;
+                            font-size: 13px;
+                            text-align: left;
+                        }
+
+                        .dashboard-panel {
+                            padding-right: 10px;
+                            padding-left: 10px;
+                        }
+
+                        .dashboard-panel-titulo {
+                            width: calc(100% - 30px);
+                            font-size: 12px;
+                        }
+                    }
+                </style>
+
+                <div class="row">
+                    <div class="col-12">
+
+                        <div id="dashboard_nom035_captura">
+
+                            <div class="dashboard-titulo">
+                                <h2>NOM-035-STPS-2018</h2>
+                                <p>Factores de Riesgo Psicosocial en el Trabajo</p>
+                            </div>
+
+                            <div class="indicadores-superiores">
+
+                                <div class="indicador-item">
+                                    <div class="indicador-imagen">
+                                        <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_EVALUADOS.png') }}" alt="Descripción">
+
+                                    </div>
+
+                                    <div class="indicador-texto texto-verde">
+                                        <span class="indicador-numero"
+                                            id="total_trabajadores_evaluados">
+                                            0
+                                        </span>
+
+                                        Trabajadores<br>
+                                        Evaluados
+                                    </div>
+                                </div>
+
+                                <div class="indicador-item">
+                                    <div class="indicador-imagen">
+                                        <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_ATS.png') }}" alt="Descripción">
+
+                                    </div>
+
+                                    <div class="indicador-texto texto-rojo">
+                                        <span class="indicador-numero"
+                                            id="total_trabajadores_ats">
+                                            0
+                                        </span>
+
+                                        Trabajadores<br>
+                                        Acontecimiento<br>
+                                        Traumático Severo<br>
+                                        (ATS)
+                                    </div>
+                                </div>
+
+                                <div class="indicador-item">
+                                    <div class="indicador-imagen">
+                                        <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_ATENCION.png') }}" alt="Descripción">
+
+                                    </div>
+
+                                    <div class="indicador-texto texto-rojo">
+                                        <span class="indicador-numero"
+                                            id="total_requieren_atencion">
+                                            0
+                                        </span>
+
+                                        Trabajadores<br>
+                                        requieren<br>
+                                        atención
+                                    </div>
+                                </div>
+
+                                <div class="indicador-item">
+                                    <div class="indicador-imagen">
+                                        <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}" alt="Descripción">
+
+                                    </div>
+
+                                    <div class="indicador-texto texto-rojo">
+
+                                        <span
+                                            class="indicador-numero"
+                                            id="nombre_categoria_dominio_mayor_riesgo">
+                                            Sin información
+                                        </span>
+
+                                        <span id="tipo_categoria_dominio_mayor_riesgo">
+                                            Categoría o dominio
+                                        </span>
+
+                                        con<br>
+                                        más trabajadores<br>
+                                        en riesgo
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <style>
+                                .dashboard-fila-graficas-riesgo {
+                                    display: grid;
+                                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                                    align-items: stretch;
+                                    gap: 25px;
+                                    width: 100%;
+                                    margin-bottom: 35px;
+                                }
+
+                                .panel-grafica-riesgo {
+                                    position: relative;
+                                    width: 100%;
+                                    min-width: 0;
+                                    height: 455px;
+                                    padding: 45px 18px 18px;
+                                    background: #fff;
+                                    border: 1px solid #333;
+                                }
+
+                                .panel-grafica-riesgo-titulo {
+                                    position: absolute;
+                                    top: -16px;
+                                    left: 50%;
+                                    z-index: 2;
+                                    width: max-content;
+                                    max-width: calc(100% - 30px);
+                                    padding: 7px 15px;
+                                    background: #00733f;
+                                    border: 2px solid #00733f;
+                                    color: #fff;
+                                    font-size: 14px;
+                                    font-weight: 700;
+                                    line-height: 1.15;
+                                    text-align: center;
+                                    transform: translateX(-50%);
+                                    white-space: normal;
+                                }
+
+                                .dashboard-grafica-barras,
+                                #grafica_categorias,
+                                #grafica_dominios {
+                                    width: 100%;
+                                    height: 390px;
+                                    min-height: 390px;
+                                    display: block;
+                                    overflow: visible;
+                                }
+
+                                .mensaje-sin-datos-grafica {
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    color: #777;
+                                    font-size: 13px;
+                                    font-weight: 700;
+                                    text-align: center;
+                                }
+
+                                @media (max-width: 991.98px) {
+                                    .dashboard-fila-graficas-riesgo {
+                                        grid-template-columns: 1fr;
+                                        gap: 40px;
+                                    }
+
+                                    .panel-grafica-riesgo {
+                                        height: 455px;
+                                    }
+
+                                    .dashboard-grafica-barras,
+                                    #grafica_categorias,
+                                    #grafica_dominios {
+                                        height: 390px;
+                                        min-height: 390px;
+                                    }
+                                }
+
+                                @media (max-width: 575.98px) {
+                                    .dashboard-fila-graficas-riesgo {
+                                        grid-template-columns: 1fr;
+                                        gap: 40px;
+                                    }
+
+                                    .panel-grafica-riesgo {
+                                        height: 485px;
+                                        padding: 45px 8px 15px;
+                                    }
+
+                                    .panel-grafica-riesgo-titulo {
+                                        width: calc(100% - 30px);
+                                        font-size: 12px;
+                                    }
+
+                                    .dashboard-grafica-barras,
+                                    #grafica_categorias,
+                                    #grafica_dominios {
+                                        height: 420px;
+                                        min-height: 420px;
+                                    }
+                                }
+                            </style>
+
+                            <div class="dashboard-fila-graficas-riesgo">
+                                <div class="panel-grafica-riesgo">
+                                    <div class="panel-grafica-riesgo-titulo">
+                                        Trabajadores con mayor riesgo (categorías)
+                                    </div>
+                                    <div
+                                        class="dashboard-grafica-barras"
+                                        id="grafica_categorias"></div>
+                                </div>
+                                <div class="panel-grafica-riesgo">
+                                    <div class="panel-grafica-riesgo-titulo">
+                                        Trabajadores con mayor riesgo (dominios)
+                                    </div>
+                                    <div
+                                        class="dashboard-grafica-barras"
+                                        id="grafica_dominios"></div>
+                                </div>
+                            </div>
+
+                            <!-- SEGUNDA FILA -->
+                            <div class="dashboard-fila dashboard-fila-general">
+                                <style>
+                                    .panel-distribucion-riesgo {
+                                        min-height: 360px;
+                                        padding: 40px 15px 15px;
+                                    }
+
+                                    .distribucion-riesgo-contenido {
+                                        position: relative;
+                                        width: 100%;
+                                        min-height: 300px;
+                                        display: grid;
+                                        grid-template-columns:
+                                            minmax(280px, 1.25fr) minmax(230px, .85fr);
+                                        align-items: center;
+                                        gap: 15px;
+                                        padding-bottom: 25px;
+                                    }
+
+                                    .distribucion-riesgo-chart {
+                                        width: 100%;
+                                        height: 285px;
+                                        min-height: 285px;
+                                    }
+
+                                    .distribucion-riesgo-leyenda {
+                                        width: 100%;
+                                        max-width: 300px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: center;
+                                        margin: 0 auto;
+                                    }
+
+                                    .distribucion-riesgo-item {
+                                        display: grid;
+                                        grid-template-columns:
+                                            14px minmax(90px, 1fr) 45px 42px;
+                                        align-items: center;
+                                        column-gap: 10px;
+                                        min-height: 44px;
+                                    }
+
+                                    .distribucion-color {
+                                        width: 12px;
+                                        height: 12px;
+                                        display: block;
+                                        border-radius: 50%;
+                                    }
+
+                                    .distribucion-nombre {
+                                        padding: 8px 0;
+                                        border-bottom: 1px solid #333;
+                                        color: #222;
+                                        font-size: 14px;
+                                        line-height: 1;
+                                    }
+
+                                    .distribucion-valor {
+                                        padding: 8px 0;
+                                        border-bottom: 1px solid #333;
+                                        color: #111;
+                                        font-size: 15px;
+                                        font-weight: 700;
+                                        line-height: 1;
+                                        text-align: center;
+                                    }
+
+                                    .distribucion-alerta {
+                                        width: 42px;
+                                        height: 38px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                    }
+
+                                    .distribucion-alerta img {
+                                        width: 36px;
+                                        height: 36px;
+                                        display: block;
+                                        object-fit: contain;
+                                    }
+
+                                    .distribucion-riesgo-nota {
+                                        position: absolute;
+                                        right: 0;
+                                        bottom: 0;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: flex-end;
+                                        gap: 5px;
+                                        color: #333;
+                                        font-size: 9px;
+                                    }
+
+                                    .distribucion-riesgo-nota img {
+                                        width: 18px;
+                                        height: 18px;
+                                        object-fit: contain;
+                                    }
+
+                                    @media (max-width: 991.98px) {
+                                        .distribucion-riesgo-contenido {
+                                            grid-template-columns:
+                                                minmax(250px, 1fr) minmax(210px, .8fr);
+                                        }
+
+                                        .distribucion-riesgo-chart {
+                                            height: 280px;
+                                            min-height: 280px;
+                                        }
+                                    }
+
+                                    @media (max-width: 767.98px) {
+                                        .panel-distribucion-riesgo {
+                                            min-height: 650px !important;
+                                        }
+
+                                        .distribucion-riesgo-contenido {
+                                            grid-template-columns: 1fr;
+                                            gap: 10px;
+                                            min-height: 580px;
+                                            padding-bottom: 35px;
+                                        }
+
+                                        .distribucion-riesgo-chart {
+                                            height: 300px;
+                                            min-height: 300px;
+                                        }
+
+                                        .distribucion-riesgo-leyenda {
+                                            max-width: 320px;
+                                        }
+
+                                        .distribucion-riesgo-nota {
+                                            right: 50%;
+                                            transform: translateX(50%);
+                                            width: 100%;
+                                            justify-content: center;
+                                        }
+                                    }
+
+                                    @media (max-width: 420px) {
+                                        .distribucion-riesgo-item {
+                                            grid-template-columns:
+                                                12px minmax(75px, 1fr) 35px 38px;
+                                            column-gap: 7px;
+                                        }
+
+                                        .distribucion-nombre {
+                                            font-size: 12px;
+                                        }
+
+                                        .distribucion-valor {
+                                            font-size: 13px;
+                                        }
+
+                                        .distribucion-alerta {
+                                            width: 38px;
+                                        }
+
+                                        .distribucion-alerta img {
+                                            width: 32px;
+                                            height: 32px;
+                                        }
+                                    }
+                                </style>
+                                <div class="dashboard-panel panel-alto panel-distribucion-riesgo">
+
+                                    <div class="dashboard-panel-titulo">
+                                        Distribución general de riesgo
+                                    </div>
+
+                                    <div
+                                        class="distribucion-riesgo-contenido"
+                                        id="grafica_distribucion_riesgo">
+
+                                        <!-- GRÁFICA DE DONA -->
+                                        <div
+                                            class="distribucion-riesgo-chart"
+                                            id="distribucionRiesgoChart"></div>
+
+                                        <!-- LISTADO DE RESULTADOS -->
+                                        <div class="distribucion-riesgo-leyenda">
+
+                                            <div
+                                                class="distribucion-riesgo-item"
+                                                data-nivel="Muy alto">
+                                                <span
+                                                    class="distribucion-color"
+                                                    style="background:#FF0000;"></span>
+
+                                                <span class="distribucion-nombre">
+                                                    Muy alto
+                                                </span>
+
+                                                <span
+                                                    class="distribucion-valor"
+                                                    id="distribucion_muy_alto">
+                                                    0
+                                                </span>
+
+                                                <div class="distribucion-alerta">
+                                                    <img
+                                                        src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}"
+                                                        alt="Trabajadores con riesgo">
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="distribucion-riesgo-item"
+                                                data-nivel="Alto">
+                                                <span
+                                                    class="distribucion-color"
+                                                    style="background:#F7AA32;"></span>
+
+                                                <span class="distribucion-nombre">
+                                                    Alto
+                                                </span>
+
+                                                <span
+                                                    class="distribucion-valor"
+                                                    id="distribucion_alto">
+                                                    0
+                                                </span>
+
+                                                <div class="distribucion-alerta">
+                                                    <img
+                                                        src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}"
+                                                        alt="Trabajadores con riesgo">
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="distribucion-riesgo-item"
+                                                data-nivel="Medio">
+                                                <span
+                                                    class="distribucion-color"
+                                                    style="background:#FFD54F;"></span>
+
+                                                <span class="distribucion-nombre">
+                                                    Medio
+                                                </span>
+
+                                                <span
+                                                    class="distribucion-valor"
+                                                    id="distribucion_medio">
+                                                    0
+                                                </span>
+
+                                                <div class="distribucion-alerta">
+                                                    <img
+                                                        src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}"
+                                                        alt="Trabajadores con riesgo">
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="distribucion-riesgo-item"
+                                                data-nivel="Bajo">
+                                                <span
+                                                    class="distribucion-color"
+                                                    style="background:#00B050;"></span>
+
+                                                <span class="distribucion-nombre">
+                                                    Bajo
+                                                </span>
+
+                                                <span
+                                                    class="distribucion-valor"
+                                                    id="distribucion_bajo">
+                                                    0
+                                                </span>
+
+                                                <div class="distribucion-alerta"></div>
+                                            </div>
+
+                                            <div
+                                                class="distribucion-riesgo-item"
+                                                data-nivel="Nulo o despreciable">
+                                                <span
+                                                    class="distribucion-color"
+                                                    style="background:#00B0F0;"></span>
+
+                                                <span class="distribucion-nombre">
+                                                    Nulo
+                                                </span>
+
+                                                <span
+                                                    class="distribucion-valor"
+                                                    id="distribucion_nulo">
+                                                    0
+                                                </span>
+
+                                                <div class="distribucion-alerta"></div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- NOTA INFERIOR -->
+                                        <div class="distribucion-riesgo-nota">
+
+                                            <img
+                                                src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}"
+                                                alt="Trabajadores que necesitan atención">
+
+                                            <span>
+                                                Trabajadores que necesitan atención
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <style>
+                                    .panel-trabajadores-ats {
+                                        position: relative;
+                                        width: 100%;
+                                        height: 100%;
+                                        min-height: 330px;
+                                    }
+
+
+                                    .dashboard-grafica-ats {
+                                        position: relative;
+                                        width: 100%;
+                                        height: 300px;
+                                        min-height: 300px;
+                                        display: block;
+                                        overflow: hidden;
+                                    }
+
+                                    .ats-chart-contenedor {
+                                        position: absolute;
+                                        inset: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                    }
+
+                                    .ats-porcentaje-centro {
+                                        position: absolute;
+                                        top: 50%;
+                                        left: 50%;
+                                        z-index: 5;
+                                        color: #111;
+                                        font-family: Arial, sans-serif;
+                                        font-size: 38px;
+                                        font-weight: 700;
+                                        line-height: 1;
+                                        text-align: center;
+                                        white-space: nowrap;
+                                        pointer-events: none;
+                                        transform: translate(-50%, -50%);
+                                    }
+
+                                    .mensaje-sin-datos-ats {
+                                        position: absolute;
+                                        inset: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        color: #777;
+                                        font-size: 13px;
+                                        font-weight: 700;
+                                        text-align: center;
+                                    }
+
+                                    @media (max-width: 767.98px) {
+                                        .panel-trabajadores-ats {
+                                            min-height: 360px;
+                                        }
+
+                                        .dashboard-grafica-ats {
+                                            height: 330px;
+                                            min-height: 330px;
+                                        }
+
+                                        .ats-porcentaje-centro {
+                                            font-size: 34px;
+                                        }
+                                    }
+                                </style>
+
+                                <div class="dashboard-panel panel-alto">
+
+                                    <div class="panel-trabajadores-ats">
+
+                                        <div class="dashboard-panel-titulo">
+                                            Trabajadores con ATS
+                                        </div>
+
+                                        <div
+                                            class="dashboard-grafica-ats"
+                                            id="grafica_trabajadores_ats">
+                                            <div
+                                                class="ats-chart-contenedor"
+                                                id="atsChartContenedor"></div>
+
+                                            <div
+                                                class="ats-porcentaje-centro"
+                                                id="ats_porcentaje_centro">
+                                                0%
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- TERCERA FILA -->
+                            <div class="dashboard-fila dashboard-fila-final">
+
+                                <div class="dashboard-panel panel-medio">
+                                    <div class="dashboard-panel-titulo">
+                                        Nivel de riesgo de la planta
+                                    </div>
+
+                                    <div class="dashboard-grafica"
+                                        id="grafica_nivel_riesgo">
+                                        Aquí irá el velocímetro de riesgo
+                                    </div>
+                                </div>
+
+
+                                <style>
+                                    .lista-recomendaciones {
+                                        width: 100%;
+                                        min-height: 175px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: center;
+                                        gap: 18px;
+                                    }
+
+                                    .recomendacion-item {
+                                        width: 100%;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 14px;
+                                    }
+
+                                    .recomendacion-icono {
+                                        width: 42px;
+                                        min-width: 42px;
+                                        height: 42px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        color: #f15a24;
+                                        font-size: 25px;
+                                        text-align: center;
+                                    }
+
+                                    .recomendacion-texto {
+                                        flex: 1;
+                                        min-width: 0;
+                                        color: #222;
+                                        font-size: 13px;
+                                        line-height: 1.35;
+                                        overflow-wrap: anywhere;
+                                    }
+
+                                    .recomendaciones-mensaje {
+                                        width: 100%;
+                                        padding: 30px 10px;
+                                        color: #777;
+                                        font-size: 13px;
+                                        font-weight: 700;
+                                        text-align: center;
+                                    }
+
+                                    @media (max-width: 575.98px) {
+                                        .lista-recomendaciones {
+                                            gap: 15px;
+                                        }
+
+                                        .recomendacion-item {
+                                            align-items: flex-start;
+                                        }
+
+                                        .recomendacion-icono {
+                                            width: 36px;
+                                            min-width: 36px;
+                                            height: 36px;
+                                            font-size: 22px;
+                                        }
+
+                                        .recomendacion-texto {
+                                            font-size: 12px;
+                                        }
+                                    }
+                                </style>
+
+
+                                <div class="dashboard-panel panel-medio">
+
+                                    <div class="dashboard-panel-titulo">
+                                        Recomendaciones prioritarias
+                                    </div>
+
+                                    <div
+                                        class="lista-recomendaciones"
+                                        id="lista_recomendaciones_prioritarias">
+                                        <div class="recomendaciones-mensaje">
+                                            Consultando recomendaciones...
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
                 <h4 class="card-title" id="12">12.- Recomendaciones</h4>
                 <h4 class="card-title" id="12_1">12.1.- Recomendaciones de control</h4>
                 <form method="post" enctype="multipart/form-data" name="form_reporte_recomendaciones_control" id="form_reporte_recomendaciones_control">
@@ -1729,7 +2776,7 @@ DESCRIPCIONACTIVIDAD
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js_sitio/reportes/reportenom0353v1.js?v=9"></script>
+<script src="/js_sitio/reportes/reportenom0353v1.js?v=10"></script>
 <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
 

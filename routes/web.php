@@ -2265,6 +2265,22 @@ Route::post('guardarnivelriesgocategorias', ['as' => 'guardarnivelriesgocategori
 
 Route::post('guardarinformeconclusionpsico', ['as' => 'guardarinformeconclusionpsico', 'uses' => 'reportes\reportenom0353Controller@guardarinformeconclusionpsico']);
 
+/// DASHBOARD
+
+Route::get('obtenerTotalTrabajadoresATSpsico/{PROYECTO_ID}', ['as' => 'obtenerTotalTrabajadoresATSpsico', 'uses' => 'reportes\reportenom0353Controller@obtenerTotalTrabajadoresATSpsico']);
+
+Route::get('obtenerTotalTrabajadoresRequierenAtencionPsico/{PROYECTO_ID}', ['as' => 'obtenerTotalTrabajadoresRequierenAtencionPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerTotalTrabajadoresRequierenAtencionPsico']);
+
+Route::get('obtenerCategoriaODominioMayorRiesgoPsico/{PROYECTO_ID}', ['as' => 'obtenerCategoriaODominioMayorRiesgoPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerCategoriaODominioMayorRiesgoPsico']);
+
+Route::get('obtenerGraficasMayorRiesgoPsico/{PROYECTO_ID}', ['as' => 'obtenerGraficasMayorRiesgoPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerGraficasMayorRiesgoPsico']);
+
+Route::get('obtenerRecomendacionesPrioritariasPsico/{PROYECTO_ID}', ['as' => 'obtenerRecomendacionesPrioritariasPsico', 'uses' => 'reportes\reportenom0353Controller@obtenerRecomendacionesPrioritariasPsico']);
+
+/// ESTADO MENU
+Route::get('consultarEstadosMenusReportePsico/{PROYECTO_ID}', ['as' => 'consultarEstadosMenusReportePsico', 'uses' => 'reportes\reportenom0353Controller@consultarEstadosMenusReportePsico']);
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////// ERGONOMIA /////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -253,6 +253,18 @@ $(document).ready(function () {
             cargarGraficaEntornoGuiaIII();
             totalfotospsico();
     
+    
+            //// DASHBOARD
+            cargarTotalTrabajadoresATSpsico();
+            cargarTotalTrabajadoresRequierenAtencionPsico();
+            cargarCategoriaODominioMayorRiesgoPsico();
+            cargarGraficasMayorRiesgoPsico();
+            cargarGraficaDistribucionRiesgoPsico();
+            cargarGraficaTrabajadoresATSpsico();
+            cargarRecomendacionesPrioritariasPsico();
+            consultarEstadosMenusReportePsico();
+    
+
             $.ajax({
                     url: 'obtenerDatosPlantillaPsico',
                     type: 'POST',
@@ -548,6 +560,8 @@ $("#form_reporte_portada").on("submit", function(e)
 
         success: function(response)
         {
+
+            consultarEstadosMenusReportePsico();
 
             Swal.fire({
                 icon: 'success',
@@ -1051,6 +1065,10 @@ $("#form_reporte_introduccion").on("submit", function(e)
 
         success: function(response)
         {
+
+            consultarEstadosMenusReportePsico();
+
+            
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -1110,6 +1128,9 @@ $("#form_reporte_listadefiniciones").on("submit", function(e)
         },
         success: function(response)
         {
+
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -1187,6 +1208,8 @@ $("#form_reporte_objetivogeneral").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -1230,6 +1253,9 @@ $("#form_reporte_objetivoespecifico").on("submit", function (e)
         },
         success: function(response)
         {
+
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -1274,6 +1300,8 @@ $("#form_reporte_ubicacion").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -1324,6 +1352,8 @@ $("#form_reporte_procesoinstalacion").on(
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -1373,6 +1403,9 @@ $("#form_reporte_descripcionmetodo").on("submit",function(e)
 
         success: function(response)
         {
+
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -1421,6 +1454,9 @@ $("#form_reporte_conclusion").on("submit",function(e)
 
         success: function(response)
         {
+
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -1543,17 +1579,14 @@ $("#form_reporte_recomendaciones_control").on("submit", function(e)
 
         beforeSend: function()
         {
-            $("#botonguardar_reporte_recomendaciones_control")
-                .prop("disabled", true);
-
-            $("#botonguardar_reporte_recomendaciones_control")
-                .html(
-                    'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                );
+            $("#botonguardar_reporte_recomendaciones_control").prop("disabled", true);
+            $("#botonguardar_reporte_recomendaciones_control").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
         },
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: "success",
                 title: "Correcto",
@@ -1664,6 +1697,8 @@ $("#form_reporte_responsablesinforme").on("submit",function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -1750,33 +1785,131 @@ function tablaVersionesinfopsico()
 }
 
 
-$("#boton_reporte_nuevarevision").on("click", function()
-{
 
-    $.ajax({
 
-        url: '/crearRevisioninfopsico',
-        type: 'POST',
-        data: {
-            PROYECTO_ID: proyecto.id,
-            _token:
-                $('meta[name="csrf-token"]')
-                .attr('content')
-        },
+$("#boton_reporte_nuevarevision").on(
+    "click",
+    function()
+    {
+        var boton = $(this);
+        var contenidoOriginal = boton.html();
 
-        success: function(response)
-        {
-            Swal.fire({
-                icon: 'success',
-                title: 'Correcto',
-                text: response.msj
-            });
+        $.ajax({
 
-            tablaVersionesinfopsico();
-			validarEdicioninfopsico()
-        }
-    });
-});
+            url: '/crearRevisioninfopsico',
+            type: 'POST',
+            data: {
+                PROYECTO_ID:proyecto.id,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+
+            beforeSend: function()
+            {
+                boton.prop('disabled', true).html('Validando información... ' +'<i class="fa fa-spinner fa-spin"></i>');
+            },
+
+            success: function(response)
+            {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Correcto',
+                    text: response.msj
+                });
+
+                tablaVersionesinfopsico();
+                validarEdicioninfopsico();
+                consultarEstadosMenusReportePsico();
+            },
+
+            error: function(xhr)
+            {
+                console.log(xhr.responseText);
+                var response = xhr.responseJSON || {};
+                var mensaje = response.msj || 'No fue posible crear la revisión.';
+                var seccionesFaltantes = response.secciones_faltantes || [];
+
+                if (
+                    Array.isArray(
+                        seccionesFaltantes
+                    ) &&
+                    seccionesFaltantes.length > 0
+                ) {
+
+                    var lista =
+                        $('<ul>', {
+                            css: {
+                                'padding-left': '22px',
+                                'margin-bottom': '0',
+                                'text-align': 'left'
+                            }
+                        });
+
+                    seccionesFaltantes.forEach(
+                        function(seccion)
+                        {
+                            lista.append(
+                                $('<li>', {
+                                    text: seccion,
+                                    css: {
+                                        'margin-bottom':
+                                            '6px'
+                                    }
+                                })
+                            );
+                        }
+                    );
+
+                    var contenido =
+                        $('<div>', {
+                            css: {
+                                'text-align': 'left'
+                            }
+                        });
+
+                    contenido.append(
+                        $('<p>', {
+                            text: mensaje
+                        })
+                    );
+
+                    contenido.append(
+                        $('<p>', {
+                            text:
+                                'Falta completar las siguientes secciones:'
+                        })
+                    );
+
+                    contenido.append(lista);
+
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Reporte incompleto',
+                        html: contenido[0],
+                        confirmButtonText: 'Entendido'
+                    });
+
+                    consultarEstadosMenusReportePsico();
+
+                    return;
+                }
+
+        
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: mensaje
+                });
+            },
+
+            complete: function()
+            {
+                boton
+                    .prop('disabled', false)
+                    .html(contenidoOriginal);
+            }
+        });
+    }
+);
 
 
 function cancelarRevisioninfopsico(ID_VERSION_INFO_PSICO,checkbox)
@@ -1865,7 +1998,6 @@ function validarEdicioninfopsico()
                 #botonguardar_reporte_descripcionmetodo,
                 #botonguardar_reporte_conclusion,
                 #botonguardar_reporte_recomendaciones_control,
-                #botonguardar_reporte_recomendaciones_categoria,
                 #botonguardar_reporte_responsablesinforme,
                 #botonguardar_analisis_graficaglobal,
                 #botonguardar_analisis_grafica_categorias,
@@ -1924,6 +2056,8 @@ function obtenerNumeroTrabajadoresPsico()
         function(response)
         {
             $('#NUMERO_TRABAJADORES').text(response.numero_trabajadores);
+            $('#total_trabajadores_evaluados').text(response.numero_trabajadores);
+
         }
     );
 }
@@ -6257,749 +6391,6 @@ function cargarGraficaAmbienteGuiaIII()
     });
 }
 
-// function crearGraficaAmbienteGuiaIII(data)
-//     {
-//     if (!Array.isArray(data)) {
-//         data = [];
-//     }
-
-//     if (
-//         window.ambienteChartRoot &&
-//         !window.ambienteChartRoot.isDisposed()
-//     ) {
-//         window.ambienteChartRoot.dispose();
-//         window.ambienteChartRoot = null;
-//     }
-
-//     var contenedor = document.getElementById('ambienteChart');
-
-//     if (!contenedor) {
-//         console.error('No existe el contenedor #ambienteChart');
-//         return;
-//     }
-
-//     contenedor.innerHTML = '';
-
-//     if (data.length === 0) {
-//         contenedor.innerHTML = `
-
-//          <div style="
-//                 width:100%;
-//                 height:650px;
-//                 display:flex;
-//                 justify-content:center;
-//                 align-items:center;
-//                 text-align:center;
-//                 font-weight:bold;
-//                 color:#777;
-//             ">
-//                 No hay información disponible
-//             </div>
-//         `;
-
-//         if (typeof chartPngs !== 'undefined') {
-//             chartPngs['ambienteChart'] = null;
-//         }
-
-//         return;
-//     }
-
-//     window.ambienteChartRoot =
-//         am5.Root.new('ambienteChart');
-
-//     var root =
-//         window.ambienteChartRoot;
-
-//     root.setThemes([
-//         am5themes_Animated.new(root)
-//     ]);
-
-//     var chart =
-//         root.container.children.push(
-//             am5xy.XYChart.new(
-//                 root,
-//                 {
-//                     panX: false,
-//                     panY: false,
-//                     wheelX: 'none',
-//                     wheelY: 'none',
-//                     layout: root.verticalLayout,
-//                     paddingLeft: 0,
-//                     paddingRight: 20
-//                 }
-//             )
-//         );
-
-//     chart.children.unshift(
-//         am5.Label.new(
-//             root,
-//             {
-//                 text: "Categoría\n\n\n",
-//                 fontSize: 18,
-//                 fontWeight: 'bold',
-//                 textAlign: 'center',
-//                 x: am5.p50,
-//                 centerX: am5.p50
-//             }
-//         )
-//     );
-
-//     var legend =
-//         chart.children.push(
-//             am5.Legend.new(
-//                 root,
-//                 {
-//                     centerX: am5.p50,
-//                     x: am5.p50
-//                 }
-//             )
-//         );
-
-//     legend.labels.template.setAll({
-//         fontSize: 20,
-//         fontWeight: 'bold'
-//     });
-
-//     legend.valueLabels.template.setAll({
-//         forceHidden: true,
-//         visible: false
-//     });
-
-//     legend.markers.template.setAll({
-//         width: 20,
-//         height: 20
-//     });
-
-//     var yAxisRenderer =
-//         am5xy.AxisRendererY.new(
-//             root,
-//             {
-//                 inversed: true,
-//                 cellStartLocation: 0.05,
-//                 cellEndLocation: 0.90,
-//                 minGridDistance: 0
-//             }
-//         );
-
-//     var yAxis =
-//         chart.yAxes.push(
-//             am5xy.CategoryAxis.new(
-//                 root,
-//                 {
-//                     categoryField: 'category',
-//                     renderer: yAxisRenderer,
-//                     tooltip: am5.Tooltip.new(root, {})
-//                 }
-//             )
-//         );
-
-//     yAxisRenderer.grid.template.setAll({
-//         forceHidden: true,
-//         visible: false,
-//         strokeOpacity: 0
-//     });
-
-//     yAxisRenderer.ticks.template.setAll({
-//         forceHidden: true,
-//         visible: false,
-//         strokeOpacity: 0
-//     });
-
-//     yAxisRenderer.labels.template.setAll({
-//         fontSize: 18,
-//         fontWeight: 'bold',
-//         centerY: am5.p50,
-//         centerX: am5.p0,
-//         textAlign: 'center',
-//         inside: true,
-//         rotation: 0,
-//         paddingTop: -100,
-//         oversizedBehavior: 'wrap',
-//         maxWidth: 330
-//     });
-
-//     yAxisRenderer
-//         .labels
-//         .template
-//         .adapters
-//         .add(
-//             'text',
-//             function(text, target)
-//             {
-//                 if (!target.dataItem) {
-//                     return text;
-//                 }
-
-//                 var category =
-//                     target.dataItem.get('category') || '';
-
-//                 if (
-//                     category.indexOf('g1-') === 0 ||
-//                     category.indexOf('g2-') === 0 ||
-//                     category.indexOf('g3-') === 0
-//                 ) {
-//                     return '[bold]' +
-//                         category.substring(3) +
-//                         '[/]';
-//                 }
-
-//                 return category;
-//             }
-//         );
-
-//     yAxis.data.setAll(data);
-
-//     var xAxisRenderer =
-//         am5xy.AxisRendererX.new(
-//             root,
-//             {
-//                 minGridDistance: 50
-//             }
-//         );
-
-//     var xAxis =
-//         chart.xAxes.push(
-//             am5xy.ValueAxis.new(
-//                 root,
-//                 {
-//                     renderer: xAxisRenderer,
-//                     min: 0,
-//                     max: 100,
-//                     strictMinMax: true,
-//                     maxDeviation: 0
-//                 }
-//             )
-//         );
-
-//     xAxisRenderer.grid.template.setAll({
-//         forceHidden: true,
-//         visible: false,
-//         strokeOpacity: 0
-//     });
-
-//     xAxisRenderer.labels.template.setAll({
-//         forceHidden: true,
-//         visible: false
-//     });
-
-//     xAxisRenderer.ticks.template.setAll({
-//         forceHidden: true,
-//         visible: false,
-//         strokeOpacity: 0
-//     });
-
-//     if (xAxisRenderer.baseGrid) {
-//         xAxisRenderer.baseGrid.setAll({
-//             forceHidden: true,
-//             visible: false,
-//             strokeOpacity: 0
-//         });
-//     }
-
-//     function obtenerPorcentajesEnteros(valores)
-//     {
-//         var total =
-//             valores.reduce(
-//                 function(acumulado, valor)
-//                 {
-//                     return acumulado + valor;
-//                 },
-//                 0
-//             );
-
-//         if (total <= 0) {
-//             return [0, 0, 0, 0, 0];
-//         }
-
-//         var porcentajesExactos =
-//             valores.map(function(valor)
-//             {
-//                 return (valor / total) * 100;
-//             });
-
-//         var porcentajesEnteros =
-//             porcentajesExactos.map(function(valor)
-//             {
-//                 return Math.floor(valor);
-//             });
-
-//         var sumaEnteros =
-//             porcentajesEnteros.reduce(
-//                 function(acumulado, valor)
-//                 {
-//                     return acumulado + valor;
-//                 },
-//                 0
-//             );
-
-//         var faltantes =
-//             100 - sumaEnteros;
-
-//         var residuos =
-//             porcentajesExactos.map(
-//                 function(valor, indice)
-//                 {
-//                     return {
-//                         indice: indice,
-//                         residuo:
-//                             valor -
-//                             porcentajesEnteros[indice]
-//                     };
-//                 }
-//             );
-
-//         residuos.sort(function(a, b)
-//         {
-//             return b.residuo - a.residuo;
-//         });
-
-//         for (
-//             var indice = 0;
-//             indice < faltantes;
-//             indice++
-//         ) {
-//             porcentajesEnteros[
-//                 residuos[indice].indice
-//             ]++;
-//         }
-
-//         return porcentajesEnteros;
-//     }
-
-//     function calcularDatos(datos)
-//     {
-//         return datos.map(function(item)
-//         {
-//             if (
-//                 item.category &&
-//                 item.category.indexOf('g3-') === 0
-//             ) {
-//                 return {
-//                     category: item.category,
-//                     s1: null,
-//                     s2: null,
-//                     s3: null,
-//                     s4: null,
-//                     s5: null,
-//                     percentage_s1: null,
-//                     percentage_s2: null,
-//                     percentage_s3: null,
-//                     percentage_s4: null,
-//                     percentage_s5: null,
-//                     visual_s1: null,
-//                     visual_s2: null,
-//                     visual_s3: null,
-//                     visual_s4: null,
-//                     visual_s5: null
-//                 };
-//             }
-
-//             var s1 =
-//                 parseInt(item.s1, 10) || 0;
-
-//             var s2 =
-//                 parseInt(item.s2, 10) || 0;
-
-//             var s3 =
-//                 parseInt(item.s3, 10) || 0;
-
-//             var s4 =
-//                 parseInt(item.s4, 10) || 0;
-
-//             var s5 =
-//                 parseInt(item.s5, 10) || 0;
-
-//             var valores = [
-//                 s1,
-//                 s2,
-//                 s3,
-//                 s4,
-//                 s5
-//             ];
-
-//             var total =
-//                 valores.reduce(
-//                     function(acumulado, valor)
-//                     {
-//                         return acumulado + valor;
-//                     },
-//                     0
-//                 );
-
-//             if (total <= 0) {
-//                 return {
-//                     category: item.category,
-//                     s1: s1,
-//                     s2: s2,
-//                     s3: s3,
-//                     s4: s4,
-//                     s5: s5,
-//                     percentage_s1: 0,
-//                     percentage_s2: 0,
-//                     percentage_s3: 0,
-//                     percentage_s4: 0,
-//                     percentage_s5: 0,
-//                     visual_s1: 0,
-//                     visual_s2: 0,
-//                     visual_s3: 0,
-//                     visual_s4: 0,
-//                     visual_s5: 0
-//                 };
-//             }
-
-//             var porcentajesEnteros =
-//                 obtenerPorcentajesEnteros(valores);
-
-//             var porcentajesExactos =
-//                 valores.map(function(valor)
-//                 {
-//                     return (valor / total) * 100;
-//                 });
-
-//             var minimoVisual = 8;
-
-//             var valoresVisuales =
-//                 porcentajesExactos.map(
-//                     function(porcentaje, indice)
-//                     {
-//                         if (valores[indice] <= 0) {
-//                             return 0;
-//                         }
-
-//                         return Math.max(
-//                             porcentaje,
-//                             minimoVisual
-//                         );
-//                     }
-//                 );
-
-//             var totalVisual =
-//                 valoresVisuales.reduce(
-//                     function(acumulado, valor)
-//                     {
-//                         return acumulado + valor;
-//                     },
-//                     0
-//                 );
-
-//             if (totalVisual > 0) {
-//                 valoresVisuales =
-//                     valoresVisuales.map(
-//                         function(valor)
-//                         {
-//                             return (
-//                                 valor /
-//                                 totalVisual
-//                             ) * 100;
-//                         }
-//                     );
-//             }
-
-//             return {
-//                 category: item.category,
-//                 s1: s1,
-//                 s2: s2,
-//                 s3: s3,
-//                 s4: s4,
-//                 s5: s5,
-//                 percentage_s1:
-//                     porcentajesEnteros[0],
-//                 percentage_s2:
-//                     porcentajesEnteros[1],
-//                 percentage_s3:
-//                     porcentajesEnteros[2],
-//                 percentage_s4:
-//                     porcentajesEnteros[3],
-//                 percentage_s5:
-//                     porcentajesEnteros[4],
-//                 visual_s1:
-//                     valoresVisuales[0],
-//                 visual_s2:
-//                     valoresVisuales[1],
-//                 visual_s3:
-//                     valoresVisuales[2],
-//                 visual_s4:
-//                     valoresVisuales[3],
-//                 visual_s5:
-//                     valoresVisuales[4]
-//             };
-//         });
-//     }
-
-//     var processedData =
-//         calcularDatos(data);
-
-//     function makeSeries(
-//         name,
-//         cantidadField,
-//         porcentajeField,
-//         visualField,
-//         color
-//     ) {
-//         var series =
-//             chart.series.push(
-//                 am5xy.ColumnSeries.new(
-//                     root,
-//                     {
-//                         name: name,
-//                         xAxis: xAxis,
-//                         yAxis: yAxis,
-//                         stacked: true,
-//                         valueXField: visualField,
-//                         categoryYField: 'category',
-//                         stroke: color,
-//                         fill: color
-//                     }
-//                 )
-//             );
-
-//         series.columns.template.setAll({
-//             height: am5.percent(70),
-//             tooltipY: 0,
-//             stroke: am5.color(0x000000),
-//             strokeWidth: 0.5,
-//             tooltipText:
-//                 '{name}: {cantidad} trabajadores ({porcentaje}%)'
-//         });
-
-//         series.columns.template.adapters.add(
-//             'forceHidden',
-//             function(forceHidden, target)
-//             {
-//                 if (
-//                     target.dataItem &&
-//                     target.dataItem.dataContext
-//                 ) {
-//                     var category =
-//                         target.dataItem
-//                             .dataContext
-//                             .category || '';
-
-//                     if (
-//                         category.indexOf('g3-') === 0
-//                     ) {
-//                         return true;
-//                     }
-//                 }
-
-//                 return forceHidden;
-//             }
-//         );
-
-//         series.bullets.push(function(
-//             rootBullet,
-//             serie,
-//             dataItem
-//         ) {
-//             var contexto =
-//                 dataItem.dataContext || {};
-
-//             var category =
-//                 contexto.category || '';
-
-//             if (
-//                 category.indexOf('g3-') === 0
-//             ) {
-//                 return undefined;
-//             }
-
-//             var cantidad =
-//                 parseInt(
-//                     contexto.cantidad,
-//                     10
-//                 ) || 0;
-
-//             if (cantidad <= 0) {
-//                 return undefined;
-//             }
-
-//             var porcentaje =
-//                 parseInt(
-//                     contexto.porcentaje,
-//                     10
-//                 ) || 0;
-
-//             var tamanioLetra = 17;
-
-//             if (porcentaje <= 3) {
-//                 tamanioLetra = 13;
-//             } else if (porcentaje <= 5) {
-//                 tamanioLetra = 14;
-//             } else if (porcentaje <= 10) {
-//                 tamanioLetra = 15;
-//             }
-
-//             return am5.Bullet.new(
-//                 root,
-//                 {
-//                     locationX: 0.5,
-//                     locationY: 0.5,
-//                     sprite:
-//                         am5.Label.new(
-//                             root,
-//                             {
-//                                 text:
-//                                     cantidad +
-//                                     ' (' +
-//                                     porcentaje +
-//                                     '%)',
-
-//                                 centerX: am5.p50,
-//                                 centerY: am5.p50,
-//                                 populateText: false,
-//                                 fontSize: tamanioLetra,
-//                                 fill:
-//                                     am5.color(
-//                                         0x000000
-//                                     ),
-//                                 fontWeight: 'bold',
-//                                 textAlign: 'center',
-//                                 paddingLeft: 1,
-//                                 paddingRight: 1
-//                             }
-//                         )
-//                 }
-//             );
-//         });
-
-//         var datosSerie =
-//             processedData.map(function(item)
-//             {
-//                 if (
-//                     item.category &&
-//                     item.category.indexOf('g3-') === 0
-//                 ) {
-//                     var filaVacia = {
-//                         category: item.category,
-//                         cantidad: null,
-//                         porcentaje: null
-//                     };
-
-//                     filaVacia[visualField] =
-//                         null;
-
-//                     return filaVacia;
-//                 }
-
-//                 var fila = {
-//                     category: item.category,
-//                     cantidad:
-//                         item[cantidadField],
-//                     porcentaje:
-//                         item[porcentajeField]
-//                 };
-
-//                 fila[visualField] =
-//                     item[visualField];
-
-//                 return fila;
-//             });
-
-//         series.data.setAll(datosSerie);
-
-//         series.appear();
-
-//         legend.data.push(series);
-//     }
-
-//     makeSeries(
-//         'Muy alto',
-//         's1',
-//         'percentage_s1',
-//         'visual_s1',
-//         am5.color(0xFF0000)
-//     );
-
-//     makeSeries(
-//         'Alto',
-//         's2',
-//         'percentage_s2',
-//         'visual_s2',
-//         am5.color(0xF7AA32)
-//     );
-
-//     makeSeries(
-//         'Medio',
-//         's3',
-//         'percentage_s3',
-//         'visual_s3',
-//         am5.color(0xFFFF00)
-//     );
-
-//     makeSeries(
-//         'Bajo',
-//         's4',
-//         'percentage_s4',
-//         'visual_s4',
-//         am5.color(0x00B050)
-//     );
-
-//     makeSeries(
-//         'Nulo',
-//         's5',
-//         'percentage_s5',
-//         'visual_s5',
-//         am5.color(0x00B0F0)
-//     );
-
-//     chart
-//         .appear(1000, 100)
-//         .then(function()
-//         {
-//             setTimeout(function()
-//             {
-//                 if (
-//                     typeof am5plugins_exporting !==
-//                     'undefined'
-//                 ) {
-//                     var exporting =
-//                         am5plugins_exporting
-//                             .Exporting
-//                             .new(
-//                                 root,
-//                                 {
-//                                     menu:
-//                                         am5plugins_exporting
-//                                             .ExportingMenu
-//                                             .new(root, {}),
-
-//                                     dpi: 300,
-
-//                                     maxWidth: 2000,
-
-//                                     maxHeight: 2000
-//                                 }
-//                             );
-
-//                     exporting
-//                         .export('png')
-//                         .then(function(imagen)
-//                         {
-//                             chartPngs[
-//                                 'ambienteChart'
-//                             ] = imagen;
-
-//                             console.log(
-//                                 'ambienteChart exportado exitosamente'
-//                             );
-//                         })
-//                         .catch(function(error)
-//                         {
-//                             console.error(
-//                                 'Error al exportar ambienteChart:',
-//                                 error
-//                             );
-//                         });
-
-//                 } else {
-//                     console.log(
-//                         'Plugin de exportación no disponible'
-//                     );
-//                 }
-
-//             }, 1000);
-//         });
-// }
 
 function crearGraficaAmbienteGuiaIII(data)
 {
@@ -10592,6 +9983,8 @@ $("#form_analisis_graficaglobal").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -10649,6 +10042,8 @@ $("#form_analisis_grafica_categorias").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -10706,6 +10101,8 @@ $("#form_analisis_grafica_dominio").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -10763,6 +10160,8 @@ $("#form_analisis_grafica_guia1").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -10820,6 +10219,8 @@ $("#form_analisis_grafica_ambiente").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -10877,6 +10278,9 @@ $("#form_analisis_grafica_factores").on("submit", function(e)
 
         success: function(response)
         {
+
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -10934,6 +10338,8 @@ $("#form_analisis_grafica_organizacion").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -10991,6 +10397,8 @@ $("#form_analisis_grafica_liderazgo").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -11048,6 +10456,8 @@ $("#form_analisis_grafica_entorno").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -11139,6 +10549,8 @@ $("#form_nivel_riesgo_categorias").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReportePsico();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -11512,3 +10924,1394 @@ $("#form_reporte_conclusion").on(
         });
     }
 );
+
+/// DASHBOARD
+
+function cargarTotalTrabajadoresATSpsico()
+{
+   
+    $('#total_trabajadores_ats').text('0');
+
+    $.get(
+        '/obtenerTotalTrabajadoresATSpsico/' + proyecto.id,
+
+        function(response)
+        {
+            var totalATS =
+                parseInt(
+                    response.total_trabajadores_ats
+                ) || 0;
+
+            $('#total_trabajadores_ats').text(
+                totalATS
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        $('#total_trabajadores_ats').text('0');
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar el total de trabajadores con ATS'
+        });
+    });
+}
+
+function cargarTotalTrabajadoresRequierenAtencionPsico()
+{
+    $('#total_requieren_atencion').text('0');
+
+    $.get(
+        '/obtenerTotalTrabajadoresRequierenAtencionPsico/' +
+        proyecto.id,
+
+        function(response)
+        {
+            var totalRequierenAtencion =
+                parseInt(
+                    response.total_requieren_atencion
+                ) || 0;
+
+            $('#total_requieren_atencion').text(
+                totalRequierenAtencion
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        $('#total_requieren_atencion').text('0');
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar los trabajadores que requieren atención'
+        });
+    });
+}
+
+function cargarCategoriaODominioMayorRiesgoPsico()
+{
+    $('#nombre_categoria_dominio_mayor_riesgo')
+        .text('Sin información');
+
+    $('#tipo_categoria_dominio_mayor_riesgo')
+        .text('Categoría o dominio');
+
+    $.get(
+        '/obtenerCategoriaODominioMayorRiesgoPsico/' +
+        proyecto.id,
+
+        function(response)
+        {
+            var nombre =
+                response.nombre ||
+                'Sin información';
+
+            var tipo =
+                response.tipo ||
+                'Categoría o dominio';
+
+            var nivel =
+                response.nivel ||
+                '';
+
+            var totalTrabajadores =
+                parseInt(
+                    response.total_trabajadores
+                ) || 0;
+
+            $('#nombre_categoria_dominio_mayor_riesgo')
+                .text(nombre);
+
+            $('#tipo_categoria_dominio_mayor_riesgo')
+                .text(tipo);
+            
+            console.log(
+                'Mayor riesgo:',
+                {
+                    nombre: nombre,
+                    tipo: tipo,
+                    nivel: nivel,
+                    total_trabajadores: totalTrabajadores
+                }
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        $('#nombre_categoria_dominio_mayor_riesgo')
+            .text('Sin información');
+
+        $('#tipo_categoria_dominio_mayor_riesgo')
+            .text('Categoría o dominio');
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar la categoría o dominio con mayor riesgo'
+        });
+    });
+}
+
+function cargarGraficasMayorRiesgoPsico()
+{
+    $('#grafica_categorias').html(`
+        <div class="mensaje-sin-datos-grafica">
+            Consultando información...
+        </div>
+    `);
+
+    $('#grafica_dominios').html(`
+        <div class="mensaje-sin-datos-grafica">
+            Consultando información...
+        </div>
+    `);
+
+    $.get(
+        '/obtenerGraficasMayorRiesgoPsico/' +
+        proyecto.id,
+
+        function(response)
+        {
+            generarGraficaBarrasMayorRiesgo(
+                'grafica_categorias',
+                response.categorias || [],
+                'categorias'
+            );
+
+            generarGraficaBarrasMayorRiesgo(
+                'grafica_dominios',
+                response.dominios || [],
+                'dominios'
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        $('#grafica_categorias').html(`
+            <div class="mensaje-sin-datos-grafica">
+                No hay información disponible
+            </div>
+        `);
+
+        $('#grafica_dominios').html(`
+            <div class="mensaje-sin-datos-grafica">
+                No hay información disponible
+            </div>
+        `);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar las categorías y dominios'
+        });
+    });
+}
+
+function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
+{
+    if (!Array.isArray(datos)) {
+        datos = [];
+    }
+
+    if (
+        tipoGrafica === 'categorias' &&
+        window.rootMayorRiesgoCategorias
+    ) {
+
+        if (
+            !window.rootMayorRiesgoCategorias
+                .isDisposed()
+        ) {
+
+            window.rootMayorRiesgoCategorias
+                .dispose();
+        }
+
+        window.rootMayorRiesgoCategorias = null;
+    }
+
+    if (
+        tipoGrafica === 'dominios' &&
+        window.rootMayorRiesgoDominios
+    ) {
+
+        if (
+            !window.rootMayorRiesgoDominios
+                .isDisposed()
+        ) {
+
+            window.rootMayorRiesgoDominios
+                .dispose();
+        }
+
+        window.rootMayorRiesgoDominios = null;
+    }
+
+    $('#' + contenedorId).empty();
+
+    var datosValidos =
+        datos
+            .filter(function(item)
+            {
+                return (
+                    item &&
+                    item.category
+                );
+            })
+            .map(function(item)
+            {
+                return {
+                    category:
+                        item.category,
+
+                    value:
+                        parseInt(item.value) || 0,
+
+                    nivel:
+                        item.nivel ||
+                        'Sin información',
+
+                    color:
+                        item.color ||
+                        '#BDBDBD'
+                };
+            });
+
+    var tieneInformacion =
+        datosValidos.some(function(item)
+        {
+            return item.value > 0;
+        });
+
+    if (
+        datosValidos.length === 0 ||
+        !tieneInformacion
+    ) {
+
+        $('#' + contenedorId).html(`
+            <div class="mensaje-sin-datos-grafica">
+                No hay información disponible
+            </div>
+        `);
+
+        return;
+    }
+
+    var root =
+        am5.Root.new(
+            contenedorId
+        );
+
+    if (tipoGrafica === 'categorias') {
+
+        window.rootMayorRiesgoCategorias =
+            root;
+
+    } else {
+
+        window.rootMayorRiesgoDominios =
+            root;
+    }
+
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    if (root._logo) {
+        root._logo.dispose();
+    }
+
+    var chart =
+        root.container.children.push(
+
+            am5xy.XYChart.new(
+                root,
+                {
+                    panX: false,
+                    panY: false,
+                    wheelX: 'none',
+                    wheelY: 'none',
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    paddingLeft: 0,
+                    paddingRight: 30,
+                    layout: root.verticalLayout
+                }
+            )
+        );
+
+    var rendererValores =
+        am5xy.AxisRendererX.new(
+            root,
+            {
+                minGridDistance: 30
+            }
+        );
+
+    rendererValores
+        .labels
+        .template
+        .setAll({
+            forceHidden: true
+        });
+
+    rendererValores
+        .grid
+        .template
+        .setAll({
+            stroke: am5.color(0xCCCCCC),
+            strokeOpacity: 0.5
+        });
+
+    var ejeValores =
+        chart.xAxes.push(
+
+            am5xy.ValueAxis.new(
+                root,
+                {
+                    min: 0,
+                    extraMax: 0.18,
+                    strictMinMax: false,
+                    renderer: rendererValores
+                }
+            )
+        );
+
+    var rendererCategorias =
+        am5xy.AxisRendererY.new(
+            root,
+            {
+                inversed: true,
+                minGridDistance:
+                    tipoGrafica ===
+                    'categorias'
+                        ? 50
+                        : 25
+            }
+        );
+
+    rendererCategorias
+        .grid
+        .template
+        .setAll({
+            forceHidden: true
+        });
+
+    rendererCategorias
+        .labels
+        .template
+        .setAll({
+            fill: am5.color(0x222222),
+
+            fontSize:
+                tipoGrafica ===
+                'categorias'
+                    ? 12
+                    : 11,
+
+            fontWeight: '400',
+
+            maxWidth:
+                tipoGrafica ===
+                'categorias'
+                    ? 220
+                    : 250,
+
+            oversizedBehavior: 'wrap',
+            textAlign: 'right',
+            paddingRight: 8
+        });
+
+    var ejeCategorias =
+        chart.yAxes.push(
+
+            am5xy.CategoryAxis.new(
+                root,
+                {
+                    categoryField:
+                        'category',
+
+                    renderer:
+                        rendererCategorias
+                }
+            )
+        );
+
+    ejeCategorias.data.setAll(
+        datosValidos
+    );
+
+    var serie =
+        chart.series.push(
+
+            am5xy.ColumnSeries.new(
+                root,
+                {
+                    name: 'Trabajadores',
+                    xAxis: ejeValores,
+                    yAxis: ejeCategorias,
+                    valueXField: 'value',
+                    categoryYField: 'category',
+                    sequencedInterpolation: true,
+                    maskBullets: false
+                }
+            )
+        );
+
+    serie.columns.template.setAll({
+
+        height:
+            tipoGrafica === 'categorias'
+                ? am5.percent(48)
+                : am5.percent(68),
+
+        strokeOpacity: 0,
+
+        cornerRadiusTR: 5,
+        cornerRadiusBR: 5,
+
+        tooltipText:
+            '{category}\n' +
+            'Nivel: {nivel}\n' +
+            'Trabajadores: {value}'
+    });
+
+    serie.columns.template.adapters.add(
+        'fill',
+
+        function(fill, target)
+        {
+            if (
+                target.dataItem &&
+                target.dataItem.dataContext &&
+                target.dataItem
+                    .dataContext
+                    .color
+            ) {
+
+                return am5.color(
+                    target.dataItem
+                        .dataContext
+                        .color
+                );
+            }
+
+            return fill;
+        }
+    );
+
+    serie.columns.template.adapters.add(
+        'stroke',
+
+        function(stroke, target)
+        {
+            if (
+                target.dataItem &&
+                target.dataItem.dataContext &&
+                target.dataItem
+                    .dataContext
+                    .color
+            ) {
+
+                return am5.color(
+                    target.dataItem
+                        .dataContext
+                        .color
+                );
+            }
+
+            return stroke;
+        }
+    );
+
+    serie.bullets.push(function()
+    {
+        return am5.Bullet.new(
+            root,
+            {
+                locationX: 1,
+
+                sprite:
+                    am5.Label.new(
+                        root,
+                        {
+                            text: '{valueX}',
+                            populateText: true,
+                            centerY:
+                                am5.percent(50),
+                            centerX:
+                                am5.percent(0),
+                            dx: 6,
+                            fill:
+                                am5.color(
+                                    0x111111
+                                ),
+                            fontSize: 12,
+                            fontWeight: '500'
+                        }
+                    )
+            }
+        );
+    });
+
+    serie.data.setAll(
+        datosValidos
+    );
+
+    serie.appear(
+        800
+    );
+
+    chart.appear(
+        800,
+        100
+    );
+}
+
+function cargarGraficaDistribucionRiesgoPsico()
+{
+    limpiarValoresDistribucionRiesgo();
+
+    $.get(
+        '/obtenerGraficaCalificacionPsico/' +
+        proyecto.id,
+
+        function(response)
+        {
+            generarGraficaDistribucionRiesgoPsico(
+                response.data || [],
+                response.total_trabajadores || 0
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        limpiarValoresDistribucionRiesgo();
+
+        $('#distribucionRiesgoChart').html(`
+            <div
+                style="
+                    width:100%;
+                    height:100%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    color:#777;
+                    font-weight:bold;
+                    text-align:center;
+                "
+            >
+                No hay información disponible
+            </div>
+        `);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar la distribución general de riesgo'
+        });
+    });
+}
+
+function limpiarValoresDistribucionRiesgo()
+{
+    $('#distribucion_muy_alto').text('0');
+    $('#distribucion_alto').text('0');
+    $('#distribucion_medio').text('0');
+    $('#distribucion_bajo').text('0');
+    $('#distribucion_nulo').text('0');
+}
+
+function generarGraficaDistribucionRiesgoPsico(datos,totalTrabajadores)
+{
+    if (!Array.isArray(datos)) {
+        datos = [];
+    }
+
+    if (window.rootDistribucionRiesgoPsico) {
+
+        if (
+            !window.rootDistribucionRiesgoPsico
+                .isDisposed()
+        ) {
+
+            window.rootDistribucionRiesgoPsico
+                .dispose();
+        }
+
+        window.rootDistribucionRiesgoPsico =
+            null;
+    }
+
+    $('#distribucionRiesgoChart').empty();
+
+    var datosNormalizados =
+        datos.map(function(item)
+        {
+            return {
+                category:
+                    item.category,
+
+                value:
+                    parseInt(item.value) || 0,
+
+                color:
+                    item.color || '#BDBDBD'
+            };
+        });
+
+
+    datosNormalizados.forEach(function(item)
+    {
+        if (item.category === 'Muy alto') {
+
+            $('#distribucion_muy_alto')
+                .text(item.value);
+
+        } else if (item.category === 'Alto') {
+
+            $('#distribucion_alto')
+                .text(item.value);
+
+        } else if (item.category === 'Medio') {
+
+            $('#distribucion_medio')
+                .text(item.value);
+
+        } else if (item.category === 'Bajo') {
+
+            $('#distribucion_bajo')
+                .text(item.value);
+
+        } else if (
+            item.category ===
+            'Nulo o despreciable'
+        ) {
+
+            $('#distribucion_nulo')
+                .text(item.value);
+        }
+    });
+
+    var datosGrafica =
+        datosNormalizados.filter(
+            function(item)
+            {
+                return item.value > 0;
+            }
+        );
+
+    if (datosGrafica.length === 0) {
+
+        $('#distribucionRiesgoChart').html(`
+            <div
+                style="
+                    width:100%;
+                    height:100%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    color:#777;
+                    font-weight:bold;
+                    text-align:center;
+                "
+            >
+                No hay información disponible
+            </div>
+        `);
+
+        return;
+    }
+
+    var root =
+        am5.Root.new(
+            'distribucionRiesgoChart'
+        );
+
+    window.rootDistribucionRiesgoPsico =
+        root;
+
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    if (root._logo) {
+        root._logo.dispose();
+    }
+
+    var chart =
+        root.container.children.push(
+
+            am5percent.PieChart.new(
+                root,
+                {
+                    layout:
+                        root.verticalLayout,
+
+                    innerRadius:
+                        am5.percent(50),
+
+                    radius:
+                        am5.percent(82),
+
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    paddingLeft: 15,
+                    paddingRight: 15
+                }
+            )
+        );
+
+    var series =
+        chart.series.push(
+
+            am5percent.PieSeries.new(
+                root,
+                {
+                    valueField:
+                        'value',
+
+                    categoryField:
+                        'category',
+
+                    alignLabels:
+                        true
+                }
+            )
+        );
+
+    series.slices.template.adapters.add(
+        'fill',
+
+        function(fill, target)
+        {
+            if (
+                target.dataItem &&
+                target.dataItem.dataContext &&
+                target.dataItem
+                    .dataContext
+                    .color
+            ) {
+
+                return am5.color(
+                    target.dataItem
+                        .dataContext
+                        .color
+                );
+            }
+
+            return fill;
+        }
+    );
+
+    series.slices.template.adapters.add(
+        'stroke',
+
+        function(stroke, target)
+        {
+            if (
+                target.dataItem &&
+                target.dataItem.dataContext &&
+                target.dataItem
+                    .dataContext
+                    .color
+            ) {
+
+                return am5.color(
+                    target.dataItem
+                        .dataContext
+                        .color
+                );
+            }
+
+            return stroke;
+        }
+    );
+
+    series.slices.template.setAll({
+        stroke: am5.color(0xFFFFFF),
+        strokeWidth: 1,
+        tooltipText:
+            '{category}: {value} trabajadores ' +
+            '({valuePercentTotal.formatNumber("0.0")}%)'
+    });
+
+    series.labels.template.setAll({
+        text:
+            '{category}\n' +
+            '{valuePercentTotal.formatNumber("0.0")}%',
+        fontSize: 9,
+        fill: am5.color(0x222222),
+        textAlign: 'center',
+        radius: 5
+    });
+
+    series.ticks.template.setAll({
+        stroke: am5.color(0x777777),
+        strokeOpacity: 0.6
+    });
+
+    series.data.setAll(
+        datosGrafica
+    );
+
+    series.appear(
+        800,
+        100
+    );
+
+    chart.appear(
+        800,
+        100
+    );
+}
+
+
+
+
+function cargarGraficaTrabajadoresATSpsico()
+{
+    if (window.rootTrabajadoresATSpsico) {
+
+        if (
+            !window.rootTrabajadoresATSpsico
+                .isDisposed()
+        ) {
+
+            window.rootTrabajadoresATSpsico
+                .dispose();
+        }
+
+        window.rootTrabajadoresATSpsico =
+            null;
+    }
+
+    $('#grafica_trabajadores_ats').html(`
+        <div class="mensaje-sin-datos-ats">
+            Consultando información...
+        </div>
+    `);
+
+    $.get(
+        '/obtenerGraficaGuiaIPsico/' +
+        proyecto.id,
+
+        function(response)
+        {
+            generarGraficaTrabajadoresATSpsico(
+                response.data || [],
+                response.requiere_valoracion || 0,
+                response.no_requiere_valoracion || 0,
+                response.total_trabajadores || 0
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        $('#grafica_trabajadores_ats').html(`
+            <div class="mensaje-sin-datos-ats">
+                No hay información disponible
+            </div>
+        `);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar los trabajadores con ATS'
+        });
+    });
+}
+
+function generarGraficaTrabajadoresATSpsico(datos,requiereValoracion,noRequiereValoracion,totalTrabajadores)
+{
+    if (!Array.isArray(datos)) {
+        datos = [];
+    }
+
+    requiereValoracion =
+        parseInt(requiereValoracion) || 0;
+
+    noRequiereValoracion =
+        parseInt(noRequiereValoracion) || 0;
+
+    totalTrabajadores =
+        parseInt(totalTrabajadores) || 0;
+
+    var porcentajeATS = 0;
+
+    if (totalTrabajadores > 0) {
+
+        porcentajeATS =
+            (
+                requiereValoracion /
+                totalTrabajadores
+            ) * 100;
+    }
+
+    if (window.rootTrabajadoresATSpsico) {
+
+        if (
+            !window.rootTrabajadoresATSpsico
+                .isDisposed()
+        ) {
+
+            window.rootTrabajadoresATSpsico
+                .dispose();
+        }
+
+        window.rootTrabajadoresATSpsico =
+            null;
+    }
+
+    var datosNormalizados =
+        datos.map(function(item)
+        {
+            return {
+                category:
+                    item.category || '',
+
+                value:
+                    parseInt(item.value) || 0,
+
+                color:
+                    item.color || '#BDBDBD'
+            };
+        });
+
+    var datosGrafica =
+        datosNormalizados.filter(
+            function(item)
+            {
+                return item.value > 0;
+            }
+        );
+
+    if (
+        totalTrabajadores === 0 ||
+        datosGrafica.length === 0
+    ) {
+
+        $('#grafica_trabajadores_ats').html(`
+            <div class="mensaje-sin-datos-ats">
+                No hay información disponible
+            </div>
+        `);
+
+        return;
+    }
+
+    $('#grafica_trabajadores_ats').html(`
+        <div
+            class="ats-chart-contenedor"
+            id="atsChartContenedor"
+        ></div>
+
+        <div
+            class="ats-porcentaje-centro"
+            id="ats_porcentaje_centro"
+        >
+            ${porcentajeATS.toFixed(1)}%
+        </div>
+    `);
+
+    var root =
+        am5.Root.new(
+            'atsChartContenedor'
+        );
+
+    window.rootTrabajadoresATSpsico =
+        root;
+
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    if (root._logo) {
+        root._logo.dispose();
+    }
+
+    var chart =
+        root.container.children.push(
+
+            am5percent.PieChart.new(
+                root,
+                {
+                    innerRadius:
+                        am5.percent(57),
+
+                    radius:
+                        am5.percent(90),
+
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                    paddingLeft: 10,
+                    paddingRight: 10
+                }
+            )
+        );
+
+    var series =
+        chart.series.push(
+
+            am5percent.PieSeries.new(
+                root,
+                {
+                    valueField:
+                        'value',
+
+                    categoryField:
+                        'category',
+
+                    alignLabels:
+                        false
+                }
+            )
+        );
+
+    series.slices.template.adapters.add(
+        'fill',
+
+        function(fill, target)
+        {
+            if (
+                target.dataItem &&
+                target.dataItem.dataContext &&
+                target.dataItem
+                    .dataContext
+                    .color
+            ) {
+
+                return am5.color(
+                    target.dataItem
+                        .dataContext
+                        .color
+                );
+            }
+
+            return fill;
+        }
+    );
+
+    series.slices.template.adapters.add(
+        'stroke',
+
+        function(stroke, target)
+        {
+            if (
+                target.dataItem &&
+                target.dataItem.dataContext &&
+                target.dataItem
+                    .dataContext
+                    .color
+            ) {
+
+                return am5.color(
+                    target.dataItem
+                        .dataContext
+                        .color
+                );
+            }
+
+            return stroke;
+        }
+    );
+
+    series.slices.template.setAll({
+        stroke: am5.color(0xFFFFFF),
+        strokeWidth: 1,
+
+        tooltipText:
+            '{category}\n' +
+            '{value} trabajadores\n' +
+            '{valuePercentTotal.formatNumber("0.0")}%'
+    });
+
+    series.labels.template.setAll({
+        text:
+            '{valuePercentTotal.formatNumber("0.0")}%',
+        inside: true,
+        radius: am5.percent(72),
+        centerX: am5.percent(50),
+        centerY: am5.percent(50),
+        fill: am5.color(0xFFFFFF),
+        fontSize: 12,
+        fontWeight: '700',
+        textAlign: 'center'
+    });
+
+    series.ticks.template.setAll({
+        forceHidden: true
+    });
+
+    series.data.setAll(
+        datosGrafica
+    );
+
+    series.appear(
+        800,
+        100
+    );
+
+    chart.appear(
+        800,
+        100
+    );
+}
+
+
+
+
+function cargarRecomendacionesPrioritariasPsico()
+{
+    $('#lista_recomendaciones_prioritarias').html(`
+        <div class="recomendaciones-mensaje">
+            Consultando recomendaciones...
+        </div>
+    `);
+
+    $.get(
+        '/obtenerRecomendacionesPrioritariasPsico/' +
+        proyecto.id,
+
+        function(response)
+        {
+            mostrarRecomendacionesPrioritariasPsico(
+                response.data || []
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        $('#lista_recomendaciones_prioritarias').html(`
+            <div class="recomendaciones-mensaje">
+                No fue posible consultar las recomendaciones.
+            </div>
+        `);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar las recomendaciones prioritarias'
+        });
+    });
+}
+
+function mostrarRecomendacionesPrioritariasPsico(
+    recomendaciones
+)
+{
+    if (!Array.isArray(recomendaciones)) {
+        recomendaciones = [];
+    }
+
+    var contenedor =
+        $('#lista_recomendaciones_prioritarias');
+
+    contenedor.empty();
+
+    if (recomendaciones.length === 0) {
+
+        contenedor.html(`
+            <div class="recomendaciones-mensaje">
+                No hay recomendaciones prioritarias.
+            </div>
+        `);
+
+        return;
+    }
+
+    var iconos = [
+        'fa-bullseye',
+        'fa-line-chart',
+        'fa-shield'
+    ];
+
+    recomendaciones.forEach(
+        function(recomendacion, indice)
+        {
+            var texto =
+                recomendacion
+                    .RECOMENDACION_CONTROL ||
+                '';
+
+            if (!texto.trim()) {
+                return;
+            }
+
+            var claseIcono =
+                iconos[
+                    indice % iconos.length
+                ];
+            
+            var item =
+                $('<div>', {
+                    class:
+                        'recomendacion-item'
+                });
+
+            var iconoContenedor =
+                $('<div>', {
+                    class:
+                        'recomendacion-icono'
+                });
+
+            var icono =
+                $('<i>', {
+                    class:
+                        'fa ' + claseIcono
+                });
+
+            var textoContenedor =
+                $('<div>', {
+                    class:
+                        'recomendacion-texto'
+                });
+
+            textoContenedor.text(
+                texto
+            );
+
+            iconoContenedor.append(
+                icono
+            );
+
+            item.append(
+                iconoContenedor,
+                textoContenedor
+            );
+
+            contenedor.append(
+                item
+            );
+        }
+    );
+
+    if (
+        contenedor
+            .find('.recomendacion-item')
+            .length === 0
+    ) {
+
+        contenedor.html(`
+            <div class="recomendaciones-mensaje">
+                No hay recomendaciones prioritarias.
+            </div>
+        `);
+    }
+}
+
+
+/// ESTADO MENU
+
+function consultarEstadosMenusReportePsico()
+{
+    if (
+        typeof proyecto === 'undefined' ||
+        !proyecto ||
+        !proyecto.id
+    ) {
+
+        console.log(
+            'No se encontró el ID del proyecto'
+        );
+
+        return;
+    }
+
+    $.get(
+        '/consultarEstadosMenusReportePsico/' +
+        proyecto.id,
+
+        function(response)
+        {
+            var estados =
+                response.estados || {};
+
+            actualizarEstadosMenusReportePsico(
+                estados
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(
+            'Error al consultar estados del menú:',
+            xhr.responseText
+        );
+    });
+}
+
+
+function actualizarEstadosMenusReportePsico(
+    estados
+)
+{
+    $.each(
+        estados,
+
+        function(menuId, completado)
+        {
+            if (completado) {
+
+                marcarMenuCompleto(
+                    menuId
+                );
+
+            } else {
+
+                marcarMenuPendiente(
+                    menuId
+                );
+            }
+        }
+    );
+}
+
+
+function marcarMenuCompleto(menuId)
+{
+    var icono =
+        $('#' + menuId);
+
+    if (!icono.length) {
+        return;
+    }
+
+    icono
+        .removeClass('fa-times')
+        .addClass('fa-check')
+        .css('color', '#64bd44');
+}
+
+
+function marcarMenuPendiente(menuId)
+{
+    var icono =
+        $('#' + menuId);
+
+    if (!icono.length) {
+        return;
+    }
+
+    icono
+        .removeClass('fa-check')
+        .addClass('fa-times')
+        .css('color', '#FF0000');
+}

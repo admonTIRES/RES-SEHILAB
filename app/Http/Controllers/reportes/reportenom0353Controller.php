@@ -3487,20 +3487,147 @@ class reportenom0353Controller extends Controller
         ]);
     }
 
+
     public function crearRevisioninfopsico(Request $request)
     {
-
         try {
 
-            DB::beginTransaction();
+            $PROYECTO_ID =
+                $request->PROYECTO_ID;
 
+            if (
+                $PROYECTO_ID === null ||
+                $PROYECTO_ID === ''
+            ) {
+
+                return response()->json([
+                    'msj' =>
+                    'No se recibió el ID del proyecto.'
+                ], 422);
+            }
+
+
+            $respuestaEstados =
+                $this->consultarEstadosMenusReportePsico(
+                    $PROYECTO_ID
+                );
+
+            $resultadoEstados =
+                $respuestaEstados->getData(true);
+
+            $estados =
+                isset($resultadoEstados['estados']) &&
+                is_array($resultadoEstados['estados'])
+                ? $resultadoEstados['estados']
+                : [];
+
+
+            if (count($estados) === 0) {
+
+                return response()->json([
+                    'msj' =>
+                    'No fue posible validar la información del reporte.',
+
+                    'secciones_faltantes' =>
+                    []
+                ], 422);
+            }
+
+            $nombresSecciones = [
+                'menureporte_0' =>
+                'Portada',
+
+                'menureporte_1' =>
+                '1.- Introducción',
+
+                'menureporte_2' =>
+                '2.- Definiciones',
+
+                'menureporte_3_1' =>
+                '3.1.- Objetivo general',
+
+                'menureporte_3_2' =>
+                '3.2.- Objetivos específicos',
+
+                'menureporte_5_1' =>
+                '5.1.- Ubicación de la instalación',
+
+                'menureporte_5_2' =>
+                '5.2.- Descripción del proceso en la instalación',
+
+                'menureporte_5_3' =>
+                '5.3.- Descripción de las actividades del personal expuesto',
+
+                'menureporte_7_1' =>
+                '7.1.- Descripción del método realizado',
+
+                'menureporte_9_2' =>
+                '9.2.- Resultados obtenidos, concentrado de calificaciones globales',
+
+                'menureporte_9_3' =>
+                '9.3.- Resultados de la Guía I',
+
+                'menureporte_9_4_1' =>
+                '9.4.1.- Categoría ambiente de trabajo',
+
+                'menureporte_9_4_2' =>
+                '9.4.2.- Categoría factores propios de la actividad',
+
+                'menureporte_9_4_3' =>
+                '9.4.3.- Categoría organización del tiempo de trabajo',
+
+                'menureporte_9_4_' =>
+                '9.4.4.- Categoría liderazgo y relaciones en el trabajo',
+
+                'menureporte_9_4_5' =>
+                '9.4.5.- Categoría entorno organizacional',
+
+                'menureporte_10' =>
+                '10.- Conclusiones',
+
+                'menureporte_12_1' =>
+                '12.1.- Recomendaciones de control',
+
+                'menureporte_12_2' =>
+                '12.2.- Recomendaciones por categoría',
+
+                'menureporte_13' =>
+                '13.- Responsables del informe'
+            ];
+
+            $seccionesFaltantes = [];
+
+            foreach ($estados as $menuId => $completado) {
+
+                if (!$completado) {
+
+                    $seccionesFaltantes[] =
+                        isset($nombresSecciones[$menuId])
+                        ? $nombresSecciones[$menuId]
+                        : $menuId;
+                }
+            }
+
+        
+            if (count($seccionesFaltantes) > 0) {
+
+                return response()->json([
+                    'msj' =>
+                    'No se puede generar la revisión porque el reporte está incompleto.',
+
+                    'secciones_faltantes' =>
+                    $seccionesFaltantes
+                ], 422);
+            }
 
             $ultima =
                 versionesinfopsicoModel::where(
                     'PROYECTO_ID',
-                    $request->PROYECTO_ID
+                    $PROYECTO_ID
                 )
-                ->orderByDesc('NUMERO_REVISION')
+                ->orderByDesc(
+                    'NUMERO_REVISION'
+                )
                 ->first();
 
             if (
@@ -3510,43 +3637,43 @@ class reportenom0353Controller extends Controller
             ) {
 
                 return response()->json([
-
                     'msj' =>
-                    'La revisión ya fue finalizada'
-
-                ], 500);
+                    'La revisión ya fue finalizada.'
+                ], 422);
             }
+
+         
+            DB::beginTransaction();
 
             $numero = $ultima ? $ultima->NUMERO_REVISION + 1 : 0;
             $rutaDocumento = 'pendiente.docx';
             $revision = new versionesinfopsicoModel();
-            $revision->PROYECTO_ID = $request->PROYECTO_ID;
+            $revision->PROYECTO_ID = $PROYECTO_ID;
             $revision->NUMERO_REVISION = $numero;
-            $revision->FINALIZADO = 1;
+            $revision->FINALIZADO =1;
             $revision->FINALIZADO_POR = Auth::user()->id;
             $revision->FECHA_FINALIZADO = now();
             $revision->RUTA_DOCUMENTO = $rutaDocumento;
             $revision->save();
+
             DB::commit();
 
             return response()->json([
-
                 'msj' =>
                 'Revisión generada correctamente'
-
             ]);
         } catch (Exception $e) {
-
-            DB::rollBack();
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
 
             return response()->json([
-
                 'msj' =>
                 'Error: ' . $e->getMessage()
-
             ], 500);
         }
     }
+
 
     public function cancelarRevisionpsicoinfo(Request $request)
     {
@@ -4033,27 +4160,6 @@ class reportenom0353Controller extends Controller
 
             /// Descripción del método realizado para la evaluación de los Factores de Riesgo Psicosocial
             $plantillaword->setValue('DESCRIPCION_METODO', $datosGenerales->DESCRIPCION_METODO ?? 'No cargado');
-
-
-            //// CONCLUSIONES
-            $plantillaword->setValue('CONCLUSION_1', $datosGenerales->REPORTE_ACONTECIMIENTOS_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_ACONTECIMIENTOS_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_2', $datosGenerales->REPORTE_AMBIENTE_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_AMBIENTE_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_3', $datosGenerales->REPORTE_CONDICIONES_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_CONDICIONES_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_4', $datosGenerales->REPORTE_FACTORES_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_FACTORES_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_5', $datosGenerales->REPORTE_CARGA_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_CARGA_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_6', $datosGenerales->REPORTE_FALTA_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_FALTA_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_7', $datosGenerales->REPORTE_ORGANIZACION_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_ORGANIZACION_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_8', $datosGenerales->REPORTE_JORNADA_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_JORNADA_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_9', $datosGenerales->REPORTE_INTERFERENCIA_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_INTERFERENCIA_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_10', $datosGenerales->REPORTE_LIDERAZGORELACIONES_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_LIDERAZGORELACIONES_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_11', $datosGenerales->REPORTE_LIDERAZGO_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_LIDERAZGO_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_12', $datosGenerales->REPORTE_RELACIONES_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_RELACIONES_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_13', $datosGenerales->REPORTE_VIOLENCIA_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_VIOLENCIA_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_14', $datosGenerales->REPORTE_ENTORNO_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_ENTORNO_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_15', $datosGenerales->REPORTE_RECONOCIMIENTO_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_RECONOCIMIENTO_CONCLUSIONES) : 'No cargado');
-            $plantillaword->setValue('CONCLUSION_16', $datosGenerales->REPORTE_INSUFICIENTE_CONCLUSIONES ? htmlspecialchars($datosGenerales->REPORTE_INSUFICIENTE_CONCLUSIONES) : 'No cargado');
-
-
 
             //// RESPONSABLE 1
             if ($datosGenerales->INFORME_RESPONSABLE1DOCUMENTO) {
@@ -9689,8 +9795,6 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
 
     //// CONCLUSION JSON
 
-
-
     public function guardarinformeconclusionpsico(Request $request)
     {
         try {
@@ -9807,6 +9911,1063 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
                 'msj' =>
                 'Error: ' .
                     $e->getMessage()
+            ], 500);
+        }
+    }
+
+    //// DASHBOARD
+
+    public function obtenerTotalTrabajadoresATSpsico($PROYECTO_ID)
+    {
+        try {
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'total_trabajadores_ats' => 0
+                ], 404);
+            }
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'total_trabajadores_ats' => 0
+                ]);
+            }
+
+        
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAI_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAI_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAI_RESPUESTAS'
+                )
+                ->get();
+
+            $totalTrabajadoresATS = 0;
+
+            foreach ($registros as $registro) {
+
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAI_RESPUESTAS,
+                    true
+                );
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+                $respuestas = array_slice(
+                    $respuestas,
+                    0,
+                    15
+                );
+
+             
+                if (
+                    !array_key_exists(0, $respuestas) ||
+                    $respuestas[0] === null ||
+                    $respuestas[0] === '' ||
+                    !is_numeric($respuestas[0])
+                ) {
+                    continue;
+                }
+
+                $seccionI =
+                    ((int) $respuestas[0] === 1)
+                    ? 1
+                    : 0;
+             
+                if ($seccionI === 0) {
+                    continue;
+                }
+
+              
+                $respuestasNormalizadas = [];
+
+                for ($indice = 0; $indice < 15; $indice++) {
+
+                    if (
+                        array_key_exists($indice, $respuestas) &&
+                        $respuestas[$indice] !== null &&
+                        $respuestas[$indice] !== '' &&
+                        is_numeric($respuestas[$indice])
+                    ) {
+
+                        $respuestasNormalizadas[$indice] =
+                            ((int) $respuestas[$indice] === 1)
+                            ? 1
+                            : 0;
+                    } else {
+
+                        $respuestasNormalizadas[$indice] = 0;
+                    }
+                }
+
+            
+                $totalSeccionII =
+                    $respuestasNormalizadas[1] +
+                    $respuestasNormalizadas[2];
+
+        
+                $totalSeccionIII = 0;
+
+                for ($indice = 3; $indice <= 9; $indice++) {
+
+                    $totalSeccionIII +=
+                        $respuestasNormalizadas[$indice];
+                }
+
+
+                $totalSeccionIV = 0;
+
+                for ($indice = 10; $indice <= 14; $indice++) {
+
+                    $totalSeccionIV +=
+                        $respuestasNormalizadas[$indice];
+                }
+
+        
+                $requiereValoracionClinica =
+                    $totalSeccionII >= 1 ||
+                    $totalSeccionIII >= 3 ||
+                    $totalSeccionIV >= 2;
+
+                if ($requiereValoracionClinica) {
+
+                    $totalTrabajadoresATS++;
+                }
+            }
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'total_trabajadores_ats' => $totalTrabajadoresATS
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'total_trabajadores_ats' => 0
+            ], 500);
+        }
+    }
+
+    public function obtenerTotalTrabajadoresRequierenAtencionPsico($PROYECTO_ID)
+    {
+        try {
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'total_requieren_atencion' => 0,
+                    'total_muy_alto' => 0,
+                    'total_alto' => 0,
+                    'total_medio' => 0
+                ], 404);
+            }
+
+            $reconocimientoPsicoId =
+                $proyecto->reconocimiento_psico_id;
+
+            if (!$reconocimientoPsicoId) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'total_requieren_atencion' => 0,
+                    'total_muy_alto' => 0,
+                    'total_alto' => 0,
+                    'total_medio' => 0
+                ]);
+            }
+
+            $registros = DB::table(
+                'recopsicoTrabajadoresRespuestas'
+            )
+                ->where(
+                    'RECPSICO_ID',
+                    $reconocimientoPsicoId
+                )
+                ->whereNotNull(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->whereRaw(
+                    'TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""'
+                )
+                ->select(
+                    'RECPSICO_GUIAIII_RESPUESTAS'
+                )
+                ->get();
+
+            $totalMuyAlto = 0;
+            $totalAlto = 0;
+            $totalMedio = 0;
+
+            foreach ($registros as $registro) {
+
+                $respuestas = json_decode(
+                    $registro->RECPSICO_GUIAIII_RESPUESTAS,
+                    true
+                );
+
+                if (!is_array($respuestas)) {
+                    continue;
+                }
+
+                $respuestas = array_slice(
+                    $respuestas,
+                    0,
+                    72
+                );
+
+                $calificacionFinal = 0;
+
+                foreach ($respuestas as $respuesta) {
+
+                    if (
+                        $respuesta !== null &&
+                        $respuesta !== '' &&
+                        is_numeric($respuesta)
+                    ) {
+
+                        $calificacionFinal +=
+                            (float) $respuesta;
+                    }
+                }
+
+                if (
+                    $calificacionFinal >= 75 &&
+                    $calificacionFinal < 99
+                ) {
+
+                    $totalMedio++;
+
+                } elseif (
+                    $calificacionFinal >= 99 &&
+                    $calificacionFinal < 140
+                ) {
+
+                    $totalAlto++;
+
+                } elseif ($calificacionFinal >= 140) {
+
+                    $totalMuyAlto++;
+                }
+            }
+
+          
+            $totalRequierenAtencion =
+                $totalMedio +
+                $totalAlto +
+                $totalMuyAlto;
+
+            return response()->json([
+                'msj' =>
+                'Información consultada correctamente',
+
+                'total_requieren_atencion' =>
+                $totalRequierenAtencion,
+
+                'total_muy_alto' =>
+                $totalMuyAlto,
+
+                'total_alto' =>
+                $totalAlto,
+
+                'total_medio' =>
+                $totalMedio
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'total_requieren_atencion' => 0,
+                'total_muy_alto' => 0,
+                'total_alto' => 0,
+                'total_medio' => 0
+            ], 500);
+        }
+    }
+
+    public function obtenerCategoriaODominioMayorRiesgoPsico($PROYECTO_ID)
+    {
+        try {
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'nombre' => 'Sin información',
+                    'tipo' => '',
+                    'nivel' => '',
+                    'total_trabajadores' => 0
+                ], 404);
+            }
+
+            if (!$proyecto->reconocimiento_psico_id) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'nombre' => 'Sin información',
+                    'tipo' => '',
+                    'nivel' => '',
+                    'total_trabajadores' => 0
+                ]);
+            }
+
+           
+            $respuestaCategorias =
+                $this->obtenerGraficaCategoriasGuiaIIIPsicologia(
+                    $PROYECTO_ID
+                );
+
+            $respuestaDominios =
+                $this->obtenerGraficaDominiosGuiaIIIPsicologia(
+                    $PROYECTO_ID
+                );
+
+            $resultadoCategorias =
+                $respuestaCategorias->getData(true);
+
+            $resultadoDominios =
+                $respuestaDominios->getData(true);
+
+            $categorias =
+                isset($resultadoCategorias['data']) &&
+                is_array($resultadoCategorias['data'])
+                ? $resultadoCategorias['data']
+                : [];
+
+            $dominios =
+                isset($resultadoDominios['data']) &&
+                is_array($resultadoDominios['data'])
+                ? $resultadoDominios['data']
+                : [];
+
+          
+            $resultados = [];
+
+            foreach ($categorias as $categoria) {
+
+                $resultados[] = [
+                    'nombre' => isset($categoria['category'])
+                        ? $categoria['category']
+                        : 'Sin nombre',
+
+                    'tipo' => 'Categoría',
+
+                    'conteo_muy_alto' =>
+                    isset($categoria['conteo_muy_alto'])
+                        ? (int) $categoria['conteo_muy_alto']
+                        : 0,
+
+                    'conteo_alto' =>
+                    isset($categoria['conteo_alto'])
+                        ? (int) $categoria['conteo_alto']
+                        : 0,
+
+                    'conteo_medio' =>
+                    isset($categoria['conteo_medio'])
+                        ? (int) $categoria['conteo_medio']
+                        : 0,
+
+                    'conteo_bajo' =>
+                    isset($categoria['conteo_bajo'])
+                        ? (int) $categoria['conteo_bajo']
+                        : 0,
+
+                    'conteo_nulo' =>
+                    isset($categoria['conteo_nulo'])
+                        ? (int) $categoria['conteo_nulo']
+                        : 0
+                ];
+            }
+
+            foreach ($dominios as $dominio) {
+
+                $resultados[] = [
+                    'nombre' => isset($dominio['category'])
+                        ? $dominio['category']
+                        : 'Sin nombre',
+
+                    'tipo' => 'Dominio',
+
+                    'conteo_muy_alto' =>
+                    isset($dominio['conteo_muy_alto'])
+                        ? (int) $dominio['conteo_muy_alto']
+                        : 0,
+
+                    'conteo_alto' =>
+                    isset($dominio['conteo_alto'])
+                        ? (int) $dominio['conteo_alto']
+                        : 0,
+
+                    'conteo_medio' =>
+                    isset($dominio['conteo_medio'])
+                        ? (int) $dominio['conteo_medio']
+                        : 0,
+
+                    'conteo_bajo' =>
+                    isset($dominio['conteo_bajo'])
+                        ? (int) $dominio['conteo_bajo']
+                        : 0,
+
+                    'conteo_nulo' =>
+                    isset($dominio['conteo_nulo'])
+                        ? (int) $dominio['conteo_nulo']
+                        : 0
+                ];
+            }
+
+            
+            $nivelesPrioridad = [
+                [
+                    'nivel' => 'Muy alto',
+                    'campo' => 'conteo_muy_alto'
+                ],
+                [
+                    'nivel' => 'Alto',
+                    'campo' => 'conteo_alto'
+                ],
+                [
+                    'nivel' => 'Medio',
+                    'campo' => 'conteo_medio'
+                ],
+                [
+                    'nivel' => 'Bajo',
+                    'campo' => 'conteo_bajo'
+                ],
+                [
+                    'nivel' => 'Nulo',
+                    'campo' => 'conteo_nulo'
+                ]
+            ];
+
+            $seleccionado = null;
+            $nivelSeleccionado = '';
+            $mayorCantidad = 0;
+
+            foreach ($nivelesPrioridad as $nivel) {
+
+                $mejorResultadoNivel = null;
+                $mayorCantidadNivel = 0;
+
+                foreach ($resultados as $resultado) {
+
+                    $cantidad =
+                        isset($resultado[$nivel['campo']])
+                        ? (int) $resultado[$nivel['campo']]
+                        : 0;
+
+                    if ($cantidad > $mayorCantidadNivel) {
+
+                        $mayorCantidadNivel = $cantidad;
+                        $mejorResultadoNivel = $resultado;
+                    }
+                }
+
+                if (
+                    $mejorResultadoNivel !== null &&
+                    $mayorCantidadNivel > 0
+                ) {
+
+                    $seleccionado = $mejorResultadoNivel;
+                    $nivelSeleccionado = $nivel['nivel'];
+                    $mayorCantidad = $mayorCantidadNivel;
+
+                    break;
+                }
+            }
+
+            if ($seleccionado === null) {
+
+                return response()->json([
+                    'msj' => 'No hay información disponible',
+                    'nombre' => 'Sin información',
+                    'tipo' => '',
+                    'nivel' => '',
+                    'total_trabajadores' => 0
+                ]);
+            }
+
+            $nombreLimpio = preg_replace(
+                '/\s+/',
+                ' ',
+                str_replace(
+                    ["\r", "\n"],
+                    ' ',
+                    $seleccionado['nombre']
+                )
+            );
+
+            $nombreLimpio = trim($nombreLimpio);
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'nombre' => $nombreLimpio,
+                'tipo' => $seleccionado['tipo'],
+                'nivel' => $nivelSeleccionado,
+                'total_trabajadores' => $mayorCantidad
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'nombre' => 'Sin información',
+                'tipo' => '',
+                'nivel' => '',
+                'total_trabajadores' => 0
+            ], 500);
+        }
+    }
+
+    public function obtenerGraficasMayorRiesgoPsico($PROYECTO_ID)
+    {
+        try {
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'categorias' => [],
+                    'dominios' => []
+                ], 404);
+            }
+
+            if (!$proyecto->reconocimiento_psico_id) {
+
+                return response()->json([
+                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
+                    'categorias' => [],
+                    'dominios' => []
+                ]);
+            }
+
+            $respuestaAmbiente =
+                $this->obtenerGraficaAmbienteGuiaIII(
+                    $PROYECTO_ID
+                )->getData(true);
+
+            $respuestaFactores =
+                $this->obtenerGraficaFactoresGuiaIII(
+                    $PROYECTO_ID
+                )->getData(true);
+
+            $respuestaOrganizacion =
+                $this->obtenerGraficaOrganizacionGuiaIII(
+                    $PROYECTO_ID
+                )->getData(true);
+
+            $respuestaLiderazgo =
+                $this->obtenerGraficaLiderazgoGuiaIII(
+                    $PROYECTO_ID
+                )->getData(true);
+
+            $respuestaEntorno =
+                $this->obtenerGraficaEntornoGuiaIII(
+                    $PROYECTO_ID
+                )->getData(true);
+
+          
+            $categoriasOriginales = [
+                'Ambiente de trabajo' =>
+                isset($respuestaAmbiente['categoria'])
+                    ? $respuestaAmbiente['categoria']
+                    : [],
+
+                'Factores propios de la actividad' =>
+                isset($respuestaFactores['categoria'])
+                    ? $respuestaFactores['categoria']
+                    : [],
+
+                'Organización del tiempo de trabajo' =>
+                isset($respuestaOrganizacion['categoria'])
+                    ? $respuestaOrganizacion['categoria']
+                    : [],
+
+                'Liderazgo y relaciones en el trabajo' =>
+                isset($respuestaLiderazgo['categoria'])
+                    ? $respuestaLiderazgo['categoria']
+                    : [],
+
+                'Entorno organizacional' =>
+                isset($respuestaEntorno['categoria'])
+                    ? $respuestaEntorno['categoria']
+                    : []
+            ];
+
+    
+            $dominiosOriginales = [
+                'Condiciones en el ambiente de trabajo' =>
+                isset($respuestaAmbiente['dominio'])
+                    ? $respuestaAmbiente['dominio']
+                    : [],
+
+                'Carga de trabajo' =>
+                isset($respuestaFactores['carga_trabajo'])
+                    ? $respuestaFactores['carga_trabajo']
+                    : [],
+
+                'Falta de control sobre el trabajo' =>
+                isset($respuestaFactores['falta_control'])
+                    ? $respuestaFactores['falta_control']
+                    : [],
+
+                'Jornada de trabajo' =>
+                isset($respuestaOrganizacion['jornada_trabajo'])
+                    ? $respuestaOrganizacion['jornada_trabajo']
+                    : [],
+
+                'Interferencia trabajo-familia' =>
+                isset(
+                    $respuestaOrganizacion['interferencia_trabajo_familia']
+                )
+                    ? $respuestaOrganizacion['interferencia_trabajo_familia']
+                    : [],
+
+                'Liderazgo' =>
+                isset($respuestaLiderazgo['liderazgo'])
+                    ? $respuestaLiderazgo['liderazgo']
+                    : [],
+
+                'Relaciones en el trabajo' =>
+                isset($respuestaLiderazgo['relaciones_trabajo'])
+                    ? $respuestaLiderazgo['relaciones_trabajo']
+                    : [],
+
+                'Violencia' =>
+                isset($respuestaLiderazgo['violencia'])
+                    ? $respuestaLiderazgo['violencia']
+                    : [],
+
+                'Reconocimiento del desempeño' =>
+                isset(
+                    $respuestaEntorno['reconocimiento_desempeno']
+                )
+                    ? $respuestaEntorno['reconocimiento_desempeno']
+                    : [],
+
+                'Insuficiente sentido de pertenencia e inestabilidad' =>
+                isset($respuestaEntorno['sentido_pertenencia'])
+                    ? $respuestaEntorno['sentido_pertenencia']
+                    : []
+            ];
+
+           
+            $niveles = [
+                [
+                    'nombre' => 'Muy alto',
+                    'color' => '#D90012'
+                ],
+                [
+                    'nombre' => 'Alto',
+                    'color' => '#FF8300'
+                ],
+                [
+                    'nombre' => 'Medio',
+                    'color' => '#FFD966'
+                ],
+                [
+                    'nombre' => 'Bajo',
+                    'color' => '#00B050'
+                ],
+                [
+                    'nombre' => 'Nulo',
+                    'color' => '#00B0F0'
+                ]
+            ];
+
+            $seleccionarNivel = function ($conteos) use ($niveles) {
+
+                foreach ($niveles as $nivel) {
+
+                    $nombreNivel = $nivel['nombre'];
+
+                    $cantidad =
+                        isset($conteos[$nombreNivel])
+                        ? (int) $conteos[$nombreNivel]
+                        : 0;
+
+                    if ($cantidad > 0) {
+
+                        return [
+                            'value' => $cantidad,
+                            'nivel' => $nombreNivel,
+                            'color' => $nivel['color']
+                        ];
+                    }
+                }
+
+                return [
+                    'value' => 0,
+                    'nivel' => 'Sin información',
+                    'color' => '#BDBDBD'
+                ];
+            };
+
+            $categorias = [];
+
+            foreach (
+                $categoriasOriginales as
+                $nombreCategoria => $conteos
+            ) {
+
+                $resultado =
+                    $seleccionarNivel($conteos);
+
+                $categorias[] = [
+                    'category' => $nombreCategoria,
+                    'value' => $resultado['value'],
+                    'nivel' => $resultado['nivel'],
+                    'color' => $resultado['color']
+                ];
+            }
+
+            $dominios = [];
+
+            foreach (
+                $dominiosOriginales as
+                $nombreDominio => $conteos
+            ) {
+
+                $resultado =
+                    $seleccionarNivel($conteos);
+
+                $dominios[] = [
+                    'category' => $nombreDominio,
+                    'value' => $resultado['value'],
+                    'nivel' => $resultado['nivel'],
+                    'color' => $resultado['color']
+                ];
+            }
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'categorias' => $categorias,
+                'dominios' => $dominios
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'categorias' => [],
+                'dominios' => []
+            ], 500);
+        }
+    }
+
+    public function obtenerRecomendacionesPrioritariasPsico($PROYECTO_ID)
+    {
+        try {
+
+            $proyecto = proyectoModel::find($PROYECTO_ID);
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'data' => []
+                ], 404);
+            }
+
+            $recomendaciones = DB::table(
+                'recomendacionesinformepsico as ri'
+            )
+                ->join(
+                    'psicocat_recomendacionescontrol as cr',
+                    'cr.ID_RECOMENDACION_CONTROL_INFORME',
+                    '=',
+                    'ri.CATALOGO_RECOMENDACIONES_ID'
+                )
+                ->where(
+                    'ri.PROYECTO_ID',
+                    $PROYECTO_ID
+                )
+                ->where(
+                    'ri.ES_PRIORITARIA',
+                    1
+                )
+                ->select(
+                    'ri.ID_RECOMENDACIONES_INFORME_PSICO',
+                    'ri.CATALOGO_RECOMENDACIONES_ID',
+                    'cr.RECOMENDACION_CONTROL'
+                )
+                ->orderBy(
+                    'ri.ID_RECOMENDACIONES_INFORME_PSICO',
+                    'asc'
+                )
+                ->get();
+
+            return response()->json([
+                'msj' => 'Información consultada correctamente',
+                'data' => $recomendaciones
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => []
+            ], 500);
+        }
+    }
+
+    public function consultarEstadosMenusReportePsico($PROYECTO_ID)
+    {
+        try {
+
+            $proyecto = proyectoModel::find(
+                $PROYECTO_ID
+            );
+
+            if (!$proyecto) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'estados' => []
+                ], 404);
+            }
+
+            $datosGenerales = DB::table(
+                'datosgeneralesinformePsico'
+            )
+                ->where(
+                    'PROYECTO_ID',
+                    $PROYECTO_ID
+                )
+                ->first();
+
+            $tieneValor = function ($valor) {
+
+                if ($valor === null) {
+                    return false;
+                }
+
+                if (is_string($valor)) {
+
+                    return trim($valor) !== '';
+                }
+
+                if (is_array($valor)) {
+
+                    return count($valor) > 0;
+                }
+
+                return true;
+            };
+
+         
+            $campoCompleto = function (
+                $campo
+            ) use (
+                $datosGenerales,
+                $tieneValor
+            ) {
+
+                if (!$datosGenerales) {
+                    return false;
+                }
+
+                if (!property_exists(
+                    $datosGenerales,
+                    $campo
+                )) {
+                    return false;
+                }
+
+                return $tieneValor(
+                    $datosGenerales->{$campo}
+                );
+            };
+
+            $todosLosCamposCompletos = function (
+                $campos
+            ) use (
+                $campoCompleto
+            ) {
+
+                foreach ($campos as $campo) {
+
+                    if (!$campoCompleto($campo)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+
+            $estados = [];
+
+            $estados['menureporte_0'] =
+                DB::table(
+                    'recursosPortadasInformePsico'
+                )
+                ->where(
+                    'PROYECTO_ID',
+                    $PROYECTO_ID
+                )
+                ->exists();
+
+            $estados['menureporte_1'] =
+                $campoCompleto(
+                    'INFORME_INTRODUCCION'
+                );
+
+            $estados['menureporte_2'] =
+                DB::table(
+                    'definicionesinformepsico'
+                )
+                ->where(
+                    'PROYECTO_ID',
+                    $PROYECTO_ID
+                )
+                ->exists();
+
+            $estados['menureporte_3_1'] =
+                $campoCompleto(
+                    'INFORME_OBJETIVOGENERALES'
+                );
+
+            $estados['menureporte_3_2'] =
+                $campoCompleto(
+                    'INFORME_OBJETIVOSESPECIFICOS'
+                );
+
+            $estados['menureporte_5_1'] =
+                $todosLosCamposCompletos([
+                    'INFORME_UBICACIONINSTALACION',
+                    'RUTA_IMAGEN_UBICACION'
+                ]);
+
+            $estados['menureporte_5_2'] =
+                $campoCompleto(
+                    'INFORME_PROCESOINSTALACION'
+                );
+
+            $estados['menureporte_5_3'] =
+                $campoCompleto(
+                    'INFORME_ACTIVIDADPRINCIPAL'
+                );
+
+            $estados['menureporte_7_1'] =
+                $campoCompleto(
+                    'DESCRIPCION_METODO'
+                );
+
+            $estados['menureporte_9_2'] =
+                $todosLosCamposCompletos([
+                    'ANALISIS_GRAFICACALIFICACIONES',
+                    'ANALISIS_GRAFICA_CATEGORIAS',
+                    'ANALISIS_GRAFICA_DOMINIOS'
+                ]);
+
+                
+            $estados['menureporte_9_3'] =
+                $campoCompleto(
+                    'ANALISIS_GRAFICA_GUIA1'
+                );
+
+            $estados['menureporte_9_4_1'] =
+                $campoCompleto(
+                    'ANALISIS_GRAFICA_CATAMBIENTE'
+                );
+
+            $estados['menureporte_9_4_2'] =
+                $campoCompleto(
+                    'ANALISIS_GRAFICA_CATFACTORES'
+                );
+
+            $estados['menureporte_9_4_3'] =
+                $campoCompleto(
+                    'ANALISIS_GRAFICA_CATORGANIZACION'
+                );
+
+            $estados['menureporte_9_4_4'] =
+                $campoCompleto(
+                    'ANALISIS_GRAFICA_CATLIDERAZGO'
+                );
+
+
+            $estados['menureporte_9_4_5'] =
+                $campoCompleto(
+                    'ANALISIS_GRAFICA_CATENTORNO'
+                );
+
+           
+            $estados['menureporte_10'] =
+                $campoCompleto(
+                    'INFORME_CONCLUSION'
+                );
+
+          
+            $estados['menureporte_12_1'] =
+                DB::table(
+                    'recomendacionesinformepsico'
+                )
+                ->where(
+                    'PROYECTO_ID',
+                    $PROYECTO_ID
+                )
+                ->exists();
+
+         
+            $estados['menureporte_12_2'] =
+                $todosLosCamposCompletos([
+                    'NIVEL_RIESGO_AMBIENTE',
+                    'NIVEL_RIESGO_FACTORES',
+                    'NIVEL_RIESGO_ORGANIZACION',
+                    'NIVEL_RIESGO_LIDERAZGO',
+                    'NIVEL_RIESGO_ENTORNO'
+                ]);
+
+          
+            $estados['menureporte_13'] =
+                $todosLosCamposCompletos([
+                    'INFORME_RESPONSABLE1',
+                    'INFORME_RESPONSABLE1CARGO',
+                    'INFORME_RESPONSABLE1DOCUMENTO',
+                    'INFORME_RESPONSABLE2',
+                    'INFORME_RESPONSABLE2CARGO',
+                    'INFORME_RESPONSABLE2DOCUMENTO'
+                ]);
+
+            return response()->json([
+                'msj' =>
+                'Estados consultados correctamente',
+
+                'estados' =>
+                $estados
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' =>
+                'Error: ' . $e->getMessage(),
+
+                'estados' =>
+                []
             ], 500);
         }
     }
