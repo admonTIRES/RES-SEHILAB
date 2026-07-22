@@ -75,7 +75,6 @@
                                 <th class="text-center">Departamento</th>
                                 <th class="text-center">Instalación</th>
                                 <th class="text-center">Área evaluada</th>
-                                <th class="text-center">Categoría</th>
                                 <th class="text-center">Agente o factor de riesgo</th>
                                 <th class="text-center">Recomendaciones</th>
                             </tr>
@@ -98,5 +97,5 @@
     var estatus = <?php echo json_encode($estatus); ?>;
     var recsensorial = <?php echo json_encode($recsensorial); ?>;
 </script>
-<script src="/js_sitio/reportes/reportematrizreco.js?v=1.8"></script>
+<script src="/js_sitio/reportes/reportematrizreco.js?v=2"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

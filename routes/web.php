@@ -1147,7 +1147,7 @@ Route::get('reportepoeword/{proyecto_id}', ['as' => 'reportes.reportepoeword', '
 Route::get('descargarPortadaInformes/{proyecto_id}/{tipo}', ['as' => 'reportes.descargarPortadaInformes', 'uses' => 'reportes\reportesController@descargarPortadaInformes']);
 
 
-Route::post('reportematrizlabguardar', ['as' => 'reportes.reportematrizlabguardar', 'uses' => 'reportes\reportesController@guardarMatrizLaboral']);
+Route::post('reportematrizlabguardar', ['as' => 'reportes.reportematrizlabguardar', 'uses' => 'reportes\reportesController@reportematrizlabguardar']);
 
 Route::post('guardarmeldraft', ['as' => 'reportes.guardarmeldraft', 'uses' => 'reportes\reportesController@guardarmeldraft']);
 

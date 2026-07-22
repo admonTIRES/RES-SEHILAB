@@ -213,186 +213,44 @@ function tabla_matrizlab(proyecto_id) {
 
 
 
-// $('#botonguardar_reporte_matriz').on('click', async function () {
-//     const data = $('#tabla_matrizlab').DataTable().rows().data().toArray();
-//     const filas = [];
-
-//     data.forEach(row => {
-//         const numero_registro = row.numero_registro;
-//         const tr = $(`.fila-matrizlab[data-numero-registro="${numero_registro}"]`);
-//         const medidas = [];
-
-//         const container = $(`.contenedor-recomendaciones[data-recomendaciones="${numero_registro}"]`);
-//         if (container.length) {
-//             container.find('.recomendacion-bloque').each(function () {
-//                 const bloque = $(this);
-//                 const descripcion = bloque.find('textarea').val()?.trim() || '';
-//                 const seleccionado = bloque.find('input[type="checkbox"]').is(':checked');
-//                 medidas.push({ descripcion, seleccionado });
-//             });
-//         }
-
-//         const fila = {
-//             numero_registro,
-//             area_id: row.recsensorialarea_nombre.match(/\(ID: (\d+)\)/)?.[1] || 0,
-//             agente: row.agente,
-//             categoria: row.categoria,
-//             recsensorialarea_numerotrabajadores: row.recsensorialarea_numerotrabajadores,
-//             recsensorialarea_tiempoexposicion: row.recsensorialarea_tiempoexposicion,
-//             recsensorialarea_indicepeligro: tr.find('.ip-select').val() ?? '',
-//             recsensorialarea_indiceexposicion: tr.find('.ie-select').val() ?? '',
-//             recsensorialarea_riesgo: tr.find('.riesgo-resultado').text() ?? '',
-//             recsensorialarea_lmpnmp: row.recsensorialarea_lmpnmp,
-//             recsensorialarea_cumplimiento: row.recsensorialarea_cumplimiento,
-//             recsensorialarea_medidas: medidas
-//         };
-
-//         filas.push(fila);
-//     });
-
-//     if (!filas.length) {
-//         alertToast('No hay datos para guardar.', 'warning');
-//         return;
-//     }
-
-//     const confirmacion = await Swal.fire({
-//         title: '¿Desea guardar la matriz?',
-//         icon: 'question',
-//         showCancelButton: true,
-//         confirmButtonText: 'Sí, guardar',
-//         cancelButtonText: 'Cancelar'
-//     });
-
-//     if (!confirmacion.isConfirmed) {
-//         return;
-//     }
-
-//     try {
-//         const res = await $.ajax({
-//             url: '/reportematrizlabguardar',
-//             method: 'POST',
-//             data: {
-//                 proyecto_id: proyecto.id,
-//                 filas,
-//                 _token: $('meta[name="csrf-token"]').attr('content')
-//             }
-//         });
-
-//         if (res.success) {
-//             await Swal.fire({
-//                 title: 'Éxito',
-//                 text: 'Matriz guardada correctamente.',
-//                 icon: 'success'
-//             });
-//         } else {
-//             await Swal.fire({
-//                 title: 'Error',
-//                 text: res.message || 'Error al guardar la matriz.',
-//                 icon: 'error'
-//             });
-//         }
-//     } catch (err) {
-//         console.error(err);
-//         await Swal.fire({
-//             title: 'Error',
-//             text: 'Error de conexión al guardar matriz.',
-//             icon: 'error'
-//         });
-//     }
-// });
-
-
-
-$('#botonguardar_reporte_matriz').on('click', async function (e) {
-
-    e.preventDefault();
-
-    const token = $('meta[name="csrf-token"]').attr('content');
-
-    if (!token) {
-        await Swal.fire({
-            title: 'Error',
-            text: 'No se encontró el token de seguridad. Recarga la página.',
-            icon: 'error'
-        });
-
-        return;
-    }
-
-    const data = $('#tabla_matrizlab')
-        .DataTable()
-        .rows()
-        .data()
-        .toArray();
-
+$('#botonguardar_reporte_matriz').on('click', async function () {
+    const data = $('#tabla_matrizlab').DataTable().rows().data().toArray();
     const filas = [];
 
+        const token = $('meta[name="csrf-token"]').attr('content');
+
+    
     data.forEach(row => {
-
         const numero_registro = row.numero_registro;
-
-        const tr = $(
-            `.fila-matrizlab[data-numero-registro="${numero_registro}"]`
-        );
-
+        const tr = $(`.fila-matrizlab[data-numero-registro="${numero_registro}"]`);
         const medidas = [];
 
-        const container = $(
-            `.contenedor-recomendaciones[data-recomendaciones="${numero_registro}"]`
-        );
-
+        const container = $(`.contenedor-recomendaciones[data-recomendaciones="${numero_registro}"]`);
         if (container.length) {
-
             container.find('.recomendacion-bloque').each(function () {
-
                 const bloque = $(this);
-
-                const descripcion =
-                    bloque.find('textarea').val()?.trim() || '';
-
-                const seleccionado =
-                    bloque.find('input[type="checkbox"]').is(':checked');
-
-                medidas.push({
-                    descripcion: descripcion,
-                    seleccionado: seleccionado
-                });
+                const descripcion = bloque.find('textarea').val()?.trim() || '';
+                const seleccionado = bloque.find('input[type="checkbox"]').is(':checked');
+                medidas.push({ descripcion, seleccionado });
             });
         }
 
-        filas.push({
-            numero_registro: numero_registro,
-
-            area_id:
-                row.recsensorialarea_nombre
-                    .match(/\(ID: (\d+)\)/)?.[1] || 0,
-
-            agente: row.agente || '',
-            categoria: row.categoria || '',
-
-            recsensorialarea_numerotrabajadores:
-                row.recsensorialarea_numerotrabajadores || '',
-
-            recsensorialarea_tiempoexposicion:
-                row.recsensorialarea_tiempoexposicion || '',
-
-            recsensorialarea_indicepeligro:
-                tr.find('.ip-select').val() || '',
-
-            recsensorialarea_indiceexposicion:
-                tr.find('.ie-select').val() || '',
-
-            recsensorialarea_riesgo:
-                tr.find('.riesgo-resultado').text().trim() || '',
-
-            recsensorialarea_lmpnmp:
-                row.recsensorialarea_lmpnmp || '',
-
-            recsensorialarea_cumplimiento:
-                row.recsensorialarea_cumplimiento || '',
-
+        const fila = {
+            numero_registro,
+            area_id: row.recsensorialarea_nombre.match(/\(ID: (\d+)\)/)?.[1] || 0,
+            agente: row.agente,
+            categoria: row.categoria,
+            recsensorialarea_numerotrabajadores: row.recsensorialarea_numerotrabajadores,
+            recsensorialarea_tiempoexposicion: row.recsensorialarea_tiempoexposicion,
+            recsensorialarea_indicepeligro: tr.find('.ip-select').val() ?? '',
+            recsensorialarea_indiceexposicion: tr.find('.ie-select').val() ?? '',
+            recsensorialarea_riesgo: tr.find('.riesgo-resultado').text() ?? '',
+            recsensorialarea_lmpnmp: row.recsensorialarea_lmpnmp,
+            recsensorialarea_cumplimiento: row.recsensorialarea_cumplimiento,
             recsensorialarea_medidas: medidas
-        });
+        };
+
+        filas.push(fila);
     });
 
     if (!filas.length) {
@@ -414,60 +272,60 @@ $('#botonguardar_reporte_matriz').on('click', async function (e) {
 
     try {
 
-        const res = await $.ajax({
-            url: '/reportematrizlabguardar',
-            type: 'POST',
+            const res = await $.ajax({
+                url: '/reportematrizlabguardar',
+                type: 'POST',
 
-            data: {
-                _token: token,
-                proyecto_id: proyecto.id,
-                filas: filas
-            },
+                data: JSON.stringify({
+                    proyecto_id: proyecto.id,
+                    filas: filas
+                }),
 
-            headers: {
-                'X-CSRF-TOKEN': token
-            }
-        });
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
 
-        if (res.success) {
-
-            await Swal.fire({
-                title: 'Éxito',
-                text: res.message || 'Matriz guardada correctamente.',
-                icon: 'success'
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
             });
 
-        } else {
+            if (res.success) {
+
+                await Swal.fire({
+                    title: 'Éxito',
+                    text: res.message || 'Matriz guardada correctamente.',
+                    icon: 'success'
+                });
+
+            } else {
+
+                await Swal.fire({
+                    title: 'Error',
+                    text: res.message || 'Error al guardar la matriz.',
+                    icon: 'error'
+                });
+            }
+
+        } catch (err) {
+
+            console.error(err);
+
+            let mensaje = 'Error de conexión al guardar la matriz.';
+
+            if (err.responseJSON && err.responseJSON.message) {
+                mensaje = err.responseJSON.message;
+            }
 
             await Swal.fire({
                 title: 'Error',
-                text: res.message || 'Error al guardar la matriz.',
+                text: mensaje,
                 icon: 'error'
             });
         }
-
-    } catch (err) {
-
-        console.error(err);
-
-        let mensaje = 'Error de conexión al guardar la matriz.';
-
-        if (err.status === 419) {
-            mensaje = 'La sesión expiró o el token de seguridad no es válido. Recarga la página.';
-        } else if (
-            err.responseJSON &&
-            err.responseJSON.message
-        ) {
-            mensaje = err.responseJSON.message;
-        }
-
-        await Swal.fire({
-            title: 'Error',
-            text: mensaje,
-            icon: 'error'
-        });
-    }
 });
+
+
+
 
 
 function calcularRiesgoPrioridad(ip, ie) {
