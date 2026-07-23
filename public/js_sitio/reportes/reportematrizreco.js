@@ -5,10 +5,6 @@
 var opcion = 0
 var ruta_storage_guardar = '/reportes';
 
-//=================================================
-// TABLA MEL DRAFT
-//=================================================
-
 var reporteregistro_id = 0; 
 var areas_poe = 1;
 
@@ -28,63 +24,32 @@ function tabla_matrizreco(proyecto_id,reporteregistro_id,areas_poe)
 {
     try {
 
-        var ruta =
-            '/matrizrecomendaciones/' +
-            proyecto_id +
-            '/' +
-            reporteregistro_id +
-            '/' +
-            areas_poe;
+        var ruta = '/matrizrecomendaciones/' + proyecto_id + '/' + reporteregistro_id + '/' +areas_poe;
 
-        if (
-            $.fn.DataTable.isDataTable(
-                '#tabla_matrizreco'
-            )
-        ) {
-            $('#tabla_matrizreco')
-                .DataTable()
-                .clear()
-                .destroy();
+        if ($.fn.DataTable.isDataTable('#tabla_matrizreco'))
+        {
+            $('#tabla_matrizreco').DataTable().clear().destroy();
         }
 
         datatable_reporte_melreco =
             $('#tabla_matrizreco').DataTable({
-
                 ajax: {
                     url: ruta,
                     type: 'GET',
                     cache: false,
                     dataType: 'json',
-
                     dataSrc: function (json) {
-
-                        if (
-                            !json ||
-                            json.success === false ||
-                            !Array.isArray(json.data)
-                        ) {
-                            console.warn(
-                                'No se recibieron datos válidos:',
-                                json
-                            );
-
+                        if (!json || json.success === false || !Array.isArray(json.data))
+                        {
+                            console.warn('No se recibieron datos válidos:',json);
                             return [];
                         }
-
                         return json.data;
                     },
 
-                    error: function (
-                        xhr,
-                        error,
-                        thrown
-                    ) {
-                        console.error(
-                            'Error al cargar DataTable:',
-                            error,
-                            thrown,
-                            xhr.responseText
-                        );
+                    error: function (xhr,error,thrown)
+                    {
+                        console.error('Error al cargar DataTable:',error,thrown,xhr.responseText);
                     }
                 },
 
@@ -106,37 +71,27 @@ function tabla_matrizreco(proyecto_id,reporteregistro_id,areas_poe)
                     },
                     {
                         data: 'reportearea_nombre',
-                        defaultContent: '',
+                        defaultContent: '-',
                         orderable: false
                     },
                     {
                         data: 'nombre_agente',
-                        defaultContent: '',
+                        defaultContent: '-',
                         orderable: false
                     },
                     {
                         data: 'recomendaciones',
-                        defaultContent: '',
+                        defaultContent: '-',
                         orderable: false,
                         searchable: false
                     }
                 ],
 
-                /*
-                 * Solamente se agrupan:
-                 *
-                 * 1 = Departamento
-                 * 2 = Instalación
-                 *
-                 * Las áreas y agentes ya aparecen una sola vez.
-                 */
                 rowsGroup: [1, 2],
-
                 ordering: false,
                 processing: true,
                 searching: true,
                 paging: true,
-
                 pageLength: 30,
 
                 lengthMenu: [
@@ -145,35 +100,15 @@ function tabla_matrizreco(proyecto_id,reporteregistro_id,areas_poe)
                 ],
 
                 language: {
-                    lengthMenu:
-                        'Mostrar _MENU_ Registros',
-
-                    zeroRecords:
-                        'No se encontraron registros',
-
-                    info:
-                        'Página _PAGE_ de _PAGES_ ' +
-                        '(Total _TOTAL_ registros)',
-
-                    infoEmpty:
-                        'No se encontraron registros',
-
-                    infoFiltered:
-                        '(Filtrado de _MAX_ registros)',
-
-                    emptyTable:
-                        'No hay datos disponibles en la tabla',
-
-                    loadingRecords:
-                        'Cargando datos...',
-
-                    processing:
-                        'Procesando ' +
-                        "<i class='fa fa-spin " +
-                        "fa-spinner fa-3x'></i>",
-
+                    lengthMenu:'Mostrar _MENU_ Registros',
+                    zeroRecords:'No se encontraron registros',
+                    info:'Página _PAGE_ de _PAGES_ ' + '(Total _TOTAL_ registros)',
+                    infoEmpty:'No se encontraron registros',
+                    infoFiltered: '(Filtrado de _MAX_ registros)',
+                    emptyTable: 'No hay datos disponibles en la tabla',
+                    loadingRecords: 'Cargando datos...',
+                    processing:'Procesando ' + "<i class='fa fa-spin " + "fa-spinner fa-3x'></i>",
                     search: 'Buscar',
-
                     paginate: {
                         first: 'Primera',
                         last: 'Última',
@@ -183,27 +118,16 @@ function tabla_matrizreco(proyecto_id,reporteregistro_id,areas_poe)
                 },
 
                 createdRow: function (row, data) {
-
                     $(row)
                         .addClass('fila-matrizreco')
-                        .attr(
-                            'data-numero-registro',
-                            data.numero_registro
-                        )
-                        .attr(
-                            'data-area-id',
-                            data.area_id || 0
-                        )
-                        .attr(
-                            'data-agente-id',
-                            data.agente_id || 0
-                        );
+                        .attr('data-numero-registro',data.numero_registro)
+                        .attr('data-area-id',data.area_id)
+                        .attr('data-agente-id',data.agente_id)
+                        .attr('data-tipo-area',data.tipo_area);
                 },
 
                 drawCallback: function () {
-
-                    $('[data-toggle="tooltip"]')
-                        .tooltip();
+                    $('[data-toggle="tooltip"]').tooltip();
                 }
             });
 
@@ -217,181 +141,123 @@ function tabla_matrizreco(proyecto_id,reporteregistro_id,areas_poe)
 }
 
 
-
-$('#btn_guardar_recomendaciones').on(
-    'click',
+$('#btn_guardar_recomendaciones').on('click',
     async function (e) {
 
         e.preventDefault();
-
         const proyecto_id = proyecto.id;
 
-        const token =
-            $('meta[name="csrf-token"]')
-                .attr('content');
+        const token = $('meta[name="csrf-token"]').attr('content');
 
-      
-        const agentesGuardar = {};
-
-        if (
-            !$.fn.DataTable.isDataTable(
-                '#tabla_matrizreco'
-            )
-        ) {
+        if (!$.fn.DataTable.isDataTable('#tabla_matrizreco'))
+        {
             await Swal.fire({
                 title: 'Advertencia',
-                text: 'La tabla de recomendaciones no está disponible.',
+                text:'La tabla de recomendaciones no está disponible.',
                 icon: 'warning',
                 confirmButtonText: 'Entendido'
             });
-
             return;
         }
+        const tabla = $('#tabla_matrizreco').DataTable();
 
-        const tabla =
-            $('#tabla_matrizreco').DataTable();
-
-        
+        const combinacionesGuardar = {};
         tabla.rows().every(function () {
-
             const row = this.data();
             const nodo = this.node();
-
-            if (
-                !row ||
-                !row.agente_id ||
-                parseInt(row.agente_id) === 0
-            ) {
+            if (!row || !row.area_id || parseInt(row.area_id) === 0 || !row.agente_id || parseInt(row.agente_id) === 0)
+            {
                 return;
             }
 
-            const agente_id = row.agente_id;
+            const area_id = row.area_id;
+            const agente_id =row.agente_id;
+            const clave = agente_id + '_' + area_id;
             const recomendaciones = [];
 
-         
             $(nodo)
                 .find('.recomendacion_checkbox')
                 .each(function () {
-
-                    recomendaciones.push({
-                        id: $(this).data('id'),
-
-                        seleccionado:
-                            $(this).is(':checked')
+                    recomendaciones.push({id:$(this).data('id'),seleccionado:$(this).is(':checked')
                     });
                 });
 
-            agentesGuardar[agente_id] = {
+            combinacionesGuardar[clave] = {
+                area_id: area_id,
                 agente_id: agente_id,
+                tipo_area: row.tipo_area || '',
                 recomendaciones: recomendaciones
             };
         });
 
         const dataGuardar =
-            Object.keys(agentesGuardar)
-                .map(function (agente_id) {
+            Object.keys(
+                combinacionesGuardar
+            )
+                .map(function (clave) {
 
-                    return agentesGuardar[agente_id];
+                    return combinacionesGuardar[
+                        clave
+                    ];
                 });
 
         if (dataGuardar.length === 0) {
 
             await Swal.fire({
                 title: 'Advertencia',
-                text: 'No hay recomendaciones para guardar.',
-                icon: 'warning',
-                confirmButtonText: 'Entendido'
+                text:'No hay recomendaciones para guardar.',
+                icon: 'warning', confirmButtonText: 'Entendido'
             });
 
             return;
         }
 
-        const confirmacion = await Swal.fire({
-            title:
-                '¿Desea guardar las recomendaciones?',
-
-            text:
-                'Se almacenarán las selecciones generales de cada agente.',
-
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Sí, guardar',
-            cancelButtonText: 'Cancelar'
-        });
+        const confirmacion =
+            await Swal.fire({
+                title: '¿Desea guardar las recomendaciones?',
+                text: 'Se almacenarán las selecciones por cada área y agente.',
+                icon: 'question', showCancelButton: true,
+                confirmButtonText: 'Sí, guardar',
+                cancelButtonText:'Cancelar'
+            });
 
         if (!confirmacion.isConfirmed) {
             return;
         }
+        const registroQuimico = typeof reporteregistro_id !== 'undefined' ? reporteregistro_id : 0;
 
         try {
 
             const res = await $.ajax({
-                url:
-                    '/guardarMatrizRecomendaciones',
-
-                type:
-                    'POST',
+                url:'/guardarMatrizRecomendaciones',
+                type:'POST',
                 data: JSON.stringify({
-                    proyecto_id:
-                        proyecto_id,
-
-                    reporteregistro_id:
-                        reporteregistro_id || 0,
-
-                    data:
-                        dataGuardar
+                    proyecto_id: proyecto_id,
+                    reporteregistro_id: registroQuimico,
+                    data: dataGuardar
                 }),
-
-                contentType:
-                    'application/json; charset=utf-8',
-
-                dataType:
-                    'json',
-
-                headers: {
-                    'X-CSRF-TOKEN': token
-                },
-
-                beforeSend: function () {
-
-                    $('#btn_guardar_recomendaciones')
-                        .prop('disabled', true)
-                        .html(
-                            '<i class="fa fa-spinner ' +
-                            'fa-spin"></i> Guardando...'
-                        );
-                }
+                contentType:'application/json; charset=utf-8',
+                dataType:'json',
+                headers: {'X-CSRF-TOKEN':token},
+                beforeSend: function () {$('#btn_guardar_recomendaciones').prop('disabled',true).html('<i class="fa ' +'fa-spinner fa-spin">' +'</i> Guardando...');}
             });
 
             if (res.success) {
-
                 await Swal.fire({
                     title: 'Éxito',
-
-                    text:
-                        res.mensaje ||
-                        'Recomendaciones guardadas correctamente.',
-
-                    icon: 'success',
-                    confirmButtonText: 'Aceptar'
+                    text: res.mensaje || 'Recomendaciones guardadas correctamente.',
+                    icon: 'success',confirmButtonText:'Aceptar'
                 });
 
-                tabla.ajax.reload(
-                    null,
-                    false
+                tabla.ajax.reload(null,false
                 );
 
             } else {
 
                 await Swal.fire({
                     title: 'Error',
-
-                    text:
-                        res.mensaje ||
-                        'Ocurrió un problema al guardar las recomendaciones.',
-
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
+                    text: res.mensaje || 'Ocurrió un problema al guardar las recomendaciones.',
+                    icon: 'error', confirmButtonText:'Aceptar'
                 });
             }
 
@@ -406,28 +272,22 @@ $('#btn_guardar_recomendaciones').on(
                 err.responseJSON &&
                 err.responseJSON.mensaje
             ) {
-                mensaje =
-                    err.responseJSON.mensaje;
+                mensaje = err.responseJSON.mensaje;
             }
 
             await Swal.fire({
                 title: 'Error',
                 text: mensaje,
                 icon: 'error',
-                confirmButtonText: 'Aceptar'
+                confirmButtonText:
+                'Aceptar'
             });
 
         } finally {
-
-            $('#btn_guardar_recomendaciones')
-                .prop('disabled', false)
-                .html(
-                    'Guardar <i class="fa fa-save"></i>'
-                );
+            $('#btn_guardar_recomendaciones').prop('disabled',false).html('Guardar ' +'<i class="fa fa-save"></i>');
         }
     }
 );
-
 
 
 

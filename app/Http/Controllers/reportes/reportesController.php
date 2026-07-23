@@ -20,6 +20,7 @@ use PhpOffice\PhpWord\Shared\Converter;
 use PhpOffice\PhpWord\Style\TablePosition;
 use PhpOffice\PhpWord\TemplateProcessor;
 
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -815,13 +816,12 @@ class reportesController extends Controller
 
 
 
-    public function matrizrecomendaciones($proyecto_id, $reporteregistro_id = null, $areas_poe = null)
-    {
+    public function matrizrecomendaciones($proyecto_id,$reporteregistro_id = null,$areas_poe = null)
+     {
         try {
 
             $data = [];
             $idAgenteQuimico = 15;
-
 
             $proyecto = proyectoModel::with('recsensorial')
                 ->find($proyecto_id);
@@ -831,21 +831,17 @@ class reportesController extends Controller
                 : null;
 
             if (!$proyecto || !$recsensorial) {
-
                 return response()->json([
                     'success' => false,
-                    'mensaje' =>
-                    'No se encontró información del proyecto o reconocimiento sensorial.',
+                    'mensaje' => 'No se encontró información del proyecto o reconocimiento sensorial.',
                     'data' => []
                 ], 404);
             }
-
 
             if (
                 empty($reporteregistro_id) ||
                 $reporteregistro_id == 0
             ) {
-
                 $registro = DB::table('reportequimicosgrupos')
                     ->where('proyecto_id', $proyecto_id)
                     ->select('registro_id')
@@ -857,12 +853,7 @@ class reportesController extends Controller
                     : 0;
             }
 
-
-            $quimicos_nombre = $this->quimicosnombre(
-                $proyecto_id,
-                $reporteregistro_id
-            );
-
+            $quimicos_nombre = $this->quimicosnombre($proyecto_id,$reporteregistro_id);
 
             $departamento = DB::table('departamentos_meldraft')
                 ->where('proyecto_id', $proyecto_id)
@@ -872,111 +863,232 @@ class reportesController extends Controller
                 $departamento = 'No asignado';
             }
 
-
-            $areas = DB::table('reportearea')
-                ->where('proyecto_id', $proyecto_id)
-                ->select(
-                    'id AS area_id',
-                    'reportearea_instalacion',
-                    'reportearea_nombre'
-                )
-                ->orderBy('reportearea_nombre', 'asc')
-                ->get()
-                ->values();
-
-
-            $instalacion = '-';
-
-            foreach ($areas as $areaInstalacion) {
-
-                if (
-                    !empty($areaInstalacion
-                        ->reportearea_instalacion)
-                ) {
-                    $instalacion =
-                        $areaInstalacion
-                        ->reportearea_instalacion;
-
-                    break;
-                }
-            }
-
-
-            $agentes = DB::table('reporterecomendaciones')
-                ->where('proyecto_id', $proyecto_id)
-                ->whereNotNull('agente_id')
-                ->whereNotNull('agente_nombre')
-                ->where('agente_nombre', '!=', '')
-                ->select(
-                    'agente_id',
-                    'agente_nombre'
-                )
-                ->distinct()
-                ->orderBy('agente_nombre', 'asc')
-                ->get()
-                ->values();
-
             $recomendacionesProyecto =
                 DB::table('reporterecomendaciones')
                 ->where('proyecto_id', $proyecto_id)
                 ->whereNotNull('agente_id')
-                ->select(
-                    'id',
-                    'agente_id',
-                    'agente_nombre',
-                    'reporterecomendaciones_descripcion'
-                )
-                ->orderBy('agente_nombre', 'asc')
+                ->select('id','agente_id','agente_nombre','reporterecomendaciones_descripcion')
                 ->orderBy('id', 'asc')
                 ->get();
 
+            $agentesDisponibles = [];
 
-            $datosAgentes = [];
+            foreach (
+                $recomendacionesProyecto as $recomendacion
+            ) {
+                $agenteId =
+                    (int) $recomendacion->agente_id;
 
-            foreach ($agentes as $agente) {
+                if (!isset($agentesDisponibles[$agenteId])) {
+                    $agentesDisponibles[$agenteId] = [
+                        'agente_id' => $agenteId,
+                        'agente_nombre' =>
+                        $recomendacion->agente_nombre
+                    ];
+                }
+            }
 
-                $recomendacionesAgente =
-                    $recomendacionesProyecto
-                    ->filter(function ($recomendacion) use ($agente) {
+            if (isset($agentesDisponibles[22])) {
+                $agentesDisponibles[22]['agente_nombre'] = 'BEI';
+            }
 
-                        return
-                            (string) $recomendacion->agente_id ===
-                            (string) $agente->agente_id;
-                    })
-                    ->values();
+            $configuraciones = [
+                4 => ['tabla' =>'reporteiluminacionpuntos', 'campo_area' =>'reporteiluminacionpuntos_area_id'],
+                1 => ['tabla' =>'reporteruidopuntoner', 'campo_area' =>'reporteruidoarea_id'],
+                2 => ['tabla' =>'reportevibracionevaluacion', 'campo_area' =>'reportearea_id'],
+                3 => ['tabla' =>'reportetemperaturaevaluacion','campo_area' => 'reportearea_id'],
+                8 => ['tabla' => 'reporteaireevaluacion','campo_area' => 'reporteairearea_id'],
+                15 => ['tabla' =>'reportequimicosevaluacion','campo_area' =>'reportequimicosarea_id']
+            ];
 
-                if ($recomendacionesAgente->count() === 0) {
+            $filasEvaluadas = [];
+
+            foreach ($configuraciones as $agenteId => $configuracion) 
+            {
+                if (!isset($agentesDisponibles[$agenteId])) 
+                {
                     continue;
                 }
 
+                $reporteAreaIds =
+                    DB::table($configuracion['tabla'])
+                    ->where('proyecto_id',$proyecto_id)
+                    ->whereNotNull($configuracion['campo_area'])
+                    ->distinct()
+                    ->pluck($configuracion['campo_area'])
+                    ->toArray();
+                if (count($reporteAreaIds) === 0) {
+                    continue;
+                }
+
+                $areasAgente =
+                    DB::table('reportearea')
+                    ->where('proyecto_id', $proyecto_id)
+                    ->whereIn('id', $reporteAreaIds)
+                    ->select('id AS area_id', 'reportearea_instalacion', 'reportearea_nombre')
+                    ->orderBy('reportearea_nombre','asc')
+                    ->get();
+
+                foreach ($areasAgente as $area) {
+                    $clave = $agenteId .'_' .$area->area_id;
+                    $filasEvaluadas[$clave] = [
+                        'agente_id' => $agenteId,
+                        'agente_nombre' => $agentesDisponibles[$agenteId]['agente_nombre'],
+                        'area_id' => $area->area_id,
+                        'tipo_area' => 'reportearea',
+                        'instalacion' =>
+                        !empty($area
+                            ->reportearea_instalacion)
+                            ? $area
+                            ->reportearea_instalacion
+                            : '-',
+                        'area_nombre' =>
+                        !empty($area
+                            ->reportearea_nombre)
+                            ? $area
+                            ->reportearea_nombre
+                            : '-'
+                    ];
+                }
+            }
+
+            if (isset($agentesDisponibles[22])) {
+                $areasReconocimiento =
+                    recsensorialareaModel::where('recsensorial_id',$recsensorial->id)
+                    ->select('id','recsensorialarea_nombre')
+                    ->get();
+
+                $idsAreasReconocimiento = $areasReconocimiento ->pluck('id')->toArray();
+                if (count($idsAreasReconocimiento) > 0) 
+                {
+                    $areasBeiIds =
+                        DB::table('puntosBeiInforme')
+                        ->whereIn('AREA_ID',$idsAreasReconocimiento)
+                        ->whereNotNull('AREA_ID')
+                        ->distinct()
+                        ->pluck('AREA_ID')
+                        ->toArray();
+                    $areasBei =
+                        $areasReconocimiento
+                        ->filter(function ($area) use (
+                            $areasBeiIds
+                        ) {
+                            return in_array(
+                                $area->id,
+                                $areasBeiIds
+                            );
+                        })
+                        ->sortBy('recsensorialarea_nombre')
+                        ->values();
+                    foreach ($areasBei as $area) {
+
+                        $clave ='22_' .$area->id;
+                        $filasEvaluadas[$clave] = [
+                            'agente_id' =>22,
+                            'agente_nombre' =>'BEI',
+                            'area_id' => $area->id,
+                            'tipo_area' => 'recsensorialarea',
+                            'instalacion' =>
+                            !empty($proyecto
+                                ->proyecto_clienteinstalacion)
+                                ? $proyecto
+                                ->proyecto_clienteinstalacion
+                                : '-',
+
+                            'area_nombre' =>
+                            !empty($area
+                                ->recsensorialarea_nombre)
+                                ? $area
+                                ->recsensorialarea_nombre
+                                : '-'
+                        ];
+                    }
+                }
+            }
+
+            $ordenAgentes = [
+                4,
+                1,
+                2,
+                3,
+                8,
+                15,
+                22
+            ];
+
+            $filasOrdenadas = [];
+
+            foreach ($ordenAgentes as $agenteId) {
+
+                $filasAgente = collect(
+                    $filasEvaluadas
+                )
+                    ->filter(function ($fila) use (
+                        $agenteId
+                    ) {
+                        return
+                            (int) $fila['agente_id'] ===
+                            (int) $agenteId;
+                    })
+                    ->sortBy('area_nombre')
+                    ->values();
+
+                foreach ($filasAgente as $fila) {
+                    $filasOrdenadas[] = $fila;
+                }
+            }
+
+            foreach ($filasEvaluadas as $fila) {
+
+                if (!in_array((int) $fila['agente_id'],$ordenAgentes)) 
+                {
+                    $filasOrdenadas[] = $fila;
+                }
+            }
+
+            $numeroRegistro = 0;
+
+            foreach ($filasOrdenadas as $fila) {
+
+                $numeroRegistro++;
+
+                $recomendacionesAgente =
+                    $recomendacionesProyecto
+                    ->filter(function (
+                        $recomendacion
+                    ) use ($fila) {
+                        return
+                            (int) $recomendacion
+                                ->agente_id ===
+                            (int) $fila['agente_id'];
+                    })
+                    ->values();
+
+                if ($recomendacionesAgente->count() === 0) 
+                {
+                    continue;
+                }
 
                 $registroGuardado =
                     DB::table('matrizrecomendaciones')
-                    ->where('proyecto_id', $proyecto_id)
-                    ->where(
-                        'agente_id',
-                        $agente->agente_id
-                    )
+                    ->where('proyecto_id',$proyecto_id)
+                    ->where('agente_id',$fila['agente_id'])
+                    ->where('area_id',$fila['area_id'])
                     ->first();
-
                 $seleccionadas = [];
-
                 if (
                     $registroGuardado &&
-                    !empty($registroGuardado->recomendaciones_json)
+                    !empty($registroGuardado
+                        ->recomendaciones_json)
                 ) {
 
-                    $decoded = json_decode(
-                        $registroGuardado->recomendaciones_json,
-                        true
-                    );
-
+                    $decoded = json_decode($registroGuardado ->recomendaciones_json,true);
                     if (is_array($decoded)) {
-
                         foreach ($decoded as $guardada) {
-
                             $estaSeleccionada =
-                                isset($guardada['seleccionado']) &&
+                                isset(
+                                    $guardada['seleccionado']
+                                ) &&
                                 (
                                     $guardada['seleccionado'] === true ||
                                     $guardada['seleccionado'] === 'true' ||
@@ -988,65 +1100,35 @@ class reportesController extends Controller
                                 isset($guardada['id'])
                             ) {
                                 $seleccionadas[] =
-                                    (string) $guardada['id'];
+                                    (string)
+                                    $guardada['id'];
                             }
                         }
                     }
                 }
 
+                $bloqueRecomendaciones =
+                    '<div class="contenedor-recomendaciones" data-recomendaciones="' . $numeroRegistro . '" data-area-id="' . $fila['area_id'] .'"data-agente-id="' .$fila['agente_id'] .'"
+                    data-tipo-area="' .$fila['tipo_area'] .'">';
 
-                $bloque_recomendaciones =
-                    '<div
-                    class="contenedor-recomendaciones"
-                    data-agente-id="' .
-                    $agente->agente_id .
-                    '"
-                    data-recomendaciones="agente_' .
-                    $agente->agente_id .
-                    '"
-                >';
-
-                foreach (
-                    $recomendacionesAgente as $recomendacion
-                ) {
-
+                foreach ($recomendacionesAgente as $recomendacion) 
+                {
                     $descripcionOriginal =
                         !empty($recomendacion
                             ->reporterecomendaciones_descripcion)
                         ? $recomendacion
                         ->reporterecomendaciones_descripcion
                         : '';
-
                     if (
-                        (int) $agente->agente_id ===
-                        (int) $idAgenteQuimico
+                        (int) $fila['agente_id'] ===
+                        $idAgenteQuimico
                     ) {
 
-                        $descripcionTexto =
-                            $this
-                            ->datosproyectoreemplazartextoquimico(
-                                $proyecto,
-                                $recsensorial,
-                                $quimicos_nombre,
-                                $descripcionOriginal
-                            );
+                        $descripcionTexto = $this->datosproyectoreemplazartextoquimico($proyecto,$recsensorial,$quimicos_nombre,$descripcionOriginal);
                     } else {
-
-
-                        $descripcionTexto =
-                            $this->datosproyectoreemplazartexto(
-                                $proyecto,
-                                $recsensorial,
-                                $descripcionOriginal
-                            );
+                        $descripcionTexto = $this ->datosproyectoreemplazartexto($proyecto,$recsensorial,$descripcionOriginal);
                     }
-
-                    $descripcion = htmlspecialchars(
-                        $descripcionTexto,
-                        ENT_QUOTES,
-                        'UTF-8'
-                    );
-
+                    $descripcion = htmlspecialchars($descripcionTexto,ENT_QUOTES,'UTF-8');
                     $isChecked = in_array(
                         (string) $recomendacion->id,
                         $seleccionadas,
@@ -1055,124 +1137,42 @@ class reportesController extends Controller
                         ? 'checked'
                         : '';
 
-                    $bloque_recomendaciones .= '
-                    <div class="recomendacion-bloque mb-2">
-
+                    $bloqueRecomendaciones .= '
+                    <div class="recomendacion-bloque mb-2" >
                         <div class="switch">
                             <label>
-
-                                <input
-                                    type="checkbox"
-                                    class="recomendacion_checkbox"
-                                    data-id="' .
-                        $recomendacion->id .
-                        '"
-                                    ' . $isChecked . '
-                                >
-
-                                <span
-                                    class="lever switch-col-light-blue">
-                                </span>
-
+                                <input type="checkbox" class="recomendacion_checkbox" data-id="' .$recomendacion->id .'"' . $isChecked . '>
+                                <span class="lever switch-col-light-blue"></span>
                             </label>
                         </div>
-
-                        <textarea
-                            class="form-control"
-                            rows="5"
-                            readonly
-                        >' . $descripcion . '</textarea>
-
+                        <textarea class="form-control" rows="5" readonly>' . $descripcion . '</textarea>
                     </div>
                 ';
                 }
 
-                $bloque_recomendaciones .= '</div>';
-
-                $datosAgentes[] = [
-                    'agente_id' =>
-                    $agente->agente_id,
-
-                    'agente_nombre' =>
-                    $agente->agente_nombre,
-
-                    'recomendaciones' =>
-                    $bloque_recomendaciones
-                ];
-            }
-
-
-            $totalAreas = $areas->count();
-            $totalAgentes = count($datosAgentes);
-
-            $totalFilas = max(
-                $totalAreas,
-                $totalAgentes
-            );
-
-
-            for ($index = 0; $index < $totalFilas; $index++) {
-
-                $area = $index < $totalAreas
-                    ? $areas->get($index)
-                    : null;
-
-                $agente = $index < $totalAgentes
-                    ? $datosAgentes[$index]
-                    : null;
+                $bloqueRecomendaciones .= '</div>';
 
                 $data[] = [
-                    'numero_registro' =>
-                    $index + 1,
-
-                    'DEPARTAMENTO_MEL' =>
-                    $departamento,
-
-                    'reportearea_instalacion' =>
-                    $instalacion,
-
-
-                    'area_id' =>
-                    $area
-                        ? $area->area_id
-                        : 0,
-
-                    'reportearea_nombre' =>
-                    $area
-                        ? $area->reportearea_nombre
-                        : '',
-
-                    'agente_id' =>
-                    $agente
-                        ? $agente['agente_id']
-                        : 0,
-
-                    'agente_nombre' =>
-                    $agente
-                        ? $agente['agente_nombre']
-                        : '',
-
-                    'nombre_agente' =>
-                    $agente
-                        ? $agente['agente_nombre']
-                        : '',
-
-                    'recomendaciones' =>
-                    $agente
-                        ? $agente['recomendaciones']
-                        : ''
+                    'numero_registro' =>$numeroRegistro,
+                    'DEPARTAMENTO_MEL' => $departamento,
+                    'reportearea_instalacion' => $fila['instalacion'],
+                    'area_id' => $fila['area_id'],
+                    'tipo_area' => $fila['tipo_area'],
+                    'reportearea_nombre' => $fila['area_nombre'],
+                    'agente_id' => $fila['agente_id'],
+                    'agente_nombre' => $fila['agente_nombre'],
+                    'nombre_agente' => $fila['agente_nombre'],
+                    'recomendaciones' => $bloqueRecomendaciones
                 ];
             }
 
             return response()->json([
                 'success' => true,
                 'data' => $data,
-
                 'mensaje' =>
                 'Matriz de recomendaciones cargada correctamente.'
             ]);
         } catch (\Exception $e) {
-
             \Log::error(
                 'Error en matrizrecomendaciones: ' .
                     $e->getMessage() .
@@ -1180,17 +1180,12 @@ class reportesController extends Controller
                     $e->getLine() .
                     ')'
             );
-
             return response()->json([
                 'success' => false,
-
                 'mensaje' =>
                 'Error al consultar la matriz de recomendaciones: ' .
                     $e->getMessage(),
-
-                'linea' =>
-                $e->getLine(),
-
+                'linea' => $e->getLine(),
                 'data' => []
             ], 500);
         }
@@ -1200,101 +1195,97 @@ class reportesController extends Controller
 
     public function guardarMatrizRecomendaciones(Request $request)
     {
+        $proyecto_id =
+            $request->input('proyecto_id');
+
+        $reporteregistro_id =
+            $request->input(
+                'reporteregistro_id',
+                0
+            );
+
+        $data =
+            $request->input('data');
+
+        if (
+            empty($proyecto_id) ||
+            !is_array($data) ||
+            count($data) === 0
+        ) {
+            return response()->json([
+                'success' => false,
+                'mensaje' =>
+                'No se recibieron recomendaciones válidas.'
+            ], 422);
+        }
+
         DB::beginTransaction();
 
         try {
 
-            $proyecto_id = $request->input('proyecto_id');
-            $reporteregistro_id =
-                $request->input('reporteregistro_id', 0);
-
-            $data = $request->input('data');
-
-            if (
-                empty($proyecto_id) ||
-                !is_array($data) ||
-                count($data) === 0
-            ) {
-
-                return response()->json([
-                    'success' => false,
-                    'mensaje' =>
-                    'No se recibieron recomendaciones válidas.'
-                ], 422);
-            }
-
-
             DB::table('matrizrecomendaciones')
-                ->where('proyecto_id', $proyecto_id)
+                ->where('proyecto_id',$proyecto_id)
                 ->delete();
+
+            $registrosInsertados = 0;
+            $combinacionesGuardadas = [];
 
             foreach ($data as $fila) {
 
-                if (
-                    !isset($fila['agente_id']) ||
-                    empty($fila['agente_id'])
-                ) {
+                if (!isset($fila['area_id']) || empty($fila['area_id']) || !isset($fila['agente_id']) || empty($fila['agente_id'])) 
+                {
                     continue;
                 }
 
-                $agente_id = $fila['agente_id'];
+                $area_id =$fila['area_id'];
+                $agente_id =$fila['agente_id'];
+                $clave =$agente_id .'_' .$area_id;
+
+                if (isset($combinacionesGuardadas[$clave])) 
+                {
+                    continue;
+                }
 
                 $recomendaciones = [];
 
-                if (
-                    isset($fila['recomendaciones']) &&
-                    is_array($fila['recomendaciones'])
-                ) {
+                if (isset($fila['recomendaciones']) && is_array($fila['recomendaciones'])) 
+                {
 
-                    foreach (
-                        $fila['recomendaciones'] as $recomendacion
-                    ) {
-
-                        if (!isset($recomendacion['id'])) {
+                    foreach ($fila['recomendaciones']as $recomendacion) 
+                    {
+                        if (!isset($recomendacion['id'])) 
+                        {
                             continue;
                         }
 
-                        $recomendaciones[] = [
-                            'id' =>
-                            $recomendacion['id'],
-
-                            'seleccionado' =>
-                            filter_var(
-                                isset(
-                                    $recomendacion['seleccionado']
-                                )
-                                    ? $recomendacion['seleccionado']
-                                    : false,
-                                FILTER_VALIDATE_BOOLEAN
-                            )
+                        $recomendaciones[] = ['id' =>$recomendacion['id'],
+                            'seleccionado' => filter_var(isset($recomendacion['seleccionado']) ? $recomendacion['seleccionado'] : false,FILTER_VALIDATE_BOOLEAN)
                         ];
                     }
                 }
 
                 DB::table('matrizrecomendaciones')
                     ->insert([
-                        'proyecto_id' =>
-                        $proyecto_id,
-
-                        'reporteregistro_id' =>
-                        $reporteregistro_id,
-
-
-                        'agente_id' =>
-                        $agente_id,
-
-                        'recomendaciones_json' =>
-                        json_encode(
-                            $recomendaciones,
-                            JSON_UNESCAPED_UNICODE
-                        ),
-
-                        'created_at' =>
-                        now(),
-
-                        'updated_at' =>
-                        now()
+                        'proyecto_id' => $proyecto_id,
+                        'reporteregistro_id' => $reporteregistro_id,
+                        'area_id' => $area_id,
+                        'agente_id' => $agente_id,
+                        'recomendaciones_json' =>json_encode($recomendaciones,JSON_UNESCAPED_UNICODE),
+                        'created_at' => now(),
+                        'updated_at' => now()
                     ]);
+
+                $combinacionesGuardadas[$clave] = true;
+                $registrosInsertados++;
+            }
+
+            if ($registrosInsertados === 0) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'mensaje' =>
+                    'No se encontró información válida para guardar.'
+                ], 422);
             }
 
             DB::commit();
@@ -1302,15 +1293,23 @@ class reportesController extends Controller
             return response()->json([
                 'success' => true,
                 'mensaje' =>
-                'Recomendaciones guardadas correctamente.'
+                'Recomendaciones guardadas correctamente.',
+                'total' =>
+                $registrosInsertados
             ]);
         } catch (\Exception $e) {
 
             DB::rollBack();
 
+            \Log::error(
+                'Error al guardar recomendaciones: ' .
+                    $e->getMessage() .
+                    ' línea ' .
+                    $e->getLine()
+            );
+
             return response()->json([
                 'success' => false,
-
                 'mensaje' =>
                 'Error al guardar recomendaciones: ' .
                     $e->getMessage(),
@@ -1322,25 +1321,20 @@ class reportesController extends Controller
     }
 
 
-
-
-
-    public function exportarMatrizRecomendaciones($proyecto_id, $reporteregistro_id)
+    public function exportarMatrizRecomendaciones($proyecto_id,$reporteregistro_id) 
     {
         try {
 
             $idAgenteQuimico = 15;
+            $idAgenteBei = 22;
 
-            $proyecto = proyectoModel::with('recsensorial')
-                ->find($proyecto_id);
+            $proyecto = proyectoModel::with('recsensorial')->find($proyecto_id);
 
-            $recsensorial = $proyecto
-                ? $proyecto->recsensorial
-                : null;
-
+            $recsensorial = $proyecto ? $proyecto->recsensorial : null;
             if (!$proyecto || !$recsensorial) {
                 return response()->json([
-                    'message' => 'No se encontró información del proyecto o reconocimiento sensorial.'
+                    'message' =>
+                    'No se encontró información del proyecto o reconocimiento sensorial.'
                 ], 404);
             }
 
@@ -1349,7 +1343,7 @@ class reportesController extends Controller
                 ? $proyecto->proyecto_clienteinstalacion
                 : 'SinInstalacion';
 
-            $nombreInstalacion = str_replace(
+            $nombreArchivoInstalacion = str_replace(
                 [
                     '\\',
                     '/',
@@ -1365,10 +1359,8 @@ class reportesController extends Controller
                 trim($nombreInstalacion)
             );
 
-            if (
-                empty($reporteregistro_id) ||
-                $reporteregistro_id == 0
-            ) {
+            if (empty($reporteregistro_id) || $reporteregistro_id == 0) 
+            {
 
                 $registroQuimico =
                     DB::table('reportequimicosgrupos')
@@ -1377,19 +1369,13 @@ class reportesController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->first();
 
-                $reporteregistro_id = $registroQuimico
-                    ? $registroQuimico->registro_id
-                    : 0;
+                $reporteregistro_id = $registroQuimico ? $registroQuimico->registro_id: 0;
             }
 
-            $quimicos_nombre = $this->quimicosnombre(
-                $proyecto_id,
-                $reporteregistro_id
-            );
+            $quimicos_nombre = $this->quimicosnombre($proyecto_id,$reporteregistro_id);
 
-            $departamentos = DB::table(
-                'departamentos_meldraft'
-            )
+            $departamentos =
+                DB::table('departamentos_meldraft')
                 ->where('proyecto_id', $proyecto_id)
                 ->whereNotNull('DEPARTAMENTO_MEL')
                 ->where('DEPARTAMENTO_MEL', '!=', '')
@@ -1404,156 +1390,115 @@ class reportesController extends Controller
                 ? implode("\n", $departamentos)
                 : 'No asignado';
 
-            $areas = DB::table('reportearea')
-                ->where('proyecto_id', $proyecto_id)
-                ->select(
-                    'id AS area_id',
-                    'reportearea_instalacion',
-                    'reportearea_nombre'
-                )
-                ->orderBy('reportearea_nombre', 'asc')
-                ->get()
-                ->values();
-
-            $instalaciones = [];
-
-            foreach ($areas as $area) {
-
-                $nombreAreaInstalacion = trim(
-                    isset($area->reportearea_instalacion)
-                        ? $area->reportearea_instalacion
-                        : ''
-                );
-
-                if (
-                    $nombreAreaInstalacion !== '' &&
-                    !in_array(
-                        $nombreAreaInstalacion,
-                        $instalaciones,
-                        true
-                    )
-                ) {
-                    $instalaciones[] =
-                        $nombreAreaInstalacion;
-                }
-            }
-
-            $instalacionTexto =
-                count($instalaciones) > 0
-                ? implode("\n", $instalaciones)
-                : $nombreInstalacion;
-
             $matrizGuardada =
                 DB::table('matrizrecomendaciones')
                 ->where('proyecto_id', $proyecto_id)
+                ->whereNotNull('area_id')
                 ->whereNotNull('agente_id')
-                ->orderBy('updated_at', 'desc')
-                ->get()
-                ->unique('agente_id')
-                ->values();
-
-            $agentesCatalogo =
-                DB::table('reporterecomendaciones')
-                ->where('proyecto_id', $proyecto_id)
-                ->whereNotNull('agente_id')
-                ->whereNotNull('agente_nombre')
-                ->where('agente_nombre', '!=', '')
-                ->select(
-                    'agente_id',
-                    'agente_nombre'
-                )
-                ->distinct()
+                ->orderBy('agente_id', 'asc')
+                ->orderBy('area_id', 'asc')
                 ->get();
-
-            $nombresAgentes = [];
-
-            foreach (
-                $agentesCatalogo as $agenteCatalogo
-            ) {
-                $nombresAgentes[(string) $agenteCatalogo->agente_id] = $agenteCatalogo->agente_nombre;
-            }
 
             $catalogoRecomendaciones =
                 DB::table('reporterecomendaciones')
                 ->where('proyecto_id', $proyecto_id)
-                ->select(
-                    'id',
-                    'agente_id',
-                    'reporterecomendaciones_descripcion'
-                )
+                ->select('id','agente_id','agente_nombre','reporterecomendaciones_descripcion')
                 ->get();
 
             $recomendacionesPorId = [];
+            $nombresAgentes = [];
 
-            foreach (
-                $catalogoRecomendaciones
-                as $recomendacionCatalogo
-            ) {
+            foreach ($catalogoRecomendaciones as $recomendacionCatalogo) 
+            {
+
                 $recomendacionesPorId[(string) $recomendacionCatalogo->id] = $recomendacionCatalogo;
+                if (!isset($nombresAgentes[(string) $recomendacionCatalogo ->agente_id])) 
+                {
+                    $nombresAgentes[(string) $recomendacionCatalogo ->agente_id] = $recomendacionCatalogo ->agente_nombre;
+                }
             }
 
-            $bloquesAgentes = [];
+            $nombresAgentes[(string) $idAgenteBei] = 'BEI';
+            $bloques = [];
 
-            foreach (
-                $matrizGuardada as $registroGuardado
-            ) {
+            foreach ($matrizGuardada as $registroGuardado) 
+            {
+                $area_id = $registroGuardado->area_id;
+                $agente_id = $registroGuardado->agente_id;
+                $clave = $agente_id . '_' .$area_id;
 
-                $agente_id =
-                    $registroGuardado->agente_id;
+                if (!isset($bloques[$clave])) {
+                    $areaNombre = '-';
+                    $instalacion = $nombreInstalacion;
+                    if ((int) $agente_id === (int) $idAgenteBei) 
+                    {
+
+                        $area = recsensorialareaModel::find($area_id);
+                        if ($area) {
+                            $areaNombre = !empty($area ->recsensorialarea_nombre) ? $area ->recsensorialarea_nombre: '-';
+                        }
+                    } else {
+
+                        $area = DB::table('reportearea')
+                            ->where('proyecto_id',$proyecto_id)
+                            ->where('id', $area_id)
+                            ->select('reportearea_instalacion','reportearea_nombre')
+                            ->first();
+
+                        if ($area) {
+                            $areaNombre = !empty($area ->reportearea_nombre) ? $area ->reportearea_nombre: '-';
+                            $instalacion =!empty($area ->reportearea_instalacion) ? $area ->reportearea_instalacion : $nombreInstalacion;
+                        }
+                    }
+
+                    $nombreAgente =
+                        isset(
+                            $nombresAgentes[(string) $agente_id]
+                        )
+                        ? $nombresAgentes[(string) $agente_id]
+                        : 'Agente ' . $agente_id;
+
+                    $bloques[$clave] = [
+                        'area_id' =>$area_id,
+                        'area_nombre' => $areaNombre,
+                        'instalacion' => $instalacion,
+                        'agente_id' => $agente_id,
+                        'agente_nombre' => $nombreAgente,
+                        'recomendaciones' =>
+                        []
+                    ];
+                }
 
                 $recomendacionesGuardadas = [];
 
-                if (
-                    !empty($registroGuardado
-                        ->recomendaciones_json)
-                ) {
-
-                    $decoded = json_decode(
-                        $registroGuardado
-                            ->recomendaciones_json,
-                        true
-                    );
-
-                    if (is_array($decoded)) {
-                        $recomendacionesGuardadas =
-                            $decoded;
-                    }
+                if (!empty($registroGuardado ->recomendaciones_json)) 
+                {
+                    $decoded = json_decode($registroGuardado ->recomendaciones_json,true);
+                    if (is_array($decoded)) {$recomendacionesGuardadas = $decoded;}
                 }
 
-                $descripcionesSeleccionadas = [];
+                foreach ($recomendacionesGuardadas as $guardada) 
+                {
 
-                foreach (
-                    $recomendacionesGuardadas as $guardada
-                ) {
-
-                    $estaSeleccionada =
-                        isset($guardada['seleccionado']) &&
-                        (
-                            $guardada['seleccionado'] === true ||
-                            $guardada['seleccionado'] === 'true' ||
-                            $guardada['seleccionado'] == 1
-                        );
-
-                    if (
-                        !$estaSeleccionada ||
-                        !isset($guardada['id'])
-                    ) {
+                    $estaSeleccionada = isset($guardada['seleccionado']) && ($guardada['seleccionado'] === true || $guardada['seleccionado'] === 'true' || $guardada['seleccionado'] == 1);
+                    if (!$estaSeleccionada || !isset($guardada['id'])) 
+                    {
                         continue;
                     }
 
-                    $recomendacion_id =
-                        (string) $guardada['id'];
+                    $recomendacion_id = (string) $guardada['id'];
 
-                    if (
-                        !isset(
-                            $recomendacionesPorId[$recomendacion_id]
-                        )
-                    ) {
+                    if (!isset($recomendacionesPorId[$recomendacion_id])) 
+                    {
                         continue;
                     }
 
-                    $recomendacion =
-                        $recomendacionesPorId[$recomendacion_id];
+                    $recomendacion = $recomendacionesPorId[$recomendacion_id];
+
+                    if ((int) $recomendacion->agente_id !== (int) $agente_id) 
+                    {
+                        continue;
+                    }
 
                     $descripcionOriginal =
                         !empty($recomendacion
@@ -1562,319 +1507,241 @@ class reportesController extends Controller
                         ->reporterecomendaciones_descripcion
                         : 'N/A';
 
-                    if (
-                        (int) $agente_id ===
-                        (int) $idAgenteQuimico
-                    ) {
-
-                        $descripcion =
-                            $this
-                            ->datosproyectoreemplazartextoquimico(
-                                $proyecto,
-                                $recsensorial,
-                                $quimicos_nombre,
-                                $descripcionOriginal
-                            );
+                    if ((int) $agente_id === (int) $idAgenteQuimico) 
+                    {
+                        $descripcion = $this->datosproyectoreemplazartextoquimico($proyecto,$recsensorial,$quimicos_nombre,$descripcionOriginal);
                     } else {
-
-                        $descripcion =
-                            $this
-                            ->datosproyectoreemplazartexto(
-                                $proyecto,
-                                $recsensorial,
-                                $descripcionOriginal
-                            );
+                        $descripcion = $this ->datosproyectoreemplazartexto($proyecto,$recsensorial,$descripcionOriginal);
                     }
 
-                    $descripcionesSeleccionadas[] =
+                    $bloques[$clave]['recomendaciones'][$recomendacion_id] =
                         $descripcion;
                 }
-
-                if (
-                    count($descripcionesSeleccionadas) === 0
-                ) {
-                    continue;
-                }
-
-                $nombreAgente =
-                    isset(
-                        $nombresAgentes[(string) $agente_id]
-                    )
-                    ? $nombresAgentes[(string) $agente_id]
-                    : 'Agente ' . $agente_id;
-
-                $bloquesAgentes[] = [
-                    'agente_id' =>
-                    $agente_id,
-
-                    'agente_nombre' =>
-                    $nombreAgente,
-
-                    'recomendaciones' =>
-                    $descripcionesSeleccionadas
-                ];
             }
 
+            $bloques = array_values(
+                array_filter(
+                    $bloques,
+                    function ($bloque) {
+
+                        return count(
+                            $bloque['recomendaciones']
+                        ) > 0;
+                    }
+                )
+            );
+
             usort(
-                $bloquesAgentes,
+                $bloques,
                 function ($a, $b) {
 
-                    return strcmp(
+                    $comparacionAgente = strcmp(
                         $a['agente_nombre'],
                         $b['agente_nombre']
+                    );
+
+                    if ($comparacionAgente !== 0) {
+                        return $comparacionAgente;
+                    }
+
+                    return strcmp(
+                        $a['area_nombre'],
+                        $b['area_nombre']
                     );
                 }
             );
 
-            $totalFilasRecomendaciones = 0;
-
-            foreach ($bloquesAgentes as $bloque) {
-
-                $totalFilasRecomendaciones +=
-                    count($bloque['recomendaciones']);
-            }
-
-            $totalAreas = $areas->count();
-
-            $totalFilas = max(
-                $totalAreas,
-                $totalFilasRecomendaciones
-            );
-
-            if ($totalFilas === 0) {
-
+            if (count($bloques) === 0) {
                 return response()->json([
                     'message' =>
-                    'No hay áreas ni recomendaciones seleccionadas para exportar.'
+                    'No hay recomendaciones seleccionadas para exportar.'
                 ], 422);
             }
 
-            $plantillaPath = storage_path(
-                'app/plantillas_reportes/' .
-                    'proyecto_infomes/' .
-                    'plantilla_melrecomendaciones.xlsx'
-            );
+            $totalFilas = 0;
+
+            foreach ($bloques as $bloque) {
+                $totalFilas += count($bloque['recomendaciones']);
+            }
+
+            $plantillaPath = storage_path('app/plantillas_reportes/' .'proyecto_infomes/' .'plantilla_melrecomendaciones.xlsx');
 
             if (!file_exists($plantillaPath)) {
-
                 return response()->json([
                     'message' =>
                     'No se encontró la plantilla del reporte.'
                 ], 404);
             }
 
-            $spreadsheet = IOFactory::load(
-                $plantillaPath
-            );
+            $spreadsheet = IOFactory::load($plantillaPath);
 
             $sheet = $spreadsheet->getActiveSheet();
-
             $filaInicio = 9;
+            $filaActual = $filaInicio;
+            $contador = 1;
 
-            $ultimaFila =
-                $filaInicio + $totalFilas - 1;
+            foreach ($bloques as $bloque) {
 
-            for (
-                $index = 0;
-                $index < $totalFilas;
-                $index++
-            ) {
+                $inicioBloque = $filaActual;
 
-                $filaExcel =
-                    $filaInicio + $index;
+                foreach ($bloque['recomendaciones']as $descripcion) 
+                {
 
-                $sheet->setCellValue(
-                    'A' . $filaExcel,
-                    $index + 1
-                );
+                    $sheet->setCellValue('F' . $filaActual,$descripcion);
+                    $sheet
+                        ->getRowDimension($filaActual)
+                        ->setRowHeight(60.9,'pt');
+                    $sheet->getStyle('A' . $filaActual .':M' . $filaActual
+                    )
+                        ->getAlignment()
+                        ->setVertical(
+                            Alignment::VERTICAL_CENTER
+                        )
+                        ->setWrapText(true);
 
-                if ($index < $totalAreas) {
+                    $sheet->getStyle(
+                        'A' . $filaActual .
+                            ':M' . $filaActual
+                    )
+                        ->getBorders()
+                        ->getAllBorders()
+                        ->setBorderStyle(
+                            Border::BORDER_THIN
+                        );
 
-                    $area = $areas->get($index);
-
-                    $sheet->setCellValue(
-                        'D' . $filaExcel,
-                        !empty($area->reportearea_nombre)
-                            ? $area->reportearea_nombre
-                            : '-'
-                    );
-                } else {
-
-                    $sheet->setCellValue(
-                        'D' . $filaExcel,
-                        ''
-                    );
+                    $filaActual++;
                 }
 
-                $sheet->getRowDimension(
-                    $filaExcel
-                )->setRowHeight(60.9, 'pt');
+                $finBloque = $filaActual - 1;
 
-                $sheet->getStyle(
-                    'A' . $filaExcel .
-                        ':M' . $filaExcel
-                )
+                $sheet->setCellValue('A' . $inicioBloque,$contador);
+
+                $sheet->setCellValue('D' . $inicioBloque, $bloque['area_nombre']);
+                $sheet->setCellValue('E' . $inicioBloque,$bloque['agente_nombre']);
+                if ($finBloque > $inicioBloque) {
+                    $sheet->mergeCells('A' . $inicioBloque .':A' . $finBloque);
+                    $sheet->mergeCells('D' . $inicioBloque .':D' . $finBloque);
+                    $sheet->mergeCells('E' . $inicioBloque .':E' . $finBloque);
+                }
+
+                $sheet->getStyle('A' . $inicioBloque .':A' . $finBloque)
                     ->getAlignment()
-                    ->setVertical(
-                        Alignment::VERTICAL_CENTER
-                    )
+                    ->setHorizontal(Alignment::HORIZONTAL_CENTER)
+                    ->setVertical(Alignment::VERTICAL_CENTER)
                     ->setWrapText(true);
 
-                $sheet->getStyle(
-                    'A' . $filaExcel .
-                        ':M' . $filaExcel
+                $sheet->getStyle('D' . $inicioBloque .':E' . $finBloque
                 )
-                    ->getBorders()
-                    ->getAllBorders()
-                    ->setBorderStyle(
-                        Border::BORDER_THIN
-                    );
+                    ->getAlignment()
+                    ->setHorizontal(Alignment::HORIZONTAL_CENTER)
+                    ->setVertical(Alignment::VERTICAL_CENTER)
+                    ->setWrapText(true);
+
+                $contador++;
             }
 
-            $sheet->setCellValue(
-                'B' . $filaInicio,
-                $departamentoTexto
-            );
+            $ultimaFila =$filaActual - 1;
 
-            $sheet->setCellValue(
-                'C' . $filaInicio,
-                $instalacionTexto
-            );
+            $sheet->setCellValue('B' . $filaInicio,$departamentoTexto);
 
             if ($ultimaFila > $filaInicio) {
-
-                $sheet->mergeCells(
-                    'B' . $filaInicio .
-                        ':B' . $ultimaFila
-                );
-
-                $sheet->mergeCells(
-                    'C' . $filaInicio .
-                        ':C' . $ultimaFila
-                );
+                $sheet->mergeCells('B' . $filaInicio .':B' . $ultimaFila);
             }
 
-            $sheet->getStyle(
-                'B' . $filaInicio .
-                    ':C' . $ultimaFila
+            $sheet->getStyle('B' . $filaInicio .':B' . $ultimaFila
             )
                 ->getAlignment()
-                ->setHorizontal(
-                    Alignment::HORIZONTAL_CENTER
-                )
-                ->setVertical(
-                    Alignment::VERTICAL_CENTER
-                )
+                ->setHorizontal(Alignment::HORIZONTAL_CENTER)
+                ->setVertical(Alignment::VERTICAL_CENTER)
                 ->setWrapText(true);
 
-            $filaAgente = $filaInicio;
+            $inicioInstalacion = $filaInicio;
 
-            foreach ($bloquesAgentes as $bloque) {
+            $instalacionActual = null;
 
-                $inicioBloqueAgente =
-                    $filaAgente;
+            foreach ($bloques as $bloque) {
 
-                foreach (
-                    $bloque['recomendaciones']
-                    as $descripcion
-                ) {
-
-                    $sheet->setCellValue(
-                        'F' . $filaAgente,
-                        $descripcion
-                    );
-
-                    $filaAgente++;
+                $cantidadRecomendaciones = count($bloque['recomendaciones']);
+                if ($instalacionActual === null) 
+                {
+                    $instalacionActual = $bloque['instalacion'];
                 }
 
-                $finBloqueAgente =
-                    $filaAgente - 1;
-
-                $sheet->setCellValue(
-                    'E' . $inicioBloqueAgente,
-                    $bloque['agente_nombre']
-                );
-
-                if (
-                    $finBloqueAgente >
-                    $inicioBloqueAgente
-                ) {
-
-                    $sheet->mergeCells(
-                        'E' . $inicioBloqueAgente .
-                            ':E' . $finBloqueAgente
-                    );
+                if ($bloque['instalacion'] !== $instalacionActual) 
+                {
+                    $finInstalacion = $inicioInstalacion - 1;
+                    $instalacionActual = $bloque['instalacion'];
                 }
 
-                $sheet->getStyle(
-                    'E' . $inicioBloqueAgente .
-                        ':E' . $finBloqueAgente
+                $inicioInstalacion += $cantidadRecomendaciones;
+            }
+
+            $instalacionesExcel = [];
+
+            $filaInstalacion = $filaInicio;
+
+            foreach ($bloques as $bloque) {
+
+                $cantidadRecomendaciones =count($bloque['recomendaciones']);
+
+                $instalacionClave = $bloque['instalacion'];
+
+                if (!isset($instalacionesExcel[$instalacionClave])) 
+                {
+                    $instalacionesExcel[$instalacionClave] = ['inicio' => $filaInstalacion, 'fin' => $filaInstalacion + $cantidadRecomendaciones -1];
+                } else {
+                    $instalacionesExcel[$instalacionClave]['fin'] = $filaInstalacion + $cantidadRecomendaciones - 1;
+                }
+
+                $filaInstalacion += $cantidadRecomendaciones;
+            }
+
+            foreach ($instalacionesExcel as $instalacionNombre => $rangoInstalacion) 
+            {
+
+                $inicio = $rangoInstalacion['inicio'];
+                $fin = $rangoInstalacion['fin'];
+
+                $sheet->setCellValue('C' . $inicio,$instalacionNombre);
+
+                if ($fin > $inicio) {
+                    $sheet->mergeCells('C' . $inicio .':C' . $fin);
+                }
+                $sheet->getStyle('C' . $inicio .':C' . $fin
                 )
                     ->getAlignment()
-                    ->setHorizontal(
-                        Alignment::HORIZONTAL_CENTER
-                    )
-                    ->setVertical(
-                        Alignment::VERTICAL_CENTER
-                    )
+                    ->setHorizontal(Alignment::HORIZONTAL_CENTER)
+                    ->setVertical(Alignment::VERTICAL_CENTER)
                     ->setWrapText(true);
             }
 
-            $nombreArchivo =
-                'Matriz recomendaciones - ' .
-                $nombreInstalacion .
-                '.xlsx';
+            $nombreArchivo = 'Matriz recomendaciones - ' .$nombreArchivoInstalacion .'.xlsx';
 
-            $carpetaPublic = storage_path(
-                'app/public'
-            );
+            $carpetaPublic = storage_path('app/public');
 
             if (!file_exists($carpetaPublic)) {
-
-                mkdir(
-                    $carpetaPublic,
-                    0775,
-                    true
-                );
+                mkdir($carpetaPublic,0775,true);
             }
 
-            $tempPath =
-                $carpetaPublic .
-                DIRECTORY_SEPARATOR .
-                $nombreArchivo;
-
-            $writer = new Xlsx(
-                $spreadsheet
-            );
-
-            $writer->save(
-                $tempPath
-            );
+            $tempPath = $carpetaPublic .DIRECTORY_SEPARATOR .$nombreArchivo;
+            $writer = new Xlsx($spreadsheet);
+            $writer->save($tempPath);
 
             return response()->download(
                 $tempPath,
                 $nombreArchivo,
                 [
-                    'Content-Type' =>
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 ]
             )->deleteFileAfterSend(true);
         } catch (\Exception $e) {
-
             \Log::error(
-                'Error al exportar matriz recomendaciones: ' .
-                    $e->getMessage() .
-                    ' línea ' .
-                    $e->getLine()
+                'Error al exportar matriz recomendaciones: ' .$e->getMessage() .' línea ' .$e->getLine()
             );
-
             return response()->json([
                 'message' =>
-                'Error al generar Excel: ' .
-                    $e->getMessage(),
-
-                'linea' =>
-                $e->getLine()
+                'Error al generar Excel: ' .$e->getMessage(),
+                'linea' =>$e->getLine()
             ], 500);
         }
     }
