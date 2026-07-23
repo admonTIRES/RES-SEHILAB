@@ -1611,6 +1611,7 @@ class recsensorialController extends Controller
         | HOJA "1 "
         |--------------------------------------------------------------------------
         */
+
         $sheet = $spreadsheet->getSheetByName('1 ');
 
         if (!$sheet) {
@@ -1654,31 +1655,35 @@ class recsensorialController extends Controller
         );
 
         $sqlComplemento = DB::select("
-            SELECT
-                hoja.catsustancia_nombre,
-                sus.SUSTANCIA_QUIMICA,
-                ingreso.catviaingresoorganismo_viaingreso AS VIA_INGRESO,
-                sus.CLASIFICACION_RIESGO,
-                IFNULL(MAX(entidad.VLE_PPT),'ND') AS PPT,
-                IFNULL(MAX(entidad.VLE_CT_P),'ND') AS CT
-            FROM recsensorialquimicosinventario inventario
-            LEFT JOIN catHojasSeguridad_SustanciasQuimicas relacion
+                SELECT
+                    hoja.catsustancia_nombre,
+                    sus.SUSTANCIA_QUIMICA,
+                    ingreso.catviaingresoorganismo_viaingreso AS VIA_INGRESO,
+                    sus.CLASIFICACION_RIESGO,
+                    IFNULL(MAX(entidad.VLE_PPT), 'ND') AS PPT,
+                    IFNULL(MAX(entidad.VLE_CT_P), 'ND') AS CT
+                FROM recsensorialquimicosinventario inventario
+                LEFT JOIN catHojasSeguridad_SustanciasQuimicas relacion
                 ON relacion.HOJA_SEGURIDAD_ID = inventario.catsustancia_id
-            LEFT JOIN catsustancia hoja
+                LEFT JOIN catsustancia hoja
                 ON hoja.id = relacion.HOJA_SEGURIDAD_ID
-            LEFT JOIN catsustancias_quimicas sus
+                LEFT JOIN catsustancias_quimicas sus
                 ON sus.ID_SUSTANCIA_QUIMICA = relacion.SUSTANCIA_QUIMICA_ID
-            LEFT JOIN sustanciaQuimicaEntidad entidad
+                LEFT JOIN sustanciaQuimicaEntidad entidad
                 ON entidad.SUSTANCIA_QUIMICA_ID = sus.ID_SUSTANCIA_QUIMICA
-            LEFT JOIN catviaingresoorganismo ingreso
+                AND entidad.ENTIDAD_ID = 1
+                LEFT JOIN catviaingresoorganismo ingreso
                 ON ingreso.id = sus.VIA_INGRESO
-            WHERE inventario.recsensorial_id = ?
-            GROUP BY
-                hoja.catsustancia_nombre,
-                sus.SUSTANCIA_QUIMICA,
-                ingreso.catviaingresoorganismo_viaingreso,
-                sus.CLASIFICACION_RIESGO
-            ORDER BY hoja.id, sus.SUSTANCIA_QUIMICA
+                WHERE inventario.recsensorial_id = ?
+                GROUP BY
+                    hoja.catsustancia_nombre,
+                    sus.SUSTANCIA_QUIMICA,
+                    ingreso.catviaingresoorganismo_viaingreso,
+                    sus.CLASIFICACION_RIESGO
+
+                ORDER BY
+                    hoja.id,
+                    sus.SUSTANCIA_QUIMICA
             ", [$id]);
 
         $sql3 = DB::select("
