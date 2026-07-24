@@ -279,6 +279,156 @@ class reportesController extends Controller
 
 
 
+    // public function tablameldraft($proyecto_id, $reporteregistro_id, $areas_poe)
+    // {
+    //     try {
+    //         if (empty($reporteregistro_id) || $reporteregistro_id == 0) {
+    //             $registro = DB::table('reportequimicosgrupos')
+    //                 ->where('proyecto_id', $proyecto_id)
+    //                 ->select('registro_id')
+    //                 ->orderBy('created_at', 'desc')
+    //                 ->first();
+
+    //             if ($registro) {
+    //                 $reporteregistro_id = $registro->registro_id;
+    //             } else {
+    //                 return response()->json([
+    //                     'data' => [],
+    //                     'total' => 0,
+    //                     'msj' => 'No se encontró registro_id para el proyecto especificado en reportequimicosgrupos'
+    //                 ]);
+    //             }
+    //         }
+
+    //         $departamento = DB::table('departamentos_meldraft')
+    //             ->where('proyecto_id', $proyecto_id)
+    //             ->value('DEPARTAMENTO_MEL');
+
+    //         if (!$departamento) {
+    //             $departamento = "No tiene departamento guardado";
+    //         }
+
+    //         if (($areas_poe + 0) == 1) {
+    //             $puntos = DB::select('
+    //                 SELECT
+    //                     rq.id,
+    //                     rq.proyecto_id,
+    //                     rq.registro_id,
+    //                     IF(cr.catregion_nombre = "N/A", "", cr.catregion_nombre) AS catregion_nombre,
+    //                     IF(cs.catsubdireccion_nombre = "N/A", "", cs.catsubdireccion_nombre) AS catsubdireccion_nombre,
+    //                     IF(cg.catgerencia_nombre = "N/A", "", cg.catgerencia_nombre) AS catgerencia_nombre,
+    //                     IF(ca.catactivo_nombre = "N/A", "", ca.catactivo_nombre) AS catactivo_nombre,
+    //                     (
+    //                         CASE
+    //                             WHEN IF(ca.catactivo_nombre = "N/A", "", ca.catactivo_nombre) != "" THEN ca.catactivo_nombre
+    //                             ELSE cg.catgerencia_nombre
+    //                         END
+    //                     ) AS gerencia_activo,
+    //                     ra.reportearea_instalacion AS reportequimicosarea_instalacion,
+    //                     ra.reportearea_nombre AS reportequimicosarea_nombre,
+    //                     rc.reportecategoria_nombre AS reportequimicoscategoria_nombre,
+    //                     rq.reportequimicosevaluacion_nombre,
+    //                     rq.reportequimicosevaluacion_anios,
+    //                     rq.reportequimicosevaluacion_antiguedadgeneral,
+    //                     rq.reportequimicosevaluacion_antiguedadcategoria,
+    //                     rq.reportequimicosevaluacion_horariotrabajo,
+    //                     rq.reportequimicosevaluacion_ficha,
+    //                     rq.reportequimicosevaluacion_geo,
+    //                     rq.reportequimicosevaluacion_total,
+    //                     rq.reportequimicosevaluacion_punto,
+    //                     rp.reportequimicosevaluacionparametro_parametro AS tipo,
+    //                     rp.reportequimicosevaluacionparametro_valorlimite AS referencia_vle,
+    //                     rp.reportequimicosevaluacionparametro_unidad AS unidad_vle,
+    //                     rp.reportequimicosevaluacionparametro_concentracion AS resultado_concentracion
+    //                 FROM reportequimicosevaluacion rq
+    //                 LEFT JOIN proyecto p ON rq.proyecto_id = p.id
+    //                 LEFT JOIN catregion cr ON p.catregion_id = cr.id
+    //                 LEFT JOIN catsubdireccion cs ON p.catsubdireccion_id = cs.id
+    //                 LEFT JOIN catgerencia cg ON p.catgerencia_id = cg.id
+    //                 LEFT JOIN catactivo ca ON p.catactivo_id = ca.id
+    //                 LEFT JOIN reportearea ra ON rq.reportequimicosarea_id = ra.id
+    //                 LEFT JOIN reportecategoria rc ON rq.reportequimicoscategoria_id = rc.id
+    //                 LEFT JOIN reportequimicosevaluacionparametro rp ON rp.reportequimicosevaluacion_id = rq.id
+    //                 WHERE rq.proyecto_id = ' . $proyecto_id . '
+    //                 AND rq.registro_id = ' . $reporteregistro_id . '
+    //                 ORDER BY rq.reportequimicosevaluacion_punto ASC
+    //             ');
+    //         } else {
+    //             $puntos = DB::select('
+    //                 SELECT
+    //                     rq.id,
+    //                     rq.proyecto_id,
+    //                     rq.registro_id,
+    //                     IF(cr.catregion_nombre = "N/A", "", cr.catregion_nombre) AS catregion_nombre,
+    //                     IF(cs.catsubdireccion_nombre = "N/A", "", cs.catsubdireccion_nombre) AS catsubdireccion_nombre,
+    //                     IF(cg.catgerencia_nombre = "N/A", "", cg.catgerencia_nombre) AS catgerencia_nombre,
+    //                     IF(ca.catactivo_nombre = "N/A", "", ca.catactivo_nombre) AS catactivo_nombre,
+    //                     (
+    //                         CASE
+    //                             WHEN IF(ca.catactivo_nombre = "N/A", "", ca.catactivo_nombre) != "" THEN ca.catactivo_nombre
+    //                             ELSE cg.catgerencia_nombre
+    //                         END
+    //                     ) AS gerencia_activo,
+    //                     ra.reportequimicosarea_instalacion,
+    //                     ra.reportequimicosarea_nombre,
+    //                     rc.reportequimicoscategoria_nombre,
+    //                     rq.reportequimicosevaluacion_nombre,
+    //                     rq.reportequimicosevaluacion_anios,
+    //                     rq.reportequimicosevaluacion_antiguedadgeneral,
+    //                     rq.reportequimicosevaluacion_antiguedadcategoria,
+    //                     rq.reportequimicosevaluacion_horariotrabajo,
+    //                     rq.reportequimicosevaluacion_ficha,
+    //                     rq.reportequimicosevaluacion_geo,
+    //                     rq.reportequimicosevaluacion_total,
+    //                     rq.reportequimicosevaluacion_punto,
+    //                     rp.reportequimicosevaluacionparametro_parametro AS tipo,
+    //                     rp.reportequimicosevaluacionparametro_valorlimite AS referencia_vle,
+    //                     rp.reportequimicosevaluacionparametro_unidad AS unidad_vle,
+    //                     rp.reportequimicosevaluacionparametro_concentracion AS resultado_concentracion
+    //                 FROM reportequimicosevaluacion rq
+    //                 LEFT JOIN proyecto p ON rq.proyecto_id = p.id
+    //                 LEFT JOIN catregion cr ON p.catregion_id = cr.id
+    //                 LEFT JOIN catsubdireccion cs ON p.catsubdireccion_id = cs.id
+    //                 LEFT JOIN catgerencia cg ON p.catgerencia_id = cg.id
+    //                 LEFT JOIN catactivo ca ON p.catactivo_id = ca.id
+    //                 LEFT JOIN reportequimicosarea ra ON rq.reportequimicosarea_id = ra.id
+    //                 LEFT JOIN reportequimicoscategoria rc ON rq.reportequimicoscategoria_id = rc.id
+    //                 LEFT JOIN reportequimicosevaluacionparametro rp ON rp.reportequimicosevaluacion_id = rq.id
+    //                 WHERE rq.proyecto_id = ' . $proyecto_id . '
+    //                 AND rq.registro_id = ' . $reporteregistro_id . '
+    //                 ORDER BY rq.reportequimicosevaluacion_punto ASC
+    //             ');
+    //         }
+
+    //         $numero_registro = 0;
+    //         foreach ($puntos as $value) {
+    //             $numero_registro++;
+    //             $value->numero_registro = $numero_registro;
+    //             $value->DEPARTAMENTO_MEL = $departamento;
+
+    //             $value->cumplimiento = $this->evaluarCumplimiento(
+    //                 $value->resultado_concentracion,
+    //                 $value->referencia_vle
+    //             );
+    //         }
+
+    //         return response()->json([
+    //             'data' => $puntos,
+    //             'total' => count($puntos),
+    //             'msj' => 'Datos consultados correctamente'
+    //         ]);
+    //     } catch (Exception $e) {
+    //         return response()->json([
+    //             'data' => [],
+    //             'total' => 0,
+    //             'msj' => 'Error: ' . $e->getMessage()
+    //         ]);
+    //     }
+    // }
+
+
+
+
     public function tablameldraft($proyecto_id, $reporteregistro_id, $areas_poe)
     {
         try {
@@ -286,18 +436,18 @@ class reportesController extends Controller
                 $registro = DB::table('reportequimicosgrupos')
                     ->where('proyecto_id', $proyecto_id)
                     ->select('registro_id')
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('created_at', 'DESC')
                     ->first();
 
-                if ($registro) {
-                    $reporteregistro_id = $registro->registro_id;
-                } else {
+                if (!$registro) {
                     return response()->json([
                         'data' => [],
                         'total' => 0,
-                        'msj' => 'No se encontró registro_id para el proyecto especificado en reportequimicosgrupos'
+                        'msj' => 'No se encontró registro_id para el proyecto.'
                     ]);
                 }
+
+                $reporteregistro_id = $registro->registro_id;
             }
 
             $departamento = DB::table('departamentos_meldraft')
@@ -305,111 +455,1493 @@ class reportesController extends Controller
                 ->value('DEPARTAMENTO_MEL');
 
             if (!$departamento) {
-                $departamento = "No tiene departamento guardado";
+                $departamento = 'No tiene departamento guardado';
             }
+
+            $proyecto = DB::table('proyecto as p')
+                ->leftJoin('catregion as cr', 'p.catregion_id', '=', 'cr.id')
+                ->leftJoin('catsubdireccion as cs', 'p.catsubdireccion_id', '=', 'cs.id')
+                ->leftJoin('catgerencia as cg', 'p.catgerencia_id', '=', 'cg.id')
+                ->leftJoin('catactivo as ca', 'p.catactivo_id', '=', 'ca.id')
+                ->where('p.id', $proyecto_id)
+                ->select(
+                    'p.*',
+                    DB::raw('IF(cr.catregion_nombre = "N/A", "", cr.catregion_nombre) AS catregion_nombre'),
+                    DB::raw('IF(cs.catsubdireccion_nombre = "N/A", "", cs.catsubdireccion_nombre) AS catsubdireccion_nombre'),
+                    DB::raw('IF(cg.catgerencia_nombre = "N/A", "", cg.catgerencia_nombre) AS catgerencia_nombre'),
+                    DB::raw('IF(ca.catactivo_nombre = "N/A", "", ca.catactivo_nombre) AS catactivo_nombre')
+                )
+                ->first();
+
+            $gerenciaActivo = '';
+
+            if ($proyecto) {
+                $gerenciaActivo = !empty($proyecto->catactivo_nombre)
+                    ? $proyecto->catactivo_nombre
+                    : $proyecto->catgerencia_nombre;
+            }
+
+            $normalizar = function ($valor) {
+                $valor = trim((string) $valor);
+
+                if (function_exists('mb_strtolower')) {
+                    return mb_strtolower($valor, 'UTF-8');
+                }
+
+                return strtolower($valor);
+            };
+
+            $valorNumerico = function ($valor) {
+                if ($valor === null || trim((string) $valor) === '') {
+                    return null;
+                }
+
+                $limpio = str_replace(',', '.', (string) $valor);
+
+                if (preg_match('/-?\d+(?:\.\d+)?/', $limpio, $coincidencia)) {
+                    return (float) $coincidencia[0];
+                }
+
+                return null;
+            };
+
+            $evaluarLimite = function ($resultado, $limite) use ($valorNumerico) {
+                $resultadoNumerico = $valorNumerico($resultado);
+
+                if ($resultadoNumerico === null) {
+                    return '';
+                }
+
+                $limiteTexto = trim((string) $limite);
+
+                if (
+                    preg_match(
+                        '/(-?\d+(?:[.,]\d+)?)\s*-\s*(-?\d+(?:[.,]\d+)?)/',
+                        $limiteTexto,
+                        $rango
+                    )
+                ) {
+                    $minimo = (float) str_replace(',', '.', $rango[1]);
+                    $maximo = (float) str_replace(',', '.', $rango[2]);
+
+                    return (
+                        $resultadoNumerico >= $minimo &&
+                        $resultadoNumerico <= $maximo
+                    )
+                        ? 'DENTRO DE NORMA'
+                        : 'FUERA DE NORMA';
+                }
+
+                $limiteNumerico = $valorNumerico($limiteTexto);
+
+                if ($limiteNumerico === null) {
+                    return '';
+                }
+
+                return $resultadoNumerico <= $limiteNumerico
+                    ? 'DENTRO DE NORMA'
+                    : 'FUERA DE NORMA';
+            };
+
+            $crearGrupo = function (
+                $areaId,
+                $categoriaId,
+                $instalacion,
+                $area,
+                $categoria,
+                $nombre,
+                $ficha,
+                $anios,
+                $antiguedadGeneral,
+                $antiguedadCategoria,
+                $horario
+            ) {
+                return [
+                    'base' => [
+                        'area_id' => $areaId,
+                        'categoria_id' => $categoriaId,
+                        'instalacion' => $instalacion,
+                        'area' => $area,
+                        'categoria' => $categoria,
+                        'nombre' => $nombre,
+                        'ficha' => $ficha,
+                        'anios' => $anios,
+                        'antiguedad_general' => $antiguedadGeneral,
+                        'antiguedad_categoria' => $antiguedadCategoria,
+                        'horario' => $horario
+                    ],
+                    'quimicos' => [],
+                    'iluminacion' => null,
+                    'temperatura' => null,
+                    'ruido' => null,
+                    'vibracion' => null,
+                    'aire' => null
+                ];
+            };
+
+            $crearFila = function () use (
+                $proyecto_id,
+                $reporteregistro_id,
+                $departamento,
+                $proyecto,
+                $gerenciaActivo
+            ) {
+                return [
+                    'id' => null,
+                    'proyecto_id' => $proyecto_id,
+                    'registro_id' => $reporteregistro_id,
+                    'numero_registro' => 0,
+
+                    'catregion_nombre' => $proyecto
+                        ? $proyecto->catregion_nombre
+                        : '',
+
+                    'catsubdireccion_nombre' => $proyecto
+                        ? $proyecto->catsubdireccion_nombre
+                        : '',
+
+                    'catgerencia_nombre' => $proyecto
+                        ? $proyecto->catgerencia_nombre
+                        : '',
+
+                    'catactivo_nombre' => $proyecto
+                        ? $proyecto->catactivo_nombre
+                        : '',
+
+                    'gerencia_activo' => $gerenciaActivo,
+                    'DEPARTAMENTO_MEL' => $departamento,
+
+                    'reportequimicosarea_instalacion' => '',
+                    'reportequimicosarea_nombre' => '',
+                    'reportequimicoscategoria_nombre' => '',
+
+                    'reportequimicosevaluacion_nombre' => '',
+                    'reportequimicosevaluacion_ficha' => '',
+                    'reportequimicosevaluacion_anios' => '',
+                    'reportequimicosevaluacion_antiguedadgeneral' => '',
+                    'reportequimicosevaluacion_antiguedadcategoria' => '',
+                    'reportequimicosevaluacion_horariotrabajo' => '',
+
+                    'tipo' => '',
+                    'referencia_vle' => '',
+                    'unidad_vle' => '',
+                    'resultado_concentracion' => '',
+                    'cumplimiento' => '',
+
+                    'iluminacion_referencia' => '',
+                    'iluminacion_resultado' => '',
+                    'iluminacion_cumplimiento' => '',
+
+                    'temperatura_referencia' => '',
+                    'temperatura_resultado' => '',
+                    'temperatura_cumplimiento' => '',
+
+                    'ruido_referencia' => '',
+                    'ruido_resultado' => '',
+                    'ruido_cumplimiento' => '',
+
+                    'vibracion_referencia' => '',
+                    'vibracion_resultado' => '',
+                    'vibracion_cumplimiento' => '',
+
+                    'aire_temperatura_referencia' => '',
+                    'aire_temperatura_resultado' => '',
+                    'aire_temperatura_cumplimiento' => '',
+
+                    'aire_velocidad_referencia' => '',
+                    'aire_velocidad_resultado' => '',
+                    'aire_velocidad_cumplimiento' => '',
+
+                    'aire_humedad_referencia' => '',
+                    'aire_humedad_resultado' => '',
+                    'aire_humedad_cumplimiento' => '',
+
+                    'aire_co_referencia' => '',
+                    'aire_co_resultado' => '',
+                    'aire_co_cumplimiento' => '',
+
+                    'aire_co2_referencia' => '',
+                    'aire_co2_resultado' => '',
+                    'aire_co2_cumplimiento' => '',
+
+                    'aire_bioaerosoles_referencia' => '',
+                    'aire_bioaerosoles_resultado' => '',
+                    'aire_bioaerosoles_cumplimiento' => ''
+                ];
+            };
+
+            $grupos = [];
 
             if (($areas_poe + 0) == 1) {
-                $puntos = DB::select('
-                    SELECT
-                        rq.id,
-                        rq.proyecto_id,
-                        rq.registro_id,
-                        IF(cr.catregion_nombre = "N/A", "", cr.catregion_nombre) AS catregion_nombre,
-                        IF(cs.catsubdireccion_nombre = "N/A", "", cs.catsubdireccion_nombre) AS catsubdireccion_nombre,
-                        IF(cg.catgerencia_nombre = "N/A", "", cg.catgerencia_nombre) AS catgerencia_nombre,
-                        IF(ca.catactivo_nombre = "N/A", "", ca.catactivo_nombre) AS catactivo_nombre,
-                        (
-                            CASE
-                                WHEN IF(ca.catactivo_nombre = "N/A", "", ca.catactivo_nombre) != "" THEN ca.catactivo_nombre
-                                ELSE cg.catgerencia_nombre
-                            END
-                        ) AS gerencia_activo,
-                        ra.reportearea_instalacion AS reportequimicosarea_instalacion,
-                        ra.reportearea_nombre AS reportequimicosarea_nombre,
-                        rc.reportecategoria_nombre AS reportequimicoscategoria_nombre,
-                        rq.reportequimicosevaluacion_nombre,
-                        rq.reportequimicosevaluacion_anios,
-                        rq.reportequimicosevaluacion_antiguedadgeneral,
-                        rq.reportequimicosevaluacion_antiguedadcategoria,
-                        rq.reportequimicosevaluacion_horariotrabajo,
-                        rq.reportequimicosevaluacion_ficha,
-                        rq.reportequimicosevaluacion_geo,
-                        rq.reportequimicosevaluacion_total,
-                        rq.reportequimicosevaluacion_punto,
-                        rp.reportequimicosevaluacionparametro_parametro AS tipo,
-                        rp.reportequimicosevaluacionparametro_valorlimite AS referencia_vle,
-                        rp.reportequimicosevaluacionparametro_unidad AS unidad_vle,
-                        rp.reportequimicosevaluacionparametro_concentracion AS resultado_concentracion
-                    FROM reportequimicosevaluacion rq
-                    LEFT JOIN proyecto p ON rq.proyecto_id = p.id
-                    LEFT JOIN catregion cr ON p.catregion_id = cr.id
-                    LEFT JOIN catsubdireccion cs ON p.catsubdireccion_id = cs.id
-                    LEFT JOIN catgerencia cg ON p.catgerencia_id = cg.id
-                    LEFT JOIN catactivo ca ON p.catactivo_id = ca.id
-                    LEFT JOIN reportearea ra ON rq.reportequimicosarea_id = ra.id
-                    LEFT JOIN reportecategoria rc ON rq.reportequimicoscategoria_id = rc.id
-                    LEFT JOIN reportequimicosevaluacionparametro rp ON rp.reportequimicosevaluacion_id = rq.id
-                    WHERE rq.proyecto_id = ' . $proyecto_id . '
-                    AND rq.registro_id = ' . $reporteregistro_id . '
-                    ORDER BY rq.reportequimicosevaluacion_punto ASC
-                ');
+                $quimicos = DB::table('reportequimicosevaluacion as rq')
+                    ->leftJoin(
+                        'reportearea as ra',
+                        'rq.reportequimicosarea_id',
+                        '=',
+                        'ra.id'
+                    )
+                    ->leftJoin(
+                        'reportecategoria as rc',
+                        'rq.reportequimicoscategoria_id',
+                        '=',
+                        'rc.id'
+                    )
+                    ->leftJoin(
+                        'reportequimicosevaluacionparametro as rp',
+                        'rp.reportequimicosevaluacion_id',
+                        '=',
+                        'rq.id'
+                    )
+                    ->where('rq.proyecto_id', $proyecto_id)
+                    ->where('rq.registro_id', $reporteregistro_id)
+                    ->select(
+                        'rq.*',
+                        'ra.id as area_id',
+                        'ra.reportearea_instalacion as area_instalacion',
+                        'ra.reportearea_nombre as area_nombre',
+                        'rc.id as categoria_id',
+                        'rc.reportecategoria_nombre as categoria_nombre',
+                        'rp.reportequimicosevaluacionparametro_parametro as tipo',
+                        'rp.reportequimicosevaluacionparametro_valorlimite as referencia_vle',
+                        'rp.reportequimicosevaluacionparametro_unidad as unidad_vle',
+                        'rp.reportequimicosevaluacionparametro_concentracion as resultado_concentracion'
+                    )
+                    ->orderBy('rq.reportequimicosevaluacion_punto', 'ASC')
+                    ->orderBy('rp.id', 'ASC')
+                    ->get();
             } else {
-                $puntos = DB::select('
-                    SELECT
-                        rq.id,
-                        rq.proyecto_id,
-                        rq.registro_id,
-                        IF(cr.catregion_nombre = "N/A", "", cr.catregion_nombre) AS catregion_nombre,
-                        IF(cs.catsubdireccion_nombre = "N/A", "", cs.catsubdireccion_nombre) AS catsubdireccion_nombre,
-                        IF(cg.catgerencia_nombre = "N/A", "", cg.catgerencia_nombre) AS catgerencia_nombre,
-                        IF(ca.catactivo_nombre = "N/A", "", ca.catactivo_nombre) AS catactivo_nombre,
-                        (
-                            CASE
-                                WHEN IF(ca.catactivo_nombre = "N/A", "", ca.catactivo_nombre) != "" THEN ca.catactivo_nombre
-                                ELSE cg.catgerencia_nombre
-                            END
-                        ) AS gerencia_activo,
-                        ra.reportequimicosarea_instalacion,
-                        ra.reportequimicosarea_nombre,
-                        rc.reportequimicoscategoria_nombre,
-                        rq.reportequimicosevaluacion_nombre,
-                        rq.reportequimicosevaluacion_anios,
-                        rq.reportequimicosevaluacion_antiguedadgeneral,
-                        rq.reportequimicosevaluacion_antiguedadcategoria,
-                        rq.reportequimicosevaluacion_horariotrabajo,
-                        rq.reportequimicosevaluacion_ficha,
-                        rq.reportequimicosevaluacion_geo,
-                        rq.reportequimicosevaluacion_total,
-                        rq.reportequimicosevaluacion_punto,
-                        rp.reportequimicosevaluacionparametro_parametro AS tipo,
-                        rp.reportequimicosevaluacionparametro_valorlimite AS referencia_vle,
-                        rp.reportequimicosevaluacionparametro_unidad AS unidad_vle,
-                        rp.reportequimicosevaluacionparametro_concentracion AS resultado_concentracion
-                    FROM reportequimicosevaluacion rq
-                    LEFT JOIN proyecto p ON rq.proyecto_id = p.id
-                    LEFT JOIN catregion cr ON p.catregion_id = cr.id
-                    LEFT JOIN catsubdireccion cs ON p.catsubdireccion_id = cs.id
-                    LEFT JOIN catgerencia cg ON p.catgerencia_id = cg.id
-                    LEFT JOIN catactivo ca ON p.catactivo_id = ca.id
-                    LEFT JOIN reportequimicosarea ra ON rq.reportequimicosarea_id = ra.id
-                    LEFT JOIN reportequimicoscategoria rc ON rq.reportequimicoscategoria_id = rc.id
-                    LEFT JOIN reportequimicosevaluacionparametro rp ON rp.reportequimicosevaluacion_id = rq.id
-                    WHERE rq.proyecto_id = ' . $proyecto_id . '
-                    AND rq.registro_id = ' . $reporteregistro_id . '
-                    ORDER BY rq.reportequimicosevaluacion_punto ASC
-                ');
+                $quimicos = DB::table('reportequimicosevaluacion as rq')
+                    ->leftJoin(
+                        'reportequimicosarea as ra',
+                        'rq.reportequimicosarea_id',
+                        '=',
+                        'ra.id'
+                    )
+                    ->leftJoin(
+                        'reportequimicoscategoria as rc',
+                        'rq.reportequimicoscategoria_id',
+                        '=',
+                        'rc.id'
+                    )
+                    ->leftJoin(
+                        'reportequimicosevaluacionparametro as rp',
+                        'rp.reportequimicosevaluacion_id',
+                        '=',
+                        'rq.id'
+                    )
+                    ->where('rq.proyecto_id', $proyecto_id)
+                    ->where('rq.registro_id', $reporteregistro_id)
+                    ->select(
+                        'rq.*',
+                        'ra.id as area_id',
+                        'ra.reportequimicosarea_instalacion as area_instalacion',
+                        'ra.reportequimicosarea_nombre as area_nombre',
+                        'rc.id as categoria_id',
+                        'rc.reportequimicoscategoria_nombre as categoria_nombre',
+                        'rp.reportequimicosevaluacionparametro_parametro as tipo',
+                        'rp.reportequimicosevaluacionparametro_valorlimite as referencia_vle',
+                        'rp.reportequimicosevaluacionparametro_unidad as unidad_vle',
+                        'rp.reportequimicosevaluacionparametro_concentracion as resultado_concentracion'
+                    )
+                    ->orderBy('rq.reportequimicosevaluacion_punto', 'ASC')
+                    ->orderBy('rp.id', 'ASC')
+                    ->get();
             }
 
-            $numero_registro = 0;
-            foreach ($puntos as $value) {
-                $numero_registro++;
-                $value->numero_registro = $numero_registro;
-                $value->DEPARTAMENTO_MEL = $departamento;
-
-                $value->cumplimiento = $this->evaluarCumplimiento(
-                    $value->resultado_concentracion,
-                    $value->referencia_vle
+            foreach ($quimicos as $quimico) {
+                $areaId = $quimico->area_id;
+                $categoriaId = $quimico->categoria_id;
+                $nombre = trim(
+                    (string) $quimico->reportequimicosevaluacion_nombre
                 );
+                $ficha = trim(
+                    (string) $quimico->reportequimicosevaluacion_ficha
+                );
+
+                $clave = implode('|', [
+                    'TRABAJADOR',
+                    $areaId,
+                    $categoriaId,
+                    $normalizar($nombre),
+                    $normalizar($ficha)
+                ]);
+
+                if (!isset($grupos[$clave])) {
+                    $grupos[$clave] = $crearGrupo(
+                        $areaId,
+                        $categoriaId,
+                        $quimico->area_instalacion,
+                        $quimico->area_nombre,
+                        $quimico->categoria_nombre,
+                        $nombre,
+                        $ficha,
+                        $quimico->reportequimicosevaluacion_anios,
+                        $quimico->reportequimicosevaluacion_antiguedadgeneral,
+                        $quimico->reportequimicosevaluacion_antiguedadcategoria,
+                        $quimico->reportequimicosevaluacion_horariotrabajo
+                    );
+                }
+
+                $grupos[$clave]['quimicos'][] = [
+                    'id' => $quimico->id,
+                    'tipo' => $quimico->tipo,
+                    'referencia' => $quimico->referencia_vle,
+                    'unidad' => $quimico->unidad_vle,
+                    'resultado' => $quimico->resultado_concentracion,
+                    'cumplimiento' => $evaluarLimite(
+                        $quimico->resultado_concentracion,
+                        $quimico->referencia_vle
+                    )
+                ];
+            }
+
+            $iluminacion = DB::table('reporteiluminacionpuntos as ri')
+                ->leftJoin(
+                    'reportearea as ra',
+                    'ri.reporteiluminacionpuntos_area_id',
+                    '=',
+                    'ra.id'
+                )
+                ->leftJoin(
+                    'reportecategoria as rc',
+                    'ri.reporteiluminacionpuntos_categoria_id',
+                    '=',
+                    'rc.id'
+                )
+                ->where('ri.proyecto_id', $proyecto_id)
+                ->select(
+                    'ri.*',
+                    'ra.id as area_id',
+                    'ra.reportearea_instalacion as area_instalacion',
+                    'ra.reportearea_nombre as area_nombre',
+                    'rc.id as categoria_id',
+                    'rc.reportecategoria_nombre as categoria_nombre'
+                )
+                ->orderBy('ri.id', 'DESC')
+                ->get()
+                ->groupBy(function ($item) use ($normalizar) {
+                    return implode('|', [
+                        $item->area_id,
+                        $item->categoria_id,
+                        $normalizar(
+                            $item->reporteiluminacionpuntos_nombre
+                        ),
+                        $normalizar(
+                            $item->reporteiluminacionpuntos_ficha
+                        )
+                    ]);
+                });
+
+            foreach ($iluminacion as $registrosIluminacion) {
+                $seleccionado = null;
+                $resultadoSeleccionado = null;
+
+                foreach ($registrosIluminacion as $registroIluminacion) {
+                    $mediciones = [
+                        $valorNumerico(
+                            $registroIluminacion->reporteiluminacionpuntos_luxmed1
+                        ),
+                        $valorNumerico(
+                            $registroIluminacion->reporteiluminacionpuntos_luxmed2
+                        ),
+                        $valorNumerico(
+                            $registroIluminacion->reporteiluminacionpuntos_luxmed3
+                        )
+                    ];
+
+                    $medicionesValidas = [];
+
+                    foreach ($mediciones as $medicion) {
+                        if ($medicion !== null && $medicion != 0) {
+                            $medicionesValidas[] = $medicion;
+                        }
+                    }
+
+                    if (empty($medicionesValidas)) {
+                        continue;
+                    }
+
+                    $menor = min($medicionesValidas);
+
+                    if (
+                        $resultadoSeleccionado === null ||
+                        $menor < $resultadoSeleccionado
+                    ) {
+                        $resultadoSeleccionado = $menor;
+                        $seleccionado = $registroIluminacion;
+                    }
+                }
+
+                if (!$seleccionado) {
+                    continue;
+                }
+
+                $areaId = $seleccionado->area_id;
+                $categoriaId = $seleccionado->categoria_id;
+
+                $nombre = trim(
+                    (string) $seleccionado->reporteiluminacionpuntos_nombre
+                );
+
+                $ficha = trim(
+                    (string) $seleccionado->reporteiluminacionpuntos_ficha
+                );
+
+                $clave = implode('|', [
+                    'TRABAJADOR',
+                    $areaId,
+                    $categoriaId,
+                    $normalizar($nombre),
+                    $normalizar($ficha)
+                ]);
+
+                if (!isset($grupos[$clave])) {
+                    $grupos[$clave] = $crearGrupo(
+                        $areaId,
+                        $categoriaId,
+                        $seleccionado->area_instalacion,
+                        $seleccionado->area_nombre,
+                        $seleccionado->categoria_nombre,
+                        $nombre,
+                        $ficha,
+                        '',
+                        '',
+                        '',
+                        ''
+                    );
+                }
+
+                $referencia = $seleccionado->reporteiluminacionpuntos_lux;
+
+                $grupos[$clave]['iluminacion'] = [
+                    'referencia' => $referencia,
+                    'resultado' => $resultadoSeleccionado,
+                    'cumplimiento' =>
+                    $resultadoSeleccionado >=
+                        $valorNumerico($referencia)
+                        ? 'DENTRO DE NORMA'
+                        : 'FUERA DE NORMA'
+                ];
+            }
+
+            $temperatura = DB::table('reportetemperaturaevaluacion as rt')
+                ->leftJoin(
+                    'reportearea as ra',
+                    'rt.reportearea_id',
+                    '=',
+                    'ra.id'
+                )
+                ->leftJoin(
+                    'reportecategoria as rc',
+                    'rt.reportecategoria_id',
+                    '=',
+                    'rc.id'
+                )
+                ->where('rt.proyecto_id', $proyecto_id)
+                ->select(
+                    'rt.*',
+                    'ra.id as area_id',
+                    'ra.reportearea_instalacion as area_instalacion',
+                    'ra.reportearea_nombre as area_nombre',
+                    'rc.id as categoria_id',
+                    'rc.reportecategoria_nombre as categoria_nombre'
+                )
+                ->orderBy('rt.id', 'DESC')
+                ->get()
+                ->groupBy(function ($item) use ($normalizar) {
+                    return implode('|', [
+                        $item->area_id,
+                        $item->categoria_id,
+                        $normalizar(
+                            $item->reportetemperaturaevaluacion_trabajador
+                        ),
+                        $normalizar(
+                            $item->reportetemperaturaevaluacion_ficha
+                        )
+                    ]);
+                });
+
+            foreach ($temperatura as $registrosTemperatura) {
+                $seleccionado = null;
+                $resultadoSeleccionado = null;
+
+                foreach ($registrosTemperatura as $registroTemperatura) {
+                    $valores = [
+                        $valorNumerico(
+                            $registroTemperatura->reportetemperaturaevaluacion_I
+                        ),
+                        $valorNumerico(
+                            $registroTemperatura->reportetemperaturaevaluacion_II
+                        ),
+                        $valorNumerico(
+                            $registroTemperatura->reportetemperaturaevaluacion_III
+                        )
+                    ];
+
+                    foreach ($valores as $valor) {
+                        if (
+                            $valor !== null &&
+                            (
+                                $resultadoSeleccionado === null ||
+                                $valor > $resultadoSeleccionado
+                            )
+                        ) {
+                            $resultadoSeleccionado = $valor;
+                            $seleccionado = $registroTemperatura;
+                        }
+                    }
+                }
+
+                if (!$seleccionado) {
+                    continue;
+                }
+
+                $areaId = $seleccionado->area_id;
+                $categoriaId = $seleccionado->categoria_id;
+
+                $nombre = trim(
+                    (string) $seleccionado->reportetemperaturaevaluacion_trabajador
+                );
+
+                $ficha = trim(
+                    (string) $seleccionado->reportetemperaturaevaluacion_ficha
+                );
+
+                $clave = implode('|', [
+                    'TRABAJADOR',
+                    $areaId,
+                    $categoriaId,
+                    $normalizar($nombre),
+                    $normalizar($ficha)
+                ]);
+
+                if (!isset($grupos[$clave])) {
+                    $grupos[$clave] = $crearGrupo(
+                        $areaId,
+                        $categoriaId,
+                        $seleccionado->area_instalacion,
+                        $seleccionado->area_nombre,
+                        $seleccionado->categoria_nombre,
+                        $nombre,
+                        $ficha,
+                        '',
+                        '',
+                        '',
+                        ''
+                    );
+                }
+
+                $referencia =
+                    $seleccionado->reportetemperaturaevaluacion_LMPE;
+
+                $grupos[$clave]['temperatura'] = [
+                    'referencia' => $referencia,
+                    'resultado' => $resultadoSeleccionado,
+                    'cumplimiento' => $evaluarLimite(
+                        $resultadoSeleccionado,
+                        $referencia
+                    )
+                ];
+            }
+
+            $registroDosisRuido = DB::table('reporteruidodosisner')
+                ->where('proyecto_id', $proyecto_id)
+                ->max('registro_id');
+
+            if ($registroDosisRuido) {
+                if (($areas_poe + 0) == 1) {
+                    $dosisRuido = DB::table('reporteruidodosisner as rd')
+                        ->leftJoin(
+                            'reportearea as ra',
+                            'rd.reporteruidoarea_id',
+                            '=',
+                            'ra.id'
+                        )
+                        ->leftJoin(
+                            'reportecategoria as rc',
+                            'rd.reporteruidocategoria_id',
+                            '=',
+                            'rc.id'
+                        )
+                        ->where('rd.proyecto_id', $proyecto_id)
+                        ->where('rd.registro_id', $registroDosisRuido)
+                        ->select(
+                            'rd.*',
+                            'ra.id as area_id',
+                            'ra.reportearea_instalacion as area_instalacion',
+                            'ra.reportearea_nombre as area_nombre',
+                            'rc.id as categoria_id',
+                            'rc.reportecategoria_nombre as categoria_nombre'
+                        )
+                        ->orderBy(
+                            'rd.reporteruidodosisner_punto',
+                            'ASC'
+                        )
+                        ->get();
+                } else {
+                    $dosisRuido = DB::table('reporteruidodosisner as rd')
+                        ->leftJoin(
+                            'reporteruidoarea as ra',
+                            'rd.reporteruidoarea_id',
+                            '=',
+                            'ra.id'
+                        )
+                        ->leftJoin(
+                            'reporteruidocategoria as rc',
+                            'rd.reporteruidocategoria_id',
+                            '=',
+                            'rc.id'
+                        )
+                        ->where('rd.proyecto_id', $proyecto_id)
+                        ->where('rd.registro_id', $registroDosisRuido)
+                        ->select(
+                            'rd.*',
+                            'ra.id as area_id',
+                            'ra.reporteruidoarea_instalacion as area_instalacion',
+                            'ra.reporteruidoarea_nombre as area_nombre',
+                            'rc.id as categoria_id',
+                            'rc.reporteruidocategoria_nombre as categoria_nombre'
+                        )
+                        ->orderBy(
+                            'rd.reporteruidodosisner_punto',
+                            'ASC'
+                        )
+                        ->get();
+                }
+            } else {
+                $dosisRuido = collect([]);
+            }
+
+            foreach ($dosisRuido as $registroDosis) {
+                $areaId = $registroDosis->area_id;
+                $categoriaId = $registroDosis->categoria_id;
+
+                $nombre = trim(
+                    (string) $registroDosis->reporteruidodosisner_nombre
+                );
+
+                $resultado =
+                    $registroDosis->reporteruidodosisner_ner;
+
+                $referencia =
+                    $registroDosis->reporteruidodosisner_lmpe;
+
+                $claveCoincidente = null;
+
+                foreach ($grupos as $claveGrupo => $grupoExistente) {
+                    if (
+                        (string) $grupoExistente['base']['area_id'] ===
+                        (string) $areaId &&
+                        (string) $grupoExistente['base']['categoria_id'] ===
+                        (string) $categoriaId &&
+                        $normalizar(
+                            $grupoExistente['base']['nombre']
+                        ) === $normalizar($nombre)
+                    ) {
+                        $claveCoincidente = $claveGrupo;
+                        break;
+                    }
+                }
+
+                if ($claveCoincidente === null) {
+                    $claveCoincidente = implode('|', [
+                        'TRABAJADOR',
+                        $areaId,
+                        $categoriaId,
+                        $normalizar($nombre),
+                        ''
+                    ]);
+
+                    if (!isset($grupos[$claveCoincidente])) {
+                        $grupos[$claveCoincidente] = $crearGrupo(
+                            $areaId,
+                            $categoriaId,
+                            $registroDosis->area_instalacion,
+                            $registroDosis->area_nombre,
+                            $registroDosis->categoria_nombre,
+                            $nombre,
+                            '',
+                            '',
+                            '',
+                            '',
+                            ''
+                        );
+                    }
+                }
+
+                $guardarRuido = false;
+
+                if ($grupos[$claveCoincidente]['ruido'] === null) {
+                    $guardarRuido = true;
+                } else {
+                    $resultadoGuardado = $valorNumerico(
+                        $grupos[$claveCoincidente]['ruido']['resultado']
+                    );
+
+                    $resultadoActual = $valorNumerico($resultado);
+
+                    if (
+                        $resultadoGuardado === null ||
+                        (
+                            $resultadoActual !== null &&
+                            $resultadoActual > $resultadoGuardado
+                        )
+                    ) {
+                        $guardarRuido = true;
+                    }
+                }
+
+                if ($guardarRuido) {
+                    $grupos[$claveCoincidente]['ruido'] = [
+                        'referencia' => $referencia,
+                        'resultado' => $resultado,
+                        'cumplimiento' => $evaluarLimite(
+                            $resultado,
+                            $referencia
+                        )
+                    ];
+                }
+            }
+
+            $registroPuntoRuido = DB::table('reporteruidopuntoner')
+                ->where('proyecto_id', $proyecto_id)
+                ->max('registro_id');
+
+            if ($registroPuntoRuido) {
+                if (($areas_poe + 0) == 1) {
+                    $puntosRuido = DB::table('reporteruidopuntoner as rr')
+                        ->leftJoin(
+                            'reportearea as ra',
+                            'rr.reporteruidoarea_id',
+                            '=',
+                            'ra.id'
+                        )
+                        ->where('rr.proyecto_id', $proyecto_id)
+                        ->where('rr.registro_id', $registroPuntoRuido)
+                        ->select(
+                            'rr.*',
+                            'ra.id as area_id',
+                            'ra.reportearea_instalacion as area_instalacion',
+                            'ra.reportearea_nombre as area_nombre'
+                        )
+                        ->orderBy('rr.id', 'DESC')
+                        ->get();
+                } else {
+                    $puntosRuido = DB::table('reporteruidopuntoner as rr')
+                        ->leftJoin(
+                            'reporteruidoarea as ra',
+                            'rr.reporteruidoarea_id',
+                            '=',
+                            'ra.id'
+                        )
+                        ->where('rr.proyecto_id', $proyecto_id)
+                        ->where('rr.registro_id', $registroPuntoRuido)
+                        ->select(
+                            'rr.*',
+                            'ra.id as area_id',
+                            'ra.reporteruidoarea_instalacion as area_instalacion',
+                            'ra.reporteruidoarea_nombre as area_nombre'
+                        )
+                        ->orderBy('rr.id', 'DESC')
+                        ->get();
+                }
+            } else {
+                $puntosRuido = collect([]);
+            }
+
+            foreach (
+                $puntosRuido->groupBy('reporteruidoarea_id') as
+                $areaId => $registrosRuido
+            ) {
+                $seleccionado = null;
+                $resultadoSeleccionado = null;
+
+                foreach ($registrosRuido as $registroRuido) {
+                    $ner = $valorNumerico(
+                        $registroRuido->reporteruidopuntoner_ner
+                    );
+
+                    if (
+                        $ner !== null &&
+                        (
+                            $resultadoSeleccionado === null ||
+                            $ner > $resultadoSeleccionado
+                        )
+                    ) {
+                        $resultadoSeleccionado = $ner;
+                        $seleccionado = $registroRuido;
+                    }
+                }
+
+                if (!$seleccionado) {
+                    continue;
+                }
+
+                $ruido = [
+                    'referencia' =>
+                    $seleccionado->reporteruidopuntoner_lmpe,
+
+                    'resultado' =>
+                    $seleccionado->reporteruidopuntoner_ner,
+
+                    'cumplimiento' => $evaluarLimite(
+                        $seleccionado->reporteruidopuntoner_ner,
+                        $seleccionado->reporteruidopuntoner_lmpe
+                    )
+                ];
+
+                $ruidoAsignado = false;
+
+                foreach ($grupos as $claveGrupo => $grupoExistente) {
+                    if (
+                        (string) $grupoExistente['base']['area_id'] ===
+                        (string) $areaId
+                    ) {
+                        if ($grupos[$claveGrupo]['ruido'] === null) {
+                            $grupos[$claveGrupo]['ruido'] = $ruido;
+                        }
+
+                        $ruidoAsignado = true;
+                    }
+                }
+
+                if (!$ruidoAsignado) {
+                    $clave = 'RUIDO_PUNTO_AREA|' . $areaId;
+
+                    $grupos[$clave] = $crearGrupo(
+                        $areaId,
+                        null,
+                        $seleccionado->area_instalacion,
+                        $seleccionado->area_nombre,
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        ''
+                    );
+
+                    $grupos[$clave]['ruido'] = $ruido;
+                }
+            }
+
+            $vibraciones = DB::table('reportevibracionevaluacion as rv')
+                ->join(
+                    'reportevibracionevaluaciondatos as rvd',
+                    'rv.id',
+                    '=',
+                    'rvd.reportevibracionevaluacion_id'
+                )
+                ->leftJoin(
+                    'reportearea as ra',
+                    'rv.reportearea_id',
+                    '=',
+                    'ra.id'
+                )
+                ->leftJoin(
+                    'reportecategoria as rc',
+                    'rv.reportecategoria_id',
+                    '=',
+                    'rc.id'
+                )
+                ->where('rv.proyecto_id', $proyecto_id)
+                ->select(
+                    'rv.*',
+                    'rvd.*',
+                    'ra.id as area_id',
+                    'ra.reportearea_instalacion as area_instalacion',
+                    'ra.reportearea_nombre as area_nombre',
+                    'rc.id as categoria_id',
+                    'rc.reportecategoria_nombre as categoria_nombre'
+                )
+                ->orderBy('rv.id', 'DESC')
+                ->get()
+                ->groupBy(function ($item) use ($normalizar) {
+                    return implode('|', [
+                        $item->area_id,
+                        $item->categoria_id,
+                        $normalizar(
+                            $item->reportevibracionevaluacion_nombre
+                        ),
+                        $normalizar(
+                            $item->reportevibracionevaluacion_ficha
+                        )
+                    ]);
+                });
+
+            foreach ($vibraciones as $registrosVibracion) {
+                $seleccionado = null;
+                $resultadoSeleccionado = null;
+                $referenciaSeleccionada = null;
+
+                foreach ($registrosVibracion as $registroVibracion) {
+                    $valores = [
+                        [
+                            'valor' => $valorNumerico(
+                                $registroVibracion->reportevibracionevaluaciondatos_az1
+                            ),
+                            'limite' =>
+                            $registroVibracion->reportevibracionevaluaciondatos_azlimite
+                        ],
+                        [
+                            'valor' => $valorNumerico(
+                                $registroVibracion->reportevibracionevaluaciondatos_az2
+                            ),
+                            'limite' =>
+                            $registroVibracion->reportevibracionevaluaciondatos_azlimite
+                        ],
+                        [
+                            'valor' => $valorNumerico(
+                                $registroVibracion->reportevibracionevaluaciondatos_az3
+                            ),
+                            'limite' =>
+                            $registroVibracion->reportevibracionevaluaciondatos_azlimite
+                        ],
+                        [
+                            'valor' => $valorNumerico(
+                                $registroVibracion->reportevibracionevaluaciondatos_ax1
+                            ),
+                            'limite' =>
+                            $registroVibracion->reportevibracionevaluaciondatos_axylimite
+                        ],
+                        [
+                            'valor' => $valorNumerico(
+                                $registroVibracion->reportevibracionevaluaciondatos_ax2
+                            ),
+                            'limite' =>
+                            $registroVibracion->reportevibracionevaluaciondatos_axylimite
+                        ],
+                        [
+                            'valor' => $valorNumerico(
+                                $registroVibracion->reportevibracionevaluaciondatos_ax3
+                            ),
+                            'limite' =>
+                            $registroVibracion->reportevibracionevaluaciondatos_axylimite
+                        ],
+                        [
+                            'valor' => $valorNumerico(
+                                $registroVibracion->reportevibracionevaluaciondatos_ay1
+                            ),
+                            'limite' =>
+                            $registroVibracion->reportevibracionevaluaciondatos_axylimite
+                        ],
+                        [
+                            'valor' => $valorNumerico(
+                                $registroVibracion->reportevibracionevaluaciondatos_ay2
+                            ),
+                            'limite' =>
+                            $registroVibracion->reportevibracionevaluaciondatos_axylimite
+                        ],
+                        [
+                            'valor' => $valorNumerico(
+                                $registroVibracion->reportevibracionevaluaciondatos_ay3
+                            ),
+                            'limite' =>
+                            $registroVibracion->reportevibracionevaluaciondatos_axylimite
+                        ]
+                    ];
+
+                    foreach ($valores as $dato) {
+                        if (
+                            $dato['valor'] !== null &&
+                            (
+                                $resultadoSeleccionado === null ||
+                                $dato['valor'] > $resultadoSeleccionado
+                            )
+                        ) {
+                            $resultadoSeleccionado = $dato['valor'];
+                            $referenciaSeleccionada = $dato['limite'];
+                            $seleccionado = $registroVibracion;
+                        }
+                    }
+                }
+
+                if (!$seleccionado) {
+                    continue;
+                }
+
+                $areaId = $seleccionado->area_id;
+                $categoriaId = $seleccionado->categoria_id;
+
+                $nombre = trim(
+                    (string) $seleccionado->reportevibracionevaluacion_nombre
+                );
+
+                $ficha = trim(
+                    (string) $seleccionado->reportevibracionevaluacion_ficha
+                );
+
+                $clave = implode('|', [
+                    'TRABAJADOR',
+                    $areaId,
+                    $categoriaId,
+                    $normalizar($nombre),
+                    $normalizar($ficha)
+                ]);
+
+                if (!isset($grupos[$clave])) {
+                    $grupos[$clave] = $crearGrupo(
+                        $areaId,
+                        $categoriaId,
+                        $seleccionado->area_instalacion,
+                        $seleccionado->area_nombre,
+                        $seleccionado->categoria_nombre,
+                        $nombre,
+                        $ficha,
+                        '',
+                        '',
+                        '',
+                        ''
+                    );
+                }
+
+                $grupos[$clave]['vibracion'] = [
+                    'referencia' => $referenciaSeleccionada,
+                    'resultado' => $resultadoSeleccionado,
+                    'cumplimiento' => $evaluarLimite(
+                        $resultadoSeleccionado,
+                        $referenciaSeleccionada
+                    )
+                ];
+            }
+
+            $registroAire = DB::table('reporteaireevaluacion')
+                ->where('proyecto_id', $proyecto_id)
+                ->max('registro_id');
+
+            if ($registroAire) {
+                if (($areas_poe + 0) == 1) {
+                    $registrosAire = DB::table('reporteaireevaluacion as ae')
+                        ->leftJoin(
+                            'reportearea as ra',
+                            'ae.reporteairearea_id',
+                            '=',
+                            'ra.id'
+                        )
+                        ->where('ae.proyecto_id', $proyecto_id)
+                        ->where('ae.registro_id', $registroAire)
+                        ->select(
+                            'ae.*',
+                            'ra.id as area_id',
+                            'ra.reportearea_instalacion as area_instalacion',
+                            'ra.reportearea_nombre as area_nombre'
+                        )
+                        ->orderBy('ae.id', 'DESC')
+                        ->get();
+                } else {
+                    $registrosAire = DB::table('reporteaireevaluacion as ae')
+                        ->leftJoin(
+                            'reporteairearea as ra',
+                            'ae.reporteairearea_id',
+                            '=',
+                            'ra.id'
+                        )
+                        ->where('ae.proyecto_id', $proyecto_id)
+                        ->where('ae.registro_id', $registroAire)
+                        ->select(
+                            'ae.*',
+                            'ra.id as area_id',
+                            'ra.reporteairearea_instalacion as area_instalacion',
+                            'ra.reporteairearea_nombre as area_nombre'
+                        )
+                        ->orderBy('ae.id', 'DESC')
+                        ->get();
+                }
+            } else {
+                $registrosAire = collect([]);
+            }
+
+            foreach (
+                $registrosAire->groupBy('reporteairearea_id') as
+                $areaId => $evaluacionesArea
+            ) {
+                $evaluacion = $evaluacionesArea
+                    ->sortByDesc('id')
+                    ->first();
+
+                if (!$evaluacion) {
+                    continue;
+                }
+
+                $temperaturaAire = isset(
+                    $evaluacion->reporteaireevaluacion_temperatura
+                )
+                    ? $evaluacion->reporteaireevaluacion_temperatura
+                    : '';
+
+                $velocidadAire = isset(
+                    $evaluacion->reporteaireevaluacion_velocidad
+                )
+                    ? $evaluacion->reporteaireevaluacion_velocidad
+                    : '';
+
+                $velocidadLimite = isset(
+                    $evaluacion->reporteaireevaluacion_velocidadlimite
+                )
+                    ? $evaluacion->reporteaireevaluacion_velocidadlimite
+                    : '';
+
+                $humedadAire = isset(
+                    $evaluacion->reporteaireevaluacion_humedad
+                )
+                    ? $evaluacion->reporteaireevaluacion_humedad
+                    : '';
+
+                $monoxidoCarbono = isset(
+                    $evaluacion->reporteaireevaluacion_co
+                )
+                    ? $evaluacion->reporteaireevaluacion_co
+                    : '';
+
+                $dioxidoCarbono = isset(
+                    $evaluacion->reporteaireevaluacion_co2
+                )
+                    ? $evaluacion->reporteaireevaluacion_co2
+                    : '';
+
+                $ct = isset(
+                    $evaluacion->reporteaireevaluacion_ct
+                )
+                    ? $evaluacion->reporteaireevaluacion_ct
+                    : '';
+
+                $ctma = isset(
+                    $evaluacion->reporteaireevaluacion_ctma
+                )
+                    ? $evaluacion->reporteaireevaluacion_ctma
+                    : '';
+
+                $hongos = isset(
+                    $evaluacion->reporteaireevaluacion_hongos
+                )
+                    ? $evaluacion->reporteaireevaluacion_hongos
+                    : '';
+
+                $levaduras = isset(
+                    $evaluacion->reporteaireevaluacion_levaduras
+                )
+                    ? $evaluacion->reporteaireevaluacion_levaduras
+                    : '';
+
+                $cumplimientoTemperatura = $evaluarLimite(
+                    $temperaturaAire,
+                    '22-24.5'
+                );
+
+                $cumplimientoVelocidad = $evaluarLimite(
+                    $velocidadAire,
+                    $velocidadLimite
+                );
+
+                $cumplimientoHumedad = $evaluarLimite(
+                    $humedadAire,
+                    '20-60'
+                );
+
+                $cumplimientoCO = $evaluarLimite(
+                    $monoxidoCarbono,
+                    '25'
+                );
+
+                $cumplimientoCO2 = $evaluarLimite(
+                    $dioxidoCarbono,
+                    '5000'
+                );
+
+                $bioaerosoles = [
+                    'CT' => $ct,
+                    'CTMA' => $ctma,
+                    'Hongos' => $hongos,
+                    'Levaduras' => $levaduras
+                ];
+
+                $bioaerosolesCumplen = true;
+                $bioaerosolesConDatos = false;
+
+                foreach ($bioaerosoles as $valorBioaerosol) {
+                    $numeroBioaerosol = $valorNumerico(
+                        $valorBioaerosol
+                    );
+
+                    if ($numeroBioaerosol !== null) {
+                        $bioaerosolesConDatos = true;
+
+                        if ($numeroBioaerosol > 500) {
+                            $bioaerosolesCumplen = false;
+                        }
+                    }
+                }
+
+                if (!$bioaerosolesConDatos) {
+                    $cumplimientoBioaerosoles = '';
+                } else {
+                    $cumplimientoBioaerosoles =
+                        $bioaerosolesCumplen
+                        ? 'DENTRO DE NORMA'
+                        : 'FUERA DE NORMA';
+                }
+
+                $referenciaBioaerosoles =
+                    "CT: 500 UFC / mtra\n" .
+                    "CTMA: 500 UFC / mtra\n" .
+                    "Hongos: 500 UFC / mtra\n" .
+                    "Levaduras: 500 UFC / mtra";
+
+                $resultadoBioaerosoles =
+                    'CT: ' . (
+                        $ct !== null && $ct !== ''
+                        ? $ct
+                        : '-'
+                    ) . "\n" .
+                    'CTMA: ' . (
+                        $ctma !== null && $ctma !== ''
+                        ? $ctma
+                        : '-'
+                    ) . "\n" .
+                    'Hongos: ' . (
+                        $hongos !== null && $hongos !== ''
+                        ? $hongos
+                        : '-'
+                    ) . "\n" .
+                    'Levaduras: ' . (
+                        $levaduras !== null && $levaduras !== ''
+                        ? $levaduras
+                        : '-'
+                    );
+
+                $datosAire = [
+                    'temperatura_referencia' => '22-24.5',
+                    'temperatura_resultado' => $temperaturaAire,
+                    'temperatura_cumplimiento' =>
+                    $cumplimientoTemperatura,
+
+                    'velocidad_referencia' => $velocidadLimite,
+                    'velocidad_resultado' => $velocidadAire,
+                    'velocidad_cumplimiento' =>
+                    $cumplimientoVelocidad,
+
+                    'humedad_referencia' => '20-60',
+                    'humedad_resultado' => $humedadAire,
+                    'humedad_cumplimiento' =>
+                    $cumplimientoHumedad,
+
+                    'co_referencia' => '25',
+                    'co_resultado' => $monoxidoCarbono,
+                    'co_cumplimiento' => $cumplimientoCO,
+
+                    'co2_referencia' => '5000',
+                    'co2_resultado' => $dioxidoCarbono,
+                    'co2_cumplimiento' => $cumplimientoCO2,
+
+                    'bioaerosoles_referencia' =>
+                    $referenciaBioaerosoles,
+
+                    'bioaerosoles_resultado' =>
+                    $resultadoBioaerosoles,
+
+                    'bioaerosoles_cumplimiento' =>
+                    $cumplimientoBioaerosoles
+                ];
+
+                $aireAsignado = false;
+
+                foreach ($grupos as $claveGrupo => $grupoExistente) {
+                    if (
+                        (string) $grupoExistente['base']['area_id'] ===
+                        (string) $areaId
+                    ) {
+                        $grupos[$claveGrupo]['aire'] = $datosAire;
+                        $aireAsignado = true;
+                    }
+                }
+
+                if (!$aireAsignado) {
+                    $clave = 'AIRE_AREA|' . $areaId;
+
+                    $grupos[$clave] = $crearGrupo(
+                        $areaId,
+                        null,
+                        $evaluacion->area_instalacion,
+                        $evaluacion->area_nombre,
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        ''
+                    );
+
+                    $grupos[$clave]['aire'] = $datosAire;
+                }
+            }
+
+            $puntos = [];
+            $numeroRegistro = 0;
+
+            foreach ($grupos as $grupo) {
+                $quimicosGrupo = $grupo['quimicos'];
+                $cantidadFilas = count($quimicosGrupo);
+
+                if ($cantidadFilas === 0) {
+                    $cantidadFilas = 1;
+                }
+
+                for (
+                    $indice = 0;
+                    $indice < $cantidadFilas;
+                    $indice++
+                ) {
+                    $fila = $crearFila();
+                    $numeroRegistro++;
+
+                    $fila['numero_registro'] = $numeroRegistro;
+
+                    $fila['reportequimicosarea_instalacion'] =
+                        $grupo['base']['instalacion'];
+
+                    $fila['reportequimicosarea_nombre'] =
+                        $grupo['base']['area'];
+
+                    $fila['reportequimicoscategoria_nombre'] =
+                        $grupo['base']['categoria'];
+
+                    $fila['reportequimicosevaluacion_nombre'] =
+                        $grupo['base']['nombre'];
+
+                    $fila['reportequimicosevaluacion_ficha'] =
+                        $grupo['base']['ficha'];
+
+                    $fila['reportequimicosevaluacion_anios'] =
+                        $grupo['base']['anios'];
+
+                    $fila['reportequimicosevaluacion_antiguedadgeneral'] = $grupo['base']['antiguedad_general'];
+
+                    $fila['reportequimicosevaluacion_antiguedadcategoria'] = $grupo['base']['antiguedad_categoria'];
+
+                    $fila['reportequimicosevaluacion_horariotrabajo'] = $grupo['base']['horario'];
+
+                    if (isset($quimicosGrupo[$indice])) {
+                        $quimico = $quimicosGrupo[$indice];
+
+                        $fila['id'] = $quimico['id'];
+                        $fila['tipo'] = $quimico['tipo'];
+                        $fila['referencia_vle'] =
+                            $quimico['referencia'];
+
+                        $fila['unidad_vle'] =
+                            $quimico['unidad'];
+
+                        $fila['resultado_concentracion'] =
+                            $quimico['resultado'];
+
+                        $fila['cumplimiento'] =
+                            $quimico['cumplimiento'];
+                    }
+
+                    if ($grupo['iluminacion']) {
+                        $fila['iluminacion_referencia'] =
+                            $grupo['iluminacion']['referencia'];
+
+                        $fila['iluminacion_resultado'] =
+                            $grupo['iluminacion']['resultado'];
+
+                        $fila['iluminacion_cumplimiento'] =
+                            $grupo['iluminacion']['cumplimiento'];
+                    }
+
+                    if ($grupo['temperatura']) {
+                        $fila['temperatura_referencia'] =
+                            $grupo['temperatura']['referencia'];
+
+                        $fila['temperatura_resultado'] =
+                            $grupo['temperatura']['resultado'];
+
+                        $fila['temperatura_cumplimiento'] =
+                            $grupo['temperatura']['cumplimiento'];
+                    }
+
+                    if ($grupo['ruido']) {
+                        $fila['ruido_referencia'] =
+                            $grupo['ruido']['referencia'];
+
+                        $fila['ruido_resultado'] =
+                            $grupo['ruido']['resultado'];
+
+                        $fila['ruido_cumplimiento'] =
+                            $grupo['ruido']['cumplimiento'];
+                    }
+
+                    if ($grupo['vibracion']) {
+                        $fila['vibracion_referencia'] =
+                            $grupo['vibracion']['referencia'];
+
+                        $fila['vibracion_resultado'] =
+                            $grupo['vibracion']['resultado'];
+
+                        $fila['vibracion_cumplimiento'] =
+                            $grupo['vibracion']['cumplimiento'];
+                    }
+
+                    if ($grupo['aire']) {
+                        $fila['aire_temperatura_referencia'] =
+                            $grupo['aire']['temperatura_referencia'];
+
+                        $fila['aire_temperatura_resultado'] =
+                            $grupo['aire']['temperatura_resultado'];
+
+                        $fila['aire_temperatura_cumplimiento'] =
+                            $grupo['aire']['temperatura_cumplimiento'];
+
+                        $fila['aire_velocidad_referencia'] =
+                            $grupo['aire']['velocidad_referencia'];
+
+                        $fila['aire_velocidad_resultado'] =
+                            $grupo['aire']['velocidad_resultado'];
+
+                        $fila['aire_velocidad_cumplimiento'] =
+                            $grupo['aire']['velocidad_cumplimiento'];
+
+                        $fila['aire_humedad_referencia'] =
+                            $grupo['aire']['humedad_referencia'];
+
+                        $fila['aire_humedad_resultado'] =
+                            $grupo['aire']['humedad_resultado'];
+
+                        $fila['aire_humedad_cumplimiento'] =
+                            $grupo['aire']['humedad_cumplimiento'];
+
+                        $fila['aire_co_referencia'] =
+                            $grupo['aire']['co_referencia'];
+
+                        $fila['aire_co_resultado'] =
+                            $grupo['aire']['co_resultado'];
+
+                        $fila['aire_co_cumplimiento'] =
+                            $grupo['aire']['co_cumplimiento'];
+
+                        $fila['aire_co2_referencia'] =
+                            $grupo['aire']['co2_referencia'];
+
+                        $fila['aire_co2_resultado'] =
+                            $grupo['aire']['co2_resultado'];
+
+                        $fila['aire_co2_cumplimiento'] =
+                            $grupo['aire']['co2_cumplimiento'];
+
+                        $fila['aire_bioaerosoles_referencia'] =
+                            $grupo['aire']['bioaerosoles_referencia'];
+
+                        $fila['aire_bioaerosoles_resultado'] =
+                            $grupo['aire']['bioaerosoles_resultado'];
+
+                        $fila['aire_bioaerosoles_cumplimiento'] =
+                            $grupo['aire']['bioaerosoles_cumplimiento'];
+                    }
+
+                    $puntos[] = (object) $fila;
+                }
             }
 
             return response()->json([
@@ -417,14 +1949,24 @@ class reportesController extends Controller
                 'total' => count($puntos),
                 'msj' => 'Datos consultados correctamente'
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            \Log::error(
+                'Error en tablameldraft: ' .
+                    $e->getMessage() .
+                    ' línea ' .
+                    $e->getLine()
+            );
+
             return response()->json([
                 'data' => [],
                 'total' => 0,
-                'msj' => 'Error: ' . $e->getMessage()
-            ]);
+                'msj' => 'Error: ' . $e->getMessage(),
+                'linea' => $e->getLine()
+            ], 500);
         }
     }
+
+
 
     private function evaluarCumplimiento($concentracion, $valorLimite)
     {
@@ -491,181 +2033,877 @@ class reportesController extends Controller
         ], 404);
     }
 
+    // public function exportarMeldraft($proyecto_id)
+    // {
+    //     try {
+    //         $registro = DB::table('reportequimicosgrupos')
+    //             ->where('proyecto_id', $proyecto_id)
+    //             ->select('registro_id')
+    //             ->orderBy('created_at', 'desc')
+    //             ->first();
+
+    //         if (!$registro) {
+    //             return response()->json(['success' => false, 'message' => 'No se encontró registro_id para este proyecto.']);
+    //         }
+
+    //         $reporteregistro_id = $registro->registro_id;
+
+    //         $departamento = DB::table('departamentos_meldraft')
+    //             ->where('proyecto_id', $proyecto_id)
+    //             ->value('DEPARTAMENTO_MEL') ?? "No tiene departamento guardado";
+
+    //         $puntos = DB::select("
+    //         SELECT
+    //             rq.id,
+    //             rq.proyecto_id,
+    //             rq.registro_id,
+    //             ra.reportearea_instalacion AS reportequimicosarea_instalacion,
+    //             ra.reportearea_nombre AS reportequimicosarea_nombre,
+    //             rc.reportecategoria_nombre AS reportequimicoscategoria_nombre,
+    //             rq.reportequimicosevaluacion_nombre,
+    //             rq.reportequimicosevaluacion_ficha,
+    //             rq.reportequimicosevaluacion_anios,
+    //             rq.reportequimicosevaluacion_antiguedadgeneral,
+    //             rq.reportequimicosevaluacion_antiguedadcategoria,
+    //             rq.reportequimicosevaluacion_horariotrabajo,
+    //             rp.reportequimicosevaluacionparametro_parametro AS tipo,
+    //             rp.reportequimicosevaluacionparametro_valorlimite AS referencia_vle,
+    //             rp.reportequimicosevaluacionparametro_unidad AS unidad_vle,
+    //             rp.reportequimicosevaluacionparametro_concentracion AS resultado_concentracion
+    //         FROM reportequimicosevaluacion rq
+    //         LEFT JOIN reportearea ra ON rq.reportequimicosarea_id = ra.id
+    //         LEFT JOIN reportecategoria rc ON rq.reportequimicoscategoria_id = rc.id
+    //         LEFT JOIN reportequimicosevaluacionparametro rp ON rp.reportequimicosevaluacion_id = rq.id
+    //         WHERE rq.proyecto_id = $proyecto_id
+    //         AND rq.registro_id = $reporteregistro_id
+    //         ORDER BY rq.reportequimicosevaluacion_punto ASC
+    //     ");
+
+    //         if (empty($puntos)) {
+    //             return response()->json(['success' => false, 'message' => 'No hay datos para exportar.']);
+    //         }
+
+    //         $templatePath = storage_path('app/plantillas_reportes/proyecto_infomes/plantillla_meldraft.xlsx');
+    //         if (!file_exists($templatePath)) {
+    //             return response()->json(['success' => false, 'message' => 'No se encontró la plantilla Excel.']);
+    //         }
+
+    //         $reader = IOFactory::createReader('Xlsx');
+    //         $reader->setIncludeCharts(true);
+    //         $reader->setReadDataOnly(false);
+    //         $spreadsheet = $reader->load($templatePath);
+    //         $sheet = $spreadsheet->getActiveSheet();
+
+    //         $blueHeader = [
+    //             'fill' => [
+    //                 'fillType' => Fill::FILL_SOLID,
+    //                 'color' => ['rgb' => 'C5D9F1']
+    //             ],
+    //             'borders' => [
+    //                 'allBorders' => [
+    //                     'borderStyle' => Border::BORDER_THIN,
+    //                     'color' => ['rgb' => '000000']
+    //                 ]
+    //             ]
+    //         ];
+
+    //         $purpleHeader = [
+    //             'fill' => [
+    //                 'fillType' => Fill::FILL_SOLID,
+    //                 'color' => ['rgb' => 'E4DFEC']
+    //             ],
+    //             'borders' => [
+    //                 'allBorders' => [
+    //                     'borderStyle' => Border::BORDER_THIN,
+    //                     'color' => ['rgb' => '000000']
+    //                 ]
+    //             ]
+    //         ];
+
+    //         $sheet->getStyle('B3:K5')->applyFromArray($blueHeader);
+    //         $sheet->getStyle('L3:O5')->applyFromArray($purpleHeader);
+
+    //         $borderStyle = [
+    //             'borders' => [
+    //                 'allBorders' => [
+    //                     'borderStyle' => Border::BORDER_THIN,
+    //                     'color' => ['argb' => '000000'],
+    //                 ],
+    //             ],
+    //             'alignment' => [
+    //                 'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //                 'vertical' => Alignment::VERTICAL_CENTER,
+    //                 'wrapText' => true,
+    //             ],
+    //         ];
+
+    //         $filaInicio = 6;
+    //         $fila = $filaInicio;
+
+
+
+    //         foreach ($puntos as $value) {
+    //             $cumplimiento = $this->evaluarCumplimiento(
+    //                 $value->resultado_concentracion,
+    //                 $value->referencia_vle
+    //             );
+
+    //             $sheet->setCellValueExplicit("C{$fila}", $value->reportequimicosarea_instalacion ?? '', DataType::TYPE_STRING);
+    //             $sheet->setCellValueExplicit("D{$fila}", $value->reportequimicosarea_nombre ?? '', DataType::TYPE_STRING);
+    //             $sheet->setCellValueExplicit("E{$fila}", $value->reportequimicosevaluacion_nombre ?? '', DataType::TYPE_STRING);
+    //             $sheet->setCellValueExplicit("F{$fila}", $value->reportequimicosevaluacion_ficha ?? '', DataType::TYPE_STRING);
+    //             $sheet->setCellValueExplicit("G{$fila}", $value->reportequimicoscategoria_nombre ?? '', DataType::TYPE_STRING);
+    //             $sheet->setCellValueExplicit("H{$fila}", $value->reportequimicosevaluacion_anios ?? '', DataType::TYPE_STRING);
+    //             $sheet->setCellValueExplicit("I{$fila}", $value->reportequimicosevaluacion_antiguedadgeneral ?? '', DataType::TYPE_STRING);
+    //             $sheet->setCellValueExplicit("J{$fila}", $value->reportequimicosevaluacion_antiguedadcategoria ?? '', DataType::TYPE_STRING);
+    //             $sheet->setCellValueExplicit("K{$fila}", $value->reportequimicosevaluacion_horariotrabajo ?? '', DataType::TYPE_STRING);
+    //             $sheet->setCellValueExplicit("L{$fila}", $value->tipo ?? '', DataType::TYPE_STRING);
+
+    //             $valorVLE = trim(($value->referencia_vle ?? '') . ' ' . ($value->unidad_vle ?? ''));
+    //             $sheet->setCellValueExplicit("M{$fila}", $valorVLE, DataType::TYPE_STRING);
+
+    //             $sheet->setCellValueExplicit("N{$fila}", $value->resultado_concentracion ?? '', DataType::TYPE_STRING);
+    //             $sheet->setCellValueExplicit("O{$fila}", $cumplimiento ?? '', DataType::TYPE_STRING);
+
+    //             $sheet->getStyle("B{$fila}:O{$fila}")->applyFromArray($borderStyle);
+
+    //             $sheet->getRowDimension($fila)->setRowHeight(42.90);
+
+    //             $fila++;
+    //         }
+
+
+
+    //         $ultimaFila = $fila - 1;
+    //         if ($ultimaFila >= $filaInicio) {
+    //             $sheet->mergeCells("B{$filaInicio}:B{$ultimaFila}");
+    //             $sheet->setCellValue("B{$filaInicio}", $departamento);
+    //             $sheet->getStyle("B{$filaInicio}:B{$ultimaFila}")->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+    //             $sheet->getStyle("B{$filaInicio}:B{$ultimaFila}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+    //             $sheet->getStyle("B{$filaInicio}:B{$ultimaFila}")->applyFromArray([
+    //                 'borders' => [
+    //                     'allBorders' => [
+    //                         'borderStyle' => Border::BORDER_THIN,
+    //                         'color' => ['argb' => '000000'],
+    //                     ],
+    //                 ],
+    //             ]);
+    //         }
+
+    //         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+    //         $writer->setPreCalculateFormulas(false);
+
+    //         $fileName = 'Matriz_de_Exposición_Laboral_' . date('Ymd_His') . '.xlsx';
+    //         $filePath = storage_path('app/plantillas_reportes/proyecto_infomes/' . $fileName);
+    //         $writer->save($filePath);
+
+    //         return response()->download($filePath)->deleteFileAfterSend(true);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Error al generar el Excel: ' . $e->getMessage(),
+    //             'line' => $e->getLine(),
+    //         ]);
+    //     }
+    // }
+
+
     public function exportarMeldraft($proyecto_id)
     {
         try {
             $registro = DB::table('reportequimicosgrupos')
                 ->where('proyecto_id', $proyecto_id)
                 ->select('registro_id')
-                ->orderBy('created_at', 'desc')
+                ->orderBy('created_at', 'DESC')
                 ->first();
 
             if (!$registro) {
-                return response()->json(['success' => false, 'message' => 'No se encontró registro_id para este proyecto.']);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontró registro_id para este proyecto.'
+                ]);
             }
 
             $reporteregistro_id = $registro->registro_id;
 
             $departamento = DB::table('departamentos_meldraft')
                 ->where('proyecto_id', $proyecto_id)
-                ->value('DEPARTAMENTO_MEL') ?? "No tiene departamento guardado";
+                ->value('DEPARTAMENTO_MEL');
 
-            $puntos = DB::select("
-            SELECT
-                rq.id,
-                rq.proyecto_id,
-                rq.registro_id,
-                ra.reportearea_instalacion AS reportequimicosarea_instalacion,
-                ra.reportearea_nombre AS reportequimicosarea_nombre,
-                rc.reportecategoria_nombre AS reportequimicoscategoria_nombre,
-                rq.reportequimicosevaluacion_nombre,
-                rq.reportequimicosevaluacion_ficha,
-                rq.reportequimicosevaluacion_anios,
-                rq.reportequimicosevaluacion_antiguedadgeneral,
-                rq.reportequimicosevaluacion_antiguedadcategoria,
-                rq.reportequimicosevaluacion_horariotrabajo,
-                rp.reportequimicosevaluacionparametro_parametro AS tipo,
-                rp.reportequimicosevaluacionparametro_valorlimite AS referencia_vle,
-                rp.reportequimicosevaluacionparametro_unidad AS unidad_vle,
-                rp.reportequimicosevaluacionparametro_concentracion AS resultado_concentracion
-            FROM reportequimicosevaluacion rq
-            LEFT JOIN reportearea ra ON rq.reportequimicosarea_id = ra.id
-            LEFT JOIN reportecategoria rc ON rq.reportequimicoscategoria_id = rc.id
-            LEFT JOIN reportequimicosevaluacionparametro rp ON rp.reportequimicosevaluacion_id = rq.id
-            WHERE rq.proyecto_id = $proyecto_id
-            AND rq.registro_id = $reporteregistro_id
-            ORDER BY rq.reportequimicosevaluacion_punto ASC
-        ");
-
-            if (empty($puntos)) {
-                return response()->json(['success' => false, 'message' => 'No hay datos para exportar.']);
+            if (!$departamento) {
+                $departamento = 'No tiene departamento guardado';
             }
 
-            $templatePath = storage_path('app/plantillas_reportes/proyecto_infomes/plantillla_meldraft.xlsx');
+            $proyecto = DB::table('proyecto')
+                ->where('id', $proyecto_id)
+                ->first();
+
+            $nombreInstalacion = 'Instalacion';
+
+            if (
+                $proyecto &&
+                isset($proyecto->proyecto_clienteinstalacion) &&
+                trim($proyecto->proyecto_clienteinstalacion) !== ''
+            ) {
+                $nombreInstalacion = trim(
+                    $proyecto->proyecto_clienteinstalacion
+                );
+            }
+
+            $nombreInstalacion = str_replace(
+                [
+                    '\\',
+                    '/',
+                    ':',
+                    '*',
+                    '?',
+                    '"',
+                    '<',
+                    '>',
+                    '|'
+                ],
+                '',
+                $nombreInstalacion
+            );
+
+            $nombreInstalacion = preg_replace(
+                '/\s+/',
+                '_',
+                $nombreInstalacion
+            );
+
+            $respuestaMatriz = $this->tablameldraft(
+                $proyecto_id,
+                $reporteregistro_id,
+                1
+            );
+
+            $resultadoMatriz = $respuestaMatriz->getData(true);
+
+            if (
+                !isset($resultadoMatriz['data']) ||
+                !is_array($resultadoMatriz['data']) ||
+                count($resultadoMatriz['data']) === 0
+            ) {
+                return response()->json([
+                    'success' => false,
+                    'message' => isset($resultadoMatriz['msj'])
+                        ? $resultadoMatriz['msj']
+                        : 'No hay datos para exportar.'
+                ]);
+            }
+
+            $puntos = $resultadoMatriz['data'];
+
+            $templatePath = storage_path(
+                'app/plantillas_reportes/proyecto_infomes/plantillla_meldraft.xlsx'
+            );
+
             if (!file_exists($templatePath)) {
-                return response()->json(['success' => false, 'message' => 'No se encontró la plantilla Excel.']);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontró la plantilla Excel.'
+                ]);
             }
 
             $reader = IOFactory::createReader('Xlsx');
             $reader->setIncludeCharts(true);
             $reader->setReadDataOnly(false);
+
             $spreadsheet = $reader->load($templatePath);
             $sheet = $spreadsheet->getActiveSheet();
 
-            $blueHeader = [
-                'fill' => [
-                    'fillType' => Fill::FILL_SOLID,
-                    'color' => ['rgb' => 'C5D9F1']
-                ],
+            $estiloFilas = [
                 'borders' => [
                     'allBorders' => [
                         'borderStyle' => Border::BORDER_THIN,
-                        'color' => ['rgb' => '000000']
+                        'color' => [
+                            'argb' => '000000'
+                        ]
                     ]
-                ]
-            ];
-
-            $purpleHeader = [
-                'fill' => [
-                    'fillType' => Fill::FILL_SOLID,
-                    'color' => ['rgb' => 'E4DFEC']
-                ],
-                'borders' => [
-                    'allBorders' => [
-                        'borderStyle' => Border::BORDER_THIN,
-                        'color' => ['rgb' => '000000']
-                    ]
-                ]
-            ];
-
-            $sheet->getStyle('B3:K5')->applyFromArray($blueHeader);
-            $sheet->getStyle('L3:O5')->applyFromArray($purpleHeader);
-
-            $borderStyle = [
-                'borders' => [
-                    'allBorders' => [
-                        'borderStyle' => Border::BORDER_THIN,
-                        'color' => ['argb' => '000000'],
-                    ],
                 ],
                 'alignment' => [
-                    'horizontal' => Alignment::HORIZONTAL_CENTER,
-                    'vertical' => Alignment::VERTICAL_CENTER,
-                    'wrapText' => true,
-                ],
+                    'horizontal' =>
+                    Alignment::HORIZONTAL_CENTER,
+
+                    'vertical' =>
+                    Alignment::VERTICAL_CENTER,
+
+                    'wrapText' => true
+                ]
             ];
 
             $filaInicio = 6;
             $fila = $filaInicio;
-
-
+            $contador = 1;
+            $datosFilas = [];
 
             foreach ($puntos as $value) {
-                $cumplimiento = $this->evaluarCumplimiento(
-                    $value->resultado_concentracion,
-                    $value->referencia_vle
-                );
+                $value = (object) $value;
 
-                $sheet->setCellValueExplicit("C{$fila}", $value->reportequimicosarea_instalacion ?? '', DataType::TYPE_STRING);
-                $sheet->setCellValueExplicit("D{$fila}", $value->reportequimicosarea_nombre ?? '', DataType::TYPE_STRING);
-                $sheet->setCellValueExplicit("E{$fila}", $value->reportequimicosevaluacion_nombre ?? '', DataType::TYPE_STRING);
-                $sheet->setCellValueExplicit("F{$fila}", $value->reportequimicosevaluacion_ficha ?? '', DataType::TYPE_STRING);
-                $sheet->setCellValueExplicit("G{$fila}", $value->reportequimicoscategoria_nombre ?? '', DataType::TYPE_STRING);
-                $sheet->setCellValueExplicit("H{$fila}", $value->reportequimicosevaluacion_anios ?? '', DataType::TYPE_STRING);
-                $sheet->setCellValueExplicit("I{$fila}", $value->reportequimicosevaluacion_antiguedadgeneral ?? '', DataType::TYPE_STRING);
-                $sheet->setCellValueExplicit("J{$fila}", $value->reportequimicosevaluacion_antiguedadcategoria ?? '', DataType::TYPE_STRING);
-                $sheet->setCellValueExplicit("K{$fila}", $value->reportequimicosevaluacion_horariotrabajo ?? '', DataType::TYPE_STRING);
-                $sheet->setCellValueExplicit("L{$fila}", $value->tipo ?? '', DataType::TYPE_STRING);
+                $referenciaVLE = '';
 
-                $valorVLE = trim(($value->referencia_vle ?? '') . ' ' . ($value->unidad_vle ?? ''));
-                $sheet->setCellValueExplicit("M{$fila}", $valorVLE, DataType::TYPE_STRING);
+                if (
+                    isset($value->referencia_vle) &&
+                    trim((string) $value->referencia_vle) !== ''
+                ) {
+                    $referenciaVLE = trim(
+                        (string) $value->referencia_vle
+                    );
+                }
 
-                $sheet->setCellValueExplicit("N{$fila}", $value->resultado_concentracion ?? '', DataType::TYPE_STRING);
-                $sheet->setCellValueExplicit("O{$fila}", $cumplimiento ?? '', DataType::TYPE_STRING);
+                if (
+                    isset($value->unidad_vle) &&
+                    trim((string) $value->unidad_vle) !== ''
+                ) {
+                    if ($referenciaVLE !== '') {
+                        $referenciaVLE .= ' ';
+                    }
 
-                $sheet->getStyle("B{$fila}:O{$fila}")->applyFromArray($borderStyle);
+                    $referenciaVLE .= trim(
+                        (string) $value->unidad_vle
+                    );
+                }
 
-                $sheet->getRowDimension($fila)->setRowHeight(42.90);
+                $datosFila = [
+                    'A' => $contador,
+
+                    'B' => $departamento,
+
+                    'C' => isset(
+                        $value->reportequimicosarea_instalacion
+                    )
+                        ? $value->reportequimicosarea_instalacion
+                        : '',
+
+                    'D' => isset(
+                        $value->reportequimicosarea_nombre
+                    )
+                        ? $value->reportequimicosarea_nombre
+                        : '',
+
+                    'E' => isset(
+                        $value->reportequimicosevaluacion_nombre
+                    )
+                        ? $value->reportequimicosevaluacion_nombre
+                        : '',
+
+                    'F' => isset(
+                        $value->reportequimicosevaluacion_ficha
+                    )
+                        ? $value->reportequimicosevaluacion_ficha
+                        : '',
+
+                    'G' => isset(
+                        $value->reportequimicoscategoria_nombre
+                    )
+                        ? $value->reportequimicoscategoria_nombre
+                        : '',
+
+                    'H' => isset(
+                        $value->reportequimicosevaluacion_anios
+                    )
+                        ? $value->reportequimicosevaluacion_anios
+                        : '',
+
+                    'I' => isset(
+                        $value->reportequimicosevaluacion_antiguedadgeneral
+                    )
+                        ? $value->reportequimicosevaluacion_antiguedadgeneral
+                        : '',
+
+                    'J' => isset(
+                        $value->reportequimicosevaluacion_antiguedadcategoria
+                    )
+                        ? $value->reportequimicosevaluacion_antiguedadcategoria
+                        : '',
+
+                    'K' => isset(
+                        $value->reportequimicosevaluacion_horariotrabajo
+                    )
+                        ? $value->reportequimicosevaluacion_horariotrabajo
+                        : '',
+
+                    'L' => isset($value->tipo)
+                        ? $value->tipo
+                        : '',
+
+                    'M' => $referenciaVLE,
+
+                    'N' => isset(
+                        $value->resultado_concentracion
+                    )
+                        ? $value->resultado_concentracion
+                        : '',
+
+                    'O' => isset($value->cumplimiento)
+                        ? $value->cumplimiento
+                        : '',
+
+                    'P' => isset(
+                        $value->iluminacion_referencia
+                    )
+                        ? $value->iluminacion_referencia
+                        : '',
+
+                    'Q' => isset(
+                        $value->iluminacion_resultado
+                    )
+                        ? $value->iluminacion_resultado
+                        : '',
+
+                    'R' => isset(
+                        $value->iluminacion_cumplimiento
+                    )
+                        ? $value->iluminacion_cumplimiento
+                        : '',
+
+                    'S' => isset(
+                        $value->temperatura_referencia
+                    )
+                        ? $value->temperatura_referencia
+                        : '',
+
+                    'T' => isset(
+                        $value->temperatura_resultado
+                    )
+                        ? $value->temperatura_resultado
+                        : '',
+
+                    'U' => isset(
+                        $value->temperatura_cumplimiento
+                    )
+                        ? $value->temperatura_cumplimiento
+                        : '',
+
+                    'V' => isset(
+                        $value->ruido_referencia
+                    )
+                        ? $value->ruido_referencia
+                        : '',
+
+                    'W' => isset(
+                        $value->ruido_resultado
+                    )
+                        ? $value->ruido_resultado
+                        : '',
+
+                    'X' => isset(
+                        $value->ruido_cumplimiento
+                    )
+                        ? $value->ruido_cumplimiento
+                        : '',
+
+                    'Y' => isset(
+                        $value->vibracion_referencia
+                    )
+                        ? $value->vibracion_referencia
+                        : '',
+
+                    'Z' => isset(
+                        $value->vibracion_resultado
+                    )
+                        ? $value->vibracion_resultado
+                        : '',
+
+                    'AA' => isset(
+                        $value->vibracion_cumplimiento
+                    )
+                        ? $value->vibracion_cumplimiento
+                        : '',
+
+                    'AB' => isset(
+                        $value->aire_temperatura_referencia
+                    )
+                        ? $value->aire_temperatura_referencia
+                        : '',
+
+                    'AC' => isset(
+                        $value->aire_temperatura_resultado
+                    )
+                        ? $value->aire_temperatura_resultado
+                        : '',
+
+                    'AD' => isset(
+                        $value->aire_temperatura_cumplimiento
+                    )
+                        ? $value->aire_temperatura_cumplimiento
+                        : '',
+
+                    'AE' => isset(
+                        $value->aire_velocidad_referencia
+                    )
+                        ? $value->aire_velocidad_referencia
+                        : '',
+
+                    'AF' => isset(
+                        $value->aire_velocidad_resultado
+                    )
+                        ? $value->aire_velocidad_resultado
+                        : '',
+
+                    'AG' => isset(
+                        $value->aire_velocidad_cumplimiento
+                    )
+                        ? $value->aire_velocidad_cumplimiento
+                        : '',
+
+                    'AH' => isset(
+                        $value->aire_humedad_referencia
+                    )
+                        ? $value->aire_humedad_referencia
+                        : '',
+
+                    'AI' => isset(
+                        $value->aire_humedad_resultado
+                    )
+                        ? $value->aire_humedad_resultado
+                        : '',
+
+                    'AJ' => isset(
+                        $value->aire_humedad_cumplimiento
+                    )
+                        ? $value->aire_humedad_cumplimiento
+                        : '',
+
+                    'AK' => isset(
+                        $value->aire_co_referencia
+                    )
+                        ? $value->aire_co_referencia
+                        : '',
+
+                    'AL' => isset(
+                        $value->aire_co_resultado
+                    )
+                        ? $value->aire_co_resultado
+                        : '',
+
+                    'AM' => isset(
+                        $value->aire_co_cumplimiento
+                    )
+                        ? $value->aire_co_cumplimiento
+                        : '',
+
+                    'AN' => isset(
+                        $value->aire_co2_referencia
+                    )
+                        ? $value->aire_co2_referencia
+                        : '',
+
+                    'AO' => isset(
+                        $value->aire_co2_resultado
+                    )
+                        ? $value->aire_co2_resultado
+                        : '',
+
+                    'AP' => isset(
+                        $value->aire_co2_cumplimiento
+                    )
+                        ? $value->aire_co2_cumplimiento
+                        : '',
+
+                    'AQ' => isset(
+                        $value->aire_bioaerosoles_referencia
+                    )
+                        ? $value->aire_bioaerosoles_referencia
+                        : '',
+
+                    'AR' => isset(
+                        $value->aire_bioaerosoles_resultado
+                    )
+                        ? $value->aire_bioaerosoles_resultado
+                        : '',
+
+                    'AS' => isset(
+                        $value->aire_bioaerosoles_cumplimiento
+                    )
+                        ? $value->aire_bioaerosoles_cumplimiento
+                        : ''
+                ];
+
+                foreach ($datosFila as $columna => $valor) {
+                    $sheet->setCellValueExplicit(
+                        "{$columna}{$fila}",
+                        (string) $valor,
+                        DataType::TYPE_STRING
+                    );
+                }
+
+                $sheet->getStyle(
+                    "A{$fila}:AS{$fila}"
+                )->applyFromArray($estiloFilas);
+
+                $sheet->getRowDimension($fila)
+                    ->setRowHeight(75);
+
+                $datosFilas[$fila] = $datosFila;
 
                 $fila++;
+                $contador++;
             }
-
-
 
             $ultimaFila = $fila - 1;
-            if ($ultimaFila >= $filaInicio) {
-                $sheet->mergeCells("B{$filaInicio}:B{$ultimaFila}");
-                $sheet->setCellValue("B{$filaInicio}", $departamento);
-                $sheet->getStyle("B{$filaInicio}:B{$ultimaFila}")->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-                $sheet->getStyle("B{$filaInicio}:B{$ultimaFila}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-                $sheet->getStyle("B{$filaInicio}:B{$ultimaFila}")->applyFromArray([
-                    'borders' => [
-                        'allBorders' => [
-                            'borderStyle' => Border::BORDER_THIN,
-                            'color' => ['argb' => '000000'],
-                        ],
-                    ],
-                ]);
+
+            $columnasAgrupar = [
+                'B',
+                'C',
+                'D',
+                'E',
+                'F',
+                'G',
+                'H',
+                'I',
+                'J',
+                'K',
+
+                'P',
+                'Q',
+                'R',
+
+                'S',
+                'T',
+                'U',
+
+                'V',
+                'W',
+                'X',
+
+                'Y',
+                'Z',
+                'AA',
+
+                'AB',
+                'AC',
+                'AD',
+
+                'AE',
+                'AF',
+                'AG',
+
+                'AH',
+                'AI',
+                'AJ',
+
+                'AK',
+                'AL',
+                'AM',
+
+                'AN',
+                'AO',
+                'AP',
+
+                'AQ',
+                'AR',
+                'AS'
+            ];
+
+            $columnasPadre = [];
+
+            foreach ($columnasAgrupar as $columnaActual) {
+                $columnasPadre[] = $columnaActual;
+
+                $inicioGrupo = $filaInicio;
+                $claveAnterior = null;
+
+                for (
+                    $filaActual = $filaInicio;
+                    $filaActual <= $ultimaFila;
+                    $filaActual++
+                ) {
+                    $partesClave = [];
+
+                    foreach ($columnasPadre as $columnaPadre) {
+                        $valorClave = isset(
+                            $datosFilas[$filaActual][$columnaPadre]
+                        )
+                            ? $datosFilas[$filaActual][$columnaPadre]
+                            : '';
+
+                        $partesClave[] = trim(
+                            (string) $valorClave
+                        );
+                    }
+
+                    $claveActual = implode(
+                        '||',
+                        $partesClave
+                    );
+
+                    if ($claveAnterior === null) {
+                        $claveAnterior = $claveActual;
+                        $inicioGrupo = $filaActual;
+                        continue;
+                    }
+
+                    if ($claveActual !== $claveAnterior) {
+                        $finGrupo = $filaActual - 1;
+
+                        if ($finGrupo > $inicioGrupo) {
+                            $sheet->mergeCells(
+                                "{$columnaActual}{$inicioGrupo}:" .
+                                    "{$columnaActual}{$finGrupo}"
+                            );
+
+                            $sheet->getStyle(
+                                "{$columnaActual}{$inicioGrupo}:" .
+                                    "{$columnaActual}{$finGrupo}"
+                            )
+                                ->getAlignment()
+                                ->setHorizontal(
+                                    Alignment::HORIZONTAL_CENTER
+                                );
+
+                            $sheet->getStyle(
+                                "{$columnaActual}{$inicioGrupo}:" .
+                                    "{$columnaActual}{$finGrupo}"
+                            )
+                                ->getAlignment()
+                                ->setVertical(
+                                    Alignment::VERTICAL_CENTER
+                                );
+
+                            $sheet->getStyle(
+                                "{$columnaActual}{$inicioGrupo}:" .
+                                    "{$columnaActual}{$finGrupo}"
+                            )
+                                ->getAlignment()
+                                ->setWrapText(true);
+                        }
+
+                        $inicioGrupo = $filaActual;
+                        $claveAnterior = $claveActual;
+                    }
+                }
+
+                if (
+                    $ultimaFila >= $filaInicio &&
+                    $ultimaFila > $inicioGrupo
+                ) {
+                    $sheet->mergeCells(
+                        "{$columnaActual}{$inicioGrupo}:" .
+                            "{$columnaActual}{$ultimaFila}"
+                    );
+
+                    $sheet->getStyle(
+                        "{$columnaActual}{$inicioGrupo}:" .
+                            "{$columnaActual}{$ultimaFila}"
+                    )
+                        ->getAlignment()
+                        ->setHorizontal(
+                            Alignment::HORIZONTAL_CENTER
+                        );
+
+                    $sheet->getStyle(
+                        "{$columnaActual}{$inicioGrupo}:" .
+                            "{$columnaActual}{$ultimaFila}"
+                    )
+                        ->getAlignment()
+                        ->setVertical(
+                            Alignment::VERTICAL_CENTER
+                        );
+
+                    $sheet->getStyle(
+                        "{$columnaActual}{$inicioGrupo}:" .
+                            "{$columnaActual}{$ultimaFila}"
+                    )
+                        ->getAlignment()
+                        ->setWrapText(true);
+                }
             }
 
-            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            if ($ultimaFila >= $filaInicio) {
+                $sheet->getStyle(
+                    "A{$filaInicio}:AS{$ultimaFila}"
+                )
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(
+                        Border::BORDER_THIN
+                    );
+
+                $sheet->getStyle(
+                    "A{$filaInicio}:AS{$ultimaFila}"
+                )
+                    ->getAlignment()
+                    ->setVertical(
+                        Alignment::VERTICAL_CENTER
+                    );
+
+                $sheet->getStyle(
+                    "A{$filaInicio}:AS{$ultimaFila}"
+                )
+                    ->getAlignment()
+                    ->setHorizontal(
+                        Alignment::HORIZONTAL_CENTER
+                    );
+
+                $sheet->getStyle(
+                    "A{$filaInicio}:AS{$ultimaFila}"
+                )
+                    ->getAlignment()
+                    ->setWrapText(true);
+            }
+
+            $writer = IOFactory::createWriter(
+                $spreadsheet,
+                'Xlsx'
+            );
+
             $writer->setPreCalculateFormulas(false);
 
-            $fileName = 'Matriz_de_Exposición_Laboral_' . date('Ymd_His') . '.xlsx';
-            $filePath = storage_path('app/plantillas_reportes/proyecto_infomes/' . $fileName);
+            $fileName =
+                $nombreInstalacion .
+                '_Matriz_de_Exposicion_Laboral_' .
+                date('Ymd_His') .
+                '.xlsx';
+
+            $directorioTemporal = storage_path(
+                'app/public'
+            );
+
+            if (!file_exists($directorioTemporal)) {
+                mkdir(
+                    $directorioTemporal,
+                    0775,
+                    true
+                );
+            }
+
+            $filePath =
+                $directorioTemporal .
+                DIRECTORY_SEPARATOR .
+                $fileName;
+
             $writer->save($filePath);
 
-            return response()->download($filePath)->deleteFileAfterSend(true);
+            return response()
+                ->download(
+                    $filePath,
+                    $fileName,
+                    [
+                        'Content-Type' =>
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    ]
+                )
+                ->deleteFileAfterSend(true);
         } catch (\Exception $e) {
+            \Log::error(
+                'Error al exportar MEL Draft: ' .
+                    $e->getMessage() .
+                    ' línea ' .
+                    $e->getLine()
+            );
+
             return response()->json([
                 'success' => false,
-                'message' => 'Error al generar el Excel: ' . $e->getMessage(),
-                'line' => $e->getLine(),
-            ]);
+                'message' =>
+                'Error al generar el Excel: ' .
+                    $e->getMessage(),
+
+                'line' => $e->getLine()
+            ], 500);
         }
     }
-
-
 
     //////////////// MATIRZ DE RECOMENDACIONES ////////////////
 
@@ -2706,49 +4944,6 @@ class reportesController extends Controller
         }
     }
 
-
-    // public function reportematrizlabguardar(Request $request)
-    // {
-    //     $proyecto_id = $request->proyecto_id;
-    //     $filas = $request->filas;
-
-    //     if (!$filas || !is_array($filas)) {
-    //         return response()->json(['success' => false, 'message' => 'No se proporcionaron datos válidos.']);
-    //     }
-
-    //     matrizlaboral::where('proyecto_id', $proyecto_id)->delete();
-
-    //     foreach ($filas as $fila) {
-    //         $medidas = [];
-
-    //         if (isset($fila['recsensorialarea_medidas']) && is_array($fila['recsensorialarea_medidas'])) {
-    //             foreach ($fila['recsensorialarea_medidas'] as $medida) {
-    //                 $medidas[] = [
-    //                     'descripcion' => $medida['descripcion'] ?? '',
-    //                     'seleccionado' => filter_var($medida['seleccionado'], FILTER_VALIDATE_BOOLEAN),
-    //                 ];
-    //             }
-    //         }
-
-    //         matrizlaboral::create([
-    //             'proyecto_id' => $proyecto_id,
-    //             'area_id' => $fila['area_id'] ?? 0,
-    //             'fila_id' => $fila['numero_registro'],
-    //             'agente' => $fila['agente'],
-    //             'categoria' => $fila['categoria'],
-    //             'numero_trabajadores' => $fila['recsensorialarea_numerotrabajadores'] ?? '',
-    //             'tiempo_exposicion' => $fila['recsensorialarea_tiempoexposicion'] ?? '',
-    //             'indice_peligro' => $fila['recsensorialarea_indicepeligro'] ?? '',
-    //             'indice_exposicion' => $fila['recsensorialarea_indiceexposicion'] ?? '',
-    //             'riesgo' => $fila['recsensorialarea_riesgo'] ?? '',
-    //             'valor_lmpnmp' => $fila['recsensorialarea_lmpnmp'] ?? '',
-    //             'cumplimiento' => $fila['recsensorialarea_cumplimiento'] ?? '',
-    //             'medidas_json' => json_encode($medidas, JSON_UNESCAPED_UNICODE),
-    //         ]);
-    //     }
-
-    //     return response()->json(['success' => true, 'message' => 'Matriz guardada correctamente.']);
-    // }
 
 
     public function reportematrizlabguardar(Request $request)

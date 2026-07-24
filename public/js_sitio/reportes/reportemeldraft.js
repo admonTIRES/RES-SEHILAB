@@ -23,93 +23,435 @@ $(document).ready(function () {
 
 var datatable_reporte_mel = null;
 
-function tabla_mel_draft(proyecto_id, reporteregistro_id, areas_poe) {
-	try {
-		var ruta = "/tablameldraft/" + proyecto_id + "/" + reporteregistro_id + "/" + areas_poe;
 
-		if ($.fn.DataTable.isDataTable('#tabla_mel_draft')) {
-			$('#tabla_mel_draft').DataTable().clear().destroy();
-		}
 
-		datatable_reporte_mel = $('#tabla_mel_draft').DataTable({
-			ajax: {
-				url: ruta,
-				type: "get",
-				cache: false,
-				dataType: "json",
-				dataSrc: function (json) {
-					if (!json || !json.data) {
-						console.warn("No se recibieron datos válidos desde el backend.");
-						return [];
-					}
-					return json.data;
-				},
-				error: function (xhr, error, thrown) {
-					console.error("Error al cargar DataTable:", error, thrown, xhr.responseText);
-				}
-			},
-			columns: [
-				{ data: "numero_registro", defaultContent: "-", orderable: false },
-				{ data: "DEPARTAMENTO_MEL", defaultContent: "-", orderable: false },
-				{ data: "reportequimicosarea_instalacion", defaultContent: "-", orderable: false },
-				{ data: "reportequimicosarea_nombre", defaultContent: "-", orderable: true },
-				{ data: "reportequimicosevaluacion_nombre", defaultContent: "-", orderable: false },
-				{ data: "reportequimicosevaluacion_ficha", defaultContent: "-", orderable: true },
-                { data: "reportequimicoscategoria_nombre", defaultContent: "-", orderable: false },
-				{ data: "reportequimicosevaluacion_anios", defaultContent: "-", orderable: false },
-				{ data: "reportequimicosevaluacion_antiguedadgeneral", defaultContent: "-", orderable: false },
-				{ data: "reportequimicosevaluacion_antiguedadcategoria", defaultContent: "-", orderable: false },
-				{ data: "reportequimicosevaluacion_horariotrabajo", defaultContent: "-", orderable: false },
-				{ data: "tipo", defaultContent: "-", orderable: false },
-                {
+
+function tabla_mel_draft(proyecto_id,reporteregistro_id,areas_poe)
+{
+    try {
+        var ruta =  "/tablameldraft/" + proyecto_id + "/" +reporteregistro_id +"/" +areas_poe;
+
+        if (
+            $.fn.DataTable.isDataTable(
+                '#tabla_mel_draft'
+            )
+        ) {
+            $('#tabla_mel_draft')
+                .DataTable()
+                .clear()
+                .destroy();
+        }
+
+        datatable_reporte_mel =
+            $('#tabla_mel_draft').DataTable({
+                ajax: {
+                    url: ruta,
+                    type: "GET",
+                    cache: false,
+                    dataType: "json",
+
+                    dataSrc: function (json) {
+                        if (!json || !json.data) {
+                            console.warn(
+                                "No se recibieron datos válidos desde el backend."
+                            );
+
+                            return [];
+                        }
+
+                        return json.data;
+                    },
+
+                    error: function (
+                        xhr,
+                        error,
+                        thrown
+                    ) {
+                        console.error(
+                            "Error al cargar DataTable:",
+                            error,
+                            thrown,
+                            xhr.responseText
+                        );
+                    }
+                },
+
+                columns: [
+                    {
+                        data: "numero_registro",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "DEPARTAMENTO_MEL",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "reportequimicosarea_instalacion",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "reportequimicosarea_nombre",
+                        defaultContent: "-",
+                        orderable: true
+                    },
+                    {
+                        data: "reportequimicosevaluacion_nombre",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "reportequimicosevaluacion_ficha",
+                        defaultContent: "-",
+                        orderable: true
+                    },
+                    {
+                        data: "reportequimicoscategoria_nombre",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "reportequimicosevaluacion_anios",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "reportequimicosevaluacion_antiguedadgeneral",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "reportequimicosevaluacion_antiguedadcategoria",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "reportequimicosevaluacion_horariotrabajo",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "tipo",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
                         data: null,
+                        defaultContent: "-",
                         orderable: false,
-                        render: function (data, type, row) {
-                            if (!row.referencia_vle && !row.unidad_vle) return "-";
-                            const valor = row.referencia_vle ?? "";
-                            const unidad = row.unidad_vle ? ` ${row.unidad_vle}` : "";
-                            return `${valor}${unidad}`;
+
+                        render: function (
+                            data,
+                            type,
+                            row
+                        ) {
+                            if (
+                                !row.referencia_vle &&
+                                !row.unidad_vle
+                            ) {
+                                return "-";
+                            }
+
+                            var valor =
+                                row.referencia_vle || "";
+
+                            var unidad =
+                                row.unidad_vle
+                                    ? " " + row.unidad_vle
+                                    : "";
+
+                            return valor + unidad;
                         }
                     },
-				{ data: "resultado_concentracion", defaultContent: "-", orderable: false },
-				{ data: "cumplimiento", defaultContent: "-", orderable: false }
+                    {
+                        data: "resultado_concentracion",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    },
 
-			],
-			lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
-            rowsGroup: [1,2], 
-            order: [[ 0, "ASC" ]],
-			ordering: false,
-			processing: true,
-			searching: true,
-			paging: true,
-			lengthMenu: [[30, 50, 100, -1], [30, 50, 100, "Todos"]],
-			language: {
-				lengthMenu: "Mostrar _MENU_ Registros",
-				zeroRecords: "No se encontraron registros",
-				info: "Página _PAGE_ de _PAGES_ (Total _TOTAL_ registros)",
-				infoEmpty: "No se encontraron registros",
-				infoFiltered: "(Filtrado de _MAX_ registros)",
-				emptyTable: "No hay datos disponibles en la tabla",
-				loadingRecords: "Cargando datos...",
-				processing: "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
-				search: "Buscar",
-				paginate: {
-					first: "Primera",
-					last: "Última",
-					next: "Siguiente",
-					previous: "Anterior"
-				}
-			},
-			drawCallback: function () {
-				$('[data-toggle="tooltip"]').tooltip();
-			}
-		});
-	} 
-	catch (error) {
-		console.error("Excepción en tabla_mel_draft:", error);
-	}
+                    {
+                        data: "iluminacion_referencia",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "iluminacion_resultado",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "iluminacion_cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+
+                    {
+                        data: "temperatura_referencia",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "temperatura_resultado",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "temperatura_cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+
+                    {
+                        data: "ruido_referencia",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "ruido_resultado",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "ruido_cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+
+                    {
+                        data: "vibracion_referencia",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "vibracion_resultado",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "vibracion_cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+
+                    {
+                        data: "aire_temperatura_referencia",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_temperatura_resultado",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_temperatura_cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+
+                    {
+                        data: "aire_velocidad_referencia",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_velocidad_resultado",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_velocidad_cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+
+                    {
+                        data: "aire_humedad_referencia",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_humedad_resultado",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_humedad_cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+
+                    {
+                        data: "aire_co_referencia",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_co_resultado",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_co_cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+
+                    {
+                        data: "aire_co2_referencia",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_co2_resultado",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_co2_cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+
+                    {
+                        data: "aire_bioaerosoles_referencia",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_bioaerosoles_resultado",
+                        defaultContent: "-",
+                        orderable: false
+                    },
+                    {
+                        data: "aire_bioaerosoles_cumplimiento",
+                        defaultContent: "-",
+                        orderable: false
+                    }
+                ],
+
+                rowsGroup: [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+
+                    15,
+                    16,
+                    17,
+
+                    18,
+                    19,
+                    20,
+
+                    21,
+                    22,
+                    23,
+
+                    24,
+                    25,
+                    26,
+
+                    27,
+                    28,
+                    29,
+
+                    30,
+                    31,
+                    32,
+
+                    33,
+                    34,
+                    35,
+
+                    36,
+                    37,
+                    38,
+
+                    39,
+                    40,
+                    41,
+
+                    42,
+                    43,
+                    44
+                ],
+
+                order: [[0, "ASC"]],
+                ordering: false,
+                processing: true,
+                searching: true,
+                paging: true,
+
+                lengthMenu: [
+                    [30, 50, 100, -1],
+                    [30, 50, 100, "Todos"]
+                ],
+
+                language: {
+                    lengthMenu:
+                        "Mostrar _MENU_ Registros",
+
+                    zeroRecords:
+                        "No se encontraron registros",
+
+                    info:
+                        "Página _PAGE_ de _PAGES_ " +
+                        "(Total _TOTAL_ registros)",
+
+                    infoEmpty:
+                        "No se encontraron registros",
+
+                    infoFiltered:
+                        "(Filtrado de _MAX_ registros)",
+
+                    emptyTable:
+                        "No hay datos disponibles en la tabla",
+
+                    loadingRecords:
+                        "Cargando datos...",
+
+                    processing:
+                        "Procesando " +
+                        "<i class='fa fa-spin " +
+                        "fa-spinner fa-3x'></i>",
+
+                    search:
+                        "Buscar",
+
+                    paginate: {
+                        first: "Primera",
+                        last: "Última",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    }
+                },
+
+                drawCallback: function () {
+                    $('[data-toggle="tooltip"]')
+                        .tooltip();
+                }
+            });
+    } catch (error) {
+        console.error(
+            "Excepción en tabla_mel_draft:",
+            error
+        );
+    }
 }
-
 
 
 function obtenerdatos() {
