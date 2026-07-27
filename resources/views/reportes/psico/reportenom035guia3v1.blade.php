@@ -652,21 +652,57 @@ DESCRIPCIONACTIVIDAD
                     </div>
                 </form>
                 <h4 class="card-title" id="5_3">5.3.- Descripción de las actividades del personal expuesto</h4>
+                <style>
+                    #tabla_areas {
+                        width: 100% !important;
+                        table-layout: fixed;
+                    }
+
+                    #tabla_areas th:nth-child(1),
+                    #tabla_areas td:nth-child(1) {
+                        width: 4% !important;
+                    }
+
+                    #tabla_areas th:nth-child(2),
+                    #tabla_areas td:nth-child(2) {
+                        width: 10% !important;
+                    }
+
+                    #tabla_areas th:nth-child(3),
+                    #tabla_areas td:nth-child(3) {
+                        width: 35% !important;
+                    }
+
+                    #tabla_areas th:nth-child(4),
+                    #tabla_areas td:nth-child(4) {
+                        width: 5% !important;
+                    }
+
+                    #tabla_areas th:nth-child(5),
+                    #tabla_areas td:nth-child(5) {
+                        width: 46% !important;
+                        vertical-align: top !important;
+                        text-align: justify;
+                        white-space: normal !important;
+                        word-break: normal;
+                    }
+                </style>
+
                 <div class="row">
                     <div class="col-12">
                         <p class="justificado">En este apartado se muestran las actividades desarrolladas por el personal en su área de trabajo.</p><br>
-                        <table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_categoria">
+                        <table class="table table-hover table-bordered table-striped tabla_info_centrado" width="100%" id="tabla_areas">
                             <thead>
                                 <tr>
-                                    <th width="60">No.</th>
-                                    <th>Categoría</th>
-                                    <th width="80">Total</th>
-                                    <th width="60">Editar</th>
-                                    <th width="60">Eliminar</th>
+                                    <th class="text-center">No. orden</th>
+                                    <th class="text-center">Área</th>
+                                    <th class="text-center">Categoría</th>
+                                    <th class="text-center">Total</th>
+                                    <th class="text-center">Descripción de la actividad principal de la instalación</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
-                        </table><br>
+                        </table>
                     </div>
                 </div>
                 <h4 class="card-title" id="6">6.- Estrategias de medición</h4>
@@ -1171,21 +1207,56 @@ DESCRIPCIONACTIVIDAD
                 <div class="row">
                     <div class="col-12">
                         <style>
-                            #ambienteChart {
+                            #ambienteCategoriaChart {
                                 width: 100%;
-                                height: 650px;
+                                height: 320px;
                             }
                         </style>
-                        <div id="ambienteChart"></div>
+                        <div id="ambienteCategoriaChart"></div>
                         <br>
                         <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_ambiente" id="form_analisis_grafica_ambiente">
+                            {!! csrf_field() !!}
                             <div class="form-group mt-3">
-                                <label>Análisis estadístico</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATAMBIENTE" name="ANALISIS_GRAFICA_CATAMBIENTE" required></textarea>
+                                <label>
+                                    Análisis estadístico de la categoría
+                                </label>
+                                <textarea class="form-control" style="margin-bottom:0px;" rows="7" id="ANALISIS_GRAFICA_CATAMBIENTE" name="ANALISIS_GRAFICA_CATAMBIENTE" required></textarea>
                             </div>
-                            <div class="col-12" style="text-align: right;">
+
+                            <div class="col-12" style="text-align:right;">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_ambiente">Guardar<i class="fa fa-save"></i></button>
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_ambiente">
+                                        Guardar
+                                        <i class="fa fa-save"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <style>
+                            #ambienteDominioChart {
+                                width: 100%;
+                                height: 320px;
+                            }
+                        </style>
+                        <div id="ambienteDominioChart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio_ambiente" id="form_analisis_grafica_dominio_ambiente">
+                            {!! csrf_field() !!}
+
+                            <div class="form-group mt-3">
+                                <label>
+                                    Análisis estadístico del dominio
+                                </label>
+                                <textarea class="form-control" style="margin-bottom:0px;" rows="7" id="ANALISIS_GRAFICA_DOMAMBIENTE" name="ANALISIS_GRAFICA_DOMAMBIENTE" required></textarea>
+                            </div>
+                            <div class="col-12" style="text-align:right;">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_dominio_ambiente">
+                                        Guardar
+                                        <i class="fa fa-save"></i>
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -1195,21 +1266,110 @@ DESCRIPCIONACTIVIDAD
                 <div class="row">
                     <div class="col-12">
                         <style>
-                            #factoresChart {
+                            #factoresCategoriaChart,
+                            #factoresDominio1Chart,
+                            #factoresDominio2Chart {
                                 width: 100%;
-                                height: 650px;
+                                height: 320px;
                             }
                         </style>
-                        <div id="factoresChart"></div>
+                        <div id="factoresCategoriaChart"></div>
                         <br>
                         <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_factores" id="form_analisis_grafica_factores">
-                            <div class="form-group mt-3">
-                                <label>Análisis estadístico</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATFACTORES" name="ANALISIS_GRAFICA_CATFACTORES" required></textarea>
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea
+                                            class="form-control"
+                                            style="margin-bottom:0px;"
+                                            rows="7"
+                                            id="ANALISIS_GRAFICA_CATFACTORES"
+                                            name="ANALISIS_GRAFICA_CATFACTORES"
+                                            required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button
+                                            type="submit"
+                                            class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_factores">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-12" style="text-align: right;">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_factores">Guardar<i class="fa fa-save"></i></button>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <div id="factoresDominio1Chart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio_factores_1" id="form_analisis_grafica_dominio_factores_1">
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea
+                                            class="form-control"
+                                            style="margin-bottom:0px;"
+                                            rows="7"
+                                            id="ANALISIS_GRAFICA_DOMFACTORES_1"
+                                            name="ANALISIS_GRAFICA_DOMFACTORES_1"
+                                            required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button
+                                            type="submit"
+                                            class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_dominio_factores_1">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <div id="factoresDominio2Chart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio_factores_2" id="form_analisis_grafica_dominio_factores_2">
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea
+                                            class="form-control"
+                                            style="margin-bottom:0px;"
+                                            rows="7"
+                                            id="ANALISIS_GRAFICA_DOMFACTORES_2"
+                                            name="ANALISIS_GRAFICA_DOMFACTORES_2"
+                                            required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button
+                                            type="submit"
+                                            class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_dominio_factores_2">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -1219,21 +1379,91 @@ DESCRIPCIONACTIVIDAD
                 <div class="row">
                     <div class="col-12">
                         <style>
-                            #organizacionChart {
+                            #organizacionCategoriaChart,
+                            #organizacionDominio1Chart,
+                            #organizacionDominio2Chart {
                                 width: 100%;
-                                height: 650px;
+                                height: 320px;
                             }
                         </style>
-                        <div id="organizacionChart"></div>
+                        <div id="organizacionCategoriaChart"></div>
                         <br>
                         <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_organizacion" id="form_analisis_grafica_organizacion">
-                            <div class="form-group mt-3">
-                                <label>Análisis estadístico</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATORGANIZACION" name="ANALISIS_GRAFICA_CATORGANIZACION" required></textarea>
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea class="form-control" style="margin-bottom:0px;"
+                                            rows="7" id="ANALISIS_GRAFICA_CATORGANIZACION" name="ANALISIS_GRAFICA_CATORGANIZACION" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_organizacion">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-12" style="text-align: right;">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_organizacion">Guardar<i class="fa fa-save"></i></button>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <div id="organizacionDominio1Chart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio_organizacion_1" id="form_analisis_grafica_dominio_organizacion_1">
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea class="form-control" style="margin-bottom:0px;"
+                                            rows="7" id="ANALISIS_GRAFICA_DOMORGANIZACION_1" name="ANALISIS_GRAFICA_DOMORGANIZACION_1" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button
+                                            type="submit"
+                                            class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_dominio_organizacion_1">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <div id="organizacionDominio2Chart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio_organizacion_2" id="form_analisis_grafica_dominio_organizacion_2">
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea class="form-control" style="margin-bottom:0px;"
+                                            rows="7" id="ANALISIS_GRAFICA_DOMORGANIZACION_2" name="ANALISIS_GRAFICA_DOMORGANIZACION_2" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_dominio_organizacion_2">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -1243,21 +1473,117 @@ DESCRIPCIONACTIVIDAD
                 <div class="row">
                     <div class="col-12">
                         <style>
-                            #liderazgoChart {
+                            #liderazgoCategoriaChart,
+                            #liderazgoDominio1Chart,
+                            #liderazgoDominio2Chart,
+                            #liderazgoDominio3Chart {
                                 width: 100%;
-                                height: 800px;
+                                height: 320px;
                             }
                         </style>
-                        <div id="liderazgoChart"></div>
+                        <div id="liderazgoCategoriaChart"></div>
                         <br>
                         <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_liderazgo" id="form_analisis_grafica_liderazgo">
-                            <div class="form-group mt-3">
-                                <label>Análisis estadístico</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATLIDERAZGO" name="ANALISIS_GRAFICA_CATLIDERAZGO" required></textarea>
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea class="form-control" style="margin-bottom:0px;"
+                                            rows="7" id="ANALISIS_GRAFICA_CATLIDERAZGO" name="ANALISIS_GRAFICA_CATLIDERAZGO" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_liderazgo">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-12" style="text-align: right;">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_liderazgo">Guardar<i class="fa fa-save"></i></button>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <div id="liderazgoDominio1Chart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio_liderazgo_1" id="form_analisis_grafica_dominio_liderazgo_1">
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea class="form-control" style="margin-bottom:0px;"
+                                            rows="7" id="ANALISIS_GRAFICA_DOMLIDERAZGO_1" name="ANALISIS_GRAFICA_DOMLIDERAZGO_1" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_dominio_liderazgo_1">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <div id="liderazgoDominio2Chart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio_liderazgo_2" id="form_analisis_grafica_dominio_liderazgo_2">
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea class="form-control" style="margin-bottom:0px;" rows="7" id="ANALISIS_GRAFICA_DOMLIDERAZGO_2"
+                                            name="ANALISIS_GRAFICA_DOMLIDERAZGO_2" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_dominio_liderazgo_2">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <div id="liderazgoDominio3Chart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio_liderazgo_3" id="form_analisis_grafica_dominio_liderazgo_3">
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea class="form-control" style="margin-bottom:0px;"
+                                            rows="7" id="ANALISIS_GRAFICA_DOMLIDERAZGO_3" name="ANALISIS_GRAFICA_DOMLIDERAZGO_3" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_dominio_liderazgo_3">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -1267,21 +1593,89 @@ DESCRIPCIONACTIVIDAD
                 <div class="row">
                     <div class="col-12">
                         <style>
-                            #entornoChart {
+                            #entornoCategoriaChart,
+                            #entornoDominio1Chart,
+                            #entornoDominio2Chart {
                                 width: 100%;
-                                height: 650px;
+                                height: 320px;
                             }
                         </style>
-                        <div id="entornoChart"></div>
+                        <div id="entornoCategoriaChart"></div>
                         <br>
                         <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_entorno" id="form_analisis_grafica_entorno">
-                            <div class="form-group mt-3">
-                                <label>Análisis estadístico</label>
-                                <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="ANALISIS_GRAFICA_CATENTORNO" name="ANALISIS_GRAFICA_CATENTORNO" required></textarea>
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea class="form-control" style="margin-bottom:0px;"
+                                            rows="7" id="ANALISIS_GRAFICA_CATENTORNO" name="ANALISIS_GRAFICA_CATENTORNO" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_entorno">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-12" style="text-align: right;">
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_analisis_grafica_entorno">Guardar<i class="fa fa-save"></i></button>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <div id="entornoDominio1Chart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio_entorno_1" id="form_analisis_grafica_dominio_entorno_1">
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea class="form-control" style="margin-bottom:0px;" rows="7"
+                                            id="ANALISIS_GRAFICA_DOMENTORNO_1" name="ANALISIS_GRAFICA_DOMENTORNO_1" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_dominio_entorno_1">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12">
+                        <div id="entornoDominio2Chart"></div>
+                        <br>
+                        <form method="post" enctype="multipart/form-data" name="form_analisis_grafica_dominio_entorno_2" id="form_analisis_grafica_dominio_entorno_2">
+                            <div class="row">
+                                <div class="col-12">
+                                    {!! csrf_field() !!}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-3">
+                                        <label>Análisis estadístico</label>
+                                        <textarea class="form-control" style="margin-bottom:0px;"
+                                            rows="7" id="ANALISIS_GRAFICA_DOMENTORNO_2" name="ANALISIS_GRAFICA_DOMENTORNO_2" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="text-align:right;">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme"
+                                            id="botonguardar_analisis_grafica_dominio_entorno_2">
+                                            Guardar
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -2271,14 +2665,148 @@ DESCRIPCIONACTIVIDAD
                             <!-- TERCERA FILA -->
                             <div class="dashboard-fila dashboard-fila-final">
 
+                                <style>
+                                    .dashboard-grafica-cumplimiento {
+                                        position: relative;
+                                        width: 100%;
+                                        height: 250px;
+                                        min-height: 250px;
+                                        overflow: hidden;
+                                    }
+
+                                    .cumplimiento-chart {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 205px;
+                                    }
+
+                                    .cumplimiento-centro {
+                                        position: absolute;
+                                        top: 132px;
+                                        left: 50%;
+                                        z-index: 5;
+                                        width: 160px;
+                                        text-align: center;
+                                        pointer-events: none;
+                                        transform: translateX(-50%);
+                                    }
+
+                                    .cumplimiento-porcentaje {
+                                        color: #222;
+                                        font-size: 24px;
+                                        font-weight: 700;
+                                        line-height: 1;
+                                    }
+
+                                    .cumplimiento-centro-texto {
+                                        margin-top: 4px;
+                                        color: #444;
+                                        font-size: 11px;
+                                        font-weight: 600;
+                                    }
+                                    .cumplimiento-resultados {
+                                        position: absolute;
+                                        right: 0;
+                                        bottom: 0;
+                                        left: 0;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        gap: 22px;
+                                        min-height: 36px;
+                                    }
+
+                                    .cumplimiento-resultado-item {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 6px;
+                                        color: #333;
+                                        font-size: 11px;
+                                        white-space: nowrap;
+                                    }
+
+                                    .cumplimiento-resultado-item strong {
+                                        font-size: 12px;
+                                    }
+
+                                    .cumplimiento-color {
+                                        width: 11px;
+                                        min-width: 11px;
+                                        height: 11px;
+                                        display: inline-block;
+                                        border-radius: 50%;
+                                    }
+
+                                    .color-rojo {
+                                        background: #E30613;
+                                    }
+
+                                    .color-verde {
+                                        background: #00B050;
+                                    }
+
+                                    .mensaje-sin-datos-cumplimiento {
+                                        position: absolute;
+                                        inset: 0;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        color: #777;
+                                        font-size: 13px;
+                                        font-weight: 700;
+                                        text-align: center;
+                                    }
+
+                                    @media (max-width: 575.98px) {
+                                        .dashboard-grafica-cumplimiento {
+                                            height: 285px;
+                                            min-height: 285px;
+                                        }
+
+                                        .cumplimiento-chart {
+                                            height: 225px;
+                                        }
+
+                                        .cumplimiento-centro {
+                                            top: 145px;
+                                        }
+
+                                        .cumplimiento-resultados {
+                                            flex-direction: column;
+                                            gap: 5px;
+                                            min-height: 55px;
+                                        }
+                                    }
+                                </style>
+
                                 <div class="dashboard-panel panel-medio">
                                     <div class="dashboard-panel-titulo">
-                                        Nivel de riesgo de la planta
+                                        Cumplimiento Normativo
                                     </div>
-
-                                    <div class="dashboard-grafica"
-                                        id="grafica_nivel_riesgo">
-                                        Aquí irá el velocímetro de riesgo
+                                    <div class="dashboard-grafica-cumplimiento" id="grafica_nivel_riesgo">
+                                        <div class="cumplimiento-chart" id="cumplimientoNormativoChart"></div>
+                                        <div class="cumplimiento-centro">
+                                            <div class="cumplimiento-porcentaje" id="porcentaje_dentro_norma">
+                                                0%
+                                            </div>
+                                            <div class="cumplimiento-centro-texto">
+                                                Dentro de norma
+                                            </div>
+                                        </div>
+                                        <div class="cumplimiento-resultados" id="cumplimiento_resultados">
+                                            <div class="cumplimiento-resultado-item fuera-norma" id="resultado_fuera_norma">
+                                                <span class="cumplimiento-color color-rojo"></span>
+                                                <span>Fuera de norma</span>
+                                                <strong id="porcentaje_fuera_norma">0%</strong>
+                                            </div>
+                                            <div class="cumplimiento-resultado-item dentro-norma" id="resultado_dentro_norma">
+                                                <span class="cumplimiento-color color-verde"></span>
+                                                <span>Dentro de norma</span>
+                                                <strong id="porcentaje_dentro_norma_leyenda">0%</strong>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -2776,7 +3304,7 @@ DESCRIPCIONACTIVIDAD
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js_sitio/reportes/reportenom0353v1.js?v=10"></script>
+<script src="/js_sitio/reportes/reportenom0353v1.js?v=12"></script>
 <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
 

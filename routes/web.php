@@ -2252,11 +2252,24 @@ Route::post('guardaranalisisgraficaglobal', ['as' => 'guardaranalisisgraficaglob
 Route::post('guardaranalisisgraficacategoria', ['as' => 'guardaranalisisgraficacategoria', 'uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficacategoria']);
 Route::post('guardaranalisisgraficadominio', ['as' => 'guardaranalisisgraficadominio', 'uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadominio']);
 Route::post('guardaranalisisgraficaguia1', ['as' => 'guardaranalisisgraficaguia1', 'uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficaguia1']);
-Route::post('guardaranalisisgraficatambiente', ['as' => 'guardaranalisisgraficatambiente', 'uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficatambiente']);
-Route::post('guardaranalisisgraficatfactores', ['as' => 'guardaranalisisgraficatfactores', 'uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficatfactores']);
-Route::post('guardaranalisisgraficatorganizacion', ['as' => 'guardaranalisisgraficatorganizacion', 'uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficatorganizacion']);
-Route::post('guardaranalisisgraficatliderazgo', ['as' => 'guardaranalisisgraficatliderazgo', 'uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficatliderazgo']);
-Route::post('guardaranalisisgraficatentorno', ['as' => 'guardaranalisisgraficatentorno', 'uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficatentorno']);
+
+/// ANALISIS GRAFICAS CATEGORIAS 
+
+Route::post('guardaranalisisgraficacatambiente',['as' => 'guardaranalisisgraficacatambiente','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficacatambiente']);
+Route::post('guardaranalisisgraficadomambiente',['as' => 'guardaranalisisgraficadomambiente','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadomambiente']);
+Route::post('guardaranalisisgraficacatfactores',['as' => 'guardaranalisisgraficacatfactores','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficacatfactores']);
+Route::post('guardaranalisisgraficadomfactores1',['as' => 'guardaranalisisgraficadomfactores1','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadomfactores1']);
+Route::post('guardaranalisisgraficadomfactores2',['as' => 'guardaranalisisgraficadomfactores2','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadomfactores2']);
+Route::post('guardaranalisisgraficacatorganizacion',['as' => 'guardaranalisisgraficacatorganizacion','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficacatorganizacion']);
+Route::post('guardaranalisisgraficadomorganizacion1',['as' => 'guardaranalisisgraficadomorganizacion1','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadomorganizacion1']);
+Route::post('guardaranalisisgraficadomorganizacion2',['as' => 'guardaranalisisgraficadomorganizacion2','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadomorganizacion2']);
+Route::post('guardaranalisisgraficacatliderazgo',['as' => 'guardaranalisisgraficacatliderazgo','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficacatliderazgo']);
+Route::post('guardaranalisisgraficadomliderazgo1',['as' => 'guardaranalisisgraficadomliderazgo1','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadomliderazgo1']);
+Route::post('guardaranalisisgraficadomliderazgo2',['as' => 'guardaranalisisgraficadomliderazgo2','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadomliderazgo2']);
+Route::post('guardaranalisisgraficadomliderazgo3',['as' => 'guardaranalisisgraficadomliderazgo3','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadomliderazgo3']);
+Route::post('guardaranalisisgraficacatentorno',['as' => 'guardaranalisisgraficacatentorno','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficacatentorno']);
+Route::post('guardaranalisisgraficadomentorno1',['as' => 'guardaranalisisgraficadomentorno1','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadomentorno1']);
+Route::post('guardaranalisisgraficadomentorno2',['as' => 'guardaranalisisgraficadomentorno2','uses' => 'reportes\reportenom0353Controller@guardaranalisisgraficadomentorno2']);
 
 /// NIVEL DE RIESGO POR CATEGORIA 
 Route::post('guardarnivelriesgocategorias', ['as' => 'guardarnivelriesgocategorias', 'uses' => 'reportes\reportenom0353Controller@guardarnivelriesgocategorias']);
@@ -2279,6 +2292,12 @@ Route::get('obtenerRecomendacionesPrioritariasPsico/{PROYECTO_ID}', ['as' => 'ob
 
 /// ESTADO MENU
 Route::get('consultarEstadosMenusReportePsico/{PROYECTO_ID}', ['as' => 'consultarEstadosMenusReportePsico', 'uses' => 'reportes\reportenom0353Controller@consultarEstadosMenusReportePsico']);
+
+/// CATEGORIAS Y AREA
+
+Route::get('areascategoriaspsico/{proyecto_id}', ['as' => 'areascategoriaspsico', 'uses' => 'reportes\reportenom0353Controller@areascategoriaspsico']);
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

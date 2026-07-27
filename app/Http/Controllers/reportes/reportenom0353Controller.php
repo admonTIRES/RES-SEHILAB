@@ -38,6 +38,7 @@ use App\modelos\clientes\clientecontratoModel;
 use App\modelos\clientes\clienteModel;
 
 use App\modelos\reconocimientopsico\recopsicotrabajadoresModel;
+use App\modelos\proyecto\estatusReportesInformeModel;
 
 //Recursos para el Excel
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -3783,10 +3784,14 @@ class reportenom0353Controller extends Controller
 
         try {
 
-            //  $reco = reconocimientoergoModel::findOrFail($RECO_ID);
+
+
+            
+            
             $proyecto = proyectoModel::where('id', $PROYECTO_ID)->first();
             $contrato = clientecontratoModel::find($proyecto->contrato_id);
-
+            
+            $recsensorial = reconocimientopsicoModel::find($proyecto->reconocimiento_psico_id);
 
             $recursos = recursosPortadasInformePsicoModel::where('PROYECTO_ID', $PROYECTO_ID)->get();
             $rutaPlantilla = storage_path('app/plantillas_reportes/proyecto_infomes/Plantilla_informe_nom0353.docx');
@@ -4314,12 +4319,201 @@ class reportenom0353Controller extends Controller
             $plantillaword->setValue('ANALISIS_GRAFICA_CATEGORIA', $datosGenerales->ANALISIS_GRAFICA_CATEGORIAS ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATEGORIAS) : 'No cargado');
             $plantillaword->setValue('ANALISIS_GRAFICA_DOMINIO', $datosGenerales->ANALISIS_GRAFICA_DOMINIOS ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMINIOS) : 'No cargado');
             $plantillaword->setValue('ANALISIS_GRAFICA_GUIA1', $datosGenerales->ANALISIS_GRAFICA_GUIA1 ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_GUIA1) : 'No cargado');
-            $plantillaword->setValue('ANALISIS_GRAFICA_CATAMBIENTE', $datosGenerales->ANALISIS_GRAFICA_CATAMBIENTE ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATAMBIENTE) : 'No cargado');
-            $plantillaword->setValue('ANALISIS_GRAFICA_CATFACTORES', $datosGenerales->ANALISIS_GRAFICA_CATFACTORES ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATFACTORES) : 'No cargado');
-            $plantillaword->setValue('ANALISIS_GRAFICA_CATORGANIZACION', $datosGenerales->ANALISIS_GRAFICA_CATORGANIZACION ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATORGANIZACION) : 'No cargado');
-            $plantillaword->setValue('ANALISIS_GRAFICA_CATLIDERAZGO', $datosGenerales->ANALISIS_GRAFICA_CATLIDERAZGO ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATLIDERAZGO) : 'No cargado');
-            $plantillaword->setValue('ANALISIS_GRAFICA_CATENTORNO', $datosGenerales->ANALISIS_GRAFICA_CATENTORNO ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATENTORNO) : 'No cargado');
 
+            /// ANALISIS GRAFICA  CATEGORIA 
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATAMBIENTE',$datosGenerales->ANALISIS_GRAFICA_CATAMBIENTE ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATAMBIENTE): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMAMBIENTE',$datosGenerales->ANALISIS_GRAFICA_DOMAMBIENTE ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMAMBIENTE): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATFACTORES',$datosGenerales->ANALISIS_GRAFICA_CATFACTORES ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATFACTORES): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMFACTORES_1',$datosGenerales->ANALISIS_GRAFICA_DOMFACTORES_1 ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMFACTORES_1): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMFACTORES_2',$datosGenerales->ANALISIS_GRAFICA_DOMFACTORES_2 ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMFACTORES_2): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATORGANIZACION',$datosGenerales->ANALISIS_GRAFICA_CATORGANIZACION ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATORGANIZACION): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMORGANIZACION_1',$datosGenerales->ANALISIS_GRAFICA_DOMORGANIZACION_1 ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMORGANIZACION_1):'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMORGANIZACION_2',$datosGenerales->ANALISIS_GRAFICA_DOMORGANIZACION_2 ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMORGANIZACION_2)
+            : 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATLIDERAZGO',$datosGenerales->ANALISIS_GRAFICA_CATLIDERAZGO ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATLIDERAZGO): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMLIDERAZGO_1',$datosGenerales->ANALISIS_GRAFICA_DOMLIDERAZGO_1 ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMLIDERAZGO_1): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMLIDERAZGO_2',$datosGenerales->ANALISIS_GRAFICA_DOMLIDERAZGO_2 ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMLIDERAZGO_2): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMLIDERAZGO_3',$datosGenerales->ANALISIS_GRAFICA_DOMLIDERAZGO_3? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMLIDERAZGO_3): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_CATENTORNO',$datosGenerales->ANALISIS_GRAFICA_CATENTORNO ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_CATENTORNO): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMENTORNO_1',$datosGenerales->ANALISIS_GRAFICA_DOMENTORNO_1 ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMENTORNO_1): 'No cargado');
+            $plantillaword->setValue('ANALISIS_GRAFICA_DOMENTORNO_2',$datosGenerales->ANALISIS_GRAFICA_DOMENTORNO_2 ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICA_DOMENTORNO_2): 'No cargado');
+
+
+            // TABLA'S POE
+            //================================================================================
+
+
+            // FORMATO
+            $font_size = 10;
+            $bgColor_encabezado = '#0C3F64'; //#1A5276
+            $fuente = 'Poppins';
+            $encabezado_celda = array('bgColor' => $bgColor_encabezado, 'valign' => 'center', 'cellMargin' => 100);
+            $encabezado_texto = array('color' => 'FFFFFF', 'size' => $font_size, 'bold' => false, 'name' => $fuente);
+            $combinar_fila_encabezado = array('vMerge' => 'restart', 'valign' => 'center', 'bgColor' => $bgColor_encabezado);
+            $combinar_fila = array('vMerge' => 'restart', 'valign' => 'center');
+            $continua_fila = array('vMerge' => 'continue', 'valign' => 'center');
+            $celda = array('valign' => 'center');
+            $centrado = array('align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0, 'lineHeight' => 1.15);
+            $izquierda = array('align' => 'left', 'spaceBefore' => 0, 'spaceAfter' => 0, 'lineHeight' => 1.15);
+            $justificado = array('align' => 'both', 'spaceBefore' => 0, 'spaceAfter' => 0, 'lineHeight' => 1.15);
+            $texto = array('color' => '000000', 'size' => $font_size, 'bold' => false, 'name' => $fuente);
+            $textonegrita = array('color' => '000000', 'size' => $font_size, 'bold' => true, 'name' => $fuente);
+            $textototal = array('color' => 'FFFFFF', 'size' => $font_size, 'bold' => false, 'name' => $fuente);
+
+
+            $sql = DB::select('SELECT
+                                    reportearea.proyecto_id,
+                                    reportearea.id,
+                                    reportearea.reportearea_instalacion,
+                                    reportearea.reportearea_nombre,
+                                    reportearea.reportearea_orden,
+                                    reportearea.reportearea_porcientooperacion,
+                                    IF(IFNULL(reportearea.reportearea_porcientooperacion, "") != "", CONCAT(reportearea.reportearea_porcientooperacion, " %"), null) AS reportearea_porcientooperacion_texto,
+                                    reporteareacategoria.reportecategoria_id,
+                                    reportecategoria.reportecategoria_nombre,
+                                    reportecategoria.reportecategoria_orden,
+                                    reporteareacategoria.reporteareacategoria_total,
+                                    reporteareacategoria.reporteareacategoria_geh,
+                                    reporteareacategoria.reporteareacategoria_actividades 
+                                FROM
+                                    reportearea
+                                    LEFT JOIN reporteareacategoria ON reportearea.id = reporteareacategoria.reportearea_id
+                                    LEFT JOIN reportecategoria ON reporteareacategoria.reportecategoria_id = reportecategoria.id
+                                WHERE
+                                    reportearea.proyecto_id = ' . $PROYECTO_ID . ' 
+                                ORDER BY
+                                    reportearea.reportearea_orden ASC,
+                                    reportearea.reportearea_nombre ASC,
+                                    reportecategoria.reportecategoria_orden ASC,
+                                    reportecategoria.reportecategoria_nombre ASC');
+
+            $ancho_col_1 = 500;
+            $ancho_col_2 = 1200;
+            $ancho_col_3 = 3500;
+            $ancho_col_4 = 1300;
+            $ancho_col_5 = 3000;
+
+            // Crear tabla
+            $table = null;
+            $width_table = 9940;
+            $table = new Table(array('name' => $fuente, 'width' => $width_table, 'borderSize' => 1, 'borderColor' => '000000', 'cellMargin' => 40, 'unit' => TblWidth::TWIP));
+
+
+            $numero_fila = 0;
+            $instalacion = 'XXXXX';
+            $area = 'xxxx';
+            foreach ($sql as $key => $value) {
+                if ($instalacion != $value->reportearea_instalacion) {
+                    if (($key + 0) != 0) {
+                        $total = DB::select('SELECT
+                                                SUM(TABLA.reportecategoria_total) AS total
+                                            FROM
+                                                (
+                                                    SELECT
+                                                        -- reportearea.proyecto_id,
+                                                        -- reportearea.reportearea_instalacion,
+                                                        -- reportearea.reportearea_nombre,
+                                                        -- reportearea.reportearea_orden,
+                                                        reporteareacategoria.reportecategoria_id,
+                                                        reportecategoria.reportecategoria_nombre,
+                                                        -- reporteareacategoria.reporteareacategoria_total,
+                                                        reportecategoria.reportecategoria_total 
+                                                    FROM
+                                                        reporteareacategoria
+                                                        LEFT JOIN reportearea ON reporteareacategoria.reportearea_id = reportearea.id
+                                                        LEFT JOIN reportecategoria ON reporteareacategoria.reportecategoria_id = reportecategoria.id
+                                                    WHERE
+                                                        reportearea.proyecto_id = ' . $PROYECTO_ID . ' 
+                                                        AND reportearea.reportearea_instalacion = "' . $instalacion . '"
+                                                    GROUP BY
+                                                        reporteareacategoria.reportecategoria_id,
+                                                        reportecategoria.reportecategoria_nombre,
+                                                        reportecategoria.reportecategoria_total
+                                                ) AS TABLA');
+
+
+                        $table->addRow(); //fila
+                        $table->addCell(null, array('gridSpan' => 3, 'valign' => 'center', 'bgColor' => '0BACDB'))->addTextRun($centrado)->addText('Total de personal', $textototal); // combina columna
+                        $table->addCell(null, $celda)->addTextRun($centrado)->addText($total[0]->total, $textonegrita);
+                        $table->addCell($ancho_col_5, $continua_fila);
+
+                        $table->addRow(); //fila
+                        $table->addCell(null, array('gridSpan' => 5, 'valign' => 'center', 'borderTopColor' => 'ffffff', 'borderTopSize' => 1, 'borderRightColor' => 'ffffff', 'borderRightSize' => 1, 'borderBottomColor' => 'ffffff', 'borderBottomSize' => 1, 'borderLeftColor' => 'ffffff', 'borderLeftSize' => 1))->addTextRun($izquierda)->addText('Nota: Las categorías repetidas en más de un área son consideradas como puesto móvil de trabajo.', $texto);
+                    }
+
+                    // encabezado tabla
+                    $table->addRow(200, array('tblHeader' => true));
+                    $table->addCell($ancho_col_1, $encabezado_celda)->addTextRun($centrado)->addText('No.', $encabezado_texto);
+                    $table->addCell($ancho_col_2, $encabezado_celda)->addTextRun($centrado)->addText('Área', $encabezado_texto);
+                    $table->addCell($ancho_col_3, $encabezado_celda)->addTextRun($centrado)->addText('Categoría', $encabezado_texto);
+                    $table->addCell($ancho_col_4, $encabezado_celda)->addTextRun($centrado)->addText('Cantidad de personal', $encabezado_texto);
+                    $table->addCell($ancho_col_5, $encabezado_celda)->addTextRun($centrado)->addText('Descripción de la actividad<w:br/>principal de la instalación', $encabezado_texto);
+
+                    // $instalacion = $value->reportearea_instalacion;
+                    $numero_fila = 0;
+                }
+
+
+                $table->addRow(); //fila
+
+
+                if ($area != $value->reportearea_nombre) {
+                    $numero_fila += 1;
+                    $table->addCell($ancho_col_1, $combinar_fila)->addTextRun($centrado)->addText($numero_fila);
+                } else {
+                    $table->addCell($ancho_col_1, $continua_fila);
+                }
+
+
+                if ($area != $value->reportearea_nombre) {
+                    $table->addCell($ancho_col_2, $combinar_fila)->addTextRun($centrado)->addText($value->reportearea_nombre, $texto);
+                    $area = $value->reportearea_nombre;
+                } else {
+                    $table->addCell($ancho_col_2, $continua_fila);
+                }
+
+
+                $table->addCell($ancho_col_3, $celda)->addTextRun($centrado)->addText($value->reportecategoria_nombre, $texto);
+                $table->addCell($ancho_col_4, $celda)->addTextRun($centrado)->addText($value->reporteareacategoria_total, $texto);
+
+
+                if ($instalacion != $value->reportearea_instalacion) {
+                    $table->addCell($ancho_col_5, $combinar_fila)->addTextRun($justificado)->addText($recsensorial->actividadprincipal, $texto);
+
+                    $instalacion = $value->reportearea_instalacion;
+                } else {
+                    $table->addCell($ancho_col_5, $continua_fila);
+                }
+            }
+
+            $total = DB::select('SELECT
+                                    SUM(TABLA.reportecategoria_total) AS total
+                                FROM
+                                    (
+                                        SELECT
+                                            -- reportearea.proyecto_id,
+                                            -- reportearea.reportearea_instalacion,
+                                            -- reportearea.reportearea_nombre,
+                                            -- reportearea.reportearea_orden,
+                                            reporteareacategoria.reportecategoria_id,
+                                            reportecategoria.reportecategoria_nombre,
+                                            -- reporteareacategoria.reporteareacategoria_total,
+                                            reportecategoria.reportecategoria_total 
+                                        FROM
+                                            reporteareacategoria
+                                            LEFT JOIN reportearea ON reporteareacategoria.reportearea_id = reportearea.id
+                                            LEFT JOIN reportecategoria ON reporteareacategoria.reportecategoria_id = reportecategoria.id
+                                        WHERE
+                                            reportearea.proyecto_id = ' . $PROYECTO_ID . ' 
+                                            AND reportearea.reportearea_instalacion = "' . $instalacion . '"
+                                        GROUP BY
+                                            reporteareacategoria.reportecategoria_id,
+                                            reportecategoria.reportecategoria_nombre,
+                                            reportecategoria.reportecategoria_total
+                                    ) AS TABLA');
+
+        
+            $plantillaword->setComplexBlock('TABLA_POE', $table);
 
 
 
@@ -4410,7 +4604,125 @@ class reportenom0353Controller extends Controller
                 );
             }
 
+            /// DASHBOARD GENERAL
 
+            $rutaDashboardGeneralTemporal = null;
+
+            if (
+                $request->has('DASHBOARDA_GENERAL') &&
+                !empty($request->DASHBOARDA_GENERAL)
+            ) {
+
+                $imagenBase64 =
+                    $request->DASHBOARDA_GENERAL;
+
+                $imagenBase64 = preg_replace(
+                    '#^data:image/(jpeg|jpg|png);base64,#i',
+                    '',
+                    $imagenBase64
+                );
+
+                $imagenBase64 = str_replace(
+                    ' ',
+                    '+',
+                    $imagenBase64
+                );
+
+                $imagenBase64 = preg_replace(
+                    '/\s+/',
+                    '',
+                    $imagenBase64
+                );
+
+                $imagenBinaria = base64_decode(
+                    $imagenBase64,
+                    true
+                );
+
+                if ($imagenBinaria !== false) {
+
+                    $folioLimpio = preg_replace(
+                        '/[<>:"\/\\\\|?*]/',
+                        '',
+                        $proyecto->proyecto_folio
+                    );
+
+                    $rutaDashboardGeneralStorage =
+                        'reportes/informes/dashboard_general_psico_' .
+                        $folioLimpio .
+                        '_' .
+                        uniqid() .
+                        '.png';
+
+                    Storage::put(
+                        $rutaDashboardGeneralStorage,
+                        $imagenBinaria
+                    );
+
+                    $rutaDashboardGeneralTemporal =
+                        storage_path(
+                            'app/' .
+                                $rutaDashboardGeneralStorage
+                        );
+
+                    if (
+                        Storage::exists(
+                            $rutaDashboardGeneralStorage
+                        ) &&
+                        file_exists(
+                            $rutaDashboardGeneralTemporal
+                        )
+                    ) {
+
+                        $datosImagen = getimagesize(
+                            $rutaDashboardGeneralTemporal
+                        );
+
+                        if ($datosImagen !== false) {
+
+                            $plantillaword->setImageValue(
+                                'DASHBOARDA_GENERAL',
+                                [
+                                    'path' =>
+                                    $rutaDashboardGeneralTemporal,
+                                    'width' => 620,
+                                    'height' => 750,
+                                    'ratio' => false,
+                                    'borderColor' => '000000'
+                                ]
+                            );
+                        } else {
+
+                            Storage::delete(
+                                $rutaDashboardGeneralStorage
+                            );
+
+                            $plantillaword->setValue(
+                                'DASHBOARDA_GENERAL',
+                                'NO FUE POSIBLE PROCESAR LA IMAGEN DEL DASHBOARD GENERAL.'
+                            );
+                        }
+                    } else {
+
+                        $plantillaword->setValue(
+                            'DASHBOARDA_GENERAL',
+                            'NO SE ENCONTRÓ EL DASHBOARD GENERAL PARA ESTE INFORME.'
+                        );
+                    }
+                } else {
+
+                    $plantillaword->setValue(
+                        'DASHBOARDA_GENERAL',
+                        'NO FUE POSIBLE PROCESAR LA IMAGEN DEL DASHBOARD GENERAL.'
+                    );
+                }
+            } else {
+
+                $plantillaword->setValue(
+                    'DASHBOARDA_GENERAL',
+                    'NO SE ENCONTRÓ EL DASHBOARD GENERAL PARA ESTE INFORME.'
+                );
+            }
             ////  GRAFICAS 
 
             $graficasWord = [
@@ -4418,7 +4730,7 @@ class reportenom0353Controller extends Controller
                     'request' => 'GRAFICA_CALIFICACION',
                     'marcador' => 'GRAFICA_CALIFICACION',
                     'archivo' => 'grafica_calificacion',
-                    'width' => 320,
+                    'width' => 360,
                     'height' => 250,
                     'ratio' => false
                 ],
@@ -4442,48 +4754,133 @@ class reportenom0353Controller extends Controller
                     'request' => 'GRAFICA_1',
                     'marcador' => 'GRAFICA_1',
                     'archivo' => 'grafica_1',
-                    'width' => 320,
+                    'width' => 360,
                     'height' => 250,
                     'ratio' => false
                 ],
+
                 [
-                    'request' => 'GRAFICA_2',
-                    'marcador' => 'GRAFICA_2',
-                    'archivo' => 'grafica_2',
-                    'width' => 650,
-                    'height' => 410,
+                    'request' => 'ambienteCategoriaChart',
+                    'marcador' => 'ambienteCategoriaChart',
+                    'archivo' => 'ambiente_categoria',
+                    'width' => 860,
+                    'height' => 260,
                     'ratio' => false
                 ],
                 [
-                    'request' => 'GRAFICA_3',
-                    'marcador' => 'GRAFICA_3',
-                    'archivo' => 'grafica_3',
-                    'width' => 650,
-                    'height' => 410,
+                    'request' => 'ambienteDominioChart',
+                    'marcador' => 'ambienteDominioChart',
+                    'archivo' => 'ambiente_dominio',
+                    'width' => 860,
+                    'height' => 260,
+                    'ratio' => false
+                ],
+
+                [
+                    'request' => 'factoresCategoriaChart',
+                    'marcador' => 'factoresCategoriaChart',
+                    'archivo' => 'factores_categoria',
+                    'width' => 860,
+                    'height' => 260,
                     'ratio' => false
                 ],
                 [
-                    'request' => 'GRAFICA_4',
-                    'marcador' => 'GRAFICA_4',
-                    'archivo' => 'grafica_4',
-                    'width' => 650,
-                    'height' => 410,
+                    'request' => 'factoresDominio1Chart',
+                    'marcador' => 'factoresDominio1Chart',
+                    'archivo' => 'factores_dominio_1',
+                    'width' => 860,
+                    'height' => 260,
                     'ratio' => false
                 ],
                 [
-                    'request' => 'GRAFICA_5',
-                    'marcador' => 'GRAFICA_5',
-                    'archivo' => 'grafica_5',
-                    'width' => 650,
-                    'height' => 480,
+                    'request' => 'factoresDominio2Chart',
+                    'marcador' => 'factoresDominio2Chart',
+                    'archivo' => 'factores_dominio_2',
+                    'width' => 860,
+                    'height' => 260,
+                    'ratio' => false
+                ],
+
+                [
+                    'request' => 'organizacionCategoriaChart',
+                    'marcador' => 'organizacionCategoriaChart',
+                    'archivo' => 'organizacion_categoria',
+                    'width' => 860,
+                    'height' => 260,
                     'ratio' => false
                 ],
                 [
-                    'request' => 'GRAFICA_6',
-                    'marcador' => 'GRAFICA_6',
-                    'archivo' => 'grafica_6',
-                    'width' => 650,
-                    'height' => 410,
+                    'request' => 'organizacionDominio1Chart',
+                    'marcador' => 'organizacionDominio1Chart',
+                    'archivo' => 'organizacion_dominio_1',
+                    'width' => 860,
+                    'height' => 260,
+                    'ratio' => false
+                ],
+                [
+                    'request' => 'organizacionDominio2Chart',
+                    'marcador' => 'organizacionDominio2Chart',
+                    'archivo' => 'organizacion_dominio_2',
+                    'width' => 860,
+                    'height' => 260,
+                    'ratio' => false
+                ],
+
+                [
+                    'request' => 'liderazgoCategoriaChart',
+                    'marcador' => 'liderazgoCategoriaChart',
+                    'archivo' => 'liderazgo_categoria',
+                    'width' => 860,
+                    'height' => 260,
+                    'ratio' => false
+                ],
+                [
+                    'request' => 'liderazgoDominio1Chart',
+                    'marcador' => 'liderazgoDominio1Chart',
+                    'archivo' => 'liderazgo_dominio_1',
+                    'width' => 860,
+                    'height' => 260,
+                    'ratio' => false
+                ],
+                [
+                    'request' => 'liderazgoDominio2Chart',
+                    'marcador' => 'liderazgoDominio2Chart',
+                    'archivo' => 'liderazgo_dominio_2',
+                    'width' => 860,
+                    'height' => 260,
+                    'ratio' => false
+                ],
+                [
+                    'request' => 'liderazgoDominio3Chart',
+                    'marcador' => 'liderazgoDominio3Chart',
+                    'archivo' => 'liderazgo_dominio_3',
+                    'width' => 860,
+                    'height' => 260,
+                    'ratio' => false
+                ],
+
+                [
+                    'request' => 'entornoCategoriaChart',
+                    'marcador' => 'entornoCategoriaChart',
+                    'archivo' => 'entorno_categoria',
+                    'width' => 860,
+                    'height' => 260,
+                    'ratio' => false
+                ],
+                [
+                    'request' => 'entornoDominio1Chart',
+                    'marcador' => 'entornoDominio1Chart',
+                    'archivo' => 'entorno_dominio_1',
+                    'width' => 860,
+                    'height' => 260,
+                    'ratio' => false
+                ],
+                [
+                    'request' => 'entornoDominio2Chart',
+                    'marcador' => 'entornoDominio2Chart',
+                    'archivo' => 'entorno_dominio_2',
+                    'width' => 860,
+                    'height' => 260,
                     'ratio' => false
                 ]
             ];
@@ -4508,7 +4905,10 @@ class reportenom0353Controller extends Controller
                     continue;
                 }
 
-                $imagenBase64 = $request->input($nombreRequest, '');
+                $imagenBase64 = $request->input(
+                    $nombreRequest,
+                    ''
+                );
 
                 if (
                     !is_string($imagenBase64) ||
@@ -4587,11 +4987,15 @@ class reportenom0353Controller extends Controller
                     continue;
                 }
 
-                $datosImagen = getimagesize($rutaTemporal);
+                $datosImagen = getimagesize(
+                    $rutaTemporal
+                );
 
                 if ($datosImagen === false) {
 
-                    Storage::delete($rutaStorage);
+                    Storage::delete(
+                        $rutaStorage
+                    );
 
                     $plantillaword->setValue(
                         $marcadorWord,
@@ -4601,7 +5005,8 @@ class reportenom0353Controller extends Controller
                     continue;
                 }
 
-                $rutasGraficasTemporales[] = $rutaStorage;
+                $rutasGraficasTemporales[] =
+                    $rutaStorage;
 
                 $opcionesImagen = [
                     'path' => $rutaTemporal,
@@ -9584,176 +9989,6 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
         }
     }
 
-    public function guardaranalisisgraficatambiente(Request $request)
-    {
-        try {
-
-            DB::beginTransaction();
-
-            $dato = datosgeneralesinformePsicoModel::where(
-                'PROYECTO_ID',
-                $request->PROYECTO_ID
-            )->first();
-            if (!$dato) {
-                $dato = new datosgeneralesinformePsicoModel();
-                $dato->PROYECTO_ID = $request->PROYECTO_ID;
-            }
-
-            $dato->ANALISIS_GRAFICA_CATAMBIENTE = $request->ANALISIS_GRAFICA_CATAMBIENTE;
-
-            $dato->save();
-
-            DB::commit();
-
-            return response()->json([
-                'msj' => 'Información guardada correctamente'
-            ]);
-        } catch (Exception $e) {
-
-            DB::rollBack();
-
-            return response()->json([
-                'msj' => 'Error: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function guardaranalisisgraficatfactores(Request $request)
-    {
-        try {
-
-            DB::beginTransaction();
-
-            $dato = datosgeneralesinformePsicoModel::where(
-                'PROYECTO_ID',
-                $request->PROYECTO_ID
-            )->first();
-            if (!$dato) {
-                $dato = new datosgeneralesinformePsicoModel();
-                $dato->PROYECTO_ID = $request->PROYECTO_ID;
-            }
-
-            $dato->ANALISIS_GRAFICA_CATFACTORES = $request->ANALISIS_GRAFICA_CATFACTORES;
-
-            $dato->save();
-
-            DB::commit();
-
-            return response()->json([
-                'msj' => 'Información guardada correctamente'
-            ]);
-        } catch (Exception $e) {
-
-            DB::rollBack();
-
-            return response()->json([
-                'msj' => 'Error: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function guardaranalisisgraficatorganizacion(Request $request)
-    {
-        try {
-
-            DB::beginTransaction();
-
-            $dato = datosgeneralesinformePsicoModel::where(
-                'PROYECTO_ID',
-                $request->PROYECTO_ID
-            )->first();
-            if (!$dato) {
-                $dato = new datosgeneralesinformePsicoModel();
-                $dato->PROYECTO_ID = $request->PROYECTO_ID;
-            }
-
-            $dato->ANALISIS_GRAFICA_CATORGANIZACION = $request->ANALISIS_GRAFICA_CATORGANIZACION;
-
-            $dato->save();
-
-            DB::commit();
-
-            return response()->json([
-                'msj' => 'Información guardada correctamente'
-            ]);
-        } catch (Exception $e) {
-
-            DB::rollBack();
-
-            return response()->json([
-                'msj' => 'Error: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function guardaranalisisgraficatliderazgo(Request $request)
-    {
-        try {
-
-            DB::beginTransaction();
-
-            $dato = datosgeneralesinformePsicoModel::where(
-                'PROYECTO_ID',
-                $request->PROYECTO_ID
-            )->first();
-            if (!$dato) {
-                $dato = new datosgeneralesinformePsicoModel();
-                $dato->PROYECTO_ID = $request->PROYECTO_ID;
-            }
-
-            $dato->ANALISIS_GRAFICA_CATLIDERAZGO = $request->ANALISIS_GRAFICA_CATLIDERAZGO;
-
-            $dato->save();
-
-            DB::commit();
-
-            return response()->json([
-                'msj' => 'Información guardada correctamente'
-            ]);
-        } catch (Exception $e) {
-
-            DB::rollBack();
-
-            return response()->json([
-                'msj' => 'Error: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function guardaranalisisgraficatentorno(Request $request)
-    {
-        try {
-
-            DB::beginTransaction();
-
-            $dato = datosgeneralesinformePsicoModel::where(
-                'PROYECTO_ID',
-                $request->PROYECTO_ID
-            )->first();
-            if (!$dato) {
-                $dato = new datosgeneralesinformePsicoModel();
-                $dato->PROYECTO_ID = $request->PROYECTO_ID;
-            }
-
-            $dato->ANALISIS_GRAFICA_CATENTORNO = $request->ANALISIS_GRAFICA_CATENTORNO;
-
-            $dato->save();
-
-            DB::commit();
-
-            return response()->json([
-                'msj' => 'Información guardada correctamente'
-            ]);
-        } catch (Exception $e) {
-
-            DB::rollBack();
-
-            return response()->json([
-                'msj' => 'Error: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
     public function guardarnivelriesgocategorias(Request $request)
     {
         try {
@@ -9792,6 +10027,528 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
         }
     }
 
+
+    //// ANALISIS GRAFICA CATEGORIA
+
+    public function guardaranalisisgraficacatambiente(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATAMBIENTE = $request->ANALISIS_GRAFICA_CATAMBIENTE;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadomambiente(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_DOMAMBIENTE = $request->ANALISIS_GRAFICA_DOMAMBIENTE;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficacatfactores(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATFACTORES = $request->ANALISIS_GRAFICA_CATFACTORES;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadomfactores1(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_DOMFACTORES_1 = $request->ANALISIS_GRAFICA_DOMFACTORES_1;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadomfactores2(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_DOMFACTORES_2 = $request->ANALISIS_GRAFICA_DOMFACTORES_2;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficacatorganizacion(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATORGANIZACION = $request->ANALISIS_GRAFICA_CATORGANIZACION;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadomorganizacion1(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_DOMORGANIZACION_1 =  $request->ANALISIS_GRAFICA_DOMORGANIZACION_1;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadomorganizacion2(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_DOMORGANIZACION_2 = $request->ANALISIS_GRAFICA_DOMORGANIZACION_2;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficacatliderazgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATLIDERAZGO = $request->ANALISIS_GRAFICA_CATLIDERAZGO;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadomliderazgo1(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_DOMLIDERAZGO_1 = $request->ANALISIS_GRAFICA_DOMLIDERAZGO_1;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadomliderazgo2(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_DOMLIDERAZGO_2 = $request->ANALISIS_GRAFICA_DOMLIDERAZGO_2;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadomliderazgo3(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_DOMLIDERAZGO_3 = $request->ANALISIS_GRAFICA_DOMLIDERAZGO_3;
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficacatentorno(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_CATENTORNO = $request->ANALISIS_GRAFICA_CATENTORNO;
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadomentorno1(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->ANALISIS_GRAFICA_DOMENTORNO_1 = $request->ANALISIS_GRAFICA_DOMENTORNO_1;
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardaranalisisgraficadomentorno2(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformePsicoModel::where(
+                'PROYECTO_ID',
+                $request->PROYECTO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformePsicoModel();
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+            $dato->ANALISIS_GRAFICA_DOMENTORNO_2 = $request->ANALISIS_GRAFICA_DOMENTORNO_2;
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
     //// CONCLUSION JSON
 
@@ -10891,28 +11648,38 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
 
             $estados['menureporte_9_4_1'] =
                 $campoCompleto(
-                    'ANALISIS_GRAFICA_CATAMBIENTE'
-                );
+                    'ANALISIS_GRAFICA_CATAMBIENTE',
+                    'ANALISIS_GRAFICA_DOMAMBIENTE'
+            );
 
             $estados['menureporte_9_4_2'] =
                 $campoCompleto(
-                    'ANALISIS_GRAFICA_CATFACTORES'
+                    'ANALISIS_GRAFICA_CATFACTORES',
+                    'ANALISIS_GRAFICA_DOMFACTORES_1',
+                    'ANALISIS_GRAFICA_DOMFACTORES_2',
                 );
 
             $estados['menureporte_9_4_3'] =
                 $campoCompleto(
-                    'ANALISIS_GRAFICA_CATORGANIZACION'
+                    'ANALISIS_GRAFICA_CATORGANIZACION',
+                    'ANALISIS_GRAFICA_DOMORGANIZACION_1',
+                    'ANALISIS_GRAFICA_DOMORGANIZACION_2',
                 );
 
             $estados['menureporte_9_4_4'] =
                 $campoCompleto(
-                    'ANALISIS_GRAFICA_CATLIDERAZGO'
+                    'ANALISIS_GRAFICA_CATLIDERAZGO',
+                    'ANALISIS_GRAFICA_DOMLIDERAZGO_1',
+                    'ANALISIS_GRAFICA_DOMLIDERAZGO_2',
+                    'ANALISIS_GRAFICA_DOMLIDERAZGO_3',
                 );
 
 
             $estados['menureporte_9_4_5'] =
                 $campoCompleto(
-                    'ANALISIS_GRAFICA_CATENTORNO'
+                    'ANALISIS_GRAFICA_CATENTORNO',
+                    'ANALISIS_GRAFICA_DOMENTORNO_1',
+                    'ANALISIS_GRAFICA_DOMENTORNO_2',
                 );
 
            
@@ -10968,6 +11735,106 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
 
                 'estados' =>
                 []
+            ], 500);
+        }
+    }
+
+
+    public function areascategoriaspsico($proyecto_id)
+    {
+        try {
+
+            $proyecto = proyectoModel::findOrFail($proyecto_id);
+
+            $actividadprincipal = DB::table('reconocimientopsico')
+                ->where('id', $proyecto->reconocimiento_psico_id)
+                ->value('actividadprincipal');
+
+            if ($actividadprincipal === null || trim($actividadprincipal) === '') 
+            {
+                $actividadprincipal = 'Sin actividad registrada';
+            }
+
+            $areas = DB::select("
+            SELECT
+                reportearea.proyecto_id,
+                reportearea.id,
+                reportearea.recsensorialarea_id,
+                reportearea.reportearea_instalacion,
+                reportearea.reportearea_nombre,
+                reportearea.reportearea_orden,
+                reportearea.reportearea_porcientooperacion,
+
+                IF(
+                    IFNULL(
+                        reportearea.reportearea_porcientooperacion,
+                        ''
+                    ) != '',
+                    CONCAT(
+                        reportearea.reportearea_porcientooperacion,
+                        ' %'
+                    ),
+                    NULL
+                ) AS reportearea_porcientooperacion_texto,
+
+                reporteareacategoria.reportecategoria_id,
+                reportecategoria.reportecategoria_nombre,
+                reportecategoria.reportecategoria_orden,
+                reporteareacategoria.reporteareacategoria_total,
+                reporteareacategoria.reporteareacategoria_geh,
+                reporteareacategoria.reporteareacategoria_actividades
+
+            FROM reportearea
+
+            LEFT JOIN reporteareacategoria
+                ON reportearea.id =
+                   reporteareacategoria.reportearea_id
+
+            LEFT JOIN reportecategoria
+                ON reporteareacategoria.reportecategoria_id =
+                   reportecategoria.id
+
+            WHERE reportearea.proyecto_id = ?
+
+            ORDER BY
+                reportearea.reportearea_orden ASC,
+                reportearea.reportearea_nombre ASC,
+                reportecategoria.reportecategoria_orden ASC,
+                reportecategoria.reportecategoria_nombre ASC
+        ", [
+                $proyecto_id
+            ]);
+
+           
+            
+            $numeroRegistro = 0;
+            $nombreAreaAnterior = null;
+            $areaIdAnterior = null;
+
+            foreach ($areas as $value) {
+
+                if ($value->reportearea_nombre !== $nombreAreaAnterior || $value->id !== $areaIdAnterior) 
+                {
+                    $numeroRegistro++;
+                    $nombreAreaAnterior = $value->reportearea_nombre;
+                    $areaIdAnterior = $value->id;
+                }
+
+                $value->numero_registro = $numeroRegistro;
+                $value->actividadprincipal = $actividadprincipal;
+            }
+
+            return response()->json([
+                'data' => $areas,
+                'actividadprincipal' => $actividadprincipal,
+                'msj' => 'Datos consultados correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'data' => [],
+                'actividadprincipal' => '',
+                'msj' => 'Error ' . $e->getMessage()
             ], 500);
         }
     }

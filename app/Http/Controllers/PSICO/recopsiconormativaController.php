@@ -167,50 +167,11 @@ class recopsiconormativaController extends Controller
                             }
                         }
 
-                        // return response()->json(['msj' => $datosGenerales, "code" => 500]);
-
-                        // ========================================================== DATOS GENERALES ===============================================================
-                        // =========================================================================================================================
-                        //Puntos totales
+                       
                         $totalTrabajadores = count($datosGenerales);
                         $trabajadoresInsertados = 0;
 
 
-                        // //BUCAMOS Y ARMAMOS EL ARRAY PARA OBTENER LAS CATEGORIAS CON SU ID
-                        // $IdCategorias = [];
-                        // $caategorias = recopsicocategoriaModel::where('RECPSICO_ID', $RECPSICO_ID)->get();
-                        // foreach ($caategorias as $cat) {
-                        //     $clave = $cat->RECPSICO_NOMBRECATEGORIA;
-                        //     $IdCategorias[$clave] = $cat->ID_RECOPSICOCATEGORIA;
-                        // }
-
-
-                        // //BUCAMOS Y ARMAMOS EL ARRAY PARA OBTENER LAS AREAS CON SU ID
-                        // $IdAreas = [];
-                        // $areas = recopsicoareaModel::where('RECPSICO_ID', $RECPSICO_ID)->get();
-                        // foreach ($areas as $area) {
-                        //     $clave = $area->RECPSICOAREA_NOMBRE;
-                        //     $IdAreas[$clave] = $area->ID_RECOPSICOAREA;
-                        // }
-
-
-                        // =========================================================================================================================
-                        // =========================================================================================================================
-
-
-                        // ====================================================== FUNCIONES ===================================================================
-                        // =========================================================================================================================
-
-
-
-                        // =========================================================================================================================
-                        // =========================================================================================================================
-
-
-                        // ====================================================== INSERCION DE DATOS ===================================================================
-                        // ========================================================================================================================
-
-                        //Limpiamos, Validamos y Insertamos todos los datos del Excel
 
                         foreach ($datosGenerales as $rowData) {
 
@@ -229,27 +190,20 @@ class recopsiconormativaController extends Controller
                                 'RECPSICOTRABAJADOR_MODALIDAD' => null
                             ]);
 
-                            $fechaNacimiento = $rowData['H'];
+
 
                             $edad = null;
 
-                            if (!is_null($fechaNacimiento) && trim($fechaNacimiento) != '') {
-                                try {
-                                    $fechaNacimientoFormat = Carbon::createFromFormat('d/m/Y', $fechaNacimiento);
-                                    $fechaActual = Carbon::now();
-                                    $edad = $fechaNacimientoFormat->diffInYears($fechaActual);
-                                } catch (Exception $e) {
-                                    $edad = null;
-                                }
+                            if (!is_null($rowData['H']) && trim($rowData['H']) !== '') {
+                                $edad = (int) $rowData['H'];
                             }
 
-                            // // validar si envia guiav
                             $TRABAJADORGUIA5 = recopsicoguia5Model::create([
                                 'RECPSICOTRABAJADOR_ID' => $TRABAJADOR->ID_RECOPSICOTRABAJADOR,
                                 'RECPSICO_ID' => $RECPSICO_ID,
                                 'RECPSICOTRABAJADOR_GENERO' => is_null($rowData['C']) ? null : $rowData['C'],
                                 'RECPSICOTRABAJADOR_EDAD' => $edad,
-                                'RECPSICOTRABAJADOR_FNACIMIENTO' => is_null($rowData['H']) ? null : $rowData['H'],
+                                'RECPSICOTRABAJADOR_FNACIMIENTO' => null,
                                 'RECPSICOTRABAJADOR_ESTADOCIVIL' => is_null($rowData['I']) ? null : $rowData['I'],
                                 'RECPSICOTRABAJADOR_ESTUDIOS' => is_null($rowData['J']) ? null : $rowData['J'],
                                 'RECPSICOTRABAJADOR_TIPOPUESTO' => is_null($rowData['K']) ? null : $rowData['K'],
@@ -308,26 +262,6 @@ class recopsiconormativaController extends Controller
                                     }
                                 }
 
-                                //$RECPSICO_MUESTRAINT = intval($RECPSICO_MUESTRA);
-                             
-
-                               
-                                // $todosLosTrabajadores = DB::table('recopsicotrabajadores')
-                                // ->where('RECPSICO_ID', $RECPSICO_ID)
-                                // ->get();
-                            
-                                // $trabajadoresAleatorios = $todosLosTrabajadores->random($RECPSICO_MUESTRAINT);
-
-                                //         foreach ($trabajadoresAleatorios as $trabajador) {
-                                //                     recopsicotrabajadoresModel::where('ID_RECOPSICOTRABAJADOR', $trabajador->ID_RECOPSICOTRABAJADOR)
-                                //                         ->update(['RECPSICOTRABAJADOR_MUESTRA' => 1]);
-                                //         }
-                                
-
-                               
-                   
-
-                        //RETORNAMOS UN MENSAJE DE CUANTOS INSERTO 
                         return response()->json(['msj' => 'Total de trabajadores cargados : ' . $trabajadoresInsertados . ' de ' . $totalTrabajadores, 'code' => 200]);
                     } else {
 

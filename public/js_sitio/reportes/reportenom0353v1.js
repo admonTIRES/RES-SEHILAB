@@ -232,6 +232,7 @@ $(document).ready(function () {
             cargarDatosInformesPsico();
             cargarDatosGeneralesInformePsico();
             cargarDefinicionesInformepsico();
+            tabla_areas();
             cargarRecomendacionesInformepsico();
             tablaVersionesinfopsico();
             validarEdicioninfopsico();
@@ -261,7 +262,9 @@ $(document).ready(function () {
             cargarGraficasMayorRiesgoPsico();
             cargarGraficaDistribucionRiesgoPsico();
             cargarGraficaTrabajadoresATSpsico();
-            cargarRecomendacionesPrioritariasPsico();
+            cargarGraficaCumplimientoNormativoPsico();
+    cargarRecomendacionesPrioritariasPsico();
+    
             consultarEstadosMenusReportePsico();
     
 
@@ -728,18 +731,51 @@ Se localiza en las coordenadas  COORDENADAS.`);
             $('#ANALISIS_GRAFICA_CATAMBIENTE')
                 .val(response.ANALISIS_GRAFICA_CATAMBIENTE); 
             
+           $('#ANALISIS_GRAFICA_CATAMBIENTE')
+                .val(response.ANALISIS_GRAFICA_CATAMBIENTE);
+
+            $('#ANALISIS_GRAFICA_DOMAMBIENTE')
+                .val(response.ANALISIS_GRAFICA_DOMAMBIENTE);
+
             $('#ANALISIS_GRAFICA_CATFACTORES')
-                .val(response.ANALISIS_GRAFICA_CATFACTORES); 
-            
+                .val(response.ANALISIS_GRAFICA_CATFACTORES);
+
+            $('#ANALISIS_GRAFICA_DOMFACTORES_1')
+                .val(response.ANALISIS_GRAFICA_DOMFACTORES_1);
+
+            $('#ANALISIS_GRAFICA_DOMFACTORES_2')
+                .val(response.ANALISIS_GRAFICA_DOMFACTORES_2);
+
             $('#ANALISIS_GRAFICA_CATORGANIZACION')
-                .val(response.ANALISIS_GRAFICA_CATORGANIZACION); 
+                .val(response.ANALISIS_GRAFICA_CATORGANIZACION);
+
+            $('#ANALISIS_GRAFICA_DOMORGANIZACION_1')
+                .val(response.ANALISIS_GRAFICA_DOMORGANIZACION_1);
+
+            $('#ANALISIS_GRAFICA_DOMORGANIZACION_2')
+                .val(response.ANALISIS_GRAFICA_DOMORGANIZACION_2);
 
             $('#ANALISIS_GRAFICA_CATLIDERAZGO')
-                .val(response.ANALISIS_GRAFICA_CATLIDERAZGO); 
-            
+                .val(response.ANALISIS_GRAFICA_CATLIDERAZGO);
+
+            $('#ANALISIS_GRAFICA_DOMLIDERAZGO_1')
+                .val(response.ANALISIS_GRAFICA_DOMLIDERAZGO_1);
+
+            $('#ANALISIS_GRAFICA_DOMLIDERAZGO_2')
+                .val(response.ANALISIS_GRAFICA_DOMLIDERAZGO_2);
+
+            $('#ANALISIS_GRAFICA_DOMLIDERAZGO_3')
+                .val(response.ANALISIS_GRAFICA_DOMLIDERAZGO_3);
+
             $('#ANALISIS_GRAFICA_CATENTORNO')
-                .val(response.ANALISIS_GRAFICA_CATENTORNO); 
-            
+                .val(response.ANALISIS_GRAFICA_CATENTORNO);
+
+            $('#ANALISIS_GRAFICA_DOMENTORNO_1')
+                .val(response.ANALISIS_GRAFICA_DOMENTORNO_1);
+
+            $('#ANALISIS_GRAFICA_DOMENTORNO_2')
+                .val(response.ANALISIS_GRAFICA_DOMENTORNO_2);
+                        
             
             
             $('#NIVEL_RIESGO_AMBIENTE')
@@ -1586,6 +1622,7 @@ $("#form_reporte_recomendaciones_control").on("submit", function(e)
         success: function(response)
         {
             consultarEstadosMenusReportePsico();
+            cargarRecomendacionesPrioritariasPsico();
 
             Swal.fire({
                 icon: "success",
@@ -2219,9 +2256,6 @@ function recortarEspacioBlancoBase64(imagenBase64, padding)
     });
 }
 
-
-
-
 function recortarImagenBase64(imagenBase64, padding)
 {
     return new Promise(function(resolve)
@@ -2447,6 +2481,388 @@ function recortarImagenBase64(imagenBase64, padding)
     });
 }
 
+// async function descargarRevisioninfopsico(PROYECTO_ID)
+// {
+//     try {
+
+//         window.chartPngs =
+//             window.chartPngs || {};
+
+//         if (
+//             !window.chartPngs[
+//                 'calificacionChart'
+//             ] &&
+//             typeof calificacionchart !==
+//                 'undefined' &&
+//             calificacionchart
+//         ) {
+//             window.chartPngs[
+//                 'calificacionChart'
+//             ] = calificacionchart;
+//         }
+
+//         if (
+//             !window.chartPngs[
+//                 'consolidadoChart'
+//             ] &&
+//             typeof categoriaschart !==
+//                 'undefined' &&
+//             categoriaschart
+//         ) {
+//             window.chartPngs[
+//                 'consolidadoChart'
+//             ] = categoriaschart;
+//         }
+
+//         if (
+//             !window.chartPngs[
+//                 'consolidadoChart2'
+//             ] &&
+//             typeof dominioschart !==
+//                 'undefined' &&
+//             dominioschart
+//         ) {
+//             window.chartPngs[
+//                 'consolidadoChart2'
+//             ] = dominioschart;
+//         }
+
+//         if (
+//             !window.chartPngs[
+//                 'guia1Chart'
+//             ] &&
+//             typeof acontecimientoschart !==
+//                 'undefined' &&
+//             acontecimientoschart
+//         ) {
+//             window.chartPngs[
+//                 'guia1Chart'
+//             ] = acontecimientoschart;
+//         }
+
+//         const dashboard =
+//             document.querySelector(
+//                 '#tabla_dashboard'
+//             );
+
+//         if (!dashboard) {
+//             Swal.fire({
+//                 icon: 'error',
+//                 title: 'Error',
+//                 text: 'No se encontró el dashboard para generar la imagen'
+//             });
+
+//             return;
+//         }
+
+//         if (
+//             document.fonts &&
+//             document.fonts.ready
+//         ) {
+//             await document.fonts.ready;
+//         }
+
+//         window.dispatchEvent(
+//             new Event('resize')
+//         );
+
+//         await new Promise(
+//             function(resolve)
+//             {
+//                 setTimeout(
+//                     resolve,
+//                     1800
+//                 );
+//             }
+//         );
+
+//         var imagenesGraficas = {
+//             GRAFICA_CALIFICACION:
+//                 window.chartPngs[
+//                     'calificacionChart'
+//                 ] || '',
+
+//             GRAFICA_CATEGORIAS:
+//                 window.chartPngs[
+//                     'consolidadoChart'
+//                 ] || '',
+
+//             GRAFICA_DOMINIOS:
+//                 window.chartPngs[
+//                     'consolidadoChart2'
+//                 ] || '',
+
+//             GRAFICA_1:
+//                 window.chartPngs[
+//                     'guia1Chart'
+//                 ] || '',
+
+//             ambienteCategoriaChart:
+//                 window.chartPngs[
+//                     'ambienteCategoriaChart'
+//                 ] || '',
+
+//             ambienteDominioChart:
+//                 window.chartPngs[
+//                     'ambienteDominioChart'
+//                 ] || '',
+
+//             factoresCategoriaChart:
+//                 window.chartPngs[
+//                     'factoresCategoriaChart'
+//                 ] || '',
+
+//             factoresDominio1Chart:
+//                 window.chartPngs[
+//                     'factoresDominio1Chart'
+//                 ] || '',
+
+//             factoresDominio2Chart:
+//                 window.chartPngs[
+//                     'factoresDominio2Chart'
+//                 ] || '',
+
+//             organizacionCategoriaChart:
+//                 window.chartPngs[
+//                     'organizacionCategoriaChart'
+//                 ] || '',
+
+//             organizacionDominio1Chart:
+//                 window.chartPngs[
+//                     'organizacionDominio1Chart'
+//                 ] || '',
+
+//             organizacionDominio2Chart:
+//                 window.chartPngs[
+//                     'organizacionDominio2Chart'
+//                 ] || '',
+
+//             liderazgoCategoriaChart:
+//                 window.chartPngs[
+//                     'liderazgoCategoriaChart'
+//                 ] || '',
+
+//             liderazgoDominio1Chart:
+//                 window.chartPngs[
+//                     'liderazgoDominio1Chart'
+//                 ] || '',
+
+//             liderazgoDominio2Chart:
+//                 window.chartPngs[
+//                     'liderazgoDominio2Chart'
+//                 ] || '',
+
+//             liderazgoDominio3Chart:
+//                 window.chartPngs[
+//                     'liderazgoDominio3Chart'
+//                 ] || '',
+
+//             entornoCategoriaChart:
+//                 window.chartPngs[
+//                     'entornoCategoriaChart'
+//                 ] || '',
+
+//             entornoDominio1Chart:
+//                 window.chartPngs[
+//                     'entornoDominio1Chart'
+//                 ] || '',
+
+//             entornoDominio2Chart:
+//                 window.chartPngs[
+//                     'entornoDominio2Chart'
+//                 ] || ''
+//         };
+
+//        var graficasParaRecortar = [
+//         'GRAFICA_CALIFICACION',
+//         'GRAFICA_CATEGORIAS',
+//         'GRAFICA_DOMINIOS',
+//         'GRAFICA_1'
+//     ];
+
+//     for (
+//         var indice = 0;
+//         indice < graficasParaRecortar.length;
+//         indice++
+//     ) {
+//         var nombreGrafica =
+//             graficasParaRecortar[indice];
+
+//         if (
+//             imagenesGraficas[nombreGrafica] &&
+//             imagenesGraficas[nombreGrafica].length > 100
+//         ) {
+//             imagenesGraficas[nombreGrafica] =
+//                 await recortarImagenBase64(
+//                     imagenesGraficas[nombreGrafica],
+//                     10
+//                 );
+//         }
+//     }
+
+//         var graficasFaltantes =
+//             [];
+
+//         Object.keys(
+//             imagenesGraficas
+//         ).forEach(
+//             function(nombreGrafica)
+//             {
+//                 if (
+//                     !imagenesGraficas[
+//                         nombreGrafica
+//                     ] ||
+//                     imagenesGraficas[
+//                         nombreGrafica
+//                     ].length < 100
+//                 ) {
+//                     graficasFaltantes.push(
+//                         nombreGrafica
+//                     );
+//                 }
+//             }
+//         );
+
+//         if (
+//             graficasFaltantes.length > 0
+//         ) {
+//             console.warn(
+//                 'Las siguientes gráficas no están disponibles:',
+//                 graficasFaltantes
+//             );
+//         }
+
+//         const canvas =
+//             await html2canvas(
+//                 dashboard,
+//                 {
+//                     scale: 4,
+//                     useCORS: true,
+//                     allowTaint: true,
+//                     backgroundColor:
+//                         '#FFFFFF',
+//                     logging: false,
+//                     scrollX: 0,
+//                     scrollY:
+//                         -window.scrollY,
+//                     width:
+//                         dashboard.scrollWidth,
+//                     height:
+//                         dashboard.scrollHeight,
+//                     windowWidth:
+//                         document
+//                             .documentElement
+//                             .scrollWidth,
+//                     windowHeight:
+//                         document
+//                             .documentElement
+//                             .scrollHeight
+//                 }
+//             );
+
+//         const dashboardBase64 =
+//             canvas.toDataURL(
+//                 'image/png',
+//                 1
+//             );
+
+//         if (
+//             !dashboardBase64 ||
+//             dashboardBase64.length < 100
+//         ) {
+//             throw new Error(
+//                 'No fue posible generar la imagen del dashboard'
+//             );
+//         }
+
+//         var form =
+//             $('<form>', {
+//                 action:
+//                     '/descargarRevisioninfopsico/' +
+//                     PROYECTO_ID,
+
+//                 method:
+//                     'POST',
+
+//                 target:
+//                     '_blank',
+
+//                 style:
+//                     'display:none;'
+//             });
+
+//         form.append(
+//             $('<input>', {
+//                 type: 'hidden',
+//                 name: '_token',
+//                 value:
+//                     $(
+//                         'meta[name="csrf-token"]'
+//                     ).attr(
+//                         'content'
+//                     )
+//             })
+//         );
+
+//         form.append(
+//             $('<input>', {
+//                 type: 'hidden',
+//                 name:
+//                     'DASHBOARD_FOTO',
+//                 value:
+//                     dashboardBase64
+//             })
+//         );
+
+//         Object.keys(
+//             imagenesGraficas
+//         ).forEach(
+//             function(nombreInput)
+//             {
+//                 form.append(
+//                     $('<input>', {
+//                         type:
+//                             'hidden',
+
+//                         name:
+//                             nombreInput,
+
+//                         value:
+//                             imagenesGraficas[
+//                                 nombreInput
+//                             ]
+//                     })
+//                 );
+//             }
+//         );
+
+//         $('body').append(form);
+
+//         form.submit();
+
+//         setTimeout(
+//             function()
+//             {
+//                 form.remove();
+//             },
+//             5000
+//         );
+
+//     } catch (error) {
+
+//         console.error(
+//             'Error al generar el informe:',
+//             error
+//         );
+
+//         Swal.fire({
+//             icon: 'error',
+//             title: 'Error',
+//             text: 'No fue posible generar las imágenes del informe'
+//         });
+//     }
+// }
+
 async function descargarRevisioninfopsico(PROYECTO_ID)
 {
     try {
@@ -2512,10 +2928,27 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
             );
 
         if (!dashboard) {
+
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'No se encontró el dashboard para generar la imagen'
+            });
+
+            return;
+        }
+
+        const dashboardGeneral =
+            document.querySelector(
+                '#dashboard_nom035_captura'
+            );
+
+        if (!dashboardGeneral) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se encontró el dashboard general para generar la imagen'
             });
 
             return;
@@ -2543,6 +2976,7 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
         );
 
         var imagenesGraficas = {
+
             GRAFICA_CALIFICACION:
                 window.chartPngs[
                     'calificacionChart'
@@ -2563,61 +2997,110 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
                     'guia1Chart'
                 ] || '',
 
-            GRAFICA_2:
+            ambienteCategoriaChart:
                 window.chartPngs[
-                    'ambienteChart'
+                    'ambienteCategoriaChart'
                 ] || '',
 
-            GRAFICA_3:
+            ambienteDominioChart:
                 window.chartPngs[
-                    'factoresChart'
+                    'ambienteDominioChart'
                 ] || '',
 
-            GRAFICA_4:
+            factoresCategoriaChart:
                 window.chartPngs[
-                    'organizacionChart'
+                    'factoresCategoriaChart'
                 ] || '',
 
-            GRAFICA_5:
+            factoresDominio1Chart:
                 window.chartPngs[
-                    'liderazgoChart'
+                    'factoresDominio1Chart'
                 ] || '',
 
-            GRAFICA_6:
+            factoresDominio2Chart:
                 window.chartPngs[
-                    'entornoChart'
+                    'factoresDominio2Chart'
+                ] || '',
+
+            organizacionCategoriaChart:
+                window.chartPngs[
+                    'organizacionCategoriaChart'
+                ] || '',
+
+            organizacionDominio1Chart:
+                window.chartPngs[
+                    'organizacionDominio1Chart'
+                ] || '',
+
+            organizacionDominio2Chart:
+                window.chartPngs[
+                    'organizacionDominio2Chart'
+                ] || '',
+
+            liderazgoCategoriaChart:
+                window.chartPngs[
+                    'liderazgoCategoriaChart'
+                ] || '',
+
+            liderazgoDominio1Chart:
+                window.chartPngs[
+                    'liderazgoDominio1Chart'
+                ] || '',
+
+            liderazgoDominio2Chart:
+                window.chartPngs[
+                    'liderazgoDominio2Chart'
+                ] || '',
+
+            liderazgoDominio3Chart:
+                window.chartPngs[
+                    'liderazgoDominio3Chart'
+                ] || '',
+
+            entornoCategoriaChart:
+                window.chartPngs[
+                    'entornoCategoriaChart'
+                ] || '',
+
+            entornoDominio1Chart:
+                window.chartPngs[
+                    'entornoDominio1Chart'
+                ] || '',
+
+            entornoDominio2Chart:
+                window.chartPngs[
+                    'entornoDominio2Chart'
                 ] || ''
         };
 
-       var graficasParaRecortar = [
-        'GRAFICA_CALIFICACION',
-        'GRAFICA_CATEGORIAS',
-        'GRAFICA_DOMINIOS',
-        'GRAFICA_1'
-    ];
+        var graficasParaRecortar = [
+            'GRAFICA_CALIFICACION',
+            'GRAFICA_CATEGORIAS',
+            'GRAFICA_DOMINIOS',
+            'GRAFICA_1'
+        ];
 
-    for (
-        var indice = 0;
-        indice < graficasParaRecortar.length;
-        indice++
-    ) {
-        var nombreGrafica =
-            graficasParaRecortar[indice];
-
-        if (
-            imagenesGraficas[nombreGrafica] &&
-            imagenesGraficas[nombreGrafica].length > 100
+        for (
+            var indice = 0;
+            indice < graficasParaRecortar.length;
+            indice++
         ) {
-            imagenesGraficas[nombreGrafica] =
-                await recortarImagenBase64(
-                    imagenesGraficas[nombreGrafica],
-                    10
-                );
-        }
-    }
+            var nombreGrafica =
+                graficasParaRecortar[indice];
 
-        var graficasFaltantes =
-            [];
+            if (
+                imagenesGraficas[nombreGrafica] &&
+                imagenesGraficas[nombreGrafica].length > 100
+            ) {
+                imagenesGraficas[nombreGrafica] =
+                    await recortarImagenBase64(
+                        imagenesGraficas[nombreGrafica],
+                        10
+                    );
+            }
+        }
+
+        var graficasFaltantes = [];
 
         Object.keys(
             imagenesGraficas
@@ -2648,19 +3131,17 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
             );
         }
 
-        const canvas =
+        const canvasDashboard =
             await html2canvas(
                 dashboard,
                 {
                     scale: 4,
                     useCORS: true,
                     allowTaint: true,
-                    backgroundColor:
-                        '#FFFFFF',
+                    backgroundColor: '#FFFFFF',
                     logging: false,
                     scrollX: 0,
-                    scrollY:
-                        -window.scrollY,
+                    scrollY: -window.scrollY,
                     width:
                         dashboard.scrollWidth,
                     height:
@@ -2677,7 +3158,7 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
             );
 
         const dashboardBase64 =
-            canvas.toDataURL(
+            canvasDashboard.toDataURL(
                 'image/png',
                 1
             );
@@ -2691,20 +3172,59 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
             );
         }
 
+        const canvasDashboardGeneral =
+            await html2canvas(
+                dashboardGeneral,
+                {
+                    scale: 4,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#FFFFFF',
+                    logging: false,
+                    scrollX: 0,
+                    scrollY: -window.scrollY,
+                    width:
+                        dashboardGeneral.scrollWidth,
+                    height:
+                        dashboardGeneral.scrollHeight,
+                    windowWidth:
+                        document
+                            .documentElement
+                            .scrollWidth,
+                    windowHeight:
+                        document
+                            .documentElement
+                            .scrollHeight
+                }
+            );
+
+        const dashboardGeneralBase64 =
+            canvasDashboardGeneral.toDataURL(
+                'image/png',
+                1
+            );
+
+        if (
+            !dashboardGeneralBase64 ||
+            dashboardGeneralBase64.length < 100
+        ) {
+            throw new Error(
+                'No fue posible generar la imagen del dashboard general'
+            );
+        }
+
         var form =
             $('<form>', {
+
                 action:
                     '/descargarRevisioninfopsico/' +
                     PROYECTO_ID,
 
-                method:
-                    'POST',
+                method: 'POST',
 
-                target:
-                    '_blank',
+                target: '_blank',
 
-                style:
-                    'display:none;'
+                style: 'display:none;'
             });
 
         form.append(
@@ -2723,10 +3243,16 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
         form.append(
             $('<input>', {
                 type: 'hidden',
-                name:
-                    'DASHBOARD_FOTO',
-                value:
-                    dashboardBase64
+                name: 'DASHBOARD_FOTO',
+                value: dashboardBase64
+            })
+        );
+
+        form.append(
+            $('<input>', {
+                type: 'hidden',
+                name: 'DASHBOARDA_GENERAL',
+                value: dashboardGeneralBase64
             })
         );
 
@@ -2737,12 +3263,8 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
             {
                 form.append(
                     $('<input>', {
-                        type:
-                            'hidden',
-
-                        name:
-                            nombreInput,
-
+                        type: 'hidden',
+                        name: nombreInput,
                         value:
                             imagenesGraficas[
                                 nombreInput
@@ -2778,191 +3300,7 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
         });
     }
 }
-
-
-
-// async function descargarRevisioninfopsico(PROYECTO_ID)
-// {
-//     try {
-
-//         window.chartPngs = window.chartPngs || {};
-
-//         if (
-//             !window.chartPngs['calificacionChart'] &&
-//             typeof calificacionchart !== 'undefined' &&
-//             calificacionchart
-//         ) {
-//             window.chartPngs['calificacionChart'] = calificacionchart;
-//         }
-
-//         if (
-//             !window.chartPngs['consolidadoChart'] &&
-//             typeof categoriaschart !== 'undefined' &&
-//             categoriaschart
-//         ) {
-//             window.chartPngs['consolidadoChart'] = categoriaschart;
-//         }
-
-//         if (
-//             !window.chartPngs['consolidadoChart2'] &&
-//             typeof dominioschart !== 'undefined' &&
-//             dominioschart
-//         ) {
-//             window.chartPngs['consolidadoChart2'] = dominioschart;
-//         }
-
-//         if (
-//             !window.chartPngs['guia1Chart'] &&
-//             typeof acontecimientoschart !== 'undefined' &&
-//             acontecimientoschart
-//         ) {
-//             window.chartPngs['guia1Chart'] = acontecimientoschart;
-//         }
-
-//         const dashboard = document.querySelector('#tabla_dashboard');
-
-//         if (!dashboard) {
-//             Swal.fire({
-//                 icon: 'error',
-//                 title: 'Error',
-//                 text: 'No se encontró el dashboard para generar la imagen'
-//             });
-//             return;
-//         }
-
-//         if (document.fonts && document.fonts.ready) {
-//             await document.fonts.ready;
-//         }
-
-//         window.dispatchEvent(new Event('resize'));
-
-//         await new Promise(function(resolve)
-//         {
-//             setTimeout(resolve, 1500);
-//         });
-
-//         var imagenesGraficas = {
-//             GRAFICA_CALIFICACION: window.chartPngs['calificacionChart'] || '',
-//             GRAFICA_CATEGORIAS: window.chartPngs['consolidadoChart'] || '',
-//             GRAFICA_DOMINIOS: window.chartPngs['consolidadoChart2'] || '',
-//             GRAFICA_1: window.chartPngs['guia1Chart'] || '',
-//             GRAFICA_2: window.chartPngs['ambienteChart'] || '',
-//             GRAFICA_3: window.chartPngs['factoresChart'] || '',
-//             GRAFICA_4: window.chartPngs['organizacionChart'] || '',
-//             GRAFICA_5: window.chartPngs['liderazgoChart'] || '',
-//             GRAFICA_6: window.chartPngs['entornoChart'] || ''
-//         };
-
-//         var graficasFaltantes = [];
-
-//         Object.keys(imagenesGraficas).forEach(function(nombreGrafica)
-//         {
-//             if (
-//                 !imagenesGraficas[nombreGrafica] ||
-//                 imagenesGraficas[nombreGrafica].length < 100
-//             ) {
-//                 graficasFaltantes.push(nombreGrafica);
-//             }
-//         });
-
-//         if (graficasFaltantes.length > 0) {
-//             console.warn(
-//                 'Las siguientes gráficas no están disponibles:',
-//                 graficasFaltantes
-//             );
-//         }
-
-//         const canvas = await html2canvas(
-//             dashboard,
-//             {
-//                 scale: 2,
-//                 useCORS: true,
-//                 allowTaint: true,
-//                 backgroundColor: '#FFFFFF',
-//                 logging: false,
-//                 scrollX: 0,
-//                 scrollY: -window.scrollY,
-//                 width: dashboard.scrollWidth,
-//                 height: dashboard.scrollHeight,
-//                 windowWidth: document.documentElement.scrollWidth,
-//                 windowHeight: document.documentElement.scrollHeight
-//             }
-//         );
-
-//         const dashboardBase64 = canvas.toDataURL(
-//             'image/jpeg',
-//             0.95
-//         );
-
-//         if (
-//             !dashboardBase64 ||
-//             dashboardBase64.length < 100
-//         ) {
-//             throw new Error(
-//                 'No fue posible generar la imagen del dashboard'
-//             );
-//         }
-
-//         var form = $('<form>', {
-//             action: '/descargarRevisioninfopsico/' + PROYECTO_ID,
-//             method: 'POST',
-//             target: '_blank',
-//             style: 'display:none;'
-//         });
-
-//         form.append(
-//             $('<input>', {
-//                 type: 'hidden',
-//                 name: '_token',
-//                 value: $('meta[name="csrf-token"]').attr('content')
-//             })
-//         );
-
-//         form.append(
-//             $('<input>', {
-//                 type: 'hidden',
-//                 name: 'DASHBOARD_FOTO',
-//                 value: dashboardBase64
-//             })
-//         );
-
-//         Object.keys(imagenesGraficas).forEach(function(nombreInput)
-//         {
-//             form.append(
-//                 $('<input>', {
-//                     type: 'hidden',
-//                     name: nombreInput,
-//                     value: imagenesGraficas[nombreInput]
-//                 })
-//             );
-//         });
-
-//         $('body').append(form);
-
-//         form.submit();
-
-//         setTimeout(function()
-//         {
-//             form.remove();
-//         }, 5000);
-
-//     } catch (error) {
-
-//         console.error(
-//             'Error al generar el informe:',
-//             error
-//         );
-
-//         Swal.fire({
-//             icon: 'error',
-//             title: 'Error',
-//             text: 'No fue posible generar las imágenes del informe'
-//         });
-//     }
-// }
-
-
-
+// GENERO
 
 function cargarGraficaGeneroPsico()
 {
@@ -2970,26 +3308,52 @@ function cargarGraficaGeneroPsico()
         '/obtenerGraficaGeneroPsico/' + proyecto.id,
         function(response)
         {
-           let hombres = parseInt(response.hombres);
-            let mujeres = parseInt(response.mujeres);
+            let hombres = parseInt(response.hombres) || 0;
+            let mujeres = parseInt(response.mujeres) || 0;
 
             let total = hombres + mujeres;
 
-            let porcentajeHombres = total > 0 ? ((hombres * 100) / total).toFixed(2) : 0;
-            let porcentajeMujeres = total > 0 ? ((mujeres * 100) / total).toFixed(2) : 0;
+            let porcentajeHombres = total > 0
+                ? Number(((hombres * 100) / total).toFixed(1))
+                : 0;
 
-            $('#lblHombres').html('Hombres: ' + hombres + ' (' + porcentajeHombres + '%)');
-            $('#lblMujeres').html('Mujeres: ' + mujeres + ' (' + porcentajeMujeres + '%)');
-            $('#stopHombreColor').attr('offset', porcentajeHombres + '%');
-            $('#stopHombreBlanco').attr('offset', porcentajeHombres + '%');
-            $('#stopMujerColor').attr('offset', porcentajeMujeres + '%');
-            $('#stopMujerBlanco').attr('offset', porcentajeMujeres + '%');
+            let porcentajeMujeres = total > 0
+                ? Number(((mujeres * 100) / total).toFixed(1))
+                : 0;
 
+            $('#lblHombres').html(
+                'Hombres: ' + hombres + ' (' + porcentajeHombres + '%)'
+            );
+
+            $('#lblMujeres').html(
+                'Mujeres: ' + mujeres + ' (' + porcentajeMujeres + '%)'
+            );
+
+            $('#stopHombreColor').attr(
+                'offset',
+                porcentajeHombres + '%'
+            );
+
+            $('#stopHombreBlanco').attr(
+                'offset',
+                porcentajeHombres + '%'
+            );
+
+            $('#stopMujerColor').attr(
+                'offset',
+                porcentajeMujeres + '%'
+            );
+
+            $('#stopMujerBlanco').attr(
+                'offset',
+                porcentajeMujeres + '%'
+            );
         }
     );
 }
 
 // EDADES
+
 let chartEdades = null;
 let edadeschart = null;
 
@@ -3030,7 +3394,6 @@ function generarGraficaEdadesPsico(edadData, maximo)
 
     $('#grafica_edad').empty();
 
-
     const categoriasEdad = edadData.map(function(item) {
         return item.categoria;
     });
@@ -3043,7 +3406,6 @@ function generarGraficaEdadesPsico(edadData, maximo)
         return item.color;
     });
 
-
     const totalTrabajadores = valoresEdad.reduce(
         function(acumulado, valor)
         {
@@ -3052,11 +3414,9 @@ function generarGraficaEdadesPsico(edadData, maximo)
         0
     );
 
-
     let maximoEscala = parseInt(maximo) || 1;
 
     maximoEscala = maximoEscala + 1;
-
 
     const optionsEdades = {
 
@@ -3079,6 +3439,7 @@ function generarGraficaEdadesPsico(edadData, maximo)
         },
 
         colors: coloresEdad,
+
         plotOptions: {
             bar: {
                 horizontal: true,
@@ -3099,22 +3460,26 @@ function generarGraficaEdadesPsico(edadData, maximo)
                 let cantidad = parseInt(valor) || 0;
 
                 let porcentaje = totalTrabajadores > 0
-                    ? (
-                        cantidad * 100 /
-                        totalTrabajadores
-                    ).toFixed(2)
-                    : '0.00';
+                    ? Number(
+                        (
+                            cantidad * 100 /
+                            totalTrabajadores
+                        ).toFixed(1)
+                    )
+                    : 0;
 
                 return cantidad +
                     ' (' +
                     porcentaje +
                     '%)';
             },
+
             style: {
                 fontSize: '11px',
                 fontWeight: 'bold',
                 colors: ['#FFFFFF']
             },
+
             dropShadow: {
                 enabled: true,
                 left: 1,
@@ -3127,14 +3492,18 @@ function generarGraficaEdadesPsico(edadData, maximo)
             categories: categoriasEdad,
             min: 0,
             max: maximoEscala,
+
             tickAmount: Math.min(
                 maximoEscala,
                 10
             ),
+
             labels: {
-                formatter: function(valor) {
+                formatter: function(valor)
+                {
                     return Math.round(valor);
                 },
+
                 style: {
                     fontSize: '12px'
                 }
@@ -3144,6 +3513,7 @@ function generarGraficaEdadesPsico(edadData, maximo)
         yaxis: {
             labels: {
                 maxWidth: 190,
+
                 style: {
                     fontSize: '13px',
                     fontWeight: 600,
@@ -3155,6 +3525,7 @@ function generarGraficaEdadesPsico(edadData, maximo)
         grid: {
             borderColor: '#E5E5E5',
             strokeDashArray: 3,
+
             padding: {
                 left: 10,
                 right: 20,
@@ -3167,18 +3538,21 @@ function generarGraficaEdadesPsico(edadData, maximo)
             show: false
         },
 
-
         tooltip: {
             y: {
                 formatter: function(valor)
                 {
                     let cantidad = parseInt(valor) || 0;
+
                     let porcentaje = totalTrabajadores > 0
-                        ? (
-                            cantidad * 100 /
-                            totalTrabajadores
-                        ).toFixed(2)
-                        : '0.00';
+                        ? Number(
+                            (
+                                cantidad * 100 /
+                                totalTrabajadores
+                            ).toFixed(1)
+                        )
+                        : 0;
+
                     return cantidad +
                         (
                             cantidad === 1
@@ -3192,7 +3566,6 @@ function generarGraficaEdadesPsico(edadData, maximo)
             }
         }
     };
-
 
     chartEdades = new ApexCharts(
         document.querySelector('#grafica_edad'),
@@ -3211,13 +3584,17 @@ function generarGraficaEdadesPsico(edadData, maximo)
                     })
                     .catch(function(error)
                     {
-                      console.error('Error al exportar gráfica de edades:',error);
+                        console.error(
+                            'Error al exportar gráfica de edades:',
+                            error
+                        );
                     });
             }, 1000);
         });
 }
 
 // ESCOLARIDAD
+
 let chartEscolaridad = null;
 let escolaridadchart = null;
 
@@ -3246,9 +3623,8 @@ function cargarGraficaEscolaridadPsico()
     });
 }
 
-function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, maximo)
+function generarGraficaEscolaridadPsico(datosEscolaridad,totalTrabajadores,maximo)
 {
-
     if (!Array.isArray(datosEscolaridad)) {
         datosEscolaridad = [];
     }
@@ -3265,7 +3641,6 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
         {
             return parseInt(item.valor) > 0;
         });
-
 
     if (datosFiltrados.length === 0) {
 
@@ -3288,7 +3663,6 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
         return;
     }
 
-
     const categorias =
         datosFiltrados.map(function(item)
         {
@@ -3301,10 +3675,8 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
             return parseInt(item.valor) || 0;
         });
 
-
     let total = parseInt(totalTrabajadores) || 0;
 
-   
     if (total === 0) {
 
         total = valores.reduce(
@@ -3331,13 +3703,14 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
         chart: {
             type: 'bar',
             height: alturaGrafica,
+
             toolbar: {
                 show: false
             },
+
             animations: {
                 enabled: true
             }
-
         },
 
         series: [
@@ -3354,15 +3727,16 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
                 horizontal: true,
                 borderRadius: 4,
                 barHeight: '70%',
-                dataLabels: { position: 'center'}
+
+                dataLabels: {
+                    position: 'center'
+                }
             }
         },
 
-
-
-
         dataLabels: {
             enabled: true,
+
             formatter: function(valor)
             {
                 const cantidad =
@@ -3370,12 +3744,14 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
 
                 const porcentaje =
                     total > 0
-                        ? (
-                            cantidad *
-                            100 /
-                            total
-                        ).toFixed(2)
-                        : '0.00';
+                        ? Number(
+                            (
+                                cantidad *
+                                100 /
+                                total
+                            ).toFixed(1)
+                        )
+                        : 0;
 
                 return cantidad +
                     ' (' +
@@ -3401,16 +3777,20 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
             categories: categorias,
             min: 0,
             max: maximoEscala,
+
             tickAmount: Math.min(
                 maximoEscala,
                 10
             ),
+
             labels: {
                 formatter: function(valor)
                 {
                     return Math.round(valor);
                 },
-                style: { fontSize: '12px'
+
+                style: {
+                    fontSize: '12px'
                 }
             }
         },
@@ -3418,6 +3798,7 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
         yaxis: {
             labels: {
                 maxWidth: 180,
+
                 style: {
                     fontSize: '12px',
                     fontWeight: 'bold'
@@ -3428,6 +3809,7 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
         grid: {
             borderColor: '#E5E5E5',
             strokeDashArray: 3,
+
             padding: {
                 left: 10,
                 right: 20,
@@ -3436,10 +3818,13 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
             }
         },
 
-        legend: { show: false },
+        legend: {
+            show: false
+        },
 
         tooltip: {
             theme: 'dark',
+
             y: {
                 formatter: function(valor)
                 {
@@ -3448,12 +3833,14 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
 
                     const porcentaje =
                         total > 0
-                            ? (
-                                cantidad *
-                                100 /
-                                total
-                            ).toFixed(2)
-                            : '0.00';
+                            ? Number(
+                                (
+                                    cantidad *
+                                    100 /
+                                    total
+                                ).toFixed(1)
+                            )
+                            : 0;
 
                     return cantidad +
                         (
@@ -3469,9 +3856,10 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
         }
     };
 
-
     chartEscolaridad = new ApexCharts(
-        document.querySelector('#grafica_escolaridad'),
+        document.querySelector(
+            '#grafica_escolaridad'
+        ),
         optionsEscolaridad
     );
 
@@ -3498,6 +3886,7 @@ function generarGraficaEscolaridadPsico(datosEscolaridad, totalTrabajadores, max
 }
 
 // ESTADO CIVIL
+
 let chartEstadoCivil = null;
 let estadocivilchart = null;
 
@@ -3526,15 +3915,11 @@ function cargarGraficaEstadoCivilPsico()
     });
 }
 
-function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maximo)
+function generarGraficaEstadoCivilPsico(estadoCivilData,totalTrabajadores,maximo)
 {
-
-
-
     if (!Array.isArray(estadoCivilData)) {
         estadoCivilData = [];
     }
-
 
     if (chartEstadoCivil) {
         chartEstadoCivil.destroy();
@@ -3543,14 +3928,12 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
 
     $('#grafica_estadocivil').empty();
 
-
     const datosFiltrados =
         estadoCivilData.filter(function(item)
         {
             return parseInt(item.total) > 0;
         });
 
-   
     if (datosFiltrados.length === 0) {
 
         $('#grafica_estadocivil').html(`
@@ -3590,8 +3973,8 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
             return item.color;
         });
 
-
-    let total = parseInt(totalTrabajadores) || 0;
+    let total =
+        parseInt(totalTrabajadores) || 0;
 
     if (total === 0) {
 
@@ -3604,12 +3987,67 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
         );
     }
 
+    const porcentajesEstadoCivil =
+        valoresEstadoCivil.map(function(cantidad)
+        {
+            return total > 0
+                ? Number(
+                    (
+                        cantidad * 100 / total
+                    ).toFixed(1)
+                )
+                : 0;
+        });
 
-    let maximoEscala = parseInt(maximo) || 1;
+    if (
+        total > 0 &&
+        porcentajesEstadoCivil.length > 0
+    ) {
 
-    maximoEscala = maximoEscala + 1;
+        const sumaPorcentajes =
+            porcentajesEstadoCivil.reduce(
+                function(acumulado, porcentaje)
+                {
+                    return acumulado + porcentaje;
+                },
+                0
+            );
+
+        const diferencia =
+            Number(
+                (
+                    100 - sumaPorcentajes
+                ).toFixed(1)
+            );
+
+        const valorMayor =
+            Math.max.apply(
+                null,
+                valoresEstadoCivil
+            );
+
+        const indiceMayor =
+            valoresEstadoCivil.indexOf(
+                valorMayor
+            );
+
+        porcentajesEstadoCivil[indiceMayor] =
+            Number(
+                (
+                    porcentajesEstadoCivil[indiceMayor] +
+                    diferencia
+                ).toFixed(1)
+            );
+    }
+
+    let maximoEscala =
+        parseInt(maximo) || 1;
+
+    maximoEscala =
+        maximoEscala + 1;
 
     const optionsEstadoCivil = {
+
         series: [
             {
                 name: 'Trabajadores',
@@ -3617,13 +4055,15 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
             }
         ],
 
-      chart: {
+        chart: {
             type: 'bar',
             height: 250,
             offsetY: -8,
+
             toolbar: {
                 show: false
             },
+
             animations: {
                 enabled: true
             }
@@ -3636,6 +4076,7 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
                 columnWidth: '65%',
                 distributed: true,
                 borderRadius: 3,
+
                 dataLabels: {
                     position: 'top'
                 }
@@ -3645,19 +4086,17 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
         dataLabels: {
             enabled: true,
             offsetY: -24,
-            formatter: function(valor)
+
+            formatter: function(valor, opciones)
             {
                 const cantidad =
                     parseInt(valor) || 0;
 
+                const indice =
+                    opciones.dataPointIndex;
+
                 const porcentaje =
-                    total > 0
-                        ? (
-                            cantidad *
-                            100 /
-                            total
-                        ).toFixed(2)
-                        : '0.00';
+                    porcentajesEstadoCivil[indice] || 0;
 
                 return cantidad +
                     ' (' +
@@ -3672,12 +4111,13 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
                     '#000000'
                 ]
             },
+
             dropShadow: {
                 enabled: false
             }
         },
 
-     xaxis: {
+        xaxis: {
             categories: categoriasEstadoCivil,
 
             labels: {
@@ -3696,20 +4136,25 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
         yaxis: {
             min: 0,
             max: maximoEscala,
+
             tickAmount: Math.min(
                 maximoEscala,
                 10
             ),
+
             labels: {
                 formatter: function(valor)
                 {
                     return Math.round(valor);
                 },
-                style: {fontSize: '11px'}
+
+                style: {
+                    fontSize: '11px'
+                }
             }
         },
 
-      grid: {
+        grid: {
             padding: {
                 left: 5,
                 right: 10,
@@ -3718,25 +4163,24 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
             }
         },
 
-
-        legend: {show: false},
+        legend: {
+            show: false
+        },
 
         tooltip: {
             theme: 'dark',
+
             y: {
-                formatter: function(valor)
+                formatter: function(valor, opciones)
                 {
                     const cantidad =
                         parseInt(valor) || 0;
 
+                    const indice =
+                        opciones.dataPointIndex;
+
                     const porcentaje =
-                        total > 0
-                            ? (
-                                cantidad *
-                                100 /
-                                total
-                            ).toFixed(2)
-                            : '0.00';
+                        porcentajesEstadoCivil[indice] || 0;
 
                     return cantidad +
                         (
@@ -3753,10 +4197,11 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
     };
 
     chartEstadoCivil = new ApexCharts(
-        document.querySelector('#grafica_estadocivil'),
+        document.querySelector(
+            '#grafica_estadocivil'
+        ),
         optionsEstadoCivil
     );
-
 
     chartEstadoCivil.render()
         .then(function()
@@ -3779,7 +4224,6 @@ function generarGraficaEstadoCivilPsico(estadoCivilData, totalTrabajadores, maxi
             }, 1000);
         });
 }
-
 
 // REGIMEN
 
@@ -3810,17 +4254,14 @@ function cargarGraficaRegimenPsico()
     });
 }
 
-function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
+function generarGraficaRegimenPsico(regimenData,totalTrabajadores)
 {
-
     if (!Array.isArray(regimenData)) {
         regimenData = [];
     }
 
     if (chartRegimen) {
-
         chartRegimen.destroy();
-
         chartRegimen = null;
     }
 
@@ -3831,8 +4272,6 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
         {
             return parseInt(item.valor) > 0;
         });
-
-
 
     if (datosFiltrados.length === 0) {
 
@@ -3849,11 +4288,11 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
                 No hay información de régimen
             </div>
         `);
+
         regimenchart = null;
+
         return;
     }
-
-
 
     const valoresRegimen =
         datosFiltrados.map(function(item)
@@ -3873,8 +4312,11 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
             return item.categoria;
         });
 
-    let total = parseInt(totalTrabajadores) || 0;
+    let total =
+        parseInt(totalTrabajadores) || 0;
+
     if (total === 0) {
+
         total = valoresRegimen.reduce(
             function(acumulado, valor)
             {
@@ -3884,6 +4326,60 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
         );
     }
 
+    const porcentajesRegimen =
+        valoresRegimen.map(function(cantidad)
+        {
+            return total > 0
+                ? Number(
+                    (
+                        cantidad * 100 / total
+                    ).toFixed(1)
+                )
+                : 0;
+        });
+
+
+    if (
+        total > 0 &&
+        porcentajesRegimen.length > 0
+    ) {
+
+        const sumaPorcentajes =
+            porcentajesRegimen.reduce(
+                function(acumulado, porcentaje)
+                {
+                    return acumulado + porcentaje;
+                },
+                0
+            );
+
+        const diferencia =
+            Number(
+                (
+                    100 - sumaPorcentajes
+                ).toFixed(1)
+            );
+
+        const valorMayor =
+            Math.max.apply(
+                null,
+                valoresRegimen
+            );
+
+        const indiceMayor =
+            valoresRegimen.indexOf(
+                valorMayor
+            );
+
+        porcentajesRegimen[indiceMayor] =
+            Number(
+                (
+                    porcentajesRegimen[indiceMayor] +
+                    diferencia
+                ).toFixed(1)
+            );
+    }
+
     const optionsRegimen = {
 
         series: valoresRegimen,
@@ -3891,42 +4387,50 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
         chart: {
             type: 'donut',
             height: 240,
+
             toolbar: {
                 show: false
             },
+
             animations: {
                 enabled: true
             }
         },
 
         colors: coloresRegimen,
+
         labels: categoriasRegimen,
 
         dataLabels: {
             enabled: false
         },
 
-
         plotOptions: {
             pie: {
                 offsetY: 2,
+
                 donut: {
                     size: '45%',
+
                     labels: {
                         show: true,
+
                         name: {
                             show: true,
                             fontSize: '12px'
                         },
+
                         value: {
                             show: true,
                             fontSize: '18px',
                             fontWeight: 'bold'
                         },
+
                         total: {
                             show: true,
                             label: 'Total',
                             fontSize: '12px',
+
                             formatter: function()
                             {
                                 return total;
@@ -3937,14 +4441,13 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
             }
         },
 
-
         legend: {
             show: true,
             position: 'bottom',
             fontSize: '10px',
             horizontalAlign: 'center',
-
             offsetY: -4,
+
             itemMargin: {
                 horizontal: 5,
                 vertical: 1
@@ -3952,19 +4455,14 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
 
             formatter: function(seriesName, opts)
             {
+                const indice =
+                    opts.seriesIndex;
+
                 const cantidad =
-                    opts.w.globals.series[
-                        opts.seriesIndex
-                    ];
+                    valoresRegimen[indice] || 0;
 
                 const porcentaje =
-                    total > 0
-                        ? (
-                            cantidad *
-                            100 /
-                            total
-                        ).toFixed(2)
-                        : '0.00';
+                    porcentajesRegimen[indice] || 0;
 
                 return seriesName +
                     ': ' +
@@ -3973,25 +4471,23 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
                     porcentaje +
                     '%)';
             }
-
         },
-
 
         tooltip: {
             theme: 'dark',
+
             y: {
-                formatter: function(valor)
+                formatter: function(valor, opts)
                 {
                     const cantidad =
                         parseInt(valor) || 0;
+
+                    const indice =
+                        opts.seriesIndex;
+
                     const porcentaje =
-                        total > 0
-                            ? (
-                                cantidad *
-                                100 /
-                                total
-                            ).toFixed(2)
-                            : '0.00';
+                        porcentajesRegimen[indice] || 0;
+
                     return cantidad +
                         (
                             cantidad === 1
@@ -4006,18 +4502,20 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
         },
 
         responsive: [
-
             {
                 breakpoint: 480,
+
                 options: {
                     chart: {
                         height: 230
                     },
+
                     plotOptions: {
                         pie: {
                             offsetY: 0
                         }
                     },
+
                     legend: {
                         position: 'bottom',
                         offsetY: -3
@@ -4026,9 +4524,11 @@ function generarGraficaRegimenPsico(regimenData, totalTrabajadores)
             }
         ]
     };
-    
+
     chartRegimen = new ApexCharts(
-        document.querySelector('#grafica_regimen'),
+        document.querySelector(
+            '#grafica_regimen'
+        ),
         optionsRegimen
     );
 
@@ -4085,7 +4585,6 @@ function cargarGraficaExperienciaPsico()
 
 function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
 {
-
     if (!Array.isArray(experienciaData)) {
         experienciaData = [];
     }
@@ -4102,8 +4601,6 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
         {
             return parseInt(item.valor) > 0;
         });
-
-
 
     if (datosFiltrados.length === 0) {
 
@@ -4144,8 +4641,8 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
             return item.rango;
         });
 
-
-    let total = parseInt(totalTrabajadores) || 0;
+    let total =
+        parseInt(totalTrabajadores) || 0;
 
     if (total === 0) {
 
@@ -4158,12 +4655,67 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
         );
     }
 
+    const porcentajesExperiencia =
+        valoresExperiencia.map(function(cantidad)
+        {
+            return total > 0
+                ? Number(
+                    (
+                        cantidad * 100 / total
+                    ).toFixed(1)
+                )
+                : 0;
+        });
+
+    if (
+        total > 0 &&
+        porcentajesExperiencia.length > 0
+    ) {
+
+        const sumaPorcentajes =
+            porcentajesExperiencia.reduce(
+                function(acumulado, porcentaje)
+                {
+                    return acumulado + porcentaje;
+                },
+                0
+            );
+
+        const diferencia =
+            Number(
+                (
+                    100 - sumaPorcentajes
+                ).toFixed(1)
+            );
+
+        const valorMayor =
+            Math.max.apply(
+                null,
+                valoresExperiencia
+            );
+
+        const indiceMayor =
+            valoresExperiencia.indexOf(
+                valorMayor
+            );
+
+        porcentajesExperiencia[indiceMayor] =
+            Number(
+                (
+                    porcentajesExperiencia[indiceMayor] +
+                    diferencia
+                ).toFixed(1)
+            );
+    }
+
     const optionsExperiencia = {
 
         series: valoresExperiencia,
+
         chart: {
             type: 'pie',
             height: 240,
+
             toolbar: {
                 show: false
             },
@@ -4173,10 +4725,7 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
             }
         },
 
-
-
         labels: rangosExperiencia,
-
 
         colors: coloresExperiencia,
 
@@ -4190,30 +4739,25 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
             horizontalAlign: 'center',
             fontSize: '9px',
             offsetY: -3,
+
             itemMargin: {
                 horizontal: 4,
                 vertical: 1
-
             },
 
             formatter: function(
                 seriesName,
                 opts
-            ) {
+            )
+            {
+                const indice =
+                    opts.seriesIndex;
 
                 const cantidad =
-                    opts.w.globals.series[
-                        opts.seriesIndex
-                    ];
+                    valoresExperiencia[indice] || 0;
 
                 const porcentaje =
-                    total > 0
-                        ? (
-                            cantidad *
-                            100 /
-                            total
-                        ).toFixed(2)
-                        : '0.00';
+                    porcentajesExperiencia[indice] || 0;
 
                 return seriesName +
                     ': ' +
@@ -4224,24 +4768,20 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
             }
         },
 
-
         tooltip: {
             theme: 'dark',
-            y: {
 
-                formatter: function(valor)
+            y: {
+                formatter: function(valor, opts)
                 {
                     const cantidad =
                         parseInt(valor) || 0;
 
+                    const indice =
+                        opts.seriesIndex;
+
                     const porcentaje =
-                        total > 0
-                            ? (
-                                cantidad *
-                                100 /
-                                total
-                            ).toFixed(2)
-                            : '0.00';
+                        porcentajesExperiencia[indice] || 0;
 
                     return cantidad +
                         (
@@ -4256,14 +4796,15 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
             }
         },
 
-
         responsive: [
             {
                 breakpoint: 480,
+
                 options: {
                     chart: {
                         height: 230
                     },
+
                     legend: {
                         position: 'bottom',
                         fontSize: '8px',
@@ -4275,7 +4816,10 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
     };
 
     chartExperiencia = new ApexCharts(
-        document.querySelector('#grafica_experiencia'),optionsExperiencia
+        document.querySelector(
+            '#grafica_experiencia'
+        ),
+        optionsExperiencia
     );
 
     chartExperiencia.render()
@@ -4295,11 +4839,13 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
                             error
                         );
                     });
+
             }, 1000);
         });
 }
 
 /// CALIFICACION GLOBAL
+
 function cargarGraficaCalificacionPsico()
 {
     $.get(
@@ -4326,9 +4872,6 @@ function cargarGraficaCalificacionPsico()
 
 function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
 {
-
-
-
     if (!Array.isArray(datosCalificacion)) {
         datosCalificacion = [];
     }
@@ -4338,16 +4881,13 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
         window.calificacionesRootPsico = null;
     }
 
-
     $('#calificacionChart').empty();
-
 
     var datosFiltrados =
         datosCalificacion.filter(function(item)
         {
             return parseInt(item.value) > 0;
         });
-
 
     if (datosFiltrados.length === 0) {
 
@@ -4370,11 +4910,82 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
         return;
     }
 
+    datosFiltrados =
+        datosFiltrados.map(function(item)
+        {
+            return {
+                category: item.category,
+                value: parseInt(item.value) || 0,
+                color: item.color,
+                porcentaje: 0
+            };
+        });
+
+    var totalCalificaciones =
+        datosFiltrados.reduce(
+            function(acumulado, item)
+            {
+                return acumulado + item.value;
+            },
+            0
+        );
 
 
-    window.calificacionesRootPsico = am5.Root.new('calificacionChart');
-    var calificacionesRoot =window.calificacionesRootPsico;
+    datosFiltrados.forEach(function(item)
+    {
+        item.porcentaje =
+            totalCalificaciones > 0
+                ? Math.round(
+                    item.value *
+                    100 /
+                    totalCalificaciones
+                )
+                : 0;
+    });
 
+    if (
+        totalCalificaciones > 0 &&
+        datosFiltrados.length > 0
+    ) {
+        var sumaPorcentajes =
+            datosFiltrados.reduce(
+                function(acumulado, item)
+                {
+                    return acumulado +
+                        item.porcentaje;
+                },
+                0
+            );
+
+        var diferencia =
+            100 - sumaPorcentajes;
+
+        var indiceMayor = 0;
+
+        datosFiltrados.forEach(
+            function(item, indice)
+            {
+                if (
+                    item.value >
+                    datosFiltrados[indiceMayor].value
+                ) {
+                    indiceMayor = indice;
+                }
+            }
+        );
+
+        datosFiltrados[indiceMayor].porcentaje =
+            datosFiltrados[indiceMayor].porcentaje +
+            diferencia;
+    }
+
+    window.calificacionesRootPsico =
+        am5.Root.new(
+            'calificacionChart'
+        );
+
+    var calificacionesRoot =
+        window.calificacionesRootPsico;
 
     calificacionesRoot.setThemes([
         am5themes_Animated.new(
@@ -4392,16 +5003,19 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
                     {
                         startAngle: 180,
                         endAngle: 360,
-                        layout:calificacionesRoot.verticalLayout,
-                        innerRadius:am5.percent(50),
+
+                        layout:
+                            calificacionesRoot
+                                .verticalLayout,
+
+                        innerRadius:
+                            am5.percent(50),
+
                         paddingTop: 10,
                         paddingBottom: 0
                     }
                 )
-
             );
-
-
 
     var calificacionesSeries =
         calificacionesChart
@@ -4413,11 +5027,10 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
                         startAngle: 180,
                         endAngle: 360,
                         valueField: 'value',
-                        categoryField:'category',
+                        categoryField: 'category',
                         alignLabels: false
                     }
                 )
-
             );
 
     calificacionesSeries
@@ -4433,7 +5046,6 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
                     target.dataItem.dataContext &&
                     target.dataItem.dataContext.color
                 ) {
-
                     return am5.color(
                         target.dataItem
                             .dataContext
@@ -4444,8 +5056,6 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
                 return fill;
             }
         );
-
-
 
     calificacionesSeries
         .slices
@@ -4466,59 +5076,89 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
                             .color
                     );
                 }
+
                 return stroke;
             }
         );
 
-
-    calificacionesSeries.slices.template.setAll({cornerRadius: 5,strokeWidth: 2});
-
-    calificacionesSeries.labels.template
+    calificacionesSeries
+        .slices
+        .template
         .setAll({
-            fontSize: 25,
-            fontWeight: 'bold',
-            text:'{value} ({valuePercentTotal.formatNumber("0.00")}%)',radius: 8
+            cornerRadius: 5,
+            strokeWidth: 2,
+
+            tooltipText:
+                '{category}: {value} trabajadores ({porcentaje}%)'
         });
 
-    calificacionesSeries.ticks.template.setAll({visible: false});
+    calificacionesSeries
+        .labels
+        .template
+        .setAll({
+            fontSize: 23,
+            fontWeight: 'bold',
+            text: '{value} ({porcentaje}%)',
+            radius: 8
+        });
+
+    calificacionesSeries
+        .ticks
+        .template
+        .setAll({
+            visible: false
+        });
 
     var leyendaCalificaciones =
         calificacionesChart
             .children
             .push(
-
                 am5.Legend.new(
                     calificacionesRoot,
                     {
-                        centerX:am5.percent(50),
-                        x:am5.percent(50),
-                        layout:calificacionesRoot.horizontalLayout,
+                        centerX: am5.percent(50),
+                        x: am5.percent(50),
+
+                        layout:
+                            calificacionesRoot
+                                .horizontalLayout,
+
                         marginTop: -15,
                         dy: -10
                     }
                 )
             );
 
-
     leyendaCalificaciones
         .labels
         .template
         .setAll({
-            fontSize: 25,
+            fontSize: 23,
             fontWeight: 'bold',
 
             text:
-                '{category}: {value} ({valuePercentTotal.formatNumber("0.00")}%)'
+                '{category}: {value} ({porcentaje}%)'
         });
 
-    leyendaCalificaciones.valueLabels.template.setAll({forceHidden: true});
-    leyendaCalificaciones.markers.template.setAll({width: 18,height: 18});
+    leyendaCalificaciones
+        .valueLabels
+        .template
+        .setAll({
+            forceHidden: true
+        });
+
+    leyendaCalificaciones
+        .markers
+        .template
+        .setAll({
+            width: 18,
+            height: 18
+        });
 
     calificacionesChart
         .seriesContainer
         .children
         .push(
-
             am5.Label.new(
                 calificacionesRoot,
                 {
@@ -4527,21 +5167,31 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
                         (
                             parseInt(
                                 totalTrabajadores
-                            ) || 0
+                            ) ||
+                            totalCalificaciones
                         ),
+
                     centerX: am5.percent(50),
                     centerY: am5.percent(35),
-                    textAlign:'center',
-                    fontSize: 25,
+                    textAlign: 'center',
+                    fontSize: 23,
                     fontWeight: 'bold'
                 }
             )
         );
 
-    calificacionesSeries.data.setAll(datosFiltrados);
+    calificacionesSeries
+        .data
+        .setAll(
+            datosFiltrados
+        );
 
-    leyendaCalificaciones.data.setAll(calificacionesSeries.dataItems);
-    
+    leyendaCalificaciones
+        .data
+        .setAll(
+            calificacionesSeries.dataItems
+        );
+
     calificacionesSeries
         .appear(1000, 100)
         .then(function()
@@ -4563,6 +5213,7 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
                                     maxHeight: 2000
                                 }
                             );
+
                     exporting
                         .export('png')
                         .then(function(data)
@@ -4583,13 +5234,16 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
                         });
 
                 } else {
+
                     console.log(
                         'Plugin de exportación no disponible'
                     );
                 }
+
             }, 1000);
         });
 }
+
 
 /// GRAFICA DE CATEGORIAS
 function cargarGraficaCategoriasGuiaIII()
@@ -5950,7 +6604,6 @@ function cargarGraficaGuiaIPsico()
 {
     $.get(
         '/obtenerGraficaGuiaIPsico/' + proyecto.id,
-
         function(response)
         {
             generarGraficaGuiaIPsico(
@@ -5971,26 +6624,19 @@ function cargarGraficaGuiaIPsico()
     });
 }
 
-function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
+function generarGraficaGuiaIPsico(guia1Data,totalTrabajadores)
 {
-
     if (!Array.isArray(guia1Data)) {
         guia1Data = [];
     }
-
-
 
     if (
         window.guia1Root &&
         !window.guia1Root.isDisposed()
     ) {
-
         window.guia1Root.dispose();
-
         window.guia1Root = null;
     }
-
-
 
     $('#guia1Chart').empty();
 
@@ -5999,8 +6645,6 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
         {
             return parseInt(item.value) > 0;
         });
-
-
 
     if (datosFiltrados.length === 0) {
 
@@ -6026,23 +6670,82 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
         return;
     }
 
+    datosFiltrados =
+        datosFiltrados.map(function(item)
+        {
+            return {
+                category: item.category,
+                value: parseInt(item.value) || 0,
+                color: item.color,
+                porcentaje: 0
+            };
+        });
 
+    var totalGrafica =
+        datosFiltrados.reduce(
+            function(acumulado, item)
+            {
+                return acumulado + item.value;
+            },
+            0
+        );
 
     var total =
         parseInt(totalTrabajadores) || 0;
 
     if (total === 0) {
-
-        total = datosFiltrados.reduce(
-            function(acumulado, item)
-            {
-                return acumulado +
-                    (parseInt(item.value) || 0);
-            },
-            0
-        );
+        total = totalGrafica;
     }
 
+
+    datosFiltrados.forEach(function(item)
+    {
+        item.porcentaje =
+            totalGrafica > 0
+                ? Math.round(
+                    item.value *
+                    100 /
+                    totalGrafica
+                )
+                : 0;
+    });
+
+
+    if (
+        totalGrafica > 0 &&
+        datosFiltrados.length > 0
+    ) {
+        var sumaPorcentajes =
+            datosFiltrados.reduce(
+                function(acumulado, item)
+                {
+                    return acumulado +
+                        item.porcentaje;
+                },
+                0
+            );
+
+        var diferencia =
+            100 - sumaPorcentajes;
+
+        var indiceMayor = 0;
+
+        datosFiltrados.forEach(
+            function(item, indice)
+            {
+                if (
+                    item.value >
+                    datosFiltrados[indiceMayor].value
+                ) {
+                    indiceMayor = indice;
+                }
+            }
+        );
+
+        datosFiltrados[indiceMayor].porcentaje =
+            datosFiltrados[indiceMayor].porcentaje +
+            diferencia;
+    }
 
     window.guia1Root =
         am5.Root.new(
@@ -6052,29 +6755,22 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
     var guia1_root =
         window.guia1Root;
 
-
-
     guia1_root.setThemes([
         am5themes_Animated.new(
             guia1_root
         )
     ]);
 
-
     var guia1_chart =
         guia1_root
             .container
             .children
             .push(
-
                 am5percent.PieChart.new(
                     guia1_root,
                     {
-                        startAngle:
-                            180,
-
-                        endAngle:
-                            360,
+                        startAngle: 180,
+                        endAngle: 360,
 
                         layout:
                             guia1_root.verticalLayout,
@@ -6082,27 +6778,20 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
                         innerRadius:
                             am5.percent(50),
 
-                        paddingBottom:
-                            0
+                        paddingBottom: 0
                     }
                 )
-
             );
-
 
     var guia1_series =
         guia1_chart
             .series
             .push(
-
                 am5percent.PieSeries.new(
                     guia1_root,
                     {
-                        startAngle:
-                            180,
-
-                        endAngle:
-                            360,
+                        startAngle: 180,
+                        endAngle: 360,
 
                         valueField:
                             'value',
@@ -6111,12 +6800,17 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
                             'category',
 
                         alignLabels:
-                            false
+                            false,
+
+                        
+                        legendLabelText:
+                            '{category}',
+
+                        legendValueText:
+                            '{porcentaje.formatNumber("0")}%'
                     }
                 )
-
             );
-
 
     guia1_series
         .slices
@@ -6124,7 +6818,6 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
         .adapters
         .add(
             'fill',
-
             function(fill, target)
             {
                 if (
@@ -6132,7 +6825,6 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
                     target.dataItem.dataContext &&
                     target.dataItem.dataContext.color
                 ) {
-
                     return am5.color(
                         target.dataItem
                             .dataContext
@@ -6144,15 +6836,12 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
             }
         );
 
-
-
     guia1_series
         .slices
         .template
         .adapters
         .add(
             'stroke',
-
             function(stroke, target)
             {
                 if (
@@ -6160,7 +6849,6 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
                     target.dataItem.dataContext &&
                     target.dataItem.dataContext.color
                 ) {
-
                     return am5.color(
                         target.dataItem
                             .dataContext
@@ -6172,116 +6860,81 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
             }
         );
 
-
     guia1_series
         .slices
         .template
         .setAll({
-            cornerRadius:
-                5,
-
-            stroke:
-                am5.color(0xFFFFFF),
-
-            strokeWidth:
-                2,
+            cornerRadius: 5,
+            stroke: am5.color(0xFFFFFF),
+            strokeWidth: 2,
 
             tooltipText:
-                '{category}: {value}'
+                '{category}: ' +
+                '{value.formatNumber("0")} trabajadores ' +
+                '({porcentaje.formatNumber("0")}%)'
         });
 
-
+    
     guia1_series
         .labels
         .template
         .setAll({
-            fontSize:
-                25,
-
-            fontWeight:
-                'bold',
+            fontSize: 23,
+            fontWeight: 'bold',
 
             text:
-                '{value}'
+                '{value.formatNumber("0")} ' +
+                '({porcentaje.formatNumber("0")}%)'
         });
-
-
 
     guia1_series
         .ticks
         .template
         .setAll({
-            visible:
-                false
+            visible: false
         });
 
     var legend3 =
         guia1_chart
             .children
             .push(
-
                 am5.Legend.new(
                     guia1_root,
                     {
-                        centerX:
-                            am5.percent(50),
-
-                        x:
-                            am5.percent(50),
+                        centerX: am5.percent(50),
+                        x: am5.percent(50),
 
                         layout:
                             guia1_root.verticalLayout,
 
-                        fontSize:
-                            25,
-
-                        fontWeight:
-                            'bold',
-
-                        marginTop:
-                            -10,
-
-                        dy:
-                            -10
+                        marginTop: -10,
+                        dy: -10
                     }
                 )
-
             );
 
     legend3
         .labels
         .template
         .setAll({
-            fontSize:
-                25,
-
-            fontWeight:
-                'bold'
+            fontSize: 23,
+            fontWeight: 'bold'
         });
-
-
 
     legend3
         .valueLabels
         .template
         .setAll({
-            fontSize:
-                25,
-
-            fontWeight:
-                'bold'
+            fontSize: 23,
+            fontWeight: 'bold'
         });
-
 
     legend3
         .markers
         .template
         .setAll({
-            width:
-                20,
-
-            height:
-                20
+            width: 20,
+            height: 20
         });
 
     guia1_series
@@ -6290,13 +6943,11 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
             datosFiltrados
         );
 
-
     legend3
         .data
         .setAll(
             guia1_series.dataItems
         );
-
 
     guia1_series
         .appear(
@@ -6311,7 +6962,6 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
                     typeof am5plugins_exporting !==
                     'undefined'
                 ) {
-
                     var exporting =
                         am5plugins_exporting
                             .Exporting
@@ -6326,18 +6976,11 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
                                                 {}
                                             ),
 
-                                    dpi:
-                                        300,
-
-                                    maxWidth:
-                                        2000,
-
-                                    maxHeight:
-                                        2000
+                                    dpi: 300,
+                                    maxWidth: 2000,
+                                    maxHeight: 2000
                                 }
                             );
-
-
 
                     exporting
                         .export('png')
@@ -6369,57 +7012,136 @@ function generarGraficaGuiaIPsico(guia1Data, totalTrabajadores)
         });
 }
 
-// CATEGORIA AMBIENTE DE TRABAJO
+// CATEGORIA AMBIENTE DE TRABAJO -> ACTUALIZADO  
 function cargarGraficaAmbienteGuiaIII()
 {
     $.get(
         '/obtenerGraficaAmbienteGuiaIII/' + proyecto.id,
         function(response)
         {
-            crearGraficaAmbienteGuiaIII(response.data);
+            var datos =
+                Array.isArray(response.data)
+                    ? response.data
+                    : [];
+
+            var indiceDominios =
+                datos.findIndex(function(item)
+                {
+                    var categoria =
+                        item.category || '';
+
+                    return categoria.indexOf('g3-') === 0;
+                });
+
+            var datosCategoria = [];
+            var datosDominio = [];
+
+            if (indiceDominios >= 0) {
+
+                datosCategoria =
+                    datos.slice(
+                        0,
+                        indiceDominios
+                    );
+
+                datosDominio =
+                    datos.slice(
+                        indiceDominios + 1
+                    );
+
+            } else {
+
+                datos.forEach(function(item)
+                {
+                    var categoria =
+                        (
+                            item.category || ''
+                        )
+                        .replace(/^g[123]-/, '')
+                        .trim()
+                        .toLowerCase();
+
+                    if (
+                        categoria.indexOf(
+                            'condiciones del ambiente'
+                        ) !== -1
+                    ) {
+                        datosDominio.push(item);
+                    } else {
+                        datosCategoria.push(item);
+                    }
+                });
+            }
+
+            crearGraficaAmbienteSeparada(
+                datosCategoria,
+                'ambienteCategoriaChart',
+                'ambienteCategoriaChart',
+                'Ambiente de trabajo'
+            );
+
+            crearGraficaAmbienteSeparada(
+                datosDominio,
+                'ambienteDominioChart',
+                'ambienteDominioChart',
+                'Condiciones del ambiente de trabajo'
+            );
         }
     )
     .fail(function(xhr)
     {
-        console.error(xhr.responseText);
+        console.error(
+            xhr.responseText
+        );
 
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'No fue posible consultar la gráfica de ambiente de trabajo'
+            text: 'No fue posible consultar las gráficas de ambiente de trabajo'
         });
     });
 }
 
-
-function crearGraficaAmbienteGuiaIII(data)
+function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
 {
     if (!Array.isArray(data)) {
         data = [];
     }
 
+    window.graficasAmbienteRoots =
+        window.graficasAmbienteRoots || {};
+
     if (
-        window.ambienteChartRoot &&
-        !window.ambienteChartRoot.isDisposed()
+        window.graficasAmbienteRoots[nombreGrafica] &&
+        !window.graficasAmbienteRoots[nombreGrafica].isDisposed()
     ) {
-        window.ambienteChartRoot.dispose();
-        window.ambienteChartRoot = null;
+        window.graficasAmbienteRoots[nombreGrafica].dispose();
+        window.graficasAmbienteRoots[nombreGrafica] = null;
     }
 
-    var contenedor = document.getElementById('ambienteChart');
+    var contenedor =
+        document.getElementById(
+            contenedorId
+        );
 
     if (!contenedor) {
-        console.error('No existe el contenedor #ambienteChart');
+
+        console.error(
+            'No existe el contenedor #' +
+            contenedorId
+        );
+
         return;
     }
 
     contenedor.innerHTML = '';
 
     if (data.length === 0) {
+
         contenedor.innerHTML = `
             <div style="
                 width:100%;
-                height:650px;
+                height:320px;
                 display:flex;
                 justify-content:center;
                 align-items:center;
@@ -6431,60 +7153,82 @@ function crearGraficaAmbienteGuiaIII(data)
             </div>
         `;
 
-        window.chartPngs = window.chartPngs || {};
-        window.chartPngs['ambienteChart'] = null;
+        window.chartPngs =
+            window.chartPngs || {};
+
+        window.chartPngs[
+            nombreGrafica
+        ] = null;
 
         return;
     }
 
-    var dataGrafica = data.slice();
+    var dataGrafica =
+        data.slice();
 
-    dataGrafica.push({
-        category: 'g0-ESPACIO_OCULTO',
-        s1: null,
-        s2: null,
-        s3: null,
-        s4: null,
-        s5: null
-    });
+    var root =
+        am5.Root.new(
+            contenedorId
+        );
 
-    window.ambienteChartRoot = am5.Root.new('ambienteChart');
-
-    var root = window.ambienteChartRoot;
+    window.graficasAmbienteRoots[
+        nombreGrafica
+    ] = root;
 
     root.setThemes([
         am5themes_Animated.new(root)
     ]);
 
-    var chart = root.container.children.push(
-        am5xy.XYChart.new(root, {
-            panX: false,
-            panY: false,
-            wheelX: 'none',
-            wheelY: 'none',
-            layout: root.verticalLayout,
-            paddingLeft: 0,
-            paddingRight: 20
-        })
-    );
+    var chart =
+        root.container.children.push(
+            am5xy.XYChart.new(
+                root,
+                {
+                    panX: false,
+                    panY: false,
+                    wheelX: 'none',
+                    wheelY: 'none',
+                    layout: root.verticalLayout,
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                    paddingRight: 20
+                }
+            )
+        );
 
     chart.children.unshift(
-        am5.Label.new(root, {
-            text: "Categoría\n\n\n",
-            fontSize: 18,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            x: am5.p50,
-            centerX: am5.p50
-        })
+        am5.Label.new(
+            root,
+            {
+                text: titulo,
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                x: am5.p50,
+                centerX: am5.p50,
+                marginTop: 5,
+                marginBottom: 15,
+                paddingTop: 0,
+                paddingBottom: 0
+            }
+        )
     );
 
-    var legend = chart.children.push(
-        am5.Legend.new(root, {
-            centerX: am5.p50,
-            x: am5.p50
-        })
-    );
+    var legend =
+        chart.children.push(
+            am5.Legend.new(
+                root,
+                {
+                    centerX: am5.p50,
+                    x: am5.p50,
+                    marginTop: 5,
+                    marginBottom: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0
+                }
+            )
+        );
 
     legend.labels.template.setAll({
         fontSize: 20,
@@ -6501,20 +7245,32 @@ function crearGraficaAmbienteGuiaIII(data)
         height: 20
     });
 
-    var yAxisRenderer = am5xy.AxisRendererY.new(root, {
-        inversed: true,
-        cellStartLocation: 0.05,
-        cellEndLocation: 0.90,
-        minGridDistance: 0
-    });
+    var yAxisRenderer =
+        am5xy.AxisRendererY.new(
+            root,
+            {
+                inversed: true,
+                cellStartLocation: 0.15,
+                cellEndLocation: 0.85,
+                minGridDistance: 0
+            }
+        );
 
-    var yAxis = chart.yAxes.push(
-        am5xy.CategoryAxis.new(root, {
-            categoryField: 'category',
-            renderer: yAxisRenderer,
-            tooltip: am5.Tooltip.new(root, {})
-        })
-    );
+    var yAxis =
+        chart.yAxes.push(
+            am5xy.CategoryAxis.new(
+                root,
+                {
+                    categoryField: 'category',
+                    renderer: yAxisRenderer,
+                    tooltip:
+                        am5.Tooltip.new(
+                            root,
+                            {}
+                        )
+                }
+            )
+        );
 
     yAxisRenderer.grid.template.setAll({
         forceHidden: true,
@@ -6529,77 +7285,35 @@ function crearGraficaAmbienteGuiaIII(data)
     });
 
     yAxisRenderer.labels.template.setAll({
-        fontSize: 18,
-        fontWeight: 'bold',
-        centerY: am5.p50,
-        centerX: am5.p0,
-        textAlign: 'center',
-        inside: true,
-        rotation: 0,
-        paddingTop: -100,
-        oversizedBehavior: 'wrap',
-        maxWidth: 330
+        forceHidden: true,
+        visible: false
     });
 
-    yAxisRenderer.labels.template.adapters.add(
-        'text',
-        function(text, target)
-        {
-            if (!target.dataItem) {
-                return text;
-            }
-
-            var category = target.dataItem.get('category') || '';
-
-            if (category.indexOf('g0-') === 0) {
-                return '';
-            }
-
-            if (
-                category.indexOf('g1-') === 0 ||
-                category.indexOf('g2-') === 0 ||
-                category.indexOf('g3-') === 0
-            ) {
-                return '[bold]' + category.substring(3) + '[/]';
-            }
-
-            return category;
-        }
+    yAxis.data.setAll(
+        dataGrafica
     );
 
-    yAxisRenderer.labels.template.adapters.add(
-        'forceHidden',
-        function(forceHidden, target)
-        {
-            if (!target.dataItem) {
-                return forceHidden;
+    var xAxisRenderer =
+        am5xy.AxisRendererX.new(
+            root,
+            {
+                minGridDistance: 50
             }
+        );
 
-            var category = target.dataItem.get('category') || '';
-
-            if (category.indexOf('g0-') === 0) {
-                return true;
-            }
-
-            return forceHidden;
-        }
-    );
-
-    yAxis.data.setAll(dataGrafica);
-
-    var xAxisRenderer = am5xy.AxisRendererX.new(root, {
-        minGridDistance: 50
-    });
-
-    var xAxis = chart.xAxes.push(
-        am5xy.ValueAxis.new(root, {
-            renderer: xAxisRenderer,
-            min: 0,
-            max: 100,
-            strictMinMax: true,
-            maxDeviation: 0
-        })
-    );
+    var xAxis =
+        chart.xAxes.push(
+            am5xy.ValueAxis.new(
+                root,
+                {
+                    renderer: xAxisRenderer,
+                    min: 0,
+                    max: 100,
+                    strictMinMax: true,
+                    maxDeviation: 0
+                }
+            )
+        );
 
     xAxisRenderer.grid.template.setAll({
         forceHidden: true,
@@ -6619,6 +7333,7 @@ function crearGraficaAmbienteGuiaIII(data)
     });
 
     if (xAxisRenderer.baseGrid) {
+
         xAxisRenderer.baseGrid.setAll({
             forceHidden: true,
             visible: false,
@@ -6628,47 +7343,81 @@ function crearGraficaAmbienteGuiaIII(data)
 
     function obtenerPorcentajesEnteros(valores)
     {
-        var total = valores.reduce(function(acumulado, valor)
-        {
-            return acumulado + valor;
-        }, 0);
+        var total =
+            valores.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
 
         if (total <= 0) {
-            return [0, 0, 0, 0, 0];
+
+            return [
+                0,
+                0,
+                0,
+                0,
+                0
+            ];
         }
 
-        var porcentajesExactos = valores.map(function(valor)
-        {
-            return (valor / total) * 100;
-        });
+        var porcentajesExactos =
+            valores.map(function(valor)
+            {
+                return (
+                    valor /
+                    total
+                ) * 100;
+            });
 
-        var porcentajesEnteros = porcentajesExactos.map(function(valor)
-        {
-            return Math.floor(valor);
-        });
+        var porcentajesEnteros =
+            porcentajesExactos.map(function(valor)
+            {
+                return Math.floor(valor);
+            });
 
-        var sumaEnteros = porcentajesEnteros.reduce(function(acumulado, valor)
-        {
-            return acumulado + valor;
-        }, 0);
+        var sumaEnteros =
+            porcentajesEnteros.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
 
-        var faltantes = 100 - sumaEnteros;
+        var faltantes =
+            100 - sumaEnteros;
 
-        var residuos = porcentajesExactos.map(function(valor, indice)
-        {
-            return {
-                indice: indice,
-                residuo: valor - porcentajesEnteros[indice]
-            };
-        });
+        var residuos =
+            porcentajesExactos.map(
+                function(valor, indice)
+                {
+                    return {
+                        indice: indice,
+                        residuo:
+                            valor -
+                            porcentajesEnteros[
+                                indice
+                            ]
+                    };
+                }
+            );
 
         residuos.sort(function(a, b)
         {
             return b.residuo - a.residuo;
         });
 
-        for (var indice = 0; indice < faltantes; indice++) {
-            porcentajesEnteros[residuos[indice].indice]++;
+        for (
+            var indice = 0;
+            indice < faltantes;
+            indice++
+        ) {
+            porcentajesEnteros[
+                residuos[indice].indice
+            ]++;
         }
 
         return porcentajesEnteros;
@@ -6678,46 +7427,58 @@ function crearGraficaAmbienteGuiaIII(data)
     {
         return datos.map(function(item)
         {
-            var category = item.category || '';
+            var category =
+                item.category || '';
 
-            if (
-                category.indexOf('g3-') === 0 ||
-                category.indexOf('g0-') === 0
-            ) {
-                return {
-                    category: category,
-                    s1: null,
-                    s2: null,
-                    s3: null,
-                    s4: null,
-                    s5: null,
-                    percentage_s1: null,
-                    percentage_s2: null,
-                    percentage_s3: null,
-                    percentage_s4: null,
-                    percentage_s5: null,
-                    visual_s1: null,
-                    visual_s2: null,
-                    visual_s3: null,
-                    visual_s4: null,
-                    visual_s5: null
-                };
-            }
+            var s1 =
+                parseInt(
+                    item.s1,
+                    10
+                ) || 0;
 
-            var s1 = parseInt(item.s1, 10) || 0;
-            var s2 = parseInt(item.s2, 10) || 0;
-            var s3 = parseInt(item.s3, 10) || 0;
-            var s4 = parseInt(item.s4, 10) || 0;
-            var s5 = parseInt(item.s5, 10) || 0;
+            var s2 =
+                parseInt(
+                    item.s2,
+                    10
+                ) || 0;
 
-            var valores = [s1, s2, s3, s4, s5];
+            var s3 =
+                parseInt(
+                    item.s3,
+                    10
+                ) || 0;
 
-            var total = valores.reduce(function(acumulado, valor)
-            {
-                return acumulado + valor;
-            }, 0);
+            var s4 =
+                parseInt(
+                    item.s4,
+                    10
+                ) || 0;
+
+            var s5 =
+                parseInt(
+                    item.s5,
+                    10
+                ) || 0;
+
+            var valores = [
+                s1,
+                s2,
+                s3,
+                s4,
+                s5
+            ];
+
+            var total =
+                valores.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
 
             if (total <= 0) {
+
                 return {
                     category: category,
                     s1: s1,
@@ -6738,39 +7499,60 @@ function crearGraficaAmbienteGuiaIII(data)
                 };
             }
 
-            var porcentajesEnteros = obtenerPorcentajesEnteros(valores);
+            var porcentajesEnteros =
+                obtenerPorcentajesEnteros(
+                    valores
+                );
 
-            var porcentajesExactos = valores.map(function(valor)
-            {
-                return (valor / total) * 100;
-            });
+            var porcentajesExactos =
+                valores.map(function(valor)
+                {
+                    return (
+                        valor /
+                        total
+                    ) * 100;
+                });
 
             var minimoVisual = 8;
 
-            var valoresVisuales = porcentajesExactos.map(
-                function(porcentaje, indice)
-                {
-                    if (valores[indice] <= 0) {
-                        return 0;
+            var valoresVisuales =
+                porcentajesExactos.map(
+                    function(porcentaje, indice)
+                    {
+                        if (
+                            valores[indice] <= 0
+                        ) {
+                            return 0;
+                        }
+
+                        return Math.max(
+                            porcentaje,
+                            minimoVisual
+                        );
                     }
+                );
 
-                    return Math.max(porcentaje, minimoVisual);
-                }
-            );
-
-            var totalVisual = valoresVisuales.reduce(
-                function(acumulado, valor)
-                {
-                    return acumulado + valor;
-                },
-                0
-            );
+            var totalVisual =
+                valoresVisuales.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
 
             if (totalVisual > 0) {
-                valoresVisuales = valoresVisuales.map(function(valor)
-                {
-                    return (valor / totalVisual) * 100;
-                });
+
+                valoresVisuales =
+                    valoresVisuales.map(
+                        function(valor)
+                        {
+                            return (
+                                valor /
+                                totalVisual
+                            ) * 100;
+                        }
+                    );
             }
 
             return {
@@ -6780,21 +7562,34 @@ function crearGraficaAmbienteGuiaIII(data)
                 s3: s3,
                 s4: s4,
                 s5: s5,
-                percentage_s1: porcentajesEnteros[0],
-                percentage_s2: porcentajesEnteros[1],
-                percentage_s3: porcentajesEnteros[2],
-                percentage_s4: porcentajesEnteros[3],
-                percentage_s5: porcentajesEnteros[4],
-                visual_s1: valoresVisuales[0],
-                visual_s2: valoresVisuales[1],
-                visual_s3: valoresVisuales[2],
-                visual_s4: valoresVisuales[3],
-                visual_s5: valoresVisuales[4]
+                percentage_s1:
+                    porcentajesEnteros[0],
+                percentage_s2:
+                    porcentajesEnteros[1],
+                percentage_s3:
+                    porcentajesEnteros[2],
+                percentage_s4:
+                    porcentajesEnteros[3],
+                percentage_s5:
+                    porcentajesEnteros[4],
+                visual_s1:
+                    valoresVisuales[0],
+                visual_s2:
+                    valoresVisuales[1],
+                visual_s3:
+                    valoresVisuales[2],
+                visual_s4:
+                    valoresVisuales[3],
+                visual_s5:
+                    valoresVisuales[4]
             };
         });
     }
 
-    var processedData = calcularDatos(dataGrafica);
+    var processedData =
+        calcularDatos(
+            dataGrafica
+        );
 
     function makeSeries(
         name,
@@ -6803,72 +7598,60 @@ function crearGraficaAmbienteGuiaIII(data)
         visualField,
         color
     ) {
-        var series = chart.series.push(
-            am5xy.ColumnSeries.new(root, {
-                name: name,
-                xAxis: xAxis,
-                yAxis: yAxis,
-                stacked: true,
-                valueXField: visualField,
-                categoryYField: 'category',
-                stroke: color,
-                fill: color
-            })
-        );
+        var series =
+            chart.series.push(
+                am5xy.ColumnSeries.new(
+                    root,
+                    {
+                        name: name,
+                        xAxis: xAxis,
+                        yAxis: yAxis,
+                        stacked: true,
+                        valueXField:
+                            visualField,
+                        categoryYField:
+                            'category',
+                        stroke: color,
+                        fill: color
+                    }
+                )
+            );
 
         series.columns.template.setAll({
-            height: am5.percent(85),
+            height: am5.percent(70),
             tooltipY: 0,
-            stroke: am5.color(0x000000),
+            stroke:
+                am5.color(
+                    0x000000
+                ),
             strokeWidth: 0.5,
             tooltipText:
                 '{name}: {cantidad} trabajadores ({porcentaje}%)'
         });
 
-        series.columns.template.adapters.add(
-            'forceHidden',
-            function(forceHidden, target)
-            {
-                if (
-                    target.dataItem &&
-                    target.dataItem.dataContext
-                ) {
-                    var category =
-                        target.dataItem.dataContext.category || '';
-
-                    if (
-                        category.indexOf('g3-') === 0 ||
-                        category.indexOf('g0-') === 0
-                    ) {
-                        return true;
-                    }
-                }
-
-                return forceHidden;
-            }
-        );
-
-        series.bullets.push(function(rootBullet, serie, dataItem)
-        {
-            var contexto = dataItem.dataContext || {};
-            var category = contexto.category || '';
-
-            if (
-                category.indexOf('g3-') === 0 ||
-                category.indexOf('g0-') === 0
-            ) {
-                return undefined;
-            }
+        series.bullets.push(function(
+            rootBullet,
+            serie,
+            dataItem
+        ) {
+            var contexto =
+                dataItem.dataContext || {};
 
             var cantidad =
-                parseInt(contexto.cantidad, 10) || 0;
+                parseInt(
+                    contexto.cantidad,
+                    10
+                ) || 0;
 
             if (cantidad <= 0) {
                 return undefined;
             }
 
             var porcentaje =
-                parseInt(contexto.porcentaje, 10) || 0;
+                parseInt(
+                    contexto.porcentaje,
+                    10
+                ) || 0;
 
             var tamanioLetra = 17;
 
@@ -6880,63 +7663,70 @@ function crearGraficaAmbienteGuiaIII(data)
                 tamanioLetra = 15;
             }
 
-            return am5.Bullet.new(root, {
-                locationX: 0.5,
-                locationY: 0.5,
-                sprite: am5.Label.new(root, {
-                    text:
-                        cantidad +
-                        ' (' +
-                        porcentaje +
-                        '%)',
-                    centerX: am5.p50,
-                    centerY: am5.p50,
-                    populateText: false,
-                    fontSize: tamanioLetra,
-                    fill: am5.color(0x000000),
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    paddingLeft: 1,
-                    paddingRight: 1
-                })
-            });
+            return am5.Bullet.new(
+                root,
+                {
+                    locationX: 0.5,
+                    locationY: 0.5,
+                    sprite:
+                        am5.Label.new(
+                            root,
+                            {
+                                text:
+                                    cantidad +
+                                    ' (' +
+                                    porcentaje +
+                                    '%)',
+                                centerX: am5.p50,
+                                centerY: am5.p50,
+                                populateText: false,
+                                fontSize:
+                                    tamanioLetra,
+                                fill:
+                                    am5.color(
+                                        0x000000
+                                    ),
+                                fontWeight:
+                                    'bold',
+                                textAlign:
+                                    'center',
+                                paddingLeft: 1,
+                                paddingRight: 1
+                            }
+                        )
+                }
+            );
         });
 
-        var datosSerie = processedData.map(function(item)
-        {
-            var category = item.category || '';
+        var datosSerie =
+            processedData.map(
+                function(item)
+                {
+                    var fila = {
+                        category:
+                            item.category,
+                        cantidad:
+                            item[cantidadField],
+                        porcentaje:
+                            item[porcentajeField]
+                    };
 
-            if (
-                category.indexOf('g3-') === 0 ||
-                category.indexOf('g0-') === 0
-            ) {
-                var filaVacia = {
-                    category: category,
-                    cantidad: null,
-                    porcentaje: null
-                };
+                    fila[visualField] =
+                        item[visualField];
 
-                filaVacia[visualField] = null;
+                    return fila;
+                }
+            );
 
-                return filaVacia;
-            }
-
-            var fila = {
-                category: category,
-                cantidad: item[cantidadField],
-                porcentaje: item[porcentajeField]
-            };
-
-            fila[visualField] = item[visualField];
-
-            return fila;
-        });
-
-        series.data.setAll(datosSerie);
+        series.data.setAll(
+            datosSerie
+        );
 
         series.appear();
 
-        legend.data.push(series);
+        legend.data.push(
+            series
+        );
     }
 
     makeSeries(
@@ -6979,73 +7769,92 @@ function crearGraficaAmbienteGuiaIII(data)
         am5.color(0x00B0F0)
     );
 
-    chart.appear(1000, 100).then(function()
-    {
-        setTimeout(function()
+    chart
+        .appear(
+            1000,
+            100
+        )
+        .then(function()
         {
-            if (
-                typeof am5plugins_exporting !==
-                'undefined'
-            ) {
-                var exporting =
-                    am5plugins_exporting.Exporting.new(
-                        root,
+            setTimeout(function()
+            {
+                if (
+                    typeof am5plugins_exporting !==
+                    'undefined'
+                ) {
+                    var exporting =
+                        am5plugins_exporting
+                            .Exporting
+                            .new(
+                                root,
+                                {
+                                    menu:
+                                        am5plugins_exporting
+                                            .ExportingMenu
+                                            .new(
+                                                root,
+                                                {}
+                                            ),
+                                    dpi: 300,
+                                    maxWidth: 2000,
+                                    maxHeight: 2000
+                                }
+                            );
+
+                    exporting
+                        .export('png')
+                        .then(function(imagen)
                         {
-                            menu:
-                                am5plugins_exporting
-                                    .ExportingMenu
-                                    .new(root, {}),
-                            dpi: 300,
-                            maxWidth: 2000,
-                            maxHeight: 2000
-                        }
+                            window.chartPngs =
+                                window.chartPngs || {};
+
+                            window.chartPngs[
+                                nombreGrafica
+                            ] = imagen;
+
+                            console.log(
+                                nombreGrafica +
+                                ' exportado exitosamente'
+                            );
+                        })
+                        .catch(function(error)
+                        {
+                            console.error(
+                                'Error al exportar ' +
+                                nombreGrafica +
+                                ':',
+                                error
+                            );
+                        });
+
+                } else {
+
+                    console.log(
+                        'Plugin de exportación no disponible'
                     );
+                }
 
-                exporting
-                    .export('png')
-                    .then(function(imagen)
-                    {
-                        window.chartPngs =
-                            window.chartPngs || {};
-
-                        window.chartPngs[
-                            'ambienteChart'
-                        ] = imagen;
-
-                        console.log(
-                            'ambienteChart exportado exitosamente'
-                        );
-                    })
-                    .catch(function(error)
-                    {
-                        console.error(
-                            'Error al exportar ambienteChart:',
-                            error
-                        );
-                    });
-
-            } else {
-                console.log(
-                    'Plugin de exportación no disponible'
-                );
-            }
-
-        }, 1000);
-    });
+            }, 1000);
+        });
 }
-// CATEGORIA FACTORES PROPIOS DE LA ACTIVIDAD
+
+// CATEGORIA FACTORES PROPIOS DE LA ACTIVIDAD -> ACTUALIZADO 
 function cargarGraficaFactoresGuiaIII()
 {
     $.get(
         '/obtenerGraficaFactoresGuiaIII/' + proyecto.id,
         function(response)
         {
-            crearGraficaFactoresGuiaIII(response.data);
+            crearGraficaFactoresGuiaIII(
+                response.data
+            );
         }
     )
     .fail(function(xhr)
     {
-        console.error(xhr.responseText);
+        console.error(
+            xhr.responseText
+        );
 
         Swal.fire({
             icon: 'error',
@@ -7056,33 +7865,175 @@ function cargarGraficaFactoresGuiaIII()
 }
 
 function crearGraficaFactoresGuiaIII(data)
+{
+    if (!Array.isArray(data)) {
+        data = [];
+    }
+
+    var datosCategoria = [];
+    var datosDominios = [];
+    var encontroSeparador = false;
+
+    data.forEach(function(item)
     {
+        var category =
+            item.category || '';
+
+        if (
+            category.indexOf('g3-') === 0
+        ) {
+            encontroSeparador = true;
+            return;
+        }
+
+        if (encontroSeparador) {
+            datosDominios.push(item);
+        } else {
+            datosCategoria.push(item);
+        }
+    });
+
+    if (!encontroSeparador) {
+
+        datosCategoria = [];
+        datosDominios = [];
+
+        data.forEach(function(item)
+        {
+            var category =
+                item.category || '';
+
+            var nombre =
+                category
+                    .replace(/^g[123]-/, '')
+                    .trim()
+                    .toLowerCase();
+
+            if (
+                nombre.indexOf(
+                    'carga de trabajo'
+                ) !== -1 ||
+                nombre.indexOf(
+                    'falta de control sobre el trabajo'
+                ) !== -1
+            ) {
+                datosDominios.push(item);
+            } else {
+                datosCategoria.push(item);
+            }
+        });
+    }
+
+    var datosDominio1 = [];
+    var datosDominio2 = [];
+
+    datosDominios.forEach(function(item)
+    {
+        var category =
+            item.category || '';
+
+        var nombre =
+            category
+                .replace(/^g[123]-/, '')
+                .trim()
+                .toLowerCase();
+
+        if (
+            nombre.indexOf(
+                'carga de trabajo'
+            ) !== -1
+        ) {
+            datosDominio1.push(item);
+        }
+
+        if (
+            nombre.indexOf(
+                'falta de control sobre el trabajo'
+            ) !== -1
+        ) {
+            datosDominio2.push(item);
+        }
+    });
+
+    if (
+        datosDominio1.length === 0 &&
+        datosDominios.length > 0
+    ) {
+        datosDominio1.push(
+            datosDominios[0]
+        );
+    }
+
+    if (
+        datosDominio2.length === 0 &&
+        datosDominios.length > 1
+    ) {
+        datosDominio2.push(
+            datosDominios[1]
+        );
+    }
+
+    crearGraficaFactoresIndividual(
+        datosCategoria,
+        'factoresCategoriaChart',
+        'factoresCategoriaChartRoot',
+        'factoresCategoriaChart',
+        'Factores propios de la actividad'
+    );
+
+    crearGraficaFactoresIndividual(
+        datosDominio1,
+        'factoresDominio1Chart',
+        'factoresDominio1ChartRoot',
+        'factoresDominio1Chart',
+        'Carga de trabajo'
+    );
+
+    crearGraficaFactoresIndividual(
+        datosDominio2,
+        'factoresDominio2Chart',
+        'factoresDominio2ChartRoot',
+        'factoresDominio2Chart',
+        'Falta de control sobre el trabajo'
+    );
+}
+
+function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGrafica,titulo)
+{
     if (!Array.isArray(data)) {
         data = [];
     }
 
     if (
-        window.factoresChartRoot &&
-        !window.factoresChartRoot.isDisposed()
+        window[rootNombre] &&
+        !window[rootNombre].isDisposed()
     ) {
-        window.factoresChartRoot.dispose();
-        window.factoresChartRoot = null;
+        window[rootNombre].dispose();
+        window[rootNombre] = null;
     }
 
-    var contenedor = document.getElementById('factoresChart');
+    var contenedor =
+        document.getElementById(
+            contenedorId
+        );
 
     if (!contenedor) {
-        console.error('No existe el contenedor #factoresChart');
+        console.error(
+            'No existe el contenedor #' +
+            contenedorId
+        );
+
         return;
     }
 
     contenedor.innerHTML = '';
 
     if (data.length === 0) {
+
         contenedor.innerHTML = `
             <div style="
                 width:100%;
-                height:650px;
+                height:320px;
                 display:flex;
                 justify-content:center;
                 align-items:center;
@@ -7094,18 +8045,23 @@ function crearGraficaFactoresGuiaIII(data)
             </div>
         `;
 
-        if (typeof chartPngs !== 'undefined') {
-            chartPngs['factoresChart'] = null;
-        }
+        window.chartPngs =
+            window.chartPngs || {};
+
+        window.chartPngs[
+            nombreGrafica
+        ] = null;
 
         return;
     }
 
-    window.factoresChartRoot =
-        am5.Root.new('factoresChart');
+    window[rootNombre] =
+        am5.Root.new(
+            contenedorId
+        );
 
     var root =
-        window.factoresChartRoot;
+        window[rootNombre];
 
     root.setThemes([
         am5themes_Animated.new(root)
@@ -7121,6 +8077,8 @@ function crearGraficaFactoresGuiaIII(data)
                     wheelX: 'none',
                     wheelY: 'none',
                     layout: root.verticalLayout,
+                    paddingTop: 0,
+                    paddingBottom: 0,
                     paddingLeft: 0,
                     paddingRight: 20
                 }
@@ -7131,12 +8089,16 @@ function crearGraficaFactoresGuiaIII(data)
         am5.Label.new(
             root,
             {
-                text: "Categoría\n\n\n",
+                text: titulo,
                 fontSize: 18,
                 fontWeight: 'bold',
                 textAlign: 'center',
                 x: am5.p50,
-                centerX: am5.p50
+                centerX: am5.p50,
+                marginTop: 5,
+                marginBottom: 15,
+                paddingTop: 0,
+                paddingBottom: 0
             }
         )
     );
@@ -7147,7 +8109,11 @@ function crearGraficaFactoresGuiaIII(data)
                 root,
                 {
                     centerX: am5.p50,
-                    x: am5.p50
+                    x: am5.p50,
+                    marginTop: 5,
+                    marginBottom: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0
                 }
             )
         );
@@ -7172,8 +8138,8 @@ function crearGraficaFactoresGuiaIII(data)
             root,
             {
                 inversed: true,
-                cellStartLocation: 0.05,
-                cellEndLocation: 0.90,
+                cellStartLocation: 0.15,
+                cellEndLocation: 0.85,
                 minGridDistance: 0
             }
         );
@@ -7185,7 +8151,11 @@ function crearGraficaFactoresGuiaIII(data)
                 {
                     categoryField: 'category',
                     renderer: yAxisRenderer,
-                    tooltip: am5.Tooltip.new(root, {})
+                    tooltip:
+                        am5.Tooltip.new(
+                            root,
+                            {}
+                        )
                 }
             )
         );
@@ -7203,46 +8173,9 @@ function crearGraficaFactoresGuiaIII(data)
     });
 
     yAxisRenderer.labels.template.setAll({
-        fontSize: 18,
-        fontWeight: 'bold',
-        centerY: am5.p50,
-        centerX: am5.p0,
-        textAlign: 'center',
-        inside: true,
-        rotation: 0,
-        paddingTop: -100,
-        oversizedBehavior: 'wrap',
-        maxWidth: 330
+        forceHidden: true,
+        visible: false
     });
-
-    yAxisRenderer
-        .labels
-        .template
-        .adapters
-        .add(
-            'text',
-            function(text, target)
-            {
-                if (!target.dataItem) {
-                    return text;
-                }
-
-                var category =
-                    target.dataItem.get('category') || '';
-
-                if (
-                    category.indexOf('g1-') === 0 ||
-                    category.indexOf('g2-') === 0 ||
-                    category.indexOf('g3-') === 0
-                ) {
-                    return '[bold]' +
-                        category.substring(3) +
-                        '[/]';
-                }
-
-                return category;
-            }
-        );
 
     yAxis.data.setAll(data);
 
@@ -7311,7 +8244,10 @@ function crearGraficaFactoresGuiaIII(data)
         var porcentajesExactos =
             valores.map(function(valor)
             {
-                return (valor / total) * 100;
+                return (
+                    valor /
+                    total
+                ) * 100;
             });
 
         var porcentajesEnteros =
@@ -7340,7 +8276,9 @@ function crearGraficaFactoresGuiaIII(data)
                         indice: indice,
                         residuo:
                             valor -
-                            porcentajesEnteros[indice]
+                            porcentajesEnteros[
+                                indice
+                            ]
                     };
                 }
             );
@@ -7367,44 +8305,35 @@ function crearGraficaFactoresGuiaIII(data)
     {
         return datos.map(function(item)
         {
-            if (
-                item.category &&
-                item.category.indexOf('g3-') === 0
-            ) {
-                return {
-                    category: item.category,
-                    s1: null,
-                    s2: null,
-                    s3: null,
-                    s4: null,
-                    s5: null,
-                    percentage_s1: null,
-                    percentage_s2: null,
-                    percentage_s3: null,
-                    percentage_s4: null,
-                    percentage_s5: null,
-                    visual_s1: null,
-                    visual_s2: null,
-                    visual_s3: null,
-                    visual_s4: null,
-                    visual_s5: null
-                };
-            }
-
             var s1 =
-                parseInt(item.s1, 10) || 0;
+                parseInt(
+                    item.s1,
+                    10
+                ) || 0;
 
             var s2 =
-                parseInt(item.s2, 10) || 0;
+                parseInt(
+                    item.s2,
+                    10
+                ) || 0;
 
             var s3 =
-                parseInt(item.s3, 10) || 0;
+                parseInt(
+                    item.s3,
+                    10
+                ) || 0;
 
             var s4 =
-                parseInt(item.s4, 10) || 0;
+                parseInt(
+                    item.s4,
+                    10
+                ) || 0;
 
             var s5 =
-                parseInt(item.s5, 10) || 0;
+                parseInt(
+                    item.s5,
+                    10
+                ) || 0;
 
             var valores = [
                 s1,
@@ -7445,12 +8374,17 @@ function crearGraficaFactoresGuiaIII(data)
             }
 
             var porcentajesEnteros =
-                obtenerPorcentajesEnteros(valores);
+                obtenerPorcentajesEnteros(
+                    valores
+                );
 
             var porcentajesExactos =
                 valores.map(function(valor)
                 {
-                    return (valor / total) * 100;
+                    return (
+                        valor /
+                        total
+                    ) * 100;
                 });
 
             var minimoVisual = 8;
@@ -7459,7 +8393,9 @@ function crearGraficaFactoresGuiaIII(data)
                 porcentajesExactos.map(
                     function(porcentaje, indice)
                     {
-                        if (valores[indice] <= 0) {
+                        if (
+                            valores[indice] <= 0
+                        ) {
                             return 0;
                         }
 
@@ -7551,37 +8487,13 @@ function crearGraficaFactoresGuiaIII(data)
             );
 
         series.columns.template.setAll({
-            height: am5.percent(85),
+            height: am5.percent(70),
             tooltipY: 0,
             stroke: am5.color(0x000000),
             strokeWidth: 0.5,
             tooltipText:
                 '{name}: {cantidad} trabajadores ({porcentaje}%)'
         });
-
-        series.columns.template.adapters.add(
-            'forceHidden',
-            function(forceHidden, target)
-            {
-                if (
-                    target.dataItem &&
-                    target.dataItem.dataContext
-                ) {
-                    var category =
-                        target.dataItem
-                            .dataContext
-                            .category || '';
-
-                    if (
-                        category.indexOf('g3-') === 0
-                    ) {
-                        return true;
-                    }
-                }
-
-                return forceHidden;
-            }
-        );
 
         series.bullets.push(function(
             rootBullet,
@@ -7590,15 +8502,6 @@ function crearGraficaFactoresGuiaIII(data)
         ) {
             var contexto =
                 dataItem.dataContext || {};
-
-            var category =
-                contexto.category || '';
-
-            if (
-                category.indexOf('g3-') === 0
-            ) {
-                return undefined;
-            }
 
             var cantidad =
                 parseInt(
@@ -7640,7 +8543,6 @@ function crearGraficaFactoresGuiaIII(data)
                                     ' (' +
                                     porcentaje +
                                     '%)',
-
                                 centerX: am5.p50,
                                 centerY: am5.p50,
                                 populateText: false,
@@ -7660,43 +8562,34 @@ function crearGraficaFactoresGuiaIII(data)
         });
 
         var datosSerie =
-            processedData.map(function(item)
-            {
-                if (
-                    item.category &&
-                    item.category.indexOf('g3-') === 0
-                ) {
-                    var filaVacia = {
-                        category: item.category,
-                        cantidad: null,
-                        porcentaje: null
+            processedData.map(
+                function(item)
+                {
+                    var fila = {
+                        category:
+                            item.category,
+                        cantidad:
+                            item[cantidadField],
+                        porcentaje:
+                            item[porcentajeField]
                     };
 
-                    filaVacia[visualField] =
-                        null;
+                    fila[visualField] =
+                        item[visualField];
 
-                    return filaVacia;
+                    return fila;
                 }
+            );
 
-                var fila = {
-                    category: item.category,
-                    cantidad:
-                        item[cantidadField],
-                    porcentaje:
-                        item[porcentajeField]
-                };
-
-                fila[visualField] =
-                    item[visualField];
-
-                return fila;
-            });
-
-        series.data.setAll(datosSerie);
+        series.data.setAll(
+            datosSerie
+        );
 
         series.appear();
 
-        legend.data.push(series);
+        legend.data.push(
+            series
+        );
     }
 
     makeSeries(
@@ -7740,7 +8633,10 @@ function crearGraficaFactoresGuiaIII(data)
     );
 
     chart
-        .appear(1000, 100)
+        .appear(
+            1000,
+            100
+        )
         .then(function()
         {
             setTimeout(function()
@@ -7758,12 +8654,12 @@ function crearGraficaFactoresGuiaIII(data)
                                     menu:
                                         am5plugins_exporting
                                             .ExportingMenu
-                                            .new(root, {}),
-
+                                            .new(
+                                                root,
+                                                {}
+                                            ),
                                     dpi: 300,
-
                                     maxWidth: 2000,
-
                                     maxHeight: 2000
                                 }
                             );
@@ -7772,23 +8668,30 @@ function crearGraficaFactoresGuiaIII(data)
                         .export('png')
                         .then(function(imagen)
                         {
-                            chartPngs[
-                                'factoresChart'
+                            window.chartPngs =
+                                window.chartPngs || {};
+
+                            window.chartPngs[
+                                nombreGrafica
                             ] = imagen;
 
                             console.log(
-                                'factoresChart exportado exitosamente'
+                                nombreGrafica +
+                                ' exportado exitosamente'
                             );
                         })
                         .catch(function(error)
                         {
                             console.error(
-                                'Error al exportar factoresChart:',
+                                'Error al exportar ' +
+                                nombreGrafica +
+                                ':',
                                 error
                             );
                         });
 
                 } else {
+
                     console.log(
                         'Plugin de exportación no disponible'
                     );
@@ -7798,19 +8701,23 @@ function crearGraficaFactoresGuiaIII(data)
         });
 }
 
-// ORGANIZACION DEL TIEMPO DE TRABAJO
+// ORGANIZACION DEL TIEMPO DE TRABAJO -> ACTUALIZADO 
 function cargarGraficaOrganizacionGuiaIII()
 {
     $.get(
         '/obtenerGraficaOrganizacionGuiaIII/' + proyecto.id,
         function(response)
         {
-            crearGraficaOrganizacionGuiaIII(response.data);
+            crearGraficaOrganizacionGuiaIII(
+                response.data
+            );
         }
     )
     .fail(function(xhr)
     {
-        console.error(xhr.responseText);
+        console.error(
+            xhr.responseText
+        );
 
         Swal.fire({
             icon: 'error',
@@ -7826,28 +8733,177 @@ function crearGraficaOrganizacionGuiaIII(data)
         data = [];
     }
 
-    if (
-        window.organizacionChartRoot &&
-        !window.organizacionChartRoot.isDisposed()
-    ) {
-        window.organizacionChartRoot.dispose();
-        window.organizacionChartRoot = null;
+    var datosCategoria = [];
+    var datosDominios = [];
+    var encontroSeparador = false;
+
+    data.forEach(function(item)
+    {
+        var category =
+            item.category || '';
+
+        if (
+            category.indexOf('g3-') === 0
+        ) {
+            encontroSeparador = true;
+            return;
+        }
+
+        if (encontroSeparador) {
+            datosDominios.push(item);
+        } else {
+            datosCategoria.push(item);
+        }
+    });
+
+    if (!encontroSeparador) {
+
+        datosCategoria = [];
+        datosDominios = [];
+
+        data.forEach(function(item)
+        {
+            var category =
+                item.category || '';
+
+            var nombre =
+                category
+                    .replace(/^g[123]-/, '')
+                    .trim()
+                    .toLowerCase();
+
+            if (
+                nombre.indexOf(
+                    'jornada de trabajo'
+                ) !== -1 ||
+                nombre.indexOf(
+                    'interferencia en la relación trabajo-familia'
+                ) !== -1 ||
+                nombre.indexOf(
+                    'interferencia en la relacion trabajo-familia'
+                ) !== -1
+            ) {
+                datosDominios.push(item);
+            } else {
+                datosCategoria.push(item);
+            }
+        });
     }
 
-    var contenedor = document.getElementById('organizacionChart');
+    var datosDominio1 = [];
+    var datosDominio2 = [];
+
+    datosDominios.forEach(function(item)
+    {
+        var category =
+            item.category || '';
+
+        var nombre =
+            category
+                .replace(/^g[123]-/, '')
+                .trim()
+                .toLowerCase();
+
+        if (
+            nombre.indexOf(
+                'jornada de trabajo'
+            ) !== -1
+        ) {
+            datosDominio1.push(item);
+        }
+
+        if (
+            nombre.indexOf(
+                'interferencia en la relación trabajo-familia'
+            ) !== -1 ||
+            nombre.indexOf(
+                'interferencia en la relacion trabajo-familia'
+            ) !== -1
+        ) {
+            datosDominio2.push(item);
+        }
+    });
+
+    if (
+        datosDominio1.length === 0 &&
+        datosDominios.length > 0
+    ) {
+        datosDominio1.push(
+            datosDominios[0]
+        );
+    }
+
+    if (
+        datosDominio2.length === 0 &&
+        datosDominios.length > 1
+    ) {
+        datosDominio2.push(
+            datosDominios[1]
+        );
+    }
+
+    crearGraficaOrganizacionIndividual(
+        datosCategoria,
+        'organizacionCategoriaChart',
+        'organizacionCategoriaChartRoot',
+        'organizacionCategoriaChart',
+        'Organización del tiempo de trabajo'
+    );
+
+    crearGraficaOrganizacionIndividual(
+        datosDominio1,
+        'organizacionDominio1Chart',
+        'organizacionDominio1ChartRoot',
+        'organizacionDominio1Chart',
+        'Jornada de trabajo'
+    );
+
+    crearGraficaOrganizacionIndividual(
+        datosDominio2,
+        'organizacionDominio2Chart',
+        'organizacionDominio2ChartRoot',
+        'organizacionDominio2Chart',
+        'Interferencia en la relación trabajo-familia'
+    );
+}
+
+function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreGrafica,titulo)
+{
+    if (!Array.isArray(data)) {
+        data = [];
+    }
+
+    if (
+        window[rootNombre] &&
+        !window[rootNombre].isDisposed()
+    ) {
+        window[rootNombre].dispose();
+        window[rootNombre] = null;
+    }
+
+    var contenedor =
+        document.getElementById(
+            contenedorId
+        );
 
     if (!contenedor) {
-        console.error('No existe el contenedor #organizacionChart');
+
+        console.error(
+            'No existe el contenedor #' +
+            contenedorId
+        );
+
         return;
     }
 
     contenedor.innerHTML = '';
 
     if (data.length === 0) {
+
         contenedor.innerHTML = `
             <div style="
                 width:100%;
-                height:650px;
+                height:320px;
                 display:flex;
                 justify-content:center;
                 align-items:center;
@@ -7859,50 +8915,78 @@ function crearGraficaOrganizacionGuiaIII(data)
             </div>
         `;
 
-        if (typeof chartPngs !== 'undefined') {
-            chartPngs['organizacionChart'] = null;
-        }
+        window.chartPngs =
+            window.chartPngs || {};
+
+        window.chartPngs[
+            nombreGrafica
+        ] = null;
 
         return;
     }
 
-    window.organizacionChartRoot = am5.Root.new('organizacionChart');
+    window[rootNombre] =
+        am5.Root.new(
+            contenedorId
+        );
 
-    var root = window.organizacionChartRoot;
+    var root =
+        window[rootNombre];
 
     root.setThemes([
         am5themes_Animated.new(root)
     ]);
 
-    var chart = root.container.children.push(
-        am5xy.XYChart.new(root, {
-            panX: false,
-            panY: false,
-            wheelX: 'none',
-            wheelY: 'none',
-            layout: root.verticalLayout,
-            paddingLeft: 0,
-            paddingRight: 20
-        })
-    );
+    var chart =
+        root.container.children.push(
+            am5xy.XYChart.new(
+                root,
+                {
+                    panX: false,
+                    panY: false,
+                    wheelX: 'none',
+                    wheelY: 'none',
+                    layout: root.verticalLayout,
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                    paddingRight: 20
+                }
+            )
+        );
 
     chart.children.unshift(
-        am5.Label.new(root, {
-            text: "Categoría\n\n\n",
-            fontSize: 18,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            x: am5.p50,
-            centerX: am5.p50
-        })
+        am5.Label.new(
+            root,
+            {
+                text: titulo,
+                fontSize: 18,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                x: am5.p50,
+                centerX: am5.p50,
+                marginTop: 5,
+                marginBottom: 15,
+                paddingTop: 0,
+                paddingBottom: 0
+            }
+        )
     );
 
-    var legend = chart.children.push(
-        am5.Legend.new(root, {
-            centerX: am5.p50,
-            x: am5.p50
-        })
-    );
+    var legend =
+        chart.children.push(
+            am5.Legend.new(
+                root,
+                {
+                    centerX: am5.p50,
+                    x: am5.p50,
+                    marginTop: 5,
+                    marginBottom: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0
+                }
+            )
+        );
 
     legend.labels.template.setAll({
         fontSize: 20,
@@ -7919,20 +9003,32 @@ function crearGraficaOrganizacionGuiaIII(data)
         height: 20
     });
 
-    var yAxisRenderer = am5xy.AxisRendererY.new(root, {
-        inversed: true,
-        cellStartLocation: 0.05,
-        cellEndLocation: 0.90,
-        minGridDistance: 0
-    });
+    var yAxisRenderer =
+        am5xy.AxisRendererY.new(
+            root,
+            {
+                inversed: true,
+                cellStartLocation: 0.15,
+                cellEndLocation: 0.85,
+                minGridDistance: 0
+            }
+        );
 
-    var yAxis = chart.yAxes.push(
-        am5xy.CategoryAxis.new(root, {
-            categoryField: 'category',
-            renderer: yAxisRenderer,
-            tooltip: am5.Tooltip.new(root, {})
-        })
-    );
+    var yAxis =
+        chart.yAxes.push(
+            am5xy.CategoryAxis.new(
+                root,
+                {
+                    categoryField: 'category',
+                    renderer: yAxisRenderer,
+                    tooltip:
+                        am5.Tooltip.new(
+                            root,
+                            {}
+                        )
+                }
+            )
+        );
 
     yAxisRenderer.grid.template.setAll({
         forceHidden: true,
@@ -7947,55 +9043,35 @@ function crearGraficaOrganizacionGuiaIII(data)
     });
 
     yAxisRenderer.labels.template.setAll({
-        fontSize: 18,
-        fontWeight: 'bold',
-        centerY: am5.p50,
-        centerX: am5.p0,
-        textAlign: 'center',
-        inside: true,
-        rotation: 0,
-        paddingTop: -100,
-        oversizedBehavior: 'wrap',
-        maxWidth: 330
+        forceHidden: true,
+        visible: false
     });
 
-    yAxisRenderer.labels.template.adapters.add(
-        'text',
-        function(text, target)
-        {
-            if (!target.dataItem) {
-                return text;
-            }
-
-            var category = target.dataItem.get('category') || '';
-
-            if (
-                category.indexOf('g1-') === 0 ||
-                category.indexOf('g2-') === 0 ||
-                category.indexOf('g3-') === 0
-            ) {
-                return '[bold]' + category.substring(3) + '[/]';
-            }
-
-            return category;
-        }
+    yAxis.data.setAll(
+        data
     );
 
-    yAxis.data.setAll(data);
+    var xAxisRenderer =
+        am5xy.AxisRendererX.new(
+            root,
+            {
+                minGridDistance: 50
+            }
+        );
 
-    var xAxisRenderer = am5xy.AxisRendererX.new(root, {
-        minGridDistance: 50
-    });
-
-    var xAxis = chart.xAxes.push(
-        am5xy.ValueAxis.new(root, {
-            renderer: xAxisRenderer,
-            min: 0,
-            max: 100,
-            strictMinMax: true,
-            maxDeviation: 0
-        })
-    );
+    var xAxis =
+        chart.xAxes.push(
+            am5xy.ValueAxis.new(
+                root,
+                {
+                    renderer: xAxisRenderer,
+                    min: 0,
+                    max: 100,
+                    strictMinMax: true,
+                    maxDeviation: 0
+                }
+            )
+        );
 
     xAxisRenderer.grid.template.setAll({
         forceHidden: true,
@@ -8015,6 +9091,7 @@ function crearGraficaOrganizacionGuiaIII(data)
     });
 
     if (xAxisRenderer.baseGrid) {
+
         xAxisRenderer.baseGrid.setAll({
             forceHidden: true,
             visible: false,
@@ -8024,47 +9101,81 @@ function crearGraficaOrganizacionGuiaIII(data)
 
     function obtenerPorcentajesEnteros(valores)
     {
-        var total = valores.reduce(function(acumulado, valor)
-        {
-            return acumulado + valor;
-        }, 0);
+        var total =
+            valores.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
 
         if (total <= 0) {
-            return [0, 0, 0, 0, 0];
+
+            return [
+                0,
+                0,
+                0,
+                0,
+                0
+            ];
         }
 
-        var porcentajesExactos = valores.map(function(valor)
-        {
-            return (valor / total) * 100;
-        });
+        var porcentajesExactos =
+            valores.map(function(valor)
+            {
+                return (
+                    valor /
+                    total
+                ) * 100;
+            });
 
-        var porcentajesEnteros = porcentajesExactos.map(function(valor)
-        {
-            return Math.floor(valor);
-        });
+        var porcentajesEnteros =
+            porcentajesExactos.map(function(valor)
+            {
+                return Math.floor(valor);
+            });
 
-        var sumaEnteros = porcentajesEnteros.reduce(function(acumulado, valor)
-        {
-            return acumulado + valor;
-        }, 0);
+        var sumaEnteros =
+            porcentajesEnteros.reduce(
+                function(acumulado, valor)
+                {
+                    return acumulado + valor;
+                },
+                0
+            );
 
-        var faltantes = 100 - sumaEnteros;
+        var faltantes =
+            100 - sumaEnteros;
 
-        var residuos = porcentajesExactos.map(function(valor, indice)
-        {
-            return {
-                indice: indice,
-                residuo: valor - porcentajesEnteros[indice]
-            };
-        });
+        var residuos =
+            porcentajesExactos.map(
+                function(valor, indice)
+                {
+                    return {
+                        indice: indice,
+                        residuo:
+                            valor -
+                            porcentajesEnteros[
+                                indice
+                            ]
+                    };
+                }
+            );
 
         residuos.sort(function(a, b)
         {
             return b.residuo - a.residuo;
         });
 
-        for (var indice = 0; indice < faltantes; indice++) {
-            porcentajesEnteros[residuos[indice].indice]++;
+        for (
+            var indice = 0;
+            indice < faltantes;
+            indice++
+        ) {
+            porcentajesEnteros[
+                residuos[indice].indice
+            ]++;
         }
 
         return porcentajesEnteros;
@@ -8074,46 +9185,60 @@ function crearGraficaOrganizacionGuiaIII(data)
     {
         return datos.map(function(item)
         {
-            if (
-                item.category &&
-                item.category.indexOf('g3-') === 0
-            ) {
-                return {
-                    category: item.category,
-                    s1: null,
-                    s2: null,
-                    s3: null,
-                    s4: null,
-                    s5: null,
-                    percentage_s1: null,
-                    percentage_s2: null,
-                    percentage_s3: null,
-                    percentage_s4: null,
-                    percentage_s5: null,
-                    visual_s1: null,
-                    visual_s2: null,
-                    visual_s3: null,
-                    visual_s4: null,
-                    visual_s5: null
-                };
-            }
+            var category =
+                item.category || '';
 
-            var s1 = parseInt(item.s1, 10) || 0;
-            var s2 = parseInt(item.s2, 10) || 0;
-            var s3 = parseInt(item.s3, 10) || 0;
-            var s4 = parseInt(item.s4, 10) || 0;
-            var s5 = parseInt(item.s5, 10) || 0;
+            var s1 =
+                parseInt(
+                    item.s1,
+                    10
+                ) || 0;
 
-            var valores = [s1, s2, s3, s4, s5];
+            var s2 =
+                parseInt(
+                    item.s2,
+                    10
+                ) || 0;
 
-            var total = valores.reduce(function(acumulado, valor)
-            {
-                return acumulado + valor;
-            }, 0);
+            var s3 =
+                parseInt(
+                    item.s3,
+                    10
+                ) || 0;
+
+            var s4 =
+                parseInt(
+                    item.s4,
+                    10
+                ) || 0;
+
+            var s5 =
+                parseInt(
+                    item.s5,
+                    10
+                ) || 0;
+
+            var valores = [
+                s1,
+                s2,
+                s3,
+                s4,
+                s5
+            ];
+
+            var total =
+                valores.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
 
             if (total <= 0) {
+
                 return {
-                    category: item.category,
+                    category: category,
                     s1: s1,
                     s2: s2,
                     s3: s3,
@@ -8132,58 +9257,97 @@ function crearGraficaOrganizacionGuiaIII(data)
                 };
             }
 
-            var porcentajesEnteros = obtenerPorcentajesEnteros(valores);
+            var porcentajesEnteros =
+                obtenerPorcentajesEnteros(
+                    valores
+                );
 
-            var porcentajesExactos = valores.map(function(valor)
-            {
-                return (valor / total) * 100;
-            });
+            var porcentajesExactos =
+                valores.map(function(valor)
+                {
+                    return (
+                        valor /
+                        total
+                    ) * 100;
+                });
 
             var minimoVisual = 8;
 
-            var valoresVisuales = porcentajesExactos.map(function(porcentaje, indice)
-            {
-                if (valores[indice] <= 0) {
-                    return 0;
-                }
+            var valoresVisuales =
+                porcentajesExactos.map(
+                    function(porcentaje, indice)
+                    {
+                        if (
+                            valores[indice] <= 0
+                        ) {
+                            return 0;
+                        }
 
-                return Math.max(porcentaje, minimoVisual);
-            });
+                        return Math.max(
+                            porcentaje,
+                            minimoVisual
+                        );
+                    }
+                );
 
-            var totalVisual = valoresVisuales.reduce(function(acumulado, valor)
-            {
-                return acumulado + valor;
-            }, 0);
+            var totalVisual =
+                valoresVisuales.reduce(
+                    function(acumulado, valor)
+                    {
+                        return acumulado + valor;
+                    },
+                    0
+                );
 
             if (totalVisual > 0) {
-                valoresVisuales = valoresVisuales.map(function(valor)
-                {
-                    return (valor / totalVisual) * 100;
-                });
+
+                valoresVisuales =
+                    valoresVisuales.map(
+                        function(valor)
+                        {
+                            return (
+                                valor /
+                                totalVisual
+                            ) * 100;
+                        }
+                    );
             }
 
             return {
-                category: item.category,
+                category: category,
                 s1: s1,
                 s2: s2,
                 s3: s3,
                 s4: s4,
                 s5: s5,
-                percentage_s1: porcentajesEnteros[0],
-                percentage_s2: porcentajesEnteros[1],
-                percentage_s3: porcentajesEnteros[2],
-                percentage_s4: porcentajesEnteros[3],
-                percentage_s5: porcentajesEnteros[4],
-                visual_s1: valoresVisuales[0],
-                visual_s2: valoresVisuales[1],
-                visual_s3: valoresVisuales[2],
-                visual_s4: valoresVisuales[3],
-                visual_s5: valoresVisuales[4]
+                percentage_s1:
+                    porcentajesEnteros[0],
+                percentage_s2:
+                    porcentajesEnteros[1],
+                percentage_s3:
+                    porcentajesEnteros[2],
+                percentage_s4:
+                    porcentajesEnteros[3],
+                percentage_s5:
+                    porcentajesEnteros[4],
+                visual_s1:
+                    valoresVisuales[0],
+                visual_s2:
+                    valoresVisuales[1],
+                visual_s3:
+                    valoresVisuales[2],
+                visual_s4:
+                    valoresVisuales[3],
+                visual_s5:
+                    valoresVisuales[4]
             };
         });
     }
 
-    var processedData = calcularDatos(data);
+    var processedData =
+        calcularDatos(
+            data
+        );
 
     function makeSeries(
         name,
@@ -8192,66 +9356,60 @@ function crearGraficaOrganizacionGuiaIII(data)
         visualField,
         color
     ) {
-        var series = chart.series.push(
-            am5xy.ColumnSeries.new(root, {
-                name: name,
-                xAxis: xAxis,
-                yAxis: yAxis,
-                stacked: true,
-                valueXField: visualField,
-                categoryYField: 'category',
-                stroke: color,
-                fill: color
-            })
-        );
+        var series =
+            chart.series.push(
+                am5xy.ColumnSeries.new(
+                    root,
+                    {
+                        name: name,
+                        xAxis: xAxis,
+                        yAxis: yAxis,
+                        stacked: true,
+                        valueXField:
+                            visualField,
+                        categoryYField:
+                            'category',
+                        stroke: color,
+                        fill: color
+                    }
+                )
+            );
 
         series.columns.template.setAll({
-            height: am5.percent(85),
+            height: am5.percent(70),
             tooltipY: 0,
-            stroke: am5.color(0x000000),
+            stroke:
+                am5.color(
+                    0x000000
+                ),
             strokeWidth: 0.5,
-            tooltipText: '{name}: {cantidad} trabajadores ({porcentaje}%)'
+            tooltipText:
+                '{name}: {cantidad} trabajadores ({porcentaje}%)'
         });
 
-        series.columns.template.adapters.add(
-            'forceHidden',
-            function(forceHidden, target)
-            {
-                if (
-                    target.dataItem &&
-                    target.dataItem.dataContext
-                ) {
-                    var category =
-                        target.dataItem.dataContext.category || '';
-
-                    if (category.indexOf('g3-') === 0) {
-                        return true;
-                    }
-                }
-
-                return forceHidden;
-            }
-        );
-
-        series.bullets.push(function(rootBullet, serie, dataItem)
-        {
-            var contexto = dataItem.dataContext || {};
-
-            var category = contexto.category || '';
-
-            if (category.indexOf('g3-') === 0) {
-                return undefined;
-            }
+        series.bullets.push(function(
+            rootBullet,
+            serie,
+            dataItem
+        ) {
+            var contexto =
+                dataItem.dataContext || {};
 
             var cantidad =
-                parseInt(contexto.cantidad, 10) || 0;
+                parseInt(
+                    contexto.cantidad,
+                    10
+                ) || 0;
 
             if (cantidad <= 0) {
                 return undefined;
             }
 
             var porcentaje =
-                parseInt(contexto.porcentaje, 10) || 0;
+                parseInt(
+                    contexto.porcentaje,
+                    10
+                ) || 0;
 
             var tamanioLetra = 17;
 
@@ -8263,57 +9421,70 @@ function crearGraficaOrganizacionGuiaIII(data)
                 tamanioLetra = 15;
             }
 
-            return am5.Bullet.new(root, {
-                locationX: 0.5,
-                locationY: 0.5,
-                sprite: am5.Label.new(root, {
-                    text: cantidad + ' (' + porcentaje + '%)',
-                    centerX: am5.p50,
-                    centerY: am5.p50,
-                    populateText: false,
-                    fontSize: tamanioLetra,
-                    fill: am5.color(0x000000),
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    paddingLeft: 1,
-                    paddingRight: 1
-                })
-            });
+            return am5.Bullet.new(
+                root,
+                {
+                    locationX: 0.5,
+                    locationY: 0.5,
+                    sprite:
+                        am5.Label.new(
+                            root,
+                            {
+                                text:
+                                    cantidad +
+                                    ' (' +
+                                    porcentaje +
+                                    '%)',
+                                centerX: am5.p50,
+                                centerY: am5.p50,
+                                populateText: false,
+                                fontSize:
+                                    tamanioLetra,
+                                fill:
+                                    am5.color(
+                                        0x000000
+                                    ),
+                                fontWeight:
+                                    'bold',
+                                textAlign:
+                                    'center',
+                                paddingLeft: 1,
+                                paddingRight: 1
+                            }
+                        )
+                }
+            );
         });
 
-        var datosSerie = processedData.map(function(item)
-        {
-            if (
-                item.category &&
-                item.category.indexOf('g3-') === 0
-            ) {
-                var filaVacia = {
-                    category: item.category,
-                    cantidad: null,
-                    porcentaje: null
-                };
+        var datosSerie =
+            processedData.map(
+                function(item)
+                {
+                    var fila = {
+                        category:
+                            item.category,
+                        cantidad:
+                            item[cantidadField],
+                        porcentaje:
+                            item[porcentajeField]
+                    };
 
-                filaVacia[visualField] = null;
+                    fila[visualField] =
+                        item[visualField];
 
-                return filaVacia;
-            }
+                    return fila;
+                }
+            );
 
-            var fila = {
-                category: item.category,
-                cantidad: item[cantidadField],
-                porcentaje: item[porcentajeField]
-            };
-
-            fila[visualField] = item[visualField];
-
-            return fila;
-        });
-
-        series.data.setAll(datosSerie);
+        series.data.setAll(
+            datosSerie
+        );
 
         series.appear();
 
-        legend.data.push(series);
+        legend.data.push(
+            series
+        );
     }
 
     makeSeries(
@@ -8357,7 +9528,10 @@ function crearGraficaOrganizacionGuiaIII(data)
     );
 
     chart
-        .appear(1000, 100)
+        .appear(
+            1000,
+            100
+        )
         .then(function()
         {
             setTimeout(function()
@@ -8367,42 +9541,52 @@ function crearGraficaOrganizacionGuiaIII(data)
                     'undefined'
                 ) {
                     var exporting =
-                        am5plugins_exporting.Exporting.new(
-                            root,
-                            {
-                                menu:
-                                    am5plugins_exporting
-                                        .ExportingMenu
-                                        .new(root, {}),
-
-                                dpi: 300,
-
-                                maxWidth: 2000,
-
-                                maxHeight: 2000
-                            }
-                        );
+                        am5plugins_exporting
+                            .Exporting
+                            .new(
+                                root,
+                                {
+                                    menu:
+                                        am5plugins_exporting
+                                            .ExportingMenu
+                                            .new(
+                                                root,
+                                                {}
+                                            ),
+                                    dpi: 300,
+                                    maxWidth: 2000,
+                                    maxHeight: 2000
+                                }
+                            );
 
                     exporting
                         .export('png')
                         .then(function(imagen)
                         {
-                            chartPngs['organizacionChart'] =
-                                imagen;
+                            window.chartPngs =
+                                window.chartPngs || {};
+
+                            window.chartPngs[
+                                nombreGrafica
+                            ] = imagen;
 
                             console.log(
-                                'organizacionChart exportado exitosamente'
+                                nombreGrafica +
+                                ' exportado exitosamente'
                             );
                         })
                         .catch(function(error)
                         {
                             console.error(
-                                'Error al exportar organizacionChart:',
+                                'Error al exportar ' +
+                                nombreGrafica +
+                                ':',
                                 error
                             );
                         });
 
                 } else {
+
                     console.log(
                         'Plugin de exportación no disponible'
                     );
@@ -8412,19 +9596,23 @@ function crearGraficaOrganizacionGuiaIII(data)
         });
 }
 
-// CATEGORIA LIDERAZGO Y RELACIONES EN EL TRABAJO 
-function cargarGraficaLiderazgoGuiaIII()
+// CATEGORIA LIDERAZGO Y RELACIONES EN EL TRABAJO  -> ACTUALIZADO
+function cargarGraficaLiderazgoGuiaIII() 
 {
     $.get(
         '/obtenerGraficaLiderazgoGuiaIII/' + proyecto.id,
         function(response)
         {
-            crearGraficaLiderazgoGuiaIII(response.data);
+            crearGraficaLiderazgoGuiaIII(
+                response.data
+            );
         }
     )
     .fail(function(xhr)
     {
-        console.error(xhr.responseText);
+        console.error(
+            xhr.responseText
+        );
 
         Swal.fire({
             icon: 'error',
@@ -8440,20 +9628,184 @@ function crearGraficaLiderazgoGuiaIII(data)
         data = [];
     }
 
+    var datosCategoria = [];
+    var datosDominios = [];
+    var encontroSeparador = false;
+
+    data.forEach(function(item)
+    {
+        var category =
+            item.category || '';
+
+        if (
+            category.indexOf('g3-') === 0
+        ) {
+            encontroSeparador = true;
+            return;
+        }
+
+        if (encontroSeparador) {
+            datosDominios.push(item);
+        } else {
+            datosCategoria.push(item);
+        }
+    });
+
+    if (!encontroSeparador) {
+
+        datosCategoria = [];
+        datosDominios = [];
+
+        data.forEach(function(item)
+        {
+            var category =
+                item.category || '';
+
+            var nombre =
+                category
+                    .replace(/^g[123]-/, '')
+                    .trim()
+                    .toLowerCase();
+
+            if (
+                nombre === 'liderazgo' ||
+                nombre.indexOf(
+                    'relaciones en el trabajo'
+                ) !== -1 ||
+                nombre.indexOf(
+                    'violencia'
+                ) !== -1
+            ) {
+                datosDominios.push(item);
+            } else {
+                datosCategoria.push(item);
+            }
+        });
+    }
+
+    var datosDominio1 = [];
+    var datosDominio2 = [];
+    var datosDominio3 = [];
+
+    datosDominios.forEach(function(item)
+    {
+        var category =
+            item.category || '';
+
+        var nombre =
+            category
+                .replace(/^g[123]-/, '')
+                .trim()
+                .toLowerCase();
+
+        if (
+            nombre === 'liderazgo' ||
+            nombre.indexOf('liderazgo') !== -1
+        ) {
+            datosDominio1.push(item);
+        }
+
+        if (
+            nombre.indexOf(
+                'relaciones en el trabajo'
+            ) !== -1
+        ) {
+            datosDominio2.push(item);
+        }
+
+        if (
+            nombre.indexOf(
+                'violencia'
+            ) !== -1
+        ) {
+            datosDominio3.push(item);
+        }
+    });
+
     if (
-        window.liderazgoChartRoot &&
-        !window.liderazgoChartRoot.isDisposed()
+        datosDominio1.length === 0 &&
+        datosDominios.length > 0
     ) {
-        window.liderazgoChartRoot.dispose();
-        window.liderazgoChartRoot = null;
+        datosDominio1.push(
+            datosDominios[0]
+        );
+    }
+
+    if (
+        datosDominio2.length === 0 &&
+        datosDominios.length > 1
+    ) {
+        datosDominio2.push(
+            datosDominios[1]
+        );
+    }
+
+    if (
+        datosDominio3.length === 0 &&
+        datosDominios.length > 2
+    ) {
+        datosDominio3.push(
+            datosDominios[2]
+        );
+    }
+
+    crearGraficaLiderazgoIndividual(
+        datosCategoria,
+        'liderazgoCategoriaChart',
+        'liderazgoCategoriaChartRoot',
+        'liderazgoCategoriaChart',
+        'Liderazgo y relaciones en el trabajo'
+    );
+
+    crearGraficaLiderazgoIndividual(
+        datosDominio1,
+        'liderazgoDominio1Chart',
+        'liderazgoDominio1ChartRoot',
+        'liderazgoDominio1Chart',
+        'Liderazgo'
+    );
+
+    crearGraficaLiderazgoIndividual(
+        datosDominio2,
+        'liderazgoDominio2Chart',
+        'liderazgoDominio2ChartRoot',
+        'liderazgoDominio2Chart',
+        'Relaciones en el trabajo'
+    );
+
+    crearGraficaLiderazgoIndividual(
+        datosDominio3,
+        'liderazgoDominio3Chart',
+        'liderazgoDominio3ChartRoot',
+        'liderazgoDominio3Chart',
+        'Violencia'
+    );
+}
+
+function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGrafica,titulo)
+{
+    if (!Array.isArray(data)) {
+        data = [];
+    }
+
+    if (
+        window[rootNombre] &&
+        !window[rootNombre].isDisposed()
+    ) {
+        window[rootNombre].dispose();
+        window[rootNombre] = null;
     }
 
     var contenedor =
-        document.getElementById('liderazgoChart');
+        document.getElementById(
+            contenedorId
+        );
 
     if (!contenedor) {
+
         console.error(
-            'No existe el contenedor #liderazgoChart'
+            'No existe el contenedor #' +
+            contenedorId
         );
 
         return;
@@ -8466,7 +9818,7 @@ function crearGraficaLiderazgoGuiaIII(data)
         contenedor.innerHTML = `
             <div style="
                 width:100%;
-                height:750px;
+                height:320px;
                 display:flex;
                 justify-content:center;
                 align-items:center;
@@ -8478,18 +9830,23 @@ function crearGraficaLiderazgoGuiaIII(data)
             </div>
         `;
 
-        if (typeof chartPngs !== 'undefined') {
-            chartPngs['liderazgoChart'] = null;
-        }
+        window.chartPngs =
+            window.chartPngs || {};
+
+        window.chartPngs[
+            nombreGrafica
+        ] = null;
 
         return;
     }
 
-    window.liderazgoChartRoot =
-        am5.Root.new('liderazgoChart');
+    window[rootNombre] =
+        am5.Root.new(
+            contenedorId
+        );
 
     var root =
-        window.liderazgoChartRoot;
+        window[rootNombre];
 
     root.setThemes([
         am5themes_Animated.new(root)
@@ -8505,6 +9862,8 @@ function crearGraficaLiderazgoGuiaIII(data)
                     wheelX: 'none',
                     wheelY: 'none',
                     layout: root.verticalLayout,
+                    paddingTop: 0,
+                    paddingBottom: 0,
                     paddingLeft: 0,
                     paddingRight: 20
                 }
@@ -8515,12 +9874,16 @@ function crearGraficaLiderazgoGuiaIII(data)
         am5.Label.new(
             root,
             {
-                text: "Categoría\n\n\n",
+                text: titulo,
                 fontSize: 18,
                 fontWeight: 'bold',
                 textAlign: 'center',
                 x: am5.p50,
-                centerX: am5.p50
+                centerX: am5.p50,
+                marginTop: 5,
+                marginBottom: 15,
+                paddingTop: 0,
+                paddingBottom: 0
             }
         )
     );
@@ -8531,7 +9894,11 @@ function crearGraficaLiderazgoGuiaIII(data)
                 root,
                 {
                     centerX: am5.p50,
-                    x: am5.p50
+                    x: am5.p50,
+                    marginTop: 5,
+                    marginBottom: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0
                 }
             )
         );
@@ -8556,8 +9923,8 @@ function crearGraficaLiderazgoGuiaIII(data)
             root,
             {
                 inversed: true,
-                cellStartLocation: 0.05,
-                cellEndLocation: 0.90,
+                cellStartLocation: 0.15,
+                cellEndLocation: 0.85,
                 minGridDistance: 0
             }
         );
@@ -8569,7 +9936,11 @@ function crearGraficaLiderazgoGuiaIII(data)
                 {
                     categoryField: 'category',
                     renderer: yAxisRenderer,
-                    tooltip: am5.Tooltip.new(root, {})
+                    tooltip:
+                        am5.Tooltip.new(
+                            root,
+                            {}
+                        )
                 }
             )
         );
@@ -8587,48 +9958,13 @@ function crearGraficaLiderazgoGuiaIII(data)
     });
 
     yAxisRenderer.labels.template.setAll({
-        fontSize: 18,
-        fontWeight: 'bold',
-        centerY: am5.p50,
-        centerX: am5.p0,
-        textAlign: 'center',
-        inside: true,
-        rotation: 0,
-        paddingTop: -100,
-        oversizedBehavior: 'wrap',
-        maxWidth: 340
+        forceHidden: true,
+        visible: false
     });
 
-    yAxisRenderer
-        .labels
-        .template
-        .adapters
-        .add(
-            'text',
-            function(text, target)
-            {
-                if (!target.dataItem) {
-                    return text;
-                }
-
-                var category =
-                    target.dataItem.get('category') || '';
-
-                if (
-                    category.indexOf('g1-') === 0 ||
-                    category.indexOf('g2-') === 0 ||
-                    category.indexOf('g3-') === 0
-                ) {
-                    return '[bold]' +
-                        category.substring(3) +
-                        '[/]';
-                }
-
-                return category;
-            }
-        );
-
-    yAxis.data.setAll(data);
+    yAxis.data.setAll(
+        data
+    );
 
     var xAxisRenderer =
         am5xy.AxisRendererX.new(
@@ -8670,6 +10006,7 @@ function crearGraficaLiderazgoGuiaIII(data)
     });
 
     if (xAxisRenderer.baseGrid) {
+
         xAxisRenderer.baseGrid.setAll({
             forceHidden: true,
             visible: false,
@@ -8689,13 +10026,23 @@ function crearGraficaLiderazgoGuiaIII(data)
             );
 
         if (total <= 0) {
-            return [0, 0, 0, 0, 0];
+
+            return [
+                0,
+                0,
+                0,
+                0,
+                0
+            ];
         }
 
         var porcentajesExactos =
             valores.map(function(valor)
             {
-                return (valor / total) * 100;
+                return (
+                    valor /
+                    total
+                ) * 100;
             });
 
         var porcentajesEnteros =
@@ -8724,7 +10071,9 @@ function crearGraficaLiderazgoGuiaIII(data)
                         indice: indice,
                         residuo:
                             valor -
-                            porcentajesEnteros[indice]
+                            porcentajesEnteros[
+                                indice
+                            ]
                     };
                 }
             );
@@ -8751,44 +10100,38 @@ function crearGraficaLiderazgoGuiaIII(data)
     {
         return datos.map(function(item)
         {
-            if (
-                item.category &&
-                item.category.indexOf('g3-') === 0
-            ) {
-                return {
-                    category: item.category,
-                    s1: null,
-                    s2: null,
-                    s3: null,
-                    s4: null,
-                    s5: null,
-                    percentage_s1: null,
-                    percentage_s2: null,
-                    percentage_s3: null,
-                    percentage_s4: null,
-                    percentage_s5: null,
-                    visual_s1: null,
-                    visual_s2: null,
-                    visual_s3: null,
-                    visual_s4: null,
-                    visual_s5: null
-                };
-            }
+            var category =
+                item.category || '';
 
             var s1 =
-                parseInt(item.s1, 10) || 0;
+                parseInt(
+                    item.s1,
+                    10
+                ) || 0;
 
             var s2 =
-                parseInt(item.s2, 10) || 0;
+                parseInt(
+                    item.s2,
+                    10
+                ) || 0;
 
             var s3 =
-                parseInt(item.s3, 10) || 0;
+                parseInt(
+                    item.s3,
+                    10
+                ) || 0;
 
             var s4 =
-                parseInt(item.s4, 10) || 0;
+                parseInt(
+                    item.s4,
+                    10
+                ) || 0;
 
             var s5 =
-                parseInt(item.s5, 10) || 0;
+                parseInt(
+                    item.s5,
+                    10
+                ) || 0;
 
             var valores = [
                 s1,
@@ -8808,8 +10151,9 @@ function crearGraficaLiderazgoGuiaIII(data)
                 );
 
             if (total <= 0) {
+
                 return {
-                    category: item.category,
+                    category: category,
                     s1: s1,
                     s2: s2,
                     s3: s3,
@@ -8829,12 +10173,17 @@ function crearGraficaLiderazgoGuiaIII(data)
             }
 
             var porcentajesEnteros =
-                obtenerPorcentajesEnteros(valores);
+                obtenerPorcentajesEnteros(
+                    valores
+                );
 
             var porcentajesExactos =
                 valores.map(function(valor)
                 {
-                    return (valor / total) * 100;
+                    return (
+                        valor /
+                        total
+                    ) * 100;
                 });
 
             var minimoVisual = 8;
@@ -8843,7 +10192,9 @@ function crearGraficaLiderazgoGuiaIII(data)
                 porcentajesExactos.map(
                     function(porcentaje, indice)
                     {
-                        if (valores[indice] <= 0) {
+                        if (
+                            valores[indice] <= 0
+                        ) {
                             return 0;
                         }
 
@@ -8864,6 +10215,7 @@ function crearGraficaLiderazgoGuiaIII(data)
                 );
 
             if (totalVisual > 0) {
+
                 valoresVisuales =
                     valoresVisuales.map(
                         function(valor)
@@ -8877,7 +10229,7 @@ function crearGraficaLiderazgoGuiaIII(data)
             }
 
             return {
-                category: item.category,
+                category: category,
                 s1: s1,
                 s2: s2,
                 s3: s3,
@@ -8908,7 +10260,9 @@ function crearGraficaLiderazgoGuiaIII(data)
     }
 
     var processedData =
-        calcularDatos(data);
+        calcularDatos(
+            data
+        );
 
     function makeSeries(
         name,
@@ -8926,8 +10280,10 @@ function crearGraficaLiderazgoGuiaIII(data)
                         xAxis: xAxis,
                         yAxis: yAxis,
                         stacked: true,
-                        valueXField: visualField,
-                        categoryYField: 'category',
+                        valueXField:
+                            visualField,
+                        categoryYField:
+                            'category',
                         stroke: color,
                         fill: color
                     }
@@ -8935,37 +10291,16 @@ function crearGraficaLiderazgoGuiaIII(data)
             );
 
         series.columns.template.setAll({
-            height: am5.percent(85),
+            height: am5.percent(70),
             tooltipY: 0,
-            stroke: am5.color(0x000000),
+            stroke:
+                am5.color(
+                    0x000000
+                ),
             strokeWidth: 0.5,
             tooltipText:
                 '{name}: {cantidad} trabajadores ({porcentaje}%)'
         });
-
-        series.columns.template.adapters.add(
-            'forceHidden',
-            function(forceHidden, target)
-            {
-                if (
-                    target.dataItem &&
-                    target.dataItem.dataContext
-                ) {
-                    var category =
-                        target.dataItem
-                            .dataContext
-                            .category || '';
-
-                    if (
-                        category.indexOf('g3-') === 0
-                    ) {
-                        return true;
-                    }
-                }
-
-                return forceHidden;
-            }
-        );
 
         series.bullets.push(function(
             rootBullet,
@@ -8974,15 +10309,6 @@ function crearGraficaLiderazgoGuiaIII(data)
         ) {
             var contexto =
                 dataItem.dataContext || {};
-
-            var category =
-                contexto.category || '';
-
-            if (
-                category.indexOf('g3-') === 0
-            ) {
-                return undefined;
-            }
 
             var cantidad =
                 parseInt(
@@ -9024,17 +10350,19 @@ function crearGraficaLiderazgoGuiaIII(data)
                                     ' (' +
                                     porcentaje +
                                     '%)',
-
                                 centerX: am5.p50,
                                 centerY: am5.p50,
                                 populateText: false,
-                                fontSize: tamanioLetra,
+                                fontSize:
+                                    tamanioLetra,
                                 fill:
                                     am5.color(
                                         0x000000
                                     ),
-                                fontWeight: 'bold',
-                                textAlign: 'center',
+                                fontWeight:
+                                    'bold',
+                                textAlign:
+                                    'center',
                                 paddingLeft: 1,
                                 paddingRight: 1
                             }
@@ -9044,43 +10372,34 @@ function crearGraficaLiderazgoGuiaIII(data)
         });
 
         var datosSerie =
-            processedData.map(function(item)
-            {
-                if (
-                    item.category &&
-                    item.category.indexOf('g3-') === 0
-                ) {
-                    var filaVacia = {
-                        category: item.category,
-                        cantidad: null,
-                        porcentaje: null
+            processedData.map(
+                function(item)
+                {
+                    var fila = {
+                        category:
+                            item.category,
+                        cantidad:
+                            item[cantidadField],
+                        porcentaje:
+                            item[porcentajeField]
                     };
 
-                    filaVacia[visualField] =
-                        null;
+                    fila[visualField] =
+                        item[visualField];
 
-                    return filaVacia;
+                    return fila;
                 }
+            );
 
-                var fila = {
-                    category: item.category,
-                    cantidad:
-                        item[cantidadField],
-                    porcentaje:
-                        item[porcentajeField]
-                };
-
-                fila[visualField] =
-                    item[visualField];
-
-                return fila;
-            });
-
-        series.data.setAll(datosSerie);
+        series.data.setAll(
+            datosSerie
+        );
 
         series.appear();
 
-        legend.data.push(series);
+        legend.data.push(
+            series
+        );
     }
 
     makeSeries(
@@ -9124,7 +10443,10 @@ function crearGraficaLiderazgoGuiaIII(data)
     );
 
     chart
-        .appear(1000, 100)
+        .appear(
+            1000,
+            100
+        )
         .then(function()
         {
             setTimeout(function()
@@ -9142,12 +10464,12 @@ function crearGraficaLiderazgoGuiaIII(data)
                                     menu:
                                         am5plugins_exporting
                                             .ExportingMenu
-                                            .new(root, {}),
-
+                                            .new(
+                                                root,
+                                                {}
+                                            ),
                                     dpi: 300,
-
                                     maxWidth: 2000,
-
                                     maxHeight: 2000
                                 }
                             );
@@ -9156,23 +10478,30 @@ function crearGraficaLiderazgoGuiaIII(data)
                         .export('png')
                         .then(function(imagen)
                         {
-                            chartPngs[
-                                'liderazgoChart'
+                            window.chartPngs =
+                                window.chartPngs || {};
+
+                            window.chartPngs[
+                                nombreGrafica
                             ] = imagen;
 
                             console.log(
-                                'liderazgoChart exportado exitosamente'
+                                nombreGrafica +
+                                ' exportado exitosamente'
                             );
                         })
                         .catch(function(error)
                         {
                             console.error(
-                                'Error al exportar liderazgoChart:',
+                                'Error al exportar ' +
+                                nombreGrafica +
+                                ':',
                                 error
                             );
                         });
 
                 } else {
+
                     console.log(
                         'Plugin de exportación no disponible'
                     );
@@ -9183,18 +10512,23 @@ function crearGraficaLiderazgoGuiaIII(data)
 }
 
 // CATEGORIA ENTORNO ORGANIZACIONAL 
+
 function cargarGraficaEntornoGuiaIII()
 {
     $.get(
         '/obtenerGraficaEntornoGuiaIII/' + proyecto.id,
         function(response)
         {
-            crearGraficaEntornoGuiaIII(response.data);
+            crearGraficaEntornoGuiaIII(
+                response.data
+            );
         }
     )
     .fail(function(xhr)
     {
-        console.error(xhr.responseText);
+        console.error(
+            xhr.responseText
+        );
 
         Swal.fire({
             icon: 'error',
@@ -9204,26 +10538,177 @@ function cargarGraficaEntornoGuiaIII()
     });
 }
 
+
 function crearGraficaEntornoGuiaIII(data)
 {
     if (!Array.isArray(data)) {
         data = [];
     }
 
+    var datosCategoria = [];
+    var datosDominios = [];
+    var encontroSeparador = false;
+
+    data.forEach(function(item)
+    {
+        var category =
+            item.category || '';
+
+        if (
+            category.indexOf('g3-') === 0
+        ) {
+            encontroSeparador = true;
+            return;
+        }
+
+        if (encontroSeparador) {
+            datosDominios.push(item);
+        } else {
+            datosCategoria.push(item);
+        }
+    });
+
+    if (!encontroSeparador) {
+
+        datosCategoria = [];
+        datosDominios = [];
+
+        data.forEach(function(item)
+        {
+            var category =
+                item.category || '';
+
+            var nombre =
+                category
+                    .replace(/^g[123]-/, '')
+                    .trim()
+                    .toLowerCase();
+
+            if (
+                nombre.indexOf(
+                    'reconocimiento del desempeño'
+                ) !== -1 ||
+                nombre.indexOf(
+                    'reconocimiento del desempeno'
+                ) !== -1 ||
+                nombre.indexOf(
+                    'insuficiente sentido de pertenencia'
+                ) !== -1 ||
+                nombre.indexOf(
+                    'inestabilidad'
+                ) !== -1
+            ) {
+                datosDominios.push(item);
+            } else {
+                datosCategoria.push(item);
+            }
+        });
+    }
+
+    var datosDominio1 = [];
+    var datosDominio2 = [];
+
+    datosDominios.forEach(function(item)
+    {
+        var category =
+            item.category || '';
+
+        var nombre =
+            category
+                .replace(/^g[123]-/, '')
+                .trim()
+                .toLowerCase();
+
+        if (
+            nombre.indexOf(
+                'reconocimiento del desempeño'
+            ) !== -1 ||
+            nombre.indexOf(
+                'reconocimiento del desempeno'
+            ) !== -1
+        ) {
+            datosDominio1.push(item);
+        }
+
+        if (
+            nombre.indexOf(
+                'insuficiente sentido de pertenencia'
+            ) !== -1 ||
+            nombre.indexOf(
+                'inestabilidad'
+            ) !== -1
+        ) {
+            datosDominio2.push(item);
+        }
+    });
+
     if (
-        window.entornoChartRoot &&
-        !window.entornoChartRoot.isDisposed()
+        datosDominio1.length === 0 &&
+        datosDominios.length > 0
     ) {
-        window.entornoChartRoot.dispose();
-        window.entornoChartRoot = null;
+        datosDominio1.push(
+            datosDominios[0]
+        );
+    }
+
+    if (
+        datosDominio2.length === 0 &&
+        datosDominios.length > 1
+    ) {
+        datosDominio2.push(
+            datosDominios[1]
+        );
+    }
+
+    crearGraficaEntornoIndividual(
+        datosCategoria,
+        'entornoCategoriaChart',
+        'entornoCategoriaChartRoot',
+        'entornoCategoriaChart',
+        'Entorno organizacional'
+    );
+
+    crearGraficaEntornoIndividual(
+        datosDominio1,
+        'entornoDominio1Chart',
+        'entornoDominio1ChartRoot',
+        'entornoDominio1Chart',
+        'Reconocimiento del desempeño'
+    );
+
+    crearGraficaEntornoIndividual(
+        datosDominio2,
+        'entornoDominio2Chart',
+        'entornoDominio2ChartRoot',
+        'entornoDominio2Chart',
+        'Insuficiente sentido de pertenencia e inestabilidad'
+    );
+}
+
+function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafica,titulo)
+{
+    if (!Array.isArray(data)) {
+        data = [];
+    }
+
+    if (
+        window[rootNombre] &&
+        !window[rootNombre].isDisposed()
+    ) {
+        window[rootNombre].dispose();
+        window[rootNombre] = null;
     }
 
     var contenedor =
-        document.getElementById('entornoChart');
+        document.getElementById(
+            contenedorId
+        );
 
     if (!contenedor) {
+
         console.error(
-            'No existe el contenedor #entornoChart'
+            'No existe el contenedor #' +
+            contenedorId
         );
 
         return;
@@ -9236,7 +10721,7 @@ function crearGraficaEntornoGuiaIII(data)
         contenedor.innerHTML = `
             <div style="
                 width:100%;
-                height:650px;
+                height:320px;
                 display:flex;
                 justify-content:center;
                 align-items:center;
@@ -9248,18 +10733,23 @@ function crearGraficaEntornoGuiaIII(data)
             </div>
         `;
 
-        if (typeof chartPngs !== 'undefined') {
-            chartPngs['entornoChart'] = null;
-        }
+        window.chartPngs =
+            window.chartPngs || {};
+
+        window.chartPngs[
+            nombreGrafica
+        ] = null;
 
         return;
     }
 
-    window.entornoChartRoot =
-        am5.Root.new('entornoChart');
+    window[rootNombre] =
+        am5.Root.new(
+            contenedorId
+        );
 
     var root =
-        window.entornoChartRoot;
+        window[rootNombre];
 
     root.setThemes([
         am5themes_Animated.new(root)
@@ -9275,6 +10765,8 @@ function crearGraficaEntornoGuiaIII(data)
                     wheelX: 'none',
                     wheelY: 'none',
                     layout: root.verticalLayout,
+                    paddingTop: 0,
+                    paddingBottom: 0,
                     paddingLeft: 0,
                     paddingRight: 20
                 }
@@ -9285,12 +10777,16 @@ function crearGraficaEntornoGuiaIII(data)
         am5.Label.new(
             root,
             {
-                text: "Categoría\n\n\n",
+                text: titulo,
                 fontSize: 18,
                 fontWeight: 'bold',
                 textAlign: 'center',
                 x: am5.p50,
-                centerX: am5.p50
+                centerX: am5.p50,
+                marginTop: 5,
+                marginBottom: 15,
+                paddingTop: 0,
+                paddingBottom: 0
             }
         )
     );
@@ -9301,7 +10797,11 @@ function crearGraficaEntornoGuiaIII(data)
                 root,
                 {
                     centerX: am5.p50,
-                    x: am5.p50
+                    x: am5.p50,
+                    marginTop: 5,
+                    marginBottom: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0
                 }
             )
         );
@@ -9326,8 +10826,8 @@ function crearGraficaEntornoGuiaIII(data)
             root,
             {
                 inversed: true,
-                cellStartLocation: 0.05,
-                cellEndLocation: 0.90,
+                cellStartLocation: 0.15,
+                cellEndLocation: 0.85,
                 minGridDistance: 0
             }
         );
@@ -9339,7 +10839,11 @@ function crearGraficaEntornoGuiaIII(data)
                 {
                     categoryField: 'category',
                     renderer: yAxisRenderer,
-                    tooltip: am5.Tooltip.new(root, {})
+                    tooltip:
+                        am5.Tooltip.new(
+                            root,
+                            {}
+                        )
                 }
             )
         );
@@ -9357,48 +10861,13 @@ function crearGraficaEntornoGuiaIII(data)
     });
 
     yAxisRenderer.labels.template.setAll({
-        fontSize: 18,
-        fontWeight: 'bold',
-        centerY: am5.p50,
-        centerX: am5.p0,
-        textAlign: 'center',
-        inside: true,
-        rotation: 0,
-        paddingTop: -100,
-        oversizedBehavior: 'wrap',
-        maxWidth: 380
+        forceHidden: true,
+        visible: false
     });
 
-    yAxisRenderer
-        .labels
-        .template
-        .adapters
-        .add(
-            'text',
-            function(text, target)
-            {
-                if (!target.dataItem) {
-                    return text;
-                }
-
-                var category =
-                    target.dataItem.get('category') || '';
-
-                if (
-                    category.indexOf('g1-') === 0 ||
-                    category.indexOf('g2-') === 0 ||
-                    category.indexOf('g3-') === 0
-                ) {
-                    return '[bold]' +
-                        category.substring(3) +
-                        '[/]';
-                }
-
-                return category;
-            }
-        );
-
-    yAxis.data.setAll(data);
+    yAxis.data.setAll(
+        data
+    );
 
     var xAxisRenderer =
         am5xy.AxisRendererX.new(
@@ -9440,6 +10909,7 @@ function crearGraficaEntornoGuiaIII(data)
     });
 
     if (xAxisRenderer.baseGrid) {
+
         xAxisRenderer.baseGrid.setAll({
             forceHidden: true,
             visible: false,
@@ -9459,13 +10929,23 @@ function crearGraficaEntornoGuiaIII(data)
             );
 
         if (total <= 0) {
-            return [0, 0, 0, 0, 0];
+
+            return [
+                0,
+                0,
+                0,
+                0,
+                0
+            ];
         }
 
         var porcentajesExactos =
             valores.map(function(valor)
             {
-                return (valor / total) * 100;
+                return (
+                    valor /
+                    total
+                ) * 100;
             });
 
         var porcentajesEnteros =
@@ -9494,7 +10974,9 @@ function crearGraficaEntornoGuiaIII(data)
                         indice: indice,
                         residuo:
                             valor -
-                            porcentajesEnteros[indice]
+                            porcentajesEnteros[
+                                indice
+                            ]
                     };
                 }
             );
@@ -9521,44 +11003,38 @@ function crearGraficaEntornoGuiaIII(data)
     {
         return datos.map(function(item)
         {
-            if (
-                item.category &&
-                item.category.indexOf('g3-') === 0
-            ) {
-                return {
-                    category: item.category,
-                    s1: null,
-                    s2: null,
-                    s3: null,
-                    s4: null,
-                    s5: null,
-                    percentage_s1: null,
-                    percentage_s2: null,
-                    percentage_s3: null,
-                    percentage_s4: null,
-                    percentage_s5: null,
-                    visual_s1: null,
-                    visual_s2: null,
-                    visual_s3: null,
-                    visual_s4: null,
-                    visual_s5: null
-                };
-            }
+            var category =
+                item.category || '';
 
             var s1 =
-                parseInt(item.s1, 10) || 0;
+                parseInt(
+                    item.s1,
+                    10
+                ) || 0;
 
             var s2 =
-                parseInt(item.s2, 10) || 0;
+                parseInt(
+                    item.s2,
+                    10
+                ) || 0;
 
             var s3 =
-                parseInt(item.s3, 10) || 0;
+                parseInt(
+                    item.s3,
+                    10
+                ) || 0;
 
             var s4 =
-                parseInt(item.s4, 10) || 0;
+                parseInt(
+                    item.s4,
+                    10
+                ) || 0;
 
             var s5 =
-                parseInt(item.s5, 10) || 0;
+                parseInt(
+                    item.s5,
+                    10
+                ) || 0;
 
             var valores = [
                 s1,
@@ -9578,8 +11054,9 @@ function crearGraficaEntornoGuiaIII(data)
                 );
 
             if (total <= 0) {
+
                 return {
-                    category: item.category,
+                    category: category,
                     s1: s1,
                     s2: s2,
                     s3: s3,
@@ -9599,12 +11076,17 @@ function crearGraficaEntornoGuiaIII(data)
             }
 
             var porcentajesEnteros =
-                obtenerPorcentajesEnteros(valores);
+                obtenerPorcentajesEnteros(
+                    valores
+                );
 
             var porcentajesExactos =
                 valores.map(function(valor)
                 {
-                    return (valor / total) * 100;
+                    return (
+                        valor /
+                        total
+                    ) * 100;
                 });
 
             var minimoVisual = 8;
@@ -9613,7 +11095,9 @@ function crearGraficaEntornoGuiaIII(data)
                 porcentajesExactos.map(
                     function(porcentaje, indice)
                     {
-                        if (valores[indice] <= 0) {
+                        if (
+                            valores[indice] <= 0
+                        ) {
                             return 0;
                         }
 
@@ -9634,6 +11118,7 @@ function crearGraficaEntornoGuiaIII(data)
                 );
 
             if (totalVisual > 0) {
+
                 valoresVisuales =
                     valoresVisuales.map(
                         function(valor)
@@ -9647,7 +11132,7 @@ function crearGraficaEntornoGuiaIII(data)
             }
 
             return {
-                category: item.category,
+                category: category,
                 s1: s1,
                 s2: s2,
                 s3: s3,
@@ -9678,7 +11163,9 @@ function crearGraficaEntornoGuiaIII(data)
     }
 
     var processedData =
-        calcularDatos(data);
+        calcularDatos(
+            data
+        );
 
     function makeSeries(
         name,
@@ -9696,8 +11183,10 @@ function crearGraficaEntornoGuiaIII(data)
                         xAxis: xAxis,
                         yAxis: yAxis,
                         stacked: true,
-                        valueXField: visualField,
-                        categoryYField: 'category',
+                        valueXField:
+                            visualField,
+                        categoryYField:
+                            'category',
                         stroke: color,
                         fill: color
                     }
@@ -9705,37 +11194,16 @@ function crearGraficaEntornoGuiaIII(data)
             );
 
         series.columns.template.setAll({
-            height: am5.percent(85),
+            height: am5.percent(70),
             tooltipY: 0,
-            stroke: am5.color(0x000000),
+            stroke:
+                am5.color(
+                    0x000000
+                ),
             strokeWidth: 0.5,
             tooltipText:
                 '{name}: {cantidad} trabajadores ({porcentaje}%)'
         });
-
-        series.columns.template.adapters.add(
-            'forceHidden',
-            function(forceHidden, target)
-            {
-                if (
-                    target.dataItem &&
-                    target.dataItem.dataContext
-                ) {
-                    var category =
-                        target.dataItem
-                            .dataContext
-                            .category || '';
-
-                    if (
-                        category.indexOf('g3-') === 0
-                    ) {
-                        return true;
-                    }
-                }
-
-                return forceHidden;
-            }
-        );
 
         series.bullets.push(function(
             rootBullet,
@@ -9744,15 +11212,6 @@ function crearGraficaEntornoGuiaIII(data)
         ) {
             var contexto =
                 dataItem.dataContext || {};
-
-            var category =
-                contexto.category || '';
-
-            if (
-                category.indexOf('g3-') === 0
-            ) {
-                return undefined;
-            }
 
             var cantidad =
                 parseInt(
@@ -9794,17 +11253,19 @@ function crearGraficaEntornoGuiaIII(data)
                                     ' (' +
                                     porcentaje +
                                     '%)',
-
                                 centerX: am5.p50,
                                 centerY: am5.p50,
                                 populateText: false,
-                                fontSize: tamanioLetra,
+                                fontSize:
+                                    tamanioLetra,
                                 fill:
                                     am5.color(
                                         0x000000
                                     ),
-                                fontWeight: 'bold',
-                                textAlign: 'center',
+                                fontWeight:
+                                    'bold',
+                                textAlign:
+                                    'center',
                                 paddingLeft: 1,
                                 paddingRight: 1
                             }
@@ -9814,43 +11275,34 @@ function crearGraficaEntornoGuiaIII(data)
         });
 
         var datosSerie =
-            processedData.map(function(item)
-            {
-                if (
-                    item.category &&
-                    item.category.indexOf('g3-') === 0
-                ) {
-                    var filaVacia = {
-                        category: item.category,
-                        cantidad: null,
-                        porcentaje: null
+            processedData.map(
+                function(item)
+                {
+                    var fila = {
+                        category:
+                            item.category,
+                        cantidad:
+                            item[cantidadField],
+                        porcentaje:
+                            item[porcentajeField]
                     };
 
-                    filaVacia[visualField] =
-                        null;
+                    fila[visualField] =
+                        item[visualField];
 
-                    return filaVacia;
+                    return fila;
                 }
+            );
 
-                var fila = {
-                    category: item.category,
-                    cantidad:
-                        item[cantidadField],
-                    porcentaje:
-                        item[porcentajeField]
-                };
-
-                fila[visualField] =
-                    item[visualField];
-
-                return fila;
-            });
-
-        series.data.setAll(datosSerie);
+        series.data.setAll(
+            datosSerie
+        );
 
         series.appear();
 
-        legend.data.push(series);
+        legend.data.push(
+            series
+        );
     }
 
     makeSeries(
@@ -9894,7 +11346,10 @@ function crearGraficaEntornoGuiaIII(data)
     );
 
     chart
-        .appear(1000, 100)
+        .appear(
+            1000,
+            100
+        )
         .then(function()
         {
             setTimeout(function()
@@ -9912,12 +11367,12 @@ function crearGraficaEntornoGuiaIII(data)
                                     menu:
                                         am5plugins_exporting
                                             .ExportingMenu
-                                            .new(root, {}),
-
+                                            .new(
+                                                root,
+                                                {}
+                                            ),
                                     dpi: 300,
-
                                     maxWidth: 2000,
-
                                     maxHeight: 2000
                                 }
                             );
@@ -9926,23 +11381,30 @@ function crearGraficaEntornoGuiaIII(data)
                         .export('png')
                         .then(function(imagen)
                         {
-                            chartPngs[
-                                'entornoChart'
+                            window.chartPngs =
+                                window.chartPngs || {};
+
+                            window.chartPngs[
+                                nombreGrafica
                             ] = imagen;
 
                             console.log(
-                                'entornoChart exportado exitosamente'
+                                nombreGrafica +
+                                ' exportado exitosamente'
                             );
                         })
                         .catch(function(error)
                         {
                             console.error(
-                                'Error al exportar entornoChart:',
+                                'Error al exportar ' +
+                                nombreGrafica +
+                                ':',
                                 error
                             );
                         });
 
                 } else {
+
                     console.log(
                         'Plugin de exportación no disponible'
                     );
@@ -9951,8 +11413,6 @@ function crearGraficaEntornoGuiaIII(data)
             }, 1000);
         });
 }
-
-
 
 ////// GUARDAR ANALISIS DE LAS GRAFICAS
 
@@ -10192,6 +11652,11 @@ $("#form_analisis_grafica_guia1").on("submit", function(e)
 
 });
 
+
+
+
+////// GUARDAR ANALISIS DE LAS GRAFICAS CATEGORIAS Y DOMINIOS
+
 $("#form_analisis_grafica_ambiente").on("submit", function(e)
 {
     e.preventDefault();
@@ -10200,8 +11665,7 @@ $("#form_analisis_grafica_ambiente").on("submit", function(e)
     formData.append('PROYECTO_ID', proyecto.id);
 
     $.ajax({
-
-        url: '/guardaranalisisgraficatambiente',
+        url: '/guardaranalisisgraficacatambiente',
         type: 'POST',
         data: formData,
         contentType: false,
@@ -10233,22 +11697,76 @@ $("#form_analisis_grafica_ambiente").on("submit", function(e)
         error: function(xhr)
         {
             console.log(xhr.responseText);
+
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Ocurrió un error al guardar'
             });
-
         },
 
         complete: function()
         {
-
             $("#botonguardar_analisis_grafica_ambiente").prop('disabled', false);
             $("#botonguardar_analisis_grafica_ambiente").html('Guardar <i class="fa fa-save"></i>');
         }
     });
+});
 
+$("#form_analisis_grafica_dominio_ambiente").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+        url: '/guardaranalisisgraficadomambiente',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_ambiente").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio_ambiente").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            consultarEstadosMenusReportePsico();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_ambiente").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio_ambiente").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
 });
 
 $("#form_analisis_grafica_factores").on("submit", function(e)
@@ -10259,8 +11777,7 @@ $("#form_analisis_grafica_factores").on("submit", function(e)
     formData.append('PROYECTO_ID', proyecto.id);
 
     $.ajax({
-
-        url: '/guardaranalisisgraficatfactores',
+        url: '/guardaranalisisgraficacatfactores',
         type: 'POST',
         data: formData,
         contentType: false,
@@ -10278,7 +11795,6 @@ $("#form_analisis_grafica_factores").on("submit", function(e)
 
         success: function(response)
         {
-
             consultarEstadosMenusReportePsico();
 
             Swal.fire({
@@ -10293,22 +11809,132 @@ $("#form_analisis_grafica_factores").on("submit", function(e)
         error: function(xhr)
         {
             console.log(xhr.responseText);
+
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Ocurrió un error al guardar'
             });
-
         },
 
         complete: function()
         {
-
             $("#botonguardar_analisis_grafica_factores").prop('disabled', false);
             $("#botonguardar_analisis_grafica_factores").html('Guardar <i class="fa fa-save"></i>');
         }
     });
+});
 
+$("#form_analisis_grafica_dominio_factores_1").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+        url: '/guardaranalisisgraficadomfactores1',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_factores_1").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio_factores_1").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            consultarEstadosMenusReportePsico();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_factores_1").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio_factores_1").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+$("#form_analisis_grafica_dominio_factores_2").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+        url: '/guardaranalisisgraficadomfactores2',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_factores_2").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio_factores_2").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            consultarEstadosMenusReportePsico();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_factores_2").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio_factores_2").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
 });
 
 $("#form_analisis_grafica_organizacion").on("submit", function(e)
@@ -10319,8 +11945,7 @@ $("#form_analisis_grafica_organizacion").on("submit", function(e)
     formData.append('PROYECTO_ID', proyecto.id);
 
     $.ajax({
-
-        url: '/guardaranalisisgraficatorganizacion',
+        url: '/guardaranalisisgraficacatorganizacion',
         type: 'POST',
         data: formData,
         contentType: false,
@@ -10352,22 +11977,132 @@ $("#form_analisis_grafica_organizacion").on("submit", function(e)
         error: function(xhr)
         {
             console.log(xhr.responseText);
+
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Ocurrió un error al guardar'
             });
-
         },
 
         complete: function()
         {
-
             $("#botonguardar_analisis_grafica_organizacion").prop('disabled', false);
             $("#botonguardar_analisis_grafica_organizacion").html('Guardar <i class="fa fa-save"></i>');
         }
     });
+});
 
+$("#form_analisis_grafica_dominio_organizacion_1").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+        url: '/guardaranalisisgraficadomorganizacion1',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_organizacion_1").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio_organizacion_1").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            consultarEstadosMenusReportePsico();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_organizacion_1").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio_organizacion_1").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+$("#form_analisis_grafica_dominio_organizacion_2").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+        url: '/guardaranalisisgraficadomorganizacion2',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_organizacion_2").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio_organizacion_2").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            consultarEstadosMenusReportePsico();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_organizacion_2").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio_organizacion_2").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
 });
 
 $("#form_analisis_grafica_liderazgo").on("submit", function(e)
@@ -10378,8 +12113,7 @@ $("#form_analisis_grafica_liderazgo").on("submit", function(e)
     formData.append('PROYECTO_ID', proyecto.id);
 
     $.ajax({
-
-        url: '/guardaranalisisgraficatliderazgo',
+        url: '/guardaranalisisgraficacatliderazgo',
         type: 'POST',
         data: formData,
         contentType: false,
@@ -10411,22 +12145,188 @@ $("#form_analisis_grafica_liderazgo").on("submit", function(e)
         error: function(xhr)
         {
             console.log(xhr.responseText);
+
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Ocurrió un error al guardar'
             });
-
         },
 
         complete: function()
         {
-
             $("#botonguardar_analisis_grafica_liderazgo").prop('disabled', false);
             $("#botonguardar_analisis_grafica_liderazgo").html('Guardar <i class="fa fa-save"></i>');
         }
     });
+});
 
+$("#form_analisis_grafica_dominio_liderazgo_1").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+        url: '/guardaranalisisgraficadomliderazgo1',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_1").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_1").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            consultarEstadosMenusReportePsico();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_1").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_1").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+$("#form_analisis_grafica_dominio_liderazgo_2").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+        url: '/guardaranalisisgraficadomliderazgo2',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_2").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_2").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            consultarEstadosMenusReportePsico();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_2").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_2").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+$("#form_analisis_grafica_dominio_liderazgo_3").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+        url: '/guardaranalisisgraficadomliderazgo3',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_3").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_3").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            consultarEstadosMenusReportePsico();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_3").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio_liderazgo_3").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
 });
 
 $("#form_analisis_grafica_entorno").on("submit", function(e)
@@ -10437,8 +12337,7 @@ $("#form_analisis_grafica_entorno").on("submit", function(e)
     formData.append('PROYECTO_ID', proyecto.id);
 
     $.ajax({
-
-        url: '/guardaranalisisgraficatentorno',
+        url: '/guardaranalisisgraficacatentorno',
         type: 'POST',
         data: formData,
         contentType: false,
@@ -10470,23 +12369,134 @@ $("#form_analisis_grafica_entorno").on("submit", function(e)
         error: function(xhr)
         {
             console.log(xhr.responseText);
+
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Ocurrió un error al guardar'
             });
-
         },
 
         complete: function()
         {
-
             $("#botonguardar_analisis_grafica_entorno").prop('disabled', false);
             $("#botonguardar_analisis_grafica_entorno").html('Guardar <i class="fa fa-save"></i>');
         }
     });
-
 });
+
+$("#form_analisis_grafica_dominio_entorno_1").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+        url: '/guardaranalisisgraficadomentorno1',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_entorno_1").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio_entorno_1").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            consultarEstadosMenusReportePsico();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_entorno_1").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio_entorno_1").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+$("#form_analisis_grafica_dominio_entorno_2").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('PROYECTO_ID', proyecto.id);
+
+    $.ajax({
+        url: '/guardaranalisisgraficadomentorno2',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_entorno_2").prop('disabled', true);
+            $("#botonguardar_analisis_grafica_dominio_entorno_2").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            consultarEstadosMenusReportePsico();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_analisis_grafica_dominio_entorno_2").prop('disabled', false);
+            $("#botonguardar_analisis_grafica_dominio_entorno_2").html('Guardar <i class="fa fa-save"></i>');
+        }
+    });
+});
+
 
 ////  CONTAR CUANTAS FOTOS HAY DE EVIDENCIA
 
@@ -10740,25 +12750,18 @@ function mostrarConclusiones(datos)
     );
 }
 
-$(document).on(
-    "click",
-    "#boton_nueva_conclusion",
+$(document).on("click","#boton_nueva_conclusion",
     function()
     {
         agregarConclusion('', '');
     }
 );
 
-$(document).on(
-    "click",
-    ".boton_eliminar_conclusion",
+$(document).on("click",".boton_eliminar_conclusion",
     function()
     {
-        var totalConclusiones =
-            $("#contenedor_conclusiones .conclusion-item").length;
-
+        var totalConclusiones = $("#contenedor_conclusiones .conclusion-item").length;
         if (totalConclusiones <= 1) {
-
             Swal.fire({
                 icon: "warning",
                 title: "Aviso",
@@ -10768,11 +12771,8 @@ $(document).on(
             return;
         }
 
-        var indice =
-            $(this).data("indice");
-
+        var indice = $(this).data("indice");
         $("#conclusion_item_" + indice).remove();
-
         actualizarNumeracionConclusiones();
     }
 );
@@ -11779,9 +13779,6 @@ function generarGraficaDistribucionRiesgoPsico(datos,totalTrabajadores)
     );
 }
 
-
-
-
 function cargarGraficaTrabajadoresATSpsico()
 {
     if (window.rootTrabajadoresATSpsico) {
@@ -12073,8 +14070,462 @@ function generarGraficaTrabajadoresATSpsico(datos,requiereValoracion,noRequiereV
     );
 }
 
+function cargarGraficaCumplimientoNormativoPsico()
+{
+    if (window.rootCumplimientoNormativo) {
+
+        if (
+            !window.rootCumplimientoNormativo
+                .isDisposed()
+        ) {
+
+            window.rootCumplimientoNormativo
+                .dispose();
+        }
+
+        window.rootCumplimientoNormativo = null;
+    }
+
+    $('#grafica_nivel_riesgo').html(`
+        <div class="mensaje-sin-datos-cumplimiento">
+            Consultando información...
+        </div>
+    `);
+
+    $.get(
+        '/obtenerGraficaCalificacionPsico/' +
+        proyecto.id,
+
+        function(response)
+        {
+            generarGraficaCumplimientoNormativoPsico(
+                response.data || [],
+                response.total_trabajadores || 0
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(xhr.responseText);
+
+        $('#grafica_nivel_riesgo').html(`
+            <div class="mensaje-sin-datos-cumplimiento">
+                No hay información disponible
+            </div>
+        `);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No fue posible consultar el cumplimiento normativo'
+        });
+    });
+}
+
+function generarGraficaCumplimientoNormativoPsico(datos,totalTrabajadores)
+{
+    if (!Array.isArray(datos)) {
+        datos = [];
+    }
+
+    totalTrabajadores =
+        parseInt(totalTrabajadores) || 0;
+
+ 
+    if (window.rootCumplimientoNormativo) {
+
+        if (
+            !window.rootCumplimientoNormativo
+                .isDisposed()
+        ) {
+
+            window.rootCumplimientoNormativo
+                .dispose();
+        }
+
+        window.rootCumplimientoNormativo = null;
+    }
+
+    var muyAlto = 0;
+    var alto = 0;
+    var medio = 0;
+    var bajo = 0;
+    var nulo = 0;
+
+    datos.forEach(function(item)
+    {
+        var cantidad =
+            parseInt(item.value) || 0;
+
+        if (item.category === 'Muy alto') {
+
+            muyAlto = cantidad;
+
+        } else if (item.category === 'Alto') {
+
+            alto = cantidad;
+
+        } else if (item.category === 'Medio') {
+
+            medio = cantidad;
+
+        } else if (item.category === 'Bajo') {
+
+            bajo = cantidad;
+
+        } else if (
+            item.category ===
+            'Nulo o despreciable'
+        ) {
+
+            nulo = cantidad;
+        }
+    });
 
 
+    if (totalTrabajadores === 0) {
+
+        totalTrabajadores =
+            muyAlto +
+            alto +
+            medio +
+            bajo +
+            nulo;
+    }
+
+    if (totalTrabajadores === 0) {
+
+        $('#grafica_nivel_riesgo').html(`
+            <div class="mensaje-sin-datos-cumplimiento">
+                No hay información disponible
+            </div>
+        `);
+
+        return;
+    }
+
+    var totalFueraNorma =
+        muyAlto +
+        alto +
+        medio;
+
+    var totalDentroNorma =
+        bajo +
+        nulo;
+
+    var porcentajeFueraNorma =
+        (
+            totalFueraNorma /
+            totalTrabajadores
+        ) * 100;
+
+    var porcentajeDentroNorma =
+        (
+            totalDentroNorma /
+            totalTrabajadores
+        ) * 100;
+
+    porcentajeFueraNorma =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                porcentajeFueraNorma
+            )
+        );
+
+    porcentajeDentroNorma =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                porcentajeDentroNorma
+            )
+        );
+
+    if (
+        porcentajeFueraNorma +
+        porcentajeDentroNorma > 0
+    ) {
+
+        porcentajeDentroNorma =
+            100 -
+            porcentajeFueraNorma;
+    }
+
+    var posicionAguja = 0;
+
+    if (porcentajeDentroNorma > 0) {
+
+        posicionAguja =
+            porcentajeFueraNorma +
+            (
+                porcentajeDentroNorma /
+                2
+            );
+
+    } else if (porcentajeFueraNorma > 0) {
+
+        posicionAguja =
+            porcentajeFueraNorma /
+            2;
+    }
+
+    var anguloAguja =
+        180 +
+        (
+            posicionAguja *
+            1.8
+        );
+
+  
+    $('#grafica_nivel_riesgo').html(`
+        <div class="cumplimiento-chart" id="cumplimientoNormativoChart"></div>
+        <div id="aguja_cumplimiento" style="position:absolute; left:50%; top:68%; z-index:5; width:31%; max-width:125px; height:7px; background:#222222; border-radius:7px; transform-origin:0 50%;
+                transform: translateY(-50%) rotate(${anguloAguja}deg); pointer-events:none;"></div>
+        <div id="centro_aguja_cumplimiento" style=" position:absolute; left:50%; top:68%; z-index:6; width:18px; height:18px; background:#222222; border-radius:50%; transform:translate(-50%, -50%); pointer-events:none;"></div>
+        <div id="texto_centro_cumplimiento" style=" position:absolute; top:43%; left:50%; z-index:7; width:160px; color:#222222; text-align:center; transform:translate(-50%, -50%); pointer-events:none">
+            <div id="porcentaje_dentro_norma" style=" font-size:24px; font-weight:700; line-height:1;">
+                ${porcentajeDentroNorma.toFixed(1)}%
+            </div>
+            <div id="descripcion_dentro_norma" style=" margin-top:5px; font-size:11px; font-weight:600; line-height:1.1;">
+                Dentro de norma
+            </div>
+        </div>
+        <div class="cumplimiento-resultados"id="cumplimiento_resultados">
+            <div class="cumplimiento-resultado-item fuera-norma" id="resultado_fuera_norma">
+                <span class="cumplimiento-color color-rojo"></span>
+                <span>
+                    Fuera de norma
+                </span>
+                <strong id="porcentaje_fuera_norma">
+                    ${porcentajeFueraNorma.toFixed(1)}%
+                </strong>
+            </div>
+
+            <div class="cumplimiento-resultado-item dentro-norma" id="resultado_dentro_norma">
+                <span class="cumplimiento-color color-verde"></span>
+                <span>
+                    Dentro de norma
+                </span
+                <strong id="porcentaje_dentro_norma_leyenda">
+                    ${porcentajeDentroNorma.toFixed(1)}%
+                </strong>
+            </div>
+        </div>
+    `);
+
+    if (porcentajeFueraNorma <= 0) {
+
+        $('#resultado_fuera_norma').hide();
+
+    } else {
+
+        $('#resultado_fuera_norma').show();
+    }
+
+
+    if (porcentajeDentroNorma <= 0) {
+
+        $('#resultado_dentro_norma').hide();
+
+        $('#texto_centro_cumplimiento').hide();
+
+    } else {
+
+        $('#resultado_dentro_norma').show();
+
+        $('#texto_centro_cumplimiento').show();
+    }
+
+
+    var datosVelocimetro = [];
+
+    if (porcentajeFueraNorma > 0) {
+
+        datosVelocimetro.push({
+            category:
+                'Fuera de norma',
+
+            value:
+                porcentajeFueraNorma,
+
+            color:
+                '#E30613'
+        });
+    }
+
+    if (porcentajeDentroNorma > 0) {
+
+        datosVelocimetro.push({
+            category:
+                'Dentro de norma',
+
+            value:
+                porcentajeDentroNorma,
+
+            color:
+                '#00B050'
+        });
+    }
+
+    var root =
+        am5.Root.new(
+            'cumplimientoNormativoChart'
+        );
+
+    window.rootCumplimientoNormativo =
+        root;
+
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+    if (root._logo) {
+        root._logo.dispose();
+    }
+
+    var chart =
+        root.container.children.push(
+
+            am5percent.PieChart.new(
+                root,
+                {
+                    startAngle:
+                        180,
+
+                    endAngle:
+                        360,
+
+                    innerRadius:
+                        am5.percent(61),
+
+                    radius:
+                        am5.percent(94),
+
+                    paddingTop:
+                        5,
+
+                    paddingBottom:
+                        0,
+
+                    paddingLeft:
+                        10,
+
+                    paddingRight:
+                        10
+                }
+            )
+        );
+
+    var series =
+        chart.series.push(
+
+            am5percent.PieSeries.new(
+                root,
+                {
+                    startAngle:
+                        180,
+
+                    endAngle:
+                        360,
+
+                    valueField:
+                        'value',
+
+                    categoryField:
+                        'category',
+
+                    alignLabels:
+                        false
+                }
+            )
+        );
+
+    series.slices.template.adapters.add(
+        'fill',
+
+        function(fill, target)
+        {
+            if (
+                target.dataItem &&
+                target.dataItem.dataContext &&
+                target.dataItem
+                    .dataContext
+                    .color
+            ) {
+
+                return am5.color(
+                    target.dataItem
+                        .dataContext
+                        .color
+                );
+            }
+
+            return fill;
+        }
+    );
+
+    series.slices.template.adapters.add(
+        'stroke',
+
+        function(stroke, target)
+        {
+            if (
+                target.dataItem &&
+                target.dataItem.dataContext &&
+                target.dataItem
+                    .dataContext
+                    .color
+            ) {
+
+                return am5.color(
+                    target.dataItem
+                        .dataContext
+                        .color
+                );
+            }
+
+            return stroke;
+        }
+    );
+
+    series.slices.template.setAll({
+        strokeWidth: 0,
+
+        toggleKey:
+            'none',
+
+        interactive:
+            false,
+
+        tooltipText:
+            '{category}: ' +
+            '{value.formatNumber("0.0")}%'
+    });
+
+    series.labels.template.setAll({
+        forceHidden: true
+    });
+
+    series.ticks.template.setAll({
+        forceHidden: true
+    });
+
+    series.data.setAll(
+        datosVelocimetro
+    );
+
+    series.appear(
+        800,
+        100
+    );
+
+    chart.appear(
+        800,
+        100
+    );
+}
 
 function cargarRecomendacionesPrioritariasPsico()
 {
@@ -12138,9 +14589,7 @@ function mostrarRecomendacionesPrioritariasPsico(
     }
 
     var iconos = [
-        'fa-bullseye',
-        'fa-line-chart',
-        'fa-shield'
+        'fa-bullseye'
     ];
 
     recomendaciones.forEach(
@@ -12314,4 +14763,133 @@ function marcarMenuPendiente(menuId)
         .removeClass('fa-check')
         .addClass('fa-times')
         .css('color', '#FF0000');
+}
+
+
+/// AREAS CATEGORIAS PSICO
+
+
+
+var datatable_areas = null;
+
+function tabla_areas(proyecto_id)
+{
+    try
+    {
+        var ruta = "/areascategoriaspsico/" + proyecto.id;
+
+        if (datatable_areas != null)
+        {
+            datatable_areas.clear().draw();
+            datatable_areas.ajax.url(ruta).load();
+
+            return;
+        }
+
+        var numeroejecucion = 1;
+
+        datatable_areas = $('#tabla_areas').DataTable({
+            ajax: {
+                url: ruta,
+                type: "GET",
+                cache: false,
+                dataType: "json",
+
+                dataSrc: function (json)
+                {
+                    return json.data;
+                },
+
+                error: function (xhr, error, code)
+                {
+                    console.log(
+                        'Error en datatable_areas: ' + code
+                    );
+
+                    if (numeroejecucion <= 1)
+                    {
+                        numeroejecucion++;
+                        tabla_areas(proyecto_id);
+                    }
+                }
+            },
+
+            columns: [
+                {
+                    data: "numero_registro",
+                    defaultContent: "-",
+                    orderable: false
+                },
+                {
+                    data: "reportearea_nombre",
+                    defaultContent: "-",
+                    orderable: false
+                },
+                {
+                    data: "reportecategoria_nombre",
+                    defaultContent: "-",
+                    orderable: false
+                },
+                {
+                    data: "reporteareacategoria_total",
+                    defaultContent: "-",
+                    orderable: false
+                },
+                {
+                    data: "actividadprincipal",
+                    defaultContent: "Sin descripción registrada",
+                    orderable: false,
+                    render: function (data, type, row)
+                    {
+                        if (
+                            data === null ||
+                            data === undefined ||
+                            $.trim(data) === ''
+                        ) {
+                            return 'Sin descripción registrada';
+                        }
+
+                        return data;
+                    }
+                }
+            ],
+
+            lengthMenu: [
+                [30, 50, 100, -1],
+                [30, 50, 100, "Todos"]
+            ],
+
+            rowsGroup: [4, 0, 1],
+            ordering: false,
+            processing: true,
+            searching: true,
+            paging: true,
+
+            language: {
+                lengthMenu: "Mostrar _MENU_ Registros",
+                zeroRecords: "No se encontraron registros",
+                info: "Página _PAGE_ de _PAGES_ (Total _TOTAL_ registros)",
+                infoEmpty: "No se encontraron registros",
+                infoFiltered: "(Filtrado de _MAX_ registros)",
+                emptyTable: "No hay datos disponibles en la tabla",
+                loadingRecords: "Cargando datos....",
+                processing: "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+                search: "Buscar",
+
+                paginate: {
+                    first: "Primera",
+                    last: "Última",
+                    next: "Siguiente",
+                    previous: "Anterior"
+                }
+            }
+        });
+    }
+    catch (exception)
+    {
+        console.log(
+            'Error al construir la tabla de áreas:',
+            exception
+        );
+    }
 }
