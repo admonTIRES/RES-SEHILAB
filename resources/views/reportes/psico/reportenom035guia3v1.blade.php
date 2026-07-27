@@ -2061,61 +2061,77 @@ DESCRIPCIONACTIVIDAD
                                     </div>
                                 </div>
 
+                                <style>
+                                    .texto-ats-azul {
+                                        color: #0cc0df !important;
+                                    }
+
+                                    .texto-ats-rojo {
+                                        color: #e00017 !important;
+                                    }
+                                </style>
                                 <div class="indicador-item">
                                     <div class="indicador-imagen">
-                                        <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_ATS.png') }}" alt="Descripción">
-
+                                        <img
+                                            id="imagen_trabajadores_ats"
+                                            src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_ATS_AZUL.png') }}"
+                                            data-imagen-roja="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_ATS.png') }}"
+                                            data-imagen-azul="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_ATS_AZUL.png') }}"
+                                            alt="Trabajadores con acontecimiento traumático severo">
                                     </div>
-
-                                    <div class="indicador-texto texto-rojo">
-                                        <span class="indicador-numero"
-                                            id="total_trabajadores_ats">
+                                    <div class="indicador-texto texto-ats-azul" id="texto_trabajadores_ats">
+                                        <span class="indicador-numero" id="total_trabajadores_ats">
                                             0
                                         </span>
-
                                         Trabajadores<br>
                                         Acontecimiento<br>
                                         Traumático Severo<br>
                                         (ATS)
                                     </div>
+
                                 </div>
 
+
+                                <style>
+                                    .texto-atencion-azul {
+                                        color: #0cc0df !important;
+                                    }
+
+                                    .texto-atencion-rojo {
+                                        color: #e00017 !important;
+                                    }
+                                </style>
                                 <div class="indicador-item">
                                     <div class="indicador-imagen">
-                                        <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_ATENCION.png') }}" alt="Descripción">
-
+                                        <img id="imagen_requieren_atencion"
+                                            src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_ATENCION_AZUL.png') }}"
+                                            data-imagen-roja="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_ATENCION.png') }}"
+                                            data-imagen-azul="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_ATENCION_AZUL.png') }}"
+                                            alt="Trabajadores que requieren atención">
                                     </div>
-
-                                    <div class="indicador-texto texto-rojo">
-                                        <span class="indicador-numero"
-                                            id="total_requieren_atencion">
-                                            0
+                                    <div class="indicador-texto texto-atencion-azul" id="texto_requieren_atencion">
+                                        <span class="indicador-numero" id="total_requieren_atencion">0
                                         </span>
-
                                         Trabajadores<br>
-                                        requieren<br>
+                                        que requieren<br>
                                         atención
                                     </div>
                                 </div>
 
+
                                 <div class="indicador-item">
                                     <div class="indicador-imagen">
                                         <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}" alt="Descripción">
-
                                     </div>
-
                                     <div class="indicador-texto texto-rojo">
-
                                         <span
                                             class="indicador-numero"
                                             id="nombre_categoria_dominio_mayor_riesgo">
                                             Sin información
                                         </span>
-
                                         <span id="tipo_categoria_dominio_mayor_riesgo">
                                             Categoría o dominio
                                         </span>
-
                                         con<br>
                                         más trabajadores<br>
                                         en riesgo
@@ -2499,11 +2515,7 @@ DESCRIPCIONACTIVIDAD
                                                     0
                                                 </span>
 
-                                                <div class="distribucion-alerta">
-                                                    <img
-                                                        src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}"
-                                                        alt="Trabajadores con riesgo">
-                                                </div>
+                                                <div class="distribucion-alerta"></div>
                                             </div>
 
                                             <div
@@ -2706,6 +2718,7 @@ DESCRIPCIONACTIVIDAD
                                         font-size: 11px;
                                         font-weight: 600;
                                     }
+
                                     .cumplimiento-resultados {
                                         position: absolute;
                                         right: 0;
@@ -3304,7 +3317,7 @@ DESCRIPCIONACTIVIDAD
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js_sitio/reportes/reportenom0353v1.js?v=12"></script>
+<script src="/js_sitio/reportes/reportenom0353v1.js?v=13"></script>
 <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
 

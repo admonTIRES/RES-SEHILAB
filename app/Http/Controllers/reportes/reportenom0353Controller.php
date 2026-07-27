@@ -10826,7 +10826,7 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
         }
     }
 
-    public function obtenerTotalTrabajadoresRequierenAtencionPsico($PROYECTO_ID)
+    public function obtenerTotalTrabajadoresRequierenAtencionPsico($PROYECTO_ID) 
     {
         try {
 
@@ -10835,7 +10835,8 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
             if (!$proyecto) {
 
                 return response()->json([
-                    'msj' => 'Proyecto no encontrado',
+                    'msj' =>
+                    'Proyecto no encontrado',
                     'total_requieren_atencion' => 0,
                     'total_muy_alto' => 0,
                     'total_alto' => 0,
@@ -10843,36 +10844,25 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
                 ], 404);
             }
 
-            $reconocimientoPsicoId =
-                $proyecto->reconocimiento_psico_id;
+            $reconocimientoPsicoId = $proyecto->reconocimiento_psico_id;
 
             if (!$reconocimientoPsicoId) {
 
                 return response()->json([
-                    'msj' => 'El proyecto no tiene reconocimiento psicosocial',
-                    'total_requieren_atencion' => 0,
-                    'total_muy_alto' => 0,
-                    'total_alto' => 0,
-                    'total_medio' => 0
+                    'msj' =>
+                    'El proyecto no tiene reconocimiento psicosocial',
+                    'total_requieren_atencion' =>0,
+                    'total_muy_alto' =>0,
+                    'total_alto' =>0,
+                    'total_medio' =>0
                 ]);
             }
 
-            $registros = DB::table(
-                'recopsicoTrabajadoresRespuestas'
-            )
-                ->where(
-                    'RECPSICO_ID',
-                    $reconocimientoPsicoId
-                )
-                ->whereNotNull(
-                    'RECPSICO_GUIAIII_RESPUESTAS'
-                )
-                ->whereRaw(
-                    'TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""'
-                )
-                ->select(
-                    'RECPSICO_GUIAIII_RESPUESTAS'
-                )
+            $registros = DB::table('recopsicoTrabajadoresRespuestas')
+                ->where('RECPSICO_ID',$reconocimientoPsicoId)
+                ->whereNotNull('RECPSICO_GUIAIII_RESPUESTAS')
+                ->whereRaw('TRIM(RECPSICO_GUIAIII_RESPUESTAS) <> ""')
+                ->select('RECPSICO_GUIAIII_RESPUESTAS')
                 ->get();
 
             $totalMuyAlto = 0;
@@ -10881,82 +10871,49 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
 
             foreach ($registros as $registro) {
 
-                $respuestas = json_decode(
-                    $registro->RECPSICO_GUIAIII_RESPUESTAS,
-                    true
-                );
+                $respuestas = json_decode($registro->RECPSICO_GUIAIII_RESPUESTAS,true);
 
                 if (!is_array($respuestas)) {
                     continue;
                 }
-
-                $respuestas = array_slice(
-                    $respuestas,
-                    0,
-                    72
-                );
+                $respuestas = array_slice($respuestas,0,72);
 
                 $calificacionFinal = 0;
 
                 foreach ($respuestas as $respuesta) {
-
-                    if (
-                        $respuesta !== null &&
-                        $respuesta !== '' &&
-                        is_numeric($respuesta)
-                    ) {
+                    if ($respuesta !== null && $respuesta !== '' && is_numeric($respuesta)) 
+                    {
 
                         $calificacionFinal +=
                             (float) $respuesta;
                     }
                 }
 
-                if (
-                    $calificacionFinal >= 75 &&
-                    $calificacionFinal < 99
-                ) {
-
+                if ($calificacionFinal >= 75 && $calificacionFinal < 99)
+                {
                     $totalMedio++;
-
-                } elseif (
-                    $calificacionFinal >= 99 &&
-                    $calificacionFinal < 140
-                ) {
-
+                } elseif ($calificacionFinal >= 99 && $calificacionFinal < 140) 
+                {
                     $totalAlto++;
-
-                } elseif ($calificacionFinal >= 140) {
-
+                } elseif ($calificacionFinal >= 140) 
+                {
                     $totalMuyAlto++;
                 }
             }
-
-          
-            $totalRequierenAtencion =
-                $totalMedio +
-                $totalAlto +
-                $totalMuyAlto;
+            $totalRequierenAtencion = $totalMuyAlto + $totalAlto;
 
             return response()->json([
                 'msj' =>
                 'Información consultada correctamente',
-
-                'total_requieren_atencion' =>
-                $totalRequierenAtencion,
-
-                'total_muy_alto' =>
-                $totalMuyAlto,
-
-                'total_alto' =>
-                $totalAlto,
-
-                'total_medio' =>
-                $totalMedio
+                'total_requieren_atencion' => $totalRequierenAtencion,
+                'total_muy_alto' => $totalMuyAlto,
+                'total_alto' => $totalAlto,
+                'total_medio' => $totalMedio
             ]);
         } catch (Exception $e) {
-
             return response()->json([
-                'msj' => 'Error: ' . $e->getMessage(),
+                'msj' =>
+                'Error: ' . $e->getMessage(),
                 'total_requieren_atencion' => 0,
                 'total_muy_alto' => 0,
                 'total_alto' => 0,

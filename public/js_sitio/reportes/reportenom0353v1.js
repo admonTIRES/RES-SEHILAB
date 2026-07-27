@@ -12927,13 +12927,15 @@ $("#form_reporte_conclusion").on(
 
 /// DASHBOARD
 
+/// Trabajadores Acontecimiento Traumático Severo (ATS)
+
 function cargarTotalTrabajadoresATSpsico()
 {
-   
-    $('#total_trabajadores_ats').text('0');
+    actualizarIndicadorTrabajadoresATS(0);
 
     $.get(
-        '/obtenerTotalTrabajadoresATSpsico/' + proyecto.id,
+        '/obtenerTotalTrabajadoresATSpsico/' +
+        proyecto.id,
 
         function(response)
         {
@@ -12942,7 +12944,7 @@ function cargarTotalTrabajadoresATSpsico()
                     response.total_trabajadores_ats
                 ) || 0;
 
-            $('#total_trabajadores_ats').text(
+            actualizarIndicadorTrabajadoresATS(
                 totalATS
             );
         }
@@ -12951,7 +12953,7 @@ function cargarTotalTrabajadoresATSpsico()
     {
         console.log(xhr.responseText);
 
-        $('#total_trabajadores_ats').text('0');
+        actualizarIndicadorTrabajadoresATS(0);
 
         Swal.fire({
             icon: 'error',
@@ -12961,31 +12963,74 @@ function cargarTotalTrabajadoresATSpsico()
     });
 }
 
+function actualizarIndicadorTrabajadoresATS(
+    totalATS
+)
+{
+    totalATS =
+        parseInt(totalATS) || 0;
+
+    var imagen =
+        $('#imagen_trabajadores_ats');
+
+    var texto =
+        $('#texto_trabajadores_ats');
+
+    $('#total_trabajadores_ats').text(
+        totalATS
+    );
+
+    if (totalATS >= 1) {
+
+        imagen.attr(
+            'src',
+            imagen.attr('data-imagen-roja')
+        );
+
+        texto
+            .removeClass(
+                'texto-ats-azul texto-rojo'
+            )
+            .addClass(
+                'texto-ats-rojo'
+            );
+
+        return;
+    }
+
+    imagen.attr(
+        'src',
+        imagen.attr('data-imagen-azul')
+    );
+
+    texto
+        .removeClass(
+            'texto-ats-rojo texto-rojo'
+        )
+        .addClass(
+            'texto-ats-azul'
+        );
+}
+
+///  Trabajadores requieren atención
+
 function cargarTotalTrabajadoresRequierenAtencionPsico()
 {
-    $('#total_requieren_atencion').text('0');
+  
+    actualizarIndicadorRequierenAtencion(0);
 
-    $.get(
-        '/obtenerTotalTrabajadoresRequierenAtencionPsico/' +
-        proyecto.id,
-
+    $.get('/obtenerTotalTrabajadoresRequierenAtencionPsico/' + proyecto.id,
         function(response)
         {
-            var totalRequierenAtencion =
-                parseInt(
-                    response.total_requieren_atencion
-                ) || 0;
-
-            $('#total_requieren_atencion').text(
-                totalRequierenAtencion
-            );
+            var totalRequierenAtencion = parseInt(response.total_requieren_atencion) || 0;
+            actualizarIndicadorRequierenAtencion(totalRequierenAtencion);
         }
     )
     .fail(function(xhr)
     {
         console.log(xhr.responseText);
 
-        $('#total_requieren_atencion').text('0');
+        actualizarIndicadorRequierenAtencion(0);
 
         Swal.fire({
             icon: 'error',
@@ -12995,6 +13040,35 @@ function cargarTotalTrabajadoresRequierenAtencionPsico()
     });
 }
 
+function actualizarIndicadorRequierenAtencion(totalRequierenAtencion)
+{
+    totalRequierenAtencion =
+        parseInt(
+            totalRequierenAtencion
+        ) || 0;
+
+    var imagen = $('#imagen_requieren_atencion');
+    var texto = $('#texto_requieren_atencion');
+    $('#total_requieren_atencion').text(totalRequierenAtencion);
+
+
+    if (totalRequierenAtencion >= 1) {
+
+        imagen.attr('src',imagen.attr('data-imagen-roja'));
+        texto
+            .removeClass('texto-atencion-azul texto-rojo')
+            .addClass('texto-atencion-rojo');
+        return;
+    }
+
+    imagen.attr('src',imagen.attr('data-imagen-azul'));
+
+    texto
+        .removeClass('texto-atencion-rojo texto-rojo')
+        .addClass('texto-atencion-azul');
+}
+
+/// CATEOGIRA O DIMINIO MAS ALTO 
 function cargarCategoriaODominioMayorRiesgoPsico()
 {
     $('#nombre_categoria_dominio_mayor_riesgo')
@@ -13060,6 +13134,8 @@ function cargarCategoriaODominioMayorRiesgoPsico()
         });
     });
 }
+
+///  Trabajadores con mayor riesgo (categorías) / Trabajadores con mayor riesgo (dominios)
 
 function cargarGraficasMayorRiesgoPsico()
 {
@@ -13479,6 +13555,8 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
     );
 }
 
+///Distribución general de riesgo
+
 function cargarGraficaDistribucionRiesgoPsico()
 {
     limpiarValoresDistribucionRiesgo();
@@ -13779,6 +13857,7 @@ function generarGraficaDistribucionRiesgoPsico(datos,totalTrabajadores)
     );
 }
 
+/// Trabajadores con ATS
 function cargarGraficaTrabajadoresATSpsico()
 {
     if (window.rootTrabajadoresATSpsico) {
@@ -14069,6 +14148,8 @@ function generarGraficaTrabajadoresATSpsico(datos,requiereValoracion,noRequiereV
         100
     );
 }
+
+/// Cumplimiento Normativo
 
 function cargarGraficaCumplimientoNormativoPsico()
 {
@@ -14526,6 +14607,8 @@ function generarGraficaCumplimientoNormativoPsico(datos,totalTrabajadores)
         100
     );
 }
+
+/// Recomendaciones prioritarias
 
 function cargarRecomendacionesPrioritariasPsico()
 {
