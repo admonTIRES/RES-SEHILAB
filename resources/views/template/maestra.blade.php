@@ -207,6 +207,7 @@ use Illuminate\Support\Str;
     {{-- Select search filter --}}
     <link href="/assets/plugins/select-search/selectize.css" rel="stylesheet" type="text/css" />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
     @endif
 
     @if(request()->is('usuario'))
@@ -1237,6 +1238,15 @@ use Illuminate\Support\Str;
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+
+            $('#INFORME_INTRODUCCION').summernote({
+                height: 400
+            });
+
+        });
+    </script>
     @endif
 
 

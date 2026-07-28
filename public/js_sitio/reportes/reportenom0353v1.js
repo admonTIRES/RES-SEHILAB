@@ -284,8 +284,9 @@ $(document).ready(function () {
                         }
 
 
-                         // INTRODUCCIÓN
-                        let contenido = $('#INFORME_INTRODUCCION').val();
+
+                        // INTRODUCCIÓN (SUMMERNOTE)
+                        let contenido = $('#INFORME_INTRODUCCION').summernote('code');
 
                         if (contenido) {
 
@@ -293,7 +294,7 @@ $(document).ready(function () {
                                 contenido = contenido.split(marcador).join(valor || '');
                             });
 
-                            $('#INFORME_INTRODUCCION').val(contenido);
+                            $('#INFORME_INTRODUCCION').summernote('code', contenido);
                         }
 
 
@@ -629,18 +630,27 @@ function cargarDatosGeneralesInformePsico()
             }
 
 
-             if (response.INFORME_INTRODUCCION &&
+
+            if (response.INFORME_INTRODUCCION &&
                 response.INFORME_INTRODUCCION.trim() != '') {
-                $('#INFORME_INTRODUCCION').val(response.INFORME_INTRODUCCION);
+
+                $('#INFORME_INTRODUCCION').summernote(
+                    'code',
+                    response.INFORME_INTRODUCCION
+                );
+
             } else {
-                $('#INFORME_OBJETIVOGENERALES')
-                    .val(`Es un hecho que los Factores de Riesgo Psicosocial (FRPS) inherentes a las diversas actividades que se desarrollan en la industria petrolera no son la excepción. La forma en que las personas se desenvuelven en los ámbitos social y económico encuentra una de sus principales expresiones en el trabajo. Su vida cotidiana, su proyecto de vida y sus experiencias emocionales, cognitivas y sociales se desarrollan, en gran medida, dentro del entorno laboral, considerando el tiempo que se dedica al desempeño de las actividades propias de cada puesto.
-                        
-Tomando en cuenta la importancia de la evaluación e intervención sobre los Factores de Riesgo Psicosocial para promover un estado de bienestar entre las personas trabajadoras, de conformidad con lo establecido en la Norma Oficial Mexicana NOM-035-STPS-2018, Factores de riesgo psicosocial en el trabajo–Identificación, análisis y prevención, NOMBRE_EMPRESA mantiene su compromiso con el cumplimiento de los estándares en materia de seguridad y salud en el trabajo, verificando que la salud de las personas trabajadoras expuestas a Factores de Riesgo Psicosocial no se vea afectada por las condiciones existentes en el centro de trabajo. Para ello, realiza de manera periódica las evaluaciones correspondientes, en apego a la normatividad aplicable y a sus procedimientos internos.
 
-En el presente estudio se describen los resultados obtenidos durante la evaluación de Factores de Riesgo Psicosocial en el ambiente laboral, de acuerdo con lo establecido en la Norma Oficial Mexicana NOM-035-STPS2018, Factores de riesgo psicosocial en el trabajo–Identificación, análisis y prevención, realizada en las áreas de la INSTALACION, los días del XX al XX de MES de AÑO."`);
+                $('#INFORME_INTRODUCCION').summernote(
+                    'code',
+                    `<p>Es un hecho que los Factores de Riesgo Psicosocial (FRPS) inherentes a las diversas actividades que se desarrollan en la industria petrolera no son la excepción. La forma en que las personas se desenvuelven en los ámbitos social y económico encuentra una de sus principales expresiones en el trabajo. Su vida cotidiana, su proyecto de vida y sus experiencias emocionales, cognitivas y sociales se desarrollan, en gran medida, dentro del entorno laboral, considerando el tiempo que se dedica al desempeño de las actividades propias de cada puesto.</p>
+
+            <p>Tomando en cuenta la importancia de la evaluación e intervención sobre los Factores de Riesgo Psicosocial para promover un estado de bienestar entre las personas trabajadoras, de conformidad con lo establecido en la Norma Oficial Mexicana NOM-035-STPS-2018, Factores de riesgo psicosocial en el trabajo–Identificación, análisis y prevención, NOMBRE_EMPRESA mantiene su compromiso con el cumplimiento de los estándares en materia de seguridad y salud en el trabajo, verificando que la salud de las personas trabajadoras expuestas a Factores de Riesgo Psicosocial no se vea afectada por las condiciones existentes en el centro de trabajo. Para ello, realiza de manera periódica las evaluaciones correspondientes, en apego a la normatividad aplicable y a sus procedimientos internos.</p>
+
+            <p>En el presente estudio se describen los resultados obtenidos durante la evaluación de Factores de Riesgo Psicosocial en el ambiente laboral, de acuerdo con lo establecido en la Norma Oficial Mexicana NOM-035-STPS2018, Factores de riesgo psicosocial en el trabajo–Identificación, análisis y prevención, realizada en las áreas de la INSTALACION, <font color="#000000" style="background-color: rgb(255, 255, 0);">"los días del XX al XX de MES de AÑO."</font></p>`
+                );
+
             }
-
 
 
     
