@@ -728,8 +728,6 @@ Se localiza en las coordenadas  COORDENADAS.`);
             $('#ANALISIS_GRAFICA_GUIA1')
                 .val(response.ANALISIS_GRAFICA_GUIA1);       
             
-            $('#ANALISIS_GRAFICA_CATAMBIENTE')
-                .val(response.ANALISIS_GRAFICA_CATAMBIENTE); 
             
            $('#ANALISIS_GRAFICA_CATAMBIENTE')
                 .val(response.ANALISIS_GRAFICA_CATAMBIENTE);

@@ -11604,40 +11604,35 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
                 );
 
             $estados['menureporte_9_4_1'] =
-                $campoCompleto(
+                $todosLosCamposCompletos([
                     'ANALISIS_GRAFICA_CATAMBIENTE',
-                    'ANALISIS_GRAFICA_DOMAMBIENTE'
-            );
+                    'ANALISIS_GRAFICA_DOMAMBIENTE']);
 
             $estados['menureporte_9_4_2'] =
-                $campoCompleto(
+                $todosLosCamposCompletos([
                     'ANALISIS_GRAFICA_CATFACTORES',
                     'ANALISIS_GRAFICA_DOMFACTORES_1',
-                    'ANALISIS_GRAFICA_DOMFACTORES_2',
-                );
+                    'ANALISIS_GRAFICA_DOMFACTORES_2']);
 
             $estados['menureporte_9_4_3'] =
-                $campoCompleto(
+                $todosLosCamposCompletos([
                     'ANALISIS_GRAFICA_CATORGANIZACION',
                     'ANALISIS_GRAFICA_DOMORGANIZACION_1',
-                    'ANALISIS_GRAFICA_DOMORGANIZACION_2',
-                );
+                    'ANALISIS_GRAFICA_DOMORGANIZACION_2']);
 
             $estados['menureporte_9_4_4'] =
-                $campoCompleto(
+                $todosLosCamposCompletos([
                     'ANALISIS_GRAFICA_CATLIDERAZGO',
                     'ANALISIS_GRAFICA_DOMLIDERAZGO_1',
                     'ANALISIS_GRAFICA_DOMLIDERAZGO_2',
-                    'ANALISIS_GRAFICA_DOMLIDERAZGO_3',
-                );
+                    'ANALISIS_GRAFICA_DOMLIDERAZGO_3']);
 
 
             $estados['menureporte_9_4_5'] =
-                $campoCompleto(
+                $todosLosCamposCompletos([
                     'ANALISIS_GRAFICA_CATENTORNO',
                     'ANALISIS_GRAFICA_DOMENTORNO_1',
-                    'ANALISIS_GRAFICA_DOMENTORNO_2',
-                );
+                    'ANALISIS_GRAFICA_DOMENTORNO_2']);
 
            
             $estados['menureporte_10'] =
