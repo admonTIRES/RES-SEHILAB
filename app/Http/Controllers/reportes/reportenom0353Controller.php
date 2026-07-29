@@ -3799,7 +3799,7 @@ class reportenom0353Controller extends Controller
 
 
             $numeroContrato = $contrato->NUMERO_CONTRATO ?? 'No cargado';
-            $plantillaword->setValue('proyecto_portada', 'Evaluación de los Factores de Riesgo Psicosocial - NOM-035-STPS-2018 "Factores de riesgo psicosocial en el trabajoidentificación, análisis y prevención."' . ' - Contrato: '  . $numeroContrato);
+            $plantillaword->setValue('proyecto_portada', 'Evaluación de los Factores de Riesgo Psicosocial - NOM-035-STPS-2018 "Factores de riesgo psicosocial en el trabajo, identificación, análisis y prevención."' . ' - Contrato: '  . $numeroContrato);
             $plantillaword->setValue('folio_portada', $proyecto->proyecto_folio ?? 'No cargado');
             $plantillaword->setValue('razon_social_portada', $proyecto->proyecto_clienterazonsocial ?? 'No cargado');
             $plantillaword->setValue('instalación_portada', $proyecto->proyecto_clienteinstalacion ?? 'No cargado');
