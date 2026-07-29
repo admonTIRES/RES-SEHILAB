@@ -1727,7 +1727,6 @@ DESCRIPCIONACTIVIDAD
                     </div>
                 </form>
                 <h4 class="card-title" id="11">11.- Dashboard General</h4>
-
                 <style>
                     #dashboard_nom035_captura {
                         width: 100%;
@@ -1879,7 +1878,7 @@ DESCRIPCIONACTIVIDAD
                         z-index: 2;
                         width: max-content;
                         max-width: calc(100% - 30px);
-                        padding: 7px 15px;
+                        padding: px 15px;
                         background: #00733f;
                         border: 2px solid #00733f;
                         color: #fff;
@@ -2039,28 +2038,21 @@ DESCRIPCIONACTIVIDAD
 
                 <div class="row">
                     <div class="col-12">
-
                         <div id="dashboard_nom035_captura">
-
                             <div class="dashboard-titulo">
                                 <h2>NOM-035-STPS-2018</h2>
                                 <p>Factores de Riesgo Psicosocial en el Trabajo</p>
                             </div>
-
                             <div class="indicadores-superiores">
-
                                 <div class="indicador-item">
                                     <div class="indicador-imagen">
                                         <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES_EVALUADOS.png') }}" alt="Descripción">
 
                                     </div>
-
                                     <div class="indicador-texto texto-verde">
-                                        <span class="indicador-numero"
-                                            id="total_trabajadores_evaluados">
+                                        <span class="indicador-numero" id="total_trabajadores_evaluados">
                                             0
                                         </span>
-
                                         Trabajadores<br>
                                         Evaluados
                                     </div>
@@ -2129,9 +2121,7 @@ DESCRIPCIONACTIVIDAD
                                         <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}" alt="Descripción">
                                     </div>
                                     <div class="indicador-texto texto-rojo">
-                                        <span
-                                            class="indicador-numero"
-                                            id="nombre_categoria_dominio_mayor_riesgo">
+                                        <span class="indicador-numero" id="nombre_categoria_dominio_mayor_riesgo">
                                             Sin información
                                         </span>
                                         <span id="tipo_categoria_dominio_mayor_riesgo">
@@ -2255,21 +2245,16 @@ DESCRIPCIONACTIVIDAD
                                     <div class="panel-grafica-riesgo-titulo">
                                         Trabajadores con mayor riesgo (categorías)
                                     </div>
-                                    <div
-                                        class="dashboard-grafica-barras"
-                                        id="grafica_categorias"></div>
+                                    <div class="dashboard-grafica-barras" id="grafica_categorias"></div>
                                 </div>
                                 <div class="panel-grafica-riesgo">
                                     <div class="panel-grafica-riesgo-titulo">
                                         Trabajadores con mayor riesgo (dominios)
                                     </div>
-                                    <div
-                                        class="dashboard-grafica-barras"
-                                        id="grafica_dominios"></div>
+                                    <div class="dashboard-grafica-barras" id="grafica_dominios"></div>
                                 </div>
                             </div>
 
-                            <!-- SEGUNDA FILA -->
                             <div class="dashboard-fila dashboard-fila-general">
                                 <style>
                                     .panel-distribucion-riesgo {
@@ -2438,140 +2423,70 @@ DESCRIPCIONACTIVIDAD
                                     }
                                 </style>
                                 <div class="dashboard-panel panel-alto panel-distribucion-riesgo">
-
                                     <div class="dashboard-panel-titulo">
                                         Distribución general de riesgo
                                     </div>
-
-                                    <div
-                                        class="distribucion-riesgo-contenido"
-                                        id="grafica_distribucion_riesgo">
-
-                                        <!-- GRÁFICA DE DONA -->
-                                        <div
-                                            class="distribucion-riesgo-chart"
-                                            id="distribucionRiesgoChart"></div>
-
-                                        <!-- LISTADO DE RESULTADOS -->
+                                    <div class="distribucion-riesgo-contenido" id="grafica_distribucion_riesgo">
+                                        <div class="distribucion-riesgo-chart" id="distribucionRiesgoChart"></div>
                                         <div class="distribucion-riesgo-leyenda">
-
-                                            <div
-                                                class="distribucion-riesgo-item"
-                                                data-nivel="Muy alto">
-                                                <span
-                                                    class="distribucion-color"
-                                                    style="background:#FF0000;"></span>
-
+                                            <div class="distribucion-riesgo-item" data-nivel="Muy alto">
+                                                <span class="distribucion-color" style="background:#FF0000;"></span>
                                                 <span class="distribucion-nombre">
                                                     Muy alto
                                                 </span>
-
-                                                <span
-                                                    class="distribucion-valor"
-                                                    id="distribucion_muy_alto">
+                                                <span class="distribucion-valor" id="distribucion_muy_alto">
                                                     0
                                                 </span>
-
                                                 <div class="distribucion-alerta">
-                                                    <img
-                                                        src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}"
-                                                        alt="Trabajadores con riesgo">
+                                                    <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}" alt="Trabajadores con riesgo">
                                                 </div>
                                             </div>
 
-                                            <div
-                                                class="distribucion-riesgo-item"
-                                                data-nivel="Alto">
-                                                <span
-                                                    class="distribucion-color"
-                                                    style="background:#F7AA32;"></span>
-
+                                            <div class="distribucion-riesgo-item" data-nivel="Alto">
+                                                <span class="distribucion-color" style="background:#F7AA32;"></span>
                                                 <span class="distribucion-nombre">
                                                     Alto
                                                 </span>
-
-                                                <span
-                                                    class="distribucion-valor"
-                                                    id="distribucion_alto">
+                                                <span class="distribucion-valor" id="distribucion_alto">
                                                     0
                                                 </span>
-
                                                 <div class="distribucion-alerta">
-                                                    <img
-                                                        src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}"
-                                                        alt="Trabajadores con riesgo">
+                                                    <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}" alt="Trabajadores con riesgo">
                                                 </div>
                                             </div>
-
-                                            <div
-                                                class="distribucion-riesgo-item"
-                                                data-nivel="Medio">
-                                                <span
-                                                    class="distribucion-color"
-                                                    style="background:#FFD54F;"></span>
-
+                                            <div class="distribucion-riesgo-item" data-nivel="Medio">
+                                                <span class="distribucion-color" style="background:#FFD54F;"></span>
                                                 <span class="distribucion-nombre">
                                                     Medio
                                                 </span>
-
-                                                <span
-                                                    class="distribucion-valor"
-                                                    id="distribucion_medio">
+                                                <span class="distribucion-valor" id="distribucion_medio">
                                                     0
                                                 </span>
-
                                                 <div class="distribucion-alerta"></div>
                                             </div>
-
-                                            <div
-                                                class="distribucion-riesgo-item"
-                                                data-nivel="Bajo">
-                                                <span
-                                                    class="distribucion-color"
-                                                    style="background:#00B050;"></span>
-
+                                            <div class="distribucion-riesgo-item"  data-nivel="Bajo">
+                                                <span class="distribucion-color"style="background:#00B050;"></span>
                                                 <span class="distribucion-nombre">
                                                     Bajo
                                                 </span>
-
-                                                <span
-                                                    class="distribucion-valor"
-                                                    id="distribucion_bajo">
+                                                <span class="distribucion-valor" id="distribucion_bajo">
                                                     0
                                                 </span>
-
                                                 <div class="distribucion-alerta"></div>
                                             </div>
-
-                                            <div
-                                                class="distribucion-riesgo-item"
-                                                data-nivel="Nulo o despreciable">
-                                                <span
-                                                    class="distribucion-color"
-                                                    style="background:#00B0F0;"></span>
-
+                                            <div class="distribucion-riesgo-item" data-nivel="Nulo o despreciable">
+                                                <span class="distribucion-color" style="background:#00B0F0;"></span>
                                                 <span class="distribucion-nombre">
                                                     Nulo
                                                 </span>
-
-                                                <span
-                                                    class="distribucion-valor"
-                                                    id="distribucion_nulo">
+                                                <span class="distribucion-valor" id="distribucion_nulo">
                                                     0
                                                 </span>
-
                                                 <div class="distribucion-alerta"></div>
                                             </div>
-
                                         </div>
-
-                                        <!-- NOTA INFERIOR -->
                                         <div class="distribucion-riesgo-nota">
-
-                                            <img
-                                                src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}"
-                                                alt="Trabajadores que necesitan atención">
-
+                                            <img src="{{ asset('assets/images/DASH_PSICO/TRABAJADORES CON RIESGO.png') }}" alt="Trabajadores que necesitan atención">
                                             <span>
                                                 Trabajadores que necesitan atención
                                             </span>
@@ -2652,36 +2567,20 @@ DESCRIPCIONACTIVIDAD
                                 </style>
 
                                 <div class="dashboard-panel panel-alto">
-
                                     <div class="panel-trabajadores-ats">
-
                                         <div class="dashboard-panel-titulo">
                                             Trabajadores con ATS
                                         </div>
-
-                                        <div
-                                            class="dashboard-grafica-ats"
-                                            id="grafica_trabajadores_ats">
-                                            <div
-                                                class="ats-chart-contenedor"
-                                                id="atsChartContenedor"></div>
-
-                                            <div
-                                                class="ats-porcentaje-centro"
-                                                id="ats_porcentaje_centro">
+                                        <div class="dashboard-grafica-ats" id="grafica_trabajadores_ats">
+                                            <div class="ats-chart-contenedor" id="atsChartContenedor"></div>
+                                            <div class="ats-porcentaje-centro" id="ats_porcentaje_centro">
                                                 0%
                                             </div>
                                         </div>
-
                                     </div>
-
                                 </div>
-
                             </div>
-
-                            <!-- TERCERA FILA -->
                             <div class="dashboard-fila dashboard-fila-final">
-
                                 <style>
                                     .dashboard-grafica-cumplimiento {
                                         position: relative;
@@ -2900,27 +2799,97 @@ DESCRIPCIONACTIVIDAD
 
 
                                 <div class="dashboard-panel panel-medio">
-
                                     <div class="dashboard-panel-titulo">
                                         Recomendaciones prioritarias
                                     </div>
-
-                                    <div
-                                        class="lista-recomendaciones"
-                                        id="lista_recomendaciones_prioritarias">
+                                    <div class="lista-recomendaciones" id="lista_recomendaciones_prioritarias">
                                         <div class="recomendaciones-mensaje">
                                             Consultando recomendaciones...
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
                 </div>
+                <style>
+                    #dashboard_nom035_captura .dashboard-titulo h2 {
+                        font-size: 36px !important;
+                        font-weight: 800 !important;
+                        line-height: 1.1 !important;
+                    }
+
+                    #dashboard_nom035_captura .dashboard-titulo p {
+                        font-size: 19px !important;
+                        font-weight: 500 !important;
+                    }
+
+                    #dashboard_nom035_captura .indicador-numero {
+                        font-size: 24px !important;
+                        font-weight: 800 !important;
+                        line-height: 1.1 !important;
+                    }
+
+                    #dashboard_nom035_captura .indicador-texto {
+                        font-size: 18px !important;
+                        font-weight: 700 !important;
+                        line-height: 1.3 !important;
+                    }
+
+                    #dashboard_nom035_captura .dashboard-panel-titulo,
+                    #dashboard_nom035_captura .panel-grafica-riesgo-titulo {
+                        font-size: 19px !important;
+                        font-weight: 700 !important;
+                        line-height: 1.2 !important;
+                        padding: 4px 20px !important;
+                    }
+
+                    #dashboard_nom035_captura .distribucion-nombre {
+                        font-size: 18px !important;
+                        font-weight: 500 !important;
+                        line-height: 1.15 !important;
+                    }
+
+                    #dashboard_nom035_captura .distribucion-valor {
+                        font-size: 20px !important;
+                        font-weight: 700 !important;
+                    }
+
+                    #dashboard_nom035_captura .distribucion-riesgo-nota {
+                        font-size: 13px !important;
+                        font-weight: 500 !important;
+                    }
+
+                    #dashboard_nom035_captura .cumplimiento-resultado-item {
+                        font-size: 16px !important;
+                        font-weight: 500 !important;
+                    }
+
+                    #dashboard_nom035_captura .cumplimiento-resultado-item strong {
+                        font-size: 17px !important;
+                        font-weight: 700 !important;
+                    }
+
+                    #dashboard_nom035_captura .recomendacion-texto {
+                        font-size: 17px !important;
+                        font-weight: 500 !important;
+                        line-height: 1.4 !important;
+                    }
+
+                    #dashboard_nom035_captura .recomendacion-icono {
+                        width: 48px !important;
+                        min-width: 48px !important;
+                        height: 48px !important;
+                        font-size: 30px !important;
+                    }
+
+                    #dashboard_nom035_captura .recomendaciones-mensaje,
+                    #dashboard_nom035_captura .mensaje-sin-datos-grafica,
+                    #dashboard_nom035_captura .mensaje-sin-datos-ats,
+                    #dashboard_nom035_captura .mensaje-sin-datos-cumplimiento {
+                        font-size: 17px !important;
+                    }
+                </style>
 
                 <h4 class="card-title" id="12">12.- Recomendaciones</h4>
                 <h4 class="card-title" id="12_1">12.1.- Recomendaciones de control</h4>
@@ -3322,7 +3291,7 @@ DESCRIPCIONACTIVIDAD
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js_sitio/reportes/reportenom0353v1.js?v=15"></script>
+<script src="/js_sitio/reportes/reportenom0353v1.js?v=16"></script>
 <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">

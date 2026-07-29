@@ -13143,6 +13143,7 @@ function cargarCategoriaODominioMayorRiesgoPsico()
     });
 }
 
+/////// GRAFICAS 
 ///  Trabajadores con mayor riesgo (categorías) / Trabajadores con mayor riesgo (dominios)
 
 function cargarGraficasMayorRiesgoPsico()
@@ -13222,7 +13223,8 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
                 .dispose();
         }
 
-        window.rootMayorRiesgoCategorias = null;
+        window.rootMayorRiesgoCategorias =
+            null;
     }
 
     if (
@@ -13239,7 +13241,8 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
                 .dispose();
         }
 
-        window.rootMayorRiesgoDominios = null;
+        window.rootMayorRiesgoDominios =
+            null;
     }
 
     $('#' + contenedorId).empty();
@@ -13329,7 +13332,7 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
                     paddingTop: 5,
                     paddingBottom: 5,
                     paddingLeft: 0,
-                    paddingRight: 30,
+                    paddingRight: 45,
                     layout: root.verticalLayout
                 }
             )
@@ -13354,8 +13357,11 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
         .grid
         .template
         .setAll({
-            stroke: am5.color(0xCCCCCC),
-            strokeOpacity: 0.5
+            stroke:
+                am5.color(0xCCCCCC),
+
+            strokeOpacity:
+                0.5
         });
 
     var ejeValores =
@@ -13365,7 +13371,7 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
                 root,
                 {
                     min: 0,
-                    extraMax: 0.18,
+                    extraMax: 0.25,
                     strictMinMax: false,
                     renderer: rendererValores
                 }
@@ -13377,9 +13383,9 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
             root,
             {
                 inversed: true,
+
                 minGridDistance:
-                    tipoGrafica ===
-                    'categorias'
+                    tipoGrafica === 'categorias'
                         ? 50
                         : 25
             }
@@ -13396,25 +13402,30 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
         .labels
         .template
         .setAll({
-            fill: am5.color(0x222222),
+            fill:
+                am5.color(0x222222),
 
             fontSize:
-                tipoGrafica ===
-                'categorias'
-                    ? 12
-                    : 11,
+                tipoGrafica === 'categorias'
+                    ? 18
+                    : 16,
 
-            fontWeight: '400',
+            fontWeight:
+                '600',
 
             maxWidth:
-                tipoGrafica ===
-                'categorias'
-                    ? 220
-                    : 250,
+                tipoGrafica === 'categorias'
+                    ? 280
+                    : 320,
 
-            oversizedBehavior: 'wrap',
-            textAlign: 'right',
-            paddingRight: 8
+            oversizedBehavior:
+                'wrap',
+
+            textAlign:
+                'right',
+
+            paddingRight:
+                12
         });
 
     var ejeCategorias =
@@ -13442,13 +13453,26 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
             am5xy.ColumnSeries.new(
                 root,
                 {
-                    name: 'Trabajadores',
-                    xAxis: ejeValores,
-                    yAxis: ejeCategorias,
-                    valueXField: 'value',
-                    categoryYField: 'category',
-                    sequencedInterpolation: true,
-                    maskBullets: false
+                    name:
+                        'Trabajadores',
+
+                    xAxis:
+                        ejeValores,
+
+                    yAxis:
+                        ejeCategorias,
+
+                    valueXField:
+                        'value',
+
+                    categoryYField:
+                        'category',
+
+                    sequencedInterpolation:
+                        true,
+
+                    maskBullets:
+                        false
                 }
             )
         );
@@ -13457,13 +13481,17 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
 
         height:
             tipoGrafica === 'categorias'
-                ? am5.percent(48)
-                : am5.percent(68),
+                ? am5.percent(52)
+                : am5.percent(70),
 
-        strokeOpacity: 0,
+        strokeOpacity:
+            0,
 
-        cornerRadiusTR: 5,
-        cornerRadiusBR: 5,
+        cornerRadiusTR:
+            5,
+
+        cornerRadiusBR:
+            5,
 
         tooltipText:
             '{category}\n' +
@@ -13524,25 +13552,38 @@ function generarGraficaBarrasMayorRiesgo(contenedorId,datos,tipoGrafica)
         return am5.Bullet.new(
             root,
             {
-                locationX: 1,
+                locationX:
+                    1,
 
                 sprite:
                     am5.Label.new(
                         root,
                         {
-                            text: '{valueX}',
-                            populateText: true,
+                            text:
+                                '{valueX}',
+
+                            populateText:
+                                true,
+
                             centerY:
                                 am5.percent(50),
+
                             centerX:
                                 am5.percent(0),
-                            dx: 6,
+
+                            dx:
+                                8,
+
                             fill:
                                 am5.color(
                                     0x111111
                                 ),
-                            fontSize: 12,
-                            fontWeight: '500'
+
+                            fontSize:
+                                19,
+
+                            fontWeight:
+                                '700'
                         }
                     )
             }
@@ -13596,7 +13637,8 @@ function cargarGraficaDistribucionRiesgoPsico()
                     align-items:center;
                     justify-content:center;
                     color:#777;
-                    font-weight:bold;
+                    font-size:18px;
+                    font-weight:700;
                     text-align:center;
                 "
             >
@@ -13627,6 +13669,9 @@ function generarGraficaDistribucionRiesgoPsico(datos,totalTrabajadores)
         datos = [];
     }
 
+    totalTrabajadores =
+        parseInt(totalTrabajadores) || 0;
+
     if (window.rootDistribucionRiesgoPsico) {
 
         if (
@@ -13649,7 +13694,7 @@ function generarGraficaDistribucionRiesgoPsico(datos,totalTrabajadores)
         {
             return {
                 category:
-                    item.category,
+                    item.category || '',
 
                 value:
                     parseInt(item.value) || 0,
@@ -13658,7 +13703,6 @@ function generarGraficaDistribucionRiesgoPsico(datos,totalTrabajadores)
                     item.color || '#BDBDBD'
             };
         });
-
 
     datosNormalizados.forEach(function(item)
     {
@@ -13711,7 +13755,8 @@ function generarGraficaDistribucionRiesgoPsico(datos,totalTrabajadores)
                     align-items:center;
                     justify-content:center;
                     color:#777;
-                    font-weight:bold;
+                    font-size:18px;
+                    font-weight:700;
                     text-align:center;
                 "
             >
@@ -13748,15 +13793,15 @@ function generarGraficaDistribucionRiesgoPsico(datos,totalTrabajadores)
                         root.verticalLayout,
 
                     innerRadius:
-                        am5.percent(50),
+                        am5.percent(48),
 
                     radius:
-                        am5.percent(82),
+                        am5.percent(72),
 
-                    paddingTop: 15,
-                    paddingBottom: 15,
-                    paddingLeft: 15,
-                    paddingRight: 15
+                    paddingTop: 28,
+                    paddingBottom: 28,
+                    paddingLeft: 45,
+                    paddingRight: 45
                 }
             )
         );
@@ -13828,8 +13873,12 @@ function generarGraficaDistribucionRiesgoPsico(datos,totalTrabajadores)
     );
 
     series.slices.template.setAll({
-        stroke: am5.color(0xFFFFFF),
-        strokeWidth: 1,
+        stroke:
+            am5.color(0xFFFFFF),
+
+        strokeWidth:
+            2,
+
         tooltipText:
             '{category}: {value} trabajadores ' +
             '({valuePercentTotal.formatNumber("0.0")}%)'
@@ -13839,15 +13888,38 @@ function generarGraficaDistribucionRiesgoPsico(datos,totalTrabajadores)
         text:
             '{category}\n' +
             '{valuePercentTotal.formatNumber("0.0")}%',
-        fontSize: 9,
-        fill: am5.color(0x222222),
-        textAlign: 'center',
-        radius: 5
+
+        fontSize:
+            17,
+
+        fontWeight:
+            '600',
+
+        fill:
+            am5.color(0x111111),
+
+        textAlign:
+            'center',
+
+        oversizedBehavior:
+            'wrap',
+
+        maxWidth:
+            150,
+
+        radius:
+            12
     });
 
     series.ticks.template.setAll({
-        stroke: am5.color(0x777777),
-        strokeOpacity: 0.6
+        stroke:
+            am5.color(0x555555),
+
+        strokeWidth:
+            2,
+
+        strokeOpacity:
+            0.8
     });
 
     series.data.setAll(
@@ -14220,7 +14292,6 @@ function generarGraficaCumplimientoNormativoPsico(datos,totalTrabajadores)
     totalTrabajadores =
         parseInt(totalTrabajadores) || 0;
 
- 
     if (window.rootCumplimientoNormativo) {
 
         if (
@@ -14232,7 +14303,8 @@ function generarGraficaCumplimientoNormativoPsico(datos,totalTrabajadores)
                 .dispose();
         }
 
-        window.rootCumplimientoNormativo = null;
+        window.rootCumplimientoNormativo =
+            null;
     }
 
     var muyAlto = 0;
@@ -14270,7 +14342,6 @@ function generarGraficaCumplimientoNormativoPsico(datos,totalTrabajadores)
             nulo = cantidad;
         }
     });
-
 
     if (totalTrabajadores === 0) {
 
@@ -14367,37 +14438,96 @@ function generarGraficaCumplimientoNormativoPsico(datos,totalTrabajadores)
             1.8
         );
 
-  
     $('#grafica_nivel_riesgo').html(`
-        <div class="cumplimiento-chart" id="cumplimientoNormativoChart"></div>
-        <div id="aguja_cumplimiento" style="position:absolute; left:50%; top:68%; z-index:5; width:31%; max-width:125px; height:7px; background:#222222; border-radius:7px; transform-origin:0 50%;
-                transform: translateY(-50%) rotate(${anguloAguja}deg); pointer-events:none;"></div>
-        <div id="centro_aguja_cumplimiento" style=" position:absolute; left:50%; top:68%; z-index:6; width:18px; height:18px; background:#222222; border-radius:50%; transform:translate(-50%, -50%); pointer-events:none;"></div>
-        <div id="texto_centro_cumplimiento" style=" position:absolute; top:43%; left:50%; z-index:7; width:160px; color:#222222; text-align:center; transform:translate(-50%, -50%); pointer-events:none">
-            <div id="porcentaje_dentro_norma" style=" font-size:24px; font-weight:700; line-height:1;">
-                ${porcentajeDentroNorma.toFixed(1)}%
-            </div>
-            <div id="descripcion_dentro_norma" style=" margin-top:5px; font-size:11px; font-weight:600; line-height:1.1;">
-                Dentro de norma
-            </div>
+        <div
+            class="cumplimiento-chart"
+            id="cumplimientoNormativoChart">
         </div>
-        <div class="cumplimiento-resultados"id="cumplimiento_resultados">
-            <div class="cumplimiento-resultado-item fuera-norma" id="resultado_fuera_norma">
-                <span class="cumplimiento-color color-rojo"></span>
+
+        <div
+            id="aguja_cumplimiento"
+            style="
+                position:absolute;
+                left:50%;
+                top:68%;
+                z-index:5;
+                width:31%;
+                max-width:125px;
+                height:8px;
+                background:#222222;
+                border-radius:8px;
+                transform-origin:0 50%;
+                transform:translateY(-50%) rotate(${anguloAguja}deg);
+                pointer-events:none;
+            ">
+        </div>
+
+        <div
+            id="centro_aguja_cumplimiento"
+            style="
+                position:absolute;
+                left:50%;
+                top:68%;
+                z-index:6;
+                width:20px;
+                height:20px;
+                background:#222222;
+                border-radius:50%;
+                transform:translate(-50%, -50%);
+                pointer-events:none;
+            ">
+        </div>
+
+        <div
+            class="cumplimiento-resultados"
+            id="cumplimiento_resultados"
+            style="
+                font-size:17px;
+                font-weight:600;
+            "
+        >
+            <div
+                class="cumplimiento-resultado-item fuera-norma"
+                id="resultado_fuera_norma"
+            >
+                <span
+                    class="cumplimiento-color color-rojo">
+                </span>
+
                 <span>
                     Fuera de norma
                 </span>
-                <strong id="porcentaje_fuera_norma">
+
+                <strong
+                    id="porcentaje_fuera_norma"
+                    style="
+                        font-size:18px;
+                        font-weight:700;
+                    "
+                >
                     ${porcentajeFueraNorma.toFixed(1)}%
                 </strong>
             </div>
 
-            <div class="cumplimiento-resultado-item dentro-norma" id="resultado_dentro_norma">
-                <span class="cumplimiento-color color-verde"></span>
+            <div
+                class="cumplimiento-resultado-item dentro-norma"
+                id="resultado_dentro_norma"
+            >
+                <span
+                    class="cumplimiento-color color-verde">
+                </span>
+
                 <span>
                     Dentro de norma
-                </span
-                <strong id="porcentaje_dentro_norma_leyenda">
+                </span>
+
+                <strong
+                    id="porcentaje_dentro_norma_leyenda"
+                    style="
+                        font-size:18px;
+                        font-weight:700;
+                    "
+                >
                     ${porcentajeDentroNorma.toFixed(1)}%
                 </strong>
             </div>
@@ -14413,20 +14543,14 @@ function generarGraficaCumplimientoNormativoPsico(datos,totalTrabajadores)
         $('#resultado_fuera_norma').show();
     }
 
-
     if (porcentajeDentroNorma <= 0) {
 
         $('#resultado_dentro_norma').hide();
 
-        $('#texto_centro_cumplimiento').hide();
-
     } else {
 
         $('#resultado_dentro_norma').show();
-
-        $('#texto_centro_cumplimiento').show();
     }
-
 
     var datosVelocimetro = [];
 
@@ -14580,7 +14704,8 @@ function generarGraficaCumplimientoNormativoPsico(datos,totalTrabajadores)
     );
 
     series.slices.template.setAll({
-        strokeWidth: 0,
+        strokeWidth:
+            0,
 
         toggleKey:
             'none',
@@ -14594,11 +14719,13 @@ function generarGraficaCumplimientoNormativoPsico(datos,totalTrabajadores)
     });
 
     series.labels.template.setAll({
-        forceHidden: true
+        forceHidden:
+            true
     });
 
     series.ticks.template.setAll({
-        forceHidden: true
+        forceHidden:
+            true
     });
 
     series.data.setAll(
