@@ -4074,81 +4074,7 @@ class reportenom0353Controller extends Controller
             );
 
 
-            ///// RECOMENDACIONES 
-
-            $recomendaciones = DB::table(
-                'recomendacionesinformepsico as ri'
-            )
-
-                ->join(
-                    'psicocat_recomendacionescontrol as cr',
-                    'cr.ID_RECOMENDACION_CONTROL_INFORME',
-                    '=',
-                    'ri.CATALOGO_RECOMENDACIONES_ID'
-                )
-
-                ->where(
-                    'ri.PROYECTO_ID',
-                    $PROYECTO_ID
-                )
-
-                ->select(
-                    'cr.RECOMENDACION_CONTROL'
-                )
-
-                ->get();
-
-
-            $texto_recomendaciones = '';
-
-            if (count($recomendaciones) > 0) {
-
-                $romanos = [
-                    'I',
-                    'II',
-                    'III',
-                    'IV',
-                    'V',
-                    'VI',
-                    'VII',
-                    'VIII',
-                    'IX',
-                    'X',
-                    'XI',
-                    'XII',
-                    'XIII',
-                    'XIV',
-                    'XV',
-                    'XVI',
-                    'XVII',
-                    'XVIII',
-                    'XIX',
-                    'XX',
-                    'XXI',
-                    'XXII',
-                    'XXIII',
-                    'XXIV',
-                    'XXV',
-                    'XXVI',
-                    'XXVII',
-                    'XXVIII',
-                    'XXIX',
-                    'XXX'
-                ];
-
-                foreach ($recomendaciones as $index => $recomendacion) {
-
-                    $texto_recomendaciones .=
-                        $romanos[$index] . '. ' .
-                        trim(strip_tags($recomendacion->RECOMENDACION_CONTROL)) .
-                        PHP_EOL . PHP_EOL;
-                }
-            } else {
-
-                $texto_recomendaciones = 'No cargado';
-            }
-
-            $plantillaword->setValue('RECOMENDACIONES', htmlspecialchars($texto_recomendaciones));
+        
 
             /// ANALISIS GRAFICA 
             $plantillaword->setValue('ANALISIS_GRAFICAGLOBAL', $datosGenerales->ANALISIS_GRAFICACALIFICACIONES ? htmlspecialchars($datosGenerales->ANALISIS_GRAFICACALIFICACIONES) : 'No cargado');
@@ -5225,14 +5151,9 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
 
             $conclusiones = [];
 
-            if (
-                isset($datosGenerales->INFORME_CONCLUSION) &&
-                !empty($datosGenerales->INFORME_CONCLUSION)
-            ) {
-                $conclusiones = json_decode(
-                    $datosGenerales->INFORME_CONCLUSION,
-                    true
-                );
+            if (isset($datosGenerales->INFORME_CONCLUSION) && !empty($datosGenerales->INFORME_CONCLUSION)) 
+            {
+                $conclusiones = json_decode($datosGenerales->INFORME_CONCLUSION,true);
             }
 
             if (
@@ -5241,18 +5162,11 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
             ) {
                 foreach ($conclusiones as $conclusion) {
 
-                    $titulo = isset($conclusion['TITULO'])
-                        ? trim($conclusion['TITULO'])
-                        : '';
+                    $titulo = isset($conclusion['TITULO']) ? trim($conclusion['TITULO']): '';
+                    $descripcion = isset($conclusion['DESCRIPCION']) ? trim($conclusion['DESCRIPCION']): '';
 
-                    $descripcion = isset($conclusion['DESCRIPCION'])
-                        ? trim($conclusion['DESCRIPCION'])
-                        : '';
-
-                    if (
-                        $titulo === '' &&
-                        $descripcion === ''
-                    ) {
+                    if ($titulo === '' && $descripcion === '') 
+                    {
                         continue;
                     }
 
@@ -5285,16 +5199,112 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
                     $textoConclusiones->addTextBreak(2);
                 }
 
-                $plantillaword->setComplexValue(
-                    'CONCLUSIONES_JSON',
-                    $textoConclusiones
+                $plantillaword->setComplexValue('CONCLUSIONES_JSON',$textoConclusiones
                 );
             } else {
+                $plantillaword->setValue('CONCLUSIONES_JSON','No se registraron conclusiones.');
+            }
 
-                $plantillaword->setValue(
-                    'CONCLUSIONES_JSON',
-                    'No se registraron conclusiones.'
-                );
+
+
+
+            ///// RECOMENDACIONES 
+
+            $textoRecomendaciones = new \PhpOffice\PhpWord\Element\TextRun([
+                'alignment' => 'both',
+                'spaceAfter' => 0,
+                'lineHeight' => 1.15
+            ]);
+
+            $recomendaciones = [];
+
+            if (isset($datosGenerales->INFORME_RECOMENDACIONES) && !empty($datosGenerales->INFORME_RECOMENDACIONES)) 
+            {
+                $recomendaciones = json_decode($datosGenerales->INFORME_RECOMENDACIONES,true);
+            }
+
+            $romanos = [
+                'I',
+                'II',
+                'III',
+                'IV',
+                'V',
+                'VI',
+                'VII',
+                'VIII',
+                'IX',
+                'X',
+                'XI',
+                'XII',
+                'XIII',
+                'XIV',
+                'XV',
+                'XVI',
+                'XVII',
+                'XVIII',
+                'XIX',
+                'XX',
+                'XXI',
+                'XXII',
+                'XXIII',
+                'XXIV',
+                'XXV',
+                'XXVI',
+                'XXVII',
+                'XXVIII',
+                'XXIX',
+                'XXX'
+            ];
+
+            if (
+                is_array($recomendaciones) &&
+                count($recomendaciones) > 0
+            ) {
+                $contadorRecomendaciones = 0;
+
+                foreach ($recomendaciones as $recomendacion) {
+
+                    $texto = isset($recomendacion['RECOMENDACION']) ? trim($recomendacion['RECOMENDACION']): '';
+
+                    if ($texto === '') {
+                        continue;
+                    }
+
+                    $numeroRomano = isset($romanos[$contadorRecomendaciones]) ? $romanos[$contadorRecomendaciones] : ($contadorRecomendaciones + 1);
+
+                    $textoRecomendaciones->addText(
+                        $numeroRomano . '. ',
+                        [
+                            'name' => $fuente,
+                            'size' => 11,
+                            'bold' => true,
+                            'color' => '000000'
+                        ]
+                    );
+
+                    $textoRecomendaciones->addText(
+                        $texto,
+                        [
+                            'name' => $fuente,
+                            'size' => 11,
+                            'bold' => false,
+                            'color' => '000000'
+                        ]
+                    );
+
+                    $textoRecomendaciones->addTextBreak(2);
+                    $contadorRecomendaciones++;
+                }
+
+                if ($contadorRecomendaciones > 0) {
+
+                    $plantillaword->setComplexValue('RECOMENDACIONES', $textoRecomendaciones);
+                } else {
+
+                    $plantillaword->setValue('RECOMENDACIONES', 'No se registraron recomendaciones.');
+                }
+            } else {
+                $plantillaword->setValue('RECOMENDACIONES', 'No se registraron recomendaciones.');
             }
 
             //// DESCARGAR INFORME 
@@ -11595,16 +11605,11 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
                     'INFORME_CONCLUSION'
                 );
 
-          
+
             $estados['menureporte_12_1'] =
-                DB::table(
-                    'recomendacionesinformepsico'
-                )
-                ->where(
-                    'PROYECTO_ID',
-                    $PROYECTO_ID
-                )
-                ->exists();
+                $campoCompleto(
+                    'INFORME_RECOMENDACIONES'
+                );
 
          
             $estados['menureporte_12_2'] =
