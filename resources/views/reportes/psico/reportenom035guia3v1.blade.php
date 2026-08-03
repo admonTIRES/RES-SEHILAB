@@ -1738,7 +1738,6 @@ DESCRIPCIONACTIVIDAD
                         color: #222;
                     }
 
-                    /* TÍTULO PRINCIPAL */
                     .dashboard-titulo {
                         margin-bottom: 20px;
                         text-align: center;
@@ -1758,7 +1757,6 @@ DESCRIPCIONACTIVIDAD
                         font-size: 13px;
                     }
 
-                    /* INDICADORES SUPERIORES */
                     .indicadores-superiores {
                         display: grid;
                         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1833,7 +1831,6 @@ DESCRIPCIONACTIVIDAD
                         color: #ff8300;
                     }
 
-                    /* FILAS */
                     .dashboard-fila {
                         display: grid;
                         gap: 25px;
@@ -1853,7 +1850,6 @@ DESCRIPCIONACTIVIDAD
                         margin-bottom: 0;
                     }
 
-                    /* PANELES */
                     .dashboard-panel {
                         position: relative;
                         min-width: 0;
@@ -2464,8 +2460,8 @@ DESCRIPCIONACTIVIDAD
                                                 </span>
                                                 <div class="distribucion-alerta"></div>
                                             </div>
-                                            <div class="distribucion-riesgo-item"  data-nivel="Bajo">
-                                                <span class="distribucion-color"style="background:#00B050;"></span>
+                                            <div class="distribucion-riesgo-item" data-nivel="Bajo">
+                                                <span class="distribucion-color" style="background:#00B050;"></span>
                                                 <span class="distribucion-nombre">
                                                     Bajo
                                                 </span>
@@ -2894,68 +2890,32 @@ DESCRIPCIONACTIVIDAD
                 <h4 class="card-title" id="12">12.- Recomendaciones</h4>
                 <h4 class="card-title" id="12_1">12.1.- Recomendaciones de control</h4>
                 <form method="post" enctype="multipart/form-data" name="form_reporte_recomendaciones_control" id="form_reporte_recomendaciones_control">
+
                     <div class="row">
+
                         <div class="col-12">
                             {!! csrf_field() !!}
                         </div>
 
                         <div class="col-12">
-                            <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_recomendaciones_control">
-                                <thead>
-                                    <tr>
-                                        <th>Descripción</th>
-                                        <th width="80">Activo</th>
-                                        <th width="150">Prioritaria</th>
-                                    </tr>
-                                </thead>
+                            <ol class="breadcrumb" style="padding:6px; margin:10px 0px;">
+                                <button type="button" class="btn btn-default waves-effect botoninforme" data-toggle="tooltip" title="Agregar recomendación"
+                                    id="boton_nueva_recomendacion">
+                                    <span class="btn-label">
+                                        <i class="fa fa-plus"></i>
+                                    </span>
+                                    Nueva recomendación
+                                </button>
 
-                                <tbody>
-                                    @foreach ($catrecomendaciones as $dato)
-                                    <tr>
-                                        <td class="justificado">
-                                            {{ $dato->RECOMENDACION_CONTROL }}
-                                        </td>
+                            </ol>
 
-                                        <td class="text-center">
-                                            <div class="switch">
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        class="recomendacion_checkbox"
-                                                        name="DESCRIPCION_RECOMENDACIONES[]"
-                                                        value="{{ $dato->ID_RECOMENDACION_CONTROL_INFORME }}"
-                                                        data-id="{{ $dato->ID_RECOMENDACION_CONTROL_INFORME }}">
-
-                                                    <span class="lever switch-col-light-blue"></span>
-                                                </label>
-                                            </div>
-                                        </td>
-
-                                        <td class="text-center">
-                                            <select
-                                                class="form-control selector_prioritaria"
-                                                name="ES_PRIORITARIA[{{ $dato->ID_RECOMENDACION_CONTROL_INFORME }}]"
-                                                id="ES_PRIORITARIA_{{ $dato->ID_RECOMENDACION_CONTROL_INFORME }}"
-                                                data-id="{{ $dato->ID_RECOMENDACION_CONTROL_INFORME }}"
-                                                disabled>
-                                                <option value=""></option>
-                                                <option value="0">No</option>
-                                                <option value="1">Sí</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
                         </div>
 
-                        <div class="col-12 mt-3" style="text-align: right;">
+                        <div class="col-12" id="contenedor_recomendaciones"></div>
+                        <div class="col-12" style="text-align:right;">
                             <div class="form-group">
-                                <button
-                                    type="submit"
-                                    class="btn btn-danger waves-effect waves-light botoninforme"
-                                    id="botonguardar_reporte_recomendaciones_control">
-                                    Guardar recomendaciones de control
+                                <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_recomendaciones_control">
+                                    Guardar recomendaciones
                                     <i class="fa fa-save"></i>
                                 </button>
                             </div>
@@ -3291,7 +3251,7 @@ DESCRIPCIONACTIVIDAD
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js_sitio/reportes/reportenom0353v1.js?v=16"></script>
+<script src="/js_sitio/reportes/reportenom0353v1.js?v=17"></script>
 <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">

@@ -65,6 +65,7 @@ class datosgeneralesinformePsicoModel extends Model
         'NIVEL_RIESGO_FACTORES',
         'NIVEL_RIESGO_ORGANIZACION',
         'NIVEL_RIESGO_LIDERAZGO',
-        'NIVEL_RIESGO_ENTORNO'
+        'NIVEL_RIESGO_ENTORNO',
+        'INFORME_RECOMENDACIONES'
     ];
 }

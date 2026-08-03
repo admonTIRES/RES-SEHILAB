@@ -157,7 +157,7 @@ $(document).ready(function () {
 
         $('#RUTA_IMAGEN_PORTADA').val('');
         $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').resetPreview();
-    $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').clearElement();
+        $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').clearElement();
 
 
     $('#RUTA_IMAGEN_UBICACION').dropify({
@@ -179,7 +179,7 @@ $(document).ready(function () {
 
             $('#RUTA_IMAGEN_UBICACION').val('');
 	        $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').resetPreview();
-    $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').clearElement();
+            $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').clearElement();
     
     
     	$('#INFORME_RESPONSABLE1DOCUMENTO').dropify({
@@ -233,7 +233,6 @@ $(document).ready(function () {
             cargarDatosGeneralesInformePsico();
             cargarDefinicionesInformepsico();
             tabla_areas();
-            cargarRecomendacionesInformepsico();
             tablaVersionesinfopsico();
             validarEdicioninfopsico();
             obtenerNumeroTrabajadoresPsico();
@@ -263,8 +262,7 @@ $(document).ready(function () {
             cargarGraficaDistribucionRiesgoPsico();
             cargarGraficaTrabajadoresATSpsico();
             cargarGraficaCumplimientoNormativoPsico();
-    cargarRecomendacionesPrioritariasPsico();
-    
+            cargarRecomendacionesPrioritariasPsico();
             consultarEstadosMenusReportePsico();
     
 
@@ -629,8 +627,6 @@ function cargarDatosGeneralesInformePsico()
                 return;
             }
 
-
-
             if (response.INFORME_INTRODUCCION &&
                 response.INFORME_INTRODUCCION.trim() != '') {
 
@@ -666,8 +662,7 @@ function cargarDatosGeneralesInformePsico()
 
 
     
-            $('#INFORME_OBJETIVOSESPECIFICOS')
-                .val(response.INFORME_OBJETIVOSESPECIFICOS);
+            $('#INFORME_OBJETIVOSESPECIFICOS').val(response.INFORME_OBJETIVOSESPECIFICOS);
             
             
             //   if (response.INFORME_OBJETIVOSESPECIFICOS &&
@@ -709,145 +704,63 @@ Se localiza en las coordenadas  COORDENADAS.`);
             }
 		
 
-            $('#DESCRIPCION_METODO')
-                .val(response.DESCRIPCION_METODO);
+            $('#DESCRIPCION_METODO').val(response.DESCRIPCION_METODO);  
+			$('#INFORME_RESPONSABLE1').val(response.INFORME_RESPONSABLE1);
+			$('#INFORME_RESPONSABLE1CARGO').val(response.INFORME_RESPONSABLE1CARGO);
+			$('#INFORME_RESPONSABLE2').val(response.INFORME_RESPONSABLE2);
+            $('#INFORME_RESPONSABLE2CARGO').val(response.INFORME_RESPONSABLE2CARGO);
             
-          
-			$('#INFORME_RESPONSABLE1')
-				.val(response.INFORME_RESPONSABLE1);
-
-			$('#INFORME_RESPONSABLE1CARGO')
-				.val(response.INFORME_RESPONSABLE1CARGO);
-
-			$('#INFORME_RESPONSABLE2')
-				.val(response.INFORME_RESPONSABLE2);
-
-		    $('#INFORME_RESPONSABLE2CARGO')
-                .val(response.INFORME_RESPONSABLE2CARGO);
-                        
             //// ANALISIS GRAFICA 
-            $('#ANALISIS_GRAFICACALIFICACIONES')
-                .val(response.ANALISIS_GRAFICACALIFICACIONES);
-                    
-             $('#ANALISIS_GRAFICA_CATEGORIAS')
-                .val(response.ANALISIS_GRAFICA_CATEGORIAS);
-                    
-            $('#ANALISIS_GRAFICA_DOMINIOS')
-                .val(response.ANALISIS_GRAFICA_DOMINIOS);
-                         
-            $('#ANALISIS_GRAFICA_GUIA1')
-                .val(response.ANALISIS_GRAFICA_GUIA1);       
-            
-            
-           $('#ANALISIS_GRAFICA_CATAMBIENTE')
-                .val(response.ANALISIS_GRAFICA_CATAMBIENTE);
-
-            $('#ANALISIS_GRAFICA_DOMAMBIENTE')
-                .val(response.ANALISIS_GRAFICA_DOMAMBIENTE);
-
-            $('#ANALISIS_GRAFICA_CATFACTORES')
-                .val(response.ANALISIS_GRAFICA_CATFACTORES);
-
-            $('#ANALISIS_GRAFICA_DOMFACTORES_1')
-                .val(response.ANALISIS_GRAFICA_DOMFACTORES_1);
-
-            $('#ANALISIS_GRAFICA_DOMFACTORES_2')
-                .val(response.ANALISIS_GRAFICA_DOMFACTORES_2);
-
-            $('#ANALISIS_GRAFICA_CATORGANIZACION')
-                .val(response.ANALISIS_GRAFICA_CATORGANIZACION);
-
-            $('#ANALISIS_GRAFICA_DOMORGANIZACION_1')
-                .val(response.ANALISIS_GRAFICA_DOMORGANIZACION_1);
-
-            $('#ANALISIS_GRAFICA_DOMORGANIZACION_2')
-                .val(response.ANALISIS_GRAFICA_DOMORGANIZACION_2);
-
-            $('#ANALISIS_GRAFICA_CATLIDERAZGO')
-                .val(response.ANALISIS_GRAFICA_CATLIDERAZGO);
-
-            $('#ANALISIS_GRAFICA_DOMLIDERAZGO_1')
-                .val(response.ANALISIS_GRAFICA_DOMLIDERAZGO_1);
-
-            $('#ANALISIS_GRAFICA_DOMLIDERAZGO_2')
-                .val(response.ANALISIS_GRAFICA_DOMLIDERAZGO_2);
-
-            $('#ANALISIS_GRAFICA_DOMLIDERAZGO_3')
-                .val(response.ANALISIS_GRAFICA_DOMLIDERAZGO_3);
-
-            $('#ANALISIS_GRAFICA_CATENTORNO')
-                .val(response.ANALISIS_GRAFICA_CATENTORNO);
-
-            $('#ANALISIS_GRAFICA_DOMENTORNO_1')
-                .val(response.ANALISIS_GRAFICA_DOMENTORNO_1);
-
-            $('#ANALISIS_GRAFICA_DOMENTORNO_2')
-                .val(response.ANALISIS_GRAFICA_DOMENTORNO_2);
+            $('#ANALISIS_GRAFICACALIFICACIONES').val(response.ANALISIS_GRAFICACALIFICACIONES);
+            $('#ANALISIS_GRAFICA_CATEGORIAS').val(response.ANALISIS_GRAFICA_CATEGORIAS);
+            $('#ANALISIS_GRAFICA_DOMINIOS').val(response.ANALISIS_GRAFICA_DOMINIOS);
+            $('#ANALISIS_GRAFICA_GUIA1').val(response.ANALISIS_GRAFICA_GUIA1);       
+            $('#ANALISIS_GRAFICA_CATAMBIENTE').val(response.ANALISIS_GRAFICA_CATAMBIENTE);
+            $('#ANALISIS_GRAFICA_DOMAMBIENTE').val(response.ANALISIS_GRAFICA_DOMAMBIENTE);
+            $('#ANALISIS_GRAFICA_CATFACTORES').val(response.ANALISIS_GRAFICA_CATFACTORES);
+            $('#ANALISIS_GRAFICA_DOMFACTORES_1').val(response.ANALISIS_GRAFICA_DOMFACTORES_1);
+            $('#ANALISIS_GRAFICA_DOMFACTORES_2').val(response.ANALISIS_GRAFICA_DOMFACTORES_2);
+            $('#ANALISIS_GRAFICA_CATORGANIZACION').val(response.ANALISIS_GRAFICA_CATORGANIZACION);
+            $('#ANALISIS_GRAFICA_DOMORGANIZACION_1').val(response.ANALISIS_GRAFICA_DOMORGANIZACION_1);
+            $('#ANALISIS_GRAFICA_DOMORGANIZACION_2').val(response.ANALISIS_GRAFICA_DOMORGANIZACION_2);
+            $('#ANALISIS_GRAFICA_CATLIDERAZGO').val(response.ANALISIS_GRAFICA_CATLIDERAZGO);
+            $('#ANALISIS_GRAFICA_DOMLIDERAZGO_1').val(response.ANALISIS_GRAFICA_DOMLIDERAZGO_1);
+            $('#ANALISIS_GRAFICA_DOMLIDERAZGO_2').val(response.ANALISIS_GRAFICA_DOMLIDERAZGO_2);
+            $('#ANALISIS_GRAFICA_DOMLIDERAZGO_3').val(response.ANALISIS_GRAFICA_DOMLIDERAZGO_3);
+            $('#ANALISIS_GRAFICA_CATENTORNO').val(response.ANALISIS_GRAFICA_CATENTORNO);
+            $('#ANALISIS_GRAFICA_DOMENTORNO_1').val(response.ANALISIS_GRAFICA_DOMENTORNO_1);
+            $('#ANALISIS_GRAFICA_DOMENTORNO_2').val(response.ANALISIS_GRAFICA_DOMENTORNO_2);
                         
-            
-            
-            $('#NIVEL_RIESGO_AMBIENTE')
-                .val(response.NIVEL_RIESGO_AMBIENTE); 
-            
-            $('#NIVEL_RIESGO_FACTORES')
-                .val(response.NIVEL_RIESGO_FACTORES); 
-            
-            $('#NIVEL_RIESGO_ORGANIZACION')
-                .val(response.NIVEL_RIESGO_ORGANIZACION); 
-            
-            $('#NIVEL_RIESGO_LIDERAZGO')
-                .val(response.NIVEL_RIESGO_LIDERAZGO); 
-            
-            $('#NIVEL_RIESGO_ENTORNO')
-                .val(response.NIVEL_RIESGO_ENTORNO); 
+            $('#NIVEL_RIESGO_AMBIENTE').val(response.NIVEL_RIESGO_AMBIENTE); 
+            $('#NIVEL_RIESGO_FACTORES').val(response.NIVEL_RIESGO_FACTORES); 
+            $('#NIVEL_RIESGO_ORGANIZACION').val(response.NIVEL_RIESGO_ORGANIZACION); 
+            $('#NIVEL_RIESGO_LIDERAZGO').val(response.NIVEL_RIESGO_LIDERAZGO); 
+            $('#NIVEL_RIESGO_ENTORNO').val(response.NIVEL_RIESGO_ENTORNO); 
             
             mostrarConclusiones(response.INFORME_CONCLUSION);
             
+            mostrarRecomendaciones(response.INFORME_RECOMENDACIONES);
+
 			   if(response.RUTA_IMAGEN_UBICACION)
             {
 
                 var archivo = response.RUTA_IMAGEN_UBICACION;
 
-                var extension = archivo.substring(
-                    archivo.lastIndexOf(".")
-                );
+                var extension = archivo.substring(archivo.lastIndexOf("."));
 
-
-
-                var imagenUrl =
-                    '/mostrarubicacioninformepsico/0/' +
-                    proyecto.id +
-                    extension;
-
+                var imagenUrl = '/mostrarubicacioninformepsico/0/' +proyecto.id + extension;
 
                 if ($('#RUTA_IMAGEN_UBICACION').data('dropify')) {
 
-                    $('#RUTA_IMAGEN_UBICACION')
-                        .dropify()
-                        .data('dropify')
-                        .destroy();
-
-
-                    $('#RUTA_IMAGEN_UBICACION')
-                        .dropify()
-                        .data('dropify')
-                        .settings.defaultFile = imagenUrl;
-
-
-                    $('#RUTA_IMAGEN_UBICACION')
-                        .dropify()
-                        .data('dropify')
-                        .init();
+                    $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').destroy();
+                    $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').settings.defaultFile = imagenUrl;
+                    $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').init();
 
                 }
                 else {
 
-                    $('#RUTA_IMAGEN_UBICACION')
-                        .attr('data-default-file', imagenUrl);
-
-
+                    $('#RUTA_IMAGEN_UBICACION').attr('data-default-file', imagenUrl);
                     $('#RUTA_IMAGEN_UBICACION').dropify({
-
                         messages: {
                             'default': 'Arrastre la imagen aquí o haga click',
                             'replace': 'Arrastre la imagen o haga clic para reemplazar',
@@ -867,74 +780,29 @@ Se localiza en las coordenadas  COORDENADAS.`);
                     });
                 }
 
-
-                $('#RUTA_IMAGEN_UBICACION')
-                    .attr('required', false);
-
+                $('#RUTA_IMAGEN_UBICACION').attr('required', false);
 			}
 			
-
-            $('#INFORME_RESPONSABLE1')
-                .val(response.INFORME_RESPONSABLE1);
-
-
-            $('#INFORME_RESPONSABLE1CARGO')
-                .val(response.INFORME_RESPONSABLE1CARGO);
-
+            $('#INFORME_RESPONSABLE1').val(response.INFORME_RESPONSABLE1);
+            $('#INFORME_RESPONSABLE1CARGO').val(response.INFORME_RESPONSABLE1CARGO);
 
 
         if(response.INFORME_RESPONSABLE1DOCUMENTO)
         {
+            var archivo = response.INFORME_RESPONSABLE1DOCUMENTO;
+            var extension = archivo.substring(archivo.lastIndexOf("."));
 
-            var archivo =
-                response.INFORME_RESPONSABLE1DOCUMENTO;
+            var imagenUrl ='/mostrarresponsable1infopsico/0/' + proyecto.id + extension;
+            if ($('#INFORME_RESPONSABLE1DOCUMENTO').data('dropify'))
+            {
 
-
-
-            var extension = archivo.substring(
-                archivo.lastIndexOf(".")
-            );
-
-
-
-            var imagenUrl =
-                '/mostrarresponsable1infopsico/0/' +
-                 proyecto.id +
-                extension;
-
-            if ($('#INFORME_RESPONSABLE1DOCUMENTO')
-                .data('dropify')) {
-
-                $('#INFORME_RESPONSABLE1DOCUMENTO')
-                    .dropify()
-                    .data('dropify')
-                    .destroy();
-
-
-
-                $('#INFORME_RESPONSABLE1DOCUMENTO')
-                    .dropify()
-                    .data('dropify')
-                    .settings.defaultFile = imagenUrl;
-
-
-
-                $('#INFORME_RESPONSABLE1DOCUMENTO')
-                    .dropify()
-                    .data('dropify')
-                    .init();
-
+                $('#INFORME_RESPONSABLE1DOCUMENTO').dropify().data('dropify').destroy();
+                $('#INFORME_RESPONSABLE1DOCUMENTO').dropify().data('dropify').settings.defaultFile = imagenUrl;
+                $('#INFORME_RESPONSABLE1DOCUMENTO').dropify().data('dropify').init();
             }
             else {
-
-                $('#INFORME_RESPONSABLE1DOCUMENTO')
-                    .attr('data-default-file', imagenUrl);
-
-
-
-                $('#INFORME_RESPONSABLE1DOCUMENTO')
-                    .dropify({
-
+                $('#INFORME_RESPONSABLE1DOCUMENTO').attr('data-default-file', imagenUrl);
+                $('#INFORME_RESPONSABLE1DOCUMENTO').dropify({
                     messages: {
                         'default': 'Arrastre la imagen aquí o haga click',
                         'replace': 'Arrastre la imagen o haga clic para reemplazar',
@@ -956,92 +824,40 @@ Se localiza en las coordenadas  COORDENADAS.`);
             }
 
 
-            $('#INFORME_RESPONSABLE1DOCUMENTO')
-                .attr('required', false);
-
-            $("#boton_descargarresponsabledoc1")
-                .css('display', 'block');
+            $('#INFORME_RESPONSABLE1DOCUMENTO').attr('required', false);
+            $("#boton_descargarresponsabledoc1").css('display', 'block');
 
         }
         else {
 
-            $("#boton_descargarresponsabledoc1")
-                .css('display', 'none');
-
+            $("#boton_descargarresponsabledoc1").css('display', 'none');
         }
 
 
-
-        $('#INFORME_RESPONSABLE2')
-            .val(response.INFORME_RESPONSABLE2);
-
-
-        $('#INFORME_RESPONSABLE2CARGO')
-            .val(response.INFORME_RESPONSABLE2CARGO);
-
-
-
+        $('#INFORME_RESPONSABLE2').val(response.INFORME_RESPONSABLE2);
+        $('#INFORME_RESPONSABLE2CARGO').val(response.INFORME_RESPONSABLE2CARGO);
         if(response.INFORME_RESPONSABLE2DOCUMENTO)
         {
+            var archivo = response.INFORME_RESPONSABLE2DOCUMENTO;
+            var extension = archivo.substring(archivo.lastIndexOf("."));
+            var imagenUrl ='/mostrarresponsable2infopsico/0/' + proyecto.id + extension;
 
-            var archivo =
-                response.INFORME_RESPONSABLE2DOCUMENTO;
-
-
-
-            var extension = archivo.substring(
-                archivo.lastIndexOf(".")
-            );
-
-
-
-            var imagenUrl =
-                '/mostrarresponsable2infopsico/0/' +
-                proyecto.id +
-                extension;
-
-
-
-            if ($('#INFORME_RESPONSABLE2DOCUMENTO')
-                .data('dropify')) {
-
-                $('#INFORME_RESPONSABLE2DOCUMENTO')
-                    .dropify()
-                    .data('dropify')
-                    .destroy();
-
-
-
-                $('#INFORME_RESPONSABLE2DOCUMENTO')
-                    .dropify()
-                    .data('dropify')
-                    .settings.defaultFile = imagenUrl;
-
-
-
-                $('#INFORME_RESPONSABLE2DOCUMENTO')
-                    .dropify()
-                    .data('dropify')
-                    .init();
-
+            if ($('#INFORME_RESPONSABLE2DOCUMENTO').data('dropify'))
+            {
+                $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').destroy();
+                $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').settings.defaultFile = imagenUrl;
+                $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').init();
             }
             else {
 
-                $('#INFORME_RESPONSABLE2DOCUMENTO')
-                    .attr('data-default-file', imagenUrl);
-
-
-
-                $('#INFORME_RESPONSABLE2DOCUMENTO')
-                    .dropify({
-
+                $('#INFORME_RESPONSABLE2DOCUMENTO').attr('data-default-file', imagenUrl);
+                $('#INFORME_RESPONSABLE2DOCUMENTO').dropify({
                     messages: {
                         'default': 'Arrastre la imagen aquí o haga click',
                         'replace': 'Arrastre la imagen o haga clic para reemplazar',
                         'remove': 'Quitar',
                         'error': 'Ooops, ha ocurrido un error.'
                     },
-
                     error: {
                         'fileSize': 'Demasiado grande ({{ value }} max).',
                         'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
@@ -1050,25 +866,16 @@ Se localiza en las coordenadas  COORDENADAS.`);
                         'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
                         'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
                     }
-
                 });
 
             }
 
-            $('#INFORME_RESPONSABLE2DOCUMENTO')
-                .attr('required', false);
-
-
-
-            $("#boton_descargarresponsabledoc2")
-                .css('display', 'block');
+            $('#INFORME_RESPONSABLE2DOCUMENTO').attr('required', false);
+            $("#boton_descargarresponsabledoc2").css('display', 'block');
 
         }
         else {
-
-            $("#boton_descargarresponsabledoc2")
-                .css('display', 'none');
-
+            $("#boton_descargarresponsabledoc2").css('display', 'none');
         }
 
         }
@@ -1365,8 +1172,7 @@ $("#form_reporte_ubicacion").on("submit", function(e)
 
 //// DESCRIPCION DEL PROCESO DE INSTALACION
 
-$("#form_reporte_procesoinstalacion").on(
-    "submit",
+$("#form_reporte_procesoinstalacion").on("submit",
     function(e)
 {
 
@@ -1383,9 +1189,7 @@ $("#form_reporte_procesoinstalacion").on(
         contentType: false,
         processData: false,
         headers: {
-            'X-CSRF-TOKEN':
-                $('meta[name="csrf-token"]')
-                .attr('content')
+            'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
         },
 
         beforeSend: function()
@@ -1434,9 +1238,7 @@ $("#form_reporte_descripcionmetodo").on("submit",function(e)
         contentType: false,
         processData: false,
         headers: {
-            'X-CSRF-TOKEN':
-                $('meta[name="csrf-token"]')
-                .attr('content')
+            'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
         },
 
         beforeSend: function()
@@ -1466,246 +1268,10 @@ $("#form_reporte_descripcionmetodo").on("submit",function(e)
     });
 });
 
-/// CONCLUSIONES
 
 
-$("#form_reporte_conclusion").on("submit",function(e)
-{
-
-    e.preventDefault();
-    let formData = new FormData(this);
-    
-    formData.append('PROYECTO_ID', proyecto.id);
-
-    $.ajax({
-        url: '/guardarconclusionesinformepsicio',
-        type: 'POST',
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-        headers: {
-            'X-CSRF-TOKEN':
-                $('meta[name="csrf-token"]')
-                .attr('content')
-        },
-
-        beforeSend: function()
-        {
-            $("#botonguardar_reporte_conclusion").prop('disabled', true);
-            $("#botonguardar_reporte_conclusion").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
-        },
-
-        success: function(response)
-        {
-
-            consultarEstadosMenusReportePsico();
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Correcto',
-                text: response.msj,
-                timer: 2000,
-                showConfirmButton: false
-            });
-        },
-        complete: function()
-        {
-            $("#botonguardar_reporte_conclusion").prop('disabled', false);
-            $("#botonguardar_reporte_conclusion").html('Guardar conclusiones <i class="fa fa-save"></i>');
-        }
-    });
-});
-
-/// RECOMENDACIONES
 
 
-$(document).on("change", ".recomendacion_checkbox", function()
-{
-    var id = $(this).data("id");
-    var selector = $("#ES_PRIORITARIA_" + id);
-
-    if ($(this).is(":checked")) {
-        selector.prop("disabled", false);
-    } else {
-        selector.val("0");
-        selector.prop("disabled", true);
-    }
-});
-
-
-$(document).on("change", ".selector_prioritaria", function()
-{
-    var totalPrioritarias = 0;
-
-    $(".selector_prioritaria").each(function()
-    {
-        var id = $(this).data("id");
-
-        var activa = $(
-            '.recomendacion_checkbox[data-id="' + id + '"]'
-        ).is(":checked");
-
-        if (
-            activa &&
-            $(this).val() == "1"
-        ) {
-            totalPrioritarias++;
-        }
-    });
-
-    if (totalPrioritarias > 3) {
-
-        $(this).val("0");
-
-        Swal.fire({
-            icon: "warning",
-            title: "Límite alcanzado",
-            text: "Solo puede seleccionar un máximo de 3 recomendaciones prioritarias"
-        });
-    }
-});
-
-
-$("#form_reporte_recomendaciones_control").on("submit", function(e)
-{
-    e.preventDefault();
-
-    var totalPrioritarias = 0;
-
-    $(".selector_prioritaria").each(function()
-    {
-        var id = $(this).data("id");
-
-        var activa = $(
-            '.recomendacion_checkbox[data-id="' + id + '"]'
-        ).is(":checked");
-
-        if (
-            activa &&
-            $(this).val() == "1"
-        ) {
-            totalPrioritarias++;
-        }
-    });
-
-    if (totalPrioritarias > 3) {
-
-        Swal.fire({
-            icon: "warning",
-            title: "Aviso",
-            text: "Solo puede seleccionar un máximo de 3 recomendaciones prioritarias"
-        });
-
-        return;
-    }
-
-    let formData = new FormData(this);
-
-    formData.append(
-        "PROYECTO_ID",
-        proyecto.id
-    );
-
-    $.ajax({
-        url: "/guardarRecomendacionesInformepsico",
-        type: "POST",
-        data: formData,
-        cache: false,
-        contentType: false,
-        processData: false,
-
-        headers: {
-            "X-CSRF-TOKEN":
-                $('meta[name="csrf-token"]')
-                .attr("content")
-        },
-
-        beforeSend: function()
-        {
-            $("#botonguardar_reporte_recomendaciones_control").prop("disabled", true);
-            $("#botonguardar_reporte_recomendaciones_control").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
-        },
-
-        success: function(response)
-        {
-            consultarEstadosMenusReportePsico();
-            cargarRecomendacionesPrioritariasPsico();
-
-            Swal.fire({
-                icon: "success",
-                title: "Correcto",
-                text: response.msj,
-                timer: 2000,
-                showConfirmButton: false
-            });
-        },
-
-        error: function(xhr)
-        {
-            var mensaje = "Ocurrió un error al guardar";
-
-            if (
-                xhr.responseJSON &&
-                xhr.responseJSON.msj
-            ) {
-                mensaje = xhr.responseJSON.msj;
-            }
-
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: mensaje
-            });
-        },
-
-        complete: function()
-        {
-            $("#botonguardar_reporte_recomendaciones_control")
-                .prop("disabled", false);
-
-            $("#botonguardar_reporte_recomendaciones_control")
-                .html(
-                    'Guardar recomendaciones <i class="fa fa-save"></i>'
-                );
-        }
-    });
-});
-
-
-function cargarRecomendacionesInformepsico()
-{
-    $.get(
-        "/obtenerRecomendacionesInformepsico/" + proyecto.id,
-
-        function(response)
-        {
-            $('input[name="DESCRIPCION_RECOMENDACIONES[]"]')
-                .prop("checked", false);
-
-            $(".selector_prioritaria")
-                .val("0")
-                .prop("disabled", true);
-
-            response.forEach(function(item)
-            {
-                var id =
-                    item.CATALOGO_RECOMENDACIONES_ID;
-
-                $('input[name="DESCRIPCION_RECOMENDACIONES[]"][value="' + id + '"]')
-                    .prop("checked", true);
-
-                $("#ES_PRIORITARIA_" + id)
-                    .prop("disabled", false)
-                    .val(
-                        String(
-                            item.ES_PRIORITARIA || 0
-                        )
-                    );
-            });
-        }
-    );
-}
 
 
 /// RESPONSABLE
@@ -1729,9 +1295,7 @@ $("#form_reporte_responsablesinforme").on("submit",function(e)
         processData: false,
 
         headers: {
-            'X-CSRF-TOKEN':
-                $('meta[name="csrf-token"]')
-                .attr('content')
+            'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
         },
 
         beforeSend: function()
@@ -1769,20 +1333,14 @@ function tablaVersionesinfopsico()
 
     try {
 
-        let ruta =
-            "/tablaVersionesinfopsico/" +
-            proyecto.id;
+        let ruta = "/tablaVersionesinfopsico/" + proyecto.id;
 
         if(tabla_reporte_revisiones != null)
         {
-            tabla_reporte_revisiones
-                .destroy();
+            tabla_reporte_revisiones.destroy();
         }
 
-        tabla_reporte_revisiones =
-            $('#tabla_reporte_revisiones')
-            .DataTable({
-
+        tabla_reporte_revisiones = $('#tabla_reporte_revisiones').DataTable({
             ajax: {
                 url: ruta,
                 type: "get",
@@ -1813,13 +1371,29 @@ function tablaVersionesinfopsico()
                 }
             ],
             
-            ordering: true,
+        lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
+            // rowsGroup: [1, 2, 3], //agrupar filas
+            // order: [[ 0, "ASC" ]],
+            ordering: false,
             processing: true,
-            responsive: true,
-            
+            searching: false,
+            paging: false,
             language: {
-                emptyTable:
-                    "No hay revisiones"
+                lengthMenu: "Mostrar _MENU_ Registros",
+                zeroRecords: "No se encontraron registros",
+                info: "Página _PAGE_ de _PAGES_ (Total _TOTAL_ registros)",
+                infoEmpty: "No se encontraron registros",
+                infoFiltered: "(Filtrado de _MAX_ registros)",
+                emptyTable: "No hay datos disponibles en la tabla",
+                loadingRecords: "Cargando datos....",
+                processing: "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+                search: "Buscar",
+                paginate: {
+                    first: "Primera",
+                    last: "Ultima",
+                    next: "Siguiente",
+                    previous: "Anterior"
+                }
             }
         });
     }
@@ -1832,8 +1406,7 @@ function tablaVersionesinfopsico()
 
 
 
-$("#boton_reporte_nuevarevision").on(
-    "click",
+$("#boton_reporte_nuevarevision").on("click",
     function()
     {
         var boton = $(this);
@@ -2283,11 +1856,8 @@ function recortarImagenBase64(imagenBase64, padding)
             var canvas = document.createElement('canvas');
             var contexto = canvas.getContext('2d');
 
-            canvas.width =
-                imagen.naturalWidth || imagen.width;
-
-            canvas.height =
-                imagen.naturalHeight || imagen.height;
+            canvas.width = imagen.naturalWidth || imagen.width;
+            canvas.height = imagen.naturalHeight || imagen.height;
 
             contexto.clearRect(
                 0,
@@ -2317,56 +1887,26 @@ function recortarImagenBase64(imagenBase64, padding)
             var maximoY = 0;
             var encontrado = false;
 
-            var anchoZonaLogo = Math.round(
-                canvas.width * 0.12
-            );
+            var anchoZonaLogo = Math.round(canvas.width * 0.12);
+            var altoZonaLogo = Math.round(canvas.height * 0.12);
 
-            var altoZonaLogo = Math.round(
-                canvas.height * 0.12
-            );
-
-            var inicioZonaLogoY =
-                canvas.height - altoZonaLogo;
-
+            var inicioZonaLogoY = canvas.height - altoZonaLogo;
             for (var y = 0; y < canvas.height; y++) {
-
                 for (var x = 0; x < canvas.width; x++) {
-
-                    var estaEnZonaLogo =
-                        x <= anchoZonaLogo &&
-                        y >= inicioZonaLogoY;
-
+                    var estaEnZonaLogo = x <= anchoZonaLogo && y >= inicioZonaLogoY;
                     if (estaEnZonaLogo) {
                         continue;
                     }
-
-                    var indice =
-                        (y * canvas.width + x) * 4;
-
-                    var rojo =
-                        pixeles[indice];
-
-                    var verde =
-                        pixeles[indice + 1];
-
-                    var azul =
-                        pixeles[indice + 2];
-
-                    var alfa =
-                        pixeles[indice + 3];
-
-                    var transparente =
-                        alfa <= 10;
-
-                    var blanco =
-                        rojo >= 245 &&
-                        verde >= 245 &&
-                        azul >= 245;
-
-                    if (
-                        !transparente &&
-                        !blanco
-                    ) {
+                    var indice = (y * canvas.width + x) * 4;
+                    var rojo = pixeles[indice];
+                    var verde = pixeles[indice + 1];
+                    var azul = pixeles[indice + 2];
+                    var alfa = pixeles[indice + 3];
+                    var transparente = alfa <= 10;
+                    var blanco = rojo >= 245 && verde >= 245 && azul >= 245;
+                
+                    if (!transparente && !blanco)
+                    {
                         encontrado = true;
 
                         if (x < minimoX) {
@@ -2393,61 +1933,31 @@ function recortarImagenBase64(imagenBase64, padding)
                 return;
             }
 
-            padding =
-                parseInt(padding, 10);
+            padding = parseInt(padding, 10);
 
             if (isNaN(padding)) {
                 padding = 15;
             }
 
-            minimoX = Math.max(
-                0,
-                minimoX - padding
-            );
-
-            minimoY = Math.max(
-                0,
-                minimoY - padding
-            );
-
-            maximoX = Math.min(
-                canvas.width - 1,
-                maximoX + padding
-            );
-
-            maximoY = Math.min(
-                canvas.height - 1,
-                maximoY + padding
-            );
-
-            var anchoRecorte =
-                maximoX - minimoX + 1;
-
-            var altoRecorte =
-                maximoY - minimoY + 1;
-
-            if (
-                anchoRecorte <= 0 ||
-                altoRecorte <= 0
-            ) {
+            minimoX = Math.max(0,minimoX - padding);
+            minimoY = Math.max(0,minimoY - padding);
+            maximoX = Math.min(canvas.width - 1,maximoX + padding);
+            maximoY = Math.min(canvas.height - 1,maximoY + padding);
+            var anchoRecorte = maximoX - minimoX + 1;
+            var altoRecorte = maximoY - minimoY + 1;
+            
+            if (anchoRecorte <= 0 || altoRecorte <= 0)
+            {
                 resolve(imagenBase64);
                 return;
             }
 
             var escalaSalida = 3;
 
-            var canvasRecortado =
-                document.createElement('canvas');
-
-            var contextoRecortado =
-                canvasRecortado.getContext('2d');
-
-            canvasRecortado.width =
-                anchoRecorte * escalaSalida;
-
-            canvasRecortado.height =
-                altoRecorte * escalaSalida;
-
+            var canvasRecortado = document.createElement('canvas');
+            var contextoRecortado = canvasRecortado.getContext('2d');
+            canvasRecortado.width = anchoRecorte * escalaSalida;
+            canvasRecortado.height = altoRecorte * escalaSalida;
             contextoRecortado.clearRect(
                 0,
                 0,
@@ -2455,12 +1965,8 @@ function recortarImagenBase64(imagenBase64, padding)
                 canvasRecortado.height
             );
 
-            contextoRecortado.imageSmoothingEnabled =
-                true;
-
-            contextoRecortado.imageSmoothingQuality =
-                'high';
-
+            contextoRecortado.imageSmoothingEnabled = true;
+            contextoRecortado.imageSmoothingQuality = 'high';
             contextoRecortado.drawImage(
                 canvas,
                 minimoX,
@@ -2473,10 +1979,7 @@ function recortarImagenBase64(imagenBase64, padding)
                 canvasRecortado.height
             );
 
-            resolve(
-                canvasRecortado.toDataURL(
-                    'image/png'
-                )
+            resolve(canvasRecortado.toDataURL('image/png')
             );
         };
 
@@ -2489,596 +1992,104 @@ function recortarImagenBase64(imagenBase64, padding)
     });
 }
 
-// async function descargarRevisioninfopsico(PROYECTO_ID)
-// {
-//     try {
 
-//         window.chartPngs =
-//             window.chartPngs || {};
-
-//         if (
-//             !window.chartPngs[
-//                 'calificacionChart'
-//             ] &&
-//             typeof calificacionchart !==
-//                 'undefined' &&
-//             calificacionchart
-//         ) {
-//             window.chartPngs[
-//                 'calificacionChart'
-//             ] = calificacionchart;
-//         }
-
-//         if (
-//             !window.chartPngs[
-//                 'consolidadoChart'
-//             ] &&
-//             typeof categoriaschart !==
-//                 'undefined' &&
-//             categoriaschart
-//         ) {
-//             window.chartPngs[
-//                 'consolidadoChart'
-//             ] = categoriaschart;
-//         }
-
-//         if (
-//             !window.chartPngs[
-//                 'consolidadoChart2'
-//             ] &&
-//             typeof dominioschart !==
-//                 'undefined' &&
-//             dominioschart
-//         ) {
-//             window.chartPngs[
-//                 'consolidadoChart2'
-//             ] = dominioschart;
-//         }
-
-//         if (
-//             !window.chartPngs[
-//                 'guia1Chart'
-//             ] &&
-//             typeof acontecimientoschart !==
-//                 'undefined' &&
-//             acontecimientoschart
-//         ) {
-//             window.chartPngs[
-//                 'guia1Chart'
-//             ] = acontecimientoschart;
-//         }
-
-//         const dashboard =
-//             document.querySelector(
-//                 '#tabla_dashboard'
-//             );
-
-//         if (!dashboard) {
-//             Swal.fire({
-//                 icon: 'error',
-//                 title: 'Error',
-//                 text: 'No se encontró el dashboard para generar la imagen'
-//             });
-
-//             return;
-//         }
-
-//         if (
-//             document.fonts &&
-//             document.fonts.ready
-//         ) {
-//             await document.fonts.ready;
-//         }
-
-//         window.dispatchEvent(
-//             new Event('resize')
-//         );
-
-//         await new Promise(
-//             function(resolve)
-//             {
-//                 setTimeout(
-//                     resolve,
-//                     1800
-//                 );
-//             }
-//         );
-
-//         var imagenesGraficas = {
-//             GRAFICA_CALIFICACION:
-//                 window.chartPngs[
-//                     'calificacionChart'
-//                 ] || '',
-
-//             GRAFICA_CATEGORIAS:
-//                 window.chartPngs[
-//                     'consolidadoChart'
-//                 ] || '',
-
-//             GRAFICA_DOMINIOS:
-//                 window.chartPngs[
-//                     'consolidadoChart2'
-//                 ] || '',
-
-//             GRAFICA_1:
-//                 window.chartPngs[
-//                     'guia1Chart'
-//                 ] || '',
-
-//             ambienteCategoriaChart:
-//                 window.chartPngs[
-//                     'ambienteCategoriaChart'
-//                 ] || '',
-
-//             ambienteDominioChart:
-//                 window.chartPngs[
-//                     'ambienteDominioChart'
-//                 ] || '',
-
-//             factoresCategoriaChart:
-//                 window.chartPngs[
-//                     'factoresCategoriaChart'
-//                 ] || '',
-
-//             factoresDominio1Chart:
-//                 window.chartPngs[
-//                     'factoresDominio1Chart'
-//                 ] || '',
-
-//             factoresDominio2Chart:
-//                 window.chartPngs[
-//                     'factoresDominio2Chart'
-//                 ] || '',
-
-//             organizacionCategoriaChart:
-//                 window.chartPngs[
-//                     'organizacionCategoriaChart'
-//                 ] || '',
-
-//             organizacionDominio1Chart:
-//                 window.chartPngs[
-//                     'organizacionDominio1Chart'
-//                 ] || '',
-
-//             organizacionDominio2Chart:
-//                 window.chartPngs[
-//                     'organizacionDominio2Chart'
-//                 ] || '',
-
-//             liderazgoCategoriaChart:
-//                 window.chartPngs[
-//                     'liderazgoCategoriaChart'
-//                 ] || '',
-
-//             liderazgoDominio1Chart:
-//                 window.chartPngs[
-//                     'liderazgoDominio1Chart'
-//                 ] || '',
-
-//             liderazgoDominio2Chart:
-//                 window.chartPngs[
-//                     'liderazgoDominio2Chart'
-//                 ] || '',
-
-//             liderazgoDominio3Chart:
-//                 window.chartPngs[
-//                     'liderazgoDominio3Chart'
-//                 ] || '',
-
-//             entornoCategoriaChart:
-//                 window.chartPngs[
-//                     'entornoCategoriaChart'
-//                 ] || '',
-
-//             entornoDominio1Chart:
-//                 window.chartPngs[
-//                     'entornoDominio1Chart'
-//                 ] || '',
-
-//             entornoDominio2Chart:
-//                 window.chartPngs[
-//                     'entornoDominio2Chart'
-//                 ] || ''
-//         };
-
-//        var graficasParaRecortar = [
-//         'GRAFICA_CALIFICACION',
-//         'GRAFICA_CATEGORIAS',
-//         'GRAFICA_DOMINIOS',
-//         'GRAFICA_1'
-//     ];
-
-//     for (
-//         var indice = 0;
-//         indice < graficasParaRecortar.length;
-//         indice++
-//     ) {
-//         var nombreGrafica =
-//             graficasParaRecortar[indice];
-
-//         if (
-//             imagenesGraficas[nombreGrafica] &&
-//             imagenesGraficas[nombreGrafica].length > 100
-//         ) {
-//             imagenesGraficas[nombreGrafica] =
-//                 await recortarImagenBase64(
-//                     imagenesGraficas[nombreGrafica],
-//                     10
-//                 );
-//         }
-//     }
-
-//         var graficasFaltantes =
-//             [];
-
-//         Object.keys(
-//             imagenesGraficas
-//         ).forEach(
-//             function(nombreGrafica)
-//             {
-//                 if (
-//                     !imagenesGraficas[
-//                         nombreGrafica
-//                     ] ||
-//                     imagenesGraficas[
-//                         nombreGrafica
-//                     ].length < 100
-//                 ) {
-//                     graficasFaltantes.push(
-//                         nombreGrafica
-//                     );
-//                 }
-//             }
-//         );
-
-//         if (
-//             graficasFaltantes.length > 0
-//         ) {
-//             console.warn(
-//                 'Las siguientes gráficas no están disponibles:',
-//                 graficasFaltantes
-//             );
-//         }
-
-//         const canvas =
-//             await html2canvas(
-//                 dashboard,
-//                 {
-//                     scale: 4,
-//                     useCORS: true,
-//                     allowTaint: true,
-//                     backgroundColor:
-//                         '#FFFFFF',
-//                     logging: false,
-//                     scrollX: 0,
-//                     scrollY:
-//                         -window.scrollY,
-//                     width:
-//                         dashboard.scrollWidth,
-//                     height:
-//                         dashboard.scrollHeight,
-//                     windowWidth:
-//                         document
-//                             .documentElement
-//                             .scrollWidth,
-//                     windowHeight:
-//                         document
-//                             .documentElement
-//                             .scrollHeight
-//                 }
-//             );
-
-//         const dashboardBase64 =
-//             canvas.toDataURL(
-//                 'image/png',
-//                 1
-//             );
-
-//         if (
-//             !dashboardBase64 ||
-//             dashboardBase64.length < 100
-//         ) {
-//             throw new Error(
-//                 'No fue posible generar la imagen del dashboard'
-//             );
-//         }
-
-//         var form =
-//             $('<form>', {
-//                 action:
-//                     '/descargarRevisioninfopsico/' +
-//                     PROYECTO_ID,
-
-//                 method:
-//                     'POST',
-
-//                 target:
-//                     '_blank',
-
-//                 style:
-//                     'display:none;'
-//             });
-
-//         form.append(
-//             $('<input>', {
-//                 type: 'hidden',
-//                 name: '_token',
-//                 value:
-//                     $(
-//                         'meta[name="csrf-token"]'
-//                     ).attr(
-//                         'content'
-//                     )
-//             })
-//         );
-
-//         form.append(
-//             $('<input>', {
-//                 type: 'hidden',
-//                 name:
-//                     'DASHBOARD_FOTO',
-//                 value:
-//                     dashboardBase64
-//             })
-//         );
-
-//         Object.keys(
-//             imagenesGraficas
-//         ).forEach(
-//             function(nombreInput)
-//             {
-//                 form.append(
-//                     $('<input>', {
-//                         type:
-//                             'hidden',
-
-//                         name:
-//                             nombreInput,
-
-//                         value:
-//                             imagenesGraficas[
-//                                 nombreInput
-//                             ]
-//                     })
-//                 );
-//             }
-//         );
-
-//         $('body').append(form);
-
-//         form.submit();
-
-//         setTimeout(
-//             function()
-//             {
-//                 form.remove();
-//             },
-//             5000
-//         );
-
-//     } catch (error) {
-
-//         console.error(
-//             'Error al generar el informe:',
-//             error
-//         );
-
-//         Swal.fire({
-//             icon: 'error',
-//             title: 'Error',
-//             text: 'No fue posible generar las imágenes del informe'
-//         });
-//     }
-// }
 
 async function descargarRevisioninfopsico(PROYECTO_ID)
 {
     try {
 
-        window.chartPngs =
-            window.chartPngs || {};
-
-        if (
-            !window.chartPngs[
-                'calificacionChart'
-            ] &&
-            typeof calificacionchart !==
-                'undefined' &&
-            calificacionchart
-        ) {
-            window.chartPngs[
-                'calificacionChart'
-            ] = calificacionchart;
+        window.chartPngs = window.chartPngs || {};
+        if (!window.chartPngs['calificacionChart'] && typeof calificacionchart !== 'undefined' && calificacionchart)
+        {
+            window.chartPngs['calificacionChart'] = calificacionchart;
         }
 
-        if (
-            !window.chartPngs[
-                'consolidadoChart'
-            ] &&
-            typeof categoriaschart !==
-                'undefined' &&
-            categoriaschart
-        ) {
-            window.chartPngs[
-                'consolidadoChart'
-            ] = categoriaschart;
+        if (!window.chartPngs['consolidadoChart'] && typeof categoriaschart !== 'undefined' && categoriaschart)
+        {
+            window.chartPngs['consolidadoChart'] = categoriaschart;
+        }
+        if (!window.chartPngs['consolidadoChart2'] && typeof dominioschart !== 'undefined' && dominioschart)
+        {
+            window.chartPngs['consolidadoChart2'] = dominioschart;
+        }
+        if (!window.chartPngs['guia1Chart'] && typeof acontecimientoschart !== 'undefined' && acontecimientoschart)
+        {
+            window.chartPngs['guia1Chart'] = acontecimientoschart;
         }
 
-        if (
-            !window.chartPngs[
-                'consolidadoChart2'
-            ] &&
-            typeof dominioschart !==
-                'undefined' &&
-            dominioschart
-        ) {
-            window.chartPngs[
-                'consolidadoChart2'
-            ] = dominioschart;
-        }
-
-        if (
-            !window.chartPngs[
-                'guia1Chart'
-            ] &&
-            typeof acontecimientoschart !==
-                'undefined' &&
-            acontecimientoschart
-        ) {
-            window.chartPngs[
-                'guia1Chart'
-            ] = acontecimientoschart;
-        }
-
-        const dashboard =
-            document.querySelector(
-                '#tabla_dashboard'
-            );
-
+        const dashboard = document.querySelector('#tabla_dashboard');
         if (!dashboard) {
-
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'No se encontró el dashboard para generar la imagen'
             });
-
             return;
         }
 
-        const dashboardGeneral =
-            document.querySelector(
-                '#dashboard_nom035_captura'
-            );
-
+        const dashboardGeneral = document.querySelector('#dashboard_nom035_captura');
         if (!dashboardGeneral) {
-
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'No se encontró el dashboard general para generar la imagen'
             });
-
             return;
         }
 
-        if (
-            document.fonts &&
-            document.fonts.ready
-        ) {
+        if (document.fonts && document.fonts.ready)
+        {
             await document.fonts.ready;
         }
 
-        window.dispatchEvent(
-            new Event('resize')
-        );
-
+        window.dispatchEvent(new Event('resize'));
         await new Promise(
             function(resolve)
             {
-                setTimeout(
-                    resolve,
-                    1800
-                );
+                setTimeout(resolve,1800);
             }
         );
 
         var imagenesGraficas = {
 
             GRAFICA_CALIFICACION:
-                window.chartPngs[
-                    'calificacionChart'
-                ] || '',
-
+                window.chartPngs['calificacionChart'] || '',
             GRAFICA_CATEGORIAS:
-                window.chartPngs[
-                    'consolidadoChart'
-                ] || '',
-
+                window.chartPngs['consolidadoChart'] || '',
             GRAFICA_DOMINIOS:
-                window.chartPngs[
-                    'consolidadoChart2'
-                ] || '',
-
+                window.chartPngs['consolidadoChart2'] || '',
             GRAFICA_1:
-                window.chartPngs[
-                    'guia1Chart'
-                ] || '',
-
+                window.chartPngs['guia1Chart'] || '',
             ambienteCategoriaChart:
-                window.chartPngs[
-                    'ambienteCategoriaChart'
-                ] || '',
-
+                window.chartPngs['ambienteCategoriaChart'] || '',
             ambienteDominioChart:
-                window.chartPngs[
-                    'ambienteDominioChart'
-                ] || '',
-
+                window.chartPngs['ambienteDominioChart'] || '',
             factoresCategoriaChart:
-                window.chartPngs[
-                    'factoresCategoriaChart'
-                ] || '',
-
+                window.chartPngs['factoresCategoriaChart'] || '',
             factoresDominio1Chart:
-                window.chartPngs[
-                    'factoresDominio1Chart'
-                ] || '',
-
+                window.chartPngs['factoresDominio1Chart'] || '',
             factoresDominio2Chart:
-                window.chartPngs[
-                    'factoresDominio2Chart'
-                ] || '',
-
+                window.chartPngs['factoresDominio2Chart'] || '',
             organizacionCategoriaChart:
-                window.chartPngs[
-                    'organizacionCategoriaChart'
-                ] || '',
-
+                window.chartPngs['organizacionCategoriaChart'] || '',
             organizacionDominio1Chart:
-                window.chartPngs[
-                    'organizacionDominio1Chart'
-                ] || '',
-
+                window.chartPngs['organizacionDominio1Chart'] || '',
             organizacionDominio2Chart:
-                window.chartPngs[
-                    'organizacionDominio2Chart'
-                ] || '',
-
+                window.chartPngs['organizacionDominio2Chart'] || '',
             liderazgoCategoriaChart:
-                window.chartPngs[
-                    'liderazgoCategoriaChart'
-                ] || '',
-
+                window.chartPngs['liderazgoCategoriaChart'] || '',
             liderazgoDominio1Chart:
-                window.chartPngs[
-                    'liderazgoDominio1Chart'
-                ] || '',
-
+                window.chartPngs['liderazgoDominio1Chart'] || '',
             liderazgoDominio2Chart:
-                window.chartPngs[
-                    'liderazgoDominio2Chart'
-                ] || '',
-
+                window.chartPngs['liderazgoDominio2Chart'] || '',
             liderazgoDominio3Chart:
-                window.chartPngs[
-                    'liderazgoDominio3Chart'
-                ] || '',
-
+                window.chartPngs['liderazgoDominio3Chart'] || '',
             entornoCategoriaChart:
-                window.chartPngs[
-                    'entornoCategoriaChart'
-                ] || '',
-
+                window.chartPngs['entornoCategoriaChart'] || '',
             entornoDominio1Chart:
-                window.chartPngs[
-                    'entornoDominio1Chart'
-                ] || '',
-
+                window.chartPngs['entornoDominio1Chart'] || '',
             entornoDominio2Chart:
-                window.chartPngs[
-                    'entornoDominio2Chart'
-                ] || ''
+                window.chartPngs['entornoDominio2Chart'] || ''
         };
 
         var graficasParaRecortar = [
@@ -3150,34 +2161,17 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
                     logging: false,
                     scrollX: 0,
                     scrollY: -window.scrollY,
-                    width:
-                        dashboard.scrollWidth,
-                    height:
-                        dashboard.scrollHeight,
-                    windowWidth:
-                        document
-                            .documentElement
-                            .scrollWidth,
-                    windowHeight:
-                        document
-                            .documentElement
-                            .scrollHeight
+                    width: dashboard.scrollWidth,
+                    height: dashboard.scrollHeight,
+                    windowWidth: document.documentElement.scrollWidth,
+                    windowHeight: document.documentElement.scrollHeight
                 }
             );
 
-        const dashboardBase64 =
-            canvasDashboard.toDataURL(
-                'image/png',
-                1
-            );
-
-        if (
-            !dashboardBase64 ||
-            dashboardBase64.length < 100
-        ) {
-            throw new Error(
-                'No fue posible generar la imagen del dashboard'
-            );
+        const dashboardBase64 = canvasDashboard.toDataURL('image/png',1);
+        if (!dashboardBase64 || dashboardBase64.length < 100)
+        {
+            throw new Error('No fue posible generar la imagen del dashboard');
         }
 
         const canvasDashboardGeneral =
@@ -3191,47 +2185,24 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
                     logging: false,
                     scrollX: 0,
                     scrollY: -window.scrollY,
-                    width:
-                        dashboardGeneral.scrollWidth,
-                    height:
-                        dashboardGeneral.scrollHeight,
-                    windowWidth:
-                        document
-                            .documentElement
-                            .scrollWidth,
-                    windowHeight:
-                        document
-                            .documentElement
-                            .scrollHeight
+                    width:dashboardGeneral.scrollWidth,
+                    height:dashboardGeneral.scrollHeight,
+                    windowWidth:document.documentElement.scrollWidth,
+                    windowHeight:document.documentElement.scrollHeight
                 }
             );
 
-        const dashboardGeneralBase64 =
-            canvasDashboardGeneral.toDataURL(
-                'image/png',
-                1
-            );
-
-        if (
-            !dashboardGeneralBase64 ||
-            dashboardGeneralBase64.length < 100
-        ) {
-            throw new Error(
-                'No fue posible generar la imagen del dashboard general'
-            );
+        const dashboardGeneralBase64 = canvasDashboardGeneral.toDataURL('image/png',1);
+        if (!dashboardGeneralBase64 || dashboardGeneralBase64.length < 100)
+        {
+            throw new Error('No fue posible generar la imagen del dashboard general');
         }
 
         var form =
             $('<form>', {
-
-                action:
-                    '/descargarRevisioninfopsico/' +
-                    PROYECTO_ID,
-
+                action:'/descargarRevisioninfopsico/' + PROYECTO_ID,
                 method: 'POST',
-
                 target: '_blank',
-
                 style: 'display:none;'
             });
 
@@ -3240,11 +2211,7 @@ async function descargarRevisioninfopsico(PROYECTO_ID)
                 type: 'hidden',
                 name: '_token',
                 value:
-                    $(
-                        'meta[name="csrf-token"]'
-                    ).attr(
-                        'content'
-                    )
+                    $('meta[name="csrf-token"]').attr('content')
             })
         );
 
@@ -3329,33 +2296,12 @@ function cargarGraficaGeneroPsico()
                 ? Number(((mujeres * 100) / total).toFixed(1))
                 : 0;
 
-            $('#lblHombres').html(
-                'Hombres: ' + hombres + ' (' + porcentajeHombres + '%)'
-            );
-
-            $('#lblMujeres').html(
-                'Mujeres: ' + mujeres + ' (' + porcentajeMujeres + '%)'
-            );
-
-            $('#stopHombreColor').attr(
-                'offset',
-                porcentajeHombres + '%'
-            );
-
-            $('#stopHombreBlanco').attr(
-                'offset',
-                porcentajeHombres + '%'
-            );
-
-            $('#stopMujerColor').attr(
-                'offset',
-                porcentajeMujeres + '%'
-            );
-
-            $('#stopMujerBlanco').attr(
-                'offset',
-                porcentajeMujeres + '%'
-            );
+            $('#lblHombres').html('Hombres: ' + hombres + ' (' + porcentajeHombres + '%)');
+            $('#lblMujeres').html('Mujeres: ' + mujeres + ' (' + porcentajeMujeres + '%)');
+            $('#stopHombreColor').attr('offset',porcentajeHombres + '%');
+            $('#stopHombreBlanco').attr('offset',porcentajeHombres + '%');
+            $('#stopMujerColor').attr('offset',porcentajeMujeres + '%');
+            $('#stopMujerBlanco').attr('offset',porcentajeMujeres + '%');
         }
     );
 }
@@ -3367,14 +2313,10 @@ let edadeschart = null;
 
 function cargarGraficaEdadesPsico()
 {
-    $.get(
-        '/obtenerGraficaEdadesPsico/' + proyecto.id,
+    $.get('/obtenerGraficaEdadesPsico/' + proyecto.id,
         function(response)
         {
-            generarGraficaEdadesPsico(
-                response.data,
-                response.maximo
-            );
+            generarGraficaEdadesPsico(response.data,response.maximo);
         }
     )
     .fail(function(xhr)
@@ -3476,10 +2418,7 @@ function generarGraficaEdadesPsico(edadData, maximo)
                     )
                     : 0;
 
-                return cantidad +
-                    ' (' +
-                    porcentaje +
-                    '%)';
+                return cantidad + ' (' + porcentaje + '%)';
             },
 
             style: {
@@ -3500,11 +2439,7 @@ function generarGraficaEdadesPsico(edadData, maximo)
             categories: categoriasEdad,
             min: 0,
             max: maximoEscala,
-
-            tickAmount: Math.min(
-                maximoEscala,
-                10
-            ),
+            tickAmount: Math.min(maximoEscala,10),
 
             labels: {
                 formatter: function(valor)
@@ -3608,15 +2543,10 @@ let escolaridadchart = null;
 
 function cargarGraficaEscolaridadPsico()
 {
-    $.get(
-        '/obtenerGraficaEscolaridadPsico/' + proyecto.id,
+    $.get('/obtenerGraficaEscolaridadPsico/' + proyecto.id,
         function(response)
         {
-            generarGraficaEscolaridadPsico(
-                response.data,
-                response.total_trabajadores,
-                response.maximo
-            );
+            generarGraficaEscolaridadPsico(response.data,response.total_trabajadores,response.maximo);
         }
     )
     .fail(function(xhr)
@@ -3653,15 +2583,7 @@ function generarGraficaEscolaridadPsico(datosEscolaridad,totalTrabajadores,maxim
     if (datosFiltrados.length === 0) {
 
         $('#grafica_escolaridad').html(`
-            <div
-                style="
-                    width:100%;
-                    padding:40px 10px;
-                    text-align:center;
-                    font-weight:bold;
-                    color:#777;
-                "
-            >
+            <div style="width:100%; padding:40px 10px; text-align:center; font-weight:bold; color:#777;">
                 No hay información de escolaridad
             </div>
         `);
@@ -3900,15 +2822,10 @@ let estadocivilchart = null;
 
 function cargarGraficaEstadoCivilPsico()
 {
-    $.get(
-        '/obtenerGraficaEstadoCivilPsico/' + proyecto.id,
+    $.get('/obtenerGraficaEstadoCivilPsico/' + proyecto.id,
         function(response)
         {
-            generarGraficaEstadoCivilPsico(
-                response.data,
-                response.total_trabajadores,
-                response.maximo
-            );
+            generarGraficaEstadoCivilPsico(response.data,response.total_trabajadores,response.maximo);
         }
     )
     .fail(function(xhr)
@@ -3945,15 +2862,7 @@ function generarGraficaEstadoCivilPsico(estadoCivilData,totalTrabajadores,maximo
     if (datosFiltrados.length === 0) {
 
         $('#grafica_estadocivil').html(`
-            <div
-                style="
-                    width:100%;
-                    padding:40px 10px;
-                    text-align:center;
-                    font-weight:bold;
-                    color:#777;
-                "
-            >
+            <div style="width:100%; padding:40px 10px; text-align:center; font-weight:bold; color:#777;">
                 No hay información de estado civil
             </div>
         `);
@@ -4067,14 +2976,8 @@ function generarGraficaEstadoCivilPsico(estadoCivilData,totalTrabajadores,maximo
             type: 'bar',
             height: 250,
             offsetY: -8,
-
-            toolbar: {
-                show: false
-            },
-
-            animations: {
-                enabled: true
-            }
+            toolbar: {show: false},
+            animations: {enabled: true}
         },
 
         colors: coloresEstadoCivil,
@@ -4084,10 +2987,7 @@ function generarGraficaEstadoCivilPsico(estadoCivilData,totalTrabajadores,maximo
                 columnWidth: '65%',
                 distributed: true,
                 borderRadius: 3,
-
-                dataLabels: {
-                    position: 'top'
-                }
+                dataLabels: {position: 'top'}
             }
         },
 
@@ -4240,14 +3140,10 @@ let regimenchart = null;
 
 function cargarGraficaRegimenPsico()
 {
-    $.get(
-        '/obtenerGraficaRegimenPsico/' + proyecto.id,
+    $.get('/obtenerGraficaRegimenPsico/' + proyecto.id,
         function(response)
         {
-            generarGraficaRegimenPsico(
-                response.data,
-                response.total_trabajadores
-            );
+            generarGraficaRegimenPsico(response.data,response.total_trabajadores);
         }
     )
     .fail(function(xhr)
@@ -4284,15 +3180,7 @@ function generarGraficaRegimenPsico(regimenData,totalTrabajadores)
     if (datosFiltrados.length === 0) {
 
         $('#grafica_regimen').html(`
-            <div
-                style="
-                    width:100%;
-                    padding:40px 10px;
-                    text-align:center;
-                    font-weight:bold;
-                    color:#777;
-                "
-            >
+            <div style="width:100%; padding:40px 10px; text-align:center; font-weight:bold;color:#777;">
                 No hay información de régimen
             </div>
         `);
@@ -4395,20 +3283,12 @@ function generarGraficaRegimenPsico(regimenData,totalTrabajadores)
         chart: {
             type: 'donut',
             height: 240,
-
-            toolbar: {
-                show: false
-            },
-
-            animations: {
-                enabled: true
-            }
+            toolbar: {show: false},
+            animations: {enabled: true}
         },
 
         colors: coloresRegimen,
-
         labels: categoriasRegimen,
-
         dataLabels: {
             enabled: false
         },
@@ -4416,7 +3296,6 @@ function generarGraficaRegimenPsico(regimenData,totalTrabajadores)
         plotOptions: {
             pie: {
                 offsetY: 2,
-
                 donut: {
                     size: '45%',
 
@@ -4569,14 +3448,10 @@ let experienciachart = null;
 
 function cargarGraficaExperienciaPsico()
 {
-    $.get(
-        '/obtenerGraficaExperienciaPsico/' + proyecto.id,
+    $.get('/obtenerGraficaExperienciaPsico/' + proyecto.id,
         function(response)
         {
-            generarGraficaExperienciaPsico(
-                response.data,
-                response.total_trabajadores
-            );
+            generarGraficaExperienciaPsico(response.data,response.total_trabajadores);
         }
     )
     .fail(function(xhr)
@@ -4613,15 +3488,7 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
     if (datosFiltrados.length === 0) {
 
         $('#grafica_experiencia').html(`
-            <div
-                style="
-                    width:100%;
-                    padding:40px 10px;
-                    text-align:center;
-                    font-weight:bold;
-                    color:#777;
-                "
-            >
+            <div style="width:100%; padding:40px 10px; text-align:center;font-weight:bold;color:#777;">
                 No hay información de experiencia laboral
             </div>
         `);
@@ -4856,14 +3723,10 @@ function generarGraficaExperienciaPsico(experienciaData,totalTrabajadores)
 
 function cargarGraficaCalificacionPsico()
 {
-    $.get(
-        '/obtenerGraficaCalificacionPsico/' + proyecto.id,
+    $.get('/obtenerGraficaCalificacionPsico/' + proyecto.id,
         function(response)
         {
-            generarGraficaCalificacionPsico(
-                response.data,
-                response.total_trabajadores
-            );
+            generarGraficaCalificacionPsico(response.data,response.total_trabajadores);
         }
     )
     .fail(function(xhr)
@@ -4900,15 +3763,7 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
     if (datosFiltrados.length === 0) {
 
         $('#calificacionChart').html(`
-            <div
-                style="
-                    width:100%;
-                    padding:60px 10px;
-                    text-align:center;
-                    font-weight:bold;
-                    color:#777;
-                "
-            >
+            <div style="width:100%; padding:60px 10px;text-align:center;font-weight:bold;color:#777;">
                 No hay respuestas válidas de la Guía III
             </div>
         `);
@@ -5256,13 +4111,10 @@ function generarGraficaCalificacionPsico(datosCalificacion,totalTrabajadores)
 /// GRAFICA DE CATEGORIAS
 function cargarGraficaCategoriasGuiaIII()
 {
-    $.get(
-        '/obtenerGraficaCategoriasGuiaIIIPsicologia/' + proyecto.id,
+    $.get('/obtenerGraficaCategoriasGuiaIIIPsicologia/' + proyecto.id,
         function(response)
         {
-            generarGraficaCategoriasGuiaIII(
-                response.data
-            );
+            generarGraficaCategoriasGuiaIII(response.data);
         }
     )
     .fail(function(xhr)
@@ -5299,18 +4151,7 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
     if (dataConsolidado1.length === 0) {
 
         $('#consolidadoChart').html(`
-            <div
-                style="
-                    width: 100%;
-                    height: 600px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    text-align: center;
-                    font-weight: bold;
-                    color: #777;
-                "
-            >
+            <div style=" width: 100%; height: 600px; display: flex; justify-content: center; align-items: center; text-align: center; font-weight: bold; color: #777;">
                 No hay información disponible
             </div>
         `);
@@ -5321,21 +4162,9 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
     }
 
 
-    window.rootConsolidadoChart1 =
-        am5.Root.new(
-            'consolidadoChart'
-        );
-
-    var rootConsolidadoChart1 =
-        window.rootConsolidadoChart1;
-
-
-    const customThemeConsolidado1 =
-        am5.Theme.new(
-            rootConsolidadoChart1
-        );
-
-
+    window.rootConsolidadoChart1 = am5.Root.new('consolidadoChart');
+    var rootConsolidadoChart1 = window.rootConsolidadoChart1;
+    const customThemeConsolidado1 = am5.Theme.new(rootConsolidadoChart1);
 
     customThemeConsolidado1
         .rule('Label')
@@ -5343,8 +4172,6 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
             'fontSize',
             17
         );
-
-
 
     customThemeConsolidado1
         .rule('Grid')
@@ -5374,9 +4201,7 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
 
     rootConsolidadoChart1.setThemes([
 
-        am5themes_Animated.new(
-            rootConsolidadoChart1
-        ),
+        am5themes_Animated.new(rootConsolidadoChart1),
 
         customThemeConsolidado1
 
@@ -5398,36 +4223,19 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
                 am5radar.RadarChart.new(
                     rootConsolidadoChart1,
                     {
-                        panX:
-                            false,
-
-                        panY:
-                            false,
-
-                        wheelX:
-                            'none',
-
-                        wheelY:
-                            'none',
-
-                        innerRadius:
-                            am5.percent(10),
-
-                        radius:
-                            am5.percent(85)
+                        panX:false,
+                        panY:false,
+                        wheelX:'none',
+                        wheelY:'none',
+                        innerRadius:am5.percent(10),
+                        radius:am5.percent(85)
                     }
                 )
-
             );
 
 
 
-    chartConsolidado1
-        .zoomOutButton
-        .set(
-            'forceHidden',
-            true
-        );
+    chartConsolidado1.zoomOutButton.set('forceHidden',true);
 
 
     var categoryAxisRendererConsolidado1 =
@@ -5464,79 +4272,35 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
         .template
         .setAll({
 
-            fill:
-                am5.color(0x000000),
-
-            fontSize:
-                20,
-
-            fontWeight:
-                'bold',
-
-            paddingLeft:
-                5,
-
-            paddingRight:
-                5,
-
-            paddingTop:
-                2,
-
-            paddingBottom:
-                2
-
+            fill:am5.color(0x000000),
+            fontSize: 20,
+            fontWeight:'bold',
+            paddingLeft:5,
+            paddingRight:5,
+            paddingTop:2,
+            paddingBottom:2
         });
 
-
-    categoryAxisConsolidado1
-        .data
-        .setAll(
-            dataConsolidado1
-        );
-
-
+    categoryAxisConsolidado1.data.setAll(dataConsolidado1);
 
     var valueAxisConsolidado1 =
         chartConsolidado1
             .yAxes
             .push(
 
-                am5xy.ValueAxis.new(
-                    rootConsolidadoChart1,
+                am5xy.ValueAxis.new(rootConsolidadoChart1,
                     {
-                        renderer:
-                            am5radar
-                                .AxisRendererRadial
-                                .new(
-                                    rootConsolidadoChart1,
-                                    {}
-                                ),
-
-                        min:
-                            0,
-
-                        max:
-                            1,
-
-                        strictMinMax:
-                            true,
-
-                        extraMax:
-                            0.1
+                        renderer:am5radar.AxisRendererRadial.new(rootConsolidadoChart1,{}),
+                        min:0,
+                        max:1,
+                        strictMinMax:true,
+                        extraMax:0.1
                     }
                 )
-
             );
 
 
-    valueAxisConsolidado1
-        .get('renderer')
-        .labels
-        .template
-        .setAll({
-            visible:
-                false
-        });
+    valueAxisConsolidado1.get('renderer').labels.template.setAll({visible:false});
 
 
     var seriesNamesConsolidado1 = [
@@ -5551,13 +4315,9 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
     var seriesColorsConsolidado1 = [
 
         am5.color(0x00B0F0),
-
         am5.color(0x00B050),
-
         am5.color(0xFFFF00),
-
         am5.color(0xF7AA32),
-
         am5.color(0xFF0000)
 
     ];
@@ -5570,157 +4330,75 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
                 chartConsolidado1
                     .series
                     .push(
-
                         am5radar
                             .RadarColumnSeries
                             .new(
                                 rootConsolidadoChart1,
                                 {
-                                    stacked:
-                                        true,
-
-                                    name:
-                                        seriesName,
-
-                                    xAxis:
-                                        categoryAxisConsolidado1,
-
-                                    yAxis:
-                                        valueAxisConsolidado1,
-
-                                    valueYField:
-                                        seriesName,
-
-                                    categoryXField:
-                                        'category'
+                                    stacked:true,
+                                    name:seriesName,
+                                    xAxis:categoryAxisConsolidado1,
+                                    yAxis:valueAxisConsolidado1,
+                                    valueYField:seriesName,
+                                    categoryXField:'category'
                                 }
                             )
-
                     );
 
-            series
-                .columns
-                .template
+            series.columns.template
                 .setAll({
-
-                    cornerRadius:
-                        0,
-
-                    strokeOpacity:
-                        1,
-
-                    stroke:
-                        am5.color(0x000000),
-
-                    strokeWidth:
-                        0.5,
-
-                    fill:
-                        seriesColorsConsolidado1[index],
-
-                    width:
-                        am5.percent(100),
-
-                    tooltipText:
-                        seriesName
-
+                    cornerRadius:0,
+                    strokeOpacity:1,
+                    stroke:am5.color(0x000000),
+                    strokeWidth:0.5,
+                    fill:seriesColorsConsolidado1[index],
+                    width:am5.percent(100),
+                    tooltipText:seriesName
                 });
 
 
-            series
-                .columns
-                .template
-                .adapters
-                .add(
-                    'tooltipText',
+            series.columns.template.adapters
+                .add('tooltipText',
 
                     function(text, target)
                     {
-                        if (
-                            !target.dataItem ||
-                            target.dataItem.get('valueY') === undefined
-                        ) {
-
+                        if (!target.dataItem || target.dataItem.get('valueY') === undefined)
+                        {
                             return seriesName;
                         }
 
-
-
-                        var valor =
-                            parseFloat(
-                                target.dataItem.get('valueY')
-                            ) || 0;
-
-
-
-                        var porcentaje =
-                            Math.round(
-                                valor * 100
-                            );
-
-
-
-                        return seriesName +
-                            ': ' +
-                            porcentaje +
-                            '%';
+                        var valor =parseFloat(target.dataItem.get('valueY')) || 0;
+                        var porcentaje =Math.round(valor * 100);
+                        return seriesName + ': ' + porcentaje +'%';
                     }
                 );
 
 
-            series
-                .bullets
-                .push(function(
-                    root,
-                    serie,
-                    dataItem
-                ) {
+            series.bullets
+                .push(function(root,serie,dataItem)
+                {
 
-                    var valor =
-                        parseFloat(
-                            dataItem.get('valueY')
-                        ) || 0;
+                    var valor = parseFloat(dataItem.get('valueY')) || 0;
 
                     if (valor <= 0) {
                         return undefined;
                     }
 
-                    var porcentaje =
-                        Math.round(
-                            valor * 100
-                        ) + '%';
-
+                    var porcentaje =Math.round(valor * 100) + '%';
 
                     return am5.Bullet.new(
                         rootConsolidadoChart1,
                         {
-                            locationY:
-                                0.5,
-
-                            sprite:
-                                am5.Label.new(
-                                    rootConsolidadoChart1,
+                            locationY:0.5,
+                            sprite:am5.Label.new(rootConsolidadoChart1,
                                     {
-                                        text:
-                                            porcentaje,
-
-                                        centerX:
-                                            am5.p50,
-
-                                        centerY:
-                                            am5.p50,
-
-                                        fill:
-                                            am5.color(0x000000),
-
-                                        fontSize:
-                                            12,
-
-                                        fontWeight:
-                                            'bold',
-
-                                        textAlign:
-                                            'center'
+                                        text:porcentaje,
+                                        centerX:am5.p50,
+                                        centerY:am5.p50,
+                                        fill:am5.color(0x000000),
+                                        fontSize:12,
+                                        fontWeight:'bold',
+                                        textAlign:'center'
                                     }
                                 )
                         }
@@ -5728,38 +4406,20 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
 
                 });
 
-            series
-                .data
-                .setAll(
-                    dataConsolidado1
-                );
+            series.data.setAll(dataConsolidado1);
 
         }
     );
 
-    var legendConsolidado1 =
-        chartConsolidado1
-            .children
+    var legendConsolidado1 = chartConsolidado1.children
             .push(
-
-                am5.Legend.new(
-                    rootConsolidadoChart1,
+                am5.Legend.new(rootConsolidadoChart1,
                     {
-                        centerX:
-                            am5.p50,
-
-                        x:
-                            am5.p50,
-
-                        y:
-                            am5.p100,
-
-                        layout:
-                            rootConsolidadoChart1
-                                .horizontalLayout,
-
-                        marginTop:
-                            1
+                        centerX:am5.p50,
+                        x:am5.p50,
+                        y:am5.p100,
+                        layout:rootConsolidadoChart1.horizontalLayout,
+                        marginTop:1
                     }
                 )
 
@@ -5769,141 +4429,61 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
         function(seriesName, index)
         {
 
-            var series =
-                chartConsolidado1
-                    .series
-                    .getIndex(index);
-
+            var series = chartConsolidado1.series.getIndex(index);
             series.legendSettings = {
-
-                labelText:
-                    seriesName,
-
-                fill:
-                    seriesColorsConsolidado1[index]
-
+                labelText: seriesName,
+                fill: seriesColorsConsolidado1[index]
             };
-
         }
     );
 
 
-    legendConsolidado1
-        .markers
-        .template
+    legendConsolidado1.markers.template
         .setAll({
-
-            width:
-                20,
-
-            height:
-                20
-
+            width:20,
+            height:20
         });
 
 
-    legendConsolidado1
-        .labels
-        .template
-        .setAll({
+    legendConsolidado1.labels.template
+        .setAll({fontSize:14,fontWeight:'bold'});
 
-            fontSize:
-                14,
+    legendConsolidado1.data
+        .setAll(chartConsolidado1.series.values);
 
-            fontWeight:
-                'bold'
-
-        });
-
-
-    legendConsolidado1
-        .data
-        .setAll(
-            chartConsolidado1
-                .series
-                .values
-        );
-
-
-    chartConsolidado1
-        .appear(
-            1000,
-            100
-        )
+    chartConsolidado1.appear(1000,100)
         .then(function()
         {
-
             setTimeout(function()
             {
+                if (typeof am5plugins_exporting !=='undefined')
+                {
+                    console.log('Plugin de exportación disponible');
 
-
-
-                if (
-                    typeof am5plugins_exporting !==
-                    'undefined'
-                ) {
-
-                    console.log(
-                        'Plugin de exportación disponible'
-                    );
-
-
-
-                    var exporting =
-                        am5plugins_exporting
-                            .Exporting
+                    var exporting = am5plugins_exporting.Exporting
                             .new(
                                 rootConsolidadoChart1,
                                 {
-                                    menu:
-                                        am5plugins_exporting
-                                            .ExportingMenu
-                                            .new(
-                                                rootConsolidadoChart1,
-                                                {}
-                                            ),
-
-                                    dpi:
-                                        300,
-
-                                    maxWidth:
-                                        2000,
-
-                                    maxHeight:
-                                        2000
+                                    menu:am5plugins_exporting.ExportingMenu.new(rootConsolidadoChart1,{}),
+                                    dpi:300,
+                                    maxWidth:2000,
+                                    maxHeight:2000
                                 }
                             );
 
-
-
-                    exporting
-                        .export('png')
-                        .then(function(data)
+                    exporting.export('png').then(function(data)
                         {
-
-                            categoriaschart =
-                                data;
-
-                            console.log(
-                                'Gráfica de categorías exportada exitosamente'
-                            );
+                            categoriaschart = data;
+                            console.log('Gráfica de categorías exportada exitosamente');
 
                         })
                         .catch(function(error)
                         {
-
-                            console.error(
-                                'Error al exportar:',
-                                error
-                            );
-
+                            console.error('Error al exportar:',error);
                         });
 
                 } else {
-
-                    console.log(
-                        'Plugin de exportación no disponible'
-                    );
+                    console.log('Plugin de exportación no disponible');
 
                 }
 
@@ -5915,14 +4495,11 @@ function generarGraficaCategoriasGuiaIII(dataConsolidado1)
 // DOMINIOS
 function cargarGraficaDominiosGuiaIII()
 {
-    $.get(
-        '/obtenerGraficaDominiosGuiaIIIPsicologia/' + proyecto.id,
+    $.get('/obtenerGraficaDominiosGuiaIIIPsicologia/' + proyecto.id,
 
         function(response)
         {
-            generarGraficaDominiosGuiaIII(
-                response.data
-            );
+            generarGraficaDominiosGuiaIII(response.data);
         }
     )
     .fail(function(xhr)
@@ -5939,45 +4516,23 @@ function cargarGraficaDominiosGuiaIII()
 
 function generarGraficaDominiosGuiaIII(dataConsolidado2)
 {
-   
 
     if (!Array.isArray(dataConsolidado2)) {
         dataConsolidado2 = [];
     }
 
-
-
-    if (
-        window.rootConsolidadoChart2 &&
-        !window.rootConsolidadoChart2.isDisposed()
-    ) {
-
+    if (window.rootConsolidadoChart2 && !window.rootConsolidadoChart2.isDisposed())
+    {
         window.rootConsolidadoChart2.dispose();
-
         window.rootConsolidadoChart2 = null;
     }
 
-
-
     $('#consolidadoChart2').empty();
-
-
 
     if (dataConsolidado2.length === 0) {
 
         $('#consolidadoChart2').html(`
-            <div
-                style="
-                    width:100%;
-                    height:750px;
-                    display:flex;
-                    justify-content:center;
-                    align-items:center;
-                    text-align:center;
-                    font-weight:bold;
-                    color:#777;
-                "
-            >
+            <div style=" width:100%; height:750px; display:flex; justify-content:center; align-items:center;text-align:center;font-weight:bold;color:#777;">
                 No hay información disponible
             </div>
         `);
@@ -5988,246 +4543,95 @@ function generarGraficaDominiosGuiaIII(dataConsolidado2)
     }
 
 
-    window.rootConsolidadoChart2 =
-        am5.Root.new(
-            'consolidadoChart2'
-        );
+    window.rootConsolidadoChart2 = am5.Root.new('consolidadoChart2');
+    var rootConsolidadoChart2 = window.rootConsolidadoChart2;
+    const customThemeConsolidado2 = am5.Theme.new(rootConsolidadoChart2);
 
-    var rootConsolidadoChart2 =
-        window.rootConsolidadoChart2;
-
-
-    const customThemeConsolidado2 =
-        am5.Theme.new(
-            rootConsolidadoChart2
-        );
-
-
-
-    customThemeConsolidado2
-        .rule('Label')
-        .set(
-            'fontSize',
-            20
-        );
-
-
-
-    customThemeConsolidado2
-        .rule('Grid')
-        .set(
-            'strokeOpacity',
-            0
-        );
-
-
-
-    customThemeConsolidado2
-        .rule('AxisRenderer')
+    customThemeConsolidado2.rule('Label').set('fontSize',20);
+    customThemeConsolidado2.rule('Grid').set('strokeOpacity', 0);
+    
+    customThemeConsolidado2.rule('AxisRenderer')
         .setAll({
-
             background:
                 am5.Rectangle.new(
                     rootConsolidadoChart2,
                     {
-                        fill:
-                            am5.color(0x000000),
-
-                        fillOpacity:
-                            0.7
+                        fill:am5.color(0x000000),
+                        fillOpacity:0.7
                     }
                 )
-
         });
 
-
     rootConsolidadoChart2.setThemes([
-
-        am5themes_Animated.new(
-            rootConsolidadoChart2
-        ),
-
+        am5themes_Animated.new(rootConsolidadoChart2),
         customThemeConsolidado2
-
     ]);
 
 
 
-    rootConsolidadoChart2
-        .numberFormatter
-        .set(
-            'numberFormat',
-            '0%'
-        );
+    rootConsolidadoChart2.numberFormatter.set('numberFormat','0%');
 
     var chartConsolidado2 =
         rootConsolidadoChart2
             .container
             .children
             .push(
-
                 am5radar.RadarChart.new(
                     rootConsolidadoChart2,
                     {
-                        panX:
-                            false,
-
-                        panY:
-                            false,
-
-                        wheelX:
-                            'none',
-
-                        wheelY:
-                            'none',
-
-                        innerRadius:
-                            am5.percent(10),
-
-                        radius:
-                            am5.percent(82)
+                        panX:false,
+                        panY:false,
+                        wheelX:'none',
+                        wheelY:'none',
+                        innerRadius:am5.percent(10),
+                        radius:am5.percent(82)
                     }
                 )
-
             );
 
 
 
-    chartConsolidado2
-        .zoomOutButton
-        .set(
-            'forceHidden',
-            true
-        );
+    chartConsolidado2.zoomOutButton.set('forceHidden',true);
 
 
-    var categoryAxisRendererConsolidado2 =
-        am5radar.AxisRendererCircular.new(
-            rootConsolidadoChart2,
-            {
-                innerRadius:
-                    am5.percent(10)
-            }
-        );
+    var categoryAxisRendererConsolidado2 = am5radar.AxisRendererCircular.new(rootConsolidadoChart2,{innerRadius:am5.percent(10)});
 
+    var categoryAxisConsolidado2 = chartConsolidado2.xAxes.push(am5xy.CategoryAxis.new(rootConsolidadoChart2,{categoryField:'category',renderer: categoryAxisRendererConsolidado2}));
 
-
-    var categoryAxisConsolidado2 =
-        chartConsolidado2
-            .xAxes
-            .push(
-
-                am5xy.CategoryAxis.new(
-                    rootConsolidadoChart2,
-                    {
-                        categoryField:
-                            'category',
-
-                        renderer:
-                            categoryAxisRendererConsolidado2
-                    }
-                )
-
-            );
-
-
-    categoryAxisRendererConsolidado2
-        .labels
-        .template
+    categoryAxisRendererConsolidado2.labels.template
         .setAll({
-
-            fill:
-                am5.color(0x000000),
-
-            fontSize:
-                16,
-
-            fontWeight:
-                'bold',
-
-            paddingLeft:
-                5,
-
-            paddingRight:
-                5,
-
-            paddingTop:
-                2,
-
-            paddingBottom:
-                2,
-
-            radius:
-                5,
-
-            centerX:
-                am5.p50,
-
-            centerY:
-                am5.p50,
-
-            textAlign:
-                'center',
-
-            oversizedBehavior:
-                'wrap',
-
-            maxWidth:
-                170
+            fill:am5.color(0x000000),
+            fontSize:16,
+            fontWeight:'bold',
+            paddingLeft:5,
+            paddingRight:5,
+            paddingTop:2,
+            paddingBottom:2,
+            radius:5,
+            centerX:am5.p50,
+            centerY:am5.p50,
+            textAlign: 'center',
+            oversizedBehavior: 'wrap',
+            maxWidth:170
         });
 
+    categoryAxisConsolidado2.data.setAll(dataConsolidado2);
 
-    categoryAxisConsolidado2
-        .data
-        .setAll(
-            dataConsolidado2
-        );
-
-
-
-    var valueAxisConsolidado2 =
-        chartConsolidado2
-            .yAxes
+    var valueAxisConsolidado2 =chartConsolidado2.yAxes
             .push(
-
                 am5xy.ValueAxis.new(
                     rootConsolidadoChart2,
                     {
-                        renderer:
-                            am5radar
-                                .AxisRendererRadial
-                                .new(
-                                    rootConsolidadoChart2,
-                                    {}
-                                ),
-
-                        min:
-                            0,
-
-                        max:
-                            1,
-
-                        strictMinMax:
-                            true,
-
-                        extraMax:
-                            0.1
+                        renderer:am5radar.AxisRendererRadial.new(rootConsolidadoChart2,{}),
+                        min:0,
+                        max:1,
+                        strictMinMax:true,
+                        extraMax:0.1
                     }
                 )
-
             );
 
-
-
-    valueAxisConsolidado2
-        .get('renderer')
-        .labels
-        .template
-        .setAll({
-            visible:
-                false
-        });
-
+    valueAxisConsolidado2.get('renderer').labels.template.setAll({visible:false});
 
     var seriesNamesConsolidado2 = [
         'Nulo',
@@ -6237,18 +4641,12 @@ function generarGraficaDominiosGuiaIII(dataConsolidado2)
         'Muy alto'
     ];
 
-
-
     var seriesColorsConsolidado2 = [
 
         am5.color(0x00B0F0),
-
         am5.color(0x00B050),
-
         am5.color(0xFFFF00),
-
         am5.color(0xF7AA32),
-
         am5.color(0xFF0000)
 
     ];
@@ -6257,209 +4655,99 @@ function generarGraficaDominiosGuiaIII(dataConsolidado2)
     seriesNamesConsolidado2.forEach(
         function(seriesName, index)
         {
-
-            var series =
-                chartConsolidado2
-                    .series
+            var series =chartConsolidado2.series
                     .push(
-
-                        am5radar
-                            .RadarColumnSeries
+                        am5radar.RadarColumnSeries
                             .new(
                                 rootConsolidadoChart2,
                                 {
-                                    stacked:
-                                        true,
-
-                                    name:
-                                        seriesName,
-
-                                    xAxis:
-                                        categoryAxisConsolidado2,
-
-                                    yAxis:
-                                        valueAxisConsolidado2,
-
-                                    valueYField:
-                                        seriesName,
-
-                                    categoryXField:
-                                        'category'
+                                    stacked:true,
+                                    name:seriesName,
+                                    xAxis:categoryAxisConsolidado2,
+                                    yAxis:valueAxisConsolidado2,
+                                    valueYField:seriesName,
+                                    categoryXField:'category'
                                 }
                             )
-
                     );
 
 
 
-            series
-                .columns
-                .template
+            series.columns.template
                 .setAll({
-
-                    cornerRadius:
-                        0,
-
-                    strokeOpacity:
-                        1,
-
-                    stroke:
-                        am5.color(0x000000),
-
-                    strokeWidth:
-                        0.5,
-
-                    fill:
-                        seriesColorsConsolidado2[index],
-
-                    width:
-                        am5.percent(100),
-
-                    tooltipText:
-                        seriesName
-
+                    cornerRadius:0,
+                    strokeOpacity:1,
+                    stroke:am5.color(0x000000),
+                    strokeWidth:0.5,
+                    fill:seriesColorsConsolidado2[index],
+                    width:am5.percent(100),
+                    tooltipText:seriesName
                 });
 
 
-            series
-                .columns
-                .template
-                .adapters
-                .add(
-                    'tooltipText',
-
+            series.columns.template.adapters
+                .add('tooltipText',
                     function(text, target)
                     {
-                        if (
-                            !target.dataItem ||
-                            target.dataItem.get('valueY') === undefined
-                        ) {
-
+                        if (!target.dataItem || target.dataItem.get('valueY') === undefined)
+                        {
                             return seriesName;
                         }
 
-
-
-                        var valor =
-                            parseFloat(
-                                target.dataItem.get('valueY')
-                            ) || 0;
-
-
-
-                        var porcentaje =
-                            Math.round(
-                                valor * 100
-                            );
-
-
-
-                        return seriesName +
-                            ': ' +
-                            porcentaje +
-                            '%';
+                        var valor =parseFloat(target.dataItem.get('valueY')) || 0;
+                        var porcentaje = Math.round(valor * 100);
+                        return seriesName + ': ' + porcentaje +'%';
                     }
                 );
 
             series
                 .bullets
-                .push(function(
-                    root,
-                    serie,
-                    dataItem
-                ) {
-
-                    var valor =
-                        parseFloat(
-                            dataItem.get('valueY')
-                        ) || 0;
-
-
+                .push(function(root,serie,dataItem)
+                {
+                    var valor = parseFloat(dataItem.get('valueY')) || 0;
 
                     if (valor <= 0) {
                         return undefined;
                     }
 
-
-
-                    var porcentaje =
-                        Math.round(
-                            valor * 100
-                        ) + '%';
-
-
+                    var porcentaje =Math.round(valor * 100) + '%';
 
                     return am5.Bullet.new(
                         rootConsolidadoChart2,
                         {
-                            locationY:
-                                0.5,
-
+                            locationY:0.5,
                             sprite:
                                 am5.Label.new(
                                     rootConsolidadoChart2,
                                     {
-                                        text:
-                                            porcentaje,
-
-                                        centerX:
-                                            am5.p50,
-
-                                        centerY:
-                                            am5.p50,
-
-                                        fill:
-                                            am5.color(0x000000),
-
-                                        fontSize:
-                                            10,
-
-                                        fontWeight:
-                                            'bold',
-
-                                        textAlign:
-                                            'center'
+                                        text:porcentaje,
+                                        centerX:am5.p50,
+                                        centerY:am5.p50,
+                                        fill:am5.color(0x000000),
+                                        fontSize:10,
+                                        fontWeight:'bold',
+                                        textAlign:'center'
                                     }
                                 )
                         }
                     );
-
                 });
 
-
-            series
-                .data
-                .setAll(
-                    dataConsolidado2
-                );
-
+            series.data.setAll(dataConsolidado2);
         }
     );
 
 
-    var legendConsolidado2 =
-        chartConsolidado2
-            .children
+    var legendConsolidado2 = chartConsolidado2.children
             .push(
-
                 am5.Legend.new(
                     rootConsolidadoChart2,
                     {
-                        centerX:
-                            am5.p50,
-
-                        x:
-                            am5.p50,
-
-                        y:
-                            am5.p100,
-
-                        layout:
-                            rootConsolidadoChart2
-                                .horizontalLayout,
-
-                        marginTop:
-                            1
+                        centerX: am5.p50,
+                        x: am5.p50,
+                        y: am5.p100,
+                        layout: rootConsolidadoChart2.horizontalLayout,
+                        marginTop:1
                     }
                 )
 
@@ -6469,19 +4757,11 @@ function generarGraficaDominiosGuiaIII(dataConsolidado2)
     seriesNamesConsolidado2.forEach(
         function(seriesName, index)
         {
-
-            var series =
-                chartConsolidado2
-                    .series
-                    .getIndex(index);
+            var series = chartConsolidado2.series.getIndex(index);
 
             series.legendSettings = {
-
-                labelText:
-                    seriesName,
-
-                fill:
-                    seriesColorsConsolidado2[index]
+                labelText:seriesName,
+                fill:seriesColorsConsolidado2[index]
 
             };
 
@@ -6490,116 +4770,55 @@ function generarGraficaDominiosGuiaIII(dataConsolidado2)
 
 
 
-    legendConsolidado2
-        .markers
-        .template
+    legendConsolidado2.markers.template
         .setAll({
-
-            width:
-                20,
-
-            height:
-                20
-
+            width:20,
+            height:20
         });
 
 
 
-    legendConsolidado2
-        .labels
-        .template
+    legendConsolidado2.labels.template
         .setAll({
-
-            fontSize:
-                14,
-
-            fontWeight:
-                'bold'
-
+            fontSize:14,
+            fontWeight:'bold'
         });
 
 
 
-    legendConsolidado2
-        .data
-        .setAll(
-            chartConsolidado2
-                .series
-                .values
-        );
+    legendConsolidado2.data.setAll(chartConsolidado2.series.values);
 
-    chartConsolidado2
-        .appear(
-            1000,
-            100
-        )
-        .then(function()
+    chartConsolidado2.appear(1000,100).then(function()
         {
-
             setTimeout(function()
             {
 
-                if (
-                    typeof am5plugins_exporting !==
-                    'undefined'
-                ) {
-
-                    var exporting =
-                        am5plugins_exporting
-                            .Exporting
+                if (typeof am5plugins_exporting !=='undefined')
+                {
+                    var exporting = am5plugins_exporting .Exporting
                             .new(
                                 rootConsolidadoChart2,
                                 {
-                                    menu:
-                                        am5plugins_exporting
-                                            .ExportingMenu
-                                            .new(
-                                                rootConsolidadoChart2,
-                                                {}
-                                            ),
-
-                                    dpi:
-                                        300,
-
-                                    maxWidth:
-                                        2000,
-
-                                    maxHeight:
-                                        2000
+                                    menu:am5plugins_exporting.ExportingMenu.new(rootConsolidadoChart2,{}),
+                                    dpi:300,
+                                    maxWidth:2000,
+                                    maxHeight:2000
                                 }
                             );
 
-
-
-                    exporting
-                        .export('png')
-                        .then(function(data)
+                    exporting.export('png').then(function(data)
                         {
-
-                            dominioschart =
-                                data;
-
-                            console.log(
-                                'Gráfica de dominios exportada correctamente'
-                            );
-
+                            dominioschart = data;
+                            console.log('Gráfica de dominios exportada correctamente');
                         })
                         .catch(function(error)
                         {
-
-                            console.error(
-                                'Error al exportar gráfica de dominios:',
-                                error
-                            );
+                            console.error('Error al exportar gráfica de dominios:',error);
 
                         });
 
                 } else {
-
-                    console.log(
-                        'Plugin de exportación no disponible'
-                    );
-
+                    console.log('Plugin de exportación no disponible');
                 }
 
             }, 1000);
@@ -6610,14 +4829,10 @@ function generarGraficaDominiosGuiaIII(dataConsolidado2)
 /// GUIA I
 function cargarGraficaGuiaIPsico()
 {
-    $.get(
-        '/obtenerGraficaGuiaIPsico/' + proyecto.id,
+    $.get('/obtenerGraficaGuiaIPsico/' + proyecto.id,
         function(response)
         {
-            generarGraficaGuiaIPsico(
-                response.data,
-                response.total_trabajadores
-            );
+            generarGraficaGuiaIPsico(response.data,response.total_trabajadores);
         }
     )
     .fail(function(xhr)
@@ -6638,10 +4853,8 @@ function generarGraficaGuiaIPsico(guia1Data,totalTrabajadores)
         guia1Data = [];
     }
 
-    if (
-        window.guia1Root &&
-        !window.guia1Root.isDisposed()
-    ) {
+    if (window.guia1Root && !window.guia1Root.isDisposed())
+    {
         window.guia1Root.dispose();
         window.guia1Root = null;
     }
@@ -6657,18 +4870,7 @@ function generarGraficaGuiaIPsico(guia1Data,totalTrabajadores)
     if (datosFiltrados.length === 0) {
 
         $('#guia1Chart').html(`
-            <div
-                style="
-                    width:100%;
-                    height:500px;
-                    display:flex;
-                    justify-content:center;
-                    align-items:center;
-                    text-align:center;
-                    font-weight:bold;
-                    color:#777;
-                "
-            >
+            <div style="width:100%; height:500px; display:flex; justify-content:center; align-items:center;text-align:center;font-weight:bold;color:#777;">
                 No hay información disponible de la Guía I
             </div>
         `);
@@ -6733,66 +4935,42 @@ function generarGraficaGuiaIPsico(guia1Data,totalTrabajadores)
                 0
             );
 
-        var diferencia =
-            100 - sumaPorcentajes;
-
+        var diferencia = 100 - sumaPorcentajes;
         var indiceMayor = 0;
 
         datosFiltrados.forEach(
             function(item, indice)
             {
-                if (
-                    item.value >
-                    datosFiltrados[indiceMayor].value
-                ) {
+                if (item.value > datosFiltrados[indiceMayor].value)
+                {
                     indiceMayor = indice;
                 }
             }
         );
 
-        datosFiltrados[indiceMayor].porcentaje =
-            datosFiltrados[indiceMayor].porcentaje +
-            diferencia;
+        datosFiltrados[indiceMayor].porcentaje = datosFiltrados[indiceMayor].porcentaje + diferencia;
     }
 
-    window.guia1Root =
-        am5.Root.new(
-            'guia1Chart'
-        );
+    window.guia1Root =am5.Root.new('guia1Chart');
+    var guia1_root = window.guia1Root;
 
-    var guia1_root =
-        window.guia1Root;
+    guia1_root.setThemes([am5themes_Animated.new(guia1_root)]);
 
-    guia1_root.setThemes([
-        am5themes_Animated.new(
-            guia1_root
-        )
-    ]);
-
-    var guia1_chart =
-        guia1_root
-            .container
-            .children
+    var guia1_chart = guia1_root.container.children
             .push(
                 am5percent.PieChart.new(
                     guia1_root,
                     {
                         startAngle: 180,
                         endAngle: 360,
-
-                        layout:
-                            guia1_root.verticalLayout,
-
-                        innerRadius:
-                            am5.percent(50),
-
+                        layout: guia1_root.verticalLayout,
+                        innerRadius:am5.percent(50),
                         paddingBottom: 0
                     }
                 )
             );
 
-    var guia1_series =
-        guia1_chart
+    var guia1_series = guia1_chart
             .series
             .push(
                 am5percent.PieSeries.new(
@@ -6800,108 +4978,59 @@ function generarGraficaGuiaIPsico(guia1Data,totalTrabajadores)
                     {
                         startAngle: 180,
                         endAngle: 360,
-
-                        valueField:
-                            'value',
-
-                        categoryField:
-                            'category',
-
-                        alignLabels:
-                            false,
-
-                        
-                        legendLabelText:
-                            '{category}',
-
-                        legendValueText:
-                            '{porcentaje.formatNumber("0")}%'
+                        valueField:'value',
+                        categoryField:'category',
+                        alignLabels:false,
+                        legendLabelText:'{category}',
+                        legendValueText:'{porcentaje.formatNumber("0")}%'
                     }
                 )
             );
 
-    guia1_series
-        .slices
-        .template
-        .adapters
+    guia1_series.slices.template.adapters
         .add(
             'fill',
             function(fill, target)
             {
-                if (
-                    target.dataItem &&
-                    target.dataItem.dataContext &&
-                    target.dataItem.dataContext.color
-                ) {
-                    return am5.color(
-                        target.dataItem
-                            .dataContext
-                            .color
-                    );
+                if (target.dataItem && target.dataItem.dataContext && target.dataItem.dataContext.color)
+                {
+                    return am5.color(target.dataItem.dataContext.color);
                 }
 
                 return fill;
             }
         );
 
-    guia1_series
-        .slices
-        .template
-        .adapters
+    guia1_series.slices.template.adapters
         .add(
             'stroke',
             function(stroke, target)
             {
-                if (
-                    target.dataItem &&
-                    target.dataItem.dataContext &&
-                    target.dataItem.dataContext.color
-                ) {
-                    return am5.color(
-                        target.dataItem
-                            .dataContext
-                            .color
-                    );
+                if (target.dataItem && target.dataItem.dataContext && target.dataItem.dataContext.color)
+                {
+                    return am5.color(target.dataItem.dataContext.color);
                 }
 
                 return stroke;
             }
         );
 
-    guia1_series
-        .slices
-        .template
+    guia1_series.slices.template
         .setAll({
             cornerRadius: 5,
             stroke: am5.color(0xFFFFFF),
             strokeWidth: 2,
-
-            tooltipText:
-                '{category}: ' +
-                '{value.formatNumber("0")} trabajadores ' +
-                '({porcentaje.formatNumber("0")}%)'
+            tooltipText:'{category}: ' + '{value.formatNumber("0")} trabajadores ' + '({porcentaje.formatNumber("0")}%)'
         });
 
     
-    guia1_series
-        .labels
-        .template
-        .setAll({
-            fontSize: 23,
-            fontWeight: 'bold',
-
-            text:
-                '{value.formatNumber("0")} ' +
-                '({porcentaje.formatNumber("0")}%)'
+    guia1_series.labels.template
+        .setAll({fontSize: 23,fontWeight: 'bold',
+            text:'{value.formatNumber("0")} ' + '({porcentaje.formatNumber("0")}%)'
         });
 
-    guia1_series
-        .ticks
-        .template
-        .setAll({
-            visible: false
-        });
-
+    guia1_series.ticks.template
+        .setAll({visible: false});
     var legend3 =
         guia1_chart
             .children
@@ -6911,109 +5040,50 @@ function generarGraficaGuiaIPsico(guia1Data,totalTrabajadores)
                     {
                         centerX: am5.percent(50),
                         x: am5.percent(50),
-
-                        layout:
-                            guia1_root.verticalLayout,
-
+                        layout:guia1_root.verticalLayout,
                         marginTop: -10,
                         dy: -10
                     }
                 )
             );
 
-    legend3
-        .labels
-        .template
-        .setAll({
-            fontSize: 23,
-            fontWeight: 'bold'
-        });
+    legend3.labels.template.setAll({fontSize: 23,fontWeight: 'bold'});
+    legend3.valueLabels.template.setAll({fontSize: 23,fontWeight: 'bold'});
+    legend3.markers.template.setAll({width: 20,height: 20});
 
-    legend3
-        .valueLabels
-        .template
-        .setAll({
-            fontSize: 23,
-            fontWeight: 'bold'
-        });
+    guia1_series.data.setAll(datosFiltrados);
+    legend3.data.setAll(guia1_series.dataItems);
 
-    legend3
-        .markers
-        .template
-        .setAll({
-            width: 20,
-            height: 20
-        });
-
-    guia1_series
-        .data
-        .setAll(
-            datosFiltrados
-        );
-
-    legend3
-        .data
-        .setAll(
-            guia1_series.dataItems
-        );
-
-    guia1_series
-        .appear(
-            1000,
-            100
-        )
+    guia1_series.appear(1000,100)
         .then(function()
         {
             setTimeout(function()
             {
-                if (
-                    typeof am5plugins_exporting !==
-                    'undefined'
-                ) {
-                    var exporting =
-                        am5plugins_exporting
-                            .Exporting
+                if (typeof am5plugins_exporting !== 'undefined')
+                {
+                    var exporting = am5plugins_exporting.Exporting
                             .new(
                                 guia1_root,
                                 {
-                                    menu:
-                                        am5plugins_exporting
-                                            .ExportingMenu
-                                            .new(
-                                                guia1_root,
-                                                {}
-                                            ),
-
+                                    menu:am5plugins_exporting.ExportingMenu.new(guia1_root,{}),
                                     dpi: 300,
                                     maxWidth: 2000,
                                     maxHeight: 2000
                                 }
                             );
 
-                    exporting
-                        .export('png')
-                        .then(function(data)
+                    exporting.export('png').then(function(data)
                         {
-                            acontecimientoschart =
-                                data;
-
-                            console.log(
-                                'Gráfica de Guía I exportada correctamente'
-                            );
+                            acontecimientoschart = data;
+                            console.log('Gráfica de Guía I exportada correctamente');
                         })
                         .catch(function(error)
                         {
-                            console.error(
-                                'Error al exportar gráfica de Guía I:',
-                                error
-                            );
+                            console.error('Error al exportar gráfica de Guía I:',error);
                         });
 
                 } else {
-
-                    console.log(
-                        'Plugin de exportación no disponible'
-                    );
+                    console.log('Plugin de exportación no disponible');
                 }
 
             }, 1000);
@@ -7023,21 +5093,14 @@ function generarGraficaGuiaIPsico(guia1Data,totalTrabajadores)
 // CATEGORIA AMBIENTE DE TRABAJO -> ACTUALIZADO  
 function cargarGraficaAmbienteGuiaIII()
 {
-    $.get(
-        '/obtenerGraficaAmbienteGuiaIII/' + proyecto.id,
+    $.get('/obtenerGraficaAmbienteGuiaIII/' + proyecto.id,
         function(response)
         {
-            var datos =
-                Array.isArray(response.data)
-                    ? response.data
-                    : [];
-
+            var datos = Array.isArray(response.data) ? response.data : [];
             var indiceDominios =
                 datos.findIndex(function(item)
                 {
-                    var categoria =
-                        item.category || '';
-
+                    var categoria = item.category || '';
                     return categoria.indexOf('g3-') === 0;
                 });
 
@@ -7046,34 +5109,16 @@ function cargarGraficaAmbienteGuiaIII()
 
             if (indiceDominios >= 0) {
 
-                datosCategoria =
-                    datos.slice(
-                        0,
-                        indiceDominios
-                    );
-
-                datosDominio =
-                    datos.slice(
-                        indiceDominios + 1
-                    );
+                datosCategoria = datos.slice(0,indiceDominios);
+                datosDominio = datos.slice(indiceDominios + 1);
 
             } else {
 
                 datos.forEach(function(item)
                 {
-                    var categoria =
-                        (
-                            item.category || ''
-                        )
-                        .replace(/^g[123]-/, '')
-                        .trim()
-                        .toLowerCase();
-
-                    if (
-                        categoria.indexOf(
-                            'condiciones del ambiente'
-                        ) !== -1
-                    ) {
+                    var categoria =(item.category || '').replace(/^g[123]-/, '').trim().toLowerCase();
+                    if (categoria.indexOf('condiciones del ambiente') !== -1)
+                    {
                         datosDominio.push(item);
                     } else {
                         datosCategoria.push(item);
@@ -7116,29 +5161,17 @@ function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
         data = [];
     }
 
-    window.graficasAmbienteRoots =
-        window.graficasAmbienteRoots || {};
+    window.graficasAmbienteRoots = window.graficasAmbienteRoots || {};
 
-    if (
-        window.graficasAmbienteRoots[nombreGrafica] &&
-        !window.graficasAmbienteRoots[nombreGrafica].isDisposed()
-    ) {
+    if (window.graficasAmbienteRoots[nombreGrafica] && !window.graficasAmbienteRoots[nombreGrafica].isDisposed())
+    {
         window.graficasAmbienteRoots[nombreGrafica].dispose();
         window.graficasAmbienteRoots[nombreGrafica] = null;
     }
 
-    var contenedor =
-        document.getElementById(
-            contenedorId
-        );
-
+    var contenedor = document.getElementById(contenedorId);
     if (!contenedor) {
-
-        console.error(
-            'No existe el contenedor #' +
-            contenedorId
-        );
-
+        console.error('No existe el contenedor #' + contenedorId);
         return;
     }
 
@@ -7147,48 +5180,25 @@ function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
     if (data.length === 0) {
 
         contenedor.innerHTML = `
-            <div style="
-                width:100%;
-                height:320px;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                text-align:center;
-                font-weight:bold;
-                color:#777;
-            ">
+            <div style="width:100%; height:320px; display:flex; justify-content:center;align-items:center;text-align:center;font-weight:bold;color:#777;">
                 No hay información disponible
             </div>
         `;
 
-        window.chartPngs =
-            window.chartPngs || {};
-
-        window.chartPngs[
-            nombreGrafica
-        ] = null;
+        window.chartPngs = window.chartPngs || {};
+        window.chartPngs[nombreGrafica] = null;
 
         return;
     }
 
-    var dataGrafica =
-        data.slice();
+    var dataGrafica = data.slice();
+    var root = am5.Root.new(contenedorId);
 
-    var root =
-        am5.Root.new(
-            contenedorId
-        );
+    window.graficasAmbienteRoots[nombreGrafica] = root;
 
-    window.graficasAmbienteRoots[
-        nombreGrafica
-    ] = root;
+    root.setThemes([am5themes_Animated.new(root)]);
 
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
-
-    var chart =
-        root.container.children.push(
+    var chart = root.container.children.push(
             am5xy.XYChart.new(
                 root,
                 {
@@ -7507,10 +5517,7 @@ function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
                 };
             }
 
-            var porcentajesEnteros =
-                obtenerPorcentajesEnteros(
-                    valores
-                );
+            var porcentajesEnteros = obtenerPorcentajesEnteros(valores);
 
             var porcentajesExactos =
                 valores.map(function(valor)
@@ -7570,42 +5577,24 @@ function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
                 s3: s3,
                 s4: s4,
                 s5: s5,
-                percentage_s1:
-                    porcentajesEnteros[0],
-                percentage_s2:
-                    porcentajesEnteros[1],
-                percentage_s3:
-                    porcentajesEnteros[2],
-                percentage_s4:
-                    porcentajesEnteros[3],
-                percentage_s5:
-                    porcentajesEnteros[4],
-                visual_s1:
-                    valoresVisuales[0],
-                visual_s2:
-                    valoresVisuales[1],
-                visual_s3:
-                    valoresVisuales[2],
-                visual_s4:
-                    valoresVisuales[3],
-                visual_s5:
-                    valoresVisuales[4]
+                percentage_s1: porcentajesEnteros[0],
+                percentage_s2: porcentajesEnteros[1],
+                percentage_s3: porcentajesEnteros[2],
+                percentage_s4: porcentajesEnteros[3],
+                percentage_s5: porcentajesEnteros[4],
+                visual_s1: valoresVisuales[0],
+                visual_s2: valoresVisuales[1],
+                visual_s3: valoresVisuales[2],
+                visual_s4: valoresVisuales[3],
+                visual_s5: valoresVisuales[4]
             };
         });
     }
 
-    var processedData =
-        calcularDatos(
-            dataGrafica
-        );
+    var processedData = calcularDatos(dataGrafica);
 
-    function makeSeries(
-        name,
-        cantidadField,
-        porcentajeField,
-        visualField,
-        color
-    ) {
+    function makeSeries(name,cantidadField,porcentajeField,visualField,color)
+    {
         var series =
             chart.series.push(
                 am5xy.ColumnSeries.new(
@@ -7615,10 +5604,8 @@ function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
                         xAxis: xAxis,
                         yAxis: yAxis,
                         stacked: true,
-                        valueXField:
-                            visualField,
-                        categoryYField:
-                            'category',
+                        valueXField: visualField,
+                        categoryYField: 'category',
                         stroke: color,
                         fill: color
                     }
@@ -7628,38 +5615,21 @@ function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
         series.columns.template.setAll({
             height: am5.percent(70),
             tooltipY: 0,
-            stroke:
-                am5.color(
-                    0x000000
-                ),
+            stroke: am5.color(0x000000),
             strokeWidth: 0.5,
-            tooltipText:
-                '{name}: {cantidad} trabajadores ({porcentaje}%)'
+            tooltipText: '{name}: {cantidad} trabajadores ({porcentaje}%)'
         });
 
-        series.bullets.push(function(
-            rootBullet,
-            serie,
-            dataItem
-        ) {
-            var contexto =
-                dataItem.dataContext || {};
-
-            var cantidad =
-                parseInt(
-                    contexto.cantidad,
-                    10
-                ) || 0;
+        series.bullets.push(function(rootBullet,serie,dataItem)
+        {
+            var contexto = dataItem.dataContext || {};
+            var cantidad = parseInt(contexto.cantidad,10) || 0;
 
             if (cantidad <= 0) {
                 return undefined;
             }
 
-            var porcentaje =
-                parseInt(
-                    contexto.porcentaje,
-                    10
-                ) || 0;
+            var porcentaje = parseInt(contexto.porcentaje,10) || 0;
 
             var tamanioLetra = 17;
 
@@ -7680,24 +5650,14 @@ function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
                         am5.Label.new(
                             root,
                             {
-                                text:
-                                    cantidad +
-                                    ' (' +
-                                    porcentaje +
-                                    '%)',
+                                text: cantidad + ' (' + porcentaje + '%)',
                                 centerX: am5.p50,
                                 centerY: am5.p50,
                                 populateText: false,
-                                fontSize:
-                                    tamanioLetra,
-                                fill:
-                                    am5.color(
-                                        0x000000
-                                    ),
-                                fontWeight:
-                                    'bold',
-                                textAlign:
-                                    'center',
+                                fontSize: tamanioLetra,
+                                fill: am5.color(0x000000),
+                                fontWeight:'bold',
+                                textAlign:'center',
                                 paddingLeft: 1,
                                 paddingRight: 1
                             }
@@ -7711,30 +5671,18 @@ function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
                 function(item)
                 {
                     var fila = {
-                        category:
-                            item.category,
-                        cantidad:
-                            item[cantidadField],
-                        porcentaje:
-                            item[porcentajeField]
+                        category: item.category,
+                        cantidad: item[cantidadField],
+                        porcentaje: item[porcentajeField]
                     };
-
-                    fila[visualField] =
-                        item[visualField];
-
+                    fila[visualField] = item[visualField];
                     return fila;
                 }
             );
 
-        series.data.setAll(
-            datosSerie
-        );
-
+        series.data.setAll(datosSerie);
         series.appear();
-
-        legend.data.push(
-            series
-        );
+        legend.data.push(series);
     }
 
     makeSeries(
@@ -7813,33 +5761,18 @@ function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
                         .export('png')
                         .then(function(imagen)
                         {
-                            window.chartPngs =
-                                window.chartPngs || {};
-
-                            window.chartPngs[
-                                nombreGrafica
-                            ] = imagen;
-
-                            console.log(
-                                nombreGrafica +
-                                ' exportado exitosamente'
-                            );
+                            window.chartPngs = window.chartPngs || {};
+                            window.chartPngs[nombreGrafica] = imagen;
+                            console.log(nombreGrafica + 'exportado exitosamente');
                         })
                         .catch(function(error)
                         {
-                            console.error(
-                                'Error al exportar ' +
-                                nombreGrafica +
-                                ':',
-                                error
-                            );
+                            console.error('Error al exportar ' + nombreGrafica + ':',error);
                         });
 
                 } else {
 
-                    console.log(
-                        'Plugin de exportación no disponible'
-                    );
+                    console.log('Plugin de exportación no disponible');
                 }
 
             }, 1000);
@@ -7849,20 +5782,15 @@ function crearGraficaAmbienteSeparada( data,contenedorId,nombreGrafica,titulo)
 // CATEGORIA FACTORES PROPIOS DE LA ACTIVIDAD -> ACTUALIZADO 
 function cargarGraficaFactoresGuiaIII()
 {
-    $.get(
-        '/obtenerGraficaFactoresGuiaIII/' + proyecto.id,
+    $.get('/obtenerGraficaFactoresGuiaIII/' + proyecto.id,
         function(response)
         {
-            crearGraficaFactoresGuiaIII(
-                response.data
-            );
+            crearGraficaFactoresGuiaIII(response.data);
         }
     )
     .fail(function(xhr)
     {
-        console.error(
-            xhr.responseText
-        );
+        console.error(xhr.responseText);
 
         Swal.fire({
             icon: 'error',
@@ -7884,12 +5812,10 @@ function crearGraficaFactoresGuiaIII(data)
 
     data.forEach(function(item)
     {
-        var category =
-            item.category || '';
+        var category = item.category || '';
 
-        if (
-            category.indexOf('g3-') === 0
-        ) {
+        if (category.indexOf('g3-') === 0)
+        {
             encontroSeparador = true;
             return;
         }
@@ -7908,23 +5834,11 @@ function crearGraficaFactoresGuiaIII(data)
 
         data.forEach(function(item)
         {
-            var category =
-                item.category || '';
+            var category = item.category || '';
+            var nombre = category.replace(/^g[123]-/, '').trim().toLowerCase();
 
-            var nombre =
-                category
-                    .replace(/^g[123]-/, '')
-                    .trim()
-                    .toLowerCase();
-
-            if (
-                nombre.indexOf(
-                    'carga de trabajo'
-                ) !== -1 ||
-                nombre.indexOf(
-                    'falta de control sobre el trabajo'
-                ) !== -1
-            ) {
+            if (nombre.indexOf('carga de trabajo') !== -1 || nombre.indexOf('falta de control sobre el trabajo') !== -1)
+            {
                 datosDominios.push(item);
             } else {
                 datosCategoria.push(item);
@@ -7937,48 +5851,28 @@ function crearGraficaFactoresGuiaIII(data)
 
     datosDominios.forEach(function(item)
     {
-        var category =
-            item.category || '';
+        var category = item.category || '';
+        var nombre = category.replace(/^g[123]-/, '').trim().toLowerCase();
 
-        var nombre =
-            category
-                .replace(/^g[123]-/, '')
-                .trim()
-                .toLowerCase();
-
-        if (
-            nombre.indexOf(
-                'carga de trabajo'
-            ) !== -1
-        ) {
+        if (nombre.indexOf('carga de trabajo') !== -1)
+        {
             datosDominio1.push(item);
         }
 
-        if (
-            nombre.indexOf(
-                'falta de control sobre el trabajo'
-            ) !== -1
-        ) {
+        if (nombre.indexOf('falta de control sobre el trabajo') !== -1)
+        {
             datosDominio2.push(item);
         }
     });
 
-    if (
-        datosDominio1.length === 0 &&
-        datosDominios.length > 0
-    ) {
-        datosDominio1.push(
-            datosDominios[0]
-        );
+    if (datosDominio1.length === 0 && datosDominios.length > 0)
+    {
+        datosDominio1.push(datosDominios[0]);
     }
 
-    if (
-        datosDominio2.length === 0 &&
-        datosDominios.length > 1
-    ) {
-        datosDominio2.push(
-            datosDominios[1]
-        );
+    if (datosDominio2.length === 0 && datosDominios.length > 1)
+    {
+        datosDominio2.push(datosDominios[1]);
     }
 
     crearGraficaFactoresIndividual(
@@ -8012,25 +5906,16 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
         data = [];
     }
 
-    if (
-        window[rootNombre] &&
-        !window[rootNombre].isDisposed()
-    ) {
+    if (window[rootNombre] && !window[rootNombre].isDisposed())
+    {
         window[rootNombre].dispose();
         window[rootNombre] = null;
     }
 
-    var contenedor =
-        document.getElementById(
-            contenedorId
-        );
+    var contenedor = document.getElementById(contenedorId);
 
     if (!contenedor) {
-        console.error(
-            'No existe el contenedor #' +
-            contenedorId
-        );
-
+        console.error('No existe el contenedor #' + contenedorId);
         return;
     }
 
@@ -8039,41 +5924,20 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
     if (data.length === 0) {
 
         contenedor.innerHTML = `
-            <div style="
-                width:100%;
-                height:320px;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                text-align:center;
-                font-weight:bold;
-                color:#777;
-            ">
+            <div style="width:100%;height:320px;display:flex;justify-content:center;align-items:center;text-align:center;font-weight:bold;color:#777;">
                 No hay información disponible
             </div>
         `;
 
-        window.chartPngs =
-            window.chartPngs || {};
-
-        window.chartPngs[
-            nombreGrafica
-        ] = null;
+        window.chartPngs = window.chartPngs || {};
+        window.chartPngs[nombreGrafica] = null;
 
         return;
     }
 
-    window[rootNombre] =
-        am5.Root.new(
-            contenedorId
-        );
-
-    var root =
-        window[rootNombre];
-
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
+    window[rootNombre] = am5.Root.new(contenedorId);
+    var root = window[rootNombre];
+    root.setThemes([am5themes_Animated.new(root)]);
 
     var chart =
         root.container.children.push(
@@ -8313,36 +6177,11 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
     {
         return datos.map(function(item)
         {
-            var s1 =
-                parseInt(
-                    item.s1,
-                    10
-                ) || 0;
-
-            var s2 =
-                parseInt(
-                    item.s2,
-                    10
-                ) || 0;
-
-            var s3 =
-                parseInt(
-                    item.s3,
-                    10
-                ) || 0;
-
-            var s4 =
-                parseInt(
-                    item.s4,
-                    10
-                ) || 0;
-
-            var s5 =
-                parseInt(
-                    item.s5,
-                    10
-                ) || 0;
-
+            var s1 = parseInt(item.s1,10) || 0;
+            var s2 = parseInt(item.s2,10) || 0;
+            var s3 = parseInt(item.s3,10) || 0;
+            var s4 = parseInt(item.s4,10) || 0;
+            var s5 = parseInt(item.s5,10) || 0;
             var valores = [
                 s1,
                 s2,
@@ -8351,8 +6190,7 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
                 s5
             ];
 
-            var total =
-                valores.reduce(
+            var total = valores.reduce(
                     function(acumulado, valor)
                     {
                         return acumulado + valor;
@@ -8381,10 +6219,7 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
                 };
             }
 
-            var porcentajesEnteros =
-                obtenerPorcentajesEnteros(
-                    valores
-                );
+            var porcentajesEnteros = obtenerPorcentajesEnteros(valores);
 
             var porcentajesExactos =
                 valores.map(function(valor)
@@ -8443,40 +6278,24 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
                 s3: s3,
                 s4: s4,
                 s5: s5,
-                percentage_s1:
-                    porcentajesEnteros[0],
-                percentage_s2:
-                    porcentajesEnteros[1],
-                percentage_s3:
-                    porcentajesEnteros[2],
-                percentage_s4:
-                    porcentajesEnteros[3],
-                percentage_s5:
-                    porcentajesEnteros[4],
-                visual_s1:
-                    valoresVisuales[0],
-                visual_s2:
-                    valoresVisuales[1],
-                visual_s3:
-                    valoresVisuales[2],
-                visual_s4:
-                    valoresVisuales[3],
-                visual_s5:
-                    valoresVisuales[4]
+                percentage_s1: porcentajesEnteros[0],
+                percentage_s2: porcentajesEnteros[1],
+                percentage_s3: porcentajesEnteros[2],
+                percentage_s4: porcentajesEnteros[3],
+                percentage_s5: porcentajesEnteros[4],
+                visual_s1: valoresVisuales[0],
+                visual_s2: valoresVisuales[1],
+                visual_s3: valoresVisuales[2],
+                visual_s4: valoresVisuales[3],
+                visual_s5: valoresVisuales[4]
             };
         });
     }
 
-    var processedData =
-        calcularDatos(data);
+    var processedData = calcularDatos(data);
 
-    function makeSeries(
-        name,
-        cantidadField,
-        porcentajeField,
-        visualField,
-        color
-    ) {
+    function makeSeries(name,cantidadField,porcentajeField,visualField,color)
+    {
         var series =
             chart.series.push(
                 am5xy.ColumnSeries.new(
@@ -8499,33 +6318,19 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
             tooltipY: 0,
             stroke: am5.color(0x000000),
             strokeWidth: 0.5,
-            tooltipText:
-                '{name}: {cantidad} trabajadores ({porcentaje}%)'
+            tooltipText: '{name}: {cantidad} trabajadores ({porcentaje}%)'
         });
 
-        series.bullets.push(function(
-            rootBullet,
-            serie,
-            dataItem
-        ) {
-            var contexto =
-                dataItem.dataContext || {};
-
-            var cantidad =
-                parseInt(
-                    contexto.cantidad,
-                    10
-                ) || 0;
+        series.bullets.push(function(rootBullet,serie,dataItem)
+        {
+            var contexto = dataItem.dataContext || {};
+            var cantidad =parseInt(contexto.cantidad,10) || 0;
 
             if (cantidad <= 0) {
                 return undefined;
             }
 
-            var porcentaje =
-                parseInt(
-                    contexto.porcentaje,
-                    10
-                ) || 0;
+            var porcentaje =parseInt(contexto.porcentaje,10) || 0;
 
             var tamanioLetra = 17;
 
@@ -8546,19 +6351,12 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
                         am5.Label.new(
                             root,
                             {
-                                text:
-                                    cantidad +
-                                    ' (' +
-                                    porcentaje +
-                                    '%)',
+                                text:cantidad + ' (' + porcentaje + '%)',
                                 centerX: am5.p50,
                                 centerY: am5.p50,
                                 populateText: false,
                                 fontSize: tamanioLetra,
-                                fill:
-                                    am5.color(
-                                        0x000000
-                                    ),
+                                fill: am5.color(0x000000),
                                 fontWeight: 'bold',
                                 textAlign: 'center',
                                 paddingLeft: 1,
@@ -8574,30 +6372,19 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
                 function(item)
                 {
                     var fila = {
-                        category:
-                            item.category,
-                        cantidad:
-                            item[cantidadField],
-                        porcentaje:
-                            item[porcentajeField]
+                        category: item.category,
+                        cantidad: item[cantidadField],
+                        porcentaje: item[porcentajeField]
                     };
 
-                    fila[visualField] =
-                        item[visualField];
-
+                    fila[visualField] = item[visualField];
                     return fila;
                 }
             );
 
-        series.data.setAll(
-            datosSerie
-        );
-
+        series.data.setAll(datosSerie);
         series.appear();
-
-        legend.data.push(
-            series
-        );
+        legend.data.push(series);
     }
 
     makeSeries(
@@ -8676,33 +6463,18 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
                         .export('png')
                         .then(function(imagen)
                         {
-                            window.chartPngs =
-                                window.chartPngs || {};
-
-                            window.chartPngs[
-                                nombreGrafica
-                            ] = imagen;
-
-                            console.log(
-                                nombreGrafica +
-                                ' exportado exitosamente'
-                            );
+                            window.chartPngs = window.chartPngs || {};
+                            window.chartPngs[nombreGrafica] = imagen;
+                            console.log(nombreGrafica +' exportado exitosamente');
                         })
                         .catch(function(error)
                         {
-                            console.error(
-                                'Error al exportar ' +
-                                nombreGrafica +
-                                ':',
-                                error
-                            );
+                            console.error('Error al exportar ' + nombreGrafica + ':',error);
                         });
 
                 } else {
 
-                    console.log(
-                        'Plugin de exportación no disponible'
-                    );
+                    console.log('Plugin de exportación no disponible');
                 }
 
             }, 1000);
@@ -8712,20 +6484,15 @@ function crearGraficaFactoresIndividual( data,contenedorId,rootNombre,nombreGraf
 // ORGANIZACION DEL TIEMPO DE TRABAJO -> ACTUALIZADO 
 function cargarGraficaOrganizacionGuiaIII()
 {
-    $.get(
-        '/obtenerGraficaOrganizacionGuiaIII/' + proyecto.id,
+    $.get('/obtenerGraficaOrganizacionGuiaIII/' + proyecto.id,
         function(response)
         {
-            crearGraficaOrganizacionGuiaIII(
-                response.data
-            );
+            crearGraficaOrganizacionGuiaIII(response.data);
         }
     )
     .fail(function(xhr)
     {
-        console.error(
-            xhr.responseText
-        );
+        console.error(xhr.responseText);
 
         Swal.fire({
             icon: 'error',
@@ -8881,26 +6648,15 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
         data = [];
     }
 
-    if (
-        window[rootNombre] &&
-        !window[rootNombre].isDisposed()
-    ) {
-        window[rootNombre].dispose();
-        window[rootNombre] = null;
+    if (window[rootNombre] && !window[rootNombre].isDisposed())
+    {
+        window[rootNombre].dispose(); window[rootNombre] = null;
     }
 
-    var contenedor =
-        document.getElementById(
-            contenedorId
-        );
+    var contenedor = document.getElementById(contenedorId);
 
     if (!contenedor) {
-
-        console.error(
-            'No existe el contenedor #' +
-            contenedorId
-        );
-
+        console.error('No existe el contenedor #' + contenedorId);
         return;
     }
 
@@ -8909,38 +6665,18 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
     if (data.length === 0) {
 
         contenedor.innerHTML = `
-            <div style="
-                width:100%;
-                height:320px;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                text-align:center;
-                font-weight:bold;
-                color:#777;
-            ">
+            <div style="width:100%;height:320px;display:flex;justify-content:center;align-items:center;text-align:center;font-weight:bold;color:#777;">
                 No hay información disponible
             </div>
         `;
 
-        window.chartPngs =
-            window.chartPngs || {};
-
-        window.chartPngs[
-            nombreGrafica
-        ] = null;
-
+        window.chartPngs = window.chartPngs || {};
+        window.chartPngs[nombreGrafica] = null;
         return;
     }
 
-    window[rootNombre] =
-        am5.Root.new(
-            contenedorId
-        );
-
-    var root =
-        window[rootNombre];
-
+    window[rootNombre] = am5.Root.new(contenedorId);
+    var root = window[rootNombre];
     root.setThemes([
         am5themes_Animated.new(root)
     ]);
@@ -9193,38 +6929,12 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
     {
         return datos.map(function(item)
         {
-            var category =
-                item.category || '';
-
-            var s1 =
-                parseInt(
-                    item.s1,
-                    10
-                ) || 0;
-
-            var s2 =
-                parseInt(
-                    item.s2,
-                    10
-                ) || 0;
-
-            var s3 =
-                parseInt(
-                    item.s3,
-                    10
-                ) || 0;
-
-            var s4 =
-                parseInt(
-                    item.s4,
-                    10
-                ) || 0;
-
-            var s5 =
-                parseInt(
-                    item.s5,
-                    10
-                ) || 0;
+            var category = item.category || '';
+            var s1 = parseInt(item.s1,10) || 0;
+            var s2 = parseInt(item.s2,10) || 0;
+            var s3 = parseInt(item.s3,10) || 0;
+            var s4 = parseInt(item.s4,10) || 0;
+            var s5 = parseInt(item.s5,10) || 0;
 
             var valores = [
                 s1,
@@ -9234,14 +6944,7 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
                 s5
             ];
 
-            var total =
-                valores.reduce(
-                    function(acumulado, valor)
-                    {
-                        return acumulado + valor;
-                    },
-                    0
-                );
+            var total = valores.reduce(function(acumulado, valor){return acumulado + valor;},0);
 
             if (total <= 0) {
 
@@ -9265,18 +6968,10 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
                 };
             }
 
-            var porcentajesEnteros =
-                obtenerPorcentajesEnteros(
-                    valores
-                );
-
-            var porcentajesExactos =
-                valores.map(function(valor)
+            var porcentajesEnteros = obtenerPorcentajesEnteros(valores);
+            var porcentajesExactos = valores.map(function(valor)
                 {
-                    return (
-                        valor /
-                        total
-                    ) * 100;
+                    return (valor / total) * 100;
                 });
 
             var minimoVisual = 8;
@@ -9285,22 +6980,16 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
                 porcentajesExactos.map(
                     function(porcentaje, indice)
                     {
-                        if (
-                            valores[indice] <= 0
-                        ) {
+                        if (valores[indice] <= 0)
+                        {
                             return 0;
                         }
 
-                        return Math.max(
-                            porcentaje,
-                            minimoVisual
-                        );
+                        return Math.max(porcentaje,minimoVisual);
                     }
                 );
 
-            var totalVisual =
-                valoresVisuales.reduce(
-                    function(acumulado, valor)
+            var totalVisual = valoresVisuales.reduce(function(acumulado, valor)
                     {
                         return acumulado + valor;
                     },
@@ -9308,15 +6997,9 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
                 );
 
             if (totalVisual > 0) {
-
-                valoresVisuales =
-                    valoresVisuales.map(
-                        function(valor)
+                valoresVisuales = valoresVisuales.map(function(valor)
                         {
-                            return (
-                                valor /
-                                totalVisual
-                            ) * 100;
+                            return (valor / totalVisual) * 100;
                         }
                     );
             }
@@ -9328,42 +7011,24 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
                 s3: s3,
                 s4: s4,
                 s5: s5,
-                percentage_s1:
-                    porcentajesEnteros[0],
-                percentage_s2:
-                    porcentajesEnteros[1],
-                percentage_s3:
-                    porcentajesEnteros[2],
-                percentage_s4:
-                    porcentajesEnteros[3],
-                percentage_s5:
-                    porcentajesEnteros[4],
-                visual_s1:
-                    valoresVisuales[0],
-                visual_s2:
-                    valoresVisuales[1],
-                visual_s3:
-                    valoresVisuales[2],
-                visual_s4:
-                    valoresVisuales[3],
-                visual_s5:
-                    valoresVisuales[4]
+                percentage_s1: porcentajesEnteros[0],
+                percentage_s2: porcentajesEnteros[1],
+                percentage_s3: porcentajesEnteros[2],
+                percentage_s4: porcentajesEnteros[3],
+                percentage_s5: porcentajesEnteros[4],
+                visual_s1: valoresVisuales[0],
+                visual_s2: valoresVisuales[1],
+                visual_s3: valoresVisuales[2],
+                visual_s4: valoresVisuales[3],
+                visual_s5: valoresVisuales[4]
             };
         });
     }
 
-    var processedData =
-        calcularDatos(
-            data
-        );
+    var processedData = calcularDatos(data);
 
-    function makeSeries(
-        name,
-        cantidadField,
-        porcentajeField,
-        visualField,
-        color
-    ) {
+    function makeSeries(name,cantidadField,porcentajeField,visualField,color)
+    {
         var series =
             chart.series.push(
                 am5xy.ColumnSeries.new(
@@ -9373,10 +7038,8 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
                         xAxis: xAxis,
                         yAxis: yAxis,
                         stacked: true,
-                        valueXField:
-                            visualField,
-                        categoryYField:
-                            'category',
+                        valueXField: visualField,
+                        categoryYField:'category',
                         stroke: color,
                         fill: color
                     }
@@ -9386,39 +7049,22 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
         series.columns.template.setAll({
             height: am5.percent(70),
             tooltipY: 0,
-            stroke:
-                am5.color(
-                    0x000000
-                ),
+            stroke: am5.color(0x000000),
             strokeWidth: 0.5,
-            tooltipText:
-                '{name}: {cantidad} trabajadores ({porcentaje}%)'
+            tooltipText:'{name}: {cantidad} trabajadores ({porcentaje}%)'
         });
 
-        series.bullets.push(function(
-            rootBullet,
-            serie,
-            dataItem
-        ) {
-            var contexto =
-                dataItem.dataContext || {};
+        series.bullets.push(function(rootBullet,serie,dataItem)
+        {
+            var contexto = dataItem.dataContext || {};
 
-            var cantidad =
-                parseInt(
-                    contexto.cantidad,
-                    10
-                ) || 0;
+            var cantidad = parseInt(contexto.cantidad,10) || 0;
 
             if (cantidad <= 0) {
                 return undefined;
             }
 
-            var porcentaje =
-                parseInt(
-                    contexto.porcentaje,
-                    10
-                ) || 0;
-
+            var porcentaje = parseInt(contexto.porcentaje,10) || 0;
             var tamanioLetra = 17;
 
             if (porcentaje <= 3) {
@@ -9446,16 +7092,10 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
                                 centerX: am5.p50,
                                 centerY: am5.p50,
                                 populateText: false,
-                                fontSize:
-                                    tamanioLetra,
-                                fill:
-                                    am5.color(
-                                        0x000000
-                                    ),
-                                fontWeight:
-                                    'bold',
-                                textAlign:
-                                    'center',
+                                fontSize: tamanioLetra,
+                                fill: am5.color(0x000000),
+                                fontWeight:'bold',
+                                textAlign:'center',
                                 paddingLeft: 1,
                                 paddingRight: 1
                             }
@@ -9469,30 +7109,22 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
                 function(item)
                 {
                     var fila = {
-                        category:
-                            item.category,
-                        cantidad:
-                            item[cantidadField],
-                        porcentaje:
-                            item[porcentajeField]
+                        category:item.category,
+                        cantidad:item[cantidadField],
+                        porcentaje:item[porcentajeField]
                     };
 
-                    fila[visualField] =
-                        item[visualField];
+                    fila[visualField] = item[visualField];
 
                     return fila;
                 }
             );
 
-        series.data.setAll(
-            datosSerie
-        );
+        series.data.setAll(datosSerie);
 
         series.appear();
 
-        legend.data.push(
-            series
-        );
+        legend.data.push(series);
     }
 
     makeSeries(
@@ -9571,33 +7203,18 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
                         .export('png')
                         .then(function(imagen)
                         {
-                            window.chartPngs =
-                                window.chartPngs || {};
-
-                            window.chartPngs[
-                                nombreGrafica
-                            ] = imagen;
-
-                            console.log(
-                                nombreGrafica +
-                                ' exportado exitosamente'
-                            );
+                            window.chartPngs = window.chartPngs || {};
+                            window.chartPngs[nombreGrafica] = imagen;
+                            console.log(nombreGrafica +'exportado exitosamente');
                         })
                         .catch(function(error)
                         {
-                            console.error(
-                                'Error al exportar ' +
-                                nombreGrafica +
-                                ':',
-                                error
-                            );
+                            console.error('Error al exportar ' + nombreGrafica +':',error);
                         });
 
                 } else {
 
-                    console.log(
-                        'Plugin de exportación no disponible'
-                    );
+                    console.log('Plugin de exportación no disponible');
                 }
 
             }, 1000);
@@ -9607,21 +7224,15 @@ function crearGraficaOrganizacionIndividual(data,contenedorId,rootNombre,nombreG
 // CATEGORIA LIDERAZGO Y RELACIONES EN EL TRABAJO  -> ACTUALIZADO
 function cargarGraficaLiderazgoGuiaIII() 
 {
-    $.get(
-        '/obtenerGraficaLiderazgoGuiaIII/' + proyecto.id,
+    $.get('/obtenerGraficaLiderazgoGuiaIII/' + proyecto.id,
         function(response)
         {
-            crearGraficaLiderazgoGuiaIII(
-                response.data
-            );
+            crearGraficaLiderazgoGuiaIII(response.data);
         }
     )
     .fail(function(xhr)
     {
-        console.error(
-            xhr.responseText
-        );
-
+        console.error(xhr.responseText);
         Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -9666,23 +7277,9 @@ function crearGraficaLiderazgoGuiaIII(data)
 
         data.forEach(function(item)
         {
-            var category =
-                item.category || '';
-
-            var nombre =
-                category
-                    .replace(/^g[123]-/, '')
-                    .trim()
-                    .toLowerCase();
-
-            if (
-                nombre === 'liderazgo' ||
-                nombre.indexOf(
-                    'relaciones en el trabajo'
-                ) !== -1 ||
-                nombre.indexOf(
-                    'violencia'
-                ) !== -1
+            var category = item.category || '';
+            var nombre = category.replace(/^g[123]-/, '').trim().toLowerCase();
+            if (nombre === 'liderazgo' || nombre.indexOf( 'relaciones en el trabajo') !== -1 || nombre.indexOf('violencia') !== -1
             ) {
                 datosDominios.push(item);
             } else {
@@ -9697,64 +7294,37 @@ function crearGraficaLiderazgoGuiaIII(data)
 
     datosDominios.forEach(function(item)
     {
-        var category =
-            item.category || '';
+        var category = item.category || '';
+        var nombre =category.replace(/^g[123]-/, '').trim().toLowerCase();
 
-        var nombre =
-            category
-                .replace(/^g[123]-/, '')
-                .trim()
-                .toLowerCase();
-
-        if (
-            nombre === 'liderazgo' ||
-            nombre.indexOf('liderazgo') !== -1
-        ) {
+        if (nombre === 'liderazgo' || nombre.indexOf('liderazgo') !== -1)
+        {
             datosDominio1.push(item);
         }
-
-        if (
-            nombre.indexOf(
-                'relaciones en el trabajo'
-            ) !== -1
-        ) {
+        if (nombre.indexOf('relaciones en el trabajo') !== -1)
+        {
             datosDominio2.push(item);
         }
 
-        if (
-            nombre.indexOf(
-                'violencia'
-            ) !== -1
-        ) {
+        if (nombre.indexOf('violencia') !== -1)
+        {
             datosDominio3.push(item);
         }
     });
 
-    if (
-        datosDominio1.length === 0 &&
-        datosDominios.length > 0
-    ) {
-        datosDominio1.push(
-            datosDominios[0]
-        );
+    if (datosDominio1.length === 0 && datosDominios.length > 0)
+    {
+        datosDominio1.push(datosDominios[0]);
     }
 
-    if (
-        datosDominio2.length === 0 &&
-        datosDominios.length > 1
-    ) {
-        datosDominio2.push(
-            datosDominios[1]
-        );
+    if (datosDominio2.length === 0 && datosDominios.length > 1)
+    {
+        datosDominio2.push(datosDominios[1]);
     }
 
-    if (
-        datosDominio3.length === 0 &&
-        datosDominios.length > 2
-    ) {
-        datosDominio3.push(
-            datosDominios[2]
-        );
+    if (datosDominio3.length === 0 && datosDominios.length > 2)
+    {
+        datosDominio3.push(datosDominios[2]);
     }
 
     crearGraficaLiderazgoIndividual(
@@ -9796,26 +7366,15 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
         data = [];
     }
 
-    if (
-        window[rootNombre] &&
-        !window[rootNombre].isDisposed()
-    ) {
-        window[rootNombre].dispose();
-        window[rootNombre] = null;
+    if (window[rootNombre] && !window[rootNombre].isDisposed())
+    {
+        window[rootNombre].dispose(); window[rootNombre] = null;
     }
 
-    var contenedor =
-        document.getElementById(
-            contenedorId
-        );
+    var contenedor = document.getElementById(contenedorId);
 
     if (!contenedor) {
-
-        console.error(
-            'No existe el contenedor #' +
-            contenedorId
-        );
-
+        console.error('No existe el contenedor #' + contenedorId);
         return;
     }
 
@@ -9824,41 +7383,22 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
     if (data.length === 0) {
 
         contenedor.innerHTML = `
-            <div style="
-                width:100%;
-                height:320px;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                text-align:center;
-                font-weight:bold;
-                color:#777;
-            ">
+            <div style="width:100%;height:320px;display:flex;justify-content:center;align-items:center;text-align:center;font-weight:bold;color:#777;">
                 No hay información disponible
             </div>
         `;
 
-        window.chartPngs =
-            window.chartPngs || {};
+        window.chartPngs = window.chartPngs || {};
 
-        window.chartPngs[
-            nombreGrafica
-        ] = null;
+        window.chartPngs[nombreGrafica] = null;
 
         return;
     }
 
-    window[rootNombre] =
-        am5.Root.new(
-            contenedorId
-        );
-
-    var root =
-        window[rootNombre];
-
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
+    window[rootNombre] = am5.Root.new(contenedorId);
+    var root = window[rootNombre];
+    
+    root.setThemes([am5themes_Animated.new(root)]);
 
     var chart =
         root.container.children.push(
@@ -9944,11 +7484,7 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
                 {
                     categoryField: 'category',
                     renderer: yAxisRenderer,
-                    tooltip:
-                        am5.Tooltip.new(
-                            root,
-                            {}
-                        )
+                    tooltip: am5.Tooltip.new(root,{})
                 }
             )
         );
@@ -10108,38 +7644,13 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
     {
         return datos.map(function(item)
         {
-            var category =
-                item.category || '';
+            var category = item.category || '';
 
-            var s1 =
-                parseInt(
-                    item.s1,
-                    10
-                ) || 0;
-
-            var s2 =
-                parseInt(
-                    item.s2,
-                    10
-                ) || 0;
-
-            var s3 =
-                parseInt(
-                    item.s3,
-                    10
-                ) || 0;
-
-            var s4 =
-                parseInt(
-                    item.s4,
-                    10
-                ) || 0;
-
-            var s5 =
-                parseInt(
-                    item.s5,
-                    10
-                ) || 0;
+            var s1 = parseInt(item.s1,10) || 0;
+            var s2 = parseInt(item.s2,10) || 0;
+            var s3 = parseInt(item.s3,10) || 0;
+            var s4 = parseInt(item.s4,10) || 0;
+            var s5 = parseInt(item.s5,10) || 0;
 
             var valores = [
                 s1,
@@ -10149,14 +7660,7 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
                 s5
             ];
 
-            var total =
-                valores.reduce(
-                    function(acumulado, valor)
-                    {
-                        return acumulado + valor;
-                    },
-                    0
-                );
+            var total = valores.reduce(function(acumulado, valor){return acumulado + valor;},0);
 
             if (total <= 0) {
 
@@ -10180,42 +7684,23 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
                 };
             }
 
-            var porcentajesEnteros =
-                obtenerPorcentajesEnteros(
-                    valores
-                );
-
-            var porcentajesExactos =
-                valores.map(function(valor)
-                {
-                    return (
-                        valor /
-                        total
-                    ) * 100;
-                });
-
+            var porcentajesEnteros = obtenerPorcentajesEnteros(valores);
+            var porcentajesExactos = valores.map(function(valor){return (valor / total) * 100;});
             var minimoVisual = 8;
 
             var valoresVisuales =
                 porcentajesExactos.map(
                     function(porcentaje, indice)
                     {
-                        if (
-                            valores[indice] <= 0
-                        ) {
+                        if (valores[indice] <= 0)
+                        {
                             return 0;
                         }
-
-                        return Math.max(
-                            porcentaje,
-                            minimoVisual
-                        );
+                        return Math.max(porcentaje,minimoVisual);
                     }
                 );
 
-            var totalVisual =
-                valoresVisuales.reduce(
-                    function(acumulado, valor)
+            var totalVisual = valoresVisuales.reduce(function(acumulado, valor)
                     {
                         return acumulado + valor;
                     },
@@ -10224,14 +7709,9 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
 
             if (totalVisual > 0) {
 
-                valoresVisuales =
-                    valoresVisuales.map(
-                        function(valor)
+                valoresVisuales = valoresVisuales.map(function(valor)
                         {
-                            return (
-                                valor /
-                                totalVisual
-                            ) * 100;
+                            return (valor / totalVisual) * 100;
                         }
                     );
             }
@@ -10243,42 +7723,24 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
                 s3: s3,
                 s4: s4,
                 s5: s5,
-                percentage_s1:
-                    porcentajesEnteros[0],
-                percentage_s2:
-                    porcentajesEnteros[1],
-                percentage_s3:
-                    porcentajesEnteros[2],
-                percentage_s4:
-                    porcentajesEnteros[3],
-                percentage_s5:
-                    porcentajesEnteros[4],
-                visual_s1:
-                    valoresVisuales[0],
-                visual_s2:
-                    valoresVisuales[1],
-                visual_s3:
-                    valoresVisuales[2],
-                visual_s4:
-                    valoresVisuales[3],
-                visual_s5:
-                    valoresVisuales[4]
+                percentage_s1: porcentajesEnteros[0],
+                percentage_s2: porcentajesEnteros[1],
+                percentage_s3: porcentajesEnteros[2],
+                percentage_s4: porcentajesEnteros[3],
+                percentage_s5: porcentajesEnteros[4],
+                visual_s1: valoresVisuales[0],
+                visual_s2: valoresVisuales[1],
+                visual_s3: valoresVisuales[2],
+                visual_s4: valoresVisuales[3],
+                visual_s5: valoresVisuales[4]
             };
         });
     }
 
-    var processedData =
-        calcularDatos(
-            data
-        );
+    var processedData = calcularDatos(data);
 
-    function makeSeries(
-        name,
-        cantidadField,
-        porcentajeField,
-        visualField,
-        color
-    ) {
+    function makeSeries(name,cantidadField,porcentajeField,visualField,color)
+    {
         var series =
             chart.series.push(
                 am5xy.ColumnSeries.new(
@@ -10288,10 +7750,8 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
                         xAxis: xAxis,
                         yAxis: yAxis,
                         stacked: true,
-                        valueXField:
-                            visualField,
-                        categoryYField:
-                            'category',
+                        valueXField: visualField,
+                        categoryYField:'category',
                         stroke: color,
                         fill: color
                     }
@@ -10301,38 +7761,22 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
         series.columns.template.setAll({
             height: am5.percent(70),
             tooltipY: 0,
-            stroke:
-                am5.color(
-                    0x000000
-                ),
+            stroke:am5.color(0x000000),
             strokeWidth: 0.5,
-            tooltipText:
-                '{name}: {cantidad} trabajadores ({porcentaje}%)'
+            tooltipText:'{name}: {cantidad} trabajadores ({porcentaje}%)'
         });
 
-        series.bullets.push(function(
-            rootBullet,
-            serie,
-            dataItem
-        ) {
-            var contexto =
-                dataItem.dataContext || {};
+        series.bullets.push(function(rootBullet,serie,dataItem)
+        {
 
-            var cantidad =
-                parseInt(
-                    contexto.cantidad,
-                    10
-                ) || 0;
-
+            var contexto = dataItem.dataContext || {};
+            var cantidad = parseInt(contexto.cantidad, 10) || 0;
+            
             if (cantidad <= 0) {
                 return undefined;
             }
 
-            var porcentaje =
-                parseInt(
-                    contexto.porcentaje,
-                    10
-                ) || 0;
+            var porcentaje = parseInt(contexto.porcentaje,10) || 0;
 
             var tamanioLetra = 17;
 
@@ -10353,24 +7797,14 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
                         am5.Label.new(
                             root,
                             {
-                                text:
-                                    cantidad +
-                                    ' (' +
-                                    porcentaje +
-                                    '%)',
+                                text: cantidad + ' (' + porcentaje +'%)',
                                 centerX: am5.p50,
                                 centerY: am5.p50,
                                 populateText: false,
-                                fontSize:
-                                    tamanioLetra,
-                                fill:
-                                    am5.color(
-                                        0x000000
-                                    ),
-                                fontWeight:
-                                    'bold',
-                                textAlign:
-                                    'center',
+                                fontSize:tamanioLetra,
+                                fill: am5.color(0x000000),
+                                fontWeight:'bold',
+                                textAlign:'center',
                                 paddingLeft: 1,
                                 paddingRight: 1
                             }
@@ -10384,30 +7818,20 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
                 function(item)
                 {
                     var fila = {
-                        category:
-                            item.category,
-                        cantidad:
-                            item[cantidadField],
-                        porcentaje:
-                            item[porcentajeField]
+                        category: item.category,
+                        cantidad: item[cantidadField],
+                        porcentaje: item[porcentajeField]
                     };
 
-                    fila[visualField] =
-                        item[visualField];
+                    fila[visualField] = item[visualField];
 
                     return fila;
                 }
             );
 
-        series.data.setAll(
-            datosSerie
-        );
-
+        series.data.setAll(datosSerie);
         series.appear();
-
-        legend.data.push(
-            series
-        );
+        legend.data.push(series);
     }
 
     makeSeries(
@@ -10486,33 +7910,18 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
                         .export('png')
                         .then(function(imagen)
                         {
-                            window.chartPngs =
-                                window.chartPngs || {};
-
-                            window.chartPngs[
-                                nombreGrafica
-                            ] = imagen;
-
-                            console.log(
-                                nombreGrafica +
-                                ' exportado exitosamente'
-                            );
+                            window.chartPngs = window.chartPngs || {};
+                            window.chartPngs[nombreGrafica] = imagen;
+                            console.log(nombreGrafica +'exportado exitosamente');
                         })
                         .catch(function(error)
                         {
-                            console.error(
-                                'Error al exportar ' +
-                                nombreGrafica +
-                                ':',
-                                error
-                            );
+                            console.error('Error al exportar' + nombreGrafica + ':', error);
                         });
 
                 } else {
 
-                    console.log(
-                        'Plugin de exportación no disponible'
-                    );
+                    console.log('Plugin de exportación no disponible');
                 }
 
             }, 1000);
@@ -10523,20 +7932,15 @@ function crearGraficaLiderazgoIndividual(data,contenedorId,rootNombre,nombreGraf
 
 function cargarGraficaEntornoGuiaIII()
 {
-    $.get(
-        '/obtenerGraficaEntornoGuiaIII/' + proyecto.id,
+    $.get('/obtenerGraficaEntornoGuiaIII/' + proyecto.id,
         function(response)
         {
-            crearGraficaEntornoGuiaIII(
-                response.data
-            );
+            crearGraficaEntornoGuiaIII(response.data);
         }
     )
     .fail(function(xhr)
     {
-        console.error(
-            xhr.responseText
-        );
+        console.error(xhr.responseText);
 
         Swal.fire({
             icon: 'error',
@@ -10559,16 +7963,13 @@ function crearGraficaEntornoGuiaIII(data)
 
     data.forEach(function(item)
     {
-        var category =
-            item.category || '';
+        var category = item.category || '';
 
-        if (
-            category.indexOf('g3-') === 0
-        ) {
+        if (category.indexOf('g3-') === 0)
+        {
             encontroSeparador = true;
             return;
         }
-
         if (encontroSeparador) {
             datosDominios.push(item);
         } else {
@@ -10583,14 +7984,9 @@ function crearGraficaEntornoGuiaIII(data)
 
         data.forEach(function(item)
         {
-            var category =
-                item.category || '';
+            var category = item.category || '';
 
-            var nombre =
-                category
-                    .replace(/^g[123]-/, '')
-                    .trim()
-                    .toLowerCase();
+            var nombre = category.replace(/^g[123]-/, '').trim().toLowerCase();
 
             if (
                 nombre.indexOf(
@@ -10618,14 +8014,9 @@ function crearGraficaEntornoGuiaIII(data)
 
     datosDominios.forEach(function(item)
     {
-        var category =
-            item.category || '';
+        var category = item.category || '';
 
-        var nombre =
-            category
-                .replace(/^g[123]-/, '')
-                .trim()
-                .toLowerCase();
+        var nombre = category.replace(/^g[123]-/, '').trim().toLowerCase();
 
         if (
             nombre.indexOf(
@@ -10650,22 +8041,14 @@ function crearGraficaEntornoGuiaIII(data)
         }
     });
 
-    if (
-        datosDominio1.length === 0 &&
-        datosDominios.length > 0
-    ) {
-        datosDominio1.push(
-            datosDominios[0]
-        );
+    if (datosDominio1.length === 0 && datosDominios.length > 0)
+    {
+        datosDominio1.push(datosDominios[0]);
     }
 
-    if (
-        datosDominio2.length === 0 &&
-        datosDominios.length > 1
-    ) {
-        datosDominio2.push(
-            datosDominios[1]
-        );
+    if (datosDominio2.length === 0 && datosDominios.length > 1)
+    {
+        datosDominio2.push(datosDominios[1]);
     }
 
     crearGraficaEntornoIndividual(
@@ -10699,25 +8082,17 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
         data = [];
     }
 
-    if (
-        window[rootNombre] &&
-        !window[rootNombre].isDisposed()
-    ) {
+    if (window[rootNombre] && !window[rootNombre].isDisposed()) 
+    {
         window[rootNombre].dispose();
         window[rootNombre] = null;
     }
 
-    var contenedor =
-        document.getElementById(
-            contenedorId
-        );
+    var contenedor = document.getElementById(contenedorId);
 
     if (!contenedor) {
 
-        console.error(
-            'No existe el contenedor #' +
-            contenedorId
-        );
+        console.error('No existe el contenedor #' + contenedorId);
 
         return;
     }
@@ -10727,41 +8102,22 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
     if (data.length === 0) {
 
         contenedor.innerHTML = `
-            <div style="
-                width:100%;
-                height:320px;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                text-align:center;
-                font-weight:bold;
-                color:#777;
-            ">
+            <div style="width:100%;height:320px;display:flex;justify-content:center;align-items:center;text-align:center;font-weight:bold;color:#777;">
                 No hay información disponible
             </div>
         `;
 
-        window.chartPngs =
-            window.chartPngs || {};
-
-        window.chartPngs[
-            nombreGrafica
-        ] = null;
+        window.chartPngs = window.chartPngs || {};
+        window.chartPngs[nombreGrafica] = null;
 
         return;
     }
 
-    window[rootNombre] =
-        am5.Root.new(
-            contenedorId
-        );
+    window[rootNombre] = am5.Root.new(contenedorId);
 
-    var root =
-        window[rootNombre];
+    var root = window[rootNombre];
 
-    root.setThemes([
-        am5themes_Animated.new(root)
-    ]);
+    root.setThemes([am5themes_Animated.new(root)]);
 
     var chart =
         root.container.children.push(
@@ -10950,10 +8306,7 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
         var porcentajesExactos =
             valores.map(function(valor)
             {
-                return (
-                    valor /
-                    total
-                ) * 100;
+                return (valor / total) * 100;
             });
 
         var porcentajesEnteros =
@@ -10971,8 +8324,7 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
                 0
             );
 
-        var faltantes =
-            100 - sumaEnteros;
+        var faltantes = 100 - sumaEnteros;
 
         var residuos =
             porcentajesExactos.map(
@@ -10980,11 +8332,7 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
                 {
                     return {
                         indice: indice,
-                        residuo:
-                            valor -
-                            porcentajesEnteros[
-                                indice
-                            ]
+                        residuo: valor - porcentajesEnteros[indice]
                     };
                 }
             );
@@ -10994,14 +8342,9 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
             return b.residuo - a.residuo;
         });
 
-        for (
-            var indice = 0;
-            indice < faltantes;
-            indice++
-        ) {
-            porcentajesEnteros[
-                residuos[indice].indice
-            ]++;
+        for (var indice = 0;indice < faltantes;indice++)
+        {
+            porcentajesEnteros[residuos[indice].indice]++;
         }
 
         return porcentajesEnteros;
@@ -11011,38 +8354,12 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
     {
         return datos.map(function(item)
         {
-            var category =
-                item.category || '';
-
-            var s1 =
-                parseInt(
-                    item.s1,
-                    10
-                ) || 0;
-
-            var s2 =
-                parseInt(
-                    item.s2,
-                    10
-                ) || 0;
-
-            var s3 =
-                parseInt(
-                    item.s3,
-                    10
-                ) || 0;
-
-            var s4 =
-                parseInt(
-                    item.s4,
-                    10
-                ) || 0;
-
-            var s5 =
-                parseInt(
-                    item.s5,
-                    10
-                ) || 0;
+            var category = item.category || '';
+            var s1 = parseInt(item.s1,10) || 0;
+            var s2 = parseInt(item.s2,10) || 0;
+            var s3 = parseInt(item.s3,10) || 0;
+            var s4 = parseInt(item.s4,10) || 0;
+            var s5 = parseInt(item.s5,10) || 0;
 
             var valores = [
                 s1,
@@ -11083,18 +8400,11 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
                 };
             }
 
-            var porcentajesEnteros =
-                obtenerPorcentajesEnteros(
-                    valores
-                );
-
+            var porcentajesEnteros = obtenerPorcentajesEnteros(valores);
             var porcentajesExactos =
                 valores.map(function(valor)
                 {
-                    return (
-                        valor /
-                        total
-                    ) * 100;
+                    return (valor / total) * 100;
                 });
 
             var minimoVisual = 8;
@@ -11103,21 +8413,16 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
                 porcentajesExactos.map(
                     function(porcentaje, indice)
                     {
-                        if (
-                            valores[indice] <= 0
-                        ) {
+                        if (valores[indice] <= 0)
+                        {
                             return 0;
                         }
 
-                        return Math.max(
-                            porcentaje,
-                            minimoVisual
-                        );
+                        return Math.max(porcentaje,minimoVisual);
                     }
                 );
 
-            var totalVisual =
-                valoresVisuales.reduce(
+            var totalVisual = valoresVisuales.reduce(
                     function(acumulado, valor)
                     {
                         return acumulado + valor;
@@ -11131,10 +8436,7 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
                     valoresVisuales.map(
                         function(valor)
                         {
-                            return (
-                                valor /
-                                totalVisual
-                            ) * 100;
+                            return (valor / totalVisual) * 100;
                         }
                     );
             }
@@ -11146,42 +8448,24 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
                 s3: s3,
                 s4: s4,
                 s5: s5,
-                percentage_s1:
-                    porcentajesEnteros[0],
-                percentage_s2:
-                    porcentajesEnteros[1],
-                percentage_s3:
-                    porcentajesEnteros[2],
-                percentage_s4:
-                    porcentajesEnteros[3],
-                percentage_s5:
-                    porcentajesEnteros[4],
-                visual_s1:
-                    valoresVisuales[0],
-                visual_s2:
-                    valoresVisuales[1],
-                visual_s3:
-                    valoresVisuales[2],
-                visual_s4:
-                    valoresVisuales[3],
-                visual_s5:
-                    valoresVisuales[4]
+                percentage_s1: porcentajesEnteros[0],
+                percentage_s2: porcentajesEnteros[1],
+                percentage_s3: porcentajesEnteros[2],
+                percentage_s4: porcentajesEnteros[3],
+                percentage_s5: porcentajesEnteros[4],
+                visual_s1: valoresVisuales[0],
+                visual_s2: valoresVisuales[1],
+                visual_s3: valoresVisuales[2],
+                visual_s4: valoresVisuales[3],
+                visual_s5: valoresVisuales[4]
             };
         });
     }
 
-    var processedData =
-        calcularDatos(
-            data
-        );
+    var processedData =calcularDatos(data);
 
-    function makeSeries(
-        name,
-        cantidadField,
-        porcentajeField,
-        visualField,
-        color
-    ) {
+    function makeSeries(name,cantidadField,porcentajeField,visualField,color)
+    {
         var series =
             chart.series.push(
                 am5xy.ColumnSeries.new(
@@ -11191,10 +8475,8 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
                         xAxis: xAxis,
                         yAxis: yAxis,
                         stacked: true,
-                        valueXField:
-                            visualField,
-                        categoryYField:
-                            'category',
+                        valueXField:visualField,
+                        categoryYField:'category',
                         stroke: color,
                         fill: color
                     }
@@ -11204,38 +8486,21 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
         series.columns.template.setAll({
             height: am5.percent(70),
             tooltipY: 0,
-            stroke:
-                am5.color(
-                    0x000000
-                ),
+            stroke:am5.color( 0x000000),
             strokeWidth: 0.5,
-            tooltipText:
-                '{name}: {cantidad} trabajadores ({porcentaje}%)'
+            tooltipText: '{name}: {cantidad} trabajadores ({porcentaje}%)'
         });
 
-        series.bullets.push(function(
-            rootBullet,
-            serie,
-            dataItem
-        ) {
-            var contexto =
-                dataItem.dataContext || {};
-
-            var cantidad =
-                parseInt(
-                    contexto.cantidad,
-                    10
-                ) || 0;
+        series.bullets.push(function(rootBullet,serie,dataItem)
+        {
+            var contexto = dataItem.dataContext || {};
+            var cantidad = parseInt(contexto.cantidad,10) || 0;
 
             if (cantidad <= 0) {
                 return undefined;
             }
 
-            var porcentaje =
-                parseInt(
-                    contexto.porcentaje,
-                    10
-                ) || 0;
+            var porcentaje = parseInt(contexto.porcentaje,10) || 0;
 
             var tamanioLetra = 17;
 
@@ -11256,24 +8521,14 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
                         am5.Label.new(
                             root,
                             {
-                                text:
-                                    cantidad +
-                                    ' (' +
-                                    porcentaje +
-                                    '%)',
+                                text:cantidad + ' (' + porcentaje + '%)',
                                 centerX: am5.p50,
                                 centerY: am5.p50,
                                 populateText: false,
-                                fontSize:
-                                    tamanioLetra,
-                                fill:
-                                    am5.color(
-                                        0x000000
-                                    ),
-                                fontWeight:
-                                    'bold',
-                                textAlign:
-                                    'center',
+                                fontSize: tamanioLetra,
+                                fill: am5.color(0x000000),
+                                fontWeight:'bold',
+                                textAlign:'center',
                                 paddingLeft: 1,
                                 paddingRight: 1
                             }
@@ -11287,30 +8542,20 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
                 function(item)
                 {
                     var fila = {
-                        category:
-                            item.category,
-                        cantidad:
-                            item[cantidadField],
-                        porcentaje:
-                            item[porcentajeField]
+                        category:   item.category,
+                        cantidad:   item[cantidadField],
+                        porcentaje: item[porcentajeField]
                     };
 
-                    fila[visualField] =
-                        item[visualField];
+                    fila[visualField] =  item[visualField];
 
                     return fila;
                 }
             );
 
-        series.data.setAll(
-            datosSerie
-        );
-
+        series.data.setAll(datosSerie);
         series.appear();
-
-        legend.data.push(
-            series
-        );
+        legend.data.push(series);
     }
 
     makeSeries(
@@ -11389,33 +8634,18 @@ function crearGraficaEntornoIndividual(data,contenedorId,rootNombre,nombreGrafic
                         .export('png')
                         .then(function(imagen)
                         {
-                            window.chartPngs =
-                                window.chartPngs || {};
-
-                            window.chartPngs[
-                                nombreGrafica
-                            ] = imagen;
-
-                            console.log(
-                                nombreGrafica +
-                                ' exportado exitosamente'
-                            );
+                            window.chartPngs = window.chartPngs || {};
+                            window.chartPngs[nombreGrafica] = imagen;
+                            console.log(nombreGrafica + ' exportado exitosamente');
                         })
                         .catch(function(error)
                         {
-                            console.error(
-                                'Error al exportar ' +
-                                nombreGrafica +
-                                ':',
-                                error
-                            );
+                            console.error('Error al exportar ' + nombreGrafica +':',error);
                         });
 
                 } else {
 
-                    console.log(
-                        'Plugin de exportación no disponible'
-                    );
+                    console.log('Plugin de exportación no disponible');
                 }
 
             }, 1000);
@@ -12601,9 +9831,6 @@ $("#form_nivel_riesgo_categorias").on("submit", function(e)
 
 
 //// GUARDAR CONCLUSIONES
-
-
-
 var contadorConclusiones = 0;
 
 function agregarConclusion(titulo, descripcion)
@@ -12614,11 +9841,7 @@ function agregarConclusion(titulo, descripcion)
     descripcion = descripcion || '';
 
     var html = `
-        <div
-            class="card conclusion-item mb-3"
-            id="conclusion_item_${contadorConclusiones}"
-            data-indice="${contadorConclusiones}"
-        >
+        <div class="card conclusion-item mb-3" id="conclusion_item_${contadorConclusiones}" data-indice="${contadorConclusiones}">
             <div class="card-header" style="background:#F5F5F5;">
                 <div class="row">
                     <div class="col-10">
@@ -12629,55 +9852,27 @@ function agregarConclusion(titulo, descripcion)
                     </div>
 
                     <div class="col-2 text-right">
-                        <button
-                            type="button"
-                            class="btn btn-danger btn-sm boton_eliminar_conclusion"
-                            data-indice="${contadorConclusiones}"
-                            title="Eliminar conclusión"
-                        >
+                        <button type="button" class="btn btn-danger btn-sm boton_eliminar_conclusion" data-indice="${contadorConclusiones}" title="Eliminar conclusión">
                             <i class="fa fa-trash"></i>
                         </button>
                     </div>
                 </div>
             </div>
-
             <div class="card-body">
-
                 <div class="row">
-
                     <div class="col-12">
                         <div class="form-group">
-                            <label>
-                                Título
-                            </label>
-
-                            <input
-                                type="text"
-                                class="form-control titulo-conclusion"
-                                name="TITULO_CONCLUSION[]"
-                                value=""
-                                required
-                            >
+                            <label>Título</label>
+                            <input type="text" class="form-control titulo-conclusion" name="TITULO_CONCLUSION[]" value="" required>
                         </div>
                     </div>
-
                     <div class="col-12">
                         <div class="form-group">
-                            <label>
-                                Descripción
-                            </label>
-
-                            <textarea
-                                class="form-control descripcion-conclusion"
-                                name="DESCRIPCION_CONCLUSION[]"
-                                rows="5"
-                                required
-                            ></textarea>
+                            <label> Descripción</label>
+                            <textarea class="form-control descripcion-conclusion" name="DESCRIPCION_CONCLUSION[]"rows="5"required></textarea>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </div>
     `;
@@ -12750,10 +9945,7 @@ function mostrarConclusiones(datos)
     conclusiones.forEach(
         function(conclusion)
         {
-            agregarConclusion(
-                conclusion.TITULO || '',
-                conclusion.DESCRIPCION || ''
-            );
+            agregarConclusion(conclusion.TITULO || '',conclusion.DESCRIPCION || '');
         }
     );
 }
@@ -12785,8 +9977,7 @@ $(document).on("click",".boton_eliminar_conclusion",
     }
 );
 
-$("#form_reporte_conclusion").on(
-    "submit",
+$("#form_reporte_conclusion").on("submit",
     function(e)
     {
         e.preventDefault();
@@ -12796,26 +9987,12 @@ $("#form_reporte_conclusion").on(
         $("#contenedor_conclusiones .conclusion-item").each(
             function()
             {
-                var titulo =
-                    $(this)
-                        .find(".titulo-conclusion")
-                        .val()
-                        .trim();
+                var titulo = $(this).find(".titulo-conclusion").val().trim();
+                var descripcion = $(this).find(".descripcion-conclusion").val().trim();
 
-                var descripcion =
-                    $(this)
-                        .find(".descripcion-conclusion")
-                        .val()
-                        .trim();
-
-                if (
-                    titulo !== "" ||
-                    descripcion !== ""
-                ) {
-                    conclusiones.push({
-                        TITULO: titulo,
-                        DESCRIPCION: descripcion
-                    });
+                if (titulo !== "" || descripcion !== "")
+                {
+                    conclusiones.push({TITULO: titulo,DESCRIPCION: descripcion});
                 }
             }
         );
@@ -12833,20 +10010,9 @@ $("#form_reporte_conclusion").on(
 
         var formData = new FormData();
 
-        formData.append(
-            "_token",
-            $('meta[name="csrf-token"]').attr("content")
-        );
-
-        formData.append(
-            "PROYECTO_ID",
-            proyecto.id
-        );
-
-        formData.append(
-            "INFORME_CONCLUSION",
-            JSON.stringify(conclusiones)
-        );
+        formData.append("_token",$('meta[name="csrf-token"]').attr("content"));
+        formData.append("PROYECTO_ID",proyecto.id);
+        formData.append("INFORME_CONCLUSION",JSON.stringify(conclusiones));
 
         $.ajax({
 
@@ -12857,22 +10023,13 @@ $("#form_reporte_conclusion").on(
             processData: false,
             cache: false,
             headers: {
-                "X-CSRF-TOKEN":
-                    $('meta[name="csrf-token"]').attr("content")
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
             },
 
             beforeSend: function()
             {
-                $("#botonguardar_reporte_conclusion")
-                    .prop(
-                        "disabled",
-                        true
-                    );
-
-                $("#botonguardar_reporte_conclusion")
-                    .html(
-                        'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-                    );
+                $("#botonguardar_reporte_conclusion").prop("disabled",true);
+                $("#botonguardar_reporte_conclusion").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
             },
 
             success: function(response)
@@ -12885,28 +10042,17 @@ $("#form_reporte_conclusion").on(
                     showConfirmButton: false
                 });
 
-                if (response.INFORME_CONCLUSION) {
-                    mostrarConclusiones(
-                        response.INFORME_CONCLUSION
-                    );
-                }
+                if (response.INFORME_CONCLUSION) {mostrarConclusiones(response.INFORME_CONCLUSION);}
             },
 
             error: function(xhr)
             {
-                console.log(
-                    xhr.responseText
-                );
+                console.log(xhr.responseText);
 
-                var mensaje =
-                    "Ocurrió un error al guardar";
-
-                if (
-                    xhr.responseJSON &&
-                    xhr.responseJSON.msj
-                ) {
-                    mensaje =
-                        xhr.responseJSON.msj;
+                var mensaje = "Ocurrió un error al guardar";
+                if (xhr.responseJSON && xhr.responseJSON.msj)
+                {
+                    mensaje = xhr.responseJSON.msj;
                 }
 
                 Swal.fire({
@@ -12918,20 +10064,415 @@ $("#form_reporte_conclusion").on(
 
             complete: function()
             {
-                $("#botonguardar_reporte_conclusion")
-                    .prop(
-                        "disabled",
-                        false
-                    );
-
-                $("#botonguardar_reporte_conclusion")
-                    .html(
-                        'Guardar conclusiones <i class="fa fa-save"></i>'
-                    );
+                $("#botonguardar_reporte_conclusion").prop("disabled",false);
+                $("#botonguardar_reporte_conclusion").html('Guardar conclusiones <i class="fa fa-save"></i>');
             }
         });
     }
 );
+
+
+
+//// GUARDAR RECOMENDACIONES
+
+var contadorRecomendaciones = 0;
+
+
+function agregarRecomendacion(prioritaria, recomendacion)
+{
+    contadorRecomendaciones++;
+
+    prioritaria =
+        prioritaria === 1 ||
+        prioritaria === "1"
+            ? "1"
+            : (
+                prioritaria === 0 ||
+                prioritaria === "0"
+                    ? "0"
+                    : ""
+            );
+
+    recomendacion = recomendacion || "";
+
+    var html = `
+        <div class="card recomendacion-item mb-3" id="recomendacion_item_${contadorRecomendaciones}" data-indice="${contadorRecomendaciones}" style="width:100%; display:block;">
+            <div class="card-header" style=" background:#F5F5F5; width:100%; display:block;">
+                <div class="row">
+                    <div class="col-10">
+                        <b>
+                            Recomendación
+                            <span class="numero-recomendacion"></span>
+                        </b>
+                    </div>
+                    <div class="col-2 text-right">
+                        <button type="button" class="btn btn-danger btn-sm boton_eliminar_recomendacion" data-indice="${contadorRecomendaciones}" title="Eliminar recomendación">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" style="width:100%; display:block; ">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Prioritaria</label>
+                            <select class="form-control selector-prioritaria" name="PRIORITARIA_RECOMENDACION[]" required>
+                                <option value="">Seleccione una opción</option>
+                                <option value="0">No</option>
+                                <option value="1">Sí</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Recomendación</label>
+                            <textarea class="form-control texto-recomendacion" name="TEXTO_RECOMENDACION[]" rows="5" required></textarea>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    `;
+
+    $("#contenedor_recomendaciones").append(
+        html
+    );
+
+    var item =
+        $(
+            "#recomendacion_item_" +
+            contadorRecomendaciones
+        );
+
+    item
+        .find(".selector-prioritaria")
+        .val(prioritaria);
+
+    item
+        .find(".texto-recomendacion")
+        .val(recomendacion);
+
+    actualizarNumeracionRecomendaciones();
+}
+
+
+function actualizarNumeracionRecomendaciones()
+{
+    $("#contenedor_recomendaciones .recomendacion-item").each(
+        function(indice)
+        {
+            $(this).find(".numero-recomendacion").text(indice + 1);
+        }
+    );
+}
+
+
+function obtenerTotalRecomendacionesPrioritarias()
+{
+    var totalPrioritarias = 0;
+
+    $(
+        "#contenedor_recomendaciones .selector-prioritaria"
+    ).each(
+        function()
+        {
+            if (
+                $(this).val() === "1"
+            ) {
+                totalPrioritarias++;
+            }
+        }
+    );
+
+    return totalPrioritarias;
+}
+
+
+function mostrarRecomendaciones(datos)
+{
+    $("#contenedor_recomendaciones").empty();
+
+    contadorRecomendaciones = 0;
+
+    if (!datos) {
+
+        agregarRecomendacion("","");
+
+        return;
+    }
+
+    var recomendaciones = datos;
+
+    if (typeof recomendaciones === "string")
+    {
+        recomendaciones =
+            recomendaciones.trim();
+
+        if (recomendaciones === "")
+        {
+            agregarRecomendacion("","");
+
+            return;
+        }
+
+        try {
+
+            recomendaciones = JSON.parse(recomendaciones);
+
+        } catch (error) {
+
+            console.error("No fue posible convertir INFORME_RECOMENDACIONES:",error);
+
+            agregarRecomendacion("",recomendaciones);
+
+            return;
+        }
+    }
+
+    if (
+        !Array.isArray(recomendaciones) ||
+        recomendaciones.length === 0
+    ) {
+        agregarRecomendacion(
+            "",
+            ""
+        );
+
+        return;
+    }
+
+    recomendaciones.forEach(
+        function(item)
+        {
+            var valorPrioritaria = "";
+
+            if (
+                item.PRIORITARIA === 1 ||
+                item.PRIORITARIA === "1"
+            ) {
+                valorPrioritaria = "1";
+            } else if (
+                item.PRIORITARIA === 0 ||
+                item.PRIORITARIA === "0"
+            ) {
+                valorPrioritaria = "0";
+            }
+
+            agregarRecomendacion(
+                valorPrioritaria,
+                item.RECOMENDACION || ""
+            );
+        }
+    );
+}
+
+
+$(document).on("click","#boton_nueva_recomendacion",
+    function()
+    {
+        agregarRecomendacion(
+            "",
+            ""
+        );
+    }
+);
+
+
+$(document).on("click",".boton_eliminar_recomendacion",
+    function()
+    {
+        var totalRecomendaciones = $("#contenedor_recomendaciones .recomendacion-item").length;
+
+        if (totalRecomendaciones <= 1)
+        {
+            Swal.fire({
+                icon: "warning",
+                title: "Aviso",
+                text: "Debe conservar al menos una recomendación"
+            });
+
+            return;
+        }
+
+        var indice = $(this).data("indice");
+
+        $("#recomendacion_item_" + indice).remove();
+
+        actualizarNumeracionRecomendaciones();
+    }
+);
+
+
+$(document).on("change",".selector-prioritaria",
+    function()
+    {
+        var totalPrioritarias = obtenerTotalRecomendacionesPrioritarias();
+
+        if (totalPrioritarias > 3)
+        {
+            $(this).val("");
+
+            Swal.fire({
+                icon: "warning",
+                title: "Límite alcanzado",
+                text: "Solo puede seleccionar un máximo de 3 recomendaciones prioritarias"
+            });
+        }
+    }
+);
+
+
+$("#form_reporte_recomendaciones_control").on(
+    "submit",
+    function(e)
+    {
+        e.preventDefault();
+
+        var totalPrioritarias = obtenerTotalRecomendacionesPrioritarias();
+
+        if (totalPrioritarias > 3)
+        {
+            Swal.fire({
+                icon: "warning",
+                title: "Aviso",
+                text: "Solo puede seleccionar un máximo de 3 recomendaciones prioritarias"
+            });
+
+            return;
+        }
+
+        var recomendaciones = [];
+
+        var formularioValido = true;
+
+        var mensajeValidacion = "";
+
+        $("#contenedor_recomendaciones .recomendacion-item").each(
+            function()
+            {
+                var prioritaria = $(this).find(".selector-prioritaria").val();
+                var recomendacion = $(this).find(".texto-recomendacion").val().trim();
+
+                if (prioritaria === "")
+                {
+                    formularioValido = false;
+                    mensajeValidacion = "Debe seleccionar si cada recomendación es prioritaria";
+
+                    return false;
+                }
+
+                if (recomendacion === "") 
+                {
+                    formularioValido = false;
+                    mensajeValidacion = "Todas las recomendaciones deben tener una descripción";
+
+                    return false;
+                }
+
+                recomendaciones.push({
+                    PRIORITARIA: prioritaria === "1" ? 1 : 0,
+                    RECOMENDACION: recomendacion
+                });
+            }
+        );
+
+        if (!formularioValido)
+        {
+            Swal.fire({
+                icon: "warning",
+                title: "Aviso",
+                text: mensajeValidacion
+            });
+
+            return;
+        }
+
+        if (recomendaciones.length === 0)
+        {
+            Swal.fire({
+                icon: "warning",
+                title: "Aviso",
+                text: "Debe agregar al menos una recomendación"
+            });
+
+            return;
+        }
+
+        var formData = new FormData();
+
+        formData.append("_token",$('meta[name="csrf-token"]').attr("content"));
+
+        formData.append("PROYECTO_ID",proyecto.id);
+        formData.append("INFORME_RECOMENDACIONES",JSON.stringify(recomendaciones));
+
+        $.ajax({
+
+            url: "/guardarRecomendacionesInformepsico",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            cache: false,
+            headers: {"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")
+            },
+
+            beforeSend: function()
+            {
+                $("#botonguardar_reporte_recomendaciones_control").prop("disabled",true);
+                $("#botonguardar_reporte_recomendaciones_control").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+            },
+
+            success: function(response)
+            {
+                consultarEstadosMenusReportePsico();
+
+                cargarRecomendacionesPrioritariasPsico();
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Correcto",
+                    text: response.msj,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                if (response.INFORME_RECOMENDACIONES)
+                {
+                    mostrarRecomendaciones(response.INFORME_RECOMENDACIONES);
+                }
+            },
+
+            error: function(xhr)
+            {
+                console.log(xhr.responseText);
+
+                var mensaje = "Ocurrió un error al guardar";
+
+                if (xhr.responseJSON && xhr.responseJSON.msj)
+                {
+                    mensaje = xhr.responseJSON.msj;
+                }
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: mensaje
+                });
+            },
+
+            complete: function()
+            {
+                $("#botonguardar_reporte_recomendaciones_control").prop("disabled",false);
+                $("#botonguardar_reporte_recomendaciones_control").html('Guardar recomendaciones <i class="fa fa-save"></i>');
+            }
+        });
+    }
+);
+
+
 
 /// DASHBOARD
 
@@ -12941,20 +10482,11 @@ function cargarTotalTrabajadoresATSpsico()
 {
     actualizarIndicadorTrabajadoresATS(0);
 
-    $.get(
-        '/obtenerTotalTrabajadoresATSpsico/' +
-        proyecto.id,
-
+    $.get('/obtenerTotalTrabajadoresATSpsico/' + proyecto.id,
         function(response)
         {
-            var totalATS =
-                parseInt(
-                    response.total_trabajadores_ats
-                ) || 0;
-
-            actualizarIndicadorTrabajadoresATS(
-                totalATS
-            );
+            var totalATS = parseInt(response.total_trabajadores_ats) || 0;
+            actualizarIndicadorTrabajadoresATS(totalATS);
         }
     )
     .fail(function(xhr)
@@ -12975,49 +10507,22 @@ function actualizarIndicadorTrabajadoresATS(
     totalATS
 )
 {
-    totalATS =
-        parseInt(totalATS) || 0;
+    totalATS = parseInt(totalATS) || 0;
 
-    var imagen =
-        $('#imagen_trabajadores_ats');
+    var imagen = $('#imagen_trabajadores_ats');
+    var texto = $('#texto_trabajadores_ats');
 
-    var texto =
-        $('#texto_trabajadores_ats');
-
-    $('#total_trabajadores_ats').text(
-        totalATS
-    );
+    $('#total_trabajadores_ats').text(totalATS);
 
     if (totalATS >= 1) {
 
-        imagen.attr(
-            'src',
-            imagen.attr('data-imagen-roja')
-        );
-
-        texto
-            .removeClass(
-                'texto-ats-azul texto-rojo'
-            )
-            .addClass(
-                'texto-ats-rojo'
-            );
-
+        imagen.attr('src',imagen.attr('data-imagen-roja'));
+        texto.removeClass('texto-ats-azul texto-rojo').addClass('texto-ats-rojo');
         return;
     }
 
-    imagen.attr(
-        'src',
-        imagen.attr('data-imagen-azul')
-    );
-
-    texto
-        .removeClass(
-            'texto-ats-rojo texto-rojo'
-        )
-        .addClass(
-            'texto-ats-azul'
-        );
+    imagen.attr('src',imagen.attr('data-imagen-azul'));
+    texto.removeClass('texto-ats-rojo texto-rojo').addClass('texto-ats-azul');
 }
 
 ///  Trabajadores requieren atención
@@ -13050,10 +10555,7 @@ function cargarTotalTrabajadoresRequierenAtencionPsico()
 
 function actualizarIndicadorRequierenAtencion(totalRequierenAtencion)
 {
-    totalRequierenAtencion =
-        parseInt(
-            totalRequierenAtencion
-        ) || 0;
+    totalRequierenAtencion = parseInt(totalRequierenAtencion) || 0;
 
     var imagen = $('#imagen_requieren_atencion');
     var texto = $('#texto_requieren_atencion');
@@ -13063,32 +10565,21 @@ function actualizarIndicadorRequierenAtencion(totalRequierenAtencion)
     if (totalRequierenAtencion >= 1) {
 
         imagen.attr('src',imagen.attr('data-imagen-roja'));
-        texto
-            .removeClass('texto-atencion-azul texto-rojo')
-            .addClass('texto-atencion-rojo');
+        texto.removeClass('texto-atencion-azul texto-rojo').addClass('texto-atencion-rojo');
         return;
     }
 
     imagen.attr('src',imagen.attr('data-imagen-azul'));
-
-    texto
-        .removeClass('texto-atencion-rojo texto-rojo')
-        .addClass('texto-atencion-azul');
+    texto.removeClass('texto-atencion-rojo texto-rojo').addClass('texto-atencion-azul');
 }
 
 /// CATEOGIRA O DIMINIO MAS ALTO 
 function cargarCategoriaODominioMayorRiesgoPsico()
 {
-    $('#nombre_categoria_dominio_mayor_riesgo')
-        .text('Sin información');
-
-    $('#tipo_categoria_dominio_mayor_riesgo')
-        .text('Categoría o dominio');
-
-    $.get(
-        '/obtenerCategoriaODominioMayorRiesgoPsico/' +
-        proyecto.id,
-
+    $('#nombre_categoria_dominio_mayor_riesgo').text('Sin información');
+    $('#tipo_categoria_dominio_mayor_riesgo').text('Categoría o dominio');
+    
+    $.get('/obtenerCategoriaODominioMayorRiesgoPsico/' + proyecto.id,
         function(response)
         {
             var nombre =
@@ -14745,6 +12236,8 @@ function generarGraficaCumplimientoNormativoPsico(datos,totalTrabajadores)
 
 /// Recomendaciones prioritarias
 
+
+
 function cargarRecomendacionesPrioritariasPsico()
 {
     $('#lista_recomendaciones_prioritarias').html(`
@@ -14753,20 +12246,17 @@ function cargarRecomendacionesPrioritariasPsico()
         </div>
     `);
 
-    $.get(
-        '/obtenerRecomendacionesPrioritariasPsico/' +
-        proyecto.id,
-
+    $.get('/obtenerRecomendacionesPrioritariasPsico/' +proyecto.id,
         function(response)
         {
-            mostrarRecomendacionesPrioritariasPsico(
-                response.data || []
-            );
+            mostrarRecomendacionesPrioritariasPsico(response.data || []);
         }
     )
     .fail(function(xhr)
     {
-        console.log(xhr.responseText);
+        console.log(
+            xhr.responseText
+        );
 
         $('#lista_recomendaciones_prioritarias').html(`
             <div class="recomendaciones-mensaje">
@@ -14782,21 +12272,20 @@ function cargarRecomendacionesPrioritariasPsico()
     });
 }
 
-function mostrarRecomendacionesPrioritariasPsico(
-    recomendaciones
-)
+
+function mostrarRecomendacionesPrioritariasPsico(recomendaciones)
 {
-    if (!Array.isArray(recomendaciones)) {
+    if (!Array.isArray(recomendaciones))
+    {
         recomendaciones = [];
     }
 
-    var contenedor =
-        $('#lista_recomendaciones_prioritarias');
+    var contenedor = $('#lista_recomendaciones_prioritarias');
 
     contenedor.empty();
 
-    if (recomendaciones.length === 0) {
-
+    if (recomendaciones.length === 0)
+    {
         contenedor.html(`
             <div class="recomendaciones-mensaje">
                 No hay recomendaciones prioritarias.
@@ -14806,76 +12295,35 @@ function mostrarRecomendacionesPrioritariasPsico(
         return;
     }
 
-    var iconos = [
-        'fa-bullseye'
-    ];
-
     recomendaciones.forEach(
-        function(recomendacion, indice)
+        function(recomendacion)
         {
             var texto =
-                recomendacion
-                    .RECOMENDACION_CONTROL ||
-                '';
+                recomendacion.RECOMENDACION || '';
 
-            if (!texto.trim()) {
+            texto =
+                String(texto).trim();
+
+            if (texto === '')
+            {
                 return;
             }
-
-            var claseIcono =
-                iconos[
-                    indice % iconos.length
-                ];
-            
-            var item =
-                $('<div>', {
-                    class:
-                        'recomendacion-item'
-                });
-
-            var iconoContenedor =
-                $('<div>', {
-                    class:
-                        'recomendacion-icono'
-                });
-
-            var icono =
-                $('<i>', {
-                    class:
-                        'fa ' + claseIcono
-                });
+            var item = $('<div>', {class:'recomendacion-item'});
+            var iconoContenedor =$('<div>', {class:'recomendacion-icono'});
+            var icono = $('<i>', {class:'fa fa-bullseye'});
 
             var textoContenedor =
-                $('<div>', {
-                    class:
-                        'recomendacion-texto'
-                });
+                $('<div>', {class:'recomendacion-texto'});
 
-            textoContenedor.text(
-                texto
-            );
-
-            iconoContenedor.append(
-                icono
-            );
-
-            item.append(
-                iconoContenedor,
-                textoContenedor
-            );
-
-            contenedor.append(
-                item
-            );
+            textoContenedor.text(texto);
+            iconoContenedor.append(icono);
+            item.append(iconoContenedor,textoContenedor);
+            contenedor.append(item);
         }
     );
 
-    if (
-        contenedor
-            .find('.recomendacion-item')
-            .length === 0
-    ) {
-
+    if (contenedor.find('.recomendacion-item').length === 0)
+    {
         contenedor.html(`
             <div class="recomendaciones-mensaje">
                 No hay recomendaciones prioritarias.

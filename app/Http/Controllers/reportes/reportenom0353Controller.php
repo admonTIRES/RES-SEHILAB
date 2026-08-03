@@ -3170,179 +3170,6 @@ class reportenom0353Controller extends Controller
         }
     }
 
-
-    public function guardarconclusionesinformepsicio(Request $request)
-    {
-        try {
-
-            DB::beginTransaction();
-
-            $dato = datosgeneralesinformePsicoModel::where(
-                'PROYECTO_ID',
-                $request->PROYECTO_ID
-            )->first();
-
-            if (!$dato) {
-
-                $dato = new datosgeneralesinformePsicoModel();
-
-                $dato->PROYECTO_ID = $request->PROYECTO_ID;
-
-                $dato->save();
-            }
-
-
-
-            $dato->REPORTE_ACONTECIMIENTOS_CONCLUSIONES = $request->REPORTE_ACONTECIMIENTOS_CONCLUSIONES;
-            $dato->REPORTE_AMBIENTE_CONCLUSIONES = $request->REPORTE_AMBIENTE_CONCLUSIONES;
-            $dato->REPORTE_CONDICIONES_CONCLUSIONES = $request->REPORTE_CONDICIONES_CONCLUSIONES;
-            $dato->REPORTE_FACTORES_CONCLUSIONES = $request->REPORTE_FACTORES_CONCLUSIONES;
-            $dato->REPORTE_CARGA_CONCLUSIONES = $request->REPORTE_CARGA_CONCLUSIONES;
-            $dato->REPORTE_FALTA_CONCLUSIONES = $request->REPORTE_FALTA_CONCLUSIONES;
-            $dato->REPORTE_ORGANIZACION_CONCLUSIONES = $request->REPORTE_ORGANIZACION_CONCLUSIONES;
-            $dato->REPORTE_JORNADA_CONCLUSIONES = $request->REPORTE_JORNADA_CONCLUSIONES;
-            $dato->REPORTE_INTERFERENCIA_CONCLUSIONES = $request->REPORTE_INTERFERENCIA_CONCLUSIONES;
-            $dato->REPORTE_LIDERAZGORELACIONES_CONCLUSIONES = $request->REPORTE_LIDERAZGORELACIONES_CONCLUSIONES;
-            $dato->REPORTE_LIDERAZGO_CONCLUSIONES = $request->REPORTE_LIDERAZGO_CONCLUSIONES;
-            $dato->REPORTE_RELACIONES_CONCLUSIONES = $request->REPORTE_RELACIONES_CONCLUSIONES;
-            $dato->REPORTE_VIOLENCIA_CONCLUSIONES = $request->REPORTE_VIOLENCIA_CONCLUSIONES;
-            $dato->REPORTE_ENTORNO_CONCLUSIONES = $request->REPORTE_ENTORNO_CONCLUSIONES;
-            $dato->REPORTE_RECONOCIMIENTO_CONCLUSIONES = $request->REPORTE_RECONOCIMIENTO_CONCLUSIONES;
-            $dato->REPORTE_INSUFICIENTE_CONCLUSIONES = $request->REPORTE_INSUFICIENTE_CONCLUSIONES;
-
-
-
-            $dato->save();
-
-            DB::commit();
-
-            return response()->json([
-                'msj' => 'Conclusiones guardadas correctamente'
-            ]);
-        } catch (Exception $e) {
-
-            DB::rollBack();
-
-            return response()->json([
-                'msj' => 'Error: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-
-    public function guardarRecomendacionesInformepsico(Request $request)
-    {
-        try {
-
-            DB::beginTransaction();
-
-            $recomendaciones =
-                $request->DESCRIPCION_RECOMENDACIONES;
-
-            $prioridades =
-                $request->ES_PRIORITARIA;
-
-            $totalPrioritarias = 0;
-
-            if (is_array($recomendaciones)) {
-
-                foreach ($recomendaciones as $recomendacion) {
-
-                    $esPrioritaria = 0;
-
-                    if (
-                        is_array($prioridades) &&
-                        isset($prioridades[$recomendacion])
-                    ) {
-                        $esPrioritaria =
-                            (int) $prioridades[$recomendacion];
-                    }
-
-                    if ($esPrioritaria === 1) {
-                        $totalPrioritarias++;
-                    }
-                }
-            }
-
-            if ($totalPrioritarias > 3) {
-
-                DB::rollBack();
-
-                return response()->json([
-                    'msj' =>
-                    'Solo puede seleccionar un máximo de 3 recomendaciones prioritarias'
-                ], 422);
-            }
-
-            recomendacionesinformepsicoModel::where(
-                'PROYECTO_ID',
-                $request->PROYECTO_ID
-            )->delete();
-
-            if ($request->DESCRIPCION_RECOMENDACIONES) {
-
-                foreach (
-                    $request->DESCRIPCION_RECOMENDACIONES
-                    as $recomendacion
-                ) {
-                    $esPrioritaria = 0;
-
-                    if (
-                        is_array($prioridades) &&
-                        isset($prioridades[$recomendacion])
-                    ) {
-                        $esPrioritaria =
-                            (int) $prioridades[$recomendacion];
-                    }
-
-                    $dato =
-                        new recomendacionesinformepsicoModel();
-
-                    $dato->PROYECTO_ID =
-                        $request->PROYECTO_ID;
-
-                    $dato->CATALOGO_RECOMENDACIONES_ID =
-                        $recomendacion;
-
-                    $dato->ES_PRIORITARIA =
-                        $esPrioritaria === 1
-                        ? 1
-                        : 0;
-
-                    $dato->save();
-                }
-            }
-
-            DB::commit();
-
-            return response()->json([
-                'msj' =>
-                'Recomendaciones guardadas correctamente'
-            ]);
-        } catch (Exception $e) {
-
-            DB::rollBack();
-
-            return response()->json([
-                'msj' =>
-                'Error: ' .
-                    $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function obtenerRecomendacionesInformepsico($PROYECTO_ID)
-    {
-        $datos =
-            recomendacionesinformepsicoModel::where(
-                'PROYECTO_ID',
-                $PROYECTO_ID
-            )->get();
-        return response()->json($datos);
-    }
-
-
-
     public function guardarResponsablesInformepsico(Request $request)
     {
         try {
@@ -3719,12 +3546,16 @@ class reportenom0353Controller extends Controller
             CONCAT(
                 ef.empleado_nombre,
                 ' ',
-                ef.empleado_apellidopaterno
+                ef.empleado_apellidopaterno,
+                ' ',
+                ef.empleado_apellidomaterno
             ) AS FINALIZADO_NOMBRE,
             CONCAT(
                 ec.empleado_nombre,
                 ' ',
-                ec.empleado_apellidopaterno
+                ec.empleado_apellidopaterno,
+                 ' ',
+                ec.empleado_apellidomaterno
             ) AS CANCELADO_NOMBRE
                 FROM versionesinfopsico vr
                 LEFT JOIN usuario uf
@@ -3745,18 +3576,23 @@ class reportenom0353Controller extends Controller
         foreach ($datos as $key => $value) {
 
             if ($value->CANCELADO == 1) {
-                $value->ESTADO =
-                    '<span class="badge badge-danger">Cancelado</span>';
+
+                $motivoCancelacion = !empty($value->MOTIVO_CANCELACION)
+                    ? e($value->MOTIVO_CANCELACION)
+                    : 'Sin motivo especificado';
+
+                $value->ESTADO = '<span class="badge badge-danger">Cancelado</span>
+                        <br>
+                    <small class="text-danger">
+                        <b>Motivo:</b> ' . $motivoCancelacion . '
+                    </small>';
             } else {
-                $value->ESTADO =
-                    '<span class="badge badge-success">Finalizado</span>';
+
+                $value->ESTADO = '<span class="badge badge-success">Finalizado</span>';
             }
 
 
-            $checked =
-                ($value->CANCELADO == 1)
-                ? 'checked'
-                : '';
+            $checked = ($value->CANCELADO == 1) ? 'checked' : '';
 
             $value->CHECKBOX_CANCELADO = '
                     <div class="switch">
@@ -5243,8 +5079,8 @@ class reportenom0353Controller extends Controller
                             $marcadorFoto,
                             [
                                 'path' => $rutaFoto,
-                                'width' => 420,
-                                'height' => 260,
+                                'width' => 220,
+                                'height' => 220,
                                 'ratio' => false
                             ]
                         );
@@ -6236,11 +6072,7 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
     {
         try {
 
-
-
-            $proyecto = proyectoModel::find(
-                $PROYECTO_ID
-            );
+            $proyecto = proyectoModel::find($PROYECTO_ID);
 
             if (!$proyecto) {
 
@@ -6252,8 +6084,7 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
             }
 
 
-            $reconocimientoPsicoId =
-                $proyecto->reconocimiento_psico_id;
+            $reconocimientoPsicoId = $proyecto->reconocimiento_psico_id;
 
             if (!$reconocimientoPsicoId) {
 
@@ -6270,20 +6101,11 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
                     'RECPSICO_ID',
                     $reconocimientoPsicoId
                 )
-                ->whereNotNull(
-                    'RECPSICOTRABAJADOR_TIEMPOPUESTO'
-                )
-                ->whereRaw(
-                    'TRIM(RECPSICOTRABAJADOR_TIEMPOPUESTO) <> ""'
-                )
-                ->selectRaw('
-                TRIM(RECPSICOTRABAJADOR_TIEMPOPUESTO) AS rango,
-                COUNT(*) AS total
-            ')
+                ->whereNotNull('RECPSICOTRABAJADOR_TIEMPOPUESTO')
+                ->whereRaw('TRIM(RECPSICOTRABAJADOR_TIEMPOPUESTO) <> ""')
+                ->selectRaw('TRIM(RECPSICOTRABAJADOR_TIEMPOPUESTO) AS rango,COUNT(*) AS total')
                 ->groupBy(
-                    DB::raw(
-                        'TRIM(RECPSICOTRABAJADOR_TIEMPOPUESTO)'
-                    )
+                    DB::raw('TRIM(RECPSICOTRABAJADOR_TIEMPOPUESTO)')
                 )
                 ->get();
 
@@ -6306,6 +6128,7 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
 
             $orden = [
                 'MENOS DE 6 MESES' => 1,
+
                 '6 MESES A 1 AÑO' => 2,
                 'ENTRE 6 MESES A 1 AÑO' => 2,
 
@@ -6330,11 +6153,12 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
 
 
             $resultados = $resultados->sortBy(function ($item) use ($orden) {
-
-                $texto = strtoupper(
+    
+                $texto = mb_strtoupper(
                     trim(
                         $item->rango
-                    )
+                    ),
+                    'UTF-8'
                 );
 
                 return isset($orden[$texto])
@@ -6354,7 +6178,9 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
                 ];
             }
 
+
             $totalTrabajadores = collect($data)->sum('valor');
+
 
             return response()->json([
                 'msj' => 'Información consultada correctamente',
@@ -10672,6 +10498,108 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
         }
     }
 
+    //// RECOMENDACIONES JSON 
+
+
+    public function guardarRecomendacionesInformepsico(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            if (!$request->PROYECTO_ID) 
+            {
+                throw new Exception('No se recibió el proyecto');
+            }
+
+            $recomendaciones = json_decode($request->INFORME_RECOMENDACIONES,true);
+
+            if (!is_array($recomendaciones) || count($recomendaciones) === 0) 
+            {
+                throw new Exception('Debe agregar al menos una recomendación');
+            }
+
+            $recomendacionesGuardar = [];
+
+            $totalPrioritarias = 0;
+
+            foreach ($recomendaciones as $recomendacion) 
+            {
+                $prioritaria = isset($recomendacion['PRIORITARIA']) ? intval($recomendacion['PRIORITARIA']) : 0;
+
+                $textoRecomendacion = isset($recomendacion['RECOMENDACION']) ? trim($recomendacion['RECOMENDACION']) : '';
+
+                $prioritaria =
+                    $prioritaria === 1
+                    ? 1
+                    : 0;
+
+                if ($textoRecomendacion === '') 
+                {
+                    continue;
+                }
+
+                if ($prioritaria === 1) 
+                {
+                    $totalPrioritarias++;
+                }
+
+                $recomendacionesGuardar[] = [
+                    'PRIORITARIA' =>
+                    $prioritaria,
+
+                    'RECOMENDACION' =>
+                    $textoRecomendacion
+                ];
+            }
+
+            if (count($recomendacionesGuardar) === 0) 
+            {
+                throw new Exception(
+                    'Debe agregar al menos una recomendación'
+                );
+            }
+
+            if ($totalPrioritarias > 3) 
+            {
+                throw new Exception('Solo puede seleccionar un máximo de 3 recomendaciones prioritarias');
+            }
+
+            $dato = datosgeneralesinformePsicoModel::where('PROYECTO_ID',$request->PROYECTO_ID)->first();
+
+            if (!$dato) {
+
+                $dato = new datosgeneralesinformePsicoModel();
+
+                $dato->PROYECTO_ID = $request->PROYECTO_ID;
+            }
+
+            $dato->INFORME_RECOMENDACIONES = json_encode( $recomendacionesGuardar,JSON_UNESCAPED_UNICODE);
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' =>
+                'Recomendaciones guardadas correctamente',
+                'INFORME_RECOMENDACIONES' =>
+                $recomendacionesGuardar
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' =>
+                'Error: ' .
+                    $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
     //// DASHBOARD
 
     public function obtenerTotalTrabajadoresATSpsico($PROYECTO_ID)
@@ -11397,52 +11325,79 @@ Debe efectuarse de conformidad con lo establecido por las normas oficiales mexic
     {
         try {
 
-            $proyecto = proyectoModel::find($PROYECTO_ID);
+            $proyecto =
+                proyectoModel::find(
+                    $PROYECTO_ID
+                );
 
             if (!$proyecto) {
 
                 return response()->json([
-                    'msj' => 'Proyecto no encontrado',
+                    'msj' =>
+                    'Proyecto no encontrado',
+
                     'data' => []
                 ], 404);
             }
 
-            $recomendaciones = DB::table(
-                'recomendacionesinformepsico as ri'
-            )
-                ->join(
-                    'psicocat_recomendacionescontrol as cr',
-                    'cr.ID_RECOMENDACION_CONTROL_INFORME',
-                    '=',
-                    'ri.CATALOGO_RECOMENDACIONES_ID'
-                )
-                ->where(
-                    'ri.PROYECTO_ID',
-                    $PROYECTO_ID
-                )
-                ->where(
-                    'ri.ES_PRIORITARIA',
-                    1
-                )
-                ->select(
-                    'ri.ID_RECOMENDACIONES_INFORME_PSICO',
-                    'ri.CATALOGO_RECOMENDACIONES_ID',
-                    'cr.RECOMENDACION_CONTROL'
-                )
-                ->orderBy(
-                    'ri.ID_RECOMENDACIONES_INFORME_PSICO',
-                    'asc'
-                )
-                ->get();
+            $datosGenerales =
+                datosgeneralesinformePsicoModel::where('PROYECTO_ID',$PROYECTO_ID)->first();
+
+            if (!$datosGenerales || !$datosGenerales->INFORME_RECOMENDACIONES) 
+            {
+                return response()->json([
+                    'msj' =>
+                    'No hay recomendaciones guardadas',
+
+                    'data' => []
+                ]);
+            }
+
+            $recomendaciones = json_decode($datosGenerales->INFORME_RECOMENDACIONES,true);
+
+            if (!is_array($recomendaciones)) 
+            {
+                return response()->json([
+                    'msj' =>
+                    'El formato de las recomendaciones no es válido',
+
+                    'data' => []
+                ]);
+            }
+
+            $recomendacionesPrioritarias = [];
+
+            foreach ($recomendaciones as $indice => $recomendacion) 
+            {
+                $prioritaria =
+                    isset($recomendacion['PRIORITARIA'])
+                    ? intval($recomendacion['PRIORITARIA']): 0;
+                $texto =
+                    isset($recomendacion['RECOMENDACION'])
+                    ? trim($recomendacion['RECOMENDACION']): '';
+
+                if ($prioritaria !== 1 || $texto === '') 
+                {
+                    continue;
+                }
+
+                $recomendacionesPrioritarias[] = [ 'INDICE' => $indice + 1,
+                    'PRIORITARIA' => 1,
+                    'RECOMENDACION' => $texto
+                ];
+            }
 
             return response()->json([
                 'msj' => 'Información consultada correctamente',
-                'data' => $recomendaciones
+                'data' => $recomendacionesPrioritarias
             ]);
         } catch (Exception $e) {
 
             return response()->json([
-                'msj' => 'Error: ' . $e->getMessage(),
+                'msj' =>
+                'Error: ' .
+                    $e->getMessage(),
+
                 'data' => []
             ], 500);
         }

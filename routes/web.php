@@ -2179,6 +2179,8 @@ Route::post('guardarconclusionesinformepsicio', ['as' => 'guardarconclusionesinf
 //// RECOMENDACIONES 
 Route::post('guardarRecomendacionesInformepsico', ['as' => 'guardarRecomendacionesInformepsico', 'uses' => 'reportes\reportenom0353Controller@guardarRecomendacionesInformepsico']);
 
+
+
 Route::get('obtenerRecomendacionesInformepsico/{RECO_ID}', ['as' => 'obtenerRecomendacionesInformepsico', 'uses' => 'reportes\reportenom0353Controller@obtenerRecomendacionesInformepsico']);
 
 //// RESPONSABLES 
