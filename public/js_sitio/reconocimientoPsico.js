@@ -2337,13 +2337,13 @@ $(document).ready(function () {
 
     document.getElementById('optionA').checked = false;
 
-    document.getElementById('option1').checked = false;
+    document.getElementById('option1').checked = true;
     document.getElementById('option2').checked = false;
     document.getElementById('option3').checked = false;
     document.getElementById('option4').checked = false;
 
 	document.getElementById('optionA').disabled = true;
-    document.getElementById('option1').disabled = true;
+    document.getElementById('option1').disabled = false;
     document.getElementById('option2').disabled = true;
     document.getElementById('option3').disabled = true;
     document.getElementById('option4').disabled = true;
@@ -2419,7 +2419,7 @@ $(document).ready(function () {
 
 	document.getElementById('option1').addEventListener('change', function () {
 		if (this.checked) {
-			this.disabled = true; // Una vez seleccionado, no se podrá desmarcar ni cambiar
+			this.disabled = false; // Una vez seleccionado, no se podrá desmarcar ni cambiar
 		}
 	});
 
@@ -3370,7 +3370,7 @@ function validarEmpleados(cargando = false) {
 
         document.getElementById('optionA').checked = false;
 
-        document.getElementById('option1').checked = false;
+        document.getElementById('option1').checked = true;
         document.getElementById('option2').checked = false;
         document.getElementById('option3').checked = false;
         document.getElementById('option4').checked = false;
@@ -3381,7 +3381,7 @@ function validarEmpleados(cargando = false) {
 
     // Deshabilitar todas las guías
     document.getElementById('optionA').disabled = true;
-    document.getElementById('option1').disabled = true;
+    document.getElementById('option1').disabled = false;
     document.getElementById('option2').disabled = true;
     document.getElementById('option3').disabled = true;
     document.getElementById('option4').disabled = true;
@@ -3414,7 +3414,7 @@ function validarEmpleados(cargando = false) {
         else if (totalEmpleados > 50) {
 
             document.getElementById('optionA').disabled = false;
-            document.getElementById('option1').disabled = true;
+            document.getElementById('option1').disabled = false;
             document.getElementById('option3').disabled = true;
 
             if (!cargando) {
