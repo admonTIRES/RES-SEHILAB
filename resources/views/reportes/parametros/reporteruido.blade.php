@@ -959,7 +959,7 @@
 							<button type="button" class="btn btn-default waves-effect botoninforme LMPE" data-toggle="tooltip" title="Importar puntos de determinación del NER" id="boton_importar_puntos_72" onclick="abrirModalPuntos(2)">
 								<span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span> Importar
 							</button>
-							<input type="number" class="form-control w-25 text-center" min="1" placeholder="Agrege el LMPE dB(A)" id="reporteruido_lmpe" name="reporteruido_lmpe">
+							<input type="number" class="form-control w-25 text-center" min="1" placeholder="Agregue  el LMPE dB(A)" id="reporteruido_lmpe" name="reporteruido_lmpe">
 						</ol>
 						<style type="text/css">
 							#tabla_reporte_7_2 th {
