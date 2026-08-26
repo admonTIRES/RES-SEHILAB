@@ -24,5 +24,8 @@ class reporteaireevaluacionModel   extends Model
 		, 'reporteaireevaluacion_co'
 		, 'reporteaireevaluacion_co2'
 		, 'reporteaireevaluacion_so2'
+		,'reporteaireevaluacion_ch20'
+		,'reporteaireevaluacion_h2s'
+		,'reporteaireevaluacion_no2'
 	];
 }

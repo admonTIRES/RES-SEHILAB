@@ -1740,6 +1740,10 @@ class reporteaireController extends Controller
                                                 reportearea.reportearea_orden AS reporteairearea_numorden,
                                                 reporteaireevaluacion.reporteaireevaluacion_ubicacion,
                                                 reporteaireevaluacion.reporteaireevaluacion_punto,
+                                                reporteaireevaluacion.reporteaireevaluacion_ch20,
+                                                reporteaireevaluacion.reporteaireevaluacion_h2s,
+                                                reporteaireevaluacion.reporteaireevaluacion_no2,
+                                                
                                                 (
                                                     SELECT
                                                         COUNT(TABLA.reporteaireevaluacion_punto)
@@ -1888,6 +1892,9 @@ class reporteaireController extends Controller
                                                 reporteairearea.reporteairearea_numorden,
                                                 reporteaireevaluacion.reporteaireevaluacion_ubicacion,
                                                 reporteaireevaluacion.reporteaireevaluacion_punto,
+                                                reporteaireevaluacion.reporteaireevaluacion_ch20,
+                                                reporteaireevaluacion.reporteaireevaluacion_h2s,
+                                                reporteaireevaluacion.reporteaireevaluacion_no2,
                                                 (
                                                     SELECT
                                                         -- TABLA.proyecto_id,

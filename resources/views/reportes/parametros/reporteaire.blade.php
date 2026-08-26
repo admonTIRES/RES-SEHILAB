@@ -710,29 +710,29 @@
 										<td>22-24.5°C</td>
 										<td rowspan="3" style="text-align: justify!important;">NOM-001-STPS-2008, Edificios, locales, instalaciones y áreas en los centros de trabajo - Condiciones de seguridad.</td>
 									</tr>
-									<tr id="HUMEDAD_AIRE_1" >
+									<tr id="HUMEDAD_AIRE_1">
 										<td>Humedad relativa</td>
 										<td>20-60%</td>
 										{{-- <td style="text-align: justify!important;">NOM-001-STPS-2008, Edificios, locales, instalaciones y áreas en los centros de trabajo - Condiciones de seguridad.</td> --}}
 									</tr>
-									<tr id="VELOCIDAD_AIRE_1" >
+									<tr id="VELOCIDAD_AIRE_1">
 										<td>Velocidad del aire</td>
 										<td>0.15-0.25 m/s</td>
 										{{-- <td style="text-align: justify!important;">NOM-001-STPS-2008, Edificios, locales, instalaciones y áreas en los centros de trabajo - Condiciones de seguridad.</td> --}}
 									</tr>
-									<tr id="CO_AIRE_1" >
+									<tr id="CO_AIRE_1">
 										<td>Concentración de monóxido de carbono (CO)</td>
 										<td>25 ppm</td>
 										<td rowspan="1" style="text-align: justify!important;">NOM-010-STPS-2014, Agentes químicos contaminantes del ambiente laboral - Reconocimiento, evaluación y control.</td>
 									</tr>
-									<tr id="CO2_AIRE_1" >
+									<tr id="CO2_AIRE_1">
 										<td>Concentración de dióxido de carbono (CO₂)</td>
 										<td>5000 ppm</td>
 										<td rowspan="1" style="text-align: justify!important;">NOM-010-STPS-2014, Agentes químicos contaminantes del ambiente laboral - Reconocimiento, evaluación y control.</td>
 
 										{{-- <td style="text-align: justify!important;">NOM-010-STPS-2014, Agentes químicos contaminantes del ambiente laboral - Reconocimiento, evaluación y control.</td> --}}
 									</tr>
-									<tr id="SO2_AIRE_1" >
+									<tr id="SO2_AIRE_1">
 										<td>Concentración de dióxido de azufre (SO₂)</td>
 										<td>0.25 ppm</td>
 										<td rowspan="1" style="text-align: justify!important;">NOM-010-STPS-2014, Agentes químicos contaminantes del ambiente laboral - Reconocimiento, evaluación y control.</td>
@@ -943,7 +943,7 @@
 									<td>NOM-111-SSA1-1994</td>
 									<td>500 UFC</td>
 								</tr> --}}
-								<tr id="TEM_AIRE_2" >
+								<tr id="TEM_AIRE_2">
 									<td>Temperatura del aire</td>
 									<td>Sin Método</td>
 									<td>22-24.5°C</td>
@@ -963,12 +963,12 @@
 									<td>NIOSH 6604</td>
 									<td>25 ppm</td>
 								</tr>
-								<tr id="CO2_AIRE_2" >
+								<tr id="CO2_AIRE_2">
 									<td>Concentración de dióxido de carbono (CO₂)</td>
 									<td>AL-38-CO2</td>
 									<td>5000 ppm</td>
 								</tr>
-								<tr id="SO2_AIRE_2" >
+								<tr id="SO2_AIRE_2">
 									<td>Concentración de dióxido de azufre (SO₂)</td>
 									<td>NIOSH-6004 1994
 									</td>
@@ -2110,43 +2110,43 @@
 						<div class="col-3">
 							<div class="form-group">
 								<label>Coliformes totales (UFC)</label>
-								<input type="text" class="form-control" id="reporteaireevaluacion_ct" name="reporteaireevaluacion_ct" placeholder="500" readonly>
+								<input type="text" class="form-control" id="reporteaireevaluacion_ct" name="reporteaireevaluacion_ct" placeholder="500">
 							</div>
 						</div>
 						<div class="col-3">
 							<div class="form-group">
 								<label>Mesofílicos Aerobios (UFC)</label>
-								<input type="text" class="form-control" id="reporteaireevaluacion_ctma" name="reporteaireevaluacion_ctma" placeholder="500" readonly>
+								<input type="text" class="form-control" id="reporteaireevaluacion_ctma" name="reporteaireevaluacion_ctma" placeholder="500">
 							</div>
 						</div>
 						<div class="col-3">
 							<div class="form-group">
 								<label>Hongos (UFC)</label>
-								<input type="text" class="form-control" id="reporteaireevaluacion_hongos" name="reporteaireevaluacion_hongos" placeholder="500" readonly>
+								<input type="text" class="form-control" id="reporteaireevaluacion_hongos" name="reporteaireevaluacion_hongos" placeholder="500">
 							</div>
 						</div>
 						<div class="col-3">
 							<div class="form-group">
 								<label>Levaduras (UFC)</label>
-								<input type="text" class="form-control" id="reporteaireevaluacion_levaduras" name="reporteaireevaluacion_levaduras" placeholder="500" readonly>
+								<input type="text" class="form-control" id="reporteaireevaluacion_levaduras" name="reporteaireevaluacion_levaduras" placeholder="500">
 							</div>
 						</div>
 						<div class="col-4">
 							<div class="form-group">
 								<label>Temperatura del aire(°C)</label>
-								<input type="number" step="any" min="0" class="form-control" id="reporteaireevaluacion_temperatura" name="reporteaireevaluacion_temperatura" placeholder="22 - 24.5" readonly>
+								<input type="number" step="any" min="0" class="form-control" id="reporteaireevaluacion_temperatura" name="reporteaireevaluacion_temperatura" placeholder="22 - 24.5">
 							</div>
 						</div>
 						<div class="col-4">
 							<div class="form-group">
 								<label>Velocidad del aire(m/s)</label>
-								<input type="number" step="any" min="0" class="form-control" id="reporteaireevaluacion_velocidad" name="reporteaireevaluacion_velocidad" placeholder="" readonly>
+								<input type="number" step="any" min="0" class="form-control" id="reporteaireevaluacion_velocidad" name="reporteaireevaluacion_velocidad" placeholder="">
 							</div>
 						</div>
 						<div class="col-4">
 							<div class="form-group">
 								<label>Límite Velocidad (m/s)</label>
-								<select class="custom-select form-control" id="reporteaireevaluacion_velocidadlimite" name="reporteaireevaluacion_velocidadlimite" disabled>
+								<select class="custom-select form-control" id="reporteaireevaluacion_velocidadlimite" name="reporteaireevaluacion_velocidadlimite">
 									<option value=""></option>
 									<option value="0.15">0.15</option>
 									<option value="0.25">0.25</option>
@@ -2156,26 +2156,47 @@
 						<div class="col-3">
 							<div class="form-group">
 								<label>Humedad del aire(%)</label>
-								<input type="number" step="any" min="0" class="form-control" id="reporteaireevaluacion_humedad" name="reporteaireevaluacion_humedad" placeholder="20 - 60" readonly>
+								<input type="number" step="any" min="0" class="form-control" id="reporteaireevaluacion_humedad" name="reporteaireevaluacion_humedad" placeholder="20 - 60">
 							</div>
 						</div>
 						<div class="col-3">
 							<div class="form-group">
 								<label style="font-size: 14px;">Monóxido de C. (CO) ppm</label>
-								<input type="text" class="form-control" id="reporteaireevaluacion_co" name="reporteaireevaluacion_co" placeholder="25" readonly>
+								<input type="text" class="form-control" id="reporteaireevaluacion_co" name="reporteaireevaluacion_co" placeholder="25">
 							</div>
 						</div>
 						<div class="col-3">
 							<div class="form-group">
 								<label style="font-size: 14px;">Dióxido de C. (CO₂) ppm</label>
-								<input type="text" class="form-control" id="reporteaireevaluacion_co2" name="reporteaireevaluacion_co2" placeholder="5000" readonly>
+								<input type="text" class="form-control" id="reporteaireevaluacion_co2" name="reporteaireevaluacion_co2" placeholder="5000">
 							</div>
 						</div>
 
 						<div class="col-3">
 							<div class="form-group">
 								<label style="font-size: 14px;">Dióxido de azufre (SO₂) ppm</label>
-								<input type="text" class="form-control" id="reporteaireevaluacion_so2" name="reporteaireevaluacion_so2" placeholder="0.25" readonly>
+								<input type="text" class="form-control" id="reporteaireevaluacion_so2" name="reporteaireevaluacion_so2" placeholder="0.25">
+							</div>
+						</div>
+
+						<div class="col-4">
+							<div class="form-group">
+								<label style="font-size: 14px;">Formaldehído (CH₂O) ppm</label>
+								<input type="text" class="form-control" id="reporteaireevaluacion_ch20" name="reporteaireevaluacion_ch20" placeholder="0.3">
+							</div>
+						</div>
+
+						<div class="col-4">
+							<div class="form-group">
+								<label style="font-size: 14px;">Ácido Sulfhídrico (h₂S)</label>
+								<input type="text" class="form-control" id="reporteaireevaluacion_h2s" name="reporteaireevaluacion_h2s" placeholder="1.0">
+							</div>
+						</div>
+
+						<div class="col-4">
+							<div class="form-group">
+								<label style="font-size: 14px;">Dióxido de Nitrógeno (NO₂)</label>
+								<input type="text" class="form-control" id="reporteaireevaluacion_no2" name="reporteaireevaluacion_no2" placeholder="0.053">
 							</div>
 						</div>
 
@@ -2367,4 +2388,4 @@
 	var areas_poe = <?php echo json_encode($areas_poe); ?>;
 </script>
 <script src="/js_sitio/html2canvas.js"></script>
-<script src="/js_sitio/reportes/reporteaire.js?v=9"></script>
+<script src="/js_sitio/reportes/reporteaire.js?v=10"></script>

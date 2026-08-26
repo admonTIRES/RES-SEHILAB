@@ -3975,8 +3975,10 @@ $('#tabla_reporte_puntos tbody').on('click', 'td.editar', function()
 	$('#reporteaireevaluacion_humedad').val(row.data().reporteaireevaluacion_humedad);
 	$('#reporteaireevaluacion_co').val(row.data().reporteaireevaluacion_co);
 	$('#reporteaireevaluacion_co2').val(row.data().reporteaireevaluacion_co2);
-	
 	$('#reporteaireevaluacion_so2').val(row.data().reporteaireevaluacion_so2);
+	$('#reporteaireevaluacion_ch20').val(row.data().reporteaireevaluacion_ch20);
+	$('#reporteaireevaluacion_h2s').val(row.data().reporteaireevaluacion_h2s);
+	$('#reporteaireevaluacion_no2').val(row.data().reporteaireevaluacion_no2);
 
 
 
