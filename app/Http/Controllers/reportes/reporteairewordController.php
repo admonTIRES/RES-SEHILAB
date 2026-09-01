@@ -2718,36 +2718,6 @@ class reporteairewordController extends Controller
 
             //================================================================================
 
-
-
-            //================================================================================
-            // TABLAS DINÁMICAS
-            // FORMALDEHÍDO CH2O
-            // ÁCIDO SULFHÍDRICO H2S
-            // DIÓXIDO DE NITRÓGENO NO2
-            //
-            // LOS MARCADORES DEL WORD SIGUEN SIENDO:
-            //
-            // ${TITULO_7_9}
-            // ${TABLA_7_9}
-            //
-            // ${TITULO_7_10}
-            // ${TABLA_7_10}
-            //
-            // ${TITULO_7_11}
-            // ${TABLA_7_11}
-            //
-            // PERO LA NUMERACIÓN VISUAL EMPIEZA EN 7.7
-            //================================================================================
-
-
-            //================================================================================
-            // VALORES GUARDADOS
-            //
-            // 1 = SÍ
-            // 2 = NO
-            //================================================================================
-
             $caracteristicas_ch20 = 2;
             $caracteristicas_h2s  = 2;
             $caracteristicas_no2  = 2;
@@ -2761,18 +2731,7 @@ class reporteairewordController extends Controller
             }
 
 
-            //================================================================================
-            // PARÁMETROS ACTIVOS
-            //
-            // SE VAN AGREGANDO EN ESTE ORDEN:
-            //
-            // 1.- Formaldehído
-            // 2.- Ácido Sulfhídrico
-            // 3.- Dióxido de Nitrógeno
-            //
-            // SI UNO NO ESTÁ, EL SIGUIENTE SE RECORRE.
-            //================================================================================
-
+    
             $parametros_aire = array();
 
 
@@ -2808,38 +2767,14 @@ class reporteairewordController extends Controller
                 );
             }
 
-
-            //================================================================================
-            // MARCADORES REALES DE LA PLANTILLA
-            //
-            // IMPORTANTE:
-            //
-            // EL NOMBRE DEL MARCADOR NO CAMBIA.
-            // LO QUE CAMBIA ES EL NÚMERO QUE SE ESCRIBE EN EL TÍTULO.
-            //================================================================================
-
             $marcadores_aire = array(
-
-                0 => array(
-                    'titulo' => 'TITULO_7_9',
-                    'tabla' => 'TABLA_7_9'
-                ),
-
-                1 => array(
-                    'titulo' => 'TITULO_7_10',
-                    'tabla' => 'TABLA_7_10'
-                ),
-
-                2 => array(
-                    'titulo' => 'TITULO_7_11',
-                    'tabla' => 'TABLA_7_11'
-                )
+                0 => array('titulo' => 'TITULO_7_9','tabla' => 'TABLA_7_9'),
+                1 => array('titulo' => 'TITULO_7_10','tabla' => 'TABLA_7_10'),
+                2 => array('titulo' => 'TITULO_7_11','tabla' => 'TABLA_7_11')
             );
 
 
-            //================================================================================
-            // CREAR LAS TABLAS ACTIVAS
-            //================================================================================
+
 
             foreach ($parametros_aire as $indice => $parametro) {
 
@@ -2847,54 +2782,15 @@ class reporteairewordController extends Controller
                     continue;
                 }
 
-
-                //============================================================================
-                // MARCADORES
-                //============================================================================
-
                 $marcador_titulo = $marcadores_aire[$indice]['titulo'];
                 $marcador_tabla  = $marcadores_aire[$indice]['tabla'];
 
-
-                //============================================================================
-                // NUMERACIÓN VISUAL
-                //
-                // PRIMERO  = 7.7
-                // SEGUNDO  = 7.8
-                // TERCERO  = 7.9
-                //============================================================================
-
                 $numero_visual = 7 + $indice;
 
-
-                //============================================================================
-                // TÍTULO
-                //============================================================================
-
-                $plantillaword->setValue(
-                    $marcador_titulo,
-                    '7.' . $numero_visual . '.- ' . $parametro['nombre']
-                );
-
-
-                //============================================================================
-                // CREAR TABLA
-                //============================================================================
+                $plantillaword->setValue($marcador_titulo,'7.' . $numero_visual . '.- ' . $parametro['nombre']);
 
                 $table = null;
-
-                $table = new Table(array(
-                    'name' => $fuente,
-                    'borderSize' => 1,
-                    'borderColor' => '000000',
-                    'cellMargin' => 40,
-                    'unit' => TblWidth::TWIP
-                ));
-
-
-                //============================================================================
-                // ANCHOS
-                //============================================================================
+                $table = new Table(array('name' => $fuente,'borderSize' => 1,'borderColor' => '000000','cellMargin' => 40,'unit' => TblWidth::TWIP));
 
                 $ancho_col_1 = 1000;
                 $ancho_col_2 = 1500;
@@ -2905,107 +2801,34 @@ class reporteairewordController extends Controller
                 $ancho_col_7 = 1000;
                 $ancho_col_8 = 1700;
 
-
-                //============================================================================
-                // ENCABEZADO
-                //============================================================================
-
                 $table->addRow(200, array('tblHeader' => true));
-
-                $table->addCell($ancho_col_1, $encabezado_celda)
-                    ->addTextRun($centrado)
-                    ->addText('No.<w:br/>medición', $encabezado_texto);
-
-                $table->addCell($ancho_col_2, $encabezado_celda)
-                    ->addTextRun($centrado)
-                    ->addText('Instalación', $encabezado_texto);
-
-                $table->addCell($ancho_col_3, $encabezado_celda)
-                    ->addTextRun($centrado)
-                    ->addText('Área', $encabezado_texto);
-
-                $table->addCell($ancho_col_4, $encabezado_celda)
-                    ->addTextRun($centrado)
-                    ->addText('Ubicación', $encabezado_texto);
-
-                $table->addCell($ancho_col_5, $encabezado_celda)
-                    ->addTextRun($centrado)
-                    ->addText('Total, de<w:br/>puntos', $encabezado_texto);
-
-                $table->addCell($ancho_col_6, $encabezado_celda)
-                    ->addTextRun($centrado)
-                    ->addText('Límite permisible<w:br/>en ppm', $encabezado_texto);
-
-                $table->addCell($ancho_col_7, $encabezado_celda)
-                    ->addTextRun($centrado)
-                    ->addText('Resultado<w:br/>en ppm', $encabezado_texto);
-
-                $table->addCell($ancho_col_8, $encabezado_celda)
-                    ->addTextRun($centrado)
-                    ->addText('Cumplimiento<w:br/>normativo', $encabezado_texto);
-
-
-                //============================================================================
-                // VARIABLES PARA COMBINAR CELDAS
-                //============================================================================
+                $table->addCell($ancho_col_1, $encabezado_celda)->addTextRun($centrado)->addText('No.<w:br/>medición', $encabezado_texto);
+                $table->addCell($ancho_col_2, $encabezado_celda)->addTextRun($centrado)->addText('Instalación', $encabezado_texto);
+                $table->addCell($ancho_col_3, $encabezado_celda)->addTextRun($centrado)->addText('Área', $encabezado_texto);
+                $table->addCell($ancho_col_4, $encabezado_celda)->addTextRun($centrado)->addText('Ubicación', $encabezado_texto);
+                $table->addCell($ancho_col_5, $encabezado_celda)->addTextRun($centrado)->addText('Total, de<w:br/>puntos', $encabezado_texto);
+                $table->addCell($ancho_col_6, $encabezado_celda)->addTextRun($centrado)->addText('Límite permisible<w:br/>en ppm', $encabezado_texto);
+                $table->addCell($ancho_col_7, $encabezado_celda)->addTextRun($centrado)->addText('Resultado<w:br/>en ppm', $encabezado_texto);
+                $table->addCell($ancho_col_8, $encabezado_celda)->addTextRun($centrado)->addText('Cumplimiento<w:br/>normativo', $encabezado_texto);
 
                 $instalacion = 'XXXXX';
                 $area = 'XXXXX';
                 $ubicacion = 'XXXXX';
 
 
-                //============================================================================
-                // RESULTADOS
-                //============================================================================
-
                 foreach ($sql as $key => $value) {
 
                     $campo_medicion = $parametro['campo'];
                     $campo_resultado = $parametro['resultado'];
-
-
-                    $resultado_medicion = isset($value->$campo_medicion)
-                        ? $value->$campo_medicion
-                        : '';
-
-
-                    $resultado_normativo = isset($value->$campo_resultado)
-                        ? $value->$campo_resultado
-                        : '';
-
-
-                    //========================================================================
-                    // FILA
-                    //========================================================================
+                    $resultado_medicion = isset($value->$campo_medicion) ? $value->$campo_medicion : '';
+                    $resultado_normativo = isset($value->$campo_resultado) ? $value->$campo_resultado: '';
 
                     $table->addRow();
 
-
-                    //========================================================================
-                    // NO. MEDICIÓN
-                    //========================================================================
-
-                    $table->addCell($ancho_col_1, $celda)
-                        ->addTextRun($centrado)
-                        ->addText(
-                            $value->reporteaireevaluacion_punto,
-                            $texto
-                        );
-
-
-                    //========================================================================
-                    // INSTALACIÓN
-                    //========================================================================
+                    $table->addCell($ancho_col_1, $celda)->addTextRun($centrado)->addText($value->reporteaireevaluacion_punto,$texto);
 
                     if ($instalacion != $value->reporteairearea_instalacion) {
-
-                        $table->addCell($ancho_col_2, $combinar_fila)
-                            ->addTextRun($centrado)
-                            ->addText(
-                                $value->reporteairearea_instalacion,
-                                $texto
-                            );
-
+                        $table->addCell($ancho_col_2, $combinar_fila)->addTextRun($centrado)->addText($value->reporteairearea_instalacion,$texto);
                         $instalacion = $value->reporteairearea_instalacion;
                     } else {
 
@@ -3013,191 +2836,67 @@ class reporteairewordController extends Controller
                     }
 
 
-                    //========================================================================
-                    // ÁREA / UBICACIÓN / TOTAL PUNTOS
-                    //========================================================================
-
                     if ($area != $value->reporteairearea_nombre) {
-
-                        // ÁREA
-                        $table->addCell($ancho_col_3, $combinar_fila)
-                            ->addTextRun($centrado)
-                            ->addText(
-                                $value->reporteairearea_nombre,
-                                $texto
-                            );
-
+                        $table->addCell($ancho_col_3, $combinar_fila)->addTextRun($centrado)->addText($value->reporteairearea_nombre,$texto);
                         $area = $value->reporteairearea_nombre;
-
-
-                        // UBICACIÓN
-                        $table->addCell($ancho_col_4, $combinar_fila)
-                            ->addTextRun($centrado)
-                            ->addText(
-                                $value->reporteaireevaluacion_ubicacion,
-                                $texto
-                            );
-
+                        $table->addCell($ancho_col_4, $combinar_fila)->addTextRun($centrado)->addText($value->reporteaireevaluacion_ubicacion,$texto);
                         $ubicacion = $value->reporteaireevaluacion_ubicacion;
-
-
-                        // TOTAL PUNTOS
-                        $table->addCell($ancho_col_5, $combinar_fila)
-                            ->addTextRun($centrado)
-                            ->addText(
-                                $value->total_puntosubicacion,
-                                $texto
-                            );
+                        $table->addCell($ancho_col_5, $combinar_fila)->addTextRun($centrado)->addText($value->total_puntosubicacion,$texto);
                     } else {
-
                         $table->addCell($ancho_col_3, $continua_fila);
-
-
                         if ($ubicacion != $value->reporteaireevaluacion_ubicacion) {
-
-                            $table->addCell($ancho_col_4, $combinar_fila)
-                                ->addTextRun($centrado)
-                                ->addText(
-                                    $value->reporteaireevaluacion_ubicacion,
-                                    $texto
-                                );
-
+                            $table->addCell($ancho_col_4, $combinar_fila)->addTextRun($centrado)->addText($value->reporteaireevaluacion_ubicacion,$texto);
                             $ubicacion = $value->reporteaireevaluacion_ubicacion;
-
-
-                            $table->addCell($ancho_col_5, $combinar_fila)
-                                ->addTextRun($centrado)
-                                ->addText(
-                                    $value->total_puntosubicacion,
-                                    $texto
-                                );
+                            $table->addCell($ancho_col_5, $combinar_fila)->addTextRun($centrado)->addText($value->total_puntosubicacion,$texto);
                         } else {
-
                             $table->addCell($ancho_col_4, $continua_fila);
                             $table->addCell($ancho_col_5, $continua_fila);
                         }
                     }
 
 
-                    //========================================================================
-                    // LÍMITE
-                    //========================================================================
+                    $table->addCell($ancho_col_6, $celda)->addTextRun($centrado)->addText($parametro['limite'],$texto);
 
-                    $table->addCell($ancho_col_6, $celda)
-                        ->addTextRun($centrado)
-                        ->addText(
-                            $parametro['limite'],
-                            $texto
-                        );
-
-
-                    //========================================================================
-                    // RESULTADO
-                    //========================================================================
-
-                    $table->addCell($ancho_col_7, $celda)
-                        ->addTextRun($centrado)
-                        ->addText(
-                            $resultado_medicion,
-                            $texto
-                        );
-
-
-                    //========================================================================
-                    // CUMPLIMIENTO
-                    //========================================================================
+                    $table->addCell($ancho_col_7, $celda)->addTextRun($centrado)->addText($resultado_medicion,$texto);
 
                     if ($resultado_normativo == 'Dentro de norma') {
 
                         $text_color = '#000000';
                         $bgColor = '#00FF00';
+                        $table->addCell($ancho_col_8,array('bgColor' => $bgColor,'valign' => 'center')) ->addTextRun($centrado)->addText($resultado_normativo,array('color' => $text_color,'size' => $font_size,'bold' => true,'name' => $fuente));
 
-                        $table->addCell(
-                            $ancho_col_8,
-                            array(
-                                'bgColor' => $bgColor,
-                                'valign' => 'center'
-                            )
-                        )
-                            ->addTextRun($centrado)
-                            ->addText(
-                                $resultado_normativo,
-                                array(
-                                    'color' => $text_color,
-                                    'size' => $font_size,
-                                    'bold' => true,
-                                    'name' => $fuente
-                                )
-                            );
                     } elseif ($resultado_normativo == 'Fuera de norma') {
 
                         $text_color = '#FFFFFF';
                         $bgColor = '#FF0000';
-
-                        $table->addCell(
-                            $ancho_col_8,
-                            array(
-                                'bgColor' => $bgColor,
-                                'valign' => 'center'
-                            )
-                        )
-                            ->addTextRun($centrado)
-                            ->addText(
-                                $resultado_normativo,
-                                array(
-                                    'color' => $text_color,
-                                    'size' => $font_size,
-                                    'bold' => true,
-                                    'name' => $fuente
-                                )
+                        $table->addCell($ancho_col_8,array('bgColor' => $bgColor,'valign' => 'center'))->addTextRun($centrado)->addText($resultado_normativo,
+                                array('color' => $text_color,'size' => $font_size,'bold' => true,'name' => $fuente)
                             );
                     } else {
 
-                        $table->addCell($ancho_col_8, $celda)
-                            ->addTextRun($centrado)
-                            ->addText('', $texto);
+                        $table->addCell($ancho_col_8, $celda)->addTextRun($centrado)->addText('', $texto);
                     }
                 }
 
-
-                //============================================================================
-                // INSERTAR TABLA
-                //============================================================================
-
-                $plantillaword->setComplexBlock(
-                    $marcador_tabla,
-                    $table
-                );
+                $plantillaword->setComplexBlock($marcador_tabla,$table);
             }
 
-
-            //================================================================================
-            // LIMPIAR LOS MARCADORES QUE NO SE UTILIZARON
-            //================================================================================
 
             $total_parametros_aire = count($parametros_aire);
 
 
-            // NINGUNO
             if ($total_parametros_aire == 0) {
-
                 $plantillaword->setValue('TITULO_7_9', '');
                 $plantillaword->setValue('TABLA_7_9', '');
-
                 $plantillaword->setValue('TITULO_7_10', '');
                 $plantillaword->setValue('TABLA_7_10', '');
-
                 $plantillaword->setValue('TITULO_7_11', '');
                 $plantillaword->setValue('TABLA_7_11', '');
             }
 
-
-            // SOLO UNO
             elseif ($total_parametros_aire == 1) {
-
                 $plantillaword->setValue('TITULO_7_10', '');
                 $plantillaword->setValue('TABLA_7_10', '');
-
                 $plantillaword->setValue('TITULO_7_11', '');
                 $plantillaword->setValue('TABLA_7_11', '');
             }
@@ -3205,12 +2904,11 @@ class reporteairewordController extends Controller
 
             // SOLO DOS
             elseif ($total_parametros_aire == 2) {
-
                 $plantillaword->setValue('TITULO_7_11', '');
                 $plantillaword->setValue('TABLA_7_11', '');
             }
 
-            
+
             
             //================================================================================
 

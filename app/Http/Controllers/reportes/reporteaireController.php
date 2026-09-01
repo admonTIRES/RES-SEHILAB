@@ -2327,7 +2327,6 @@ class reporteaireController extends Controller
                             "Dentro de norma",
                             IF(
                                 CONVERT(
-
                                     REPLACE(
                                         REPLACE(
                                             REPLACE(
@@ -2625,7 +2624,6 @@ class reporteaireController extends Controller
                 reporteaireevaluacion.reporteaireevaluacion_levaduras,
                 (
                     IF(
-
                         CONVERT(
 
                             REPLACE(
@@ -2641,7 +2639,6 @@ class reporteaireController extends Controller
                                 " ",
                                 ""
                             ),
-
                             UNSIGNED INTEGER
                         ) > 0,
                         IF(
@@ -2712,7 +2709,6 @@ class reporteaireController extends Controller
                 reporteaireevaluacion.reporteaireevaluacion_co,
                 (
                     IF(
-
                         CONVERT(
 
                             REPLACE(
@@ -2728,13 +2724,9 @@ class reporteaireController extends Controller
                                 " ",
                                 ""
                             ),
-
                             UNSIGNED INTEGER
-
                         ) >= 0,
-
                         IF(
-
                             (
                                 REPLACE(
                                     REPLACE(
@@ -2750,26 +2742,16 @@ class reporteaireController extends Controller
                                     ""
                                 ) + 0
                             ) <= 25,
-
                             "Dentro de norma",
-
                             "Fuera de norma"
                         ),
-
                         "Fuera de norma"
                     )
-
                 ) AS co_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_co2,
-
                 (
-
                     IF(
-
                         CONVERT(
-
                             REPLACE(
                                 REPLACE(
                                     REPLACE(
@@ -2783,13 +2765,9 @@ class reporteaireController extends Controller
                                 " ",
                                 ""
                             ),
-
                             UNSIGNED INTEGER
-
                         ) >= 0,
-
                         IF(
-
                             (
                                 REPLACE(
                                     REPLACE(
@@ -2805,33 +2783,20 @@ class reporteaireController extends Controller
                                     ""
                                 ) + 0
                             ) <= 5000,
-
                             "Dentro de norma",
-
                             "Fuera de norma"
                         ),
-
                         "Fuera de norma"
                     )
-
                 ) AS co2_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_so2,
-
                 (
-
                     IF(
-
                         reporteaireevaluacion.reporteaireevaluacion_so2
                         REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$",
-
                         "Dentro de norma",
-
                         IF(
-
                             CONVERT(
-
                                 REPLACE(
                                     REPLACE(
                                         REPLACE(
@@ -2845,13 +2810,9 @@ class reporteaireController extends Controller
                                     " ",
                                     ""
                                 ),
-
                                 DECIMAL(10,4)
-
                             ) >= 0,
-
                             IF(
-
                                 (
                                     REPLACE(
                                         REPLACE(
@@ -2900,25 +2861,16 @@ class reporteaireController extends Controller
                 reporteaireevaluacion.reporteaireevaluacion_ubicacion,
                 reporteaireevaluacion.reporteaireevaluacion_punto,
                 reporteaireevaluacion.reporteaireevaluacion_ch20,
-
                 (
                     IF(
-
                         TRIM(reporteaireevaluacion.reporteaireevaluacion_ch20) LIKE "<%",
-
                         "Dentro de norma",
-
                         IF(
-
                             reporteaireevaluacion.reporteaireevaluacion_ch20
                             REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$",
-
                             "Dentro de norma",
-
                             IF(
-
                                 CONVERT(
-
                                     REPLACE(
                                         REPLACE(
                                             REPLACE(
@@ -2932,13 +2884,9 @@ class reporteaireController extends Controller
                                         " ",
                                         ""
                                     ),
-
                                     DECIMAL(10,4)
-
                                 ) >= 0,
-
                                 IF(
-
                                     (
                                         REPLACE(
                                             REPLACE(
@@ -2954,43 +2902,24 @@ class reporteaireController extends Controller
                                             ""
                                         ) + 0
                                     ) <= 0.3,
-
                                     "Dentro de norma",
-
                                     "Fuera de norma"
                                 ),
-
                                 "Fuera de norma"
                             )
                         )
                     )
-
                 ) AS ch20_resultado,
-
-
-                /*================================================
-                    ÁCIDO SULFHÍDRICO H2S
-                    LIMITE: 1.0
-                =================================================*/
-
                 reporteaireevaluacion.reporteaireevaluacion_h2s,
-
                 (
                     IF(
-
                         TRIM(reporteaireevaluacion.reporteaireevaluacion_h2s) LIKE "<%",
-
                         "Dentro de norma",
-
                         IF(
-
                             reporteaireevaluacion.reporteaireevaluacion_h2s
                             REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$",
-
                             "Dentro de norma",
-
                             IF(
-
                                 CONVERT(
 
                                     REPLACE(
@@ -3006,13 +2935,9 @@ class reporteaireController extends Controller
                                         " ",
                                         ""
                                     ),
-
                                     DECIMAL(10,4)
-
                                 ) >= 0,
-
                                 IF(
-
                                     (
                                         REPLACE(
                                             REPLACE(
@@ -3028,45 +2953,25 @@ class reporteaireController extends Controller
                                             ""
                                         ) + 0
                                     ) <= 1.0,
-
                                     "Dentro de norma",
-
                                     "Fuera de norma"
                                 ),
-
                                 "Fuera de norma"
                             )
                         )
                     )
-
                 ) AS h2s_resultado,
-
-
-                /*================================================
-                    DIÓXIDO DE NITRÓGENO NO2
-                    LIMITE: 0.053
-                =================================================*/
-
                 reporteaireevaluacion.reporteaireevaluacion_no2,
-
                 (
                     IF(
-
                         TRIM(reporteaireevaluacion.reporteaireevaluacion_no2) LIKE "<%",
-
                         "Dentro de norma",
-
                         IF(
-
                             reporteaireevaluacion.reporteaireevaluacion_no2
                             REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$",
-
                             "Dentro de norma",
-
                             IF(
-
                                 CONVERT(
-
                                     REPLACE(
                                         REPLACE(
                                             REPLACE(
@@ -3080,13 +2985,9 @@ class reporteaireController extends Controller
                                         " ",
                                         ""
                                     ),
-
                                     DECIMAL(10,4)
-
                                 ) >= 0,
-
                                 IF(
-
                                     (
                                         REPLACE(
                                             REPLACE(
@@ -3102,77 +3003,46 @@ class reporteaireController extends Controller
                                             ""
                                         ) + 0
                                     ) <= 0.053,
-
                                     "Dentro de norma",
-
                                     "Fuera de norma"
                                 ),
-
                                 "Fuera de norma"
                             )
                         )
                     )
-
                 ) AS no2_resultado,
-
-
                 (
                     SELECT
-
                         COUNT(TABLA.reporteaireevaluacion_punto)
-
                     FROM
-
                         reporteaireevaluacion AS TABLA
-
                     WHERE
-
                         TABLA.proyecto_id =
                         reporteaireevaluacion.proyecto_id
-
                         AND TABLA.registro_id =
                         reporteaireevaluacion.registro_id
-
                         AND TABLA.reporteairearea_id =
                         reporteaireevaluacion.reporteairearea_id
-
                 ) AS total_puntosarea,
-
-
                 (
                     SELECT
-
                         COUNT(TABLA.reporteaireevaluacion_punto)
-
                     FROM
-
                         reporteaireevaluacion AS TABLA
-
                     WHERE
-
                         TABLA.proyecto_id =
                         reporteaireevaluacion.proyecto_id
-
                         AND TABLA.registro_id =
                         reporteaireevaluacion.registro_id
-
                         AND TABLA.reporteairearea_id =
                         reporteaireevaluacion.reporteairearea_id
-
                         AND TABLA.reporteaireevaluacion_ubicacion =
                         reporteaireevaluacion.reporteaireevaluacion_ubicacion
-
                 ) AS total_puntosubicacion,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_ct,
-
                 (
-
                     IF(
-
                         CONVERT(
-
                             REPLACE(
                                 REPLACE(
                                     REPLACE(
@@ -3186,13 +3056,9 @@ class reporteaireController extends Controller
                                 " ",
                                 ""
                             ),
-
                             UNSIGNED INTEGER
-
                         ) > 0,
-
                         IF(
-
                             (
                                 REPLACE(
                                     REPLACE(
@@ -3208,26 +3074,16 @@ class reporteaireController extends Controller
                                     ""
                                 ) + 0
                             ) <= 500,
-
                             "Dentro de norma",
-
                             "Fuera de norma"
                         ),
-
                         "Fuera de norma"
                     )
-
                 ) AS ct_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_ctma,
-
                 (
-
                     IF(
-
                         CONVERT(
-
                             REPLACE(
                                 REPLACE(
                                     REPLACE(
@@ -3241,13 +3097,9 @@ class reporteaireController extends Controller
                                 " ",
                                 ""
                             ),
-
                             UNSIGNED INTEGER
-
                         ) > 0,
-
                         IF(
-
                             (
                                 REPLACE(
                                     REPLACE(
@@ -3263,26 +3115,16 @@ class reporteaireController extends Controller
                                     ""
                                 ) + 0
                             ) <= 500,
-
                             "Dentro de norma",
-
                             "Fuera de norma"
                         ),
-
                         "Fuera de norma"
                     )
-
                 ) AS ctma_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_hongos,
-
                 (
-
                     IF(
-
                         CONVERT(
-
                             REPLACE(
                                 REPLACE(
                                     REPLACE(
@@ -3296,13 +3138,9 @@ class reporteaireController extends Controller
                                 " ",
                                 ""
                             ),
-
                             UNSIGNED INTEGER
-
                         ) > 0,
-
                         IF(
-
                             (
                                 REPLACE(
                                     REPLACE(
@@ -3318,26 +3156,16 @@ class reporteaireController extends Controller
                                     ""
                                 ) + 0
                             ) <= 500,
-
                             "Dentro de norma",
-
                             "Fuera de norma"
                         ),
-
                         "Fuera de norma"
                     )
-
                 ) AS hongos_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_levaduras,
-
                 (
-
                     IF(
-
                         CONVERT(
-
                             REPLACE(
                                 REPLACE(
                                     REPLACE(
@@ -3351,13 +3179,9 @@ class reporteaireController extends Controller
                                 " ",
                                 ""
                             ),
-
                             UNSIGNED INTEGER
-
                         ) > 0,
-
                         IF(
-
                             (
                                 REPLACE(
                                     REPLACE(
@@ -3373,100 +3197,59 @@ class reporteaireController extends Controller
                                     ""
                                 ) + 0
                             ) <= 500,
-
                             "Dentro de norma",
-
                             "Fuera de norma"
                         ),
-
                         "Fuera de norma"
                     )
-
                 ) AS levaduras_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_temperatura,
-
                 (
-
                     IF(
-
                         (
                             reporteaireevaluacion.reporteaireevaluacion_temperatura + 0
                         ) >= 22
-
                         AND
-
                         (
                             reporteaireevaluacion.reporteaireevaluacion_temperatura + 0
                         ) <= 24.5,
-
                         "Dentro de norma",
-
                         "Fuera de norma"
                     )
-
                 ) AS temperatura_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_velocidad,
-
                 reporteaireevaluacion.reporteaireevaluacion_velocidadlimite,
-
                 (
-
                     IF(
-
                         (
                             reporteaireevaluacion.reporteaireevaluacion_velocidad + 0
                         )
-
                         <=
-
                         (
                             reporteaireevaluacion.reporteaireevaluacion_velocidadlimite + 0
                         ),
-
                         "Dentro de norma",
-
                         "Fuera de norma"
                     )
-
                 ) AS velocidad_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_humedad,
-
                 (
-
                     IF(
-
                         (
                             reporteaireevaluacion.reporteaireevaluacion_humedad + 0
                         ) >= 20
-
                         AND
-
                         (
                             reporteaireevaluacion.reporteaireevaluacion_humedad + 0
                         ) <= 60,
-
                         "Dentro de norma",
-
                         "Fuera de norma"
                     )
-
                 ) AS humedad_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_co,
-
                 (
-
                     IF(
-
                         CONVERT(
-
                             REPLACE(
                                 REPLACE(
                                     REPLACE(
@@ -3480,13 +3263,9 @@ class reporteaireController extends Controller
                                 " ",
                                 ""
                             ),
-
                             UNSIGNED INTEGER
-
                         ) >= 0,
-
                         IF(
-
                             (
                                 REPLACE(
                                     REPLACE(
@@ -3502,26 +3281,16 @@ class reporteaireController extends Controller
                                     ""
                                 ) + 0
                             ) <= 25,
-
                             "Dentro de norma",
-
                             "Fuera de norma"
                         ),
-
                         "Fuera de norma"
                     )
-
                 ) AS co_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_co2,
-
                 (
-
                     IF(
-
                         CONVERT(
-
                             REPLACE(
                                 REPLACE(
                                     REPLACE(
@@ -3535,13 +3304,9 @@ class reporteaireController extends Controller
                                 " ",
                                 ""
                             ),
-
                             UNSIGNED INTEGER
-
                         ) >= 0,
-
                         IF(
-
                             (
                                 REPLACE(
                                     REPLACE(
@@ -3557,29 +3322,18 @@ class reporteaireController extends Controller
                                     ""
                                 ) + 0
                             ) <= 5000,
-
                             "Dentro de norma",
-
                             "Fuera de norma"
                         ),
-
                         "Fuera de norma"
                     )
-
                 ) AS co2_resultado,
-
-
                 reporteaireevaluacion.reporteaireevaluacion_so2,
-
                 (
-
                     IF(
-
                         reporteaireevaluacion.reporteaireevaluacion_so2
                         REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$",
-
                         "Dentro de norma",
-
                         IF(
 
                             CONVERT(
