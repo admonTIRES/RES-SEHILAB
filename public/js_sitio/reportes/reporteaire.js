@@ -208,7 +208,24 @@ function datosgenerales()
 			$('.div_instalacion_nombre').html(dato.reporte_portada.reporte_instalacion);
 
 
+		const camposCaracteristicas = [
+				'caracteristicas_ch20',
+				'caracteristicas_h2s',
+				'caracteristicas_no2'
+			];
+
+			camposCaracteristicas.forEach(function(campo) {
+
+				$('#' + campo).val(dato[campo]);
+
+			});
+
+
+			actualizarCaracteristicasAire();
+
+			
 			$('#reporte_introduccion').html(dato.reporte_introduccion);
+
 			$('#reporte_objetivogeneral').html(dato.reporte_objetivogeneral);
 			$('#reporte_objetivoespecifico').html(dato.reporte_objetivoespecifico);
 			$('#reporte_metodologia_4_1').html(dato.reporte_metodologia_4_1);
@@ -312,6 +329,20 @@ function datosgenerales()
 			$('#reporte_memoriafotografica_lista').html(dato.reporte_memoriafotografica_guardado);
 
 			// ACTUALIZAR MENU INDICE, SI CADA PUNTO YA HA SIDO GUARDADO
+
+
+			let caracteristicas_guardadas = 0;
+
+			if (
+				dato.caracteristicas_ch20 != null && dato.caracteristicas_ch20 != '' &&
+				dato.caracteristicas_h2s != null && dato.caracteristicas_h2s != '' &&
+				dato.caracteristicas_no2 != null && dato.caracteristicas_no2 != ''
+			) {
+				caracteristicas_guardadas = 1;
+			}
+
+			menureporte_estado("menureporte_0_1", caracteristicas_guardadas);
+
 			menureporte_estado("menureporte_0", dato.reporte_portada_guardado);
 			menureporte_estado("menureporte_1", dato.reporte_introduccion_guardado);
 			menureporte_estado("menureporte_2", 1); // Definiciones
@@ -434,7 +465,7 @@ function botoninforme_estado(boton_estado)
 }
 
 
-function 	menureporte_estado(menu_nombre, menu_estado)
+function menureporte_estado(menu_nombre, menu_estado)
 {
 	if (parseInt(menu_estado) > 0)
 	{
@@ -1065,6 +1096,195 @@ $("#botonguardar_reporte_portada").click(function()
 						// actualiza boton
 						$('#botonguardar_reporte_portada').html('Guardar portada <i class="fa fa-save"></i>');
 						$('#botonguardar_reporte_portada').attr('disabled', false);
+
+						// mensaje
+						swal({
+							title: "Error",
+							text: ""+dato.msj,
+							type: "error", // warning, error, success, info
+							buttons: {
+								visible: false, // true , false
+							},
+							timer: 1500,
+							showConfirmButton: false
+						});
+						return false;
+					}
+				}).submit();
+				return false;
+			}
+			else 
+			{
+				// mensaje
+				swal({
+					title: "Cancelado",
+					text: "Acción cancelada",
+					type: "error", // warning, error, success, info
+					buttons: {
+						visible: false, // true , false
+					},
+					timer: 500,
+					showConfirmButton: false
+				});
+			}
+		});
+		return false;
+	}
+});
+
+
+
+//=================================================
+// CARACTERISTICAS
+
+
+function actualizarCaracteristicasAire()
+{
+    var ch20 = $('#caracteristicas_ch20').val();
+    var h2s  = $('#caracteristicas_h2s').val();
+    var no2  = $('#caracteristicas_no2').val();
+
+
+    // OCULTAR TODOS PRIMERO
+
+    $('#7_9_FORMALDEHIDO').hide();
+    $('#7_10_ACIDO_SULFHIDRICO').hide();
+    $('#7_11_DIOXIDO_NITROGENO').hide();
+
+
+    var parametros = [];
+
+
+
+    if (String(ch20) === '1')
+    {
+        parametros.push({
+            div: '#7_9_FORMALDEHIDO',
+            titulo: '#7_9',
+            nombre: 'Formaldehído (CH₂O)'
+        });
+    }
+
+
+
+    if (String(h2s) === '1')
+    {
+        parametros.push({
+            div: '#7_10_ACIDO_SULFHIDRICO',
+            titulo: '#7_10',
+            nombre: 'Ácido Sulfhídrico (H₂S)'
+        });
+    }
+
+
+
+    if (String(no2) === '1')
+    {
+        parametros.push({
+            div: '#7_11_DIOXIDO_NITROGENO',
+            titulo: '#7_11',
+            nombre: 'Dióxido de Nitrógeno (NO₂)'
+        });
+    }
+
+
+    $.each(parametros, function(index, parametro)
+    {
+        var numero = 9 + index;
+
+        $(parametro.div).show();
+
+        $(parametro.titulo).html(
+            '7.' + numero + '.- ' + parametro.nombre
+        );
+    });
+}
+
+
+$(document).on(
+    'change',
+    '#caracteristicas_ch20, #caracteristicas_h2s, #caracteristicas_no2',
+    function()
+    {
+        actualizarCaracteristicasAire();
+    }
+);
+
+
+
+
+$("#botonguardar_reporte_caracteristicas").click(function()
+{
+	// valida campos vacios
+	var valida = this.form.checkValidity();
+	if (valida)
+	{
+		swal({
+			title: "¡Confirme que desea guardar!",
+			text: "Características de aire",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Guardar!",
+			cancelButtonText: "Cancelar!",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+		function(isConfirm)
+		{
+			if (isConfirm)
+			{
+				// cerrar msj confirmacion
+				swal.close();
+
+				// enviar datos
+				$('#form_reporte_caracteristicas').ajaxForm({
+					dataType: 'json',
+					type: 'POST',
+					url: ''+ruta_storage_guardar,
+					data: {
+						opcion: 22,
+						proyecto_id: proyecto.id,
+						agente_id: agente_id,
+						agente_nombre: agente_nombre,
+						reporteregistro_id: reporteregistro_id,
+						catactivo_id: $("#reporte_catactivo_id").val(),
+						reporte_instalacion: $("#reporte_instalacion").val()
+					},
+					resetForm: false,
+					success: function(dato)
+					{
+						// Actualizar ID reporte						
+						reporteregistro_id = dato.reporteregistro_id;
+
+						menureporte_estado("menureporte_0_1", 1);
+
+						// mensaje
+						swal({
+							title: "Correcto",
+							text: ""+dato.msj,
+							type: "success", // warning, error, success, info
+							buttons: {
+								visible: false, // true , false
+							},
+							timer: 1500,
+							showConfirmButton: false
+						});
+
+						// actualiza boton
+						$('#botonguardar_reporte_caracteristicas').html('Guardar características de aire <i class="fa fa-save"></i>');
+						$('#botonguardar_reporte_caracteristicas').attr('disabled', false);
+					},
+					beforeSend: function()
+					{
+						$('#botonguardar_reporte_caracteristicas').html('Guardando características de aire <i class="fa fa-spin fa-spinner"></i>');
+						$('#botonguardar_reporte_caracteristicas').attr('disabled', true);
+					},
+					error: function(dato)
+					{
+						// actualiza boton
+						$('#botonguardar_reporte_caracteristicas').html('Guardar características de aire <i class="fa fa-save"></i>');
+						$('#botonguardar_reporte_caracteristicas').attr('disabled', false);
 
 						// mensaje
 						swal({
@@ -3615,7 +3835,12 @@ function tabla_reporte_puntos(proyecto_id, reporteregistro_id) {
                         tabla_reporte_7_4(json.tabla_reporte_7_4);
                         tabla_reporte_7_5(json.tabla_reporte_7_5);
                         tabla_reporte_7_6(json.tabla_reporte_7_6);
-                        tabla_reporte_7_7(json.tabla_reporte_7_7);
+						tabla_reporte_7_7(json.tabla_reporte_7_7);
+						
+                        tabla_reporte_7_9(json.tabla_reporte_7_9);
+                        tabla_reporte_7_10(json.tabla_reporte_7_10);
+                        tabla_reporte_7_11(json.tabla_reporte_7_11);
+
 
                         return json.data;
                     },
@@ -3690,153 +3915,6 @@ function tabla_reporte_puntos(proyecto_id, reporteregistro_id) {
 
 
 
-// var datatable_reporte_puntos = null;
-// function tabla_reporte_puntos(proyecto_id, reporteregistro_id)
-// {
-// 	try 
-// 	{
-// 		var ruta = "/reporteaireevaluaciontabla/"+proyecto_id+"/"+reporteregistro_id+"/"+areas_poe;
-
-// 		if (datatable_reporte_puntos != null)
-// 		{
-// 			datatable_reporte_puntos.clear().draw();
-// 			datatable_reporte_puntos.ajax.url(ruta).load();
-// 		}
-// 		else
-// 		{
-// 			var numeroejecucion = 1;
-// 			datatable_reporte_puntos = $('#tabla_reporte_puntos').DataTable({
-// 				ajax: {
-// 					url: ruta,
-// 					type: "get",
-// 					cache: false,
-// 					dataType: "json",
-// 					data: {},
-// 					dataSrc: function (json)
-// 					{
-// 						menureporte_estado("menureporte_7_1", parseInt(json.total));
-// 						menureporte_estado("menureporte_7_2", parseInt(json.total));
-// 						menureporte_estado("menureporte_7_3", parseInt(json.total));
-// 						menureporte_estado("menureporte_7_4", parseInt(json.total));
-// 						menureporte_estado("menureporte_7_5", parseInt(json.total));
-// 						menureporte_estado("menureporte_7_6", parseInt(json.total));
-// 						menureporte_estado("menureporte_7_7", parseInt(json.total));
-
-						
-// 						// // Tablas
-// 						tabla_reporte_7_1(json.tabla_reporte_7_1);
-// 						tabla_reporte_7_2(json.tabla_reporte_7_2);
-// 						tabla_reporte_7_3(json.tabla_reporte_7_3);
-// 						tabla_reporte_7_4(json.tabla_reporte_7_4);
-// 						tabla_reporte_7_5(json.tabla_reporte_7_5);
-// 						tabla_reporte_7_6(json.tabla_reporte_7_6);
-// 						tabla_reporte_7_7(json.tabla_reporte_7_7);
-
-
-// 						return json.data;
-// 					},
-// 					error: function (xhr, error, code)
-// 					{						
-// 						console.log('error en datatable_reporte_puntos '+code);
-// 						if (numeroejecucion <= 1)
-// 						{
-// 							tabla_reporte_puntos(proyecto_id, reporteregistro_id)
-// 							numeroejecucion += 1;
-// 						}
-// 					}
-// 				},
-// 				columns: [
-// 					// {
-// 					//     data: "id" 
-// 					// },
-// 					{
-// 						data: "reporteaireevaluacion_punto",
-// 						defaultContent: "-",
-// 						orderable: false,
-// 					},
-// 					{
-// 						data: "reporteairearea_instalacion",
-// 						defaultContent: "-",
-// 						orderable: false,
-// 					},
-// 					{
-// 						data: "reporteairearea_nombre",
-// 						defaultContent: "-",
-// 						orderable: false,
-// 					},
-// 					{
-// 						data: "reporteaireevaluacion_ubicacion",
-// 						defaultContent: "-",
-// 						orderable: false,
-// 					},
-// 					{
-// 						data: "boton_editar",
-// 						defaultContent: "-",
-// 						className: 'editar',
-// 						orderable: false,
-// 					},
-// 					{
-// 						data: "boton_eliminar",
-// 						defaultContent: "-",
-// 						orderable: false,
-// 					}
-// 				],
-// 				lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
-// 				rowsGroup: [1, 2, 0], //agrupar filas
-// 				// order: [[ 0, "ASC" ]],
-// 				ordering: false,
-// 				processing: true,
-// 				searching: false,
-// 				paging: true,
-// 				language: {
-// 					lengthMenu: "Mostrar _MENU_ Registros",
-// 					zeroRecords: "No se encontraron registros",
-// 					info: "Página _PAGE_ de _PAGES_ (Total _TOTAL_ registros)",
-// 					infoEmpty: "No se encontraron registros",
-// 					infoFiltered: "(Filtrado de _MAX_ registros)",
-// 					emptyTable: "No hay datos disponibles en la tabla",
-// 					loadingRecords: "Cargando datos....",
-// 					processing: "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
-// 					search: "Buscar",
-// 					paginate: {
-// 						first: "Primera",
-// 						last: "Ultima",
-// 						next: "Siguiente",
-// 						previous: "Anterior"
-// 					}
-// 				},
-// 				rowCallback: function(row, data, index)
-// 				{
-// 					// // console.log(index+' - '+data.reporteiluminacionpuntos_nopunto);
-// 					// $(row).find('td:eq(7)').css('background', data.resultadoner_color);
-
-// 					if(data.reportehieloevaluacionparametros_resultado == "Dentro de norma")
-// 					{
-// 						$(row).find('td:eq(13)').css('background', "#00FF00");
-// 						$(row).find('td:eq(13)').css('color', '#000000');
-// 						$(row).find('td:eq(13)').css('font-weight', 'bold');
-// 					}
-// 					else
-// 					{
-// 						$(row).find('td:eq(13)').css('background', "#FF0000");
-// 						$(row).find('td:eq(13)').css('color', '#FFFFFF');
-// 						$(row).find('td:eq(13)').css('font-weight', 'bold');
-// 					}
-// 				},
-// 			});
-// 		}
-
-// 		// Tooltip en DataTable
-// 		datatable_reporte_puntos.on('draw', function ()
-// 		{
-// 			$('[data-toggle="tooltip"]').tooltip();
-// 		});
-// 	}
-// 	catch (exception)
-// 	{
-// 		tabla_reporte_puntos(proyecto_id, reporteregistro_id);
-//     }
-// }
 
 
 $("#boton_reporte_nuevopuntomedicion").click(function()
@@ -4645,6 +4723,177 @@ function tabla_reporte_7_7(tbody)
 	});
 }
 
+var datatable_reporte_7_9 = null;
+function tabla_reporte_7_9(tbody)
+{
+	if (datatable_reporte_7_9 != null)
+	{
+		datatable_reporte_7_9.destroy();
+	}
+
+	$('#tabla_reporte_7_9 tbody').html(tbody);
+
+
+	datatable_reporte_7_9 = $('#tabla_reporte_7_9').DataTable({
+		lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
+		rowsGroup: [1, 2, 3, 4, 0], //agrupar filas
+		order: [[ 0, "DESC" ]],
+		ordering: false,
+		searching: true,
+		processing: true,
+		paging: true,
+		language: {
+			lengthMenu: "Mostrar _MENU_ Registros",
+			zeroRecords: "No se encontraron registros",
+			info: "Página _PAGE_ de _PAGES_ (Total _TOTAL_ registros)",
+			infoEmpty: "No se encontraron registros",
+			infoFiltered: "(Filtrado de _MAX_ registros)",
+			emptyTable: "No hay datos disponibles en la tabla",
+			loadingRecords: "Cargando datos....",
+			processing: "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+			search: "Buscar",
+			paginate: {
+				first: "Primera",
+				last: "Ultima",
+				next: "Siguiente",
+				previous: "Anterior"
+			}
+		},
+		rowCallback: function(row, data, index)
+		{
+			// // console.log(index+' - '+data.reporteiluminacionpuntos_nopunto);
+			// $(row).find('td:eq(7)').css('background', data.resultadoner_color);
+
+			if($(row).find('td:eq(7)').text() == "Dentro de norma")
+			{
+				$(row).find('td:eq(7)').css('background', "#00FF00");
+				$(row).find('td:eq(7)').css('color', '#000000');
+				$(row).find('td:eq(7)').css('font-weight', 'bold');
+			}
+			else
+			{
+				$(row).find('td:eq(7)').css('background', "#FF0000");
+				$(row).find('td:eq(7)').css('color', '#FFFFFF');
+				$(row).find('td:eq(7)').css('font-weight', 'bold');
+			}
+		},
+	});
+}
+
+var datatable_reporte_7_10 = null;
+function tabla_reporte_7_10(tbody)
+{
+	if (datatable_reporte_7_10 != null)
+	{
+		datatable_reporte_7_10.destroy();
+	}
+
+	$('#tabla_reporte_7_10 tbody').html(tbody);
+
+
+	datatable_reporte_7_10 = $('#tabla_reporte_7_10').DataTable({
+		lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
+		rowsGroup: [1, 2, 3, 4, 0], //agrupar filas
+		order: [[ 0, "DESC" ]],
+		ordering: false,
+		searching: true,
+		processing: true,
+		paging: true,
+		language: {
+			lengthMenu: "Mostrar _MENU_ Registros",
+			zeroRecords: "No se encontraron registros",
+			info: "Página _PAGE_ de _PAGES_ (Total _TOTAL_ registros)",
+			infoEmpty: "No se encontraron registros",
+			infoFiltered: "(Filtrado de _MAX_ registros)",
+			emptyTable: "No hay datos disponibles en la tabla",
+			loadingRecords: "Cargando datos....",
+			processing: "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+			search: "Buscar",
+			paginate: {
+				first: "Primera",
+				last: "Ultima",
+				next: "Siguiente",
+				previous: "Anterior"
+			}
+		},
+		rowCallback: function(row, data, index)
+		{
+			// // console.log(index+' - '+data.reporteiluminacionpuntos_nopunto);
+			// $(row).find('td:eq(7)').css('background', data.resultadoner_color);
+
+			if($(row).find('td:eq(7)').text() == "Dentro de norma")
+			{
+				$(row).find('td:eq(7)').css('background', "#00FF00");
+				$(row).find('td:eq(7)').css('color', '#000000');
+				$(row).find('td:eq(7)').css('font-weight', 'bold');
+			}
+			else
+			{
+				$(row).find('td:eq(7)').css('background', "#FF0000");
+				$(row).find('td:eq(7)').css('color', '#FFFFFF');
+				$(row).find('td:eq(7)').css('font-weight', 'bold');
+			}
+		},
+	});
+}
+
+
+var datatable_reporte_7_11 = null;
+function tabla_reporte_7_11(tbody)
+{
+	if (datatable_reporte_7_11 != null)
+	{
+		datatable_reporte_7_11.destroy();
+	}
+
+	$('#tabla_reporte_7_11 tbody').html(tbody);
+
+
+	datatable_reporte_7_11 = $('#tabla_reporte_7_11').DataTable({
+		lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
+		rowsGroup: [1, 2, 3, 4, 0], //agrupar filas
+		order: [[ 0, "DESC" ]],
+		ordering: false,
+		searching: true,
+		processing: true,
+		paging: true,
+		language: {
+			lengthMenu: "Mostrar _MENU_ Registros",
+			zeroRecords: "No se encontraron registros",
+			info: "Página _PAGE_ de _PAGES_ (Total _TOTAL_ registros)",
+			infoEmpty: "No se encontraron registros",
+			infoFiltered: "(Filtrado de _MAX_ registros)",
+			emptyTable: "No hay datos disponibles en la tabla",
+			loadingRecords: "Cargando datos....",
+			processing: "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+			search: "Buscar",
+			paginate: {
+				first: "Primera",
+				last: "Ultima",
+				next: "Siguiente",
+				previous: "Anterior"
+			}
+		},
+		rowCallback: function(row, data, index)
+		{
+			// // console.log(index+' - '+data.reporteiluminacionpuntos_nopunto);
+			// $(row).find('td:eq(7)').css('background', data.resultadoner_color);
+
+			if($(row).find('td:eq(7)').text() == "Dentro de norma")
+			{
+				$(row).find('td:eq(7)').css('background', "#00FF00");
+				$(row).find('td:eq(7)').css('color', '#000000');
+				$(row).find('td:eq(7)').css('font-weight', 'bold');
+			}
+			else
+			{
+				$(row).find('td:eq(7)').css('background', "#FF0000");
+				$(row).find('td:eq(7)').css('color', '#FFFFFF');
+				$(row).find('td:eq(7)').css('font-weight', 'bold');
+			}
+		},
+	});
+}
 
 //=================================================
 // TABLA 7.7 MATRIZ DE EXPOSICIÓN LABORAL
@@ -5555,6 +5804,10 @@ function reporte_dashboard(proyecto_id, reporteregistro_id)
 			$("#dashboard_co2").html(dato.dashboard_co2);
 			$("#dashboard_bioaerosoles").html(dato.dashboard_bioaerosoles);
 			$("#dashboard_recomendaciones").html(dato.dashboard_recomendaciones);
+
+			$("#dashboard_ch20").html(dato.dashboard_ch20);
+			$("#dashboard_h2s").html(dato.dashboard_h2s);
+			$("#dashboard_no2").html(dato.dashboard_no2);
 
 			// // mensaje
 			// swal({

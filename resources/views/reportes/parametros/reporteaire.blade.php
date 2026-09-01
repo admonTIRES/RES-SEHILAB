@@ -231,6 +231,9 @@
 	<div class="col-xlg-10 col-lg-9 col-md-7">
 		<div class="card">
 
+
+
+
 			<!-- <div class="evluaraire mt-4">
 				<h3 class="card-title" style="padding: 0px!important;" id="0_1">Seleccione las características a evaluar de aire</h3>
 				<form method="post" enctype="multipart/form-data" name="form_reporte_evaluaraire" id="form_reporte_evaluaraire">
@@ -290,6 +293,49 @@
 
 
 			<div class="card-body" style="display: block">
+
+				<h4 class="card-title" id="0_1">Seleccione las características a evaluar de aire</h4>
+				<form method="post" enctype="multipart/form-data" name="form_reporte_caracteristicas" id="form_reporte_caracteristicas">
+					<div class="row">
+						<div class="col-12">
+							{!! csrf_field() !!}
+						</div>
+						<div class="col-4">
+							<div class="form-group">
+								<label>Formaldehído (CH₂O) </label>
+								<select class="custom-select form-control" id="caracteristicas_ch20" name="caracteristicas_ch20" required>
+									<option value=""></option>
+									<option value="1">Sí</option>
+									<option value="2">No</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-4">
+							<div class="form-group">
+								<label>Ácido Sulfhídrico (h₂S)</label>
+								<select class="custom-select form-control" id="caracteristicas_h2s" name="caracteristicas_h2s" required>
+									<option value=""></option>
+									<option value="1">Sí</option>
+									<option value="2">No</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-4">
+							<div class="form-group">
+								<label>Dióxido de Nitrógeno (NO₂)</label>
+								<select class="custom-select form-control" id="caracteristicas_no2" name="caracteristicas_no2" required>
+									<option value=""></option>
+									<option value="1">Sí</option>
+									<option value="2">No</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-12" style="text-align: right;">
+							<button type="submit" class="btn btn-danger waves-effect waves-light " id="botonguardar_reporte_caracteristicas">Guardar características de aire <i class="fa fa-save"></i></button>
+						</div>
+					</div>
+				</form>
+
 				<h4 class="card-title" style="padding: 0px!important;" id="0">Portadas</h4>
 				<form method="post" enctype="multipart/form-data" name="form_reporte_portada" id="form_reporte_portada">
 					<div class="row">
@@ -1210,7 +1256,7 @@
 						</table>
 					</div>
 				</div>
-				<h4 class="card-title" id="7_8">7.7.- Matriz de exposición laboral</h4>
+				<h4 class="card-title" id="7_8">7.8.- Matriz de exposición laboral</h4>
 				<div class="row">
 					<div class="col-12">
 						<style type="text/css">
@@ -1266,6 +1312,75 @@
 						</table>
 					</div>
 				</div>
+
+				<div id="7_9_FORMALDEHIDO" style="display: none;">
+					<h4 class="card-title" id="7_9">7.9.- Formaldehído (CH₂O) </h4>
+					<div class="row">
+						<div class="col-12">
+							<table class="table table-hover tabla_info_centrado tabla_evaluacion" width="100%" id="tabla_reporte_7_9">
+								<thead>
+									<tr>
+										<th width="70">No. de<br>Medición</th>
+										<th width="120">Instalación</th>
+										<th width="150">Área</th>
+										<th width="">Ubicación</th>
+										<th width="60">Total<br>puntos</th>
+										<th width="100">Límite permisible<br>en ppm</th>
+										<th width="100">Resultado<br>en ppm</th>
+										<th width="100">Cumplimiento<br>Normativo</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div id="7_10_ACIDO_SULFHIDRICO" style="display: none;">
+					<h4 class="card-title" id="7_10">7.10.- Ácido Sulfhídrico (h₂S) </h4>
+					<div class="row">
+						<div class="col-12">
+							<table class="table table-hover tabla_info_centrado tabla_evaluacion" width="100%" id="tabla_reporte_7_10">
+								<thead>
+									<tr>
+										<th width="70">No. de<br>Medición</th>
+										<th width="120">Instalación</th>
+										<th width="150">Área</th>
+										<th width="">Ubicación</th>
+										<th width="60">Total<br>puntos</th>
+										<th width="100">Límite permisible<br>en ppm</th>
+										<th width="100">Resultado<br>en ppm</th>
+										<th width="100">Cumplimiento<br>Normativo</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div id="7_11_DIOXIDO_NITROGENO" style="display: none;">
+					<h4 class="card-title" id="7_11">7.11.- Dióxido de Nitrógeno (NO₂) </h4>
+					<div class="row">
+						<div class="col-12">
+							<table class="table table-hover tabla_info_centrado tabla_evaluacion" width="100%" id="tabla_reporte_7_11">
+								<thead>
+									<tr>
+										<th width="70">No. de<br>Medición</th>
+										<th width="120">Instalación</th>
+										<th width="150">Área</th>
+										<th width="">Ubicación</th>
+										<th width="60">Total<br>puntos</th>
+										<th width="100">Límite permisible<br>en ppm</th>
+										<th width="100">Resultado<br>en ppm</th>
+										<th width="100">Cumplimiento<br>Normativo</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
 				<h4 class="card-title" id="8">8.- Conclusiones</h4>
 				<select class="custom-select form-control mb-1" style="width: 100%;" id="ID_CATCONCLUSION">
 					<option value="">&nbsp;</option>
@@ -1416,6 +1531,29 @@
 											<span id="dashboard_bioaerosoles">dato</span>
 										</td>
 									</tr>
+
+
+									<tr>
+										<th width="33.33%">Áreas criticas en Formaldehído (CH₂O)</th>
+										<th width="33.33%">Áreas criticas en Ácido Sulfhídrico (h₂S)</th>
+										<th width="33.33%">Áreas criticas en Dióxido de Nitrógeno (NO₂)</th>
+
+									</tr>
+									<tr>
+										<td width="33.33%" height="120">
+											<span id="dashboard_ch20">dato</span>
+										</td>
+										<td width="33.33%">
+											<span id="dashboard_h2s">dato</span>
+										</td>
+										<td width="33.33%">
+											<span id="dashboard_no2">dato</span>
+										</td>
+									</tr>
+
+
+
+
 								</tbody>
 							</table>
 						</div>
@@ -2388,4 +2526,4 @@
 	var areas_poe = <?php echo json_encode($areas_poe); ?>;
 </script>
 <script src="/js_sitio/html2canvas.js"></script>
-<script src="/js_sitio/reportes/reporteaire.js?v=10"></script>
+<script src="/js_sitio/reportes/reporteaire.js?v=11"></script>

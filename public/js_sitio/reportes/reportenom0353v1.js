@@ -229,42 +229,99 @@ $(document).ready(function () {
             $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').clearElement();
 
 		
-            cargarDatosInformesPsico();
-            cargarDatosGeneralesInformePsico();
-            cargarDefinicionesInformepsico();
-            tabla_areas();
-            tablaVersionesinfopsico();
-            validarEdicioninfopsico();
-            obtenerNumeroTrabajadoresPsico();
-            cargarGraficaGeneroPsico();
-            cargarGraficaEdadesPsico();
-            cargarGraficaEscolaridadPsico();
-            cargarGraficaEstadoCivilPsico();
-            cargarGraficaRegimenPsico();
-            cargarGraficaExperienciaPsico();
-            cargarGraficaCalificacionPsico();
-            cargarGraficaCategoriasGuiaIII();
-            cargarGraficaDominiosGuiaIII();
-            cargarGraficaGuiaIPsico();
-            cargarGraficaAmbienteGuiaIII();
-            cargarGraficaFactoresGuiaIII();
-            cargarGraficaOrganizacionGuiaIII();
-            cargarGraficaLiderazgoGuiaIII();
-            cargarGraficaEntornoGuiaIII();
-            totalfotospsico();
+            // cargarDatosInformesPsico();
+            // cargarDatosGeneralesInformePsico();
+            // cargarDefinicionesInformepsico();
+            // tabla_areas();
+            // tablaVersionesinfopsico();
+            // validarEdicioninfopsico();
+            // obtenerNumeroTrabajadoresPsico();
+            // cargarGraficaGeneroPsico();
+            // cargarGraficaEdadesPsico();
+            // cargarGraficaEscolaridadPsico();
+            // cargarGraficaEstadoCivilPsico();
+            // cargarGraficaRegimenPsico();
+            // cargarGraficaExperienciaPsico();
+            // cargarGraficaCalificacionPsico();
+            // cargarGraficaCategoriasGuiaIII();
+            // cargarGraficaDominiosGuiaIII();
+            // cargarGraficaGuiaIPsico();
+            // cargarGraficaAmbienteGuiaIII();
+            // cargarGraficaFactoresGuiaIII();
+            // cargarGraficaOrganizacionGuiaIII();
+            // cargarGraficaLiderazgoGuiaIII();
+            // cargarGraficaEntornoGuiaIII();
+            // totalfotospsico();
     
     
-            //// DASHBOARD
-            cargarTotalTrabajadoresATSpsico();
-            cargarTotalTrabajadoresRequierenAtencionPsico();
-            cargarCategoriaODominioMayorRiesgoPsico();
-            cargarGraficasMayorRiesgoPsico();
-            cargarGraficaDistribucionRiesgoPsico();
-            cargarGraficaTrabajadoresATSpsico();
-            cargarGraficaCumplimientoNormativoPsico();
-            cargarRecomendacionesPrioritariasPsico();
-            consultarEstadosMenusReportePsico();
+            // //// DASHBOARD
+            // cargarTotalTrabajadoresATSpsico();
+            // cargarTotalTrabajadoresRequierenAtencionPsico();
+            // cargarCategoriaODominioMayorRiesgoPsico();
+            // cargarGraficasMayorRiesgoPsico();
+            // cargarGraficaDistribucionRiesgoPsico();
+            // cargarGraficaTrabajadoresATSpsico();
+            // cargarGraficaCumplimientoNormativoPsico();
+            // cargarRecomendacionesPrioritariasPsico();
+            // consultarEstadosMenusReportePsico();
     
+    
+    
+                var funcionesCargaPsico = [
+                    cargarDatosInformesPsico,
+                    cargarDatosGeneralesInformePsico,
+                    cargarDefinicionesInformepsico,
+                    tabla_areas,
+                    tablaVersionesinfopsico,
+                    validarEdicioninfopsico,
+                    obtenerNumeroTrabajadoresPsico,
+
+                    cargarGraficaGeneroPsico,
+                    cargarGraficaEdadesPsico,
+                    cargarGraficaEscolaridadPsico,
+                    cargarGraficaEstadoCivilPsico,
+                    cargarGraficaRegimenPsico,
+                    cargarGraficaExperienciaPsico,
+                    cargarGraficaCalificacionPsico,
+
+                    cargarGraficaCategoriasGuiaIII,
+                    cargarGraficaDominiosGuiaIII,
+                    cargarGraficaGuiaIPsico,
+                    cargarGraficaAmbienteGuiaIII,
+                    cargarGraficaFactoresGuiaIII,
+                    cargarGraficaOrganizacionGuiaIII,
+                    cargarGraficaLiderazgoGuiaIII,
+                    cargarGraficaEntornoGuiaIII,
+
+                    totalfotospsico,
+
+                    // DASHBOARD
+                    cargarTotalTrabajadoresATSpsico,
+                    cargarTotalTrabajadoresRequierenAtencionPsico,
+                    cargarCategoriaODominioMayorRiesgoPsico,
+                    cargarGraficasMayorRiesgoPsico,
+                    cargarGraficaDistribucionRiesgoPsico,
+                    cargarGraficaTrabajadoresATSpsico,
+                    cargarGraficaCumplimientoNormativoPsico,
+                    cargarRecomendacionesPrioritariasPsico,
+                    consultarEstadosMenusReportePsico
+                ];
+
+                $.each(funcionesCargaPsico, function (indice, funcion) {
+
+                    setTimeout(function () {
+
+                        try {
+                            funcion();
+                        } catch (error) {
+                            console.error(
+                                'Error al ejecutar la función ' + funcion.name,
+                                error
+                            );
+                        }
+
+                    }, indice * 400);
+                });
 
             $.ajax({
                     url: 'obtenerDatosPlantillaPsico',
