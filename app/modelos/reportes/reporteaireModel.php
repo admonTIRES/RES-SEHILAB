@@ -42,6 +42,10 @@ class reporteaireModel extends Model
 		'reporteaire_cancelado',
 		'reporteaire_canceladonombre',
 		'reporteaire_canceladofecha',
-		'reporteaire_canceladoobservacion'
+		'reporteaire_canceladoobservacion',
+
+		'caracteristicas_ch20',
+		'caracteristicas_h2s',
+		'caracteristicas_no2',
 	];
 }
