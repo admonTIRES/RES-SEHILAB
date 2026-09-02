@@ -1534,9 +1534,9 @@
 
 
 									<tr>
-										<th width="33.33%">Áreas criticas en Formaldehído (CH₂O)</th>
-										<th width="33.33%">Áreas criticas en Ácido Sulfhídrico (h₂S)</th>
-										<th width="33.33%">Áreas criticas en Dióxido de Nitrógeno (NO₂)</th>
+										<th width="33.33%">Áreas criticas en Formaldehído (CH<sub>2</sub>O)</th>
+										<th width="33.33%">Áreas criticas en Ácido Sulfhídrico (h<sub>2</sub>S)</th>
+										<th width="33.33%">Áreas criticas en Dióxido de Nitrógeno (NO<sub>2</sub>)</th>
 
 									</tr>
 									<tr>

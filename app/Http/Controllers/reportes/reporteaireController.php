@@ -3335,9 +3335,7 @@ class reporteaireController extends Controller
                         REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$",
                         "Dentro de norma",
                         IF(
-
                             CONVERT(
-
                                 REPLACE(
                                     REPLACE(
                                         REPLACE(
@@ -3351,13 +3349,9 @@ class reporteaireController extends Controller
                                     " ",
                                     ""
                                 ),
-
                                 DECIMAL(10,4)
-
                             ) >= 0,
-
                             IF(
-
                                 (
                                     REPLACE(
                                         REPLACE(
@@ -3373,420 +3367,205 @@ class reporteaireController extends Controller
                                         ""
                                     ) + 0
                                 ) > 0.25,
-
                                 "Fuera de norma",
-
                                 "Dentro de norma"
                             ),
-
                             "Fuera de norma"
                         )
                     )
-
                 ) AS so2_resultado
-
-
             FROM
-
                 reporteaireevaluacion
-
-
                 LEFT JOIN reporteairearea
-
                 ON reporteaireevaluacion.reporteairearea_id =
                 reporteairearea.id
-
-
             WHERE
-
                 reporteaireevaluacion.proyecto_id = ' . $proyecto_id . '
-
                 AND reporteaireevaluacion.registro_id = ' . $reporteregistro_id . '
-
-
             ORDER BY
-
                 reporteaireevaluacion.reporteaireevaluacion_punto ASC,
-
                 reporteairearea.reporteairearea_numorden ASC');
             }
 
-
-
             foreach ($evaluacion as $key => $value) {
-
-
                 $value->boton_editar =
                     '<button type="button" class="btn btn-warning waves-effect btn-circle">
                     <i class="fa fa-pencil fa-2x"></i>
                 </button>';
-
-
                 if ($edicion == 1) {
-
                     $value->boton_eliminar =
                         '<button type="button" class="btn btn-danger waves-effect btn-circle eliminar">
                         <i class="fa fa-trash fa-2x"></i>
                     </button>';
                 } else {
-
                     $value->boton_eliminar =
                         '<button type="button" class="btn btn-default waves-effect btn-circle" data-toggle="tooltip" title="No disponible">
                         <i class="fa fa-ban fa-2x"></i>
                     </button>';
                 }
 
-
-
-                // TABLA RESULTADOS BIOAEROSOLES
-                //==========================================
-
-
                 $dato['tabla_reporte_7_1'] .= '<tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->total_puntosarea . '</td>
-
                 <td>Cuenta de microorganismos coliformes totales en placa (CT)</td>
-
                 <td>NOM-113-SSA-1994</td>
-
                 <td>UFC/mtra</td>
-
                 <td>500</td>
-
                 <td>' . $value->reporteaireevaluacion_ct . '</td>
-
                 <td>' . $value->ct_resultado . '</td>
-
             </tr>
-
-
             <tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->total_puntosarea . '</td>
-
                 <td>Cuenta Total de Mesofílicos Aerobios (CTMA)</td>
-
                 <td>NOM-092-SSA1-1994</td>
-
                 <td>UFC/mtra</td>
-
                 <td>500</td>
-
                 <td>' . $value->reporteaireevaluacion_ctma . '</td>
-
                 <td>' . $value->ctma_resultado . '</td>
-
             </tr>
-
-
             <tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->total_puntosarea . '</td>
-
                 <td>Hongos</td>
-
                 <td>NOM-111-SSA1-1994</td>
-
                 <td>UFC/mtra</td>
-
                 <td>500</td>
-
                 <td>' . $value->reporteaireevaluacion_hongos . '</td>
-
                 <td>' . $value->hongos_resultado . '</td>
-
             </tr>
-
-
             <tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->total_puntosarea . '</td>
-
                 <td>Levaduras</td>
-
                 <td>NOM-111-SSA1-1994</td>
-
                 <td>UFC/mtra</td>
-
                 <td>500</td>
-
                 <td>' . $value->reporteaireevaluacion_levaduras . '</td>
-
                 <td>' . $value->levaduras_resultado . '</td>
-
             </tr>';
-
-
-
-                // TABLA RESULTADOS TEMPERATURA
-                //==========================================
 
 
                 $dato['tabla_reporte_7_2'] .= '<tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->reporteaireevaluacion_ubicacion . '</td>
-
                 <td>' . $value->total_puntosubicacion . '</td>
-
                 <td>22-24.5</td>
-
                 <td>' . $value->reporteaireevaluacion_temperatura . '</td>
-
                 <td>' . $value->temperatura_resultado . '</td>
-
             </tr>';
-
-
-
-                // TABLA RESULTADOS VELOCIDAD
-                //==========================================
 
 
                 $dato['tabla_reporte_7_3'] .= '<tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->reporteaireevaluacion_ubicacion . '</td>
-
                 <td>' . $value->total_puntosubicacion . '</td>
-
                 <td>' . $value->reporteaireevaluacion_velocidadlimite . '</td>
-
                 <td>' . $value->reporteaireevaluacion_velocidad . '</td>
-
                 <td>' . $value->velocidad_resultado . '</td>
-
             </tr>';
-
-
-
-                // TABLA RESULTADOS HUMEDAD RELATIVA
-                //==========================================
-
 
                 $dato['tabla_reporte_7_4'] .= '<tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->reporteaireevaluacion_ubicacion . '</td>
-
                 <td>' . $value->total_puntosubicacion . '</td>
-
                 <td>20-60</td>
-
                 <td>' . $value->reporteaireevaluacion_humedad . '</td>
-
                 <td>' . $value->humedad_resultado . '</td>
-
             </tr>';
-
-
-
-                // TABLA RESULTADOS MONÓXIDO DE CARBONO (CO)
-                //==========================================
 
 
                 $dato['tabla_reporte_7_5'] .= '<tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->reporteaireevaluacion_ubicacion . '</td>
-
                 <td>' . $value->total_puntosubicacion . '</td>
-
                 <td>25</td>
-
                 <td>' . $value->reporteaireevaluacion_co . '</td>
-
                 <td>' . $value->co_resultado . '</td>
-
             </tr>';
 
-
-
-                // TABLA RESULTADOS DIÓXIDO DE CARBONO (CO2)
-                //==========================================
 
 
                 $dato['tabla_reporte_7_6'] .= '<tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->reporteaireevaluacion_ubicacion . '</td>
-
                 <td>' . $value->total_puntosubicacion . '</td>
-
                 <td>5000</td>
-
                 <td>' . $value->reporteaireevaluacion_co2 . '</td>
-
                 <td>' . $value->co2_resultado . '</td>
-
             </tr>';
 
-
-
-                // TABLA RESULTADOS DIÓXIDO DE AZUFRE (SO2)
-                //==========================================
 
 
                 $dato['tabla_reporte_7_7'] .= '<tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->reporteaireevaluacion_ubicacion . '</td>
-
                 <td>' . $value->total_puntosubicacion . '</td>
-
                 <td>0.25</td>
-
                 <td>' . $value->reporteaireevaluacion_so2 . '</td>
-
                 <td>' . $value->so2_resultado . '</td>
-
             </tr>';
-
-
-
-                // TABLA RESULTADOS FORMALDEHÍDO (CH20)
-                //==========================================
 
 
                 $dato['tabla_reporte_7_9'] .= '<tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->reporteaireevaluacion_ubicacion . '</td>
-
                 <td>' . $value->total_puntosubicacion . '</td>
-
                 <td>0.3</td>
-
                 <td>' . $value->reporteaireevaluacion_ch20 . '</td>
-
                 <td>' . $value->ch20_resultado . '</td>
-
             </tr>';
-
-
-
-                // TABLA RESULTADOS ÁCIDO SULFHÍDRICO (H2S)
-                //==========================================
-
 
                 $dato['tabla_reporte_7_10'] .= '<tr>
 
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->reporteaireevaluacion_ubicacion . '</td>
-
                 <td>' . $value->total_puntosubicacion . '</td>
-
                 <td>1.0</td>
-
                 <td>' . $value->reporteaireevaluacion_h2s . '</td>
-
                 <td>' . $value->h2s_resultado . '</td>
-
             </tr>';
 
-
-
-                // TABLA RESULTADOS DIÓXIDO DE NITRÓGENO (NO2)
-                //==========================================
-
-
                 $dato['tabla_reporte_7_11'] .= '<tr>
-
                 <td>' . $value->reporteaireevaluacion_punto . '</td>
-
                 <td>' . $value->reporteairearea_instalacion . '</td>
-
                 <td>' . $value->reporteairearea_nombre . '</td>
-
                 <td>' . $value->reporteaireevaluacion_ubicacion . '</td>
-
                 <td>' . $value->total_puntosubicacion . '</td>
-
                 <td>0.053</td>
-
                 <td>' . $value->reporteaireevaluacion_no2 . '</td>
-
                 <td>' . $value->no2_resultado . '</td>
-
             </tr>';
             }
 
 
 
-            //==========================================
-            // RESPUESTA
-            //==========================================
-
-
             $dato['data'] = $evaluacion;
-
             $dato["total"] = count($evaluacion);
-
             $dato["msj"] = 'Datos consultados correctamente';
 
             return response()->json($dato);
@@ -3805,12 +3584,9 @@ class reporteaireController extends Controller
             $dato['tabla_reporte_7_5'] = NULL;
             $dato['tabla_reporte_7_6'] = NULL;
             $dato['tabla_reporte_7_7'] = NULL;
-
             $dato['tabla_reporte_7_9'] = NULL;
             $dato['tabla_reporte_7_10'] = NULL;
-            $dato['tabla_reporte_7_11'] = NULL;
-
-
+            $dato['tabla_reporte_7_11'] = NULL;  
             $dato["msj"] = 'Error ' . $e->getMessage();
 
 
@@ -4690,963 +4466,7 @@ class reporteaireController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function reporteairedashboard($proyecto_id, $reporteregistro_id, $areas_poe)
-    // {
-    //     try {
-    //         //=====================================
-    //         // CUMPLIMIENTO NORMATIVO POR PARAMETRO
-
-
-    //         if (($areas_poe + 0) == 1) {
-    //             $cumplimiento = DB::select('SELECT
-    //                                             reporteaireevaluacion.id,
-    //                                             reporteaireevaluacion.proyecto_id,
-    //                                             reporteaireevaluacion.registro_id,
-    //                                             reporteaireevaluacion.reporteairearea_id,
-    //                                             reportearea.reportearea_instalacion AS reporteairearea_instalacion,
-    //                                             reportearea.reportearea_nombre AS reporteairearea_nombre,
-    //                                             reportearea.reportearea_orden AS reporteairearea_numorden,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_ubicacion,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_punto,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_ct,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, "<", "˂"), ">", "˃") AS reporteaireevaluacion_ct,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, ">" , 1000), "<" ,""), " ", "") + 0) <= 500, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS ct_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_ctma,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, "<", "˂"), ">", "˃") AS reporteaireevaluacion_ctma,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, ">" , 1000), "<" ,""), " ", "") + 0) <= 500, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS ctma_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_hongos,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, "<", "˂"), ">", "˃") AS reporteaireevaluacion_hongos,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, ">" , 1000), "<" ,""), " ", "") + 0) <= 500, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS hongos_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_levaduras,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, "<", "˂"), ">", "˃") AS reporteaireevaluacion_levaduras,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, ">" , 1000), "<" ,""), " ", "") + 0) <= 500, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS levaduras_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_temperatura,
-    //                                             (
-    //                                                 IF((reporteaireevaluacion.reporteaireevaluacion_temperatura + 0) >= 22 AND (reporteaireevaluacion.reporteaireevaluacion_temperatura + 0) <= 24.5, 1, 0)
-    //                                             ) AS temperatura_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_velocidad,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_velocidadlimite,
-    //                                             (
-    //                                                 -- IF((reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) >= 0.15 AND (reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) <= 0.25, 1, 0)
-    //                                                 IF((reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) <= (reporteaireevaluacion.reporteaireevaluacion_velocidadlimite + 0), 1, 0)
-    //                                             ) AS velocidad_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_humedad,
-    //                                             (
-    //                                                 IF((reporteaireevaluacion.reporteaireevaluacion_humedad + 0) >= 20 AND (reporteaireevaluacion.reporteaireevaluacion_humedad + 0) <= 60, 1, 0)
-    //                                             ) AS humedad_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_co,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, "<", "˂"), ">", "˃") AS reporteaireevaluacion_co,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, ">" , 1000), "<" ,""), " ", "") + 0) <= 25, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) >= 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, ">" , ""), "<" ,""), " ", "") + 0) <= 25
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS co_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_co2,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, "<", "˂"), ">", "˃") AS reporteaireevaluacion_co2,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, ">" , 6000), "<" ,""), " ", "") + 0) <= 5000, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) >= 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, ">" , ""), "<" ,""), " ", "") + 0) <= 5000
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS co2_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_so2,
-    //                                             (
-    //                                                 IF(
-    //                                                     -- Verificar si el valor contiene solo letras o es N.D, N.A, N/A
-    //                                                     reporteaireevaluacion.reporteaireevaluacion_so2 REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$", 
-    //                                                     -- Si contiene solo letras o las abreviaturas, retornamos "Dentro de norma"
-    //                                                     1,  
-    //                                                     -- Si contiene números, continuamos con la limpieza
-    //                                                     IF(
-    //                                                         CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_so2, ">" , ""), "<" ,""), " ", ""), DECIMAL(10,2)) >= 0,
-    //                                                         -- Después de limpiar, verificamos si el valor es mayor o igual a 0.25
-    //                                                         IF(
-    //                                                             (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_so2, ">" , ""), "<" ,""), " ", "") + 0) > 0.25,
-    //                                                             0,  -- Si es mayor o igual a 0.25, está fuera de norma
-    //                                                             1  -- Si es menor, está dentro de norma
-    //                                                         ),
-    //                                                         0 -- Si no es un número válido o es negativo, es fuera de norma
-    //                                                     )
-    //                                                 )
-    //                                             ) AS so2_resultado  
-    //                                         FROM
-    //                                             reporteaireevaluacion
-    //                                             LEFT JOIN reportearea ON reporteaireevaluacion.reporteairearea_id = reportearea.id
-    //                                         WHERE
-    //                                             reporteaireevaluacion.proyecto_id = ' . $proyecto_id . ' 
-    //                                             AND reporteaireevaluacion.registro_id = ' . $reporteregistro_id . ' 
-    //                                         ORDER BY
-    //                                             reportearea.reportearea_orden ASC,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_punto ASC');
-    //         } else {
-    //             $cumplimiento = DB::select('SELECT
-    //                                             reporteaireevaluacion.id,
-    //                                             reporteaireevaluacion.proyecto_id,
-    //                                             reporteaireevaluacion.registro_id,
-    //                                             reporteaireevaluacion.reporteairearea_id,
-    //                                             reporteairearea.reporteairearea_instalacion,
-    //                                             reporteairearea.reporteairearea_nombre,
-    //                                             reporteairearea.reporteairearea_numorden,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_ubicacion,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_punto,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_ct,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, "<", "˂"), ">", "˃") AS reporteaireevaluacion_ct,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, ">" , 1000), "<" ,""), " ", "") + 0) <= 500, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS ct_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_ctma,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, "<", "˂"), ">", "˃") AS reporteaireevaluacion_ctma,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, ">" , 1000), "<" ,""), " ", "") + 0) <= 500, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS ctma_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_hongos,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, "<", "˂"), ">", "˃") AS reporteaireevaluacion_hongos,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, ">" , 1000), "<" ,""), " ", "") + 0) <= 500, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS hongos_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_levaduras,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, "<", "˂"), ">", "˃") AS reporteaireevaluacion_levaduras,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, ">" , 1000), "<" ,""), " ", "") + 0) <= 500, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS levaduras_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_temperatura,
-    //                                             (
-    //                                                 IF((reporteaireevaluacion.reporteaireevaluacion_temperatura + 0) >= 22 AND (reporteaireevaluacion.reporteaireevaluacion_temperatura + 0) <= 24.5, 1, 0)
-    //                                             ) AS temperatura_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_velocidad,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_velocidadlimite,
-    //                                             (
-    //                                                 -- IF((reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) >= 0.15 AND (reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) <= 0.25, 1, 0)
-    //                                                 IF((reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) <= (reporteaireevaluacion.reporteaireevaluacion_velocidadlimite + 0), 1, 0)
-    //                                             ) AS velocidad_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_humedad,
-    //                                             (
-    //                                                 IF((reporteaireevaluacion.reporteaireevaluacion_humedad + 0) >= 20 AND (reporteaireevaluacion.reporteaireevaluacion_humedad + 0) <= 60, 1, 0)
-    //                                             ) AS humedad_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_co,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, "<", "˂"), ">", "˃") AS reporteaireevaluacion_co,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, ">" , 1000), "<" ,""), " ", "") + 0) <= 25, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) >= 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, ">" , ""), "<" ,""), " ", "") + 0) <= 25
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS co_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_co2,
-    //                                             -- REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, "<", "˂"), ">", "˃") AS reporteaireevaluacion_co2,
-    //                                             (
-    //                                                 -- IF((REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, ">" , 6000), "<" ,""), " ", "") + 0) <= 5000, "Dentro de norma", "Fuera de norma")
-    //                                                 IF(
-    //                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) >= 0
-    //                                                     , IF(
-    //                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, ">" , ""), "<" ,""), " ", "") + 0) <= 5000
-    //                                                         , 1
-    //                                                         , 0
-    //                                                     )
-    //                                                     , 0
-    //                                                 )
-    //                                             ) AS co2_resultado,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_so2,
-    //                                             (
-    //                                                 IF(
-    //                                                     -- Verificar si el valor contiene solo letras o es N.D, N.A, N/A
-    //                                                     reporteaireevaluacion.reporteaireevaluacion_so2 REGEXP "^[A-Za-z]+$|^N[./]?D$|^N[./]?A$", 
-    //                                                     -- Si contiene solo letras o las abreviaturas, retornamos "Dentro de norma"
-    //                                                     1,  
-    //                                                     -- Si contiene números, continuamos con la limpieza
-    //                                                     IF(
-    //                                                         CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_so2, ">" , ""), "<" ,""), " ", ""), DECIMAL(10,2)) >= 0,
-    //                                                         -- Después de limpiar, verificamos si el valor es mayor o igual a 0.25
-    //                                                         IF(
-    //                                                             (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_so2, ">" , ""), "<" ,""), " ", "") + 0) > 0.25,
-    //                                                             0,  -- Si es mayor o igual a 0.25, está fuera de norma
-    //                                                             1  -- Si es menor, está dentro de norma
-    //                                                         ),
-    //                                                         0 -- Si no es un número válido o es negativo, es fuera de norma
-    //                                                     )
-    //                                                 )
-    //                                             ) AS so2_resultado 
-    //                                         FROM
-    //                                             reporteaireevaluacion
-    //                                             LEFT JOIN reporteairearea ON reporteaireevaluacion.reporteairearea_id = reporteairearea.id
-    //                                         WHERE
-    //                                             reporteaireevaluacion.proyecto_id = ' . $proyecto_id . ' 
-    //                                             AND reporteaireevaluacion.registro_id = ' . $reporteregistro_id . ' 
-    //                                         ORDER BY
-    //                                             reporteairearea.reporteairearea_numorden ASC,
-    //                                             reporteaireevaluacion.reporteaireevaluacion_punto ASC');
-    //         }
-
-
-    //         $dato["dashboard_parametros"] = '';
-    //         $bioaerosoles = 0;
-    //         $bioaerosoles_color = '';
-    //         $temperatura = 0;
-    //         $temperatura_color = '';
-    //         $velocidad = 0;
-    //         $velocidad_color = '';
-    //         $humedad = 0;
-    //         $humedad_color = '';
-    //         $monoxido = 0;
-    //         $monoxido_color = '';
-    //         $dioxido = 0;
-    //         $dioxido_color = '';
-    //         $azufre = 0;
-    //         $azufre_color = '';
-    //         if (count($cumplimiento) > 0) {
-    //             foreach ($cumplimiento as $key => $value) {
-    //                 $temperatura += ($value->temperatura_resultado + 0);
-    //                 $velocidad += ($value->velocidad_resultado + 0);
-    //                 $humedad += ($value->humedad_resultado + 0);
-    //                 $monoxido += ($value->co_resultado + 0);
-    //                 $dioxido += ($value->co2_resultado + 0);
-    //                 $azufre += ($value->so2_resultado + 0);
-    //                 $bioaerosoles += (($value->ct_resultado + 0) + ($value->ctma_resultado + 0) + ($value->hongos_resultado + 0) + ($value->levaduras_resultado + 0));
-    //             }
-
-
-    //             //--------------------
-
-
-    //             $temperatura = round((round(($temperatura / count($cumplimiento)), 3) * 100), 1);
-
-
-    //             if ($temperatura >= 90) {
-    //                 $temperatura_color = '#8ee66b';
-    //             } else if ($temperatura >= 50) {
-    //                 $temperatura_color = '#ffb22b';
-    //             } else {
-    //                 $temperatura_color = '#fc4b6c';
-    //             }
-
-
-    //             //--------------------
-
-
-    //             $velocidad = round((round(($velocidad / count($cumplimiento)), 3) * 100), 1);
-
-
-    //             if ($velocidad >= 90) {
-    //                 $velocidad_color = '#8ee66b';
-    //             } else if ($velocidad >= 50) {
-    //                 $velocidad_color = '#ffb22b';
-    //             } else {
-    //                 $velocidad_color = '#fc4b6c';
-    //             }
-
-
-    //             //--------------------
-
-
-    //             $humedad = round((round(($humedad / count($cumplimiento)), 3) * 100), 1);
-
-
-    //             if ($humedad >= 90) {
-    //                 $humedad_color = '#8ee66b';
-    //             } else if ($humedad >= 50) {
-    //                 $humedad_color = '#ffb22b';
-    //             } else {
-    //                 $humedad_color = '#fc4b6c';
-    //             }
-
-
-    //             //--------------------
-
-
-    //             $monoxido = round((round(($monoxido / count($cumplimiento)), 3) * 100), 1);
-
-
-    //             if ($monoxido >= 90) {
-    //                 $monoxido_color = '#8ee66b';
-    //             } else if ($monoxido >= 50) {
-    //                 $monoxido_color = '#ffb22b';
-    //             } else {
-    //                 $monoxido_color = '#fc4b6c';
-    //             }
-
-
-    //             //--------------------
-
-
-    //             $dioxido = round((round(($dioxido / count($cumplimiento)), 3) * 100), 1);
-
-
-    //             if ($dioxido >= 90) {
-    //                 $dioxido_color = '#8ee66b';
-    //             } else if ($dioxido >= 50) {
-    //                 $dioxido_color = '#ffb22b';
-    //             } else {
-    //                 $dioxido_color = '#fc4b6c';
-    //             }
-
-
-    //             //--------------------
-
-    //             $azufre = round((round(($azufre / count($cumplimiento)), 3) * 100), 1);
-
-
-    //             if ($azufre >= 90) {
-    //                 $azufre_color = '#8ee66b';
-    //             } else if ($dioxido >= 50) {
-    //                 $azufre_color = '#ffb22b';
-    //             } else {
-    //                 $azufre_color = '#fc4b6c';
-    //             }
-
-
-    //             //--------------------
-
-
-    //             $bioaerosoles = round((round(($bioaerosoles / (4 * count($cumplimiento))), 3) * 100), 1);
-
-
-    //             if ($bioaerosoles >= 90) {
-    //                 $bioaerosoles_color = '#8ee66b';
-    //             } else if ($bioaerosoles >= 50) {
-    //                 $bioaerosoles_color = '#ffb22b';
-    //             } else {
-    //                 $bioaerosoles_color = '#fc4b6c';
-    //             }
-
-
-    //             //--------------------
-
-
-    //             $dato["dashboard_parametros"] .= '<div class="col-12" >
-    //                                                     <h6 class="m-t-30" style="margin: 0px; font-size:0.8vw;">Temperatura del aire <span class="pull-right">' . $temperatura . '%</span></h6>
-    //                                                     <div class="progress" style="margin-bottom: 8px;">
-    //                                                         <div class="progress-bar" role="progressbar" style="width: ' . $temperatura . '%; height: 10px; background: #8ee66b;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-    //                                                     </div>
-    //                                                 </div>
-    //                                                 <div class="col-12" >
-    //                                                     <h6 class="m-t-30" style="margin: 0px; font-size:0.8vw;">Velocidad del aire <span class="pull-right">' . $velocidad . '%</span></h6>
-    //                                                     <div class="progress" style="margin-bottom: 8px;">
-    //                                                         <div class="progress-bar" role="progressbar" style="width: ' . $velocidad . '%; height: 10px; background: #8ee66b;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-    //                                                     </div>
-    //                                                 </div>
-    //                                                 <div class="col-12" >
-    //                                                     <h6 class="m-t-30" style="margin: 0px; font-size:0.8vw;">Humedad relativa <span class="pull-right">' . $humedad . '%</span></h6>
-    //                                                     <div class="progress" style="margin-bottom: 8px;">
-    //                                                         <div class="progress-bar" role="progressbar" style="width: ' . $humedad . '%; height: 10px; background: #8ee66b;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-    //                                                     </div>
-    //                                                 </div>
-    //                                                 <div class="col-12" >
-    //                                                     <h6 class="m-t-30" style="margin: 0px; font-size:0.8vw;">Monóxido de carbono (CO) <span class="pull-right">' . $monoxido . '%</span></h6>
-    //                                                     <div class="progress" style="margin-bottom: 8px;">
-    //                                                         <div class="progress-bar" role="progressbar" style="width: ' . $monoxido . '%; height: 10px; background: #8ee66b;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-    //                                                     </div>
-    //                                                 </div>
-    //                                                 <div class="col-12">
-    //                                                     <h6 class="m-t-30" style="margin: 0px; font-size:0.8vw;">Dióxido de carbono (CO<sub>2</sub>) <span class="pull-right">' . $dioxido . '%</span></h6>
-    //                                                     <div class="progress" style="margin-bottom: 8px;">
-    //                                                         <div class="progress-bar" role="progressbar" style="width: ' . $dioxido . '%; height: 10px; background: #8ee66b;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-    //                                                     </div>
-    //                                                 </div>
-    //                                                 <div class="col-12" >
-    //                                                     <h6 class="m-t-30" style="margin: 0px; font-size:0.8vw;">Dióxido de azufre (SO<sub>2</sub>) <span class="pull-right">' . $azufre . '%</span></h6>
-    //                                                     <div class="progress" style="margin-bottom: 8px;">
-    //                                                         <div class="progress-bar" role="progressbar" style="width: ' . $azufre . '%; height: 10px; background: #8ee66b;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-    //                                                     </div>
-    //                                                 </div>
-    //                                                 <div class="col-12">
-    //                                                     <h6 class="m-t-30" style="margin: 0px; font-size:0.8vw;">Bioaerosoles (CT, CTMA, Hongos, Levaduras) <span class="pull-right">' . $bioaerosoles . '%</span></h6>
-    //                                                     <div class="progress" style="margin-bottom: 8px;">
-    //                                                         <div class="progress-bar" role="progressbar" style="width: ' . $bioaerosoles . '%; height: 10px; background: #8ee66b;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-    //                                                     </div>
-    //                                                 </div>
-    //                                                 ';
-
-
-    //             $dato["dashboard_puntos"] = (count($cumplimiento) + 0);
-    //         } else {
-    //             $dato["dashboard_puntos"] = 0;
-    //             $dato["dashboard_parametros"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">No se encontrarón parámetros evaluados.</span>';
-    //         }
-
-
-    //         //=====================================
-    //         // AREAS CRITICAS POR PARAMETRO
-
-
-    //         if (($areas_poe + 0) == 1) {
-    //             $total_instalaciones = DB::select('SELECT
-    //                                                     reporteaireevaluacion.proyecto_id,
-    //                                                     reporteaireevaluacion.registro_id,
-    //                                                     reportearea.reportearea_instalacion AS reporteairearea_instalacion
-    //                                                 FROM
-    //                                                     reporteaireevaluacion
-    //                                                     LEFT JOIN reportearea ON reporteaireevaluacion.reporteairearea_id = reportearea.id
-    //                                                 WHERE
-    //                                                     reporteaireevaluacion.proyecto_id = ' . $proyecto_id . ' 
-    //                                                     AND reporteaireevaluacion.registro_id = ' . $reporteregistro_id . ' 
-    //                                                 GROUP BY
-    //                                                     reporteaireevaluacion.proyecto_id,
-    //                                                     reporteaireevaluacion.registro_id,
-    //                                                     reportearea.reportearea_instalacion');
-    //         } else {
-    //             $total_instalaciones = DB::select('SELECT
-    //                                                     reporteaireevaluacion.proyecto_id,
-    //                                                     reporteaireevaluacion.registro_id,
-    //                                                     reporteairearea.reporteairearea_instalacion
-    //                                                 FROM
-    //                                                     reporteaireevaluacion
-    //                                                     LEFT JOIN reporteairearea ON reporteaireevaluacion.reporteairearea_id = reporteairearea.id
-    //                                                 WHERE
-    //                                                     reporteaireevaluacion.proyecto_id = ' . $proyecto_id . ' 
-    //                                                     AND reporteaireevaluacion.registro_id = ' . $reporteregistro_id . ' 
-    //                                                 GROUP BY
-    //                                                     reporteaireevaluacion.proyecto_id,
-    //                                                     reporteaireevaluacion.registro_id,
-    //                                                     reporteairearea.reporteairearea_instalacion');
-    //         }
-
-
-    //         //-----------------------------------
-
-
-    //         if (($areas_poe + 0) == 1) {
-    //             $areas_criticas = DB::select('SELECT
-    //                                                 TABLA.proyecto_id,
-    //                                                 TABLA.registro_id,
-    //                                                 TABLA.reporteairearea_instalacion,
-    //                                                 TABLA.reporteairearea_id,
-    //                                                 TABLA.reporteairearea_nombre,
-    //                                                 COUNT(TABLA.reporteaireevaluacion_punto) AS puntos,
-    //                                                 SUM(TABLA.temperatura_resultado) AS t_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.temperatura_resultado) / COUNT(TABLA.reporteaireevaluacion_punto)), 3) * 100), 0) AS t_resultado,
-    //                                                 SUM(TABLA.velocidad_resultado) AS v_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.velocidad_resultado) / COUNT(TABLA.reporteaireevaluacion_punto)), 3) * 100), 0) AS v_resultado,
-    //                                                 SUM(TABLA.humedad_resultado) AS h_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.humedad_resultado) / COUNT(TABLA.reporteaireevaluacion_punto)), 3) * 100), 0) AS h_resultado,
-    //                                                 SUM(TABLA.co_resultado) AS co_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.co_resultado) / COUNT(TABLA.reporteaireevaluacion_punto)), 3) * 100), 0) AS co_resultado,
-    //                                                 SUM(TABLA.co2_resultado) AS co2_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.co2_resultado) / COUNT(TABLA.reporteaireevaluacion_punto)), 3) * 100), 0) AS co2_resultado,
-    //                                                 SUM(TABLA.bioaerosoles_resultado) AS bio_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.bioaerosoles_resultado) / (COUNT(TABLA.reporteaireevaluacion_punto) * 4)), 3) * 100), 0) AS bio_resultado
-    //                                             FROM
-    //                                                 (
-    //                                                     SELECT
-    //                                                         reporteaireevaluacion.proyecto_id,
-    //                                                         reporteaireevaluacion.registro_id,
-    //                                                         reporteaireevaluacion.id,
-    //                                                         reportearea.reportearea_instalacion AS reporteairearea_instalacion,
-    //                                                         reporteaireevaluacion.reporteairearea_id,
-    //                                                         reportearea.reportearea_nombre AS reporteairearea_nombre,
-    //                                                         reportearea.reportearea_orden AS reporteairearea_numorden,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_ubicacion,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_punto,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_temperatura,
-    //                                                         (
-    //                                                             IF((reporteaireevaluacion.reporteaireevaluacion_temperatura + 0) >= 22 AND (reporteaireevaluacion.reporteaireevaluacion_temperatura + 0) <= 24.5, 1, 0)
-    //                                                         ) AS temperatura_resultado,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_velocidad,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_velocidadlimite,
-    //                                                         (
-    //                                                             -- IF((reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) >= 0.15 AND (reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) <= 0.25, 1, 0)
-    //                                                             IF((reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) <= (reporteaireevaluacion.reporteaireevaluacion_velocidadlimite + 0), 1, 0)
-    //                                                         ) AS velocidad_resultado,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_humedad,
-    //                                                         (
-    //                                                             IF((reporteaireevaluacion.reporteaireevaluacion_humedad + 0) >= 20 AND (reporteaireevaluacion.reporteaireevaluacion_humedad + 0) <= 60, 1, 0)
-    //                                                         ) AS humedad_resultado,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_co,
-    //                                                         (
-    //                                                             IF(
-    //                                                                 CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                 , IF(
-    //                                                                     (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, ">" , ""), "<" ,""), " ", "") + 0) <= 25
-    //                                                                     , 1
-    //                                                                     , 0
-    //                                                                 )
-    //                                                                 , 0
-    //                                                             )
-    //                                                         ) AS co_resultado,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_co2,
-    //                                                         (
-    //                                                             IF(
-    //                                                                 CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                 , IF(
-    //                                                                     (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, ">" , ""), "<" ,""), " ", "") + 0) <= 5000
-    //                                                                     , 1
-    //                                                                     , 0
-    //                                                                 )
-    //                                                                 , 0
-    //                                                             )
-    //                                                         ) AS co2_resultado,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_ct,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_ctma,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_hongos,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_levaduras,
-    //                                                         (
-    //                                                             (
-    //                                                                 IF(
-    //                                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                     , IF(
-    //                                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                                         , 1
-    //                                                                         , 0
-    //                                                                     )
-    //                                                                     , 0
-    //                                                                 )
-    //                                                             )
-    //                                                             +
-    //                                                             (
-    //                                                                 IF(
-    //                                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                     , IF(
-    //                                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                                         , 1
-    //                                                                         , 0
-    //                                                                     )
-    //                                                                     , 0
-    //                                                                 )
-    //                                                             )
-    //                                                             +
-    //                                                             (
-    //                                                                 IF(
-    //                                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                     , IF(
-    //                                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                                         , 1
-    //                                                                         , 0
-    //                                                                     )
-    //                                                                     , 0
-    //                                                                 )
-    //                                                             )
-    //                                                             +
-    //                                                             (
-    //                                                                 IF(
-    //                                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                     , IF(
-    //                                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                                         , 1
-    //                                                                         , 0
-    //                                                                     )
-    //                                                                     , 0
-    //                                                                 )
-    //                                                             )
-    //                                                         ) AS bioaerosoles_resultado
-    //                                                     FROM
-    //                                                         reporteaireevaluacion
-    //                                                         LEFT JOIN reportearea ON reporteaireevaluacion.reporteairearea_id = reportearea.id
-    //                                                     WHERE
-    //                                                         reporteaireevaluacion.proyecto_id = ' . $proyecto_id . ' 
-    //                                                         AND reporteaireevaluacion.registro_id = ' . $reporteregistro_id . ' 
-    //                                                     ORDER BY
-    //                                                         reportearea.reportearea_orden ASC,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_punto ASC
-    //                                                 ) AS TABLA
-    //                                             GROUP BY
-    //                                                 TABLA.proyecto_id,
-    //                                                 TABLA.registro_id,
-    //                                                 TABLA.reporteairearea_instalacion,
-    //                                                 TABLA.reporteairearea_id,
-    //                                                 TABLA.reporteairearea_nombre');
-    //         } else {
-    //             $areas_criticas = DB::select('SELECT
-    //                                                 TABLA.proyecto_id,
-    //                                                 TABLA.registro_id,
-    //                                                 TABLA.reporteairearea_instalacion,
-    //                                                 TABLA.reporteairearea_id,
-    //                                                 TABLA.reporteairearea_nombre,
-    //                                                 COUNT(TABLA.reporteaireevaluacion_punto) AS puntos,
-    //                                                 SUM(TABLA.temperatura_resultado) AS t_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.temperatura_resultado) / COUNT(TABLA.reporteaireevaluacion_punto)), 3) * 100), 0) AS t_resultado,
-    //                                                 SUM(TABLA.velocidad_resultado) AS v_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.velocidad_resultado) / COUNT(TABLA.reporteaireevaluacion_punto)), 3) * 100), 0) AS v_resultado,
-    //                                                 SUM(TABLA.humedad_resultado) AS h_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.humedad_resultado) / COUNT(TABLA.reporteaireevaluacion_punto)), 3) * 100), 0) AS h_resultado,
-    //                                                 SUM(TABLA.co_resultado) AS co_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.co_resultado) / COUNT(TABLA.reporteaireevaluacion_punto)), 3) * 100), 0) AS co_resultado,
-    //                                                 SUM(TABLA.co2_resultado) AS co2_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.co2_resultado) / COUNT(TABLA.reporteaireevaluacion_punto)), 3) * 100), 0) AS co2_resultado,
-    //                                                 SUM(TABLA.bioaerosoles_resultado) AS bio_cumplimiento, 
-    //                                                 ROUND((ROUND((SUM(TABLA.bioaerosoles_resultado) / (COUNT(TABLA.reporteaireevaluacion_punto) * 4)), 3) * 100), 0) AS bio_resultado
-    //                                             FROM
-    //                                                 (
-    //                                                     SELECT
-    //                                                         reporteaireevaluacion.proyecto_id,
-    //                                                         reporteaireevaluacion.registro_id,
-    //                                                         reporteaireevaluacion.id,
-    //                                                         reporteairearea.reporteairearea_instalacion,
-    //                                                         reporteaireevaluacion.reporteairearea_id,
-    //                                                         reporteairearea.reporteairearea_nombre,
-    //                                                         reporteairearea.reporteairearea_numorden,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_ubicacion,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_punto,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_temperatura,
-    //                                                         (
-    //                                                             IF((reporteaireevaluacion.reporteaireevaluacion_temperatura + 0) >= 22 AND (reporteaireevaluacion.reporteaireevaluacion_temperatura + 0) <= 24.5, 1, 0)
-    //                                                         ) AS temperatura_resultado,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_velocidad,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_velocidadlimite,
-    //                                                         (
-    //                                                             -- IF((reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) >= 0.15 AND (reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) <= 0.25, 1, 0)
-    //                                                             IF((reporteaireevaluacion.reporteaireevaluacion_velocidad + 0) <= (reporteaireevaluacion.reporteaireevaluacion_velocidadlimite + 0), 1, 0)
-    //                                                         ) AS velocidad_resultado,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_humedad,
-    //                                                         (
-    //                                                             IF((reporteaireevaluacion.reporteaireevaluacion_humedad + 0) >= 20 AND (reporteaireevaluacion.reporteaireevaluacion_humedad + 0) <= 60, 1, 0)
-    //                                                         ) AS humedad_resultado,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_co,
-    //                                                         (
-    //                                                             IF(
-    //                                                                 CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                 , IF(
-    //                                                                     (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co, ">" , ""), "<" ,""), " ", "") + 0) <= 25
-    //                                                                     , 1
-    //                                                                     , 0
-    //                                                                 )
-    //                                                                 , 0
-    //                                                             )
-    //                                                         ) AS co_resultado,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_co2,
-    //                                                         (
-    //                                                             IF(
-    //                                                                 CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                 , IF(
-    //                                                                     (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_co2, ">" , ""), "<" ,""), " ", "") + 0) <= 5000
-    //                                                                     , 1
-    //                                                                     , 0
-    //                                                                 )
-    //                                                                 , 0
-    //                                                             )
-    //                                                         ) AS co2_resultado,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_ct,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_ctma,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_hongos,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_levaduras,
-    //                                                         (
-    //                                                             (
-    //                                                                 IF(
-    //                                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                     , IF(
-    //                                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ct, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                                         , 1
-    //                                                                         , 0
-    //                                                                     )
-    //                                                                     , 0
-    //                                                                 )
-    //                                                             )
-    //                                                             +
-    //                                                             (
-    //                                                                 IF(
-    //                                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                     , IF(
-    //                                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_ctma, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                                         , 1
-    //                                                                         , 0
-    //                                                                     )
-    //                                                                     , 0
-    //                                                                 )
-    //                                                             )
-    //                                                             +
-    //                                                             (
-    //                                                                 IF(
-    //                                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                     , IF(
-    //                                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_hongos, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                                         , 1
-    //                                                                         , 0
-    //                                                                     )
-    //                                                                     , 0
-    //                                                                 )
-    //                                                             )
-    //                                                             +
-    //                                                             (
-    //                                                                 IF(
-    //                                                                     CONVERT(REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, ">" , ""), "<" ,""), " ", ""), UNSIGNED INTEGER) > 0
-    //                                                                     , IF(
-    //                                                                         (REPLACE(REPLACE(REPLACE(reporteaireevaluacion.reporteaireevaluacion_levaduras, ">" , ""), "<" ,""), " ", "") + 0) <= 500
-    //                                                                         , 1
-    //                                                                         , 0
-    //                                                                     )
-    //                                                                     , 0
-    //                                                                 )
-    //                                                             )
-    //                                                         ) AS bioaerosoles_resultado
-    //                                                     FROM
-    //                                                         reporteaireevaluacion
-    //                                                         LEFT JOIN reporteairearea ON reporteaireevaluacion.reporteairearea_id = reporteairearea.id
-    //                                                     WHERE
-    //                                                         reporteaireevaluacion.proyecto_id = ' . $proyecto_id . ' 
-    //                                                         AND reporteaireevaluacion.registro_id = ' . $reporteregistro_id . ' 
-    //                                                     ORDER BY
-    //                                                         reporteairearea.reporteairearea_numorden ASC,
-    //                                                         reporteaireevaluacion.reporteaireevaluacion_punto ASC
-    //                                                 ) AS TABLA
-    //                                             GROUP BY
-    //                                                 TABLA.proyecto_id,
-    //                                                 TABLA.registro_id,
-    //                                                 TABLA.reporteairearea_instalacion,
-    //                                                 TABLA.reporteairearea_id,
-    //                                                 TABLA.reporteairearea_nombre');
-    //         }
-
-
-    //         $dato["dashboard_temperatura"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato["dashboard_velocidad"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato["dashboard_humedad"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato["dashboard_co"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato["dashboard_co2"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato["dashboard_bioaerosoles"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-
-
-    //         if (count($areas_criticas) > 0) {
-    //             $dato["dashboard_temperatura"] = NULL;
-    //             $dato["dashboard_velocidad"] = NULL;
-    //             $dato["dashboard_humedad"] = NULL;
-    //             $dato["dashboard_co"] = NULL;
-    //             $dato["dashboard_co2"] = NULL;
-    //             $dato["dashboard_bioaerosoles"] = NULL;
-
-    //             $instalacion1 = 'XXXXX';
-    //             $instalacion2 = 'XXXXX';
-    //             $instalacion3 = 'XXXXX';
-    //             $instalacion4 = 'XXXXX';
-    //             $instalacion5 = 'XXXXX';
-    //             $instalacion6 = 'XXXXX';
-
-    //             foreach ($areas_criticas as $key => $value) {
-    //                 if (($value->t_resultado + 0) < 100) {
-    //                     if (count($total_instalaciones) > 1 && $instalacion1 != $value->reporteairearea_instalacion) {
-    //                         $dato["dashboard_temperatura"] .= '<b style="font-size: 0.6vw; color: #0BACDB;">' . $value->reporteairearea_instalacion . '</b><br>';
-    //                         $instalacion1 = $value->reporteairearea_instalacion;
-    //                     }
-
-    //                     $dato["dashboard_temperatura"] .= '● ' . $value->reporteairearea_nombre . ' (' . $value->puntos . ' puntos - <b>' . $value->t_resultado . '%</b>)<br>';
-    //                 }
-
-
-    //                 if (($value->v_resultado + 0) < 100) {
-    //                     if (count($total_instalaciones) > 1 && $instalacion2 != $value->reporteairearea_instalacion) {
-    //                         $dato["dashboard_velocidad"] .= '<b style="font-size: 0.6vw; color: #0BACDB;">' . $value->reporteairearea_instalacion . '</b><br>';
-    //                         $instalacion2 = $value->reporteairearea_instalacion;
-    //                     }
-
-    //                     $dato["dashboard_velocidad"] .= '● ' . $value->reporteairearea_nombre . ' (' . $value->puntos . ' puntos - <b>' . $value->v_resultado . '%</b>)<br>';
-    //                 }
-
-
-    //                 if (($value->h_resultado + 0) < 100) {
-    //                     if (count($total_instalaciones) > 1 && $instalacion3 != $value->reporteairearea_instalacion) {
-    //                         $dato["dashboard_humedad"] .= '<b style="font-size: 0.6vw; color: #0BACDB;">' . $value->reporteairearea_instalacion . '</b><br>';
-    //                         $instalacion3 = $value->reporteairearea_instalacion;
-    //                     }
-
-    //                     $dato["dashboard_humedad"] .= '● ' . $value->reporteairearea_nombre . ' (' . $value->puntos . ' puntos - <b>' . $value->h_resultado . '%</b>)<br>';
-    //                 }
-
-
-    //                 if (($value->co_resultado + 0) < 100) {
-    //                     if (count($total_instalaciones) > 1 && $instalacion4 != $value->reporteairearea_instalacion) {
-    //                         $dato["dashboard_co"] .= '<b style="font-size: 0.6vw; color: #0BACDB;">' . $value->reporteairearea_instalacion . '</b><br>';
-    //                         $instalacion4 = $value->reporteairearea_instalacion;
-    //                     }
-
-    //                     $dato["dashboard_co"] .= '● ' . $value->reporteairearea_nombre . ' (' . $value->puntos . ' puntos - <b>' . $value->co_resultado . '%</b>)<br>';
-    //                 }
-
-
-    //                 if (($value->co2_resultado + 0) < 100) {
-    //                     if (count($total_instalaciones) > 1 && $instalacion5 != $value->reporteairearea_instalacion) {
-    //                         $dato["dashboard_co2"] .= '<b style="font-size: 0.6vw; color: #0BACDB;">' . $value->reporteairearea_instalacion . '</b><br>';
-    //                         $instalacion5 = $value->reporteairearea_instalacion;
-    //                     }
-
-    //                     $dato["dashboard_co2"] .= '● ' . $value->reporteairearea_nombre . ' (' . $value->puntos . ' puntos - <b>' . $value->co2_resultado . '%</b>)<br>';
-    //                 }
-
-
-    //                 if (($value->bio_resultado + 0) < 100) {
-    //                     if (count($total_instalaciones) > 1 && $instalacion6 != $value->reporteairearea_instalacion) {
-    //                         $dato["dashboard_bioaerosoles"] .= '<b style="font-size: 0.6vw; color: #0BACDB;">' . $value->reporteairearea_instalacion . '</b><br>';
-    //                         $instalacion6 = $value->reporteairearea_instalacion;
-    //                     }
-
-    //                     $dato["dashboard_bioaerosoles"] .= '● ' . $value->reporteairearea_nombre . ' (' . $value->puntos . ' puntos - <b>' . $value->bio_resultado . '%</b>)<br>';
-    //                 }
-    //             }
-
-
-    //             if (!$dato["dashboard_temperatura"]) {
-    //                 $dato["dashboard_temperatura"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //             }
-
-
-    //             if (!$dato["dashboard_velocidad"]) {
-    //                 $dato["dashboard_velocidad"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //             }
-
-
-    //             if (!$dato["dashboard_humedad"]) {
-    //                 $dato["dashboard_humedad"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //             }
-
-
-    //             if (!$dato["dashboard_co"]) {
-    //                 $dato["dashboard_co"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //             }
-
-
-    //             if (!$dato["dashboard_co2"]) {
-    //                 $dato["dashboard_co2"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //             }
-
-
-    //             if (!$dato["dashboard_bioaerosoles"]) {
-    //                 $dato["dashboard_bioaerosoles"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //             }
-    //         }
-
-
-    //         //=====================================
-    //         // RECOMENDACIONES
-
-
-    //         $recomendaciones = DB::select('SELECT
-    //                                             -- reporterecomendaciones.proyecto_id,
-    //                                             -- reporterecomendaciones.registro_id,
-    //                                             -- reporterecomendaciones.agente_id,
-    //                                             -- reporterecomendaciones.agente_nombre,
-    //                                             -- reporterecomendaciones.catactivo_id,
-    //                                             -- reporterecomendaciones.reporterecomendacionescatalogo_id,
-    //                                             -- reporterecomendaciones.reporterecomendaciones_tipo,
-    //                                             -- reporterecomendaciones.reporterecomendaciones_descripcion,
-    //                                             COUNT(reporterecomendaciones.id) AS totalrecomendaciones
-    //                                         FROM
-    //                                             reporterecomendaciones 
-    //                                         WHERE
-    //                                             reporterecomendaciones.proyecto_id = ' . $proyecto_id . '  
-    //                                             AND reporterecomendaciones.registro_id = ' . $reporteregistro_id . ' 
-    //                                             AND reporterecomendaciones.agente_nombre LIKE "%Aire%"');
-
-
-    //         $dato['dashboard_recomendaciones'] = 0;
-    //         if (count($recomendaciones) > 0) {
-    //             $dato['dashboard_recomendaciones'] = $recomendaciones[0]->totalrecomendaciones;
-    //         }
-
-
-    //         //=====================================
-
-
-    //         $dato["msj"] = 'Datos consultados correctamente';
-    //         return response()->json($dato);
-    //     } catch (Exception $e) {
-    //         $dato["dashboard_parametros"] = 'Error al consultar los parámetros evaluados.';
-    //         $dato["dashboard_puntos"] = 0;
-    //         $dato["dashboard_temperatura"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato["dashboard_velocidad"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato["dashboard_humedad"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato["dashboard_co"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato["dashboard_co2"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato["dashboard_bioaerosoles"] = '<span style="font-size: 1.1vw; font-weight: 600; color: #000000;">0</span>';
-    //         $dato['dashboard_recomendaciones'] = 0;
-    //         $dato["msj"] = 'Error ' . $e->getMessage();
-    //         return response()->json($dato);
-    //     }
-    // }
-
+    
 
     public function reporteairedashboard($proyecto_id, $reporteregistro_id, $areas_poe)
     {
@@ -6826,47 +5646,6 @@ class reporteaireController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    /*
-    public function reporteairedashboardgraficas(Request $request)
-    {
-        try
-        {
-            // dd($request->all());
-
-            if ($request->grafica_dashboard)
-            {
-                // Codificar imagen recibida como tipo base64
-                $imagen_recibida = explode(',', $request->grafica_dashboard); //Archivo foto tipo base64
-                $imagen_nueva = base64_decode($imagen_recibida[1]);
-
-
-                // Ruta destino archivo
-                $destinoPath = 'reportes/proyecto/'.$request->proyecto_id.'/'.$request->agente_nombre.'/'.$request->reporteregistro_id.'/dashboard/dashboard_grafica.jpg'; // GRAFICA
-
-
-                // Guardar Foto
-                Storage::put($destinoPath, $imagen_nueva); // Guardar en storage
-                // file_put_contents(public_path('/imagen.jpg'), $imagen_nueva); // Guardar en public
-            }
-
-
-            // Mensaje
-            $dato["msj"] = 'Imagen guardada correctamente';
-            return response()->json($dato);
-        }
-        catch(Exception $e)
-        {
-            $dato["msj"] = 'Error '.$e->getMessage();
-            return response()->json($dato);
-        }
-    }
-    */
 
 
     /**
