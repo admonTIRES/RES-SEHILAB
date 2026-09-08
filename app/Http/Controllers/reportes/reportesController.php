@@ -432,22 +432,19 @@ class reportesController extends Controller
     public function tablameldraft($proyecto_id, $reporteregistro_id, $areas_poe)
     {
         try {
+
+
+
             if (empty($reporteregistro_id) || $reporteregistro_id == 0) {
-                $registro = DB::table('reportequimicosgrupos')
+
+                $reporteregistro_id = DB::table(
+                    'reportequimicosevaluacion'
+                )
                     ->where('proyecto_id', $proyecto_id)
-                    ->select('registro_id')
-                    ->orderBy('created_at', 'DESC')
-                    ->first();
-
-                if (!$registro) {
-                    return response()->json([
-                        'data' => [],
-                        'total' => 0,
-                        'msj' => 'No se encontró registro_id para el proyecto.'
-                    ]);
+                    ->max('registro_id');
+                if (empty($reporteregistro_id)) {
+                    $reporteregistro_id = 0;
                 }
-
-                $reporteregistro_id = $registro->registro_id;
             }
 
             $departamento = DB::table('departamentos_meldraft')
@@ -2211,20 +2208,16 @@ class reportesController extends Controller
     public function exportarMeldraft($proyecto_id)
     {
         try {
-            $registro = DB::table('reportequimicosgrupos')
+
+            $reporteregistro_id = DB::table(
+                'reportequimicosevaluacion'
+            )
                 ->where('proyecto_id', $proyecto_id)
-                ->select('registro_id')
-                ->orderBy('created_at', 'DESC')
-                ->first();
+                ->max('registro_id');
 
-            if (!$registro) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'No se encontró registro_id para este proyecto.'
-                ]);
+            if (empty($reporteregistro_id)) {
+                $reporteregistro_id = 0;
             }
-
-            $reporteregistro_id = $registro->registro_id;
 
             $departamento = DB::table('departamentos_meldraft')
                 ->where('proyecto_id', $proyecto_id)
@@ -2238,15 +2231,21 @@ class reportesController extends Controller
                 ->where('id', $proyecto_id)
                 ->first();
 
+            if (!$proyecto) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontró el proyecto.'
+                ], 404);
+            }
+
             $nombreInstalacion = 'Instalacion';
 
             if (
-                $proyecto &&
                 isset($proyecto->proyecto_clienteinstalacion) &&
-                trim($proyecto->proyecto_clienteinstalacion) !== ''
+                trim((string) $proyecto->proyecto_clienteinstalacion) !== ''
             ) {
                 $nombreInstalacion = trim(
-                    $proyecto->proyecto_clienteinstalacion
+                    (string) $proyecto->proyecto_clienteinstalacion
                 );
             }
 
@@ -2272,6 +2271,7 @@ class reportesController extends Controller
                 $nombreInstalacion
             );
 
+
             $respuestaMatriz = $this->tablameldraft(
                 $proyecto_id,
                 $reporteregistro_id,
@@ -2289,12 +2289,13 @@ class reportesController extends Controller
                     'success' => false,
                     'message' => isset($resultadoMatriz['msj'])
                         ? $resultadoMatriz['msj']
-                        : 'No hay datos para exportar.'
+                        : 'No hay información de agentes para exportar.'
                 ]);
             }
 
             $puntos = $resultadoMatriz['data'];
 
+    
             $templatePath = storage_path(
                 'app/plantillas_reportes/proyecto_infomes/plantillla_meldraft.xlsx'
             );
