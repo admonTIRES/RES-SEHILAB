@@ -2220,6 +2220,8 @@
 		</div>
 	</div>
 </div>
+
+
 <!-- ============================================================== -->
 <!-- MODAL-REPORTE-CANCELACION OBSERVACION -->
 <!-- ============================================================== -->
@@ -2244,4 +2246,4 @@
 	var recsensorial = <?php echo json_encode($recsensorial); ?>;
 </script>
 <script src="/js_sitio/html2canvas.js"></script>
-<script src="/js_sitio/reportes/reportevibracion.js?v=8.0"></script>
+<script src="/js_sitio/reportes/reportevibracion.js?v=9"></script>

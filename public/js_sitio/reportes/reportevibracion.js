@@ -2169,124 +2169,238 @@ function validarCampos() {
 	}
 }
 
+// $("#botonguardar_modal_area").click(function (e){
+	
+// 	datatable_areacategoria.search("").draw();
+
+// 	e.preventDefault()
+
+// 	if (validarCampos()) {
+// 		// valida campos vacios
+// 		var valida = this.form.checkValidity();
+// 		if (valida) {
+// 			swal({
+// 				title: "¡Confirme que desea guardar!",
+// 				text: "Área: " + $("#reportearea_nombre").val(),
+// 				type: "warning",
+// 				showCancelButton: true,
+// 				confirmButtonColor: "#DD6B55",
+// 				confirmButtonText: "Guardar!",
+// 				cancelButtonText: "Cancelar!",
+// 				closeOnConfirm: false,
+// 				closeOnCancel: false
+// 			},
+// 				function (isConfirm) {
+// 					if (isConfirm) {
+// 						// cerrar msj confirmacion
+// 						swal.close();
+	
+// 						// enviar datos
+// 						$('#form_reporte_area').ajaxForm({
+// 							dataType: 'json',
+// 							type: 'POST',
+// 							url: '' + ruta_storage_guardar,
+// 							data: {
+// 								opcion: 8,
+// 								proyecto_id: proyecto.id,
+// 								agente_id: agente_id,
+// 								agente_nombre: agente_nombre,
+// 								reporteregistro_id: reporteregistro_id,
+// 								catactivo_id: $("#reporte_catactivo_id").val(),
+// 								reporte_instalacion: $("#reporte_instalacion").val(),
+// 							},
+// 							resetForm: false,
+// 							success: function (dato) {
+// 								// Actualizar ID reporte
+// 								reporteregistro_id = dato.reporteregistro_id;
+	
+	
+// 								// Actualizar tabla
+// 								tabla_reporte_areas(proyecto.id);
+// 								tabla_reporte_puntos(proyecto.id);
+// 								tabla_reporte_matriz(proyecto.id);
+// 								reporte_dashboard(proyecto.id);
+	
+	
+// 								// mensaje
+// 								swal({
+// 									title: "Correcto",
+// 									text: "" + dato.msj,
+// 									type: "success", // warning, error, success, info
+// 									buttons: {
+// 										visible: false, // true , false
+// 									},
+// 									timer: 1500,
+// 									showConfirmButton: false
+// 								});
+	
+// 								// actualiza boton
+// 								$('#botonguardar_modal_area').html('Guardar <i class="fa fa-save"></i>');
+// 								$('#botonguardar_modal_area').attr('disabled', false);
+	
+// 								// cerrar modal
+// 								$('#modal_reporte_area').modal('hide');
+// 							},
+// 							beforeSend: function () {
+// 								$('#botonguardar_modal_area').html('Guardando <i class="fa fa-spin fa-spinner"></i>');
+// 								$('#botonguardar_modal_area').attr('disabled', true);
+// 							},
+// 							error: function (dato) {
+// 								// actualiza boton
+// 								$('#botonguardar_modal_area').html('Guardar <i class="fa fa-save"></i>');
+// 								$('#botonguardar_modal_area').attr('disabled', false);
+	
+// 								// mensaje
+// 								swal({
+// 									title: "Error",
+// 									text: "" + dato.msj,
+// 									type: "error", // warning, error, success, info
+// 									buttons: {
+// 										visible: false, // true , false
+// 									},
+// 									timer: 1500,
+// 									showConfirmButton: false
+// 								});
+// 								return false;
+// 							}
+// 						}).submit();
+// 						return false;
+// 					}
+// 					else {
+// 						// mensaje
+// 						swal({
+// 							title: "Cancelado",
+// 							text: "Acción cancelada",
+// 							type: "error", // warning, error, success, info
+// 							buttons: {
+// 								visible: false, // true , false
+// 							},
+// 							timer: 500,
+// 							showConfirmButton: false
+// 						});
+// 					}
+// 				});
+// 			return false;
+// 		}
+
+// 	}
+// });
+
+
+
 $("#botonguardar_modal_area").click(function (e){
 	
 	datatable_areacategoria.search("").draw();
 
-	e.preventDefault()	
+	e.preventDefault();	
 
-	if (validarCampos()) {
-		// valida campos vacios
-		var valida = this.form.checkValidity();
-		if (valida) {
-			swal({
-				title: "¡Confirme que desea guardar!",
-				text: "Área: " + $("#reportearea_nombre").val(),
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#DD6B55",
-				confirmButtonText: "Guardar!",
-				cancelButtonText: "Cancelar!",
-				closeOnConfirm: false,
-				closeOnCancel: false
-			},
-				function (isConfirm) {
-					if (isConfirm) {
-						// cerrar msj confirmacion
-						swal.close();
+	// valida campos vacios
+	var valida = this.form.checkValidity();
+	if (valida) {
+		swal({
+			title: "¡Confirme que desea guardar!",
+			text: "Área: " + $("#reportearea_nombre").val(),
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Guardar!",
+			cancelButtonText: "Cancelar!",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+			function (isConfirm) {
+				if (isConfirm) {
+					// cerrar msj confirmacion
+					swal.close();
 	
-						// enviar datos
-						$('#form_reporte_area').ajaxForm({
-							dataType: 'json',
-							type: 'POST',
-							url: '' + ruta_storage_guardar,
-							data: {
-								opcion: 8,
-								proyecto_id: proyecto.id,
-								agente_id: agente_id,
-								agente_nombre: agente_nombre,
-								reporteregistro_id: reporteregistro_id,
-								catactivo_id: $("#reporte_catactivo_id").val(),
-								reporte_instalacion: $("#reporte_instalacion").val(),
-							},
-							resetForm: false,
-							success: function (dato) {
-								// Actualizar ID reporte						
-								reporteregistro_id = dato.reporteregistro_id;
-	
-	
-								// Actualizar tabla
-								tabla_reporte_areas(proyecto.id);
-								tabla_reporte_puntos(proyecto.id);
-								tabla_reporte_matriz(proyecto.id);
-								reporte_dashboard(proyecto.id);
+					// enviar datos
+					$('#form_reporte_area').ajaxForm({
+						dataType: 'json',
+						type: 'POST',
+						url: '' + ruta_storage_guardar,
+						data: {
+							opcion: 8,
+							proyecto_id: proyecto.id,
+							agente_id: agente_id,
+							agente_nombre: agente_nombre,
+							reporteregistro_id: reporteregistro_id,
+							catactivo_id: $("#reporte_catactivo_id").val(),
+							reporte_instalacion: $("#reporte_instalacion").val(),
+						},
+						resetForm: false,
+						success: function (dato) {
+							// Actualizar ID reporte						
+							reporteregistro_id = dato.reporteregistro_id;
 	
 	
-								// mensaje
-								swal({
-									title: "Correcto",
-									text: "" + dato.msj,
-									type: "success", // warning, error, success, info
-									buttons: {
-										visible: false, // true , false
-									},
-									timer: 1500,
-									showConfirmButton: false
-								});
+							// Actualizar tabla
+							tabla_reporte_areas(proyecto.id);
+							tabla_reporte_puntos(proyecto.id);
+							tabla_reporte_matriz(proyecto.id);
+							reporte_dashboard(proyecto.id);
 	
-								// actualiza boton
-								$('#botonguardar_modal_area').html('Guardar <i class="fa fa-save"></i>');
-								$('#botonguardar_modal_area').attr('disabled', false);
 	
-								// cerrar modal
-								$('#modal_reporte_area').modal('hide');
-							},
-							beforeSend: function () {
-								$('#botonguardar_modal_area').html('Guardando <i class="fa fa-spin fa-spinner"></i>');
-								$('#botonguardar_modal_area').attr('disabled', true);
-							},
-							error: function (dato) {
-								// actualiza boton
-								$('#botonguardar_modal_area').html('Guardar <i class="fa fa-save"></i>');
-								$('#botonguardar_modal_area').attr('disabled', false);
+							// mensaje
+							swal({
+								title: "Correcto",
+								text: "" + dato.msj,
+								type: "success", // warning, error, success, info
+								buttons: {
+									visible: false, // true , false
+								},
+								timer: 1500,
+								showConfirmButton: false
+							});
 	
-								// mensaje
-								swal({
-									title: "Error",
-									text: "" + dato.msj,
-									type: "error", // warning, error, success, info
-									buttons: {
-										visible: false, // true , false
-									},
-									timer: 1500,
-									showConfirmButton: false
-								});
-								return false;
-							}
-						}).submit();
-						return false;
-					}
-					else {
-						// mensaje
-						swal({
-							title: "Cancelado",
-							text: "Acción cancelada",
-							type: "error", // warning, error, success, info
-							buttons: {
-								visible: false, // true , false
-							},
-							timer: 500,
-							showConfirmButton: false
-						});
-					}
-				});
-			return false;
-		}
-
+							// actualiza boton
+							$('#botonguardar_modal_area').html('Guardar <i class="fa fa-save"></i>');
+							$('#botonguardar_modal_area').attr('disabled', false);
+	
+							// cerrar modal
+							$('#modal_reporte_area').modal('hide');
+						},
+						beforeSend: function () {
+							$('#botonguardar_modal_area').html('Guardando <i class="fa fa-spin fa-spinner"></i>');
+							$('#botonguardar_modal_area').attr('disabled', true);
+						},
+						error: function (dato) {
+							// actualiza boton
+							$('#botonguardar_modal_area').html('Guardar <i class="fa fa-save"></i>');
+							$('#botonguardar_modal_area').attr('disabled', false);
+	
+							// mensaje
+							swal({
+								title: "Error",
+								text: "" + dato.msj,
+								type: "error", // warning, error, success, info
+								buttons: {
+									visible: false, // true , false
+								},
+								timer: 1500,
+								showConfirmButton: false
+							});
+							return false;
+						}
+					}).submit();
+					return false;
+				}
+				else {
+					// mensaje
+					swal({
+						title: "Cancelado",
+						text: "Acción cancelada",
+						type: "error", // warning, error, success, info
+						buttons: {
+							visible: false, // true , false
+						},
+						timer: 500,
+						showConfirmButton: false
+					});
+				}
+			});
+		return false;
 	} 
 });
-
-
 
 var datatable_reporte_5_4 = null;
 function tabla_reporte_5_4(tbody)
