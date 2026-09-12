@@ -870,9 +870,11 @@ class reportevibracionwordController extends Controller
 
 
                 $plantillaword->setValue('4_3_CUERPO_FIGURA2_PIE', '</w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t>Figura 2</w:t></w:r><w:r><w:t>. Límites de aceleración longitudinal (az) como función de la frecuencia y del tiempo de exposición (NOM-024-STPS-2001)');
-                $plantillaword->setValue('4_3_CUERPO_FIGURA4_PIE', '</w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t>Figura 3</w:t></w:r><w:r><w:t>. Límites de aceleración transversal (ax, ay) como función de la frecuencia y del tiempo de exposición (NOM-024-STPS-2001)');
+                
 
+          
 
+                $plantillaword->setValue('4_3_CUERPO_FIGURA4_PIE', '');
                 $plantillaword->setValue('4_3_EXTREMIDADES_PARRAFO1', '');
                 $plantillaword->setValue('4_3_EXTREMIDADES_FIGURA1', '');
                 $plantillaword->setValue('4_3_EXTREMIDADES_PARRAFO2', '');
@@ -898,7 +900,7 @@ class reportevibracionwordController extends Controller
             else
             {
                 $plantillaword->setValue('4_3_CUERPO_FIGURA2_PIE', '</w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t>Figura 3</w:t></w:r><w:r><w:t>. Límites de aceleración longitudinal (az) como función de la frecuencia y del tiempo de exposición (NOM-024-STPS-2001)');
-                $plantillaword->setValue('4_3_CUERPO_FIGURA4_PIE', '</w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t>Figura 4</w:t></w:r><w:r><w:t>. Límites de aceleración transversal (ax, ay) como función de la frecuencia y del tiempo de exposición (NOM-024-STPS-2001)');
+                $plantillaword->setValue('4_3_CUERPO_FIGURA4_PIE', '');
                 $plantillaword->setValue('4_2_PARRAFO_ADICIONAL', '');
             }
 
