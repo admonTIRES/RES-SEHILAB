@@ -184,7 +184,7 @@ class reportetemperaturaController extends Controller
     }
 
 
-    public function datosproyectoreemplazartexto($proyecto, $recsensorial, $texto)
+        public function datosproyectoreemplazartexto($proyecto, $recsensorial, $texto)
     {
         $meses = ["Vacio", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
         $reportefecha = explode("-", $proyecto->proyecto_fechaentrega);
@@ -206,6 +206,8 @@ class reportetemperaturaController extends Controller
         $texto = str_replace('INSTALACION_NOMBRE', $proyecto->proyecto_clienteinstalacion, $texto);
         $texto = str_replace('INSTALACION_DIRECCION', $proyecto->proyecto_clientedireccionservicio, $texto);
         $texto = str_replace('INSTALACION_CODIGOPOSTAL', 'C.P. ' . $recsensorial->recsensorial_codigopostal, $texto);
+
+
         $texto = str_replace('INSTALACION_COORDENADAS', $recsensorial->recsensorial_coordenadas, $texto);
         $texto = str_replace('REPORTE_FECHA_LARGA', $reportefecha[2] . " de " . $meses[($reportefecha[1] + 0)] . " del año " . $reportefecha[0], $texto);
 
@@ -221,101 +223,475 @@ class reportetemperaturaController extends Controller
      * @param  $agente_nombre
      * @return \Illuminate\Http\Response
      */
+    // public function reportetemperaturadatosgenerales($proyecto_id, $agente_id, $agente_nombre)
+    // {
+    //     try {
+
+
+
+    //         $proyecto = proyectoModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto_id);
+    //         $recsensorial = recsensorialModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto->recsensorial_id);
+
+    //         $meses = ["Vacio", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    //         $proyectofecha = explode("-", $proyecto->proyecto_fechaentrega);
+
+    //         $reportecatalogo = reportetemperaturacatalogoModel::findOrFail(1);
+    //         $reporte = reportetemperaturaModel::where('proyecto_id', $proyecto_id)->get();
+
+
+    //         if (count($reporte) > 0) {
+    //             $reporte = $reporte[0];
+    //             $dato['reporteregistro_id'] = ($reporte->id + 0);
+    //         } else {
+    //             if (($recsensorial->recsensorial_tipocliente + 0) == 1) // 1 = Pemex, 0 = cliente
+    //             {
+    //                 $reporte = reportetemperaturaModel::where('catactivo_id', $proyecto->catactivo_id)
+    //                     ->orderBy('updated_at', 'DESC')
+    //                     ->get();
+    //             } else {
+    //                 $reporte = DB::select('SELECT
+    //                                             recsensorial.recsensorial_tipocliente,
+    //                                             recsensorial.cliente_id,
+    //                                             reportetemperatura.id,
+    //                                             reportetemperatura.proyecto_id,
+    //                                             reportetemperatura.catactivo_id,
+    //                                             reportetemperatura.reportetemperatura_fecha,
+    //                                             reportetemperatura.reporte_mes,
+
+    //                                             reportetemperatura.reportetemperatura_instalacion,
+    //                                             reportetemperatura.reportetemperatura_catregion_activo,
+    //                                             reportetemperatura.reportetemperatura_catsubdireccion_activo,
+    //                                             reportetemperatura.reportetemperatura_catgerencia_activo,
+    //                                             reportetemperatura.reportetemperatura_catactivo_activo,
+    //                                             reportetemperatura.reportetemperatura_introduccion,
+    //                                             reportetemperatura.reportetemperatura_objetivogeneral,
+    //                                             reportetemperatura.reportetemperatura_objetivoespecifico,
+    //                                             reportetemperatura.reportetemperatura_metodologia_4_1,
+    //                                             reportetemperatura.reportetemperatura_ubicacioninstalacion,
+    //                                             reportetemperatura.reportetemperatura_ubicacionfoto,
+    //                                             reportetemperatura.reportetemperatura_procesoinstalacion,
+    //                                             reportetemperatura.reportetemperatura_actividadprincipal,
+    //                                             reportetemperatura.reportetemperatura_conclusion,
+    //                                             reportetemperatura.reportetemperatura_responsable1,
+    //                                             reportetemperatura.reportetemperatura_responsable1cargo,
+    //                                             reportetemperatura.reportetemperatura_responsable1documento,
+    //                                             reportetemperatura.reportetemperatura_responsable2,
+    //                                             reportetemperatura.reportetemperatura_responsable2cargo,
+    //                                             reportetemperatura.reportetemperatura_responsable2documento,
+    //                                             reportetemperatura.created_at,
+    //                                             reportetemperatura.updated_at 
+    //                                         FROM
+    //                                             recsensorial
+    //                                             LEFT JOIN proyecto ON recsensorial.id = proyecto.recsensorial_id
+    //                                             LEFT JOIN reportetemperatura ON proyecto.id = reportetemperatura.proyecto_id 
+    //                                         WHERE
+    //                                             recsensorial.cliente_id = ' . $recsensorial->cliente_id . ' 
+    //                                             AND reportetemperatura.reportetemperatura_instalacion <> "" 
+    //                                         ORDER BY
+    //                                             reportetemperatura.updated_at DESC');
+    //             }
+
+
+    //             if (count($reporte) > 0) {
+    //                 $reporte = $reporte[0];
+    //                 $dato['reporteregistro_id'] = 0;
+    //             } else {
+    //                 $reporte = array(0, 0);
+    //                 $dato['reporteregistro_id'] = -1;
+    //             }
+    //         }
+
+
+    //         //------------------------------
+
+
+    //         $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
+    //             ->where('agente_id', 3) //Temperatura
+    //             ->orderBy('reporterevisiones_revision', 'DESC')
+    //             ->get();
+
+
+    //         if (count($revision) > 0) {
+    //             $revision = reporterevisionesModel::findOrFail($revision[0]->id);
+
+
+    //             $dato['reporte_concluido'] = $revision->reporterevisiones_concluido;
+    //             $dato['reporte_cancelado'] = $revision->reporterevisiones_cancelado;
+    //         } else {
+    //             $dato['reporte_concluido'] = 0;
+    //             $dato['reporte_cancelado'] = 0;
+    //         }
+
+
+    //         // PORTADA
+    //         //===================================================
+
+
+    //         $dato['recsensorial_tipocliente'] = ($recsensorial->recsensorial_tipocliente + 0);
+
+
+    //         if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_fecha != NULL) {
+    //             $reportefecha = $reporte->reportetemperatura_fecha;
+    //             $dato['reporte_portada_guardado'] = 1;
+
+    //             $dato['reporte_portada'] = array(
+    //                 'reporte_catregion_activo' => $reporte->reportetemperatura_catregion_activo,
+    //                 'catregion_id' => $proyecto->catregion_id,
+    //                 'reporte_catsubdireccion_activo' => $reporte->reportetemperatura_catsubdireccion_activo,
+    //                 'catsubdireccion_id' => $proyecto->catsubdireccion_id,
+    //                 'reporte_catgerencia_activo' => $reporte->reportetemperatura_catgerencia_activo,
+    //                 'catgerencia_id' => $proyecto->catgerencia_id,
+    //                 'reporte_catactivo_activo' => $reporte->reportetemperatura_catactivo_activo,
+    //                 'catactivo_id' => $proyecto->catactivo_id,
+    //                 'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion,
+    //                 'reporte_fecha' => $reportefecha,
+    //                 'reporte_mes' => $reporte->reporte_mes
+
+    //             );
+    //         } else {
+    //             $reportefecha = $meses[$proyectofecha[1] + 0] . " del " . $proyectofecha[0];
+    //             $dato['reporte_portada_guardado'] = 0;
+
+    //             $dato['reporte_portada'] = array(
+    //                 'reporte_catregion_activo' => 1,
+    //                 'catregion_id' => $proyecto->catregion_id,
+    //                 'reporte_catsubdireccion_activo' => 1,
+    //                 'catsubdireccion_id' => $proyecto->catsubdireccion_id,
+    //                 'reporte_catgerencia_activo' => 1,
+    //                 'catgerencia_id' => $proyecto->catgerencia_id,
+    //                 'reporte_catactivo_activo' => 1,
+    //                 'catactivo_id' => $proyecto->catactivo_id,
+    //                 'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion,
+    //                 'reporte_mes' => ""
+
+    //             );
+    //         }
+
+
+    //         // INTRODUCCION
+    //         //===================================================
+
+
+    //         if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_introduccion != NULL) {
+    //             if ($reporte->proyecto_id == $proyecto_id) {
+    //                 $dato['reporte_introduccion_guardado'] = 1;
+    //             } else {
+    //                 $dato['reporte_introduccion_guardado'] = 0;
+    //             }
+
+    //             $introduccion = $reporte->reportetemperatura_introduccion;
+    //         } else {
+    //             $dato['reporte_introduccion_guardado'] = 0;
+    //             $introduccion = $reportecatalogo->reportetemperaturacatalogo_introduccion;
+    //         }
+
+    //         $dato['reporte_introduccion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $introduccion);
+
+
+    //         // OBJETIVO GENERAL
+    //         //===================================================
+
+
+    //         if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_objetivogeneral != NULL) {
+    //             if ($reporte->proyecto_id == $proyecto_id) {
+    //                 $dato['reporte_objetivogeneral_guardado'] = 1;
+    //             } else {
+    //                 $dato['reporte_objetivogeneral_guardado'] = 0;
+    //             }
+
+    //             $objetivogeneral = $reporte->reportetemperatura_objetivogeneral;
+    //         } else {
+    //             $dato['reporte_objetivogeneral_guardado'] = 0;
+    //             $objetivogeneral = $reportecatalogo->reportetemperaturacatalogo_objetivogeneral;
+    //         }
+
+    //         $dato['reporte_objetivogeneral'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivogeneral);
+
+
+    //         // OBJETIVOS ESPECIFICOS
+    //         //===================================================
+
+
+    //         if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_objetivoespecifico != NULL) {
+    //             if ($reporte->proyecto_id == $proyecto_id) {
+    //                 $dato['reporte_objetivoespecifico_guardado'] = 1;
+    //             } else {
+    //                 $dato['reporte_objetivoespecifico_guardado'] = 0;
+    //             }
+
+    //             $objetivoespecifico = $reporte->reportetemperatura_objetivoespecifico;
+    //         } else {
+    //             $dato['reporte_objetivoespecifico_guardado'] = 0;
+    //             $objetivoespecifico = $reportecatalogo->reportetemperaturacatalogo_objetivoespecifico;
+    //         }
+
+    //         $dato['reporte_objetivoespecifico'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivoespecifico);
+
+
+    //         // METODOLOGIA PUNTO 4.1
+    //         //===================================================
+
+
+    //         if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_metodologia_4_1 != NULL) {
+    //             if ($reporte->proyecto_id == $proyecto_id) {
+    //                 $dato['reporte_metodologia_4_1_guardado'] = 1;
+    //             } else {
+    //                 $dato['reporte_metodologia_4_1_guardado'] = 0;
+    //             }
+
+    //             $metodologia_4_1 = $reporte->reportetemperatura_metodologia_4_1;
+    //         } else {
+    //             $dato['reporte_metodologia_4_1_guardado'] = 0;
+    //             $metodologia_4_1 = $reportecatalogo->reportetemperaturacatalogo_metodologia_4_1;
+    //         }
+
+    //         $dato['reporte_metodologia_4_1'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_1);
+
+
+    //         // UBICACION
+    //         //===================================================
+
+
+    //         if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_ubicacioninstalacion != NULL) {
+    //             if ($reporte->proyecto_id == $proyecto_id) {
+    //                 $dato['reporte_ubicacioninstalacion_guardado'] = 1;
+    //             } else {
+    //                 $dato['reporte_ubicacioninstalacion_guardado'] = 0;
+    //             }
+
+    //             $ubicacion = $reporte->reportetemperatura_ubicacioninstalacion;
+    //         } else {
+    //             $dato['reporte_ubicacioninstalacion_guardado'] = 0;
+    //             $ubicacion = $reportecatalogo->reportetemperaturacatalogo_ubicacioninstalacion;
+    //         }
+
+
+    //         $ubicacionfoto = NULL;
+    //         if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_ubicacionfoto != NULL) {
+    //             $ubicacionfoto = $reporte->reportetemperatura_ubicacionfoto;
+    //         }
+
+
+    //         $dato['reporte_ubicacioninstalacion'] = array(
+    //             'ubicacion' => $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $ubicacion),
+    //             'ubicacionfoto' => $ubicacionfoto
+    //         );
+
+
+    //         // PROCESO INSTALACION
+    //         //===================================================
+
+
+    //         if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_procesoinstalacion != NULL) {
+    //             $dato['reporte_procesoinstalacion_guardado'] = 1;
+    //             $procesoinstalacion = $reporte->reportetemperatura_procesoinstalacion;
+    //         } else {
+    //             $dato['reporte_procesoinstalacion_guardado'] = 0;
+    //             $procesoinstalacion = $recsensorial->recsensorial_descripcionproceso;
+    //         }
+
+
+    //         $dato['reporte_procesoinstalacion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $procesoinstalacion);
+
+
+    //         // ACTIVIDAD PRINCIPAL
+    //         //===================================================
+
+
+    //         if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_actividadprincipal != NULL) {
+    //             $actividadprincipal = $reporte->reportetemperatura_actividadprincipal;
+    //         } else {
+    //             $actividadprincipal = $recsensorial->recsensorial_actividadprincipal;
+    //         }
+
+
+    //         $dato['reporte_actividadprincipal'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $actividadprincipal);
+
+
+    //         // CONCLUSION
+    //         //===================================================
+
+
+    //         if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_conclusion != NULL) {
+    //             $dato['reporte_conclusion_guardado'] = 1;
+    //             $conclusion = $reporte->reportetemperatura_conclusion;
+    //         } else {
+    //             $dato['reporte_conclusion_guardado'] = 0;
+    //             $conclusion = $reportecatalogo->reportetemperaturacatalogo_conclusion;
+    //         }
+
+
+    //         $dato['reporte_conclusion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $conclusion);
+
+
+    //         // RESPONSABLES DEL INFORME
+    //         //===================================================
+
+
+    //         if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_responsable1 != NULL) {
+    //             if ($reporte->proyecto_id == $proyecto_id) {
+    //                 $dato['reporte_responsablesinforme_guardado'] = 1;
+    //             } else {
+    //                 $dato['reporte_responsablesinforme_guardado'] = 0;
+    //             }
+
+    //             $dato['reporte_responsablesinforme'] = array(
+    //                 'responsable1' => $reporte->reportetemperatura_responsable1,
+    //                 'responsable1cargo' => $reporte->reportetemperatura_responsable1cargo,
+    //                 'responsable1documento' => $reporte->reportetemperatura_responsable1documento,
+    //                 'responsable2' => $reporte->reportetemperatura_responsable2,
+    //                 'responsable2cargo' => $reporte->reportetemperatura_responsable2cargo,
+    //                 'responsable2documento' => $reporte->reportetemperatura_responsable2documento,
+    //                 'proyecto_id' => $reporte->proyecto_id,
+    //                 'registro_id' => $reporte->id
+    //             );
+    //         } else {
+    //             $dato['reporte_responsablesinforme_guardado'] = 0;
+
+
+    //             $reportehistorial = reportetemperaturaModel::where('reportetemperatura_responsable1', '!=', '')
+    //                 ->orderBy('updated_at', 'DESC')
+    //                 ->limit(1)
+    //                 ->get();
+
+
+    //             if (count($reportehistorial) > 0 && $reportehistorial[0]->reportetemperatura_responsable1 != NULL) {
+    //                 $dato['reporte_responsablesinforme'] = array(
+    //                     'responsable1' => $reportehistorial[0]->reportetemperatura_responsable1,
+    //                     'responsable1cargo' => $reportehistorial[0]->reportetemperatura_responsable1cargo,
+    //                     'responsable1documento' => $reportehistorial[0]->reportetemperatura_responsable1documento,
+    //                     'responsable2' => $reportehistorial[0]->reportetemperatura_responsable2,
+    //                     'responsable2cargo' => $reportehistorial[0]->reportetemperatura_responsable2cargo,
+    //                     'responsable2documento' => $reportehistorial[0]->reportetemperatura_responsable2documento,
+    //                     'proyecto_id' => $reportehistorial[0]->proyecto_id,
+    //                     'registro_id' => $reportehistorial[0]->id
+    //                 );
+    //             } else {
+    //                 $dato['reporte_responsablesinforme'] = array(
+    //                     'responsable1' => NULL,
+    //                     'responsable1cargo' => NULL,
+    //                     'responsable1documento' => NULL,
+    //                     'responsable2' => NULL,
+    //                     'responsable2cargo' => NULL,
+    //                     'responsable2documento' => NULL,
+    //                     'proyecto_id' => 0,
+    //                     'registro_id' => 0
+    //                 );
+    //             }
+    //         }
+
+
+    //         // MEMORIA FOTOGRAFICA
+    //         //===================================================
+
+
+    //         $memoriafotografica = DB::select('SELECT
+    //                                                 -- proyectoevidenciafoto.id,
+    //                                                 proyectoevidenciafoto.proyecto_id,
+    //                                                 -- proyectoevidenciafoto.proveedor_id,
+    //                                                 -- proyectoevidenciafoto.agente_id,
+    //                                                 proyectoevidenciafoto.agente_nombre,
+    //                                                 -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
+    //                                                 IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
+    //                                                 -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
+    //                                                 -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion 
+    //                                             FROM
+    //                                                 proyectoevidenciafoto
+    //                                             WHERE
+    //                                                 proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
+    //                                                 AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
+    //                                             GROUP BY
+    //                                                 proyectoevidenciafoto.proyecto_id,
+    //                                                 proyectoevidenciafoto.agente_nombre
+    //                                             LIMIT 1');
+
+
+    //         if (count($memoriafotografica) > 0) {
+    //             $dato['reporte_memoriafotografica_guardado'] = $memoriafotografica[0]->total;
+    //         } else {
+    //             $dato['reporte_memoriafotografica_guardado'] = 0;
+    //         }
+
+
+    //         //===================================================
+
+
+    //         // respuesta
+    //         $dato["msj"] = 'Datos consultados correctamente';
+    //         return response()->json($dato);
+    //     } catch (Exception $e) {
+    //         $dato["msj"] = 'Error ' . $e->getMessage();
+    //         return response()->json($dato);
+    //     }
+    // }
+
+
+
+
     public function reportetemperaturadatosgenerales($proyecto_id, $agente_id, $agente_nombre)
     {
         try {
-            $proyecto = proyectoModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto_id);
-            $recsensorial = recsensorialModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto->recsensorial_id);
 
-            $meses = ["Vacio", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+            $proyecto = proyectoModel::with(['catregion','catsubdireccion','catgerencia','catactivo'])->findOrFail($proyecto_id);
+
+
+            $recsensorial = recsensorialModel::with(['catregion','catsubdireccion','catgerencia','catactivo' ])->findOrFail($proyecto->recsensorial_id);
+
+
+            $meses = [
+                "Vacio",
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            ];
+
+
             $proyectofecha = explode("-", $proyecto->proyecto_fechaentrega);
 
+
             $reportecatalogo = reportetemperaturacatalogoModel::findOrFail(1);
-            $reporte = reportetemperaturaModel::where('proyecto_id', $proyecto_id)->get();
 
 
-            if (count($reporte) > 0) {
-                $reporte = $reporte[0];
+
+            $reporte = reportetemperaturaModel::where('proyecto_id',$proyecto_id)->first();
+
+
+            if ($reporte) {
+
                 $dato['reporteregistro_id'] = ($reporte->id + 0);
             } else {
-                if (($recsensorial->recsensorial_tipocliente + 0) == 1) // 1 = Pemex, 0 = cliente
-                {
-                    $reporte = reportetemperaturaModel::where('catactivo_id', $proyecto->catactivo_id)
-                        ->orderBy('updated_at', 'DESC')
-                        ->get();
-                } else {
-                    $reporte = DB::select('SELECT
-                                                recsensorial.recsensorial_tipocliente,
-                                                recsensorial.cliente_id,
-                                                reportetemperatura.id,
-                                                reportetemperatura.proyecto_id,
-                                                reportetemperatura.catactivo_id,
-                                                reportetemperatura.reportetemperatura_fecha,
-                                                reportetemperatura.reporte_mes,
 
-                                                reportetemperatura.reportetemperatura_instalacion,
-                                                reportetemperatura.reportetemperatura_catregion_activo,
-                                                reportetemperatura.reportetemperatura_catsubdireccion_activo,
-                                                reportetemperatura.reportetemperatura_catgerencia_activo,
-                                                reportetemperatura.reportetemperatura_catactivo_activo,
-                                                reportetemperatura.reportetemperatura_introduccion,
-                                                reportetemperatura.reportetemperatura_objetivogeneral,
-                                                reportetemperatura.reportetemperatura_objetivoespecifico,
-                                                reportetemperatura.reportetemperatura_metodologia_4_1,
-                                                reportetemperatura.reportetemperatura_ubicacioninstalacion,
-                                                reportetemperatura.reportetemperatura_ubicacionfoto,
-                                                reportetemperatura.reportetemperatura_procesoinstalacion,
-                                                reportetemperatura.reportetemperatura_actividadprincipal,
-                                                reportetemperatura.reportetemperatura_conclusion,
-                                                reportetemperatura.reportetemperatura_responsable1,
-                                                reportetemperatura.reportetemperatura_responsable1cargo,
-                                                reportetemperatura.reportetemperatura_responsable1documento,
-                                                reportetemperatura.reportetemperatura_responsable2,
-                                                reportetemperatura.reportetemperatura_responsable2cargo,
-                                                reportetemperatura.reportetemperatura_responsable2documento,
-                                                reportetemperatura.created_at,
-                                                reportetemperatura.updated_at 
-                                            FROM
-                                                recsensorial
-                                                LEFT JOIN proyecto ON recsensorial.id = proyecto.recsensorial_id
-                                                LEFT JOIN reportetemperatura ON proyecto.id = reportetemperatura.proyecto_id 
-                                            WHERE
-                                                recsensorial.cliente_id = ' . $recsensorial->cliente_id . ' 
-                                                AND reportetemperatura.reportetemperatura_instalacion <> "" 
-                                            ORDER BY
-                                                reportetemperatura.updated_at DESC');
-                }
-
-
-                if (count($reporte) > 0) {
-                    $reporte = $reporte[0];
-                    $dato['reporteregistro_id'] = 0;
-                } else {
-                    $reporte = array(0, 0);
-                    $dato['reporteregistro_id'] = -1;
-                }
+                $dato['reporteregistro_id'] = -1;
             }
 
 
-            //------------------------------
-
-
             $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-                ->where('agente_id', 3) //Temperatura
+                ->where('agente_id', 3) 
                 ->orderBy('reporterevisiones_revision', 'DESC')
                 ->get();
 
 
             if (count($revision) > 0) {
+
                 $revision = reporterevisionesModel::findOrFail($revision[0]->id);
-
-
                 $dato['reporte_concluido'] = $revision->reporterevisiones_concluido;
                 $dato['reporte_cancelado'] = $revision->reporterevisiones_cancelado;
             } else {
+
                 $dato['reporte_concluido'] = 0;
                 $dato['reporte_cancelado'] = 0;
             }
+
 
 
             // PORTADA
@@ -325,11 +701,14 @@ class reportetemperaturaController extends Controller
             $dato['recsensorial_tipocliente'] = ($recsensorial->recsensorial_tipocliente + 0);
 
 
-            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_fecha != NULL) {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_fecha != NULL) 
+            {
+
                 $reportefecha = $reporte->reportetemperatura_fecha;
                 $dato['reporte_portada_guardado'] = 1;
 
                 $dato['reporte_portada'] = array(
+
                     'reporte_catregion_activo' => $reporte->reportetemperatura_catregion_activo,
                     'catregion_id' => $proyecto->catregion_id,
                     'reporte_catsubdireccion_activo' => $reporte->reportetemperatura_catsubdireccion_activo,
@@ -344,10 +723,13 @@ class reportetemperaturaController extends Controller
 
                 );
             } else {
-                $reportefecha = $meses[$proyectofecha[1] + 0] . " del " . $proyectofecha[0];
+
+                $reportefecha = $meses[$proyectofecha[1] + 0] ." del " .$proyectofecha[0];
                 $dato['reporte_portada_guardado'] = 0;
 
+
                 $dato['reporte_portada'] = array(
+
                     'reporte_catregion_activo' => 1,
                     'catregion_id' => $proyecto->catregion_id,
                     'reporte_catsubdireccion_activo' => 1,
@@ -363,121 +745,97 @@ class reportetemperaturaController extends Controller
             }
 
 
+
             // INTRODUCCION
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_introduccion != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_introduccion_guardado'] = 1;
-                } else {
-                    $dato['reporte_introduccion_guardado'] = 0;
-                }
-
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_introduccion != NULL) 
+            {
+                $dato['reporte_introduccion_guardado'] = 1;
                 $introduccion = $reporte->reportetemperatura_introduccion;
             } else {
+
                 $dato['reporte_introduccion_guardado'] = 0;
                 $introduccion = $reportecatalogo->reportetemperaturacatalogo_introduccion;
             }
 
-            $dato['reporte_introduccion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $introduccion);
+
+            $dato['reporte_introduccion'] = $this->datosproyectoreemplazartexto($proyecto,$recsensorial,$introduccion);
 
 
-            // OBJETIVO GENERAL
-            //===================================================
-
-
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_objetivogeneral != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_objetivogeneral_guardado'] = 1;
-                } else {
-                    $dato['reporte_objetivogeneral_guardado'] = 0;
-                }
-
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_objetivogeneral != NULL) 
+            {
+                $dato['reporte_objetivogeneral_guardado'] = 1;
                 $objetivogeneral = $reporte->reportetemperatura_objetivogeneral;
             } else {
+
                 $dato['reporte_objetivogeneral_guardado'] = 0;
                 $objetivogeneral = $reportecatalogo->reportetemperaturacatalogo_objetivogeneral;
             }
 
-            $dato['reporte_objetivogeneral'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivogeneral);
+
+            $dato['reporte_objetivogeneral'] = $this->datosproyectoreemplazartexto($proyecto,$recsensorial,$objetivogeneral);
 
 
-            // OBJETIVOS ESPECIFICOS
-            //===================================================
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_objetivoespecifico != NULL) 
+            {
 
-
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_objetivoespecifico != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_objetivoespecifico_guardado'] = 1;
-                } else {
-                    $dato['reporte_objetivoespecifico_guardado'] = 0;
-                }
-
+                $dato['reporte_objetivoespecifico_guardado'] = 1;
                 $objetivoespecifico = $reporte->reportetemperatura_objetivoespecifico;
             } else {
+
                 $dato['reporte_objetivoespecifico_guardado'] = 0;
                 $objetivoespecifico = $reportecatalogo->reportetemperaturacatalogo_objetivoespecifico;
             }
 
-            $dato['reporte_objetivoespecifico'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivoespecifico);
+            $dato['reporte_objetivoespecifico'] = $this->datosproyectoreemplazartexto($proyecto,$recsensorial,$objetivoespecifico);
 
-
-            // METODOLOGIA PUNTO 4.1
-            //===================================================
-
-
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_metodologia_4_1 != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_metodologia_4_1_guardado'] = 1;
-                } else {
-                    $dato['reporte_metodologia_4_1_guardado'] = 0;
-                }
-
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_metodologia_4_1 != NULL) 
+            {
+                $dato['reporte_metodologia_4_1_guardado'] = 1;
                 $metodologia_4_1 = $reporte->reportetemperatura_metodologia_4_1;
             } else {
+
                 $dato['reporte_metodologia_4_1_guardado'] = 0;
                 $metodologia_4_1 = $reportecatalogo->reportetemperaturacatalogo_metodologia_4_1;
             }
 
-            $dato['reporte_metodologia_4_1'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_1);
+
+            $dato['reporte_metodologia_4_1'] = $this->datosproyectoreemplazartexto($proyecto,$recsensorial,$metodologia_4_1);
 
 
-            // UBICACION
-            //===================================================
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_ubicacioninstalacion != NULL ) 
+            {
 
-
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_ubicacioninstalacion != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_ubicacioninstalacion_guardado'] = 1;
-                } else {
-                    $dato['reporte_ubicacioninstalacion_guardado'] = 0;
-                }
-
+                $dato['reporte_ubicacioninstalacion_guardado'] = 1;
                 $ubicacion = $reporte->reportetemperatura_ubicacioninstalacion;
             } else {
+
                 $dato['reporte_ubicacioninstalacion_guardado'] = 0;
                 $ubicacion = $reportecatalogo->reportetemperaturacatalogo_ubicacioninstalacion;
             }
 
 
             $ubicacionfoto = NULL;
-            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_ubicacionfoto != NULL) {
+
+
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_ubicacionfoto != NULL) 
+            {
                 $ubicacionfoto = $reporte->reportetemperatura_ubicacionfoto;
             }
 
 
             $dato['reporte_ubicacioninstalacion'] = array(
-                'ubicacion' => $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $ubicacion),
+
+                'ubicacion' => $this->datosproyectoreemplazartexto($proyecto,$recsensorial,$ubicacion),
                 'ubicacionfoto' => $ubicacionfoto
+
             );
 
 
-            // PROCESO INSTALACION
-            //===================================================
-
-
-            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_procesoinstalacion != NULL) {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_procesoinstalacion != NULL) 
+            {
                 $dato['reporte_procesoinstalacion_guardado'] = 1;
                 $procesoinstalacion = $reporte->reportetemperatura_procesoinstalacion;
             } else {
@@ -485,52 +843,39 @@ class reportetemperaturaController extends Controller
                 $procesoinstalacion = $recsensorial->recsensorial_descripcionproceso;
             }
 
-
-            $dato['reporte_procesoinstalacion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $procesoinstalacion);
-
-
-            // ACTIVIDAD PRINCIPAL
-            //===================================================
+            $dato['reporte_procesoinstalacion'] = $this->datosproyectoreemplazartexto($proyecto,$recsensorial,$procesoinstalacion);
 
 
-            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_actividadprincipal != NULL) {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_actividadprincipal != NULL ) 
+            {
                 $actividadprincipal = $reporte->reportetemperatura_actividadprincipal;
             } else {
                 $actividadprincipal = $recsensorial->recsensorial_actividadprincipal;
             }
 
+            $dato['reporte_actividadprincipal'] = $this->datosproyectoreemplazartexto($proyecto,$recsensorial,$actividadprincipal);
 
-            $dato['reporte_actividadprincipal'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $actividadprincipal);
-
-
-            // CONCLUSION
-            //===================================================
-
-
-            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_conclusion != NULL) {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_conclusion != NULL) 
+            {
                 $dato['reporte_conclusion_guardado'] = 1;
                 $conclusion = $reporte->reportetemperatura_conclusion;
             } else {
+
                 $dato['reporte_conclusion_guardado'] = 0;
                 $conclusion = $reportecatalogo->reportetemperaturacatalogo_conclusion;
             }
 
 
-            $dato['reporte_conclusion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $conclusion);
+            $dato['reporte_conclusion'] = $this->datosproyectoreemplazartexto($proyecto,$recsensorial,$conclusion);
 
 
-            // RESPONSABLES DEL INFORME
-            //===================================================
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reportetemperatura_responsable1 != NULL) 
+            {
 
-
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportetemperatura_responsable1 != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_responsablesinforme_guardado'] = 1;
-                } else {
-                    $dato['reporte_responsablesinforme_guardado'] = 0;
-                }
+                $dato['reporte_responsablesinforme_guardado'] = 1;
 
                 $dato['reporte_responsablesinforme'] = array(
+
                     'responsable1' => $reporte->reportetemperatura_responsable1,
                     'responsable1cargo' => $reporte->reportetemperatura_responsable1cargo,
                     'responsable1documento' => $reporte->reportetemperatura_responsable1documento,
@@ -539,66 +884,47 @@ class reportetemperaturaController extends Controller
                     'responsable2documento' => $reporte->reportetemperatura_responsable2documento,
                     'proyecto_id' => $reporte->proyecto_id,
                     'registro_id' => $reporte->id
+
                 );
             } else {
+
+
                 $dato['reporte_responsablesinforme_guardado'] = 0;
 
+                $dato['reporte_responsablesinforme'] = array(
 
-                $reportehistorial = reportetemperaturaModel::where('reportetemperatura_responsable1', '!=', '')
-                    ->orderBy('updated_at', 'DESC')
-                    ->limit(1)
-                    ->get();
+                    'responsable1' => NULL,
+                    'responsable1cargo' => NULL,
+                    'responsable1documento' => NULL,
+                    'responsable2' => NULL,
+                    'responsable2cargo' => NULL,
+                    'responsable2documento' => NULL,
+                    'proyecto_id' => 0,
+                    'registro_id' => 0
 
-
-                if (count($reportehistorial) > 0 && $reportehistorial[0]->reportetemperatura_responsable1 != NULL) {
-                    $dato['reporte_responsablesinforme'] = array(
-                        'responsable1' => $reportehistorial[0]->reportetemperatura_responsable1,
-                        'responsable1cargo' => $reportehistorial[0]->reportetemperatura_responsable1cargo,
-                        'responsable1documento' => $reportehistorial[0]->reportetemperatura_responsable1documento,
-                        'responsable2' => $reportehistorial[0]->reportetemperatura_responsable2,
-                        'responsable2cargo' => $reportehistorial[0]->reportetemperatura_responsable2cargo,
-                        'responsable2documento' => $reportehistorial[0]->reportetemperatura_responsable2documento,
-                        'proyecto_id' => $reportehistorial[0]->proyecto_id,
-                        'registro_id' => $reportehistorial[0]->id
-                    );
-                } else {
-                    $dato['reporte_responsablesinforme'] = array(
-                        'responsable1' => NULL,
-                        'responsable1cargo' => NULL,
-                        'responsable1documento' => NULL,
-                        'responsable2' => NULL,
-                        'responsable2cargo' => NULL,
-                        'responsable2documento' => NULL,
-                        'proyecto_id' => 0,
-                        'registro_id' => 0
-                    );
-                }
+                );
             }
 
 
-            // MEMORIA FOTOGRAFICA
-            //===================================================
-
-
             $memoriafotografica = DB::select('SELECT
-                                                    -- proyectoevidenciafoto.id,
-                                                    proyectoevidenciafoto.proyecto_id,
-                                                    -- proyectoevidenciafoto.proveedor_id,
-                                                    -- proyectoevidenciafoto.agente_id,
-                                                    proyectoevidenciafoto.agente_nombre,
-                                                    -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
-                                                    IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
-                                                    -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
-                                                    -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion 
-                                                FROM
-                                                    proyectoevidenciafoto
-                                                WHERE
-                                                    proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
-                                                    AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
-                                                GROUP BY
-                                                    proyectoevidenciafoto.proyecto_id,
-                                                    proyectoevidenciafoto.agente_nombre
-                                                LIMIT 1');
+                                                -- proyectoevidenciafoto.id,
+                                                proyectoevidenciafoto.proyecto_id,
+                                                -- proyectoevidenciafoto.proveedor_id,
+                                                -- proyectoevidenciafoto.agente_id,
+                                                proyectoevidenciafoto.agente_nombre,
+                                                -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
+                                                IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
+                                                -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
+                                                -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion
+                                            FROM
+                                                proyectoevidenciafoto
+                                            WHERE
+                                                proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
+                                                AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
+                                            GROUP BY
+                                                proyectoevidenciafoto.proyecto_id,
+                                                proyectoevidenciafoto.agente_nombre
+                                            LIMIT 1');
 
 
             if (count($memoriafotografica) > 0) {
@@ -607,15 +933,15 @@ class reportetemperaturaController extends Controller
                 $dato['reporte_memoriafotografica_guardado'] = 0;
             }
 
-
-            //===================================================
-
-
             // respuesta
+
             $dato["msj"] = 'Datos consultados correctamente';
+
             return response()->json($dato);
         } catch (Exception $e) {
+
             $dato["msj"] = 'Error ' . $e->getMessage();
+
             return response()->json($dato);
         }
     }
