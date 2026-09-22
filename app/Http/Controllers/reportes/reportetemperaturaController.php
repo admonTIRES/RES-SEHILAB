@@ -634,8 +634,6 @@ class reportetemperaturaController extends Controller
 
 
             $proyecto = proyectoModel::with(['catregion','catsubdireccion','catgerencia','catactivo'])->findOrFail($proyecto_id);
-
-
             $recsensorial = recsensorialModel::with(['catregion','catsubdireccion','catgerencia','catactivo' ])->findOrFail($proyecto->recsensorial_id);
 
 
@@ -658,10 +656,7 @@ class reportetemperaturaController extends Controller
 
             $proyectofecha = explode("-", $proyecto->proyecto_fechaentrega);
 
-
             $reportecatalogo = reportetemperaturacatalogoModel::findOrFail(1);
-
-
 
             $reporte = reportetemperaturaModel::where('proyecto_id',$proyecto_id)->first();
 
@@ -694,9 +689,7 @@ class reportetemperaturaController extends Controller
 
 
 
-            // PORTADA
-            //===================================================
-
+           
 
             $dato['recsensorial_tipocliente'] = ($recsensorial->recsensorial_tipocliente + 0);
 
