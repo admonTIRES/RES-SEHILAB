@@ -385,486 +385,526 @@ class reportequimicosController extends Controller
      * @param  $agente_nombre
      * @return \Illuminate\Http\Response
      */
+
+
     public function reportequimicosdatosgenerales($proyecto_id, $agente_id, $agente_nombre)
-    {
-        try {
-            $proyecto = proyectoModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto_id);
-            $recsensorial = recsensorialModel::with(['cliente', 'catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto->recsensorial_id);
+{
+    try {
+        $proyecto = proyectoModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto_id);
+        $recsensorial = recsensorialModel::with(['cliente', 'catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto->recsensorial_id);
 
-            $meses = ["Vacio", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-            $proyectofecha = explode("-", $proyecto->proyecto_fechaentrega);
+        $meses = ["Vacio", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        $proyectofecha = explode("-", $proyecto->proyecto_fechaentrega);
 
-            $reportecatalogo = reportequimicoscatalogoModel::limit(1)->get();
-            $reporte  = reportequimicosModel::where('proyecto_id', $proyecto_id)
-                ->orderBy('reportequimicos_revision', 'DESC')
-                ->limit(1)
-                ->get();
+        $reportecatalogo = reportequimicoscatalogoModel::limit(1)->get();
 
-
-            if (count($reporte) > 0) {
-                $reporte = $reporte[0];
-                $dato['reporteregistro_id'] = $reporte->id;
-            } else {
-                if (($recsensorial->recsensorial_tipocliente + 0) == 1) // 1 = Pemex, 0 = cliente
-                {
-                    $reporte = reportequimicosModel::where('catactivo_id', $proyecto->catactivo_id)
-                        ->orderBy('proyecto_id', 'DESC')
-                        ->orderBy('reportequimicos_revision', 'DESC')
-                        ->limit(1)
-                        ->get();
-                } else {
-                    $reporte = DB::select('SELECT
-                                                recsensorial.recsensorial_tipocliente,
-                                                recsensorial.cliente_id,
-                                                reportequimicos.id,
-                                                reportequimicos.proyecto_id,
-                                                reportequimicos.agente_id,
-                                                reportequimicos.agente_nombre,
-                                                reportequimicos.catactivo_id,
-                                                reportequimicos.reportequimicos_revision,
-                                                reportequimicos.reportequimicos_fecha,
-                                                reportequimicos.reporte_mes,
-
-                                                reportequimicos.reportequimicos_instalacion,
-                                                reportequimicos.reportequimicos_catregion_activo,
-                                                reportequimicos.reportequimicos_catsubdireccion_activo,
-                                                reportequimicos.reportequimicos_catgerencia_activo,
-                                                reportequimicos.reportequimicos_catactivo_activo,
-                                                reportequimicos.reportequimicos_introduccion,
-                                                reportequimicos.reportequimicos_objetivogeneral,
-                                                reportequimicos.reportequimicos_objetivoespecifico,
-                                                reportequimicos.reportequimicos_metodologia_4_1,
-                                                reportequimicos.reportequimicos_metodologia_4_2,
-                                                reportequimicos.reportequimicos_ubicacioninstalacion,
-                                                reportequimicos.reportequimicos_ubicacionfoto,
-                                                reportequimicos.reportequimicos_procesoinstalacion,
-                                                reportequimicos.reportequimicos_actividadprincipal,
-                                                reportequimicos.reportequimicos_conclusion,
-                                                reportequimicos.reportequimicos_responsable1,
-                                                reportequimicos.reportequimicos_responsable1cargo,
-                                                reportequimicos.reportequimicos_responsable1documento,
-                                                reportequimicos.reportequimicos_responsable2,
-                                                reportequimicos.reportequimicos_responsable2cargo,
-                                                reportequimicos.reportequimicos_responsable2documento,
-                                                reportequimicos.reportequimicos_concluido,
-                                                reportequimicos.reportequimicos_concluidonombre,
-                                                reportequimicos.reportequimicos_concluidofecha,
-                                                reportequimicos.reportequimicos_cancelado,
-                                                reportequimicos.reportequimicos_canceladonombre,
-                                                reportequimicos.reportequimicos_canceladofecha,
-                                                reportequimicos.reportequimicos_canceladoobservacion,
-                                                reportequimicos.created_at,
-                                                reportequimicos.updated_at 
-                                            FROM
-                                                recsensorial
-                                                LEFT JOIN proyecto ON recsensorial.id = proyecto.recsensorial_id
-                                                LEFT JOIN reportequimicos ON proyecto.id = reportequimicos.proyecto_id 
-                                            WHERE
-                                                recsensorial.cliente_id = ' . $recsensorial->cliente_id . '  
-                                                AND reportequimicos.reportequimicos_instalacion <> "" 
-                                            ORDER BY
-                                                reportequimicos.updated_at DESC');
-                }
+        $reporte = reportequimicosModel::where('proyecto_id', $proyecto_id)
+            ->orderBy('reportequimicos_revision', 'DESC')
+            ->limit(1)
+            ->get();
 
 
-                if (count($reporte) > 0) {
-                    $reporte = $reporte[0];
-                    $dato['reporteregistro_id'] = 0;
-                } else {
-                    $reporte = array(0, 0);
-                    $dato['reporteregistro_id'] = -1;
-                }
-            }
+      
+        if (count($reporte) > 0) {
+            $reporte = $reporte[0];
+            $dato['reporteregistro_id'] = $reporte->id;
+        } else {
+            $reporte = NULL;
+            $dato['reporteregistro_id'] = -1;
+        }
 
 
-            //------------------------------
+        //------------------------------
 
 
-            $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-                ->where('agente_id', 15) //Quimicos
-                ->orderBy('reporterevisiones_revision', 'DESC')
-                ->get();
+        $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
+            ->where('agente_id', 15) //Quimicos
+            ->orderBy('reporterevisiones_revision', 'DESC')
+            ->get();
 
 
-            if (count($revision) > 0) {
-                $revision = reporterevisionesModel::findOrFail($revision[0]->id);
+        if (count($revision) > 0) {
+            $revision = reporterevisionesModel::findOrFail($revision[0]->id);
+
+            $dato['reporte_concluido'] = $revision->reporterevisiones_concluido;
+            $dato['reporte_cancelado'] = $revision->reporterevisiones_cancelado;
+        } else {
+            $dato['reporte_concluido'] = 0;
+            $dato['reporte_cancelado'] = 0;
+        }
 
 
-                $dato['reporte_concluido'] = $revision->reporterevisiones_concluido;
-                $dato['reporte_cancelado'] = $revision->reporterevisiones_cancelado;
-            } else {
-                $dato['reporte_concluido'] = 0;
-                $dato['reporte_cancelado'] = 0;
-            }
+        // QUIMICOS LISTA
+        //===================================================
 
 
-            // QUIMICOS LISTA
-            //===================================================
+        $quimicos_nombre = $this->quimicosnombre($proyecto_id, $dato['reporteregistro_id']);
 
 
-            $quimicos_nombre = $this->quimicosnombre($proyecto_id, $dato['reporteregistro_id']);
+        // PORTADA
+        //===================================================
+
+        $dato['recsensorial_tipocliente'] = ($recsensorial->recsensorial_tipocliente + 0);
 
 
-            // PORTADA
-            //===================================================
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->reportequimicos_fecha != NULL &&
+            $reporte->proyecto_id == $proyecto_id
+        ) {
+            $reportefecha = $reporte->reportequimicos_fecha;
+            $dato['reporte_portada_guardado'] = 1;
 
-            $dato['recsensorial_tipocliente'] = ($recsensorial->recsensorial_tipocliente + 0);
+            $dato['reporte_portada'] = array(
+                'reporte_catregion_activo' => $reporte->reportequimicos_catregion_activo,
+                'catregion_id' => $proyecto->catregion_id,
+                'reporte_catsubdireccion_activo' => $reporte->reportequimicos_catsubdireccion_activo,
+                'catsubdireccion_id' => $proyecto->catsubdireccion_id,
+                'reporte_catgerencia_activo' => $reporte->reportequimicos_catgerencia_activo,
+                'catgerencia_id' => $proyecto->catgerencia_id,
+                'reporte_catactivo_activo' => $reporte->reportequimicos_catactivo_activo,
+                'catactivo_id' => $proyecto->catactivo_id,
+                'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion,
+                'reporte_fecha' => $reportefecha,
+                'reporte_mes' => $reporte->reporte_mes
+            );
+        } else {
+            $reportefecha = $meses[($proyectofecha[1] + 0)] . " del " . $proyectofecha[0];
+            $dato['reporte_portada_guardado'] = 0;
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_fecha != NULL && $reporte->proyecto_id == $proyecto_id) {
-                $reportefecha = $reporte->reportequimicos_fecha;
-                $dato['reporte_portada_guardado'] = 1;
-
-                $dato['reporte_portada'] = array(
-                    'reporte_catregion_activo' => $reporte->reportequimicos_catregion_activo,
-                    'catregion_id' => $proyecto->catregion_id,
-                    'reporte_catsubdireccion_activo' => $reporte->reportequimicos_catsubdireccion_activo,
-                    'catsubdireccion_id' => $proyecto->catsubdireccion_id,
-                    'reporte_catgerencia_activo' => $reporte->reportequimicos_catgerencia_activo,
-                    'catgerencia_id' => $proyecto->catgerencia_id,
-                    'reporte_catactivo_activo' => $reporte->reportequimicos_catactivo_activo,
-                    'catactivo_id' => $proyecto->catactivo_id,
-                    'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion,
-                    'reporte_fecha' => $reportefecha,
-                    'reporte_mes' => $reporte->reporte_mes
-
-                );
-            } else {
-                $reportefecha = $meses[($proyectofecha[1] + 0)] . " del " . $proyectofecha[0];
-                $dato['reporte_portada_guardado'] = 0;
-
-                $dato['reporte_portada'] = array(
-                    'reporte_catregion_activo' => 1,
-                    'catregion_id' => $proyecto->catregion_id,
-                    'reporte_catsubdireccion_activo' => 1,
-                    'catsubdireccion_id' => $proyecto->catsubdireccion_id,
-                    'reporte_catgerencia_activo' => 1,
-                    'catgerencia_id' => $proyecto->catgerencia_id,
-                    'reporte_catactivo_activo' => 1,
-                    'catactivo_id' => $proyecto->catactivo_id,
-                    'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion,
-                    'reporte_fecha' => $reportefecha,
-                    'reporte_mes' => ""
-
-
-                );
-            }
+            $dato['reporte_portada'] = array(
+                'reporte_catregion_activo' => 1,
+                'catregion_id' => $proyecto->catregion_id,
+                'reporte_catsubdireccion_activo' => 1,
+                'catsubdireccion_id' => $proyecto->catsubdireccion_id,
+                'reporte_catgerencia_activo' => 1,
+                'catgerencia_id' => $proyecto->catgerencia_id,
+                'reporte_catactivo_activo' => 1,
+                'catactivo_id' => $proyecto->catactivo_id,
+                'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion,
+                'reporte_fecha' => $reportefecha,
+                'reporte_mes' => ""
+            );
+        }
 
 
-            // INTRODUCCION
-            //===================================================
+        // INTRODUCCION
+        //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_introduccion != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_introduccion_guardado'] = 1;
-                } else {
-                    $dato['reporte_introduccion_guardado'] = 0;
-                }
-
-                $introduccion = $reporte->reportequimicos_introduccion;
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->reportequimicos_introduccion != NULL
+        ) {
+            if ($reporte->proyecto_id == $proyecto_id) {
+                $dato['reporte_introduccion_guardado'] = 1;
             } else {
                 $dato['reporte_introduccion_guardado'] = 0;
-                $introduccion = $reportecatalogo[0]->reportequimicoscatalogo_introduccion;
             }
 
-            $dato['reporte_introduccion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $quimicos_nombre, $introduccion);
+            $introduccion = $reporte->reportequimicos_introduccion;
+        } else {
+            $dato['reporte_introduccion_guardado'] = 0;
+            $introduccion = $reportecatalogo[0]->reportequimicoscatalogo_introduccion;
+        }
+
+        $dato['reporte_introduccion'] = $this->datosproyectoreemplazartexto(
+            $proyecto,
+            $recsensorial,
+            $quimicos_nombre,
+            $introduccion
+        );
 
 
-            // OBJETIVO GENERAL
-            //===================================================
+        // OBJETIVO GENERAL
+        //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_objetivogeneral != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_objetivogeneral_guardado'] = 1;
-                } else {
-                    $dato['reporte_objetivogeneral_guardado'] = 0;
-                }
-
-                $objetivogeneral = $reporte->reportequimicos_objetivogeneral;
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->reportequimicos_objetivogeneral != NULL
+        ) {
+            if ($reporte->proyecto_id == $proyecto_id) {
+                $dato['reporte_objetivogeneral_guardado'] = 1;
             } else {
                 $dato['reporte_objetivogeneral_guardado'] = 0;
-                $objetivogeneral = $reportecatalogo[0]->reportequimicoscatalogo_objetivogeneral;
             }
 
-            $dato['reporte_objetivogeneral'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $quimicos_nombre, $objetivogeneral);
+            $objetivogeneral = $reporte->reportequimicos_objetivogeneral;
+        } else {
+            $dato['reporte_objetivogeneral_guardado'] = 0;
+            $objetivogeneral = $reportecatalogo[0]->reportequimicoscatalogo_objetivogeneral;
+        }
+
+        $dato['reporte_objetivogeneral'] = $this->datosproyectoreemplazartexto(
+            $proyecto,
+            $recsensorial,
+            $quimicos_nombre,
+            $objetivogeneral
+        );
 
 
-            // OBJETIVOS ESPECIFICOS
-            //===================================================
+        // OBJETIVOS ESPECIFICOS
+        //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_objetivoespecifico != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_objetivoespecifico_guardado'] = 1;
-                } else {
-                    $dato['reporte_objetivoespecifico_guardado'] = 0;
-                }
-
-                $objetivoespecifico = $reporte->reportequimicos_objetivoespecifico;
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->reportequimicos_objetivoespecifico != NULL
+        ) {
+            if ($reporte->proyecto_id == $proyecto_id) {
+                $dato['reporte_objetivoespecifico_guardado'] = 1;
             } else {
                 $dato['reporte_objetivoespecifico_guardado'] = 0;
-                $objetivoespecifico = $reportecatalogo[0]->reportequimicoscatalogo_objetivoespecifico;
             }
 
-            $dato['reporte_objetivoespecifico'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $quimicos_nombre, $objetivoespecifico);
+            $objetivoespecifico = $reporte->reportequimicos_objetivoespecifico;
+        } else {
+            $dato['reporte_objetivoespecifico_guardado'] = 0;
+            $objetivoespecifico = $reportecatalogo[0]->reportequimicoscatalogo_objetivoespecifico;
+        }
+
+        $dato['reporte_objetivoespecifico'] = $this->datosproyectoreemplazartexto(
+            $proyecto,
+            $recsensorial,
+            $quimicos_nombre,
+            $objetivoespecifico
+        );
 
 
-            // METODOLOGIA PUNTO 4.1
-            //===================================================
+        // METODOLOGIA PUNTO 4.1
+        //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_metodologia_4_1 != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_metodologia_4_1_guardado'] = 1;
-                } else {
-                    $dato['reporte_metodologia_4_1_guardado'] = 0;
-                }
-
-                $metodologia_4_1 = $reporte->reportequimicos_metodologia_4_1;
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->reportequimicos_metodologia_4_1 != NULL
+        ) {
+            if ($reporte->proyecto_id == $proyecto_id) {
+                $dato['reporte_metodologia_4_1_guardado'] = 1;
             } else {
                 $dato['reporte_metodologia_4_1_guardado'] = 0;
-                $metodologia_4_1 = $reportecatalogo[0]->reportequimicoscatalogo_metodologia_4_1;
             }
 
-            $dato['reporte_metodologia_4_1'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $quimicos_nombre, $metodologia_4_1);
+            $metodologia_4_1 = $reporte->reportequimicos_metodologia_4_1;
+        } else {
+            $dato['reporte_metodologia_4_1_guardado'] = 0;
+            $metodologia_4_1 = $reportecatalogo[0]->reportequimicoscatalogo_metodologia_4_1;
+        }
+
+        $dato['reporte_metodologia_4_1'] = $this->datosproyectoreemplazartexto(
+            $proyecto,
+            $recsensorial,
+            $quimicos_nombre,
+            $metodologia_4_1
+        );
 
 
-            // METODOLOGIA PUNTO 4.2
-            //===================================================
+        // METODOLOGIA PUNTO 4.2
+        //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_metodologia_4_2 != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_metodologia_4_2_guardado'] = 1;
-                } else {
-                    $dato['reporte_metodologia_4_2_guardado'] = 0;
-                }
-
-                $metodologia_4_2 = $reporte->reportequimicos_metodologia_4_2;
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->reportequimicos_metodologia_4_2 != NULL
+        ) {
+            if ($reporte->proyecto_id == $proyecto_id) {
+                $dato['reporte_metodologia_4_2_guardado'] = 1;
             } else {
                 $dato['reporte_metodologia_4_2_guardado'] = 0;
-                $metodologia_4_2 = $reportecatalogo[0]->reportequimicoscatalogo_metodologia_4_2;
             }
 
-            $dato['reporte_metodologia_4_2'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $quimicos_nombre, $metodologia_4_2);
+            $metodologia_4_2 = $reporte->reportequimicos_metodologia_4_2;
+        } else {
+            $dato['reporte_metodologia_4_2_guardado'] = 0;
+            $metodologia_4_2 = $reportecatalogo[0]->reportequimicoscatalogo_metodologia_4_2;
+        }
+
+        $dato['reporte_metodologia_4_2'] = $this->datosproyectoreemplazartexto(
+            $proyecto,
+            $recsensorial,
+            $quimicos_nombre,
+            $metodologia_4_2
+        );
 
 
-            // UBICACION
-            //===================================================
+        // UBICACION
+        //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_ubicacioninstalacion != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_ubicacioninstalacion_guardado'] = 1;
-                } else {
-                    $dato['reporte_ubicacioninstalacion_guardado'] = 0;
-                }
-
-                $ubicacion = $reporte->reportequimicos_ubicacioninstalacion;
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->reportequimicos_ubicacioninstalacion != NULL
+        ) {
+            if ($reporte->proyecto_id == $proyecto_id) {
+                $dato['reporte_ubicacioninstalacion_guardado'] = 1;
             } else {
                 $dato['reporte_ubicacioninstalacion_guardado'] = 0;
-                $ubicacion = $reportecatalogo[0]->reportequimicoscatalogo_ubicacioninstalacion;
             }
 
+            $ubicacion = $reporte->reportequimicos_ubicacioninstalacion;
+        } else {
+            $dato['reporte_ubicacioninstalacion_guardado'] = 0;
+            $ubicacion = $reportecatalogo[0]->reportequimicoscatalogo_ubicacioninstalacion;
+        }
 
-            $ubicacionfoto = NULL;
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_ubicacionfoto != NULL && $reporte->proyecto_id == $proyecto_id) {
-                $ubicacionfoto = $reporte->reportequimicos_ubicacionfoto;
-            }
 
-            $dato['reporte_ubicacioninstalacion'] = array(
-                'ubicacion' => $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $quimicos_nombre, $ubicacion),
-                'ubicacionfoto' => $ubicacionfoto
+        $ubicacionfoto = NULL;
+
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->reportequimicos_ubicacionfoto != NULL &&
+            $reporte->proyecto_id == $proyecto_id
+        ) {
+            $ubicacionfoto = $reporte->reportequimicos_ubicacionfoto;
+        }
+
+        $dato['reporte_ubicacioninstalacion'] = array(
+            'ubicacion' => $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $quimicos_nombre,
+                $ubicacion
+            ),
+            'ubicacionfoto' => $ubicacionfoto
+        );
+
+
+        // PROCESO INSTALACION
+        //===================================================
+
+
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->reportequimicos_procesoinstalacion != NULL &&
+            $reporte->proyecto_id == $proyecto_id
+        ) {
+            $dato['reporte_procesoinstalacion_guardado'] = 1;
+            $procesoinstalacion = $reporte->reportequimicos_procesoinstalacion;
+        } else {
+            $dato['reporte_procesoinstalacion_guardado'] = 0;
+            $procesoinstalacion = $recsensorial->recsensorial_descripcionproceso;
+        }
+
+        $dato['reporte_procesoinstalacion'] = $this->datosproyectoreemplazartexto(
+            $proyecto,
+            $recsensorial,
+            $quimicos_nombre,
+            $procesoinstalacion
+        );
+
+
+        // ACTIVIDAD PRINCIPAL
+        //===================================================
+
+
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->reportequimicos_actividadprincipal != NULL &&
+            $reporte->proyecto_id == $proyecto_id
+        ) {
+            $procesoinstalacion = $reporte->reportequimicos_actividadprincipal;
+        } else {
+            $procesoinstalacion = $recsensorial->recsensorial_actividadprincipal;
+        }
+
+        $dato['reporte_actividadprincipal'] = $this->datosproyectoreemplazartexto(
+            $proyecto,
+            $recsensorial,
+            $quimicos_nombre,
+            $procesoinstalacion
+        );
+
+
+        // CONCLUSION
+        //===================================================
+
+
+        $idConclusion = DB::select(
+            'SELECT * FROM reportequimicosconclusion WHERE proyecto_id = ? LIMIT 1',
+            [$proyecto_id]
+        );
+
+
+        if (count($idConclusion) > 0) {
+
+            $dato['reporte_conclusion_guardado'] = 1;
+            $dato['reporte_conclusion_id'] = $idConclusion[0]->id;
+            $conclusion = $idConclusion[0]->reportequimicosconclusion_conclusion;
+            $dato['reporte_conclusion'] = $conclusion;
+
+        } else {
+
+            $dato['reporte_conclusion_guardado'] = 0;
+            $dato['reporte_conclusion_id'] = 0;
+            $conclusion = $reportecatalogo[0]->reportequimicoscatalogo_conclusion;
+
+            $dato['reporte_conclusion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $quimicos_nombre,
+                $conclusion
             );
 
-
-            // PROCESO INSTALACION
-            //===================================================
-
-
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_procesoinstalacion != NULL && $reporte->proyecto_id == $proyecto_id) {
-                $dato['reporte_procesoinstalacion_guardado'] = 1;
-                $procesoinstalacion = $reporte->reportequimicos_procesoinstalacion;
-            } else {
-                $dato['reporte_procesoinstalacion_guardado'] = 0;
-                $procesoinstalacion = $recsensorial->recsensorial_descripcionproceso;
-            }
-
-            $dato['reporte_procesoinstalacion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $quimicos_nombre, $procesoinstalacion);
-
-
-            // ACTIVIDAD PRINCIPAL
-            //===================================================
-
-
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_actividadprincipal != NULL && $reporte->proyecto_id == $proyecto_id) {
-                $procesoinstalacion = $reporte->reportequimicos_actividadprincipal;
-            } else {
-                $procesoinstalacion = $recsensorial->recsensorial_actividadprincipal;
-            }
-
-            $dato['reporte_actividadprincipal'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $quimicos_nombre, $procesoinstalacion);
-
-
-            // CONCLUSION
-            //===================================================
-            $idConclusion = DB::select('SELECT * FROM reportequimicosconclusion WHERE proyecto_id = ? LIMIT 1', [$proyecto_id]);
-
-            if (count($idConclusion) > 0) {
-
-                $dato['reporte_conclusion_guardado'] = 1;
-                $dato['reporte_conclusion_id'] = $idConclusion[0]->id;
-                $conclusion = $idConclusion[0]->reportequimicosconclusion_conclusion;
-                $dato['reporte_conclusion'] = $conclusion;
-            } else {
-
-                $dato['reporte_conclusion_guardado'] = 0;
-                $dato['reporte_conclusion_id'] = 0;
-                $conclusion = $reportecatalogo[0]->reportequimicoscatalogo_conclusion;
-                $dato['reporte_conclusion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $quimicos_nombre, $conclusion);
-            }
-
-
-
-            // RESPONSABLES DEL INFORME
-            //===================================================
-
-
-            // if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_responsable1 != NULL) {
-
-            //     if ($reporte->proyecto_id == $proyecto_id) {
-            //         $dato['reporte_responsablesinforme_guardado'] = 1;
-            //     } else {
-            //         $dato['reporte_responsablesinforme_guardado'] = 0;
-            //     }
-
-            //     $dato['reporte_responsablesinforme'] = array(
-            //         'responsable1' => $reporte->reportequimicos_responsable1,
-            //         'responsable1cargo' => $reporte->reportequimicos_responsable1cargo,
-            //         'responsable1documento' => $reporte->reportequimicos_responsable1documento,
-            //         'responsable2' => $reporte->reportequimicos_responsable2,
-            //         'responsable2cargo' => $reporte->reportequimicos_responsable2cargo,
-            //         'responsable2documento' => $reporte->reportequimicos_responsable2documento,
-            //         'proyecto_id' => $reporte->proyecto_id,
-            //         'registro_id' => $reporte->id
-            //     );
-            // } else {
-            //     $dato['reporte_responsablesinforme_guardado'] = 0;
-
-
-            //     $reportehistorial = reportequimicosModel::where('reportequimicos_responsable1', '!=', '')
-            //         ->orderBy('updated_at', 'DESC')
-            //         ->limit(1)
-            //         ->get();
-
-            //     if (count($reportehistorial) > 0 && $reportehistorial[0]->reportequimicos_responsable1 != NULL) {
-            //         $dato['reporte_responsablesinforme'] = array(
-            //             'responsable1' => $reportehistorial[0]->reportequimicos_responsable1,
-            //             'responsable1cargo' => $reportehistorial[0]->reportequimicos_responsable1cargo,
-            //             'responsable1documento' => $reportehistorial[0]->reportequimicos_responsable1documento,
-            //             'responsable2' => $reportehistorial[0]->reportequimicos_responsable2,
-            //             'responsable2cargo' => $reportehistorial[0]->reportequimicos_responsable2cargo,
-            //             'responsable2documento' => $reportehistorial[0]->reportequimicos_responsable2documento,
-            //             'proyecto_id' => $reportehistorial[0]->proyecto_id,
-            //             'registro_id' => $reportehistorial[0]->id
-            //         );
-            //     } else {
-            //         $dato['reporte_responsablesinforme'] = array(
-            //             'responsable1' => NULL,
-            //             'responsable1cargo' => NULL,
-            //             'responsable1documento' => NULL,
-            //             'responsable2' => NULL,
-            //             'responsable2cargo' => NULL,
-            //             'responsable2documento' => NULL,
-            //             'proyecto_id' => 0,
-            //             'registro_id' => 0
-            //         );
-            //     }
-            // }
-
-
-            // RESPONSABLES DEL INFORME
-            //===================================================
-
-            if (
-                isset($dato['reporteregistro_id']) &&
-                $reporte->id == $dato['reporteregistro_id'] &&
-                $reporte->proyecto_id == $proyecto_id &&
-                !is_null($reporte->reportequimicos_responsable1) &&
-                $reporte->reportequimicos_responsable1 != ''
-            ) {
-                $dato['reporte_responsablesinforme_guardado'] = 1;
-
-                $dato['reporte_responsablesinforme'] = array(
-                    'responsable1' => $reporte->reportequimicos_responsable1,
-                    'responsable1cargo' => $reporte->reportequimicos_responsable1cargo,
-                    'responsable1documento' => $reporte->reportequimicos_responsable1documento,
-                    'responsable2' => $reporte->reportequimicos_responsable2,
-                    'responsable2cargo' => $reporte->reportequimicos_responsable2cargo,
-                    'responsable2documento' => $reporte->reportequimicos_responsable2documento,
-                    'proyecto_id' => $reporte->proyecto_id,
-                    'registro_id' => $reporte->id
-                );
-            } else {
-                $dato['reporte_responsablesinforme_guardado'] = 0;
-
-                $dato['reporte_responsablesinforme'] = array(
-                    'responsable1' => NULL,
-                    'responsable1cargo' => NULL,
-                    'responsable1documento' => NULL,
-                    'responsable2' => NULL,
-                    'responsable2cargo' => NULL,
-                    'responsable2documento' => NULL,
-                    'proyecto_id' => 0,
-                    'registro_id' => 0
-                );
-            }
-
-
-
-            // MEMORIA FOTOGRAFICA
-            //===================================================
-
-
-            $memoriafotografica = DB::select('SELECT
-                                                    -- proyectoevidenciafoto.id,
-                                                    proyectoevidenciafoto.proyecto_id,
-                                                    -- proyectoevidenciafoto.proveedor_id,
-                                                    -- proyectoevidenciafoto.agente_id,
-                                                    proyectoevidenciafoto.agente_nombre,
-                                                    -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
-                                                    IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_archivo), 0) AS total
-                                                    -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
-                                                    -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion 
-                                                FROM
-                                                    proyectoevidenciafoto
-                                                WHERE
-                                                    proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
-                                                    AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
-                                                GROUP BY
-                                                    proyectoevidenciafoto.proyecto_id,
-                                                    proyectoevidenciafoto.agente_nombre
-                                                LIMIT 1');
-
-            if (count($memoriafotografica) > 0) {
-                $dato['reporte_memoriafotografica_guardado'] = $memoriafotografica[0]->total;
-            } else {
-                $dato['reporte_memoriafotografica_guardado'] = 0;
-            }
-
-
-            //===================================================
-
-
-            // respuesta
-            $dato["msj"] = 'Datos consultados correctamente';
-            return response()->json($dato);
-        } catch (Exception $e) {
-            $dato["msj"] = 'Error ' . $e->getMessage();
-            return response()->json($dato);
         }
+
+
+
+        // RESPONSABLES DEL INFORME
+        //===================================================
+
+
+        // if ($dato['reporteregistro_id'] >= 0 && $reporte->reportequimicos_responsable1 != NULL) {
+
+        //     if ($reporte->proyecto_id == $proyecto_id) {
+        //         $dato['reporte_responsablesinforme_guardado'] = 1;
+        //     } else {
+        //         $dato['reporte_responsablesinforme_guardado'] = 0;
+        //     }
+
+        //     $dato['reporte_responsablesinforme'] = array(
+        //         'responsable1' => $reporte->reportequimicos_responsable1,
+        //         'responsable1cargo' => $reporte->reportequimicos_responsable1cargo,
+        //         'responsable1documento' => $reporte->reportequimicos_responsable1documento,
+        //         'responsable2' => $reporte->reportequimicos_responsable2,
+        //         'responsable2cargo' => $reporte->reportequimicos_responsable2cargo,
+        //         'responsable2documento' => $reporte->reportequimicos_responsable2documento,
+        //         'proyecto_id' => $reporte->proyecto_id,
+        //         'registro_id' => $reporte->id
+        //     );
+
+        // } else {
+
+        //     $dato['reporte_responsablesinforme_guardado'] = 0;
+
+
+        //     $reportehistorial = reportequimicosModel::where('reportequimicos_responsable1', '!=', '')
+        //         ->orderBy('updated_at', 'DESC')
+        //         ->limit(1)
+        //         ->get();
+
+        //     if (count($reportehistorial) > 0 && $reportehistorial[0]->reportequimicos_responsable1 != NULL) {
+
+        //         $dato['reporte_responsablesinforme'] = array(
+        //             'responsable1' => $reportehistorial[0]->reportequimicos_responsable1,
+        //             'responsable1cargo' => $reportehistorial[0]->reportequimicos_responsable1cargo,
+        //             'responsable1documento' => $reportehistorial[0]->reportequimicos_responsable1documento,
+        //             'responsable2' => $reportehistorial[0]->reportequimicos_responsable2,
+        //             'responsable2cargo' => $reportehistorial[0]->reportequimicos_responsable2cargo,
+        //             'responsable2documento' => $reportehistorial[0]->reportequimicos_responsable2documento,
+        //             'proyecto_id' => $reportehistorial[0]->proyecto_id,
+        //             'registro_id' => $reportehistorial[0]->id
+        //         );
+
+        //     } else {
+
+        //         $dato['reporte_responsablesinforme'] = array(
+        //             'responsable1' => NULL,
+        //             'responsable1cargo' => NULL,
+        //             'responsable1documento' => NULL,
+        //             'responsable2' => NULL,
+        //             'responsable2cargo' => NULL,
+        //             'responsable2documento' => NULL,
+        //             'proyecto_id' => 0,
+        //             'registro_id' => 0
+        //         );
+
+        //     }
+        // }
+
+
+        // RESPONSABLES DEL INFORME
+        //===================================================
+
+
+        if (
+            $dato['reporteregistro_id'] > 0 &&
+            $reporte->id == $dato['reporteregistro_id'] &&
+            $reporte->proyecto_id == $proyecto_id &&
+            !is_null($reporte->reportequimicos_responsable1) &&
+            $reporte->reportequimicos_responsable1 != ''
+        ) {
+
+            $dato['reporte_responsablesinforme_guardado'] = 1;
+
+            $dato['reporte_responsablesinforme'] = array(
+                'responsable1' => $reporte->reportequimicos_responsable1,
+                'responsable1cargo' => $reporte->reportequimicos_responsable1cargo,
+                'responsable1documento' => $reporte->reportequimicos_responsable1documento,
+                'responsable2' => $reporte->reportequimicos_responsable2,
+                'responsable2cargo' => $reporte->reportequimicos_responsable2cargo,
+                'responsable2documento' => $reporte->reportequimicos_responsable2documento,
+                'proyecto_id' => $reporte->proyecto_id,
+                'registro_id' => $reporte->id
+            );
+
+        } else {
+
+            $dato['reporte_responsablesinforme_guardado'] = 0;
+
+            $dato['reporte_responsablesinforme'] = array(
+                'responsable1' => NULL,
+                'responsable1cargo' => NULL,
+                'responsable1documento' => NULL,
+                'responsable2' => NULL,
+                'responsable2cargo' => NULL,
+                'responsable2documento' => NULL,
+                'proyecto_id' => 0,
+                'registro_id' => 0
+            );
+
+        }
+
+
+
+        // MEMORIA FOTOGRAFICA
+        //===================================================
+
+
+        $memoriafotografica = DB::select('SELECT
+                                                -- proyectoevidenciafoto.id,
+                                                proyectoevidenciafoto.proyecto_id,
+                                                -- proyectoevidenciafoto.proveedor_id,
+                                                -- proyectoevidenciafoto.agente_id,
+                                                proyectoevidenciafoto.agente_nombre,
+                                                -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
+                                                IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_archivo), 0) AS total
+                                                -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
+                                                -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion 
+                                            FROM
+                                                proyectoevidenciafoto
+                                            WHERE
+                                                proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
+                                                AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
+                                            GROUP BY
+                                                proyectoevidenciafoto.proyecto_id,
+                                                proyectoevidenciafoto.agente_nombre
+                                            LIMIT 1');
+
+
+        if (count($memoriafotografica) > 0) {
+            $dato['reporte_memoriafotografica_guardado'] = $memoriafotografica[0]->total;
+        } else {
+            $dato['reporte_memoriafotografica_guardado'] = 0;
+        }
+
+
+        //===================================================
+
+
+        // respuesta
+        $dato["msj"] = 'Datos consultados correctamente';
+
+        return response()->json($dato);
+
+    } catch (Exception $e) {
+
+        $dato["msj"] = 'Error ' . $e->getMessage();
+
+        return response()->json($dato);
+
     }
+}
 
 
 

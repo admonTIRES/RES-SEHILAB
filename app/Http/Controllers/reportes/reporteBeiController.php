@@ -190,10 +190,11 @@ class reporteBeiController extends Controller{
         return $texto;
     }
 
+
     public function reportebeidatosgenerales($proyecto_id, $agente_id, $agente_nombre)
     {
         try {
-            
+
             $proyecto = proyectoModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto_id);
             $recsensorial = recsensorialModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto->recsensorial_id);
 
@@ -202,110 +203,42 @@ class reporteBeiController extends Controller{
 
             $reportebeicatalogo = reportebeicatalogoModel::limit(1)->get();
 
-            $reportebei  = reportebeiModel::where('proyecto_id', $proyecto_id)
+            $reportebei = reportebeiModel::where('proyecto_id', $proyecto_id)
                 ->orderBy('reportebei_revision', 'DESC')
                 ->limit(1)
                 ->get();
 
-            if (count($reportebei) == 0) {
-                if (($recsensorial->recsensorial_tipocliente + 0) == 1) // 1 = Pemex, 0 = cliente
-                {
-                    $reportebei = reportebeiModel::where('catactivo_id', $proyecto->catactivo_id)
-                        ->orderBy('proyecto_id', 'DESC')
-                        ->orderBy('reportebei_revision', 'DESC')
-                        // ->orderBy('updated_at', 'DESC')
-                        ->limit(1)
-                        ->get();
-                } else {
-                    $reporte = DB::select('SELECT
-                                                recsensorial.recsensorial_tipocliente,
-                                                recsensorial.cliente_id,
-                                                reportebei.id,
-                                                reportebei.proyecto_id,
-                                                reportebei.agente_id,
-                                                reportebei.agente_nombre,
-                                                reportebei.catactivo_id,
-                                                reportebei.reportebei_revision,
-                                                reportebei.reportebei_fecha,
-                                                reportebei.reportebei_mes,
-                                                reportebei.reportebei_instalacion,
-                                                reportebei.reportebei_catregion_activo,
-                                                reportebei.reportebei_catsubdireccion_activo,
-                                                reportebei.reportebei_catgerencia_activo,
-                                                reportebei.reportebei_catactivo_activo,
-                                                reportebei.reportebei_introduccion,
-                                                reportebei.reportebei_objetivogeneral,
-                                                reportebei.reportebei_objetivoespecifico,
-                                                reportebei.reportebei_metodologia_4_1,
-                                                reportebei.reportebei_metodologia_4_2,
-                                                reportebei.reportebei_metodologia_4_2_1,
-                                                reportebei.reportebei_metodologia_4_2_2,
-                                                reportebei.reportebei_metodologia_4_2_3,
-                                                reportebei.reportebei_metodologia_4_2_4,
-                                                reportebei.reportebei_ubicacioninstalacion,
-                                                reportebei.reportebei_ubicacionfoto,
-                                                reportebei.reportebei_procesoinstalacion,
-                                                reportebei.reportebei_actividadprincipal,
-                                                reportebei.reportebei_criterioseleccion,
-                                                reportebei.reportebei_conclusion,
-                                                reportebei.reportebei_responsable1,
-                                                reportebei.reportebei_responsable1cargo,
-                                                reportebei.reportebei_responsable1documento,
-                                                reportebei.reportebei_responsable2,
-                                                reportebei.reportebei_responsable2cargo,
-                                                reportebei.reportebei_responsable2documento,
-                                                reportebei.reportebei_concluido,
-                                                reportebei.reportebei_concluidonombre,
-                                                reportebei.reportebei_concluidofecha,
-                                                reportebei.reportebei_cancelado,
-                                                reportebei.reportebei_canceladonombre,
-                                                reportebei.reportebei_canceladofecha,
-                                                reportebei.reportebei_canceladoobservacion,
-                                                reportebei.created_at,
-                                                reportebei.updated_at 
-                                            FROM
-                                                recsensorial
-                                                LEFT JOIN proyecto ON recsensorial.id = proyecto.recsensorial_id
-                                                LEFT JOIN reportebei ON proyecto.id = reportebei.proyecto_id 
-                                            WHERE
-                                                recsensorial.cliente_id = ' . $recsensorial->cliente_id . ' 
-                                                AND reportebei.reportebei_instalacion <> "" 
-                                            ORDER BY
-                                                reportebei.updated_at DESC');
-                }
 
+           
+            if (count($reportebei) > 0) {
 
-                $dato['reportebei_id'] = 0;
-
-
-                if (count($reportebei) == 0) {
-                    $reportebei = array(0, 0);
-                    $dato['reportebei_id'] = -1;
-                }
+                $reportebei = $reportebei[0];
+                $dato['reportebei_id'] = $reportebei->id;
             } else {
-                $dato['reportebei_id'] = $reportebei[0]->id;
+
+                $reportebei = NULL;
+                $dato['reportebei_id'] = -1;
             }
-
-
-            $reportebei = $reportebei[0];
 
 
             //------------------------------
 
 
             $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-                ->where('agente_id', 22) 
+                ->where('agente_id', 22)
                 ->orderBy('reporterevisiones_revision', 'DESC')
                 ->get();
 
 
             if (count($revision) > 0) {
+
                 $revision = reporterevisionesModel::findOrFail($revision[0]->id);
 
 
                 $dato['reportebei_concluido'] = $revision->reporterevisiones_concluido;
                 $dato['reportebei_cancelado'] = $revision->reporterevisiones_cancelado;
             } else {
+
                 $dato['reportebei_concluido'] = 0;
                 $dato['reportebei_cancelado'] = 0;
             }
@@ -315,26 +248,27 @@ class reporteBeiController extends Controller{
 
 
 
-
-
-
             // PORTADA
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_fecha != NULL && $reportebei->proyecto_id == $proyecto_id) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_fecha != NULL && $reportebei->proyecto_id == $proyecto_id) {
+
                 $reportefecha = $reportebei->reportebei_fecha;
 
                 $dato['reportebei_portada_guardado'] = 1;
             } else {
+
                 $reportefecha = $meses[$proyectofecha[1] + 0] . " del " . $proyectofecha[0];
 
                 $dato['reportebei_portada_guardado'] = 0;
             }
 
 
-            if ($dato['reportebei_id'] >= 0) {
+            if ($dato['reportebei_id'] > 0) {
+
                 $dato['reportebei_portada'] = array(
+
                     'reportebei_catregion_activo' => $reportebei->reportebei_catregion_activo,
                     'catregion_id' => $proyecto->catregion_id,
                     'reportebei_catsubdireccion_activo' => $reportebei->reportebei_catsubdireccion_activo,
@@ -347,10 +281,11 @@ class reporteBeiController extends Controller{
                     'reportebei_fecha' => $reportefecha,
                     'reportebei_mes' => $reportebei->reportebei_mes
 
-
                 );
             } else {
+
                 $dato['reportebei_portada'] = array(
+
                     'reportebei_catregion_activo' => 1,
                     'catregion_id' => $proyecto->catregion_id,
                     'reportebei_catsubdireccion_activo' => 1,
@@ -367,299 +302,479 @@ class reporteBeiController extends Controller{
             }
 
 
+
             // INTRODUCCION
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_introduccion != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_introduccion != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_introduccion_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_introduccion_guardado'] = 0;
                 }
 
                 $introduccion = $reportebei->reportebei_introduccion;
             } else {
+
                 $dato['reportebei_introduccion_guardado'] = 0;
+
                 $introduccion = $reportebeicatalogo[0]->reportebeicatalogo_introduccion;
             }
 
-            $dato['reportebei_introduccion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $introduccion);
+
+            $dato['reportebei_introduccion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $introduccion
+            );
+
 
 
             // OBJETIVO GENERAL
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_objetivogeneral != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_objetivogeneral != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_objetivogeneral_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_objetivogeneral_guardado'] = 0;
                 }
 
                 $objetivogeneral = $reportebei->reportebei_objetivogeneral;
             } else {
+
                 $dato['reportebei_objetivogeneral_guardado'] = 0;
+
                 $objetivogeneral = $reportebeicatalogo[0]->reportebeicatalogo_objetivogeneral;
             }
 
-            $dato['reportebei_objetivogeneral'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivogeneral);
+
+            $dato['reportebei_objetivogeneral'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $objetivogeneral
+            );
+
 
 
             // OBJETIVOS ESPECIFICOS
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_objetivoespecifico != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_objetivoespecifico != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_objetivoespecifico_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_objetivoespecifico_guardado'] = 0;
                 }
 
                 $objetivoespecifico = $reportebei->reportebei_objetivoespecifico;
             } else {
+
                 $dato['reportebei_objetivoespecifico_guardado'] = 0;
+
                 $objetivoespecifico = $reportebeicatalogo[0]->reportebeicatalogo_objetivoespecifico;
             }
 
-            $dato['reportebei_objetivoespecifico'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivoespecifico);
+
+            $dato['reportebei_objetivoespecifico'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $objetivoespecifico
+            );
+
 
 
             // METODOLOGIA PUNTO 4.1
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_metodologia_4_1 != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_metodologia_4_1 != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_metodologia_4_1_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_metodologia_4_1_guardado'] = 0;
                 }
 
                 $metodologia_4_1 = $reportebei->reportebei_metodologia_4_1;
             } else {
+
                 $dato['reportebei_metodologia_4_1_guardado'] = 0;
+
                 $metodologia_4_1 = $reportebeicatalogo[0]->reportebeicatalogo_metodologia_4_1;
             }
 
-            $dato['reportebei_metodologia_4_1'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_1);
+
+            $dato['reportebei_metodologia_4_1'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_1
+            );
+
 
 
             // METODOLOGIA PUNTO 4.2
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_metodologia_4_2 != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_metodologia_4_2 != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_metodologia_4_2_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_metodologia_4_2_guardado'] = 0;
                 }
 
                 $metodologia_4_2 = $reportebei->reportebei_metodologia_4_2;
             } else {
+
                 $dato['reportebei_metodologia_4_2_guardado'] = 0;
+
                 $metodologia_4_2 = $reportebeicatalogo[0]->reportebeicatalogo_metodologia_4_2;
             }
 
-            $dato['reportebei_metodologia_4_2'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2);
+
+            $dato['reportebei_metodologia_4_2'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2
+            );
+
 
 
             // METODOLOGIA PUNTO 4.2.1
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_metodologia_4_2_1 != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_metodologia_4_2_1 != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_metodologia_4_2_1_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_metodologia_4_2_1_guardado'] = 0;
                 }
 
                 $metodologia_4_2_1 = $reportebei->reportebei_metodologia_4_2_1;
             } else {
+
                 $dato['reportebei_metodologia_4_2_1_guardado'] = 0;
+
                 $metodologia_4_2_1 = $reportebeicatalogo[0]->reportebeicatalogo_metodologia_4_2_1;
             }
 
-            $dato['reportebei_metodologia_4_2_1'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2_1);
+
+            $dato['reportebei_metodologia_4_2_1'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2_1
+            );
+
 
 
             // METODOLOGIA PUNTO 4.2.2
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_metodologia_4_2_2 != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_metodologia_4_2_2 != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_metodologia_4_2_2_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_metodologia_4_2_2_guardado'] = 0;
                 }
 
                 $metodologia_4_2_2 = $reportebei->reportebei_metodologia_4_2_2;
             } else {
+
                 $dato['reportebei_metodologia_4_2_2_guardado'] = 0;
+
                 $metodologia_4_2_2 = $reportebeicatalogo[0]->reportebeicatalogo_metodologia_4_2_2;
             }
 
-            $dato['reportebei_metodologia_4_2_2'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2_2);
+
+            $dato['reportebei_metodologia_4_2_2'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2_2
+            );
+
 
 
             // METODOLOGIA PUNTO 4.2.3
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_metodologia_4_2_3 != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_metodologia_4_2_3 != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_metodologia_4_2_3_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_metodologia_4_2_3_guardado'] = 0;
                 }
 
                 $metodologia_4_2_3 = $reportebei->reportebei_metodologia_4_2_3;
             } else {
+
                 $dato['reportebei_metodologia_4_2_3_guardado'] = 0;
+
                 $metodologia_4_2_3 = $reportebeicatalogo[0]->reportebeicatalogo_metodologia_4_2_3;
             }
 
-            $dato['reportebei_metodologia_4_2_3'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2_3);
+
+            $dato['reportebei_metodologia_4_2_3'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2_3
+            );
+
 
 
             // METODOLOGIA PUNTO 4.2.4
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_metodologia_4_2_4 != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_metodologia_4_2_4 != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_metodologia_4_2_4_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_metodologia_4_2_4_guardado'] = 0;
                 }
 
                 $metodologia_4_2_4 = $reportebei->reportebei_metodologia_4_2_4;
             } else {
+
                 $dato['reportebei_metodologia_4_2_4_guardado'] = 0;
+
                 $metodologia_4_2_4 = $reportebeicatalogo[0]->reportebeicatalogo_metodologia_4_2_4;
             }
 
-            $dato['reportebei_metodologia_4_2_4'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2_4);
+
+            $dato['reportebei_metodologia_4_2_4'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2_4
+            );
+
 
 
             // UBICACION
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_ubicacioninstalacion != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_ubicacioninstalacion != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_ubicacioninstalacion_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_ubicacioninstalacion_guardado'] = 0;
                 }
 
                 $ubicacion = $reportebei->reportebei_ubicacioninstalacion;
             } else {
+
                 $dato['reportebei_ubicacioninstalacion_guardado'] = 0;
+
                 $ubicacion = $reportebeicatalogo[0]->reportebeicatalogo_ubicacioninstalacion;
             }
 
+
             $ubicacionfoto = NULL;
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_ubicacionfoto != NULL && $reportebei->proyecto_id == $proyecto_id) {
+
+
+            if (
+                $dato['reportebei_id'] > 0 &&
+                $reportebei->reportebei_ubicacionfoto != NULL &&
+                $reportebei->proyecto_id == $proyecto_id
+            ) {
+
                 $ubicacionfoto = $reportebei->reportebei_ubicacionfoto;
             }
 
+
             $dato['reportebei_ubicacioninstalacion'] = array(
-                'ubicacion' => $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $ubicacion),
+
+                'ubicacion' => $this->datosproyectoreemplazartexto(
+                    $proyecto,
+                    $recsensorial,
+                    $ubicacion
+                ),
+
                 'ubicacionfoto' => $ubicacionfoto
+
             );
+
 
 
             // PROCESO INSTALACION
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_procesoinstalacion != NULL && $reportebei->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reportebei_id'] > 0 &&
+                $reportebei->reportebei_procesoinstalacion != NULL &&
+                $reportebei->proyecto_id == $proyecto_id
+            ) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_procesoinstalacion_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_procesoinstalacion_guardado'] = 0;
                 }
 
                 $procesoinstalacion = $reportebei->reportebei_procesoinstalacion;
             } else {
+
                 $dato['reportebei_procesoinstalacion_guardado'] = 0;
+
                 $procesoinstalacion = $recsensorial->recsensorial_descripcionproceso;
             }
 
-            $dato['reportebei_procesoinstalacion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $procesoinstalacion);
+
+            $dato['reportebei_procesoinstalacion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $procesoinstalacion
+            );
+
 
 
             // ACTIVIDAD PRINCIPAL
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_actividadprincipal != NULL && $reportebei->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reportebei_id'] > 0 &&
+                $reportebei->reportebei_actividadprincipal != NULL &&
+                $reportebei->proyecto_id == $proyecto_id
+            ) {
+
                 $procesoinstalacion = $reportebei->reportebei_actividadprincipal;
             } else {
+
                 $procesoinstalacion = $recsensorial->recsensorial_actividadprincipal;
             }
 
-            $dato['reportebei_actividadprincipal'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $procesoinstalacion);
+
+            $dato['reportebei_actividadprincipal'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $procesoinstalacion
+            );
+
 
 
             // CRITERIO DE SELECCION
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_criterioseleccion != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_criterioseleccion != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_criterioseleccion_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_criterioseleccion_guardado'] = 0;
                 }
 
                 $criterioseleccion = $reportebei->reportebei_criterioseleccion;
             } else {
+
                 $dato['reportebei_criterioseleccion_guardado'] = 0;
+
                 $criterioseleccion = $reportebeicatalogo[0]->reportebeicatalogo_criterioseleccion;
             }
 
-            $dato['reportebei_criterioseleccion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $criterioseleccion);
+
+            $dato['reportebei_criterioseleccion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $criterioseleccion
+            );
+
 
 
             // CONCLUSION
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_conclusion != NULL && $reportebei->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reportebei_id'] > 0 &&
+                $reportebei->reportebei_conclusion != NULL &&
+                $reportebei->proyecto_id == $proyecto_id
+            ) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_conclusion_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_conclusion_guardado'] = 0;
                 }
 
                 $conclusion = $reportebei->reportebei_conclusion;
             } else {
+
                 $dato['reportebei_conclusion_guardado'] = 0;
+
                 $conclusion = $reportebeicatalogo[0]->reportebeicatalogo_conclusion;
             }
 
-            $dato['reportebei_conclusion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $conclusion);
+
+            $dato['reportebei_conclusion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $conclusion
+            );
+
 
 
             // RESPONSABLES DEL INFORME
             //===================================================
 
 
-            if ($dato['reportebei_id'] >= 0 && $reportebei->reportebei_responsable1 != NULL) {
+            if ($dato['reportebei_id'] > 0 && $reportebei->reportebei_responsable1 != NULL) {
+
                 if ($reportebei->proyecto_id == $proyecto_id) {
+
                     $dato['reportebei_responsablesinforme_guardado'] = 1;
                 } else {
+
                     $dato['reportebei_responsablesinforme_guardado'] = 0;
                 }
 
+
                 $dato['reportebei_responsablesinforme'] = array(
+
                     'reportebei_responsable1' => $reportebei->reportebei_responsable1,
                     'reportebei_responsable1cargo' => $reportebei->reportebei_responsable1cargo,
                     'reportebei_responsable1documento' => $reportebei->reportebei_responsable1documento,
@@ -670,11 +785,16 @@ class reporteBeiController extends Controller{
                     'registro_id' => $reportebei->id,
                     'tipo1' => 1,
                     'tipo2' => 2
+
                 );
             } else {
+
                 $dato['reportebei_responsablesinforme_guardado'] = 0;
 
+
+              
                 $dato['reportebei_responsablesinforme'] = array(
+
                     'reportebei_responsable1' => $recsensorial->recsensorial_repfisicos1nombre,
                     'reportebei_responsable1cargo' => $recsensorial->recsensorial_repfisicos1cargo,
                     'reportebei_responsable1documento' => $recsensorial->recsensorial_repfisicos1doc,
@@ -686,9 +806,10 @@ class reporteBeiController extends Controller{
                     'recsensorial_id' => $recsensorial->id,
                     'tipo1' => 3,
                     'tipo2' => 4
+
                 );
-                // }
             }
+
 
 
             // MEMORIA FOTOGRAFICA
@@ -696,33 +817,41 @@ class reporteBeiController extends Controller{
 
 
             $memoriafotografica = collect(DB::select('SELECT
-                                                            proyectoevidenciafoto.proyecto_id,
-                                                            proyectoevidenciafoto.agente_nombre,
-                                                            IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
-                                                           
-                                                        FROM
-                                                            proyectoevidenciafoto
-                                                        WHERE
-                                                            proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
-                                                            AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
-                                                        GROUP BY
-                                                            proyectoevidenciafoto.proyecto_id,
-                                                            proyectoevidenciafoto.agente_nombre
-                                                        LIMIT 1'));
+                                                        proyectoevidenciafoto.proyecto_id,
+                                                        proyectoevidenciafoto.agente_nombre,
+                                                        IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
+                                                       
+                                                    FROM
+                                                        proyectoevidenciafoto
+                                                    WHERE
+                                                        proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
+                                                        AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
+                                                    GROUP BY
+                                                        proyectoevidenciafoto.proyecto_id,
+                                                        proyectoevidenciafoto.agente_nombre
+                                                    LIMIT 1'));
+
 
             if (count($memoriafotografica) > 0) {
+
                 $dato['reportebei_memoriafotografica_guardado'] = $memoriafotografica[0]->total;
             } else {
+
                 $dato['reportebei_memoriafotografica_guardado'] = 0;
             }
 
 
+
             // respuesta
             $dato["msj"] = 'Datos consultados correctamente';
+
             return response()->json($dato);
         } catch (Exception $e) {
+
             $dato['datoscompletos'] = 0;
+
             $dato["msj"] = 'Error ' . $e->getMessage();
+
             return response()->json($dato);
         }
     }

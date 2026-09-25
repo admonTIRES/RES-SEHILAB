@@ -255,11 +255,14 @@ class reporteiluminacionController extends Controller
      * @param  $agente_nombre
      * @return \Illuminate\Http\Response
      */
+
     public function reporteiluminaciondatosgenerales($proyecto_id, $agente_id, $agente_nombre)
     {
         try {
+
             $excelExists = reporteiluminacionModel::where('proyecto_id', $proyecto_id)->value('reporteiluminacion_excel');
             $dato['reporteiluminacion_excel'] = $excelExists;
+
             $proyecto = proyectoModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto_id);
             $recsensorial = recsensorialModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto->recsensorial_id);
 
@@ -268,92 +271,22 @@ class reporteiluminacionController extends Controller
 
             $reporteiluminacioncatalogo = reporteiluminacioncatalogoModel::limit(1)->get();
 
-            $reporteiluminacion  = reporteiluminacionModel::where('proyecto_id', $proyecto_id)
+
+            $reporteiluminacion = reporteiluminacionModel::where('proyecto_id', $proyecto_id)
                 ->orderBy('reporteiluminacion_revision', 'DESC')
                 ->limit(1)
                 ->get();
 
-            if (count($reporteiluminacion) == 0) {
-                if (($recsensorial->recsensorial_tipocliente + 0) == 1) // 1 = Pemex, 0 = cliente
-                {
-                    $reporteiluminacion = reporteiluminacionModel::where('catactivo_id', $proyecto->catactivo_id)
-                        ->orderBy('proyecto_id', 'DESC')
-                        ->orderBy('reporteiluminacion_revision', 'DESC')
-                        // ->orderBy('updated_at', 'DESC')
-                        ->limit(1)
-                        ->get();
-                } else {
-                    $reporte = DB::select('SELECT
-                                                recsensorial.recsensorial_tipocliente,
-                                                recsensorial.cliente_id,
-                                                reporteiluminacion.id,
-                                                reporteiluminacion.proyecto_id,
-                                                reporteiluminacion.agente_id,
-                                                reporteiluminacion.agente_nombre,
-                                                reporteiluminacion.catactivo_id,
-                                                reporteiluminacion.reporteiluminacion_revision,
-                                                reporteiluminacion.reporteiluminacion_fecha,
-                                                reporteiluminacion.reporteiluminacion_mes,
-                                                reporteiluminacion.reporteiluminacion_instalacion,
-                                                reporteiluminacion.reporteiluminacion_catregion_activo,
-                                                reporteiluminacion.reporteiluminacion_catsubdireccion_activo,
-                                                reporteiluminacion.reporteiluminacion_catgerencia_activo,
-                                                reporteiluminacion.reporteiluminacion_catactivo_activo,
-                                                reporteiluminacion.reporteiluminacion_introduccion,
-                                                reporteiluminacion.reporteiluminacion_objetivogeneral,
-                                                reporteiluminacion.reporteiluminacion_objetivoespecifico,
-                                                reporteiluminacion.reporteiluminacion_metodologia_4_1,
-                                                reporteiluminacion.reporteiluminacion_metodologia_4_2,
-                                                reporteiluminacion.reporteiluminacion_metodologia_4_2_1,
-                                                reporteiluminacion.reporteiluminacion_metodologia_4_2_2,
-                                                reporteiluminacion.reporteiluminacion_metodologia_4_2_3,
-                                                reporteiluminacion.reporteiluminacion_metodologia_4_2_4,
-                                                reporteiluminacion.reporteiluminacion_ubicacioninstalacion,
-                                                reporteiluminacion.reporteiluminacion_ubicacionfoto,
-                                                reporteiluminacion.reporteiluminacion_procesoinstalacion,
-                                                reporteiluminacion.reporteiluminacion_actividadprincipal,
-                                                reporteiluminacion.reporteiluminacion_criterioseleccion,
-                                                reporteiluminacion.reporteiluminacion_conclusion,
-                                                reporteiluminacion.reporteiluminacion_responsable1,
-                                                reporteiluminacion.reporteiluminacion_responsable1cargo,
-                                                reporteiluminacion.reporteiluminacion_responsable1documento,
-                                                reporteiluminacion.reporteiluminacion_responsable2,
-                                                reporteiluminacion.reporteiluminacion_responsable2cargo,
-                                                reporteiluminacion.reporteiluminacion_responsable2documento,
-                                                reporteiluminacion.reporteiluminacion_concluido,
-                                                reporteiluminacion.reporteiluminacion_concluidonombre,
-                                                reporteiluminacion.reporteiluminacion_concluidofecha,
-                                                reporteiluminacion.reporteiluminacion_cancelado,
-                                                reporteiluminacion.reporteiluminacion_canceladonombre,
-                                                reporteiluminacion.reporteiluminacion_canceladofecha,
-                                                reporteiluminacion.reporteiluminacion_canceladoobservacion,
-                                                reporteiluminacion.created_at,
-                                                reporteiluminacion.updated_at 
-                                            FROM
-                                                recsensorial
-                                                LEFT JOIN proyecto ON recsensorial.id = proyecto.recsensorial_id
-                                                LEFT JOIN reporteiluminacion ON proyecto.id = reporteiluminacion.proyecto_id 
-                                            WHERE
-                                                recsensorial.cliente_id = ' . $recsensorial->cliente_id . ' 
-                                                AND reporteiluminacion.reporteiluminacion_instalacion <> "" 
-                                            ORDER BY
-                                                reporteiluminacion.updated_at DESC');
-                }
 
+            if (count($reporteiluminacion) > 0) {
 
-                $dato['reporteiluminacion_id'] = 0;
-
-
-                if (count($reporteiluminacion) == 0) {
-                    $reporteiluminacion = array(0, 0);
-                    $dato['reporteiluminacion_id'] = -1;
-                }
+                $reporteiluminacion = $reporteiluminacion[0];
+                $dato['reporteiluminacion_id'] = $reporteiluminacion->id;
             } else {
-                $dato['reporteiluminacion_id'] = $reporteiluminacion[0]->id;
+
+                $reporteiluminacion = NULL;
+                $dato['reporteiluminacion_id'] = -1;
             }
-
-
-            $reporteiluminacion = $reporteiluminacion[0];
 
 
             //------------------------------
@@ -366,12 +299,13 @@ class reporteiluminacionController extends Controller
 
 
             if (count($revision) > 0) {
-                $revision = reporterevisionesModel::findOrFail($revision[0]->id);
 
+                $revision = reporterevisionesModel::findOrFail($revision[0]->id);
 
                 $dato['reporteiluminacion_concluido'] = $revision->reporterevisiones_concluido;
                 $dato['reporteiluminacion_cancelado'] = $revision->reporterevisiones_cancelado;
             } else {
+
                 $dato['reporteiluminacion_concluido'] = 0;
                 $dato['reporteiluminacion_cancelado'] = 0;
             }
@@ -388,19 +322,27 @@ class reporteiluminacionController extends Controller
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_fecha != NULL && $reporteiluminacion->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_fecha != NULL &&
+                $reporteiluminacion->proyecto_id == $proyecto_id
+            ) {
+
                 $reportefecha = $reporteiluminacion->reporteiluminacion_fecha;
 
                 $dato['reporteiluminacion_portada_guardado'] = 1;
             } else {
+
                 $reportefecha = $meses[$proyectofecha[1] + 0] . " del " . $proyectofecha[0];
 
                 $dato['reporteiluminacion_portada_guardado'] = 0;
             }
 
 
-            if ($dato['reporteiluminacion_id'] >= 0) {
+            if ($dato['reporteiluminacion_id'] > 0) {
+
                 $dato['reporteiluminacion_portada'] = array(
+
                     'reporteiluminacion_catregion_activo' => $reporteiluminacion->reporteiluminacion_catregion_activo,
                     'catregion_id' => $proyecto->catregion_id,
                     'reporteiluminacion_catsubdireccion_activo' => $reporteiluminacion->reporteiluminacion_catsubdireccion_activo,
@@ -413,10 +355,11 @@ class reporteiluminacionController extends Controller
                     'reporteiluminacion_fecha' => $reportefecha,
                     'reporteiluminacion_mes' => $reporteiluminacion->reporteiluminacion_mes
 
-
                 );
             } else {
+
                 $dato['reporteiluminacion_portada'] = array(
+
                     'reporteiluminacion_catregion_activo' => 1,
                     'catregion_id' => $proyecto->catregion_id,
                     'reporteiluminacion_catsubdireccion_activo' => 1,
@@ -437,207 +380,348 @@ class reporteiluminacionController extends Controller
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_introduccion != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_introduccion != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_introduccion_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_introduccion_guardado'] = 0;
                 }
 
                 $introduccion = $reporteiluminacion->reporteiluminacion_introduccion;
             } else {
+
                 $dato['reporteiluminacion_introduccion_guardado'] = 0;
+
                 $introduccion = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_introduccion;
             }
 
-            $dato['reporteiluminacion_introduccion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $introduccion);
+
+            $dato['reporteiluminacion_introduccion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $introduccion
+            );
 
 
             // OBJETIVO GENERAL
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_objetivogeneral != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_objetivogeneral != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_objetivogeneral_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_objetivogeneral_guardado'] = 0;
                 }
 
                 $objetivogeneral = $reporteiluminacion->reporteiluminacion_objetivogeneral;
             } else {
+
                 $dato['reporteiluminacion_objetivogeneral_guardado'] = 0;
+
                 $objetivogeneral = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_objetivogeneral;
             }
 
-            $dato['reporteiluminacion_objetivogeneral'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivogeneral);
+
+            $dato['reporteiluminacion_objetivogeneral'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $objetivogeneral
+            );
 
 
             // OBJETIVOS ESPECIFICOS
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_objetivoespecifico != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_objetivoespecifico != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_objetivoespecifico_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_objetivoespecifico_guardado'] = 0;
                 }
 
                 $objetivoespecifico = $reporteiluminacion->reporteiluminacion_objetivoespecifico;
             } else {
+
                 $dato['reporteiluminacion_objetivoespecifico_guardado'] = 0;
+
                 $objetivoespecifico = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_objetivoespecifico;
             }
 
-            $dato['reporteiluminacion_objetivoespecifico'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivoespecifico);
+
+            $dato['reporteiluminacion_objetivoespecifico'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $objetivoespecifico
+            );
 
 
             // METODOLOGIA PUNTO 4.1
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_metodologia_4_1 != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_metodologia_4_1 != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_metodologia_4_1_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_metodologia_4_1_guardado'] = 0;
                 }
 
                 $metodologia_4_1 = $reporteiluminacion->reporteiluminacion_metodologia_4_1;
             } else {
+
                 $dato['reporteiluminacion_metodologia_4_1_guardado'] = 0;
+
                 $metodologia_4_1 = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_metodologia_4_1;
             }
 
-            $dato['reporteiluminacion_metodologia_4_1'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_1);
+
+            $dato['reporteiluminacion_metodologia_4_1'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_1
+            );
 
 
             // METODOLOGIA PUNTO 4.2
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_metodologia_4_2 != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_metodologia_4_2 != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_metodologia_4_2_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_metodologia_4_2_guardado'] = 0;
                 }
 
                 $metodologia_4_2 = $reporteiluminacion->reporteiluminacion_metodologia_4_2;
             } else {
+
                 $dato['reporteiluminacion_metodologia_4_2_guardado'] = 0;
+
                 $metodologia_4_2 = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_metodologia_4_2;
             }
 
-            $dato['reporteiluminacion_metodologia_4_2'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2);
+
+            $dato['reporteiluminacion_metodologia_4_2'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2
+            );
 
 
             // METODOLOGIA PUNTO 4.2.1
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_metodologia_4_2_1 != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_metodologia_4_2_1 != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_metodologia_4_2_1_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_metodologia_4_2_1_guardado'] = 0;
                 }
 
                 $metodologia_4_2_1 = $reporteiluminacion->reporteiluminacion_metodologia_4_2_1;
             } else {
+
                 $dato['reporteiluminacion_metodologia_4_2_1_guardado'] = 0;
+
                 $metodologia_4_2_1 = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_metodologia_4_2_1;
             }
 
-            $dato['reporteiluminacion_metodologia_4_2_1'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2_1);
+
+            $dato['reporteiluminacion_metodologia_4_2_1'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2_1
+            );
 
 
             // METODOLOGIA PUNTO 4.2.2
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_metodologia_4_2_2 != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_metodologia_4_2_2 != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_metodologia_4_2_2_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_metodologia_4_2_2_guardado'] = 0;
                 }
 
                 $metodologia_4_2_2 = $reporteiluminacion->reporteiluminacion_metodologia_4_2_2;
             } else {
+
                 $dato['reporteiluminacion_metodologia_4_2_2_guardado'] = 0;
+
                 $metodologia_4_2_2 = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_metodologia_4_2_2;
             }
 
-            $dato['reporteiluminacion_metodologia_4_2_2'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2_2);
+
+            $dato['reporteiluminacion_metodologia_4_2_2'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2_2
+            );
 
 
             // METODOLOGIA PUNTO 4.2.3
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_metodologia_4_2_3 != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_metodologia_4_2_3 != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_metodologia_4_2_3_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_metodologia_4_2_3_guardado'] = 0;
                 }
 
                 $metodologia_4_2_3 = $reporteiluminacion->reporteiluminacion_metodologia_4_2_3;
             } else {
+
                 $dato['reporteiluminacion_metodologia_4_2_3_guardado'] = 0;
+
                 $metodologia_4_2_3 = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_metodologia_4_2_3;
             }
 
-            $dato['reporteiluminacion_metodologia_4_2_3'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2_3);
+
+            $dato['reporteiluminacion_metodologia_4_2_3'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2_3
+            );
 
 
             // METODOLOGIA PUNTO 4.2.4
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_metodologia_4_2_4 != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_metodologia_4_2_4 != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_metodologia_4_2_4_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_metodologia_4_2_4_guardado'] = 0;
                 }
 
                 $metodologia_4_2_4 = $reporteiluminacion->reporteiluminacion_metodologia_4_2_4;
             } else {
+
                 $dato['reporteiluminacion_metodologia_4_2_4_guardado'] = 0;
+
                 $metodologia_4_2_4 = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_metodologia_4_2_4;
             }
 
-            $dato['reporteiluminacion_metodologia_4_2_4'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2_4);
+
+            $dato['reporteiluminacion_metodologia_4_2_4'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2_4
+            );
 
 
             // UBICACION
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_ubicacioninstalacion != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_ubicacioninstalacion != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_ubicacioninstalacion_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_ubicacioninstalacion_guardado'] = 0;
                 }
 
                 $ubicacion = $reporteiluminacion->reporteiluminacion_ubicacioninstalacion;
             } else {
+
                 $dato['reporteiluminacion_ubicacioninstalacion_guardado'] = 0;
+
                 $ubicacion = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_ubicacioninstalacion;
             }
 
+
             $ubicacionfoto = NULL;
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_ubicacionfoto != NULL && $reporteiluminacion->proyecto_id == $proyecto_id) {
+
+
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_ubicacionfoto != NULL &&
+                $reporteiluminacion->proyecto_id == $proyecto_id
+            ) {
+
                 $ubicacionfoto = $reporteiluminacion->reporteiluminacion_ubicacionfoto;
             }
 
+
             $dato['reporteiluminacion_ubicacioninstalacion'] = array(
-                'ubicacion' => $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $ubicacion),
+
+                'ubicacion' => $this->datosproyectoreemplazartexto(
+                    $proyecto,
+                    $recsensorial,
+                    $ubicacion
+                ),
+
                 'ubicacionfoto' => $ubicacionfoto
+
             );
 
 
@@ -645,87 +729,147 @@ class reporteiluminacionController extends Controller
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_procesoinstalacion != NULL && $reporteiluminacion->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_procesoinstalacion != NULL &&
+                $reporteiluminacion->proyecto_id == $proyecto_id
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_procesoinstalacion_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_procesoinstalacion_guardado'] = 0;
                 }
 
                 $procesoinstalacion = $reporteiluminacion->reporteiluminacion_procesoinstalacion;
             } else {
+
                 $dato['reporteiluminacion_procesoinstalacion_guardado'] = 0;
+
                 $procesoinstalacion = $recsensorial->recsensorial_descripcionproceso;
             }
 
-            $dato['reporteiluminacion_procesoinstalacion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $procesoinstalacion);
+
+            $dato['reporteiluminacion_procesoinstalacion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $procesoinstalacion
+            );
 
 
             // ACTIVIDAD PRINCIPAL
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_actividadprincipal != NULL && $reporteiluminacion->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_actividadprincipal != NULL &&
+                $reporteiluminacion->proyecto_id == $proyecto_id
+            ) {
+
                 $procesoinstalacion = $reporteiluminacion->reporteiluminacion_actividadprincipal;
             } else {
+
                 $procesoinstalacion = $recsensorial->recsensorial_actividadprincipal;
             }
 
-            $dato['reporteiluminacion_actividadprincipal'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $procesoinstalacion);
+
+            $dato['reporteiluminacion_actividadprincipal'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $procesoinstalacion
+            );
 
 
             // CRITERIO DE SELECCION
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_criterioseleccion != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_criterioseleccion != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_criterioseleccion_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_criterioseleccion_guardado'] = 0;
                 }
 
                 $criterioseleccion = $reporteiluminacion->reporteiluminacion_criterioseleccion;
             } else {
+
                 $dato['reporteiluminacion_criterioseleccion_guardado'] = 0;
+
                 $criterioseleccion = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_criterioseleccion;
             }
 
-            $dato['reporteiluminacion_criterioseleccion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $criterioseleccion);
+
+            $dato['reporteiluminacion_criterioseleccion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $criterioseleccion
+            );
 
 
             // CONCLUSION
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_conclusion != NULL && $reporteiluminacion->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_conclusion != NULL &&
+                $reporteiluminacion->proyecto_id == $proyecto_id
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_conclusion_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_conclusion_guardado'] = 0;
                 }
 
                 $conclusion = $reporteiluminacion->reporteiluminacion_conclusion;
             } else {
+
                 $dato['reporteiluminacion_conclusion_guardado'] = 0;
+
                 $conclusion = $reporteiluminacioncatalogo[0]->reporteiluminacioncatalogo_conclusion;
             }
 
-            $dato['reporteiluminacion_conclusion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $conclusion);
+
+            $dato['reporteiluminacion_conclusion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $conclusion
+            );
 
 
             // RESPONSABLES DEL INFORME
             //===================================================
 
 
-            if ($dato['reporteiluminacion_id'] >= 0 && $reporteiluminacion->reporteiluminacion_responsable1 != NULL) {
+            if (
+                $dato['reporteiluminacion_id'] > 0 &&
+                $reporteiluminacion->reporteiluminacion_responsable1 != NULL
+            ) {
+
                 if ($reporteiluminacion->proyecto_id == $proyecto_id) {
+
                     $dato['reporteiluminacion_responsablesinforme_guardado'] = 1;
                 } else {
+
                     $dato['reporteiluminacion_responsablesinforme_guardado'] = 0;
                 }
 
+
                 $dato['reporteiluminacion_responsablesinforme'] = array(
+
                     'reporteiluminacion_responsable1' => $reporteiluminacion->reporteiluminacion_responsable1,
                     'reporteiluminacion_responsable1cargo' => $reporteiluminacion->reporteiluminacion_responsable1cargo,
                     'reporteiluminacion_responsable1documento' => $reporteiluminacion->reporteiluminacion_responsable1documento,
@@ -736,40 +880,16 @@ class reporteiluminacionController extends Controller
                     'registro_id' => $reporteiluminacion->id,
                     'tipo1' => 1,
                     'tipo2' => 2
+
                 );
             } else {
+
                 $dato['reporteiluminacion_responsablesinforme_guardado'] = 0;
 
-                // $reporteiluminacionhistorial = reporteiluminacionModel::where('catactivo_id', $proyecto->catactivo_id)
-                //                                                         ->orderBy('proyecto_id', 'DESC')
-                //                                                         ->orderBy('reporteiluminacion_revision', 'DESC')
-                //                                                         ->limit(1)
-                //                                                         ->get();
 
-                // $reporteiluminacionhistorial = reporteiluminacionModel::where('reporteiluminacion_responsable1', '!=', '')
-                //                                                         ->orderBy('updated_at', 'DESC')
-                //                                                         ->limit(1)
-                //                                                         ->get();
-
-
-                // if (count($reporteiluminacionhistorial) > 0 && $reporteiluminacionhistorial[0]->reporteiluminacion_responsable1 != NULL)
-                // {
-                //     $dato['reporteiluminacion_responsablesinforme'] = array(
-                //                                                         'reporteiluminacion_responsable1' => $reporteiluminacionhistorial[0]->reporteiluminacion_responsable1
-                //                                                         , 'reporteiluminacion_responsable1cargo' => $reporteiluminacionhistorial[0]->reporteiluminacion_responsable1cargo
-                //                                                         , 'reporteiluminacion_responsable1documento' => $reporteiluminacionhistorial[0]->reporteiluminacion_responsable1documento
-                //                                                         , 'reporteiluminacion_responsable2' => $reporteiluminacionhistorial[0]->reporteiluminacion_responsable2
-                //                                                         , 'reporteiluminacion_responsable2cargo' => $reporteiluminacionhistorial[0]->reporteiluminacion_responsable2cargo
-                //                                                         , 'reporteiluminacion_responsable2documento' => $reporteiluminacionhistorial[0]->reporteiluminacion_responsable2documento
-                //                                                         , 'proyecto_id' => $reporteiluminacionhistorial[0]->proyecto_id
-                //                                                         , 'registro_id' => $reporteiluminacionhistorial[0]->id
-                //                                                         , 'tipo1' => 1
-                //                                                         , 'tipo2' => 2
-                //                                                     );
-                // }
-                // else
-                // {
+                
                 $dato['reporteiluminacion_responsablesinforme'] = array(
+
                     'reporteiluminacion_responsable1' => $recsensorial->recsensorial_repfisicos1nombre,
                     'reporteiluminacion_responsable1cargo' => $recsensorial->recsensorial_repfisicos1cargo,
                     'reporteiluminacion_responsable1documento' => $recsensorial->recsensorial_repfisicos1doc,
@@ -781,8 +901,8 @@ class reporteiluminacionController extends Controller
                     'recsensorial_id' => $recsensorial->id,
                     'tipo1' => 3,
                     'tipo2' => 4
+
                 );
-                // }
             }
 
 
@@ -791,28 +911,31 @@ class reporteiluminacionController extends Controller
 
 
             $memoriafotografica = collect(DB::select('SELECT
-                                                            -- proyectoevidenciafoto.id,
-                                                            proyectoevidenciafoto.proyecto_id,
-                                                            -- proyectoevidenciafoto.proveedor_id,
-                                                            -- proyectoevidenciafoto.agente_id,
-                                                            proyectoevidenciafoto.agente_nombre,
-                                                            -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
-                                                            IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
-                                                            -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
-                                                            -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion 
-                                                        FROM
-                                                            proyectoevidenciafoto
-                                                        WHERE
-                                                            proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
-                                                            AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
-                                                        GROUP BY
-                                                            proyectoevidenciafoto.proyecto_id,
-                                                            proyectoevidenciafoto.agente_nombre
-                                                        LIMIT 1'));
+                                                        -- proyectoevidenciafoto.id,
+                                                        proyectoevidenciafoto.proyecto_id,
+                                                        -- proyectoevidenciafoto.proveedor_id,
+                                                        -- proyectoevidenciafoto.agente_id,
+                                                        proyectoevidenciafoto.agente_nombre,
+                                                        -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
+                                                        IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
+                                                        -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
+                                                        -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion 
+                                                    FROM
+                                                        proyectoevidenciafoto
+                                                    WHERE
+                                                        proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
+                                                        AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
+                                                    GROUP BY
+                                                        proyectoevidenciafoto.proyecto_id,
+                                                        proyectoevidenciafoto.agente_nombre
+                                                    LIMIT 1'));
+
 
             if (count($memoriafotografica) > 0) {
+
                 $dato['reporteiluminacion_memoriafotografica_guardado'] = $memoriafotografica[0]->total;
             } else {
+
                 $dato['reporteiluminacion_memoriafotografica_guardado'] = 0;
             }
 
@@ -883,10 +1006,14 @@ class reporteiluminacionController extends Controller
 
             // respuesta
             $dato["msj"] = 'Datos consultados correctamente';
+
             return response()->json($dato);
         } catch (Exception $e) {
+
             $dato['datoscompletos'] = 0;
+
             $dato["msj"] = 'Error ' . $e->getMessage();
+
             return response()->json($dato);
         }
     }

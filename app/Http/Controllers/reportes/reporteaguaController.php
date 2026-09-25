@@ -363,110 +363,32 @@ class reporteaguaController extends Controller
      * @param  $agente_nombre
      * @return \Illuminate\Http\Response
      */
+
+
     public function reporteaguadatosgenerales($proyecto_id, $agente_id, $agente_nombre)
     {
-        try
-        {
+        try {
             $proyecto = proyectoModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto_id);
             $recsensorial = recsensorialModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto->recsensorial_id);
-                
+
             $meses = ["Vacio", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             $proyectofecha = explode("-", $proyecto->proyecto_fechaentrega);
 
             $reportecatalogo = reporteaguacatalogoModel::limit(1)->get();
-            $reporte  = reporteaguaModel::where('proyecto_id', $proyecto_id)
-                                        ->orderBy('reporteagua_revision', 'DESC')
-                                        ->limit(1)
-                                        ->get();
+
+            $reporte = reporteaguaModel::where('proyecto_id', $proyecto_id)
+                ->orderBy('reporteagua_revision', 'DESC')
+                ->limit(1)
+                ->get();
 
 
-            if (count($reporte) > 0)
-            {
+           
+            if (count($reporte) > 0) {
                 $reporte = $reporte[0];
                 $dato['reporteregistro_id'] = $reporte->id;
-            }
-            else
-            {
-                if (($recsensorial->recsensorial_tipocliente+0) == 1) // 1 = Pemex, 0 = cliente
-                {
-                    $reporte = reporteaguaModel::where('catactivo_id', $proyecto->catactivo_id)
-                                                ->orderBy('proyecto_id', 'DESC')
-                                                ->orderBy('reporteagua_revision', 'DESC')
-                                                ->limit(1)
-                                                ->get();
-                }
-                else
-                {
-                    $reporte = DB::select('SELECT
-                                                recsensorial.recsensorial_tipocliente,
-                                                recsensorial.cliente_id,
-                                                reporteagua.id,
-                                                reporteagua.proyecto_id,
-                                                reporteagua.agente_id,
-                                                reporteagua.agente_nombre,
-                                                reporteagua.catactivo_id,
-                                                reporteagua.reporteagua_revision,
-                                                reporteagua.reporteagua_fecha,
-                                                reporteagua.reporte_mes,
-                                                reporteagua.reporteagua_instalacion,
-                                                reporteagua.reporteagua_catregion_activo,
-                                                reporteagua.reporteagua_catsubdireccion_activo,
-                                                reporteagua.reporteagua_catgerencia_activo,
-                                                reporteagua.reporteagua_catactivo_activo,
-                                                reporteagua.reporteagua_introduccion,
-                                                reporteagua.reporteagua_introduccion2,
-                                                reporteagua.reporteagua_objetivogeneral,
-                                                reporteagua.reporteagua_objetivoespecifico,
-                                                reporteagua.reporteagua_objetivoespecifico2,
-                                                reporteagua.reporteagua_metodologia_4_1,
-                                                reporteagua.reporteagua_metodologia_4_2,
-                                                reporteagua.reporteagua_metodologia_4_3,
-                                                reporteagua.reporteagua_metodologia_4_32,
-                                                reporteagua.reporteagua_metodologia_4_3_1,
-                                                reporteagua.reporteagua_ubicacioninstalacion,
-                                                reporteagua.reporteagua_ubicacionfoto,
-                                                reporteagua.reporteagua_procesoinstalacion,
-                                                reporteagua.reporteagua_actividadprincipal,
-                                                reporteagua.reporteagua_procesoelaboracion,
-                                                reporteagua.reporteagua_conclusion,
-                                                reporteagua.reporteagua_conclusion2,
-                                                reporteagua.reporteagua_responsable1,
-                                                reporteagua.reporteagua_responsable1cargo,
-                                                reporteagua.reporteagua_responsable1documento,
-                                                reporteagua.reporteagua_responsable2,
-                                                reporteagua.reporteagua_responsable2cargo,
-                                                reporteagua.reporteagua_responsable2documento,
-                                                reporteagua.reporteagua_concluido,
-                                                reporteagua.reporteagua_concluidonombre,
-                                                reporteagua.reporteagua_concluidofecha,
-                                                reporteagua.reporteagua_cancelado,
-                                                reporteagua.reporteagua_canceladonombre,
-                                                reporteagua.reporteagua_canceladofecha,
-                                                reporteagua.reporteagua_canceladoobservacion,
-                                                reporteagua.created_at,
-                                                reporteagua.updated_at 
-                                            FROM
-                                                recsensorial
-                                                LEFT JOIN proyecto ON recsensorial.id = proyecto.recsensorial_id
-                                                LEFT JOIN reporteagua ON proyecto.id = reporteagua.proyecto_id 
-                                            WHERE
-                                                recsensorial.cliente_id = '.$recsensorial->cliente_id.'  
-                                                AND reporteagua.reporteagua_instalacion <> "" 
-                                            ORDER BY
-                                                reporteagua.updated_at DESC');
-                }
-
-
-                if (count($reporte) > 0)
-                {
-                    $reporte = $reporte[0];
-                    $dato['reporteregistro_id'] = 0;
-                }
-                else
-                {
-                    $reporte = array(0, 0);
-                    $dato['reporteregistro_id'] = -1;
-                }
+            } else {
+                $reporte = NULL;
+                $dato['reporteregistro_id'] = -1;
             }
 
 
@@ -474,72 +396,66 @@ class reporteaguaController extends Controller
 
 
             $revision = reporterevisionesModel::where('proyecto_id', $proyecto_id)
-                                                ->where('agente_id', 9) //Agua
-                                                ->orderBy('reporterevisiones_revision', 'DESC')
-                                                ->get();
+                ->where('agente_id', 9) //Agua
+                ->orderBy('reporterevisiones_revision', 'DESC')
+                ->get();
 
 
-            if(count($revision) > 0)
-            {
+            if (count($revision) > 0) {
                 $revision = reporterevisionesModel::findOrFail($revision[0]->id);
 
 
                 $dato['reporte_concluido'] = $revision->reporterevisiones_concluido;
                 $dato['reporte_cancelado'] = $revision->reporterevisiones_cancelado;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_concluido'] = 0;
                 $dato['reporte_cancelado'] = 0;
             }
 
-            
+
             // PORTADA
             //===================================================
 
 
-            $dato['recsensorial_tipocliente'] = ($recsensorial->recsensorial_tipocliente+0);
+            $dato['recsensorial_tipocliente'] = ($recsensorial->recsensorial_tipocliente + 0);
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_fecha != NULL && $reporte->proyecto_id == $proyecto_id)
-            {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_fecha != NULL && $reporte->proyecto_id == $proyecto_id) {
                 $reportefecha = $reporte->reporteagua_fecha;
                 $dato['reporte_portada_guardado'] = 1;
 
                 $dato['reporte_portada'] = array(
-                                                  'reporte_catregion_activo' => $reporte->reporteagua_catregion_activo
-                                                , 'catregion_id' => $proyecto->catregion_id
-                                                , 'reporte_catsubdireccion_activo' => $reporte->reporteagua_catsubdireccion_activo
-                                                , 'catsubdireccion_id' => $proyecto->catsubdireccion_id
-                                                , 'reporte_catgerencia_activo' => $reporte->reporteagua_catgerencia_activo
-                                                , 'catgerencia_id' => $proyecto->catgerencia_id
-                                                , 'reporte_catactivo_activo' => $reporte->reporteagua_catactivo_activo
-                                                , 'catactivo_id' => $proyecto->catactivo_id
-                                                , 'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion
-                                                , 'reporte_fecha' => $reportefecha
-                                                , 'reporte_mes' => $reporte->reporte_mes
+                    'reporte_catregion_activo' => $reporte->reporteagua_catregion_activo,
+                    'catregion_id' => $proyecto->catregion_id,
+                    'reporte_catsubdireccion_activo' => $reporte->reporteagua_catsubdireccion_activo,
+                    'catsubdireccion_id' => $proyecto->catsubdireccion_id,
+                    'reporte_catgerencia_activo' => $reporte->reporteagua_catgerencia_activo,
+                    'catgerencia_id' => $proyecto->catgerencia_id,
+                    'reporte_catactivo_activo' => $reporte->reporteagua_catactivo_activo,
+                    'catactivo_id' => $proyecto->catactivo_id,
+                    'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion,
+                    'reporte_fecha' => $reportefecha,
+                    'reporte_mes' => $reporte->reporte_mes
 
-                                            );
-            }
-            else
-            {
-                $reportefecha = $meses[$proyectofecha[1] + 0]." del ".$proyectofecha[0];
+                );
+            } else {
+                $reportefecha = $meses[$proyectofecha[1] + 0] . " del " . $proyectofecha[0];
                 $dato['reporte_portada_guardado'] = 0;
 
                 $dato['reporte_portada'] = array(
-                                                  'reporte_catregion_activo' => 1
-                                                , 'catregion_id' => $proyecto->catregion_id
-                                                , 'reporte_catsubdireccion_activo' => 1
-                                                , 'catsubdireccion_id' => $proyecto->catsubdireccion_id
-                                                , 'reporte_catgerencia_activo' => 1
-                                                , 'catgerencia_id' => $proyecto->catgerencia_id
-                                                , 'reporte_catactivo_activo' => 1
-                                                , 'catactivo_id' => $proyecto->catactivo_id
-                                                , 'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion
-                                                , 'reporte_fecha' => $reportefecha
-                                                , 'reporte_mes' => ""
+                    'reporte_catregion_activo' => 1,
+                    'catregion_id' => $proyecto->catregion_id,
+                    'reporte_catsubdireccion_activo' => 1,
+                    'catsubdireccion_id' => $proyecto->catsubdireccion_id,
+                    'reporte_catgerencia_activo' => 1,
+                    'catgerencia_id' => $proyecto->catgerencia_id,
+                    'reporte_catactivo_activo' => 1,
+                    'catactivo_id' => $proyecto->catactivo_id,
+                    'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion,
+                    'reporte_fecha' => $reportefecha,
+                    'reporte_mes' => ""
 
-                                            );
+                );
             }
 
 
@@ -547,22 +463,16 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_introduccion != NULL)
-            {
-                if ($reporte->proyecto_id == $proyecto_id)
-                {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_introduccion != NULL) {
+                if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_introduccion_guardado'] = 1;
-                }
-                else
-                {
+                } else {
                     $dato['reporte_introduccion_guardado'] = 0;
                 }
 
                 $introduccion = $reporte->reporteagua_introduccion;
                 $introduccion2 = $reporte->reporteagua_introduccion2;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_introduccion_guardado'] = 0;
                 $introduccion = $reportecatalogo[0]->reporteaguacatalogo_introduccion;
                 $introduccion2 = $reportecatalogo[0]->reporteaguacatalogo_introduccion2;
@@ -576,21 +486,15 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_objetivogeneral != NULL)
-            {
-                if ($reporte->proyecto_id == $proyecto_id)
-                {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_objetivogeneral != NULL) {
+                if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_objetivogeneral_guardado'] = 1;
-                }
-                else
-                {
+                } else {
                     $dato['reporte_objetivogeneral_guardado'] = 0;
                 }
 
                 $objetivogeneral = $reporte->reporteagua_objetivogeneral;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_objetivogeneral_guardado'] = 0;
                 $objetivogeneral = $reportecatalogo[0]->reporteaguacatalogo_objetivogeneral;
             }
@@ -602,22 +506,16 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_objetivoespecifico != NULL)
-            {
-                if ($reporte->proyecto_id == $proyecto_id)
-                {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_objetivoespecifico != NULL) {
+                if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_objetivoespecifico_guardado'] = 1;
-                }
-                else
-                {
+                } else {
                     $dato['reporte_objetivoespecifico_guardado'] = 0;
                 }
 
                 $objetivoespecifico = $reporte->reporteagua_objetivoespecifico;
                 $objetivoespecifico2 = $reporte->reporteagua_objetivoespecifico2;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_objetivoespecifico_guardado'] = 0;
                 $objetivoespecifico = $reportecatalogo[0]->reporteaguacatalogo_objetivoespecifico;
                 $objetivoespecifico2 = $reportecatalogo[0]->reporteaguacatalogo_objetivoespecifico2;
@@ -631,21 +529,15 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_metodologia_4_1 != NULL)
-            {
-                if ($reporte->proyecto_id == $proyecto_id)
-                {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_metodologia_4_1 != NULL) {
+                if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_metodologia_4_1_guardado'] = 1;
-                }
-                else
-                {
+                } else {
                     $dato['reporte_metodologia_4_1_guardado'] = 0;
                 }
 
                 $metodologia_4_1 = $reporte->reporteagua_metodologia_4_1;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_metodologia_4_1_guardado'] = 0;
                 $metodologia_4_1 = $reportecatalogo[0]->reporteaguacatalogo_metodologia_4_1;
             }
@@ -657,21 +549,15 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_metodologia_4_2 != NULL)
-            {
-                if ($reporte->proyecto_id == $proyecto_id)
-                {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_metodologia_4_2 != NULL) {
+                if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_metodologia_4_2_guardado'] = 1;
-                }
-                else
-                {
+                } else {
                     $dato['reporte_metodologia_4_2_guardado'] = 0;
                 }
 
                 $metodologia_4_2 = $reporte->reporteagua_metodologia_4_2;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_metodologia_4_2_guardado'] = 0;
                 $metodologia_4_2 = $reportecatalogo[0]->reporteaguacatalogo_metodologia_4_2;
             }
@@ -683,22 +569,16 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_metodologia_4_3 != NULL)
-            {
-                if ($reporte->proyecto_id == $proyecto_id)
-                {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_metodologia_4_3 != NULL) {
+                if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_metodologia_4_3_guardado'] = 1;
-                }
-                else
-                {
+                } else {
                     $dato['reporte_metodologia_4_3_guardado'] = 0;
                 }
 
                 $metodologia_4_3 = $reporte->reporteagua_metodologia_4_3;
                 $metodologia_4_32 = $reporte->reporteagua_metodologia_4_32;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_metodologia_4_3_guardado'] = 0;
                 $metodologia_4_3 = $reportecatalogo[0]->reporteaguacatalogo_metodologia_4_3;
                 $metodologia_4_32 = $reportecatalogo[0]->reporteaguacatalogo_metodologia_4_32;
@@ -712,49 +592,40 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_ubicacioninstalacion != NULL)
-            {
-                if ($reporte->proyecto_id == $proyecto_id)
-                {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_ubicacioninstalacion != NULL) {
+                if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_ubicacioninstalacion_guardado'] = 1;
-                }
-                else
-                {
+                } else {
                     $dato['reporte_ubicacioninstalacion_guardado'] = 0;
                 }
 
                 $ubicacion = $reporte->reporteagua_ubicacioninstalacion;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_ubicacioninstalacion_guardado'] = 0;
                 $ubicacion = $reportecatalogo[0]->reporteaguacatalogo_ubicacioninstalacion;
             }
 
 
             $ubicacionfoto = NULL;
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_ubicacionfoto != NULL && $reporte->proyecto_id == $proyecto_id)
-            {
+
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_ubicacionfoto != NULL && $reporte->proyecto_id == $proyecto_id) {
                 $ubicacionfoto = $reporte->reporteagua_ubicacionfoto;
             }
 
             $dato['reporte_ubicacioninstalacion'] = array(
-                                                          'ubicacion' => $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $ubicacion)
-                                                        , 'ubicacionfoto' => $ubicacionfoto
-                                                    );
+                'ubicacion' => $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $ubicacion),
+                'ubicacionfoto' => $ubicacionfoto
+            );
 
 
             // PROCESO INSTALACION
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_procesoinstalacion != NULL && $reporte->proyecto_id == $proyecto_id)
-            {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_procesoinstalacion != NULL && $reporte->proyecto_id == $proyecto_id) {
                 $dato['reporte_procesoinstalacion_guardado'] = 1;
                 $procesoinstalacion = $reporte->reporteagua_procesoinstalacion;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_procesoinstalacion_guardado'] = 0;
                 $procesoinstalacion = $recsensorial->recsensorial_descripcionproceso;
             }
@@ -766,12 +637,9 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_actividadprincipal != NULL && $reporte->proyecto_id == $proyecto_id)
-            {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_actividadprincipal != NULL && $reporte->proyecto_id == $proyecto_id) {
                 $procesoinstalacion = $reporte->reporteagua_actividadprincipal;
-            }
-            else
-            {
+            } else {
                 $procesoinstalacion = $recsensorial->recsensorial_actividadprincipal;
             }
 
@@ -782,13 +650,10 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_procesoelaboracion != NULL && $reporte->proyecto_id == $proyecto_id)
-            {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_procesoelaboracion != NULL && $reporte->proyecto_id == $proyecto_id) {
                 $dato['reporte_procesoelaboracion_guardado'] = 1;
                 $procesoelaboracion = $reporte->reporteagua_procesoelaboracion;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_procesoelaboracion_guardado'] = 0;
                 $procesoelaboracion = $reportecatalogo[0]->reporteaguacatalogo_procesoelaboracion;
             }
@@ -800,14 +665,11 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_conclusion != NULL && $reporte->proyecto_id == $proyecto_id)
-            {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_conclusion != NULL && $reporte->proyecto_id == $proyecto_id) {
                 $dato['reporte_conclusion_guardado'] = 1;
                 $conclusion = $reporte->reporteagua_conclusion;
                 $conclusion2 = $reporte->reporteagua_conclusion2;
-            }
-            else
-            {
+            } else {
                 $dato['reporte_conclusion_guardado'] = 0;
                 $conclusion = $reportecatalogo[0]->reporteaguacatalogo_conclusion;
                 $conclusion2 = $reportecatalogo[0]->reporteaguacatalogo_conclusion2;
@@ -821,64 +683,37 @@ class reporteaguaController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteagua_responsable1 != NULL)
-            {
-                if ($reporte->proyecto_id == $proyecto_id)
-                {
+            if ($dato['reporteregistro_id'] > 0 && $reporte->reporteagua_responsable1 != NULL) {
+                if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_responsablesinforme_guardado'] = 1;
-                }
-                else
-                {
+                } else {
                     $dato['reporte_responsablesinforme_guardado'] = 0;
                 }
 
                 $dato['reporte_responsablesinforme'] = array(
-                                                              'responsable1' => $reporte->reporteagua_responsable1
-                                                            , 'responsable1cargo' => $reporte->reporteagua_responsable1cargo
-                                                            , 'responsable1documento' => $reporte->reporteagua_responsable1documento
-                                                            , 'responsable2' => $reporte->reporteagua_responsable2
-                                                            , 'responsable2cargo' => $reporte->reporteagua_responsable2cargo
-                                                            , 'responsable2documento' => $reporte->reporteagua_responsable2documento
-                                                            , 'proyecto_id' => $reporte->proyecto_id
-                                                            , 'registro_id' => $reporte->id
-                                                        );
-            }
-            else
-            {
+                    'responsable1' => $reporte->reporteagua_responsable1,
+                    'responsable1cargo' => $reporte->reporteagua_responsable1cargo,
+                    'responsable1documento' => $reporte->reporteagua_responsable1documento,
+                    'responsable2' => $reporte->reporteagua_responsable2,
+                    'responsable2cargo' => $reporte->reporteagua_responsable2cargo,
+                    'responsable2documento' => $reporte->reporteagua_responsable2documento,
+                    'proyecto_id' => $reporte->proyecto_id,
+                    'registro_id' => $reporte->id
+                );
+            } else {
                 $dato['reporte_responsablesinforme_guardado'] = 0;
 
 
-                $reportehistorial = reporteaguaModel::where('reporteagua_responsable1', '!=', '')
-                                                    ->orderBy('updated_at', 'DESC')
-                                                    ->limit(1)
-                                                    ->get();
-
-                if (count($reportehistorial) > 0 && $reportehistorial[0]->reporteagua_responsable1 != NULL)
-                {
-                    $dato['reporte_responsablesinforme'] = array(
-                                                                  'responsable1' => $reportehistorial[0]->reporteagua_responsable1
-                                                                , 'responsable1cargo' => $reportehistorial[0]->reporteagua_responsable1cargo
-                                                                , 'responsable1documento' => $reportehistorial[0]->reporteagua_responsable1documento
-                                                                , 'responsable2' => $reportehistorial[0]->reporteagua_responsable2
-                                                                , 'responsable2cargo' => $reportehistorial[0]->reporteagua_responsable2cargo
-                                                                , 'responsable2documento' => $reportehistorial[0]->reporteagua_responsable2documento
-                                                                , 'proyecto_id' => $reportehistorial[0]->proyecto_id
-                                                                , 'registro_id' => $reportehistorial[0]->id
-                                                            );
-                }
-                else
-                {
-                    $dato['reporte_responsablesinforme'] = array(
-                                                                  'responsable1' => NULL
-                                                                , 'responsable1cargo' => NULL
-                                                                , 'responsable1documento' => NULL
-                                                                , 'responsable2' => NULL
-                                                                , 'responsable2cargo' => NULL
-                                                                , 'responsable2documento' => NULL
-                                                                , 'proyecto_id' => 0
-                                                                , 'registro_id' => 0
-                                                            );
-                }
+                $dato['reporte_responsablesinforme'] = array(
+                    'responsable1' => NULL,
+                    'responsable1cargo' => NULL,
+                    'responsable1documento' => NULL,
+                    'responsable2' => NULL,
+                    'responsable2cargo' => NULL,
+                    'responsable2documento' => NULL,
+                    'proyecto_id' => 0,
+                    'registro_id' => 0
+                );
             }
 
 
@@ -887,33 +722,30 @@ class reporteaguaController extends Controller
 
 
             $memoriafotografica = DB::select('SELECT
-                                                    proyectoevidenciafoto.proyecto_id,
-                                                    proyectoevidenciafoto.agente_id,
-                                                    proyectoevidenciafoto.agente_nombre,
-                                                    COUNT(proyectoevidenciafoto.proyectoevidenciafoto_nopunto) AS total 
-                                                FROM
-                                                    proyectoevidenciafoto
-                                                WHERE
-                                                    proyectoevidenciafoto.proyecto_id = '.$proyecto_id.' 
-                                                    AND proyectoevidenciafoto.agente_nombre LIKE "%'.$agente_nombre.'%" 
-                                                GROUP BY
-                                                    proyectoevidenciafoto.proyecto_id,
-                                                    proyectoevidenciafoto.agente_id,
-                                                    proyectoevidenciafoto.agente_nombre');
+                                                proyectoevidenciafoto.proyecto_id,
+                                                proyectoevidenciafoto.agente_id,
+                                                proyectoevidenciafoto.agente_nombre,
+                                                COUNT(proyectoevidenciafoto.proyectoevidenciafoto_nopunto) AS total 
+                                            FROM
+                                                proyectoevidenciafoto
+                                            WHERE
+                                                proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . ' 
+                                                AND proyectoevidenciafoto.agente_nombre LIKE "%' . $agente_nombre . '%" 
+                                            GROUP BY
+                                                proyectoevidenciafoto.proyecto_id,
+                                                proyectoevidenciafoto.agente_id,
+                                                proyectoevidenciafoto.agente_nombre');
 
 
             $dato['reporte_memoriafotografica_lista'] = '';
-            if (count($memoriafotografica) > 0)
-            {
+
+            if (count($memoriafotografica) > 0) {
                 $dato['reporte_memoriafotografica_guardado'] = 1;
 
-                foreach ($memoriafotografica as $key => $value)
-                {
-                    $dato['reporte_memoriafotografica_lista'] .= '● '.$value->total.' fotos de '.$value->agente_nombre.'<br>';
+                foreach ($memoriafotografica as $key => $value) {
+                    $dato['reporte_memoriafotografica_lista'] .= '● ' . $value->total . ' fotos de ' . $value->agente_nombre . '<br>';
                 }
-            }
-            else
-            {                
+            } else {
                 $dato['reporte_memoriafotografica_guardado'] = 0;
                 $dato['reporte_memoriafotografica_lista'] = '● 0 fotos de Agua (Fisicoquímico)<br>● 0 fotos de Agua (Microbiológico)';
             }
@@ -924,14 +756,15 @@ class reporteaguaController extends Controller
 
             // respuesta
             $dato["msj"] = 'Datos consultados correctamente';
+
             return response()->json($dato);
-        }
-        catch(Exception $e)
-        {
-            $dato["msj"] = 'Error '.$e->getMessage();
+        } catch (Exception $e) {
+            $dato["msj"] = 'Error ' . $e->getMessage();
+
             return response()->json($dato);
         }
     }
+
 
 
     /**

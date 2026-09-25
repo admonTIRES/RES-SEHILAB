@@ -245,80 +245,52 @@ class reportevibracionController extends Controller
      * @param  $agente_nombre
      * @return \Illuminate\Http\Response
      */
+
     public function reportevibraciondatosgenerales($proyecto_id, $agente_id, $agente_nombre)
     {
         try {
+
             $proyecto = proyectoModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto_id);
+
             $recsensorial = recsensorialModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto->recsensorial_id);
 
-            $meses = ["Vacio", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+            $meses = [
+                "Vacio",
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            ];
+
+
             $proyectofecha = explode("-", $proyecto->proyecto_fechaentrega);
 
+
             $reportecatalogo = reportevibracioncatalogoModel::findOrFail(1);
+
+
             $reporte = reportevibracionModel::where('proyecto_id', $proyecto_id)->get();
 
 
             if (count($reporte) > 0) {
+
                 $reporte = $reporte[0];
+
                 $dato['reporteregistro_id'] = ($reporte->id + 0);
             } else {
-                if (($recsensorial->recsensorial_tipocliente + 0) == 1) // 1 = Pemex, 0 = cliente
-                {
-                    $reporte = reportevibracionModel::where('catactivo_id', $proyecto->catactivo_id)
-                        ->orderBy('updated_at', 'DESC')
-                        ->get();
-                } else {
-                    $reporte = DB::select('SELECT
-                                                recsensorial.recsensorial_tipocliente,
-                                                recsensorial.cliente_id,
-                                                -- proyecto.id,
-                                                reportevibracion.proyecto_id,
-                                                reportevibracion.id,
-                                                reportevibracion.catactivo_id,
-                                                reportevibracion.reportevibracion_fecha,
-                                                reportevibracion.reporte_mes,
-                                                reportevibracion.reportevibracion_instalacion,
-                                                reportevibracion.reportevibracion_catregion_activo,
-                                                reportevibracion.reportevibracion_catsubdireccion_activo,
-                                                reportevibracion.reportevibracion_catgerencia_activo,
-                                                reportevibracion.reportevibracion_catactivo_activo,
-                                                reportevibracion.reportevibracion_alcanceinforme,
-                                                reportevibracion.reportevibracion_introduccion,
-                                                reportevibracion.reportevibracion_objetivogeneral,
-                                                reportevibracion.reportevibracion_objetivoespecifico,
-                                                reportevibracion.reportevibracion_metodologia_4_1,
-                                                reportevibracion.reportevibracion_ubicacioninstalacion,
-                                                reportevibracion.reportevibracion_ubicacionfoto,
-                                                reportevibracion.reportevibracion_procesoinstalacion,
-                                                reportevibracion.reportevibracion_actividadprincipal,
-                                                reportevibracion.reportevibracion_conclusion,
-                                                reportevibracion.reportevibracion_responsable1,
-                                                reportevibracion.reportevibracion_responsable1cargo,
-                                                reportevibracion.reportevibracion_responsable1documento,
-                                                reportevibracion.reportevibracion_responsable2,
-                                                reportevibracion.reportevibracion_responsable2cargo,
-                                                reportevibracion.reportevibracion_responsable2documento,
-                                                reportevibracion.created_at,
-                                                reportevibracion.updated_at 
-                                            FROM
-                                                recsensorial
-                                                LEFT JOIN proyecto ON recsensorial.id = proyecto.recsensorial_id
-                                                LEFT JOIN reportevibracion ON proyecto.id = reportevibracion.proyecto_id
-                                            WHERE
-                                                recsensorial.cliente_id = ' . $recsensorial->cliente_id . '
-                                                AND reportevibracion.reportevibracion_instalacion != ""
-                                            ORDER BY
-                                                reportevibracion.updated_at DESC');
-                }
 
+                $reporte = NULL;
 
-                if (count($reporte) > 0) {
-                    $reporte = $reporte[0];
-                    $dato['reporteregistro_id'] = 0;
-                } else {
-                    $reporte = array(0, 0);
-                    $dato['reporteregistro_id'] = -1;
-                }
+                $dato['reporteregistro_id'] = -1;
             }
 
 
@@ -332,13 +304,17 @@ class reportevibracionController extends Controller
 
 
             if (count($revision) > 0) {
+
                 $revision = reporterevisionesModel::findOrFail($revision[0]->id);
 
 
                 $dato['reporte_concluido'] = $revision->reporterevisiones_concluido;
+
                 $dato['reporte_cancelado'] = $revision->reporterevisiones_cancelado;
             } else {
+
                 $dato['reporte_concluido'] = 0;
+
                 $dato['reporte_cancelado'] = 0;
             }
 
@@ -350,11 +326,18 @@ class reportevibracionController extends Controller
             $dato['recsensorial_tipocliente'] = ($recsensorial->recsensorial_tipocliente + 0);
 
 
-            if ($dato['reporteregistro_id'] > 0 && $reporte->reportevibracion_fecha != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_fecha != NULL
+            ) {
+
                 $reportefecha = $reporte->reportevibracion_fecha;
+
                 $dato['reporte_portada_guardado'] = 1;
 
+
                 $dato['reporte_portada'] = array(
+
                     'reporte_catregion_activo' => $reporte->reportevibracion_catregion_activo,
                     'catregion_id' => $proyecto->catregion_id,
                     'reporte_catsubdireccion_activo' => $reporte->reportevibracion_catsubdireccion_activo,
@@ -367,12 +350,17 @@ class reportevibracionController extends Controller
                     'reporte_fecha' => $reportefecha,
                     'reporte_mes' => $reporte->reporte_mes,
                     'reporte_alcanceinforme' => $reporte->reportevibracion_alcanceinforme
+
                 );
             } else {
+
                 $reportefecha = $meses[$proyectofecha[1] + 0] . " del " . $proyectofecha[0];
+
                 $dato['reporte_portada_guardado'] = 0;
 
+
                 $dato['reporte_portada'] = array(
+
                     'reporte_catregion_activo' => 1,
                     'catregion_id' => $proyecto->catregion_id,
                     'reporte_catsubdireccion_activo' => 1,
@@ -385,6 +373,7 @@ class reportevibracionController extends Controller
                     'reporte_fecha' => $reportefecha,
                     'reporte_mes' => "",
                     'reporte_alcanceinforme' => 0
+
                 );
             }
 
@@ -393,109 +382,152 @@ class reportevibracionController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportevibracion_introduccion != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_introduccion_guardado'] = 1;
-                } else {
-                    $dato['reporte_introduccion_guardado'] = 0;
-                }
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_introduccion != NULL
+            ) {
+
+                $dato['reporte_introduccion_guardado'] = 1;
 
                 $introduccion = $reporte->reportevibracion_introduccion;
             } else {
+
                 $dato['reporte_introduccion_guardado'] = 0;
+
                 $introduccion = $reportecatalogo->reportevibracioncatalogo_introduccion;
             }
 
-            $dato['reporte_introduccion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $introduccion);
+
+            $dato['reporte_introduccion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $introduccion
+            );
 
 
             // OBJETIVO GENERAL
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportevibracion_objetivogeneral != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_objetivogeneral_guardado'] = 1;
-                } else {
-                    $dato['reporte_objetivogeneral_guardado'] = 0;
-                }
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_objetivogeneral != NULL
+            ) {
+
+                $dato['reporte_objetivogeneral_guardado'] = 1;
 
                 $objetivogeneral = $reporte->reportevibracion_objetivogeneral;
             } else {
+
                 $dato['reporte_objetivogeneral_guardado'] = 0;
+
                 $objetivogeneral = $reportecatalogo->reportevibracioncatalogo_objetivogeneral;
             }
 
-            $dato['reporte_objetivogeneral'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivogeneral);
+
+            $dato['reporte_objetivogeneral'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $objetivogeneral
+            );
 
 
             // OBJETIVOS ESPECIFICOS
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportevibracion_objetivoespecifico != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_objetivoespecifico_guardado'] = 1;
-                } else {
-                    $dato['reporte_objetivoespecifico_guardado'] = 0;
-                }
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_objetivoespecifico != NULL
+            ) {
+
+                $dato['reporte_objetivoespecifico_guardado'] = 1;
 
                 $objetivoespecifico = $reporte->reportevibracion_objetivoespecifico;
             } else {
+
                 $dato['reporte_objetivoespecifico_guardado'] = 0;
+
                 $objetivoespecifico = $reportecatalogo->reportevibracioncatalogo_objetivoespecifico;
             }
 
-            $dato['reporte_objetivoespecifico'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivoespecifico);
+
+            $dato['reporte_objetivoespecifico'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $objetivoespecifico
+            );
 
 
             // METODOLOGIA PUNTO 4.1
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportevibracion_metodologia_4_1 != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_metodologia_4_1_guardado'] = 1;
-                } else {
-                    $dato['reporte_metodologia_4_1_guardado'] = 0;
-                }
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_metodologia_4_1 != NULL
+            ) {
+
+                $dato['reporte_metodologia_4_1_guardado'] = 1;
 
                 $metodologia_4_1 = $reporte->reportevibracion_metodologia_4_1;
             } else {
+
                 $dato['reporte_metodologia_4_1_guardado'] = 0;
+
                 $metodologia_4_1 = $reportecatalogo->reportevibracioncatalogo_metodologia_4_1;
             }
 
-            $dato['reporte_metodologia_4_1'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_1);
+
+            $dato['reporte_metodologia_4_1'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_1
+            );
 
 
             // UBICACION
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportevibracion_ubicacioninstalacion != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_ubicacioninstalacion_guardado'] = 1;
-                } else {
-                    $dato['reporte_ubicacioninstalacion_guardado'] = 0;
-                }
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_ubicacioninstalacion != NULL
+            ) {
+
+                $dato['reporte_ubicacioninstalacion_guardado'] = 1;
 
                 $ubicacion = $reporte->reportevibracion_ubicacioninstalacion;
             } else {
+
                 $dato['reporte_ubicacioninstalacion_guardado'] = 0;
+
                 $ubicacion = $reportecatalogo->reportevibracioncatalogo_ubicacioninstalacion;
             }
 
 
             $ubicacionfoto = NULL;
-            if ($dato['reporteregistro_id'] > 0 && $reporte->reportevibracion_ubicacionfoto != NULL) {
+
+
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_ubicacionfoto != NULL
+            ) {
+
                 $ubicacionfoto = $reporte->reportevibracion_ubicacionfoto;
             }
 
 
             $dato['reporte_ubicacioninstalacion'] = array(
-                'ubicacion' => $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $ubicacion),
+
+                'ubicacion' => $this->datosproyectoreemplazartexto(
+                    $proyecto,
+                    $recsensorial,
+                    $ubicacion
+                ),
+
                 'ubicacionfoto' => $ubicacionfoto
+
             );
 
 
@@ -503,60 +535,93 @@ class reportevibracionController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] > 0 && $reporte->reportevibracion_procesoinstalacion != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_procesoinstalacion != NULL
+            ) {
+
                 $dato['reporte_procesoinstalacion_guardado'] = 1;
+
                 $procesoinstalacion = $reporte->reportevibracion_procesoinstalacion;
             } else {
+
                 $dato['reporte_procesoinstalacion_guardado'] = 0;
+
                 $procesoinstalacion = $recsensorial->recsensorial_descripcionproceso;
             }
 
 
-            $dato['reporte_procesoinstalacion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $procesoinstalacion);
+            $dato['reporte_procesoinstalacion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $procesoinstalacion
+            );
 
 
             // ACTIVIDAD PRINCIPAL
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] > 0 && $reporte->reportevibracion_actividadprincipal != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_actividadprincipal != NULL
+            ) {
+
                 $actividadprincipal = $reporte->reportevibracion_actividadprincipal;
             } else {
+
                 $actividadprincipal = $recsensorial->recsensorial_actividadprincipal;
             }
 
 
-            $dato['reporte_actividadprincipal'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $actividadprincipal);
+            $dato['reporte_actividadprincipal'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $actividadprincipal
+            );
 
 
             // CONCLUSION
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] > 0 && $reporte->reportevibracion_conclusion != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_conclusion != NULL
+            ) {
+
                 $dato['reporte_conclusion_guardado'] = 1;
+
                 $conclusion = $reporte->reportevibracion_conclusion;
             } else {
+
                 $dato['reporte_conclusion_guardado'] = 0;
+
                 $conclusion = $reportecatalogo->reportevibracioncatalogo_conclusion;
             }
 
 
-            $dato['reporte_conclusion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $conclusion);
+            $dato['reporte_conclusion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $conclusion
+            );
 
 
             // RESPONSABLES DEL INFORME
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reportevibracion_responsable1 != NULL) {
-                if ($reporte->proyecto_id == $proyecto_id) {
-                    $dato['reporte_responsablesinforme_guardado'] = 1;
-                } else {
-                    $dato['reporte_responsablesinforme_guardado'] = 0;
-                }
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reportevibracion_responsable1 != NULL
+            ) {
+
+                $dato['reporte_responsablesinforme_guardado'] = 1;
+
 
                 $dato['reporte_responsablesinforme'] = array(
+
                     'responsable1' => $reporte->reportevibracion_responsable1,
                     'responsable1cargo' => $reporte->reportevibracion_responsable1cargo,
                     'responsable1documento' => $reporte->reportevibracion_responsable1documento,
@@ -565,40 +630,25 @@ class reportevibracionController extends Controller
                     'responsable2documento' => $reporte->reportevibracion_responsable2documento,
                     'proyecto_id' => $reporte->proyecto_id,
                     'registro_id' => $reporte->id
+
                 );
             } else {
+
                 $dato['reporte_responsablesinforme_guardado'] = 0;
 
 
-                $reportehistorial = reportevibracionModel::where('reportevibracion_responsable1', '!=', '')
-                    ->orderBy('updated_at', 'DESC')
-                    ->limit(1)
-                    ->get();
+                $dato['reporte_responsablesinforme'] = array(
 
+                    'responsable1' => NULL,
+                    'responsable1cargo' => NULL,
+                    'responsable1documento' => NULL,
+                    'responsable2' => NULL,
+                    'responsable2cargo' => NULL,
+                    'responsable2documento' => NULL,
+                    'proyecto_id' => 0,
+                    'registro_id' => 0
 
-                if (count($reportehistorial) > 0 && $reportehistorial[0]->reportevibracion_responsable1 != NULL) {
-                    $dato['reporte_responsablesinforme'] = array(
-                        'responsable1' => $reportehistorial[0]->reportevibracion_responsable1,
-                        'responsable1cargo' => $reportehistorial[0]->reportevibracion_responsable1cargo,
-                        'responsable1documento' => $reportehistorial[0]->reportevibracion_responsable1documento,
-                        'responsable2' => $reportehistorial[0]->reportevibracion_responsable2,
-                        'responsable2cargo' => $reportehistorial[0]->reportevibracion_responsable2cargo,
-                        'responsable2documento' => $reportehistorial[0]->reportevibracion_responsable2documento,
-                        'proyecto_id' => $reportehistorial[0]->proyecto_id,
-                        'registro_id' => $reportehistorial[0]->id
-                    );
-                } else {
-                    $dato['reporte_responsablesinforme'] = array(
-                        'responsable1' => NULL,
-                        'responsable1cargo' => NULL,
-                        'responsable1documento' => NULL,
-                        'responsable2' => NULL,
-                        'responsable2cargo' => NULL,
-                        'responsable2documento' => NULL,
-                        'proyecto_id' => 0,
-                        'registro_id' => 0
-                    );
-                }
+                );
             }
 
 
@@ -607,29 +657,31 @@ class reportevibracionController extends Controller
 
 
             $memoriafotografica = DB::select('SELECT
-                                                    -- proyectoevidenciafoto.id,
-                                                    proyectoevidenciafoto.proyecto_id,
-                                                    -- proyectoevidenciafoto.proveedor_id,
-                                                    -- proyectoevidenciafoto.agente_id,
-                                                    proyectoevidenciafoto.agente_nombre,
-                                                    -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
-                                                    IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
-                                                    -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
-                                                    -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion 
-                                                FROM
-                                                    proyectoevidenciafoto
-                                                WHERE
-                                                    proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
-                                                    AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
-                                                GROUP BY
-                                                    proyectoevidenciafoto.proyecto_id,
-                                                    proyectoevidenciafoto.agente_nombre
-                                                LIMIT 1');
+                                                -- proyectoevidenciafoto.id,
+                                                proyectoevidenciafoto.proyecto_id,
+                                                -- proyectoevidenciafoto.proveedor_id,
+                                                -- proyectoevidenciafoto.agente_id,
+                                                proyectoevidenciafoto.agente_nombre,
+                                                -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
+                                                IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
+                                                -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
+                                                -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion 
+                                            FROM
+                                                proyectoevidenciafoto
+                                            WHERE
+                                                proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
+                                                AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
+                                            GROUP BY
+                                                proyectoevidenciafoto.proyecto_id,
+                                                proyectoevidenciafoto.agente_nombre
+                                            LIMIT 1');
 
 
             if (count($memoriafotografica) > 0) {
+
                 $dato['reporte_memoriafotografica_guardado'] = $memoriafotografica[0]->total;
             } else {
+
                 $dato['reporte_memoriafotografica_guardado'] = 0;
             }
 
@@ -638,14 +690,17 @@ class reportevibracionController extends Controller
 
 
             // respuesta
+
             $dato["msj"] = 'Datos consultados correctamente';
+
             return response()->json($dato);
         } catch (Exception $e) {
+
             $dato["msj"] = 'Error ' . $e->getMessage();
+
             return response()->json($dato);
         }
     }
-
 
     /**
      * Display the specified resource.

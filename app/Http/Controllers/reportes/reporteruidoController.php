@@ -274,6 +274,9 @@ class reporteruidoController extends Controller
      * @param  $agente_nombre
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function reporteruidodatosgenerales($proyecto_id, $agente_id, $agente_nombre)
     {
         try {
@@ -284,87 +287,22 @@ class reporteruidoController extends Controller
             $proyectofecha = explode("-", $proyecto->proyecto_fechaentrega);
 
             $reportecatalogo = reporteruidocatalogoModel::limit(1)->get();
-            $reporte  = reporteruidoModel::where('proyecto_id', $proyecto_id)
+
+            $reporte = reporteruidoModel::where('proyecto_id', $proyecto_id)
                 ->orderBy('reporteruido_revision', 'DESC')
                 ->limit(1)
                 ->get();
 
 
+            
             if (count($reporte) > 0) {
                 $reporte = $reporte[0];
                 $dato['reporteregistro_id'] = $reporte->id;
             } else {
-                if (($recsensorial->recsensorial_tipocliente + 0) == 1) // 1 = Pemex, 0 = cliente
-                {
-                    $reporte = reporteruidoModel::where('catactivo_id', $proyecto->catactivo_id)
-                        ->orderBy('proyecto_id', 'DESC')
-                        ->orderBy('reporteruido_revision', 'DESC')
-                        ->limit(1)
-                        ->get();
-                } else {
-                    $reporte = DB::select('SELECT
-                                                recsensorial.recsensorial_tipocliente,
-                                                recsensorial.cliente_id,
-                                                reporteruido.id,
-                                                reporteruido.proyecto_id,
-                                                reporteruido.agente_id,
-                                                reporteruido.agente_nombre,
-                                                reporteruido.catactivo_id,
-                                                reporteruido.reporteruido_revision,
-                                                reporteruido.reporteruido_fecha,
-                                                reporteruido.reporte_mes,
-                                                reporteruido.reporteruido_instalacion,
-                                                reporteruido.reporteruido_catregion_activo,
-                                                reporteruido.reporteruido_catsubdireccion_activo,
-                                                reporteruido.reporteruido_catgerencia_activo,
-                                                reporteruido.reporteruido_catactivo_activo,
-                                                reporteruido.reporteruido_introduccion,
-                                                reporteruido.reporteruido_objetivogeneral,
-                                                reporteruido.reporteruido_objetivoespecifico,
-                                                reporteruido.reporteruido_metodologia_4_1,
-                                                reporteruido.reporteruido_metodologia_4_2,
-                                                reporteruido.reporteruido_ubicacioninstalacion,
-                                                reporteruido.reporteruido_ubicacionfoto,
-                                                reporteruido.reporteruido_procesoinstalacion,
-                                                reporteruido.reporteruido_actividadprincipal,
-                                                reporteruido.reporteruido_metodoevaluacion,
-                                                reporteruido.reporteruido_conclusion,
-                                                reporteruido.reporteruido_responsable1,
-                                                reporteruido.reporteruido_responsable1cargo,
-                                                reporteruido.reporteruido_responsable1documento,
-                                                reporteruido.reporteruido_responsable2,
-                                                reporteruido.reporteruido_responsable2cargo,
-                                                reporteruido.reporteruido_responsable2documento,
-                                                reporteruido.reporteruido_concluido,
-                                                reporteruido.reporteruido_concluidonombre,
-                                                reporteruido.reporteruido_concluidofecha,
-                                                reporteruido.reporteruido_cancelado,
-                                                reporteruido.reporteruido_canceladonombre,
-                                                reporteruido.reporteruido_canceladofecha,
-                                                reporteruido.reporteruido_canceladoobservacion,
-                                                reporteruido.reporteruido_lmpe,
-                                                reporteruido.created_at,
-                                                reporteruido.updated_at 
-                                            FROM
-                                                recsensorial
-                                                LEFT JOIN proyecto ON recsensorial.id = proyecto.recsensorial_id
-                                                LEFT JOIN reporteruido ON proyecto.id = reporteruido.proyecto_id 
-                                            WHERE
-                                                recsensorial.cliente_id = ' . $recsensorial->cliente_id . ' 
-                                                AND reporteruido.reporteruido_instalacion <> "" 
-                                            ORDER BY
-                                                reporteruido.updated_at DESC');
-                }
-
-
-                if (count($reporte) > 0) {
-                    $reporte = $reporte[0];
-                    $dato['reporteregistro_id'] = 0;
-                } else {
-                    $reporte = array(0, 0);
-                    $dato['reporteregistro_id'] = -1;
-                }
+                $reporte = NULL;
+                $dato['reporteregistro_id'] = -1;
             }
+
 
             //------------------------------
 
@@ -378,7 +316,6 @@ class reporteruidoController extends Controller
             if (count($revision) > 0) {
                 $revision = reporterevisionesModel::findOrFail($revision[0]->id);
 
-
                 $dato['reporte_concluido'] = $revision->reporterevisiones_concluido;
                 $dato['reporte_cancelado'] = $revision->reporterevisiones_cancelado;
             } else {
@@ -389,12 +326,23 @@ class reporteruidoController extends Controller
 
             // PORTADA
             //===================================================
-            $dato['reporteruido_lmpe'] = $reporte->reporteruido_lmpe;
+
+
+            if ($dato['reporteregistro_id'] > 0) {
+                $dato['reporteruido_lmpe'] = $reporte->reporteruido_lmpe;
+            } else {
+                $dato['reporteruido_lmpe'] = NULL;
+            }
+
 
             $dato['recsensorial_tipocliente'] = ($recsensorial->recsensorial_tipocliente + 0);
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_fecha != NULL && $reporte->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_fecha != NULL &&
+                $reporte->proyecto_id == $proyecto_id
+            ) {
                 $reportefecha = $reporte->reporteruido_fecha;
                 $dato['reporte_portada_guardado'] = 1;
 
@@ -427,9 +375,6 @@ class reporteruidoController extends Controller
                     'reporte_instalacion' => $proyecto->proyecto_clienteinstalacion,
                     'reporte_fecha' => $reportefecha,
                     'reporte_mes' => ""
-
-
-
                 );
             }
 
@@ -438,7 +383,10 @@ class reporteruidoController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_introduccion != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_introduccion != NULL
+            ) {
                 if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_introduccion_guardado'] = 1;
                 } else {
@@ -451,14 +399,21 @@ class reporteruidoController extends Controller
                 $introduccion = $reportecatalogo[0]->reporteruidocatalogo_introduccion;
             }
 
-            $dato['reporte_introduccion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $introduccion);
+            $dato['reporte_introduccion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $introduccion
+            );
 
 
             // OBJETIVO GENERAL
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_objetivogeneral != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_objetivogeneral != NULL
+            ) {
                 if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_objetivogeneral_guardado'] = 1;
                 } else {
@@ -471,14 +426,21 @@ class reporteruidoController extends Controller
                 $objetivogeneral = $reportecatalogo[0]->reporteruidocatalogo_objetivogeneral;
             }
 
-            $dato['reporte_objetivogeneral'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivogeneral);
+            $dato['reporte_objetivogeneral'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $objetivogeneral
+            );
 
 
             // OBJETIVOS ESPECIFICOS
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_objetivoespecifico != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_objetivoespecifico != NULL
+            ) {
                 if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_objetivoespecifico_guardado'] = 1;
                 } else {
@@ -491,14 +453,21 @@ class reporteruidoController extends Controller
                 $objetivoespecifico = $reportecatalogo[0]->reporteruidocatalogo_objetivoespecifico;
             }
 
-            $dato['reporte_objetivoespecifico'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $objetivoespecifico);
+            $dato['reporte_objetivoespecifico'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $objetivoespecifico
+            );
 
 
             // METODOLOGIA PUNTO 4.1
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_metodologia_4_1 != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_metodologia_4_1 != NULL
+            ) {
                 if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_metodologia_4_1_guardado'] = 1;
                 } else {
@@ -511,14 +480,21 @@ class reporteruidoController extends Controller
                 $metodologia_4_1 = $reportecatalogo[0]->reporteruidocatalogo_metodologia_4_1;
             }
 
-            $dato['reporte_metodologia_4_1'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_1);
+            $dato['reporte_metodologia_4_1'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_1
+            );
 
 
             // METODOLOGIA PUNTO 4.2
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_metodologia_4_2 != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_metodologia_4_2 != NULL
+            ) {
                 if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_metodologia_4_2_guardado'] = 1;
                 } else {
@@ -531,14 +507,21 @@ class reporteruidoController extends Controller
                 $metodologia_4_2 = $reportecatalogo[0]->reporteruidocatalogo_metodologia_4_2;
             }
 
-            $dato['reporte_metodologia_4_2'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodologia_4_2);
+            $dato['reporte_metodologia_4_2'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodologia_4_2
+            );
 
 
             // UBICACION
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_ubicacioninstalacion != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_ubicacioninstalacion != NULL
+            ) {
                 if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_ubicacioninstalacion_guardado'] = 1;
                 } else {
@@ -553,12 +536,21 @@ class reporteruidoController extends Controller
 
 
             $ubicacionfoto = NULL;
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_ubicacionfoto != NULL && $reporte->proyecto_id == $proyecto_id) {
+
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_ubicacionfoto != NULL &&
+                $reporte->proyecto_id == $proyecto_id
+            ) {
                 $ubicacionfoto = $reporte->reporteruido_ubicacionfoto;
             }
 
             $dato['reporte_ubicacioninstalacion'] = array(
-                'ubicacion' => $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $ubicacion),
+                'ubicacion' => $this->datosproyectoreemplazartexto(
+                    $proyecto,
+                    $recsensorial,
+                    $ubicacion
+                ),
                 'ubicacionfoto' => $ubicacionfoto
             );
 
@@ -567,7 +559,11 @@ class reporteruidoController extends Controller
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_procesoinstalacion != NULL && $reporte->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_procesoinstalacion != NULL &&
+                $reporte->proyecto_id == $proyecto_id
+            ) {
                 $dato['reporte_procesoinstalacion_guardado'] = 1;
                 $procesoinstalacion = $reporte->reporteruido_procesoinstalacion;
             } else {
@@ -575,27 +571,43 @@ class reporteruidoController extends Controller
                 $procesoinstalacion = $recsensorial->recsensorial_descripcionproceso;
             }
 
-            $dato['reporte_procesoinstalacion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $procesoinstalacion);
+            $dato['reporte_procesoinstalacion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $procesoinstalacion
+            );
 
 
             // ACTIVIDAD PRINCIPAL
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_actividadprincipal != NULL && $reporte->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_actividadprincipal != NULL &&
+                $reporte->proyecto_id == $proyecto_id
+            ) {
                 $procesoinstalacion = $reporte->reporteruido_actividadprincipal;
             } else {
                 $procesoinstalacion = $recsensorial->recsensorial_actividadprincipal;
             }
 
-            $dato['reporte_actividadprincipal'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $procesoinstalacion);
+            $dato['reporte_actividadprincipal'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $procesoinstalacion
+            );
 
 
             // METODO DE EVALUACION
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_metodoevaluacion != NULL && $reporte->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_metodoevaluacion != NULL &&
+                $reporte->proyecto_id == $proyecto_id
+            ) {
                 $dato['reporte_metodoevaluacion_guardado'] = 1;
                 $metodoevaluacion = $reporte->reporteruido_metodoevaluacion;
             } else {
@@ -603,14 +615,22 @@ class reporteruidoController extends Controller
                 $metodoevaluacion = $reportecatalogo[0]->reporteruidocatalogo_metodoevaluacion;
             }
 
-            $dato['reporte_metodoevaluacion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $metodoevaluacion);
+            $dato['reporte_metodoevaluacion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $metodoevaluacion
+            );
 
 
             // CONCLUSION
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_conclusion != NULL && $reporte->proyecto_id == $proyecto_id) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_conclusion != NULL &&
+                $reporte->proyecto_id == $proyecto_id
+            ) {
                 $dato['reporte_conclusion_guardado'] = 1;
                 $conclusion = $reporte->reporteruido_conclusion;
             } else {
@@ -618,14 +638,21 @@ class reporteruidoController extends Controller
                 $conclusion = $reportecatalogo[0]->reporteruidocatalogo_conclusion;
             }
 
-            $dato['reporte_conclusion'] = $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $conclusion);
+            $dato['reporte_conclusion'] = $this->datosproyectoreemplazartexto(
+                $proyecto,
+                $recsensorial,
+                $conclusion
+            );
 
 
             // RESPONSABLES DEL INFORME
             //===================================================
 
 
-            if ($dato['reporteregistro_id'] >= 0 && $reporte->reporteruido_responsable1 != NULL) {
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->reporteruido_responsable1 != NULL
+            ) {
                 if ($reporte->proyecto_id == $proyecto_id) {
                     $dato['reporte_responsablesinforme_guardado'] = 1;
                 } else {
@@ -645,40 +672,16 @@ class reporteruidoController extends Controller
             } else {
                 $dato['reporte_responsablesinforme_guardado'] = 0;
 
-                // $reportehistorial = reporteruidoModel::where('catactivo_id', $proyecto->catactivo_id)
-                //                                         ->orderBy('proyecto_id', 'DESC')
-                //                                         ->orderBy('reporteruido_revision', 'DESC')
-                //                                         ->limit(1)
-                //                                         ->get();
-
-                $reportehistorial = reporteruidoModel::where('reporteruido_responsable1', '!=', '')
-                    ->orderBy('updated_at', 'DESC')
-                    ->limit(1)
-                    ->get();
-
-                if (count($reportehistorial) > 0 && $reportehistorial[0]->reporteruido_responsable1 != NULL) {
-                    $dato['reporte_responsablesinforme'] = array(
-                        'responsable1' => $reportehistorial[0]->reporteruido_responsable1,
-                        'responsable1cargo' => $reportehistorial[0]->reporteruido_responsable1cargo,
-                        'responsable1documento' => $reportehistorial[0]->reporteruido_responsable1documento,
-                        'responsable2' => $reportehistorial[0]->reporteruido_responsable2,
-                        'responsable2cargo' => $reportehistorial[0]->reporteruido_responsable2cargo,
-                        'responsable2documento' => $reportehistorial[0]->reporteruido_responsable2documento,
-                        'proyecto_id' => $reportehistorial[0]->proyecto_id,
-                        'registro_id' => $reportehistorial[0]->id
-                    );
-                } else {
-                    $dato['reporte_responsablesinforme'] = array(
-                        'responsable1' => NULL,
-                        'responsable1cargo' => NULL,
-                        'responsable1documento' => NULL,
-                        'responsable2' => NULL,
-                        'responsable2cargo' => NULL,
-                        'responsable2documento' => NULL,
-                        'proyecto_id' => 0,
-                        'registro_id' => 0
-                    );
-                }
+                $dato['reporte_responsablesinforme'] = array(
+                    'responsable1' => NULL,
+                    'responsable1cargo' => NULL,
+                    'responsable1documento' => NULL,
+                    'responsable2' => NULL,
+                    'responsable2cargo' => NULL,
+                    'responsable2documento' => NULL,
+                    'proyecto_id' => 0,
+                    'registro_id' => 0
+                );
             }
 
 
@@ -687,24 +690,25 @@ class reporteruidoController extends Controller
 
 
             $memoriafotografica = DB::select('SELECT
-                                                    -- proyectoevidenciafoto.id,
-                                                    proyectoevidenciafoto.proyecto_id,
-                                                    -- proyectoevidenciafoto.proveedor_id,
-                                                    -- proyectoevidenciafoto.agente_id,
-                                                    proyectoevidenciafoto.agente_nombre,
-                                                    -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
-                                                    IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
-                                                    -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
-                                                    -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion 
-                                                FROM
-                                                    proyectoevidenciafoto
-                                                WHERE
-                                                    proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
-                                                    AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
-                                                GROUP BY
-                                                    proyectoevidenciafoto.proyecto_id,
-                                                    proyectoevidenciafoto.agente_nombre
-                                                LIMIT 1');
+                                                -- proyectoevidenciafoto.id,
+                                                proyectoevidenciafoto.proyecto_id,
+                                                -- proyectoevidenciafoto.proveedor_id,
+                                                -- proyectoevidenciafoto.agente_id,
+                                                proyectoevidenciafoto.agente_nombre,
+                                                -- proyectoevidenciafoto.proyectoevidenciafoto_carpeta,
+                                                IFNULL(COUNT(proyectoevidenciafoto.proyectoevidenciafoto_descripcion), 0) AS total
+                                                -- ,proyectoevidenciafoto.proyectoevidenciafoto_archivo,
+                                                -- proyectoevidenciafoto.proyectoevidenciafoto_descripcion 
+                                            FROM
+                                                proyectoevidenciafoto
+                                            WHERE
+                                                proyectoevidenciafoto.proyecto_id = ' . $proyecto_id . '
+                                                AND proyectoevidenciafoto.agente_nombre = "' . $agente_nombre . '"
+                                            GROUP BY
+                                                proyectoevidenciafoto.proyecto_id,
+                                                proyectoevidenciafoto.agente_nombre
+                                            LIMIT 1');
+
 
             if (count($memoriafotografica) > 0) {
                 $dato['reporte_memoriafotografica_guardado'] = $memoriafotografica[0]->total;
@@ -779,9 +783,12 @@ class reporteruidoController extends Controller
 
             // respuesta
             $dato["msj"] = 'Datos consultados correctamente';
+
             return response()->json($dato);
         } catch (Exception $e) {
+
             $dato["msj"] = 'Error ' . $e->getMessage();
+
             return response()->json($dato);
         }
     }
