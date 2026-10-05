@@ -1227,14 +1227,14 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Edad *</label>
-                                <input type="text" class="form-control" id="EDAD_BEI" name="EDAD_BEI" required readonly>
+                                <input type="text" class="form-control" id="EDAD_BEI" name="EDAD_BEI" required >
                             </div>
                         </div>
 
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Antigüedad Laboral *</label>
-                                <input type="text" class="form-control" id="ANTIGUEDAD_BEI" name="ANTIGUEDAD_BEI" required readonly>
+                                <input type="text" class="form-control" id="ANTIGUEDAD_BEI" name="ANTIGUEDAD_BEI" required >
                             </div>
                         </div>
                         <div class="col-4">
