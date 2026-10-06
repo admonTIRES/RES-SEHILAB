@@ -323,6 +323,21 @@ class reporteruidoController extends Controller
                 $dato['reporte_cancelado'] = 0;
             }
 
+            // CARACTERISTICA 
+            //===================================================
+
+            if (
+                $dato['reporteregistro_id'] > 0 &&
+                $reporte->caracteristicas_ruido !== null &&
+                $reporte->proyecto_id == $proyecto_id
+            ) {
+                $dato['caracteristicas_ruido_guardado'] = 1;
+                $dato['caracteristicas_ruido'] = $reporte->caracteristicas_ruido;
+            } else {
+                $dato['caracteristicas_ruido_guardado'] = 0;
+                $dato['caracteristicas_ruido'] = '';
+            }
+
 
             // PORTADA
             //===================================================
@@ -7723,6 +7738,17 @@ class reporteruidoController extends Controller
                 $dato["msj"] = 'Datos modificados correctamente';
             }
 
+
+            if (($request->opcion + 0) == 27) {
+                $reporte->update([
+
+                    'caracteristicas_ruido' => $request->caracteristicas_ruido
+
+                ]);
+
+                // Mensaje
+                $dato["msj"] = 'Datos guardados correctamente';
+            }
 
             /*
 

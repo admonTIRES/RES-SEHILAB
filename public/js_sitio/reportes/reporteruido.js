@@ -206,6 +206,9 @@ function datosgenerales()
 
 			$('.div_instalacion_nombre').html(dato.reporte_portada.reporte_instalacion);
 
+			$('#caracteristicas_ruido').val(dato.caracteristicas_ruido);
+			actualizarCaracteristicasRuido();
+
 			$('#reporte_introduccion').html(dato.reporte_introduccion);
 			$('#reporte_objetivogeneral').html(dato.reporte_objetivogeneral);
 			$('#reporte_objetivoespecifico').html(dato.reporte_objetivoespecifico);
@@ -308,6 +311,7 @@ function datosgenerales()
 			$('#memoriafotografica_total').html(dato.reporte_memoriafotografica_guardado);
 
 			// ACTUALIZAR MENU INDICE, SI CADA PUNTO YA HA SIDO GUARDADO
+			menureporte_estado("menureporte_0_1", dato.caracteristicas_ruido_guardado);
 			menureporte_estado("menureporte_0", dato.reporte_portada_guardado);
 			menureporte_estado("menureporte_1", dato.reporte_introduccion_guardado);
 			menureporte_estado("menureporte_2", 1); // Definiciones
@@ -497,6 +501,401 @@ function redimencionar_foto(campo_file, campo_filehidden, boton_guardar) {
         img.src = e.target.result;
     };
 }
+
+//================================================
+// CARACTERISTICAS
+
+
+
+
+
+function actualizarCaracteristicasRuido()
+{
+    var opcion = String($('#caracteristicas_ruido').val() || '');
+
+
+    //======================================================================
+    // FUNCIONES PARA MOSTRAR Y OCULTAR
+    //======================================================================
+
+    function mostrar(id)
+    {
+        var elemento = document.getElementById(id);
+
+        if (elemento)
+        {
+            elemento.style.removeProperty('display');
+        }
+    }
+
+
+    function ocultar(id)
+    {
+        var elemento = document.getElementById(id);
+
+        if (elemento)
+        {
+            elemento.style.setProperty(
+                'display',
+                'none',
+                'important'
+            );
+        }
+    }
+
+
+
+    //======================================================================
+    // RESTABLECER TODAS LAS SECCIONES
+    //======================================================================
+
+    mostrar('seccion_ruido_6_2');
+    mostrar('seccion_ruido_6_3');
+
+    mostrar('seccion_ruido_7_1');
+    mostrar('seccion_ruido_7_2');
+    mostrar('seccion_ruido_7_3');
+    mostrar('seccion_ruido_7_6');
+
+
+
+    //======================================================================
+    // RESTABLECER TODO EL ÍNDICE
+    //======================================================================
+
+    mostrar('indice_ruido_6_2');
+    mostrar('indice_ruido_6_3');
+
+    mostrar('indice_ruido_7_1');
+    mostrar('indice_ruido_7_2');
+    mostrar('indice_ruido_7_3');
+    mostrar('indice_ruido_7_6');
+
+
+
+    //======================================================================
+    // RESTABLECER TÍTULOS ORIGINALES DE LAS SECCIONES
+    //======================================================================
+
+    $('#6_2').html(
+        '6.2.- Determinación de las áreas y puntos de evaluación'
+    );
+
+    $('#6_3').html(
+        '6.3.- Selección del método o métodos empleados para la evaluación de la exposición a ruido'
+    );
+
+    $('#7_1').html(
+        '7.1.- Tabla de resultados del Nivel Sonoro Continuo Equivalente “A” (NSCE<sub>A, T</sub>) por punto de medición'
+    );
+
+    $('#7_2').html(
+        '7.2.- Tabla de resultados de la determinación del NER'
+    );
+
+    $('#7_3').html(
+        '7.3.- Determinación del NER, porcentaje de dosis de la evaluación personal (del o los trabajadores)'
+    );
+
+    $('#7_6').html(
+        '7.4.- Resultados del Nivel de Ruido Efectivo (NRE) con modelo por bandas de octava'
+    );
+
+
+
+    //======================================================================
+    // RESTABLECER TEXTOS ORIGINALES DEL ÍNDICE
+    //======================================================================
+
+    $('#indice_ruido_6_2 .titulo-menu').html(
+        '6.2.- Determinación de las áreas y puntos de evaluación'
+    );
+
+    $('#indice_ruido_6_3 .titulo-menu').html(
+        '6.3.- Selección del método o métodos empleados para la evaluación de la exposición a ruido'
+    );
+
+    $('#indice_ruido_7_1 .titulo-menu').html(
+        '7.1.- Tabla de resultados del Nivel Sonoro Continuo Equivalente “A” (NSCE<sub>A, T</sub>) por punto de medición'
+    );
+
+    $('#indice_ruido_7_2 .titulo-menu').html(
+        '7.2.- Tabla de resultados de la determinación del NER'
+    );
+
+    $('#indice_ruido_7_3 .titulo-menu').html(
+        '7.3.- Determinación del NER, porcentaje de dosis de la evaluación personal (del o los trabajadores)'
+    );
+
+    $('#indice_ruido_7_6 .titulo-menu').html(
+        '7.4.- Resultados del Nivel de Ruido Efectivo (NRE) con modelo por bandas de octava'
+    );
+
+
+
+    //======================================================================
+    // OPCIÓN 2 =  DOSIMETRÍA
+    //
+    // OCULTAR:
+    //
+    // 6.2
+    // 7.1
+    // 7.2
+    // 7.4  -> ID REAL 7_6
+    //
+    // MOSTRAR:
+    //
+    // 6.3 -> visualmente será 6.2
+    // 7.3 -> visualmente será 7.1
+    //======================================================================
+
+    if (opcion === '2')
+    {
+        //==================================================================
+        // OCULTAR SECCIONES
+        //==================================================================
+
+        ocultar('seccion_ruido_6_2');
+
+        ocultar('seccion_ruido_7_1');
+        ocultar('seccion_ruido_7_2');
+        ocultar('seccion_ruido_7_6');
+
+
+        //==================================================================
+        // OCULTAR ÍNDICE
+        //==================================================================
+
+        ocultar('indice_ruido_6_2');
+
+        ocultar('indice_ruido_7_1');
+        ocultar('indice_ruido_7_2');
+        ocultar('indice_ruido_7_6');
+
+
+        //==================================================================
+        // 6.3 PASA VISUALMENTE A 6.2
+        //==================================================================
+
+        $('#6_3').html(
+            '6.2.- Selección del método o métodos empleados para la evaluación de la exposición a ruido'
+        );
+
+        $('#indice_ruido_6_3 .titulo-menu').html(
+            '6.2.- Selección del método o métodos empleados para la evaluación de la exposición a ruido'
+        );
+
+
+        //==================================================================
+        // 7.3 PASA VISUALMENTE A 7.1
+        //==================================================================
+
+        $('#7_3').html(
+            '7.1.- Determinación del NER, porcentaje de dosis de la evaluación personal (del o los trabajadores)'
+        );
+
+        $('#indice_ruido_7_3 .titulo-menu').html(
+            '7.1.- Determinación del NER, porcentaje de dosis de la evaluación personal (del o los trabajadores)'
+        );
+
+
+        return;
+    }
+
+
+
+    //======================================================================
+    // OPCIÓN 1 =   SONOMETRÍA
+    //
+    // MOSTRAR:
+    //
+    // 6.2
+    // 6.3
+    // 7.1
+    // 7.2
+    // 7.4 -> ID REAL 7_6
+    //
+    // OCULTAR:
+    //
+    // 7.3
+    //
+    // RENUMERAR:
+    //
+    // 7.4 -> 7.3
+    //======================================================================
+
+    if (opcion === '1')
+    {
+        //==================================================================
+        // OCULTAR SECCIÓN 7.3
+        //==================================================================
+
+        ocultar('seccion_ruido_7_3');
+
+
+        //==================================================================
+        // OCULTAR 7.3 DEL ÍNDICE
+        //==================================================================
+
+        ocultar('indice_ruido_7_3');
+
+
+        //==================================================================
+        // 7.4 PASA VISUALMENTE A 7.3
+        //
+        // EL ID REAL SIGUE SIENDO 7_6
+        //==================================================================
+
+        $('#7_6').html(
+            '7.3.- Resultados del Nivel de Ruido Efectivo (NRE) con modelo por bandas de octava'
+        );
+
+        $('#indice_ruido_7_6 .titulo-menu').html(
+            '7.3.- Resultados del Nivel de Ruido Efectivo (NRE) con modelo por bandas de octava'
+        );
+
+
+        return;
+    }
+
+
+
+    //======================================================================
+    // OPCIÓN 3 = AMBOS
+    //
+    // TODO VISIBLE Y NUMERACIÓN ORIGINAL
+    //======================================================================
+
+    if (opcion === '3')
+    {
+        return;
+    }
+}
+
+
+//==========================================================================
+// EVENTO CHANGE
+//==========================================================================
+
+$(document).on(
+    'change',
+    '#caracteristicas_ruido',
+    function()
+    {
+        actualizarCaracteristicasRuido();
+    }
+);
+
+
+
+
+$("#botonguardar_reporte_caracteristicas").click(function()
+{
+	// valida campos vacios
+	var valida = this.form.checkValidity();
+	if (valida)
+	{
+		swal({
+			title: "¡Confirme que desea guardar!",
+			text: "Características",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Guardar!",
+			cancelButtonText: "Cancelar!",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		},
+		function(isConfirm)
+		{
+			if (isConfirm)
+			{
+				// cerrar msj confirmacion
+				swal.close();
+
+				// enviar datos
+				$('#form_reporte_caracteristicas').ajaxForm({
+					dataType: 'json',
+					type: 'POST',
+					url: ''+ruta_storage_guardar,
+					data: {
+						opcion: 27,
+						proyecto_id: proyecto.id,
+						agente_id: agente_id,
+						agente_nombre: agente_nombre,
+						reporteregistro_id: reporteregistro_id,
+						catactivo_id: $("#reporte_catactivo_id").val(),
+						reporte_instalacion: $("#reporte_instalacion").val()
+					},
+					resetForm: false,
+					success: function(dato)
+					{
+						// Actualizar ID reporte						
+						reporteregistro_id = dato.reporteregistro_id;
+
+						menureporte_estado("menureporte_0_1", 1);
+
+						// mensaje
+						swal({
+							title: "Correcto",
+							text: ""+dato.msj,
+							type: "success", // warning, error, success, info
+							buttons: {
+								visible: false, // true , false
+							},
+							timer: 1500,
+							showConfirmButton: false
+						});
+
+						// actualiza boton
+						$('#botonguardar_reporte_caracteristicas').html('Guardar características <i class="fa fa-save"></i>');
+						$('#botonguardar_reporte_caracteristicas').attr('disabled', false);
+					},
+					beforeSend: function()
+					{
+						$('#botonguardar_reporte_caracteristicas').html('Guardando características <i class="fa fa-spin fa-spinner"></i>');
+						$('#botonguardar_reporte_caracteristicas').attr('disabled', true);
+					},
+					error: function(dato)
+					{
+						// actualiza boton
+						$('#botonguardar_reporte_caracteristicas').html('Guardar características <i class="fa fa-save"></i>');
+						$('#botonguardar_reporte_caracteristicas').attr('disabled', false);
+
+						// mensaje
+						swal({
+							title: "Error",
+							text: ""+dato.msj,
+							type: "error", // warning, error, success, info
+							buttons: {
+								visible: false, // true , false
+							},
+							timer: 1500,
+							showConfirmButton: false
+						});
+						return false;
+					}
+				}).submit();
+				return false;
+			}
+			else 
+			{
+				// mensaje
+				swal({
+					title: "Cancelado",
+					text: "Acción cancelada",
+					type: "error", // warning, error, success, info
+					buttons: {
+						visible: false, // true , false
+					},
+					timer: 500,
+					showConfirmButton: false
+				});
+			}
+		});
+		return false;
+	}
+});
 
 
 

@@ -44,6 +44,7 @@ class reporteruidoModel extends Model
 		'reporteruido_canceladonombre',
 		'reporteruido_canceladofecha',
 		'reporteruido_canceladoobservacion',
-		'reporteruido_lmpe'
+		'reporteruido_lmpe',
+		'caracteristicas_ruido'
 	];
 }

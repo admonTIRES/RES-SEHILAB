@@ -164,6 +164,7 @@
 	<div class="col-xlg-2 col-lg-3 col-md-5">
 		<div class="stickyside">
 			<div class="list-group" id="top-menu">
+				<a href="#0_1" class="list-group-item active">Característica ruido<i id="menureporte_0_1"></i></a>
 				<a href="#0" class="list-group-item active">Portada <i class="fa fa-times" id="menureporte_0"></i></a>
 				<a href="#1" class="list-group-item">1.- Introducción <i class="fa fa-times" id="menureporte_1"></i></a>
 				<a href="#2" class="list-group-item">2.- Definiciones <i class="fa fa-times" id="menureporte_2"></i></a>
@@ -184,17 +185,39 @@
 				<a href="#5_8" class="list-group-item submenu">5.8.- NS <sub>A</sub> instantáneo para identificar las áreas y fuentes emisoras <i class="fa fa-times" id="menureporte_5_8"></i></a>
 				<a href="#6" class="list-group-item">6.- Evaluación</a>
 				<a href="#6_1" class="list-group-item submenu">6.1.- Condiciones de operación durante la evaluación (representado en porcentaje) <i class="fa fa-times" id="menureporte_6_1"></i></a>
-				<a href="#6_2" class="list-group-item submenu">6.2.- Determinación de las áreas y puntos de evaluación <i class="fa fa-times" id="menureporte_6_2"></i></a>
-				<a href="#6_3" class="list-group-item submenu">6.3.- Selección del método o métodos empleados para la evaluación de la exposición a ruido <i class="fa fa-times" id="menureporte_6_3"></i></a>
+				<a href="#6_2" id="indice_ruido_6_2" class="list-group-item submenu">
+					<span class="titulo-menu">6.2.- Determinación de las áreas y puntos de evaluación</span>
+					<i class="fa fa-times" id="menureporte_6_2"></i>
+				</a>
+				<a href="#6_3" id="indice_ruido_6_3" class="list-group-item submenu">
+					<span class="titulo-menu">6.3.- Selección del método o métodos empleados para la evaluación de la exposición a ruido</span>
+					<i class="fa fa-times" id="menureporte_6_3"></i>
+				</a>
 				<a href="#7" class="list-group-item">7.- Resultados</a>
-				<a href="#7_1" class="list-group-item submenu">7.1.- Tabla de resultados del Nivel Sonoro Continuo Equivalente “A” (NSCE<sub>A, T</sub>) por punto de medición <i class="fa fa-times" id="menureporte_7_1"></i></a>
-				<a href="#7_2" class="list-group-item submenu">7.2.- Tabla de resultados de la determinación del NER <i class="fa fa-times" id="menureporte_7_2"></i></a>
-				<a href="#7_3" class="list-group-item submenu">7.3.- Determinación del NER, porcentaje de dosis de la evaluación personal (del o los trabajadores) <i class="fa fa-times" id="menureporte_7_3"></i></a>
-				{{--
-				<a href="#7_4" class="list-group-item submenu">7.4.- Determinación del factor de reducción (R) del equipo de protección personal auditivo <i class="fa fa-times" id="menureporte_7_4"></i></a>
-				<a href="#7_5" class="list-group-item submenu">7.5.- Resultados del Nivel de Ruido Efectivo (NRE) por modelo con mediciones de ruido en dB (A) <i class="fa fa-times" id="menureporte_7_5"></i></a>
-				--}}
-				<a href="#7_6" class="list-group-item submenu">7.4.- Resultados del Nivel de Ruido Efectivo (NRE) con modelo por bandas de octava <i class="fa fa-times" id="menureporte_7_6"></i></a>
+				<a href="#7_1" id="indice_ruido_7_1" class="list-group-item submenu">
+					<span class="titulo-menu">
+						7.1.- Tabla de resultados del Nivel Sonoro Continuo Equivalente “A” (NSCE<sub>A, T</sub>) por punto de medición
+					</span>
+					<i class="fa fa-times" id="menureporte_7_1"></i>
+				</a>
+				<a href="#7_2" id="indice_ruido_7_2" class="list-group-item submenu">
+					<span class="titulo-menu">
+						7.2.- Tabla de resultados de la determinación del NER
+					</span>
+					<i class="fa fa-times" id="menureporte_7_2"></i>
+				</a>
+				<a href="#7_3" id="indice_ruido_7_3" class="list-group-item submenu">
+					<span class="titulo-menu">
+						7.3.- Determinación del NER, porcentaje de dosis de la evaluación personal (del o los trabajadores)
+					</span>
+					<i class="fa fa-times" id="menureporte_7_3"></i>
+				</a>
+				<a href="#7_6" id="indice_ruido_7_6" class="list-group-item submenu">
+					<span class="titulo-menu">
+						7.4.- Resultados del Nivel de Ruido Efectivo (NRE) con modelo por bandas de octava
+					</span>
+					<i class="fa fa-times" id="menureporte_7_6"></i>
+				</a>
 				<a href="#7_7" class="list-group-item submenu">7.5.- Matriz de exposición laboral <i class="fa fa-times" id="menureporte_7_7"></i></a>
 				<a href="#8" class="list-group-item">8.- Conclusiones <i class="fa fa-times" id="menureporte_8"></i></a>
 				<a href="#9" class="list-group-item">9.- Recomendaciones de control <i class="fa fa-times" id="menureporte_9"></i></a>
@@ -217,7 +240,32 @@
 	</div>
 	<div class="col-xlg-10 col-lg-9 col-md-7">
 		<div class="card">
-			<div class="card-body">
+			<div class="card-body" style="display: block">
+
+
+				<h4 class="card-title" id="0_1">Seleccione las características a evaluar ruido</h4>
+				<form method="post" enctype="multipart/form-data" name="form_reporte_caracteristicas" id="form_reporte_caracteristicas">
+					<div class="row">
+						<div class="col-12">
+							{!! csrf_field() !!}
+						</div>
+						<div class="col-12">
+							<div class="form-group">
+								<label>Seleccionar características</label>
+								<select class="custom-select form-control" id="caracteristicas_ruido" name="caracteristicas_ruido" required>
+									<option value=""></option>
+									<option value="1">Sonometría</option>
+									<option value="2">Dosimetría</option>
+									<option value="3">Ambos</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-12" style="text-align: right;">
+							<button type="submit" class="btn btn-danger waves-effect waves-light " id="botonguardar_reporte_caracteristicas">Guardar características <i class="fa fa-save"></i></button>
+						</div>
+					</div>
+				</form>
+
 				<h4 class="card-title" style="padding: 0px!important;" id="0">Portadas</h4>
 				<form method="post" enctype="multipart/form-data" name="form_reporte_portada" id="form_reporte_portada">
 					<div class="row">
@@ -871,235 +919,303 @@
 						</table>
 					</div>
 				</div>
-				<h4 class="card-title" id="6_2">6.2.- Determinación de las áreas y puntos de evaluación</h4>
-				<div class="row">
-					<div class="col-12">
-						<p class="justificado">Para la evaluación de ruido al que se expone el personal dentro de las áreas operativas, se ubicaron los puntos de medición en las zonas donde el nivel instantáneo NSA sea igual o mayor a los 80 dB, de acuerdo con lo establecido en la metodología descrita en la NOM-011-STPS-2001.<br><br>No se realizaron evaluaciones donde el nivel instantáneo descrito en el reconocimiento fue menor a los 80 dB, debido a que se consideran las áreas de acuerdo al Nivel instantáneo establecido en la NOM-011-STPS-2001.</p><br>
-						<ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
-							<button type="button" class="btn btn-default waves-effect botoninforme" data-toggle="tooltip" title="Nueva área y puntos de evaluación" id="boton_reporte_areaevaluacion">
-								<span class="btn-label"><i class="fa fa-plus"></i></span>Área y puntos de evaluación
-							</button>
-						</ol>
-						<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_6_2">
-							<thead>
-								<tr>
-									<th width="130">Instalación</th>
-									<th width="220">Área</th>
-									<th width="100">No. de<br>medición</th>
-									<th>Ubicación</th>
-									<th width="100">No. de<br>evaluaciones<br>por área</th>
-									<th width="60">Editar</th>
-									<th width="60">Eliminar</th>
-								</tr>
-							</thead>
-							<tbody></tbody>
-							<tfoot>
-								<tr>
-									<th colspan="4">Total de puntos evaluados</th>
-									<td><b id="areaevaluacion_totalpuntos">0</b></td>
-									<td colspan="2"></td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-				<h4 class="card-title" id="6_3">6.3.- Selección del método o métodos empleados para la evaluación de la exposición a ruido</h4>
-				<form method="post" enctype="multipart/form-data" name="form_reporte_metodoevaluacion" id="form_reporte_metodoevaluacion">
+
+				<div id="seccion_ruido_6_2">
+					<h4 class="card-title" id="6_2">
+						6.2.- Determinación de las áreas y puntos de evaluación
+					</h4>
 					<div class="row">
 						<div class="col-12">
-							{!! csrf_field() !!}
-							<div class="form-group">
-								<textarea class="form-control" style="margin-bottom: 0px;" rows="8" id="reporte_metodoevaluacion" name="reporte_metodoevaluacion" required></textarea>
-							</div>
-						</div>
-						<div class="col-12" style="text-align: right;">
-							<div class="form-group">
-								<button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_metodoevaluacion">Guardar método de evaluación <i class="fa fa-save"></i></button>
-							</div>
-						</div>
-					</div>
-				</form>
-				<h4 class="card-title" id="7">7.- Resultados</h4>
-				<h4 class="card-title" id="7_1">7.1.- Tabla de resultados del Nivel Sonoro Continuo Equivalente “A” (NSCE<sub>A, T</sub>) por punto de medición</h4>
-				<div class="row">
-					<div class="col-12">
-						<ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
-							<button type="button" class="btn btn-default waves-effect botoninforme" data-toggle="tooltip" title="Nuevo punto de medición de nivel sonoro continuo" id="boton_reporte_nuevonivelsonoro">
-								<span class="btn-label"><i class="fa fa-plus"></i></span>Punto de medición de nivel sonoro continuo
-							</button>
-							<button type="button" class="btn btn-default waves-effect botoninforme" data-toggle="tooltip" title="Importar puntos de medición de nivel sonoro continuo" id="boton_importar_puntos_71" onclick="abrirModalPuntos(1)">
-								<span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span> Importar
-							</button>
-						</ol>
-						<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_7_1">
-							<thead>
-								<tr>
-									<th width="100">No. Medición</th>
-									<th>Ubicación</th>
-									<th width="100">Periodo 1</th>
-									<th width="100">Periodo 2</th>
-									<th width="100">NSCE<sub>A, Ti</sub><br>Promedio</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td colspan="5">No hay datos que mostrar</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<h4 class="card-title" id="7_2">7.2.- Tabla de resultados de la determinación del NER</h4>
-				<div class="row">
-					<div class="col-12">
-						<ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
-							<button type="button" class="btn btn-default waves-effect botoninforme LMPE" data-toggle="tooltip" title="Nuevo punto de determinación del NER " id="boton_reporte_nuevopuntoner">
-								<span class="btn-label"><i class="fa fa-plus"></i></span>Punto de determinación del NER
-							</button>
-							<button type="button" class="btn btn-default waves-effect botoninforme LMPE" data-toggle="tooltip" title="Importar puntos de determinación del NER" id="boton_importar_puntos_72" onclick="abrirModalPuntos(2)">
-								<span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span> Importar
-							</button>
-							<input type="number" class="form-control w-25 text-center" min="1" placeholder="Agregue  el LMPE dB(A)" id="reporteruido_lmpe" name="reporteruido_lmpe">
-						</ol>
-						<style type="text/css">
-							#tabla_reporte_7_2 th {
-								background: #F9F9F9;
-								border: 1px #E5E5E5 solid;
-								padding: 1px !important;
-								font-size: 0.7vw !important;
-								text-align: center;
-								vertical-align: middle;
-							}
-
-							#tabla_reporte_7_2 td {
-								padding: 1px !important;
-								font-size: 0.7vw !important;
-								text-align: center;
-							}
-
-							#tabla_reporte_7_2 tr:hover td {
-								color: #000000;
-							}
-						</style>
-						<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_7_2">
-							<thead>
-								<tr>
-									<th width="70">No.<br>Medición</th>
-									<th width="">Área</th>
-									<th width="130">Ubicación</th>
-									<th width="130">Identificación</th>
-									<th width="60">NER<br>dB(A)</th>
-									<th width="60">LMPE<br>dB(A)</th>
-									<th width="90">TMPE<br>Horas</th>
-									<th width="110">Cumplimiento<br>normativo</th>
-									<th width="60">Editar</th>
-									<th width="60">Eliminar</th>
-								</tr>
-							</thead>
-							<tbody></tbody>
-						</table>
-					</div>
-				</div>
-				<h4 class="card-title" id="7_3">7.3.- Determinación del NER, porcentaje de dosis de la evaluación personal (del o los trabajadores)</h4>
-				<div class="row">
-					<div class="col-12">
-						<ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
-							<button type="button" class="btn btn-default waves-effect botoninforme LMPE" data-toggle="tooltip" title="Nueva dosis de determinación del NER al personal" id="boton_reporte_nuevadosisner">
-								<span class="btn-label"><i class="fa fa-plus"></i></span>Dosis de determinación del NER al personal
-							</button>
-							<button type="button" class="btn btn-default waves-effect botoninforme LMPE" data-toggle="tooltip" title="Importar dosis de determinación del NER al personal" id="boton_importar_puntos_73" onclick="abrirModalPuntos(3)">
-								<span class="btn-label"><i class="fa fa-file-excel-o" aria-hidden="true"></i></span> Importar
-							</button>
-						</ol>
-						<style type="text/css">
-							#tabla_reporte_7_3 th {
-								background: #F9F9F9;
-								border: 1px #E5E5E5 solid;
-								padding: 1px !important;
-								font-size: 0.7vw !important;
-								text-align: center;
-								vertical-align: middle;
-							}
-
-							#tabla_reporte_7_3 td {
-								padding: 1px !important;
-								font-size: 0.7vw !important;
-								text-align: center;
-							}
-
-							#tabla_reporte_7_3 tr:hover td {
-								color: #000000;
-							}
-						</style>
-						<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_7_3">
-							<thead>
-								<tr>
-									<th width="60">No.<br>Medición</th>
-									<th width="150">Área</th>
-									<th width="">Categoría</th>
-									<th width="60">% Dosis</th>
-									<th width="60">NER<br>dB(A)</th>
-									<th width="60">LMPE<br>dB(A)</th>
-									<th width="90">TMPE<br>Horas</th>
-									<th width="110">Cumplimiento<br>normativo</th>
-									<th width="60">Editar</th>
-									<th width="60">Eliminar</th>
-								</tr>
-							</thead>
-							<tbody></tbody>
-						</table>
-					</div>
-				</div>
-				{{--
-				<h4 class="card-title" id="7_4">7.4.- Determinación del factor de reducción (R) del equipo de protección personal auditivo</h4>
-					<p class="justificado">Cuando se use un equipo de protección personal auditiva, el factor de reducción R se calcula con la siguiente ecuación:</p><br>
-					<div class="imagen_formula">
-						<img src="/assets/images/reportes/reporteruido_figura_7.4.jpg" height="60">
-					</div><br>
-					<p class="justificado">Donde:<br>NRR: Es el factor de nivel de reducción a ruido establecido por el fabricante.</p><br>
-					<div id="equiposauditivos_datos"></div>
-				<h4 class="card-title" id="7_5">7.5.- Resultados del Nivel de Ruido Efectivo (NRE) por modelo con mediciones de ruido en dB (A)</h4>
-					<div class="row">
-						<div class="col-12">
-							<p class="justificado">A continuación, se describe la determinación del Factores de Reducción del Equipo de Protección Personal Auditivo para cada punto y el Nivel de Ruido Efectivo (NRE):</p><br>
-							<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_7_5">
+							<p class="justificado">
+								Para la evaluación de ruido al que se expone el personal dentro de las áreas operativas,
+								se ubicaron los puntos de medición en las zonas donde el nivel instantáneo NSA sea igual
+								o mayor a los 80 dB, de acuerdo con lo establecido en la metodología descrita en la
+								NOM-011-STPS-2001.
+								<br><br>
+								No se realizaron evaluaciones donde el nivel instantáneo descrito en el reconocimiento
+								fue menor a los 80 dB, debido a que se consideran las áreas de acuerdo al Nivel instantáneo
+								establecido en la NOM-011-STPS-2001.
+							</p>
+							<br>
+							<ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
+								<button type="button" class="btn btn-default waves-effect botoninforme" data-toggle="tooltip" title="Nueva área y puntos de evaluación"
+									id="boton_reporte_areaevaluacion">
+									<span class="btn-label"><i class="fa fa-plus"></i></span>
+									Área y puntos de evaluación
+								</button>
+							</ol>
+							<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_6_2">
 								<thead>
 									<tr>
-										<th width="70">No.<br>medición</th>
-										<th>Área</th>
-										<th>Puesto</th>
-										<th width="70">NER<br>dB(A)</th>
-										<th width="70">NRE<br>dB(A)</th>
+										<th width="130">Instalación</th>
+										<th width="220">Área</th>
+										<th width="100">No. de<br>medición</th>
+										<th>Ubicación</th>
+										<th width="100">No. de<br>evaluaciones<br>por área</th>
+										<th width="60">Editar</th>
+										<th width="60">Eliminar</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+								<tfoot>
+									<tr>
+										<th colspan="4">Total de puntos evaluados</th>
+										<td>
+											<b id="areaevaluacion_totalpuntos">0</b>
+										</td>
+										<td colspan="2"></td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+
+
+				<div id="seccion_ruido_6_3">
+					<h4 class="card-title" id="6_3">6.3.- Selección del método o métodos empleados para la evaluación de la exposición a ruido</h4>
+					<form method="post" enctype="multipart/form-data" name="form_reporte_metodoevaluacion" id="form_reporte_metodoevaluacion">
+						<div class="row">
+							<div class="col-12">
+								{!! csrf_field() !!}
+
+								<div class="form-group">
+									<textarea class="form-control" style="margin-bottom: 0px;" rows="8" id="reporte_metodoevaluacion" name="reporte_metodoevaluacion" required></textarea>
+								</div>
+							</div>
+							<div class="col-12" style="text-align: right;">
+								<div class="form-group">
+									<button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_metodoevaluacion">
+										Guardar método de evaluación <i class="fa fa-save"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<h4 class="card-title" id="7">7.- Resultados</h4>
+
+
+				<div id="seccion_ruido_7_1">
+					<h4 class="card-title" id="7_1">
+						7.1.- Tabla de resultados del Nivel Sonoro Continuo Equivalente “A”
+						(NSCE<sub>A, T</sub>) por punto de medición
+					</h4>
+					<div class="row">
+						<div class="col-12">
+							<ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
+								<button type="button" class="btn btn-default waves-effect botoninforme" data-toggle="tooltip" title="Nuevo punto de medición de nivel sonoro continuo"
+									id="boton_reporte_nuevonivelsonoro">
+									<span class="btn-label"> <i class="fa fa-plus"></i></span>
+									Punto de medición de nivel sonoro continuo
+								</button>
+								<button type="button" class="btn btn-default waves-effect botoninforme" data-toggle="tooltip" title="Importar puntos de medición de nivel sonoro continuo"
+									id="boton_importar_puntos_71" onclick="abrirModalPuntos(1)">
+									<span class="btn-label">
+										<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+									</span>
+									Importar
+								</button>
+							</ol>
+
+							<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_7_1">
+								<thead>
+									<tr>
+										<th width="100">No. Medición</th>
+										<th>Ubicación</th>
+										<th width="100">Periodo 1</th>
+										<th width="100">Periodo 2</th>
+										<th width="100">NSCE<sub>A, Ti</sub><br>Promedio</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td colspan="5">No hay datos que mostrar</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div id="seccion_ruido_7_2">
+					<h4 class="card-title" id="7_2">
+						7.2.- Tabla de resultados de la determinación del NER
+					</h4>
+					<div class="row">
+						<div class="col-12">
+							<ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
+								<button type="button" class="btn btn-default waves-effect botoninforme LMPE" data-toggle="tooltip" title="Nuevo punto de determinación del NER"
+									id="boton_reporte_nuevopuntoner">
+									<span class="btn-label">
+										<i class="fa fa-plus"></i>
+									</span>
+									Punto de determinación del NER
+								</button>
+
+								<button type="button" class="btn btn-default waves-effect botoninforme LMPE" data-toggle="tooltip" title="Importar puntos de determinación del NER"
+									id="boton_importar_puntos_72" onclick="abrirModalPuntos(2)">
+									<span class="btn-label">
+										<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+									</span>
+									Importar
+								</button>
+								<input type="number" class="form-control w-25 text-center" min="1" placeholder="Agregue el LMPE dB(A)" id="reporteruido_lmpe" name="reporteruido_lmpe">
+							</ol>
+
+
+							<style type="text/css">
+								#tabla_reporte_7_2 th {
+									background: #F9F9F9;
+									border: 1px #E5E5E5 solid;
+									padding: 1px !important;
+									font-size: 0.7vw !important;
+									text-align: center;
+									vertical-align: middle;
+								}
+
+								#tabla_reporte_7_2 td {
+									padding: 1px !important;
+									font-size: 0.7vw !important;
+									text-align: center;
+								}
+
+								#tabla_reporte_7_2 tr:hover td {
+									color: #000000;
+								}
+							</style>
+
+
+							<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_7_2">
+								<thead>
+									<tr>
+										<th width="70">No.<br>Medición</th>
+										<th width="">Área</th>
+										<th width="130">Ubicación</th>
+										<th width="130">Identificación</th>
+										<th width="60">NER<br>dB(A)</th>
+										<th width="60">LMPE<br>dB(A)</th>
+										<th width="90">TMPE<br>Horas</th>
+										<th width="110">Cumplimiento<br>normativo</th>
+										<th width="60">Editar</th>
+										<th width="60">Eliminar</th>
 									</tr>
 								</thead>
 								<tbody></tbody>
 							</table>
 						</div>
-					</div> 
-				--}}
-				<h4 class="card-title" id="7_6">7.4.- Resultados del Nivel de Ruido Efectivo (NRE) con modelo por bandas de octava</h4>
-				<div class="row">
-					<div class="col-12">
-						<p class="justificado">A continuación, se describe la determinación del Factores de Reducción del Equipo de Protección Personal Auditivo para cada punto y el Nivel de Ruido Efectivo (NRE):</p>
-						<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_7_6">
-							<thead>
-								<tr>
-									<th width="60">No.<br>medición</th>
-									<th width="130">Área</th>
-									<th width="">Ubicación</th>
-									<th width="">Identificación</th>
-									<th width="80">Frecuencia<br>en Hz</th>
-									<th width="80">Nivel de<br>Presión<br>Acústica<br>Promedio (dB)</th>
-									<th width="60">NER<br>dB(A)</th>
-									<th width="60">R<br>dB (A)</th>
-									<th width="60">NRE<br>dB (A)</th>
-									<th width="60">Editar</th>
-								</tr>
-							</thead>
-							<tbody></tbody>
-						</table>
 					</div>
 				</div>
+
+
+				<div id="seccion_ruido_7_3">
+					<h4 class="card-title" id="7_3">
+						7.3.- Determinación del NER, porcentaje de dosis de la evaluación personal (del o los trabajadores)
+					</h4>
+					<div class="row">
+						<div class="col-12">
+							<ol class="breadcrumb" style="padding: 6px; margin: 10px 0px;">
+								<button type="button" class="btn btn-default waves-effect botoninforme LMPE" data-toggle="tooltip" title="Nueva dosis de determinación del NER al personal"
+									id="boton_reporte_nuevadosisner">
+									<span class="btn-label">
+										<i class="fa fa-plus"></i>
+									</span>
+									Dosis de determinación del NER al personal
+								</button>
+
+								<button type="button" class="btn btn-default waves-effect botoninforme LMPE" data-toggle="tooltip"
+									title="Importar dosis de determinación del NER al personal" id="boton_importar_puntos_73" onclick="abrirModalPuntos(3)">
+									<span class="btn-label">
+										<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+									</span>
+									Importar
+								</button>
+							</ol>
+
+
+							<style type="text/css">
+								#tabla_reporte_7_3 th {
+									background: #F9F9F9;
+									border: 1px #E5E5E5 solid;
+									padding: 1px !important;
+									font-size: 0.7vw !important;
+									text-align: center;
+									vertical-align: middle;
+								}
+
+								#tabla_reporte_7_3 td {
+									padding: 1px !important;
+									font-size: 0.7vw !important;
+									text-align: center;
+								}
+
+								#tabla_reporte_7_3 tr:hover td {
+									color: #000000;
+								}
+							</style>
+
+							<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_7_3">
+								<thead>
+									<tr>
+										<th width="60">No.<br>Medición</th>
+										<th width="150">Área</th>
+										<th width="">Categoría</th>
+										<th width="60">% Dosis</th>
+										<th width="60">NER<br>dB(A)</th>
+										<th width="60">LMPE<br>dB(A)</th>
+										<th width="90">TMPE<br>Horas</th>
+										<th width="110">Cumplimiento<br>normativo</th>
+										<th width="60">Editar</th>
+										<th width="60">Eliminar</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+
+
+
+				<div id="seccion_ruido_7_6">
+					<h4 class="card-title" id="7_6">
+						7.4.- Resultados del Nivel de Ruido Efectivo (NRE) con modelo por bandas de octava
+					</h4>
+					<div class="row">
+						<div class="col-12">
+							<p class="justificado">
+								A continuación, se describe la determinación del Factores de Reducción del Equipo de Protección Personal Auditivo para cada punto y el Nivel de Ruido Efectivo (NRE):
+							</p>
+
+							<table class="table table-hover tabla_info_centrado" width="100%" id="tabla_reporte_7_6">
+								<thead>
+									<tr>
+										<th width="60">No.<br>medición</th>
+										<th width="130">Área</th>
+										<th width="">Ubicación</th>
+										<th width="">Identificación</th>
+										<th width="80">Frecuencia<br>en Hz</th>
+										<th width="80">
+											Nivel de<br>
+											Presión<br>
+											Acústica<br>
+											Promedio (dB)
+										</th>
+										<th width="60">NER<br>dB(A)</th>
+										<th width="60">R<br>dB (A)</th>
+										<th width="60">NRE<br>dB (A)</th>
+										<th width="60">Editar</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+
 				<h4 class="card-title" id="7_7">7.5.- Matriz de exposición laboral</h4>
 				<div class="row">
 					<div class="col-12">
@@ -2953,4 +3069,4 @@
 	var areas_poe = <?php echo json_encode($areas_poe); ?>;
 </script>
 {{-- <script src="/js_sitio/html2canvas.js"></script> --}}
-<script src="/js_sitio/reportes/reporteruido.js?v=6.0"></script>
+<script src="/js_sitio/reportes/reporteruido.js?v=7"></script>

@@ -3558,6 +3558,625 @@ class reporteruidowordController extends Controller
             $plantillaword->setComplexBlock('TABLA_7_7', $table);
 
 
+            ///// CARACTERISTICAS
+
+
+            $font_size_titulo = 12;
+            $font_size_texto = 12;
+            $font_size_indice = 12;
+
+
+            $caracteristicas_ruido = isset($agente[0]) ? (string) ($agente[0]->caracteristicas_ruido ?? ''): '';
+
+
+            $mostrar = [
+                '6_2' => true,
+                '6_3' => true,
+                '7_1' => true,
+                '7_2' => true,
+                '7_3' => true,
+                '7_6' => true,
+            ];
+
+            $numero = [
+                '6_2' => '6.2',
+                '6_3' => '6.3',
+                '7_1' => '7.1',
+                '7_2' => '7.2',
+                '7_3' => '7.3',
+                '7_6' => '7.4',
+            ];
+
+
+            if ($caracteristicas_ruido === '1') {
+
+                $mostrar['7_3'] = false;
+                $numero['7_6'] = '7.3';
+            }
+
+
+            elseif ($caracteristicas_ruido === '2') {
+
+                $mostrar['6_2'] = false;
+                $mostrar['7_1'] = false;
+                $mostrar['7_2'] = false;
+                $mostrar['7_6'] = false;
+                $numero['6_3'] = '6.2';
+                $numero['7_3'] = '7.1';
+            }
+
+
+
+            $titulosRuido = [
+                'TITULO_RUIDO_6_2' => $numero['6_2'] . '    Determinación de las áreas y puntos de evaluación',
+                'TITULO_RUIDO_6_3' => $numero['6_3'] . '    Selección del método o métodos empleados para la evaluación de la exposición a ruido',
+                'TITULO_RUIDO_7_2' => $numero['7_2'] . '    Tabla de resultados de la determinación del NER',
+                'TITULO_RUIDO_7_3' => $numero['7_3'] . '    Determinación del NER, porcentaje de dosis de la evaluación personal (del o los trabajadores)',
+                'TITULO_RUIDO_7_6' => $numero['7_6'] . '    Resultados del Nivel de Ruido Efectivo (NRE) con modelo por bandas de octava',
+            ];
+
+            foreach ($titulosRuido as $marcador => $textoTitulo) {
+
+                $titulo = new \PhpOffice\PhpWord\Element\TextRun([
+                    'spaceAfter' => 0
+                ]);
+
+                $titulo->addText(
+                    $textoTitulo,
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_titulo,
+                        'bold' => true
+                    ]
+                );
+
+                $plantillaword->setComplexValue($marcador, $titulo);
+            }
+
+
+
+            $titulo71 = new \PhpOffice\PhpWord\Element\TextRun([
+                'spaceAfter' => 0
+            ]);
+
+            $titulo71->addText(
+                $numero['7_1'] . '    Tabla de resultados del Nivel Sonoro Continuo Equivalente “A” (NSCE',
+                [
+                    'name' => $fuente,
+                    'size' => $font_size_titulo,
+                    'bold' => true
+                ]
+            );
+
+            $titulo71->addText(
+                'A, T',
+                [
+                    'name' => $fuente,
+                    'size' => 8,
+                    'bold' => true,
+                    'subScript' => true
+                ]
+            );
+
+            $titulo71->addText(
+                ') por punto de medición',
+                [
+                    'name' => $fuente,
+                    'size' => $font_size_titulo,
+                    'bold' => true
+                ]
+            );
+
+            $plantillaword->setComplexValue('TITULO_RUIDO_7_1', $titulo71);
+
+
+            
+
+            $texto62 = new \PhpOffice\PhpWord\Element\TextRun([
+                'alignment' => 'both',
+                'spaceAfter' => 0
+            ]);
+
+            $texto62->addText(
+                'Para la evaluación de ruido al que se expone el personal dentro de las áreas operativas, se ubicaron los puntos de medición en las zonas donde el nivel instantáneo NSA sea igual o mayor a los 80 dB, de acuerdo con lo establecido en la metodología descrita en la NOM-011-STPS-2001.',
+                [
+                    'name' => $fuente,
+                    'size' => $font_size_texto,
+                    'bold' => false
+                ]
+            );
+
+            $texto62->addTextBreak();
+            $texto62->addTextBreak();
+
+            $texto62->addText(
+                'No se realizaron evaluaciones donde el nivel instantáneo descrito en el reconocimiento fue menor a los 80 dB, debido a que se consideran las áreas de acuerdo al Nivel instantáneo establecido en la NOM-011-STPS-2001.',
+                [
+                    'name' => $fuente,
+                    'size' => $font_size_texto,
+                    'bold' => false
+                ]
+            );
+
+            $plantillaword->setComplexValue('TEXTO_RUIDO_6_2', $texto62);
+
+
+
+
+            foreach (['TEXTO_RUIDO_7_2', 'TEXTO_RUIDO_7_3'] as $marcadorTexto) {
+
+                $tablaTexto = new \PhpOffice\PhpWord\Element\Table([
+                    'borderSize' => 0,
+                    'cellMargin' => 0
+                ]);
+
+
+                $tablaTexto->addRow();
+
+                $celda = $tablaTexto->addCell(1400, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'dB       :',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => true
+                    ]
+                );
+
+                $celda = $tablaTexto->addCell(8000, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'Decibeles',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => false
+                    ]
+                );
+
+
+                $tablaTexto->addRow();
+
+                $celda = $tablaTexto->addCell(1400, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'LMPE :',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => true
+                    ]
+                );
+
+                $celda = $tablaTexto->addCell(8000, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'Límite Máximo Permisible de Exposición',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => false
+                    ]
+                );
+
+                $tablaTexto->addRow();
+
+                $celda = $tablaTexto->addCell(1400, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'NER    :',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => true
+                    ]
+                );
+
+                $celda = $tablaTexto->addCell(8000, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'Nivel de Exposición a Ruido',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => false
+                    ]
+                );
+
+
+                $tablaTexto->addRow();
+
+                $celda = $tablaTexto->addCell(1400, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'TMPE :',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => true
+                    ]
+                );
+
+                $celda = $tablaTexto->addCell(8000, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'Tiempo Máximo Permisible de Exposición',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => false
+                    ]
+                );
+
+
+                $tablaTexto->addRow();
+
+                $celda = $tablaTexto->addCell(1400, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'N/A    :',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => true
+                    ]
+                );
+
+                $celda = $tablaTexto->addCell(8000, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'No Aplica cálculo del T.M.P.E cuando el N.E.R. se encuentra por debajo de los 90 dB',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => false
+                    ]
+                );
+
+
+                $plantillaword->setComplexBlock(
+                    $marcadorTexto,
+                    $tablaTexto
+                );
+            }
+
+
+            foreach (['LEYENDA_RUIDO_7_2', 'LEYENDA_RUIDO_7_3'] as $marcadorLeyenda) {
+
+                $leyenda = new \PhpOffice\PhpWord\Element\Table([
+                    'borderSize' => 0,
+                    'cellMargin' => 40
+                ]);
+
+
+                $leyenda->addRow(400);
+
+                $celda = $leyenda->addCell(700, [
+                    'bgColor' => '00B050',
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(' ');
+
+                $celda = $leyenda->addCell(3500, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'Dentro de norma',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => true
+                    ]
+                );
+
+                $leyenda->addRow(400);
+
+                $celda = $leyenda->addCell(700, [
+                    'bgColor' => 'FF0000',
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(' ');
+
+                $celda = $leyenda->addCell(3500, [
+                    'borderSize' => 0,
+                    'valign' => 'center'
+                ]);
+
+                $celda->addText(
+                    'Fuera de norma',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_texto,
+                        'bold' => true
+                    ]
+                );
+
+
+                $plantillaword->setComplexBlock(
+                    $marcadorLeyenda,
+                    $leyenda
+                );
+            }
+
+
+            $texto76 = new \PhpOffice\PhpWord\Element\TextRun([
+                'alignment' => 'both',
+                'spaceAfter' => 0
+            ]);
+
+            $texto76->addText(
+                'A continuación, se describe la determinación del Factores de Reducción del Equipo de Protección Personal Auditivo para cada punto y el Nivel de Ruido Efectivo (NRE):',
+                [
+                    'name' => $fuente,
+                    'size' => $font_size_texto,
+                    'bold' => false
+                ]
+            );
+
+            $plantillaword->setComplexValue(
+                'TEXTO_RUIDO_7_6',
+                $texto76
+            );
+
+
+            $indice6 = new \PhpOffice\PhpWord\Element\TextRun([
+                'spaceAfter' => 0
+            ]);
+
+            $primerIndice = true;
+
+            if ($mostrar['6_2']) {
+
+                $indice6->addText(
+                    $numero['6_2'] . '    Determinación de las áreas y puntos de evaluación',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_indice,
+                        'bold' => false
+                    ]
+                );
+
+                $primerIndice = false;
+            }
+
+            if ($mostrar['6_3']) {
+
+                if (!$primerIndice) {
+                    $indice6->addTextBreak();
+                }
+
+                $indice6->addText(
+                    $numero['6_3'] . '    Selección del método o métodos empleados para la evaluación de la exposición a ruido',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_indice,
+                        'bold' => false
+                    ]
+                );
+            }
+
+            $plantillaword->setComplexValue('INDICE_RUIDO_6',$indice6);
+
+
+            $indice7 = new \PhpOffice\PhpWord\Element\TextRun(['spaceAfter' => 0]);
+
+            $primerIndice = true;
+
+            if ($mostrar['7_1']) {
+
+                $indice7->addText(
+                    $numero['7_1'] . '    Tabla de resultados del Nivel Sonoro Continuo Equivalente “A” (NSCE',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_indice,
+                        'bold' => false
+                    ]
+                );
+
+                $indice7->addText(
+                    'A, T',
+                    [
+                        'name' => $fuente,
+                        'size' => 8,
+                        'bold' => false,
+                        'subScript' => true
+                    ]
+                );
+
+                $indice7->addText(
+                    ') por punto de medición',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_indice,
+                        'bold' => false
+                    ]
+                );
+
+                $primerIndice = false;
+            }
+
+
+            if ($mostrar['7_2']) {
+
+                if (!$primerIndice) {
+                    $indice7->addTextBreak();
+                }
+
+                $indice7->addText(
+                    $numero['7_2'] . '    Tabla de resultados de la determinación del NER',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_indice,
+                        'bold' => false
+                    ]
+                );
+
+                $primerIndice = false;
+            }
+
+
+            if ($mostrar['7_3']) {
+
+                if (!$primerIndice) {
+                    $indice7->addTextBreak();
+                }
+
+                $indice7->addText(
+                    $numero['7_3'] . '    Determinación del NER, porcentaje de dosis de la evaluación personal (del o los trabajadores)',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_indice,
+                        'bold' => false
+                    ]
+                );
+
+                $primerIndice = false;
+            }
+
+            if ($mostrar['7_6']) {
+
+                if (!$primerIndice) {
+                    $indice7->addTextBreak();
+                }
+
+                $indice7->addText(
+                    $numero['7_6'] . '    Resultados del Nivel de Ruido Efectivo (NRE) con modelo por bandas de octava',
+                    [
+                        'name' => $fuente,
+                        'size' => $font_size_indice,
+                        'bold' => false
+                    ]
+                );
+            }
+
+            $plantillaword->setComplexValue('INDICE_RUIDO_7',$indice7);
+
+            $bloquesRuido = [
+                'BLOQUE_RUIDO_6_2' => $mostrar['6_2'],
+                'BLOQUE_RUIDO_6_3' => $mostrar['6_3'],
+                'BLOQUE_RUIDO_7_1' => $mostrar['7_1'],
+                'BLOQUE_RUIDO_7_2' => $mostrar['7_2'],
+                'BLOQUE_RUIDO_7_3' => $mostrar['7_3'],
+                'BLOQUE_RUIDO_7_6' => $mostrar['7_6'],
+            ];
+
+            foreach ($bloquesRuido as $bloque => $visible) {
+
+                $plantillaword->cloneBlock(
+                    $bloque,
+                    $visible ? 1 : 0,
+                    true,
+                    false
+                );
+            }
+
+
+            $marcadoresRuido = [
+
+                // ÍNDICES
+                'INDICE_RUIDO_6',
+                'INDICE_RUIDO_7',
+
+                // 6.2
+                'TITULO_RUIDO_6_2',
+                'TEXTO_RUIDO_6_2',
+                'TABLA_6_2',
+
+                // 6.3
+                'TITULO_RUIDO_6_3',
+                'METODO_EVALUACION',
+
+                // 7.1
+                'TITULO_RUIDO_7_1',
+                'TABLA_7_1',
+
+                // 7.2
+                'TITULO_RUIDO_7_2',
+                'TABLA_7_2',
+                'TEXTO_RUIDO_7_2',
+                'LEYENDA_RUIDO_7_2',
+
+                // 7.3
+                'TITULO_RUIDO_7_3',
+                'TABLA_7_3',
+                'TEXTO_RUIDO_7_3',
+                'LEYENDA_RUIDO_7_3',
+
+                // 7.6 / visualmente 7.4
+                'TITULO_RUIDO_7_6',
+                'TEXTO_RUIDO_7_6',
+                'TABLA_7_6',
+            ];
+
+            foreach ($marcadoresRuido as $marcador) {
+                $plantillaword->setValue($marcador, '');
+            }
+
+
+            $marcadoresBloquesRuido = [
+                'BLOQUE_RUIDO_6_2',
+                '/BLOQUE_RUIDO_6_2',
+
+                'BLOQUE_RUIDO_6_3',
+                '/BLOQUE_RUIDO_6_3',
+
+                'BLOQUE_RUIDO_7_1',
+                '/BLOQUE_RUIDO_7_1',
+
+                'BLOQUE_RUIDO_7_2',
+                '/BLOQUE_RUIDO_7_2',
+
+                'BLOQUE_RUIDO_7_3',
+                '/BLOQUE_RUIDO_7_3',
+
+                'BLOQUE_RUIDO_7_6',
+                '/BLOQUE_RUIDO_7_6',
+            ];
+
+            foreach ($marcadoresBloquesRuido as $marcador) {
+                $plantillaword->setValue($marcador, '');
+            }
+
+
+
+            
             // CONCLUSION
             //================================================================================
 
