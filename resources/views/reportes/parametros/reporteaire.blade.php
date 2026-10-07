@@ -230,68 +230,6 @@
 
 	<div class="col-xlg-10 col-lg-9 col-md-7">
 		<div class="card">
-
-
-
-
-			<!-- <div class="evluaraire mt-4">
-				<h3 class="card-title" style="padding: 0px!important;" id="0_1">Seleccione las características a evaluar de aire</h3>
-				<form method="post" enctype="multipart/form-data" name="form_reporte_evaluaraire" id="form_reporte_evaluaraire">
-					<div class="col-12">
-						{!! csrf_field() !!}
-					</div>
-					<input type="hidden" id="ID_CAI_INFORMES" name="ID_CAI_INFORMES" value="0">
-
-					<div class="checkbox-container" style="display: flex; justify-content: center; flex-wrap: wrap;">
-						<div style="margin-right: 20px;">
-							<input type="checkbox" id="bioaerosoles" name="bioaerosoles">
-							<label for="bioaerosoles">Bioaerosoles</label>
-						</div>
-						<div style="margin-right: 20px;">
-							<input type="checkbox" id="co" name="co">
-							<label for="co">CO</label>
-						</div>
-						<div style="margin-right: 20px;">
-							<input type="checkbox" id="co2" name="co2">
-							<label for="co2">CO₂</label>
-						</div>
-						<div style="margin-right: 20px;">
-							<input type="checkbox" id="temperatura" name="temperatura">
-							<label for="temperatura">Temperatura del aire</label>
-						</div>
-						<div style="margin-right: 20px;">
-							<input type="checkbox" id="velocidad" name="velocidad">
-							<label for="velocidad">Velocidad del aire</label>
-						</div>
-						<div style="margin-right: 20px;">
-							<input type="checkbox" id="caudal" name="caudal">
-							<label for="caudal">Caudal de aire</label>
-						</div>
-						<div>
-							<input type="checkbox" id="humedad" name="humedad">
-							<label for="humedad">Humedad relativa</label>
-						</div>
-						<div>
-							<input type="checkbox" id="SO2" name="SO2">
-							<label for="SO2">SO2</label>
-						</div>
-						<div>
-							<input type="checkbox" id="Formaldehídos" name="Formaldehídos">
-							<label for="Formaldehídos">Formaldehídos</label>
-						</div>
-					</div>
-
-					<div class="col-12" style="text-align: center; margin-top: 20px;">
-						<button type="submit" class="btn btn-danger waves-effect waves-light " id="botonguardar_reporte_evaluaraire">
-							Guardar características de aire <i class="fa fa-save"></i>
-						</button>
-					</div>
-				</form>
-			</div>
-
- -->
-
-
 			<div class="card-body" style="display: block">
 
 				<h4 class="card-title" id="0_1">Seleccione las características a evaluar de aire</h4>
