@@ -1045,7 +1045,6 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     <a href="#8" class="list-group-item">8.- Peligro /Riesgo Ergonómico en Áreas de Trabajo de la Planta <i class="fa" id="menureporte_8"></i></a>
                                     <a href="#9" class="list-group-item">9.- Conclusiones <i class="fa" id="menureporte_9"></i></a>
                                     <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
-                                    <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
                                     @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador']))
                                     <a href="#11" class="list-group-item">11.- Anexo 1: Fichas ISO-TR 12295 <i class="fa" id="menureporte_11"></i></a>
                                     <a href="#12" class="list-group-item">12.- Generar informe <i class="fa" id="menureporte_12"></i></a>
