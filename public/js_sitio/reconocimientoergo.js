@@ -682,7 +682,7 @@ $("#boton_guardar_recsensorial").click(function () {
                             menu_parametros_ocultar();
                             activa_stepforms();
                             tabla_reconocimientosensorial();
-
+                            activa_tab();
                             Swal.fire({
                                 icon: "success",
                                 title: "¡El reconocimiento fue guardado exitosamente!",
@@ -1147,6 +1147,12 @@ function activa_stepforms() {
 	$("#steps_menu_tab4").css('display', 'block');
 	$("#steps_menu_tab5").css('display', 'block');
 }
+
+
+function activa_tab() {
+	$("#tab_menu3").css('display', 'block');
+}
+
 
 function desactiva_stepforms() {
 	$("#steps_menu_tab2").css('display', 'none');
