@@ -1046,8 +1046,10 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     <a href="#9" class="list-group-item">9.- Conclusiones <i class="fa" id="menureporte_9"></i></a>
                                     <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
                                     <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
+                                    @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador']))
                                     <a href="#11" class="list-group-item">11.- Anexo 1: Fichas ISO-TR 12295 <i class="fa" id="menureporte_11"></i></a>
                                     <a href="#12" class="list-group-item">12.- Generar informe <i class="fa" id="menureporte_12"></i></a>
+                                    @endif
 
 
                                     <!-- <a href="#6_2" class="list-group-item submenu">6.2.- Método empleado y criterio de selección <i class="fa fa-times" id="menureporte_6_2"></i></a>
@@ -1273,7 +1275,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
 
 <p>Dentro del medio ambiente laboral existen condiciones de riesgo de tipo ergonómico, que de no encontrarse identificados pueden poner en riesgo la salud y la productividad del trabajador; por lo que la identificación temprana y el establecimiento de estrategias de control son primordiales para mantener una condición de trabajo óptima.</p>
 
-<p>En el presente estudio se describen los resultados y evidencias obtenidas durante la evaluación realizada en las áreas de la INSTALACION,<font color="#000000" style="background-color: rgb(255, 255, 0);">los días del XX al XX de MES de AÑO."</font></p> </textarea>
+<p>En el presente estudio se describen los resultados y evidencias obtenidas durante la evaluación realizada en las áreas de la INSTALACION, <font color="#000000" style="background-color: rgb(255, 255, 0);">los días del XX al XX de MES de AÑO."</font></p> </textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12" style="text-align: right;">
@@ -1702,6 +1704,8 @@ DESCRIPCIONACTIVIDAD
                                             </div>
                                         </div>
                                     </form>
+                                    @if(auth()->user()->hasRoles(['Superusuario', 'Administrador']))
+
                                     <h4 class="card-title" id="11">11.- Anexo 1: Fichas ISO-TR 12295</h4>
                                     <div class="row mb-5">
                                         <div class="col-12">
@@ -1736,6 +1740,8 @@ DESCRIPCIONACTIVIDAD
                                             </table>
                                         </div>
                                     </div>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
