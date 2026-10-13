@@ -1527,7 +1527,8 @@ DESCRIPCIONACTIVIDAD
                                     <form method="post" enctype="multipart/form-data" name="form_preguntas-nom-036" id="form_preguntas-nom-036">
                                         <div class="form-group">
                                             <label>Descripción de las siguientes gráficas</label>
-                                            <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="INTRODUCCION_GRAFICASNOM036" name="INTRODUCCION_GRAFICASNOM036" required></textarea>
+                                            <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="INTRODUCCION_GRAFICASNOM036" name="INTRODUCCION_GRAFICASNOM036" required>A continuación se muestran los resultados gráficos de las tres preguntas que permiten identificar, analizar, prevenir y controlar los factores de riesgo ergonómicos en el trabajo derivados del manejo manual de cargas (NOM-036-1-STPS-2018) al igual que la aplicación de los criterios de la ISO TR 12295.
+                                            </textarea>
                                         </div>
                                         <div class="col-12" style="text-align: right;">
                                             <div class="form-group">
@@ -1565,7 +1566,7 @@ DESCRIPCIONACTIVIDAD
                                     <form method="post" enctype="multipart/form-data" name="form_fichas-iso12995" id="form_fichas-iso12995">
                                         <div class="form-group">
                                             <label>Descripción de las siguientes gráficas</label>
-                                            <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="INTRODUCCION_GRAFICASISO12995" name="INTRODUCCION_GRAFICASISO12995" required></textarea>
+                                            <textarea class="form-control" style="margin-bottom: 0px;" rows="7" id="INTRODUCCION_GRAFICASISO12995" name="INTRODUCCION_GRAFICASISO12995" required>En el presente apartado se muestran cada uno de los criterios de la carga física estática de acuerdo con la ISO TR-12295 en cuanto a: manejo de cargas, movimientos repetitivos, posturas; y los aspectos que cada una de las fichas contenga. El resultado final de la aplicación de estás dentro del análisis de la tarea que realiza el trabajador, se utiliza para determinar si hay riesgo ergonómico que conlleve a un análisis específico con métodos para estimar el riesgo y que permita establecer las medidas de control según sea el caso.</textarea>
                                         </div>
                                         <div class="col-12" style="text-align: right;">
                                             <div class="form-group">
