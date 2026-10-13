@@ -2126,8 +2126,6 @@ function mostrartablarecocategoriasergo() {
 	}
 }
 
-
-
 $('#Tablarecocategoriasergo tbody').on('click', 'td>button.editar', function () {
     var tr = $(this).closest('tr');
     var row = Tablarecocategoriasergo.row(tr);
@@ -2181,7 +2179,6 @@ $('#Tablarecocategoriasergo tbody').on('click', 'td>button.editar', function () 
     }
 
 });
-
 
 
 $('#Tablarecocategoriasergo tbody').on('change', 'input.ELIMINAR', function () {
@@ -3833,21 +3830,20 @@ function evaluarFicha_1_1() {
 
 function evaluarFicha_1_2() {
 
-	let a = $('input[name="a2"]:checked').val();
-	let b = $('input[name="b2"]:checked').val();
-	let c = $('input[name="c2"]:checked').val();
+    let a = $('input[name="a2"]:checked').val();
+    let b = $('input[name="b2"]:checked').val();
+    let c = $('input[name="c2"]:checked').val();
 
-	if (!a || !b || !c) return;
+    if (!a || !b || !c) return;
 
-	let ok = ((a === "SI" || b === "SI") && c === "SI");
+    let ok = (a === "SI" && b === "SI" && c === "SI");
 
-		if (!ok) {
-		$('#ficha_1_5').html(""); 
-		fichas["1.5"].render();  
-	} else {
-		$('#ficha_1_5').html(""); 
-	}
-
+    if (!ok) {
+        $('#ficha_1_5').html("");
+        fichas["1.5"].render();
+    } else {
+        $('#ficha_1_5').html("");
+    }
 
 }
 
