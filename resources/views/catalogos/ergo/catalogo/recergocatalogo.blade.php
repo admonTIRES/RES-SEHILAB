@@ -531,7 +531,7 @@
 
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Nombre introducción *</label>
+                                <label>Nombre conclusión *</label>
                                 <input type="text" class="form-control" id="QUIEN_CONCLUSION" name="QUIEN_CONCLUSION" required>
                             </div>
                         </div>
