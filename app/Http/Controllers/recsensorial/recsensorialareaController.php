@@ -564,9 +564,9 @@ class recsensorialareaController extends Controller
                                     LEFT JOIN recsensorialcategoria ON recsensorialareacategorias.recsensorialcategoria_id = recsensorialcategoria.id 
                                 WHERE
                                     recsensorialarea.recsensorial_id = ' . $recsensorial_id . ' 
-                                ORDER BY
-                                    recsensorialarea.recsensorialarea_nombre ASC,
-                                    recsensorialcategoria.recsensorialcategoria_nombrecategoria ASC');
+                               ORDER BY
+                                recsensorialarea.id ASC,
+                                recsensorialareacategorias.id ASC');
 
             $numero_fila = 0;
             $area = 'xxxx';
