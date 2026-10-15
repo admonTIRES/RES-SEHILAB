@@ -6084,16 +6084,31 @@ Se localiza en las coordenadas  COORDENADAS.`);
                 .val(response.INFORME_RESPONSABLE2CARGO);
             
             
-            $('#INTRODUCCION_GRAFICASNOM036')
-                .val(response.INTRODUCCION_GRAFICASNOM036);
-            
+            if (response.INTRODUCCION_GRAFICASNOM036 &&
+                response.INTRODUCCION_GRAFICASNOM036.trim() != '') {
+                $('#INTRODUCCION_GRAFICASNOM036').val(response.INTRODUCCION_GRAFICASNOM036);
+            } else {
+                $('#INTRODUCCION_GRAFICASNOM036')
+                    .val(`A continuación se muestran los resultados gráficos de las tres preguntas que permiten identificar, analizar, prevenir y controlar los factores de riesgo ergonómicos en el trabajo derivados del manejo manual de cargas (NOM-036-1-STPS-2018) al igual que la aplicación de los criterios de la ISO TR 12295.`);
+
+            }
+
+
             
             $('#CONCLUSION_GRAFICASNOM036')
                 .val(response.CONCLUSION_GRAFICASNOM036);
             
             
-            $('#INTRODUCCION_GRAFICASISO12995')
-                .val(response.INTRODUCCION_GRAFICASISO12995);
+            
+             if (response.INTRODUCCION_GRAFICASISO12995 &&
+                response.INTRODUCCION_GRAFICASISO12995.trim() != '') {
+                $('#INTRODUCCION_GRAFICASISO12995').val(response.INTRODUCCION_GRAFICASISO12995);
+            } else {
+                $('#INTRODUCCION_GRAFICASISO12995')
+                    .val(`En el presente apartado se muestran cada uno de los criterios de la carga física estática de acuerdo con la ISO TR-12295 en cuanto a: manejo de cargas, movimientos repetitivos, posturas; y los aspectos que cada una de las fichas contenga. El resultado final de la aplicación de estás dentro del análisis de la tarea que realiza el trabajador, se utiliza para determinar si hay riesgo ergonómico que conlleve a un análisis específico con métodos para estimar el riesgo y que permita establecer las medidas de control según sea el caso.`);
+
+            }
+
             
              
             $('#CONCLUSION_GRAFICASISO12995')

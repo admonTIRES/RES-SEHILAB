@@ -657,27 +657,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-12 clienteblock" id="seccion_foto_mapaderiesgo">
-                                                                        <div class="card">
-                                                                            <div class="card-body">
-                                                                                <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: -4px; margin-left: 160px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar mapa de riesgo" id="boton_descargarmapaderiesgo"></i>
-                                                                                <h4 class="card-title">Mapa de peligro <br> y riesgo ergonómico </h4>
-                                                                                <div class="row">
-                                                                                    <div class="col-12 clienteblock">
-                                                                                        <div class="form-group">
-                                                                                            <style type="text/css" media="screen">
-                                                                                                .dropify-wrapper {
-                                                                                                    height: 300px !important;
-                                                                                                    /*tamaño estatico del campo foto*/
-                                                                                                }
-                                                                                            </style>
-                                                                                            <input type="file" accept="image/jpeg,image/x-png,image/gif" id="inputfotomapaderiesgo" name="inputfotomapaderiesgo" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                               
 
                                                                 </div>
                                                             </div>
@@ -1076,6 +1056,31 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                             </div>
                         </div>
                         <div class="col-xlg-10 col-lg-9 col-md-7">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body" style="padding: 6px 10px">
+                                            <table class="table" style="border: 0px #000 solid; margin: 0px;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="40" style="text-align: center; border: none;">
+                                                        </td>
+                                                        <td width="auto" style="text-align: left; border: none; vertical-align: middle;">
+                                                        </td>
+                                                        <td width="auto" style="text-align: right; border: none; vertical-align: middle;">
+                                                            <h4 style="margin: 0px;"><a class="text-success div_reconocimiento_instalacion">INSTALACIÓN</a></h4>
+                                                            <small style="color: #AAAAAA; font-size: 12px;">Instalación</small>
+                                                        </td>
+                                                        <td width="40" style="text-align: center; border: none;">
+                                                            <span class="btn btn-success btn-circle"><i class="fa fa-industry"></i></span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title" style="padding: 0px!important;" id="0">Portadas</h4>
@@ -1351,8 +1356,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     {!! csrf_field() !!}
-                                                    <textarea
-                                                        class="form-control"
+                                                    <textarea class="form-control"
                                                         style="margin-bottom: 0px;"
                                                         rows="8"
                                                         id="INFORME_OBJETIVOGENERALES"
