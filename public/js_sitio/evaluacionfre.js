@@ -160,7 +160,198 @@ $('.link_menuprincipal').click(function () {
 			break;
 		
 
+case "tab_menu3":
+			$("#tab_3").css('display', 'block');
+			$("#tab_1").css('display', 'none');
+			$("#tab_2").css('display', 'none');
 
+			$("#steps_menu_tab1").click();
+
+
+           
+            
+            cargarDatosInformesFreErgo();
+            cargarDatosGeneralesInformeFre();
+            cargarDefinicionesFreErgo();
+            cargarDatosGeneralesInformeReco();
+            cargarMapaPeligros();
+
+			// cargarGraficas();
+			// tablaReporteCategoriasErgo();
+            // tablaReporteAreasErgo();
+            // totalPlanosErgo();
+			// cargarRecomendacionesInformeErgo();
+			// tablaVersionesRecoErgo();
+			// validarEdicionRecoErgo();
+            // cargarGraficasFichas();
+
+            
+            $.ajax({
+                    url: 'obtenerDatosPlantilla',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        id: recsensorial
+                    },
+                    success: function(resp) {
+
+                        if (!resp.success) {
+                            return;
+                        }
+
+                        // RECONOCIMIENTO
+
+
+                         let reco = $('#INFORME_RECONOCIMIENTO').val();
+
+                        if (reco) {
+
+                            $.each(resp.data, function(marcador, valor) {
+                                reco = reco.split(marcador).join(valor || '');
+                            });
+
+                            $('#INFORME_RECONOCIMIENTO').val(reco);
+                        }
+                       
+
+                        // UBICACIÓN
+                        let ubicacion = $('#INFORME_UBICACIONINSTALACION').val();
+
+                        if (ubicacion) {
+
+                            $.each(resp.data, function(marcador, valor) {
+                                ubicacion = ubicacion.split(marcador).join(valor || '');
+                            });
+
+                            $('#INFORME_UBICACIONINSTALACION').val(ubicacion);
+                        }
+
+                        // PROCESO
+                        let proceso = $('#INFORME_PROCESOINSTALACION').val();
+
+                        if (proceso) {
+
+                            $.each(resp.data, function(marcador, valor) {
+                                proceso = proceso.split(marcador).join(valor || '');
+                            });
+
+                            $('#INFORME_PROCESOINSTALACION').val(proceso);
+                        }
+
+                        // ACTIVIDAD PRINCIPAL
+                        let actividad = $('#INFORME_ACTIVIDADPRINCIPAL').val();
+
+                        if (actividad) {
+
+                            $.each(resp.data, function(marcador, valor) {
+                                actividad = actividad.split(marcador).join(valor || '');
+                            });
+
+                            $('#INFORME_ACTIVIDADPRINCIPAL').val(actividad);
+                        }
+
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            
+		$('#RUTA_IMAGEN_PORTADA').dropify({
+				messages: {
+					'default': 'Arrastre la imagen aquí o haga click',
+					'replace': 'Arrastre la imagen o haga clic para reemplazar',
+					'remove': 'Quitar',
+					'error': 'Ooops, ha ocurrido un error.'
+				},
+				error: {
+					'fileSize': 'Demasiado grande ({{ value }} max).',
+					'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+					'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+					'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+					'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+					'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+				}
+			});
+
+
+            $('#RUTA_IMAGEN_PORTADA').val('');
+	        $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').resetPreview();
+            $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').clearElement();
+            
+
+			$('#RUTA_IMAGEN_UBICACION').dropify({
+				messages: {
+					'default': 'Arrastre la imagen aquí o haga click',
+					'replace': 'Arrastre la imagen o haga clic para reemplazar',
+					'remove': 'Quitar',
+					'error': 'Ooops, ha ocurrido un error.'
+				},
+				error: {
+					'fileSize': 'Demasiado grande ({{ value }} max).',
+					'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+					'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+					'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+					'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+					'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+				}
+			});
+
+            $('#RUTA_IMAGEN_UBICACION').val('');
+	        $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').resetPreview();
+            $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').clearElement();
+
+			$('#INFORME_RESPONSABLE1DOCUMENTO').dropify({
+							messages: {
+								'default': 'Arrastre la imagen aquí o haga click',
+								'replace': 'Arrastre la imagen o haga clic para reemplazar',
+								'remove': 'Quitar',
+								'error': 'Ooops, ha ocurrido un error.'
+							},
+							error: {
+								'fileSize': 'Demasiado grande ({{ value }} max).',
+								'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+								'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+								'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+								'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+								'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+							}
+			});
+
+
+            $('#INFORME_RESPONSABLE1DOCUMENTO').val('');
+	        $('#INFORME_RESPONSABLE1DOCUMENTO').dropify().data('dropify').resetPreview();
+            $('#INFORME_RESPONSABLE1DOCUMENTO').dropify().data('dropify').clearElement();
+
+
+		$('#INFORME_RESPONSABLE2DOCUMENTO').dropify({
+						messages: {
+							'default': 'Arrastre la imagen aquí o haga click',
+							'replace': 'Arrastre la imagen o haga clic para reemplazar',
+							'remove': 'Quitar',
+							'error': 'Ooops, ha ocurrido un error.'
+						},
+						error: {
+							'fileSize': 'Demasiado grande ({{ value }} max).',
+							'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+							'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+							'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+							'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+							'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+						}
+					});
+
+
+
+            $('#INFORME_RESPONSABLE2DOCUMENTO').val('');
+	        $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').resetPreview();
+            $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').clearElement();
+
+			
+
+			break;
+		
 		default:
 			break;
 	}
@@ -453,138 +644,6 @@ $("#boton_descargarmapaderiesgo").click(function () {
 	window.open('/mostrarmapariesgoergo/1/' + recsensorial);
 });
 
-
-// $("#boton_guardar_recsensorial").click(function () {
-
-// 	$('#recsensorial_ordenservicio').attr('required', false);
-// 	$('#inputfotomapa').attr('required', false);
-// 	$('#inputfotomapa').prop('required', false);
-
-// 	if ($('#proyecto_folio').val() != "") {
-
-// 		// valida campos vacios
-// 		var valida = this.form.checkValidity();
-// 		if (valida) {
-
-
-// 				swal({
-// 					title: "¡Confirme que desea guardar!",
-// 					text: "Reconocimiento sensorial",
-// 					type: "warning",
-// 					showCancelButton: true,
-// 					confirmButtonColor: "#DD6B55",
-// 					confirmButtonText: "Aceptar!",
-// 					cancelButtonText: "Cancelar!",
-// 					closeOnConfirm: false,
-// 					closeOnCancel: false
-// 				}, function (isConfirm) {
-// 					if (isConfirm) {
-// 						// cerrar msj confirmacion
-// 						swal.close();
-
-// 						// enviar datos
-// 						$('#form_recsensorial').ajaxForm({
-// 							dataType: 'json',
-// 							type: 'POST',
-// 							url: '/reconocimientoergo',
-// 							data: {
-// 								opcion: 1,
-// 								higiene: HIGIENE,
-// 							},
-// 							resetForm: false,
-// 							success: function (dato) {
-// 								// Campos Hidden
-// 								$("#recsensorial_id").val(dato.recsensorial.id);
-// 								recsensorial = dato.recsensorial.id;
-
-// 								// ocultar menu parametro en el modulo evaluacion
-// 								menu_parametros_ocultar();
-
-	
-// 								activa_stepforms();
-
-							
-
-// 								// actualiza tabla general RECSENSORIAL
-// 								tabla_reconocimientosensorial();
-
-// 								// mensaje
-// 								swal({
-// 									title: "¡El reconocimiento fue guardado exitosamente!.",
-// 									text: "" + dato.msj,
-// 									type: "success", // warning, error, success, info
-// 									buttons: {
-// 										visible: false, // true , false
-// 									},
-// 									timer: 4500,
-// 									showConfirmButton: false
-// 								});
-
-// 								// actualiza boton
-// 								$('#boton_guardar_recsensorial').html('Guardar <i class="fa fa-save"></i>');
-// 								return false;
-// 							},
-// 							beforeSend: function () {
-// 								$('#boton_guardar_recsensorial').html('Guardando <i class="fa fa-spin fa-spinner"></i>');
-// 							},
-// 							error: function (dato) {
-// 								// actualiza boton
-// 								$('#boton_guardar_recsensorial').html('Guardar <i class="fa fa-save"></i>');
-// 								// mensaje
-// 								swal({
-// 									title: "Error",
-// 									text: "Error en la acción: " + dato,
-// 									type: "error", // warning, error, success, info
-// 									buttons: {
-// 										visible: false, // true , false
-// 									},
-// 									timer: 1500,
-// 									showConfirmButton: false
-// 								});
-// 								return false;
-// 							}
-// 						}).submit();
-// 						return false;
-// 					}
-// 					else {
-// 						// mensaje
-// 						swal({
-// 							title: "Cancelado",
-// 							text: "Acción cancelada",
-// 							type: "error", // warning, error, success, info
-// 							buttons: {
-// 								visible: false, // true , false
-// 							},
-// 							timer: 500,
-// 							showConfirmButton: false
-// 						});
-// 					}
-// 				});
-// 				return false;
-			
-// 		}
-
-
-// 	} else {
-// 		// mensaje
-
-// 		$('html, body').animate({
-// 			scrollTop: $("#primeraParte").offset().top
-// 		}, 1000);
-
-// 		swal({
-// 			title: "Falta seleccionar un FOLIO de proyecto",
-// 			text: "Es necesario seleccionar este reconocimiento con un FOLIO de proyecto para poder continuar!.",
-// 			type: "warning", // warning, error, success, info
-// 			buttons: {
-// 				visible: false, // true , false
-// 			},
-// 			timer: 2000,
-// 			showConfirmButton: false
-// 		});
-// 		return false;
-// 	}
-// });
 
 
 
@@ -1537,139 +1596,6 @@ function obtenerEstructuraProyectos(FOLIO, NUEVO) {
 				    }
 				
 
-				
-				// //FOTOS OBTENIDAS DE RECSENSORIAL
-				// if (response.info[0].FOTOUBICACION != null) {
-				// 	var archivo = response.info[0].FOTOUBICACION;
-				// 	var extension = archivo.substring(archivo.lastIndexOf("."));
-				// 	var imagenUrl = '/mostrarmapa/0/' + response.info[0].ID + extension;
-		
-				// 	rutaMapa = imagenUrl
-				// 	$("#hidden_fotomapa").val(response.info[0].ID);
-				// 	$("#hidden_fotomapa_extension").val(extension);
-		
-				// 	// INPUT FOTO UBICACION
-				// 	if ($('#inputfotomapa').data('dropify')) {
-				// 		$('#inputfotomapa').dropify().data('dropify').destroy();
-				// 		// $('.dropify-wrapper').css('height', 400);
-				// 		$('#inputfotomapa').dropify().data('dropify').settings.defaultFile = imagenUrl;
-				// 		$('#inputfotomapa').dropify().data('dropify').init();
-				// 	}
-				// 	else {
-				// 		// $('#inputfotomapa').attr('data-height', 400);
-				// 		$('#inputfotomapa').attr('data-default-file', imagenUrl);
-				// 		$('#inputfotomapa').dropify({
-				// 			messages: {
-				// 				'default': 'Arrastre la imagen aquí o haga click',
-				// 				'replace': 'Arrastre la imagen o haga clic para reemplazar',
-				// 				'remove': 'Quitar',
-				// 				'error': 'Ooops, ha ocurrido un error.'
-				// 			},
-				// 			error: {
-				// 				'fileSize': 'Demasiado grande ({{ value }} max).',
-				// 				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-				// 				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-				// 				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-				// 				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-				// 				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-				// 			}
-				// 		});
-				// 	}
-		
-				// 	// No requerir campo FOTO
-				// 	$('#inputfotomapa').attr('required', false);
-		
-				// 	// Activar boton descarga
-				// 	$("#boton_descargarmapaubicacion").css('display', 'block');
-				// }
-				// else {
-				// 	$("#boton_descargarmapaubicacion").css('display', 'none');
-				// }
-
-				// if (response.info[0].FOTOPLANO != null) {
-				// 	var archivo = response.info[0].FOTOPLANO;
-				// 	var extension = archivo.substring(archivo.lastIndexOf("."));
-				// 	var imagenUrl = '/mostrarplano/0/' + response.info[0].ID + extension;
-			
-				// 	rutaMapa = imagenUrl;
-			
-				// 	$("#hidden_fotoplano").val(response.info[0].ID);
-				// 	$("#hidden_fotoplano_extension").val(extension);
-			
-				// 	// INPUT FOTO PLANO
-				// 	if ($('#inputfotoplano').data('dropify')) {
-				// 		$('#inputfotoplano').dropify().data('dropify').destroy();
-				// 		// $('.dropify-wrapper').css('height', 400);
-				// 		$('#inputfotoplano').dropify().data('dropify').settings.defaultFile = imagenUrl;
-				// 		$('#inputfotoplano').dropify().data('dropify').init();
-				// 	}
-				// 	else {
-				// 		// $('#inputfotoplano').attr('data-height', 400);
-				// 		$('#inputfotoplano').attr('data-default-file', imagenUrl);
-				// 		$('#inputfotoplano').dropify({
-				// 			messages: {
-				// 				'default': 'Arrastre la imagen aquí o haga click',
-				// 				'replace': 'Arrastre la imagen o haga clic para reemplazar',
-				// 				'remove': 'Quitar',
-				// 				'error': 'Ooops, ha ocurrido un error.'
-				// 			},
-				// 			error: {
-				// 				'fileSize': 'Demasiado grande ({{ value }} max).',
-				// 				'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-				// 				'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-				// 				'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-				// 				'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-				// 				'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-				// 			}
-				// 		});
-				// 	}
-			
-				// 	// No requerir campo FOTO
-				// 	$('#inputfotoplano').attr('required', false);
-			
-				// 	// Activar boton descarga
-				// 	$("#boton_descargarplanoinstalacion").css('display', 'block');
-				// }
-				// else {
-				// 	$("#boton_descargarplanoinstalacion").css('display', 'none');
-				// }
-
-			
-			
-				// // OBTENER FOTO INSTALACION
-				// if (response.info[0].FOTOINSTALACION) {
-				// 	var archivo = response.info[0].FOTOINSTALACION;
-				// 	var extension = archivo.substring(archivo.lastIndexOf("."));
-				// 	var imagenUrl = '/mostrarfotoinstalacion/0/' + response.info[0].ID + extension;
-			
-					
-				// 	$("#hidden_fotoinstalacion").val(response.info[0].ID);
-				// 	$("#hidden_fotoinstalacion_extension").val(extension);
-				// 	// INPUT FOTO INSTALACION
-				// 	$('#inputfotoinstalacion').dropify().data('dropify').destroy();
-				// 	// $('.dropify-wrapper').css('height', 400);
-				// 	$('#inputfotoinstalacion').dropify().data('dropify').settings.defaultFile = imagenUrl;
-				// 	$('#inputfotoinstalacion').dropify().data('dropify').init();
-			
-				// 	// No requerir campo FOTO
-				// 	$('#inputfotoinstalacion').attr('required', false);
-			
-				// 	// Activar boton descarga
-				// 	$("#boton_descargarfotoinstalacion").css('display', 'block');
-			
-				// } else {
-			
-				// 	// Resetear campo FOTO INSTALACION
-				// 	$('#inputfotoinstalacion').val('');
-				// 	$('#inputfotoinstalacion').dropify().data('dropify').resetPreview();
-				// 	$('#inputfotoinstalacion').dropify().data('dropify').clearElement();
-			
-				// 	// No requerir campo FOTO
-				// 	$('#inputfotoinstalacion').attr('required', false);
-				// 	$("#boton_descargarfotoinstalacion").css('display', 'none');
-				// }
-
-
 
 				swal({
 					title: "Información del proyecto consultada y asignada correctamente",
@@ -1903,6 +1829,8 @@ function cargarAreasFicha(valoresSeleccionados = []) {
 }
 
 
+/// ACTIVIDADES  - TAREAS 
+
 function agregarActividad() {
 
     let contenedor = document.getElementById("contenedorActividades");
@@ -1911,32 +1839,34 @@ function agregarActividad() {
     let html = `
     <div class="actividad-item" id="actividad_${total}">
         <div class="actividad-card">
+
             <div class="d-flex justify-content-between mb-2">
                 <strong>Actividad ${total}</strong>
-                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)">
-                    <i class="fa fa-trash"></i>
-                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)"> <i class="fa fa-trash"></i></button>
             </div>
+
             <div class="actividad-row">
+
                 <div class="actividad-left">
-                    <input type="text" 
-                        class="form-control actividad-nombre" 
-                        placeholder="Nombre de la actividad">
+                    <label class="d-block">Nombre de la actividad
+                        <textarea class="form-control actividad-nombre mt-1" rows="3" placeholder="Nombre de la actividad"></textarea>
+                    </label>
                 </div>
+
                 <div class="actividad-right">
-                    <button type="button" 
-                        class="btn btn-agregar-tarea"
-                        onclick="agregarTarea(${total})">
-                        + Agregar tarea
-                    </button>
+                    <button type="button" class="btn btn-agregar-tarea" onclick="agregarTarea(${total})"> + Agregar tarea</button>
+
                     <div id="tareas_${total}"></div>
                 </div>
+
             </div>
         </div>
     </div>
     `;
 
     contenedor.insertAdjacentHTML('beforeend', html);
+
+    reindexarActividades();
 }
 
 function eliminarActividad(btn) {
@@ -1948,7 +1878,9 @@ function eliminarActividad(btn) {
 
 function reindexarActividades() {
 
-    let actividades = document.querySelectorAll('#contenedorActividades .actividad-item');
+    let actividades = document.querySelectorAll(
+        '#contenedorActividades .actividad-item'
+    );
 
     actividades.forEach((el, index) => {
 
@@ -1958,17 +1890,15 @@ function reindexarActividades() {
 
         el.querySelector('strong').innerText = `Actividad ${num}`;
 
-        let input = el.querySelector('.actividad-left input');
-        input.name = `actividades[${num}][nombre]`;
+        let textarea = el.querySelector('.actividad-nombre');
+        textarea.name = `actividades[${num}][nombre]`;
 
         let btnTarea = el.querySelector('.btn-agregar-tarea');
         btnTarea.setAttribute('onclick', `agregarTarea(${num})`);
 
-     
         let tareasDiv = el.querySelector('[id^="tareas_"]');
         tareasDiv.id = `tareas_${num}`;
 
-       
         reindexarTareasActividad(tareasDiv, num);
     });
 }
@@ -1980,20 +1910,51 @@ function agregarTarea(idActividad) {
 
     let html = `
     <div class="tarea-item">
-        <div class="d-flex justify-content-between">
+
+        <div class="d-flex justify-content-between mb-2">
             <small>Tarea ${total}</small>
-            <button type="button" class="btn btn-danger btn-sm"
-                onclick="eliminarTarea(this)">
-                <i class="fa fa-trash"></i>
-            </button>
+
+            <button type="button"  class="btn btn-danger btn-sm" onclick="eliminarTarea(this)"> <i class="fa fa-trash"></i></button>
         </div>
-        <input type="text" class="form-control mt-1 tarea-nombre" placeholder="Nombre">
-        <input type="text" class="form-control mt-1 tarea-frecuencia" placeholder="Frecuencia (No de veces durante la jornada)">
-        <input type="text" class="form-control mt-1 tarea-duracion" placeholder="Duración (tiempo en Min)">
+
+        <div class="form-group mb-2">
+            <label class="d-block">Nombre de la tarea
+                <textarea class="form-control mt-1 tarea-nombre" rows="3" ></textarea>
+            </label>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mb-2">
+                    <label class="d-block">Frecuencia
+                        <input type="text" class="form-control mt-1 tarea-frecuencia">
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="form-group mb-2">
+                    <label class="d-block">
+                        No de veces
+                        <input type="text" class="form-control mt-1 tarea-numero-veces" >
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group mb-2">
+            <label class="d-block"> Duración (tiempo en Min)
+                <input type="text"
+                    class="form-control mt-1 tarea-duracion" >
+            </label>
+        </div>
     </div>
     `;
 
     contenedor.insertAdjacentHTML('beforeend', html);
+
+    reindexarTareasActividad(contenedor, idActividad);
 }
 
 function eliminarTarea(btn) {
@@ -2016,17 +1977,28 @@ function reindexarTareasActividad(contenedor, idActividad) {
 
         let num = index + 1;
 
-     
         let titulo = el.querySelector('small');
-        if (titulo) titulo.innerText = `Tarea ${num}`;
 
-        let inputs = el.querySelectorAll('input');
+        if (titulo) {
+            titulo.innerText = `Tarea ${num}`;
+        }
 
-        inputs[0].name = `actividades[${idActividad}][tareas][${num}][nombre]`;
-        inputs[1].name = `actividades[${idActividad}][tareas][${num}][frecuencia]`;
-        inputs[2].name = `actividades[${idActividad}][tareas][${num}][duracion]`;
+        el.querySelector('.tarea-nombre').name =
+            `actividades[${idActividad}][tareas][${num}][nombre]`;
+
+        el.querySelector('.tarea-frecuencia').name =
+            `actividades[${idActividad}][tareas][${num}][frecuencia]`;
+
+        el.querySelector('.tarea-numero-veces').name =
+            `actividades[${idActividad}][tareas][${num}][numero_veces]`;
+
+        el.querySelector('.tarea-duracion').name =
+            `actividades[${idActividad}][tareas][${num}][duracion]`;
     });
 }
+
+/// FIN TAREA 
+
 
 function toggleSeccion(id) {
 
@@ -3019,21 +2991,20 @@ function evaluarFicha_1_1() {
 
 function evaluarFicha_1_2() {
 
-	let a = $('input[name="a2"]:checked').val();
-	let b = $('input[name="b2"]:checked').val();
-	let c = $('input[name="c2"]:checked').val();
+    let a = $('input[name="a2"]:checked').val();
+    let b = $('input[name="b2"]:checked').val();
+    let c = $('input[name="c2"]:checked').val();
 
-	if (!a || !b || !c) return;
+    if (!a || !b || !c) return;
 
-	let ok = ((a === "SI" || b === "SI") && c === "SI");
+    let ok = (a === "SI" && b === "SI" && c === "SI");
 
-		if (!ok) {
-		$('#ficha_1_5').html(""); 
-		fichas["1.5"].render();  
-	} else {
-		$('#ficha_1_5').html(""); 
-	}
-
+    if (!ok) {
+        $('#ficha_1_5').html("");
+        fichas["1.5"].render();
+    } else {
+        $('#ficha_1_5').html("");
+    }
 
 }
 
@@ -3541,6 +3512,7 @@ function generarJSONActividades() {
             actividad.tareas.push({
                 nombre: $(this).find('.tarea-nombre').val(),
                 frecuencia: $(this).find('.tarea-frecuencia').val(),
+                numero_veces: $(this).find('.tarea-numero-veces').val(),
                 duracion: $(this).find('.tarea-duracion').val()
             });
 
@@ -3722,7 +3694,7 @@ function pintarActividades(json) {
 
         let htmlActividad = `
         <div class="actividad-item" id="actividad_${num}">
-            
+
             <div class="actividad-card">
 
                 <div class="d-flex justify-content-between mb-2">
@@ -3731,21 +3703,19 @@ function pintarActividades(json) {
                         <i class="fa fa-trash"></i>
                     </button>
                 </div>
+
                 <div class="actividad-row">
                     <div class="actividad-left">
-                        <input type="text" 
-                            class="form-control actividad-nombre" 
-                            value="${actividad.nombre || ''}">
+                        <label class="d-block"> Nombre de la actividad
+                            <textarea class="form-control actividad-nombre mt-1" rows="3">${actividad.nombre || ''}</textarea>
+                        </label>
                     </div>
                     <div class="actividad-right">
-                        <button type="button" 
-                            class="btn btn-agregar-tarea"
-                            onclick="agregarTarea(${num})">
-                            + Agregar tarea
-                        </button>
+                        <button type="button" class="btn btn-agregar-tarea" onclick="agregarTarea(${num})"> + Agregar tarea</button>
                         <div id="tareas_${num}"></div>
                     </div>
                 </div>
+
             </div>
         </div>
         `;
@@ -3763,24 +3733,39 @@ function pintarActividades(json) {
 
                     <div class="d-flex justify-content-between">
                         <small>Tarea ${numT}</small>
-                        <button type="button" class="btn btn-danger btn-sm"
-                            onclick="eliminarTarea(this)">
-                            <i class="fa fa-trash"></i>
-                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarTarea(this)"><i class="fa fa-trash"></i></button>
                     </div>
 
-                    <input type="text" 
-                        class="form-control mt-1 tarea-nombre" 
-                        value="${tarea.nombre || ''}">
+                    <div class="form-group mb-2">
+                        <label class="d-block">Nombre de la tarea
+                            <textarea class="form-control mt-1 tarea-nombre" rows="3">${tarea.nombre || ''}</textarea>
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group mb-2">
+                                <label class="d-block">Frecuencia
+                                    <input type="text" class="form-control mt-1 tarea-frecuencia"value="${tarea.frecuencia || ''}">
+                                </label>
+                            </div>
+                        </div>
 
-                    <input type="text" 
-                        class="form-control mt-1 tarea-frecuencia" 
-                        value="${tarea.frecuencia || ''}">
+                        <div class="col-6">
+                            <div class="form-group mb-2">
+                                <label class="d-block">No de veces
+                                    <input type="text" class="form-control mt-1 tarea-numero-veces" value="${tarea.numero_veces ?? ''}">
+                                </label>
+                            </div>
+                        </div>
 
-                    <input type="text" 
-                        class="form-control mt-1 tarea-duracion" 
-                        value="${tarea.duracion || ''}">
+                    </div>
 
+                    <div class="form-group mb-2">
+                        <label class="d-block">
+                            Duración (tiempo en Min)
+                            <input type="text" class="form-control mt-1 tarea-duracion" value="${tarea.duracion || ''}">
+                        </label>
+                    </div>
                 </div>
                 `;
 
@@ -4026,7 +4011,7 @@ function activarLogicaFichas() {
 
 
 
-	let selectAreasFRE;
+let selectAreasFRE;
 
 $(document).ready(function () {
 
@@ -4214,8 +4199,6 @@ function cargarAreasFRE(valoresSeleccionados = []) {
 
 }
 
-
-
 $('input[name="EVALUACION_TRABAJADOR"]').change(function () {
 
 	var valor = $(this).val();
@@ -4237,6 +4220,7 @@ $('input[name="EVALUACION_TRABAJADOR"]').change(function () {
 
 	}
 });
+//// TAREAS FRE
 
 function agregarActividadFRE() {
 
@@ -4248,22 +4232,16 @@ function agregarActividadFRE() {
         <div class="actividad-card">
             <div class="d-flex justify-content-between mb-2">
                 <strong>Actividad ${total}</strong>
-                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)">
-                    <i class="fa fa-trash"></i>
-                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)"> <i class="fa fa-trash"></i></button>
             </div>
             <div class="actividad-row">
                 <div class="actividad-left">
-                    <input type="text" 
-                        class="form-control actividad-nombre" 
-                        placeholder="Nombre de la actividad">
+                    <label class="d-block">Nombre de la actividad
+                        <textarea class="form-control actividad-nombre mt-1" rows="3" ></textarea>
+                    </label>
                 </div>
                 <div class="actividad-right">
-                    <button type="button" 
-                        class="btn btn-agregar-tarea"
-                        onclick="agregarTarea(${total})">
-                        + Agregar tarea
-                    </button>
+                    <button type="button" class="btn btn-agregar-tarea" onclick="agregarTarea(${total})"> + Agregar tarea</button>
                     <div id="tareas_${total}"></div>
                 </div>
             </div>
@@ -4293,17 +4271,17 @@ function reindexarActividadesfre() {
 
         el.querySelector('strong').innerText = `Actividad ${num}`;
 
-        let input = el.querySelector('.actividad-left input');
+        let input = el.querySelector('.actividad-left textarea');
         input.name = `actividades[${num}][nombre]`;
 
         let btnTarea = el.querySelector('.btn-agregar-tarea');
         btnTarea.setAttribute('onclick', `agregarTarea(${num})`);
 
-     
+
         let tareasDiv = el.querySelector('[id^="tareas_"]');
         tareasDiv.id = `tareas_${num}`;
 
-       
+
         reindexarTareasActividadfre(tareasDiv, num);
     });
 }
@@ -4317,14 +4295,39 @@ function agregarTareafre(idActividad) {
     <div class="tarea-item">
         <div class="d-flex justify-content-between">
             <small>Tarea ${total}</small>
-            <button type="button" class="btn btn-danger btn-sm"
-                onclick="eliminarTarea(this)">
-                <i class="fa fa-trash"></i>
-            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarTarea(this)"><i class="fa fa-trash"></i></button>
         </div>
-        <input type="text" class="form-control mt-1 tarea-nombre" placeholder="Nombre">
-        <input type="text" class="form-control mt-1 tarea-frecuencia" placeholder="Frecuencia (No de veces durante la jornada)">
-        <input type="text" class="form-control mt-1 tarea-duracion" placeholder="Duración (tiempo en Min)">
+
+        <div class="form-group mb-2">
+            <label class="d-block">Nombre de la tarea
+                <textarea class="form-control mt-1 tarea-nombre" rows="3" ></textarea>
+            </label>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mb-2">
+                    <label class="d-block"> Frecuencia
+                        <input type="text" class="form-control mt-1 tarea-frecuencia">
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="form-group mb-2">
+                    <label class="d-block"> No de veces
+                        <input type="text" class="form-control mt-1 tarea-numero-veces">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mb-2">
+            <label class="d-block">
+                Duración (tiempo en Min)
+                <input type="text" class="form-control mt-1 tarea-duracion" >
+            </label>
+        </div>
     </div>
     `;
 
@@ -4351,15 +4354,16 @@ function reindexarTareasActividadfre(contenedor, idActividad) {
 
         let num = index + 1;
 
-     
+
         let titulo = el.querySelector('small');
         if (titulo) titulo.innerText = `Tarea ${num}`;
 
-        let inputs = el.querySelectorAll('input');
+        let inputs = el.querySelectorAll('textarea, input');
 
         inputs[0].name = `actividades[${idActividad}][tareas][${num}][nombre]`;
         inputs[1].name = `actividades[${idActividad}][tareas][${num}][frecuencia]`;
-        inputs[2].name = `actividades[${idActividad}][tareas][${num}][duracion]`;
+        inputs[2].name = `actividades[${idActividad}][tareas][${num}][numero_veces]`;
+        inputs[3].name = `actividades[${idActividad}][tareas][${num}][duracion]`;
     });
 }
 
@@ -4384,35 +4388,29 @@ function pintarActividadesfre(json, idHidden = 'JSON_ACTIVIDADES') {
         data = json;
     }
 
-	if (!Array.isArray(data)) return;
-	
+    if (!Array.isArray(data)) return;
+
     data.forEach((actividad, index) => {
 
         let num = index + 1;
 
         let htmlActividad = `
         <div class="actividad-item" id="actividad_${num}">
-            
+
             <div class="actividad-card">
 
                 <div class="d-flex justify-content-between mb-2">
                     <strong>Actividad ${num}</strong>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)">
-                        <i class="fa fa-trash"></i>
-                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)"> <i class="fa fa-trash"></i></button>
                 </div>
                 <div class="actividad-row">
                     <div class="actividad-left">
-                        <input type="text" 
-                            class="form-control actividad-nombre" 
-                            value="${actividad.nombre || ''}">
+                        <label class="d-block"> Nombre de la actividad
+                            <textarea class="form-control actividad-nombre mt-1" rows="3" >${actividad.nombre || ''}</textarea>
+                        </label>
                     </div>
                     <div class="actividad-right">
-                        <button type="button" 
-                            class="btn btn-agregar-tarea"
-                            onclick="agregarTarea(${num})">
-                            + Agregar tarea
-                        </button>
+                        <button type="button" class="btn btn-agregar-tarea" onclick="agregarTarea(${num})"> + Agregar tarea</button>
                         <div id="tareas_${num}"></div>
                     </div>
                 </div>
@@ -4433,23 +4431,36 @@ function pintarActividadesfre(json, idHidden = 'JSON_ACTIVIDADES') {
 
                     <div class="d-flex justify-content-between">
                         <small>Tarea ${numT}</small>
-                        <button type="button" class="btn btn-danger btn-sm"
-                            onclick="eliminarTarea(this)">
-                            <i class="fa fa-trash"></i>
-                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarTarea(this)"><i class="fa fa-trash"></i></button>
                     </div>
 
-                    <input type="text" 
-                        class="form-control mt-1 tarea-nombre" 
-                        value="${tarea.nombre || ''}">
+                    <div class="form-group mb-2">
+                        <label class="d-block"> Nombre de la tarea
+                            <textarea class="form-control mt-1 tarea-nombre" rows="3" >${tarea.nombre || ''}</textarea>
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group mb-2">
+                                <label class="d-block"> Frecuencia
+                                    <input type="text" class="form-control mt-1 tarea-frecuencia" value="${tarea.frecuencia || ''}">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group mb-2">
+                                <label class="d-block">No de veces
+                                    <input type="text" class="form-control mt-1 tarea-numero-veces"  placeholder="No de veces" value="${tarea.numero_veces ?? ''}">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
-                    <input type="text" 
-                        class="form-control mt-1 tarea-frecuencia" 
-                        value="${tarea.frecuencia || ''}">
-
-                    <input type="text" 
-                        class="form-control mt-1 tarea-duracion" 
-                        value="${tarea.duracion || ''}">
+                    <div class="form-group mb-2">
+                        <label class="d-block"> Duración (tiempo en Min)
+                            <input type="text" class="form-control mt-1 tarea-duracion"  value="${tarea.duracion || ''}">
+                        </label>
+                    </div>
 
                 </div>
                 `;
@@ -4462,6 +4473,8 @@ function pintarActividadesfre(json, idHidden = 'JSON_ACTIVIDADES') {
 
     });
 }
+
+/// FIN TAREAS
 
 function cargarDatosFicha(data) {
 
@@ -4858,7 +4871,6 @@ function pintarEPP(jsonEPP) {
 
 }
 
-
 $('#modal_evalfre').on('hidden.bs.modal', function (e) {
 
 	ID_EVALUACION_FRE = 0;
@@ -4906,12 +4918,6 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
 
 })
 
-
-
-
-
-
-
 $(document).on('change', '#ENFERMEDAD_MUSCULOESQUELETICA', function () {
 
     if ($(this).val() === 'SI') {
@@ -4924,7 +4930,6 @@ $(document).on('change', '#ENFERMEDAD_MUSCULOESQUELETICA', function () {
     }
 
 });
-
 
 $(document).on('change', '#SUFRIDO_LESION_ACCIDENTE', function () {
 
@@ -4997,7 +5002,6 @@ $(document).on('click', '#agregarFilaEquipo', function () {
     $('#tablaEquiposTrabajo tbody').append(fila);
 
 });
-
 
 $(document).on('click', '.eliminarFilaEquipo', function () {
     $(this).closest('tr').remove();
@@ -5188,7 +5192,6 @@ $('#PERCEPCION_TERMICA').on('change', function () {
 
 });
 
-
 $('input[name="HOMBRO"]').change(function () {
 
     if ($('#HOMBRO_NO').is(':checked')) {
@@ -5209,7 +5212,6 @@ $('input[name="HOMBRO"]').change(function () {
     }
 
 });
-
 
 $('input[name="CODO"]').change(function () {
 
@@ -5254,8 +5256,6 @@ $('input[name="MUNECA"]').change(function () {
 
 });
 
-
-
 function habilitarBloque(selector, habilitar) {
 
     $(selector)
@@ -5271,7 +5271,6 @@ function habilitarBloque(selector, habilitar) {
     }
 
 }
-
 
 // PREGUNTA 1
 $('input[name="COLUMNA_LUMBAR_P1"]').change(function () {
@@ -5299,7 +5298,6 @@ $('input[name="COLUMNA_LUMBAR_P1"]').change(function () {
     }
 
 });
-
 
 // PREGUNTA 4
 $('input[name="COLUMNA_LUMBAR_P4"]').change(function () {
@@ -5338,7 +5336,6 @@ function habilitarBloqueCuello(selector, habilitar) {
     }
 
 }
-
 
 //-------------------------------------
 // PREGUNTA 1
@@ -5393,10 +5390,6 @@ $('input[name="CUELLO_P4"]').change(function () {
 
 });
 
-
-
-
-
 function habilitarBloqueHombro(selector, habilitar) {
 
     $(selector)
@@ -5412,7 +5405,6 @@ function habilitarBloqueHombro(selector, habilitar) {
     }
 
 }
-
 
 //--------------------------------------------------
 // PREGUNTA 1
@@ -5442,7 +5434,6 @@ $('input[name="HOMBRO_P1"]').change(function () {
     }
 
 });
-
 
 //--------------------------------------------------
 // PREGUNTA 4
@@ -5502,8 +5493,6 @@ function opcionesClaveEPP() {
     return html;
 }
 
-
-
 $(document).on('click', '#agregarEPP', function () {
 
   
@@ -5536,7 +5525,6 @@ $(document).on('click', '.eliminarFilaEPP', function () {
     $(this).closest('tr').remove();
 
 });
-
 
 $(document).on('change', '.region_anatomica_epp', function () {
 
@@ -5585,7 +5573,6 @@ $(document).on('change', '.clave_epp', function () {
 
 });
 
-
 function generarJSONEPP() {
 
     let datos = [];
@@ -5616,8 +5603,6 @@ function generarJSONEPP() {
 
 }
 
-
-
 function generarJSONActividadesfre() {
 
     let data = [];
@@ -5634,6 +5619,7 @@ function generarJSONActividadesfre() {
             actividad.tareas.push({
                 nombre: $(this).find('.tarea-nombre').val(),
                 frecuencia: $(this).find('.tarea-frecuencia').val(),
+                numero_veces: $(this).find('.tarea-numero-veces').val(),
                 duracion: $(this).find('.tarea-duracion').val()
             });
 
@@ -5644,7 +5630,6 @@ function generarJSONActividadesfre() {
 
     return JSON.stringify(data);
 }
-
 
 function generarJSONEquiposTrabajo() {
 
@@ -5660,7 +5645,6 @@ function generarJSONEquiposTrabajo() {
     });
     return JSON.stringify(equipos);
 }
-
 
 function generarJSONFuentesTermicas() {
     let datos = [];
@@ -5687,7 +5671,6 @@ function generarJSONFuentesVibracion() {
     });
     return JSON.stringify(datos);
 }
-
 
 $("#boton_guardar_fre").click(function (e) {
     e.preventDefault();
@@ -5815,7 +5798,6 @@ $("#boton_guardar_fre").click(function (e) {
 
 ////// GRAFICAS 1
 
-
 function cargarGraficaPregunta1()
 {
 
@@ -5851,7 +5833,6 @@ function cargarGraficaPregunta1()
 
 }
 
-
 function llenarMapaPregunta1(datos)
 {
     colocarPorcentaje("#CUELLOP1",datos.CUELLO);
@@ -5864,7 +5845,6 @@ function llenarMapaPregunta1(datos)
     colocarPorcentaje("#RODILLAP1",datos.RODILLAS);
     colocarPorcentaje("#TOBILLOP1",datos.TOBILLOS_PIES);
 }
-
 
 function colocarPorcentaje(id, valor)
 {
@@ -5892,7 +5872,6 @@ function colocarPorcentaje(id, valor)
         });
     }
 }
-
 
 function llenarTablaPregunta1(datos)
 {
@@ -5943,10 +5922,7 @@ function llenarTablaPregunta1(datos)
     $("#tablaPregunta1").html(html);
 }
 
-
-
 ////// GRAFICAS 2
-
 
 function cargarGraficaPregunta2()
 {
@@ -5976,7 +5952,6 @@ function cargarGraficaPregunta2()
     });
 
 }
-
 
 function llenarMapaPregunta2(datos)
 {
@@ -6021,7 +5996,6 @@ function colocarPorcentajePregunta2(id,valor)
     }
 
 }
-
 
 function llenarTablaPregunta2(datos)
 {
@@ -6072,8 +6046,6 @@ function llenarTablaPregunta2(datos)
 
 ////// GRAFICAS 3
 
-
-
 function cargarGraficaPregunta3()
 {
     $.ajax({
@@ -6104,7 +6076,6 @@ function cargarGraficaPregunta3()
     });
 }
 
-
 function llenarMapaPregunta3(datos)
 {
 
@@ -6119,7 +6090,6 @@ function llenarMapaPregunta3(datos)
     colocarPorcentajePregunta3("#TOBILLOP3",datos.TOBILLOS_PIES_7_DIAS);
 
 }
-
 
 function colocarPorcentajePregunta3(id,valor)
 {
@@ -6148,7 +6118,6 @@ function colocarPorcentajePregunta3(id,valor)
     }
 
 }
-
 
 function llenarTablaPregunta3(datos)
 {
@@ -6202,7 +6171,6 @@ function llenarTablaPregunta3(datos)
 
 
 ////// GRAFICAS 4
-
 
 function cargarGraficaPregunta4()
 {
@@ -6311,10 +6279,7 @@ function llenarTablaPregunta4(datos)
 
 }
 
-
-
 ////// GRAFICAS 5
-
 
 function cargarGraficaPregunta5()
 {
@@ -6357,7 +6322,6 @@ function llenarMapaPregunta5(valor)
 {
     colocarPorcentajePregunta5("#CUELLOP5",valor);
 }
-
 
 function colocarPorcentajePregunta5(id,valor)
 {
@@ -6430,10 +6394,7 @@ function llenarTablaPregunta5(datos)
 
 }
 
-
-
 ////// GRAFICAS 6
-
 
 function cargarGraficaPregunta6()
 {
@@ -6585,3 +6546,1197 @@ function descargarCard(idCard,nombre)
     });
 
 }
+
+
+
+/////////////// PORTADA  //////////////
+
+
+function cargarDatosInformesFreErgo()
+{
+
+    $.get('/obtenerDatosInformesRecoergo/' + recsensorial, function(response)
+    {
+
+        //-----------------------------------------
+        // LLENAR SELECTS
+        //-----------------------------------------
+
+
+            $('#NIVEL1').html(response.opciones);
+            $('#NIVEL2').html(response.opciones);
+            $('#NIVEL3').html(response.opciones);
+            $('#NIVEL4').html(response.opciones);
+            $('#NIVEL5').html(response.opciones);
+
+            $('#OPCION_PORTADA1').html(response.checks);
+            $('#OPCION_PORTADA2').html(response.checks);
+            $('#OPCION_PORTADA3').html(response.checks);
+            $('#OPCION_PORTADA4').html(response.checks);
+            $('#OPCION_PORTADA5').html(response.checks);
+            $('#OPCION_PORTADA6').html(response.checks);
+
+
+        $('#INFORME_MES').val("");
+        $('#INFORME_ANIO').val("");
+        
+        //-----------------------------------------
+        // SI EXISTE INFORMACION
+        //-----------------------------------------
+
+        if(response.data != 'No se encontraron datos')
+        {
+
+            let data = response.data[0];
+
+
+            //-----------------------------------------
+            // ASIGNAR VALORES
+            //-----------------------------------------
+
+            $('#NIVEL1').val(data.NIVEL1).trigger('change');
+            $('#NIVEL2').val(data.NIVEL2).trigger('change');
+            $('#NIVEL3').val(data.NIVEL3).trigger('change');
+            $('#NIVEL4').val(data.NIVEL4).trigger('change');
+            $('#NIVEL5').val(data.NIVEL5).trigger('change');
+
+
+            $('#OPCION_PORTADA1').val(data.OPCION_PORTADA1).trigger('change');
+            $('#OPCION_PORTADA2').val(data.OPCION_PORTADA2).trigger('change');
+            $('#OPCION_PORTADA3').val(data.OPCION_PORTADA3).trigger('change');
+            $('#OPCION_PORTADA4').val(data.OPCION_PORTADA4).trigger('change');
+            $('#OPCION_PORTADA5').val(data.OPCION_PORTADA5).trigger('change');
+            $('#OPCION_PORTADA6').val(data.OPCION_PORTADA6).trigger('change');
+
+
+            //-----------------------------------------
+            // MES Y AÑO
+            //-----------------------------------------
+
+            $('#INFORME_MES').val(data.INFORME_MES);
+            $('#INFORME_ANIO').val(data.INFORME_ANIO);
+
+
+
+            //-----------------------------------------
+            // IMAGEN PORTADA
+            //-----------------------------------------
+
+            if(data.RUTA_IMAGEN_PORTADA)
+            {
+
+                var archivo = data.RUTA_IMAGEN_PORTADA;
+
+                var extension = archivo.substring(
+                    archivo.lastIndexOf(".")
+                );
+
+
+
+                var imagenUrl =
+                    '/mostrarportadarecoergo/0/' +
+                    recsensorial +
+                    extension;
+
+
+
+                //-----------------------------------------
+                // DROPIFY
+                //-----------------------------------------
+
+                if ($('#RUTA_IMAGEN_PORTADA').data('dropify')) {
+
+                    $('#RUTA_IMAGEN_PORTADA')
+                        .dropify()
+                        .data('dropify')
+                        .destroy();
+
+
+                    $('#RUTA_IMAGEN_PORTADA')
+                        .dropify()
+                        .data('dropify')
+                        .settings.defaultFile = imagenUrl;
+
+
+                    $('#RUTA_IMAGEN_PORTADA')
+                        .dropify()
+                        .data('dropify')
+                        .init();
+
+                }
+                else {
+
+                    $('#RUTA_IMAGEN_PORTADA')
+                        .attr('data-default-file', imagenUrl);
+
+
+                    $('#RUTA_IMAGEN_PORTADA').dropify({
+
+                        messages: {
+                            'default': 'Arrastre la imagen aquí o haga click',
+                            'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                            'remove': 'Quitar',
+                            'error': 'Ooops, ha ocurrido un error.'
+                        },
+
+                        error: {
+                            'fileSize': 'Demasiado grande ({{ value }} max).',
+                            'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                            'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                            'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                            'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                            'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                        }
+
+                    });
+                }
+
+
+
+                //-----------------------------------------
+                // NO REQUERIDO
+                //-----------------------------------------
+
+                $('#RUTA_IMAGEN_PORTADA')
+                    .attr('required', false);
+
+            }
+
+        }
+
+    }).fail(function(xhr)
+    {
+
+        console.log(xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudieron cargar los datos del informe'
+        });
+
+    });
+
+}
+
+$("#form_informe_portada").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    formData.append('RECO_ID', recsensorial);
+
+    $.ajax({
+        url: '/guardarPortadaFreErgo',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+
+            $("#botonguardar_reporte_portada").prop('disabled', true);
+
+            $("#botonguardar_reporte_portada").html(
+                'Guardando... <i class="fa fa-spinner fa-spin"></i>'
+            );
+
+        },
+
+        success: function(response)
+        {
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+
+            cargarDatosInformesFreErgo();
+
+        },
+
+        error: function(xhr)
+        {
+
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_reporte_portada").prop('disabled', false);
+
+            $("#botonguardar_reporte_portada").html(
+                'Guardar portadas <i class="fa fa-save"></i>'
+            );
+
+        }
+
+    });
+
+});
+
+
+/////  DATOS GENERALES
+
+
+
+function cargarDatosGeneralesInformeReco()
+{
+
+    $.get(
+
+        '/obtenerDatosGeneralesInformeReco/' + recsensorial,
+
+        function(response)
+        {
+
+        
+
+            if(response.msj){
+
+                return;
+            }
+
+
+            if (response.INFORME_UBICACIONINSTALACION &&
+                response.INFORME_UBICACIONINSTALACION.trim() != '') {
+                $('#INFORME_UBICACIONINSTALACION').val(response.INFORME_UBICACIONINSTALACION);
+            } else {
+                $('#INFORME_UBICACIONINSTALACION')
+                    .val(` Este estudio se realizó en las áreas de la INSTALACION, con domicilio DIRECCION.
+
+Se localiza en las coordenadas  COORDENADAS.`);
+
+            }
+        
+                    
+			   if(response.RUTA_IMAGEN_UBICACION)
+            {
+
+                var archivo = response.RUTA_IMAGEN_UBICACION;
+
+                var extension = archivo.substring(
+                    archivo.lastIndexOf(".")
+                );
+
+
+
+                var imagenUrl =
+                    '/mostrarubicacionrecoergo/0/' +
+                    recsensorial +
+                    extension;
+
+
+                if ($('#RUTA_IMAGEN_UBICACION').data('dropify')) {
+
+                    $('#RUTA_IMAGEN_UBICACION')
+                        .dropify()
+                        .data('dropify')
+                        .destroy();
+
+
+                    $('#RUTA_IMAGEN_UBICACION')
+                        .dropify()
+                        .data('dropify')
+                        .settings.defaultFile = imagenUrl;
+
+
+                    $('#RUTA_IMAGEN_UBICACION')
+                        .dropify()
+                        .data('dropify')
+                        .init();
+
+                }
+                else {
+
+                    $('#RUTA_IMAGEN_UBICACION')
+                        .attr('data-default-file', imagenUrl);
+
+
+                    $('#RUTA_IMAGEN_UBICACION').dropify({
+
+                        messages: {
+                            'default': 'Arrastre la imagen aquí o haga click',
+                            'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                            'remove': 'Quitar',
+                            'error': 'Ooops, ha ocurrido un error.'
+                        },
+
+                        error: {
+                            'fileSize': 'Demasiado grande ({{ value }} max).',
+                            'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                            'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                            'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                            'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                            'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                        }
+
+                    });
+                }
+
+
+                $('#RUTA_IMAGEN_UBICACION')
+                    .attr('required', false);
+
+			}
+			
+
+        }
+
+    );
+
+}
+
+
+function cargarDatosGeneralesInformeFre()
+{
+
+    $.get(
+
+        '/obtenerDatosGeneralesInformeFre/' + recsensorial,
+
+        function(response)
+        {
+
+        
+
+            if(response.msj){
+
+                return;
+            }
+
+
+          if (response.INFORME_INTRODUCCION &&
+                response.INFORME_INTRODUCCION.trim() != '') {
+
+                $('#INFORME_INTRODUCCION').summernote(
+                    'code',
+                    response.INFORME_INTRODUCCION
+                );
+
+            } else {
+
+                $('#INFORME_INTRODUCCION').summernote(
+                    'code',
+                    `<p>Los factores de riesgo ergonómico contribuyen a la aparición de enfermedades de tipo músculo esquelético, según los datos revelados por la Organización Internacional del Trabajo (OIT) estos a nivel mundial representan una de las principales causas de enfermedad laboral, seguido por exposición a material particulado, los gases, los humos, y el ruido (Discroll, 2018). Por otra parte, la OMS indicó que a nivel mundial cerca del 20% de los dolores lumbares y cervicales son atribuibles a exposiciones en el trabajo (2018).</p>
+
+<p>De acuerdo con el Instituto Mexicano del Seguro Social (IMSS) en 2020, se registraron más de 100.000 casos nuevos de enfermedades laborales, la naturaleza de la lesión indica que hay un número importante de enfermedades que se agrupan como trastornos músculo-esqueléticos (TME), entre ellas, síndrome del túnel carpiano, lesiones de hombro, tenosinovitis del pulgar (“De Quervain”), bursitis, epicondilitis y artrosis; por tal razón los TME representa en la actualidad un importante tipo de enfermedad laboral que afecta a la planta laboral de México. </p>
+
+<p>En México el Reglamento Federal de Seguridad y Salud en el trabajo (RFST), publicado en el Diario Oficial de la Federación (DOF) el día 13 de noviembre de 2014, establece en su artículo 42, que las empresas deben contar con un análisis de los Factores de Riesgo Ergonómico de los puestos de trabajo. Además, la NOM-036-1-STPS-2018 establece los elementos para identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en los centros de trabajo derivados del manejo manual de cargas, a efecto de prevenir alteraciones a la salud de los trabajadores, y aplica en los centros de trabajo donde existan trabajadores cuya actividad implique realizar manejo manual de cargas de forma cotidiana (más de una vez al día); así mismo la LEY SILLA - DOF 19/12/24 en lo referente a el empleador.</p>
+
+<p>Dentro del medio ambiente laboral existen condiciones de riesgo de tipo ergonómico, que de no encontrarse identificados pueden poner en riesgo la salud y la productividad del trabajador; por lo que la identificación temprana y el establecimiento de estrategias de control son primordiales para mantener una condición de trabajo óptima.</p>
+
+<p>En el presente estudio se describen los resultados y evidencias obtenidas posterior a haber identificado el riesgo y peligro ergonómico por medio de las fichas de la ISO-TR 12295-2014 (Reconocimiento); posteriormente se aplican métodos ergonómicos específicos que permiten identificar el riesgo ergonómico para que la empresa tome las medidas preventivas respectivas</p>`
+                );
+
+            }
+
+
+
+          if (response.INFORME_OBJETIVOGENERALES &&
+                response.INFORME_OBJETIVOGENERALES.trim() != '') {
+                $('#INFORME_OBJETIVOGENERALES').val(response.INFORME_OBJETIVOGENERALES);
+            } else {
+                $('#INFORME_OBJETIVOGENERALES')
+                    .val(`Evaluar los factores de riesgo ergonómicos de las actividades laborales que impliquen postura, movimientos repetitivos, manipulación manual de cargas y fuerza manual, mediante el análisis biomecánico y aplicación de métodos de carga física para la prevención de trastornos músculo esqueléticos de origen laboral.`);
+            }
+
+
+
+            if (response.INFORME_OBJETIVOSESPECIFICOS &&
+                response.INFORME_OBJETIVOSESPECIFICOS.trim() != '') {
+                $('#INFORME_OBJETIVOSESPECIFICOS').val(response.INFORME_OBJETIVOSESPECIFICOS);
+            } else {
+                $('#INFORME_OBJETIVOSESPECIFICOS')
+                    .val(`•	A partir de la ISO TR 12295 como insumo de identificación de los peligros y riesgos ergonómicos, el riesgo Elevado, se someterá a valoraciones ergonómicas con métodos específicos de cuantificación del riesgo. 
+
+• Determinar el nivel de riesgo por carga física a la cual se encuentran expuestos los trabajadores de cada planta objeto del estudio en las tareas que son analizadas
+
+• Generar recomendaciones derivadas de la cuantificación del riesgo ergonómico para mitigar la probabilidad de ocurrencia de Trastornos Músculo Esqueléticos (TME) de origen laboral.
+
+•	Estudiar la relación del riesgo Biomecánicos de acuerdo a los criterios de la NOM-036-1-SPTS-2018, ISO-TR-12295 y la LEY SILLA DOF 19/12/24.`);
+
+            }
+            
+            
+
+
+             if (response.INFORME_RECONOCIMIENTO &&
+                response.INFORME_RECONOCIMIENTO.trim() != '') {
+                $('#INFORME_RECONOCIMIENTO').val(response.INFORME_RECONOCIMIENTO);
+            } else {
+                $('#INFORME_RECONOCIMIENTO')
+                    .val(`Se realiza observación de cada uno de los procesos con el objetivo de analizar la situación de trabajo, la cual enmarca las múltiples tareas, funciones, y entornos en los que se debe desempeñar un trabajador (Castillo, 2013). Se aplicó el procedimiento para la identificación y evaluación de los factores de riesgo ergonómico, el cual se detalla en el punto 4, relacionado con la metodología, así mismo mediante la aplicación de la ISO TR 12295, que permite la identificación de peligros y riesgos ergonómicos, la cual permite hacer una evaluación inicial rápida de: levantamiento de cargas, transporte de cargas, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas forzadas y posturas dinámicas forzadas, fichas técnicas que nos permiten ser el punto de partida inicial de evaluación del riesgo como modelo expositivo del riesgo por exposición a sobrecarga biomecánica.
+
+A continuación, se presenta la determinación de los factores de riesgo detectados y la aplicación del modelo conceptual de un estudio ergonómico, en la INSTALACION.
+
+En la aplicación de las fichas técnicas de identificación del riesgo ergonómico de acuerdo con la ISO-TR 12295, se evidenció que las categorías estudiadas tienen tareas que presentan riesgo Elevado; se procedió a hacer un análisis especifico con métodos ergonómicos en las categorías objeto de este estudio; así mismo cabe señalar que esto se correlaciona con los dispuesto en la NOM-036-1-STPS-2018, en cuanto al levantamiento y transporte de cargas.`);
+
+            }
+            
+
+         
+            
+
+
+            if (response.INFORME_PROCESOINSTALACION &&
+                response.INFORME_PROCESOINSTALACION.trim() != '') {
+                $('#INFORME_PROCESOINSTALACION').val(response.INFORME_PROCESOINSTALACION);
+            } else {
+                $('#INFORME_PROCESOINSTALACION').val(`DESCRIPCIONPROCESO`);
+            }
+           
+            if (response.INFORME_ACTIVIDADPRINCIPAL &&
+                response.INFORME_ACTIVIDADPRINCIPAL.trim() != '') {
+                $('#INFORME_ACTIVIDADPRINCIPAL').val(response.INFORME_ACTIVIDADPRINCIPAL);
+            } else {
+                $('#INFORME_ACTIVIDADPRINCIPAL').val(`DESCRIPCIONACTIVIDAD`);
+            }
+		
+
+			$('#SELECT_CONCLUSION')
+				.val(response.SELECT_CONCLUSION)
+				.trigger('change');
+
+			$('#INFORME_CONCLUSION')
+				.val(response.INFORME_CONCLUSION);
+			
+			$('#INFORME_RESPONSABLE1')
+				.val(response.INFORME_RESPONSABLE1);
+
+
+			$('#INFORME_RESPONSABLE1CARGO')
+				.val(response.INFORME_RESPONSABLE1CARGO);
+
+
+
+			$('#INFORME_RESPONSABLE2')
+				.val(response.INFORME_RESPONSABLE2);
+
+
+
+		    $('#INFORME_RESPONSABLE2CARGO')
+                .val(response.INFORME_RESPONSABLE2CARGO);
+            
+            
+            $('#INTRODUCCION_GRAFICASNOM036')
+                .val(response.INTRODUCCION_GRAFICASNOM036);
+            
+            
+            $('#CONCLUSION_GRAFICASNOM036')
+                .val(response.CONCLUSION_GRAFICASNOM036);
+            
+            
+            $('#INTRODUCCION_GRAFICASISO12995')
+                .val(response.INTRODUCCION_GRAFICASISO12995);
+            
+             
+            $('#CONCLUSION_GRAFICASISO12995')
+                .val(response.CONCLUSION_GRAFICASISO12995);
+                    
+            
+            $('#INFORME_RESPONSABLE1')
+                .val(response.INFORME_RESPONSABLE1);
+
+
+            $('#INFORME_RESPONSABLE1CARGO')
+                .val(response.INFORME_RESPONSABLE1CARGO);
+
+
+
+        if(response.INFORME_RESPONSABLE1DOCUMENTO)
+        {
+
+            var archivo =
+                response.INFORME_RESPONSABLE1DOCUMENTO;
+
+
+
+            var extension = archivo.substring(
+                archivo.lastIndexOf(".")
+            );
+
+
+
+            var imagenUrl =
+                '/mostrarresponsable1recoergo/0/' +
+                recsensorial +
+                extension;
+
+            if ($('#INFORME_RESPONSABLE1DOCUMENTO')
+                .data('dropify')) {
+
+                $('#INFORME_RESPONSABLE1DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .destroy();
+
+
+
+                $('#INFORME_RESPONSABLE1DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .settings.defaultFile = imagenUrl;
+
+
+
+                $('#INFORME_RESPONSABLE1DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .init();
+
+            }
+            else {
+
+                $('#INFORME_RESPONSABLE1DOCUMENTO')
+                    .attr('data-default-file', imagenUrl);
+
+
+
+                $('#INFORME_RESPONSABLE1DOCUMENTO')
+                    .dropify({
+
+                    messages: {
+                        'default': 'Arrastre la imagen aquí o haga click',
+                        'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                        'remove': 'Quitar',
+                        'error': 'Ooops, ha ocurrido un error.'
+                    },
+
+                    error: {
+                        'fileSize': 'Demasiado grande ({{ value }} max).',
+                        'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                        'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                        'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                        'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                        'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                    }
+
+                });
+
+            }
+
+
+            $('#INFORME_RESPONSABLE1DOCUMENTO')
+                .attr('required', false);
+
+            $("#boton_descargarresponsabledoc1")
+                .css('display', 'block');
+
+        }
+        else {
+
+            $("#boton_descargarresponsabledoc1")
+                .css('display', 'none');
+
+        }
+
+
+
+        $('#INFORME_RESPONSABLE2')
+            .val(response.INFORME_RESPONSABLE2);
+
+
+        $('#INFORME_RESPONSABLE2CARGO')
+            .val(response.INFORME_RESPONSABLE2CARGO);
+
+
+
+        if(response.INFORME_RESPONSABLE2DOCUMENTO)
+        {
+
+            var archivo =
+                response.INFORME_RESPONSABLE2DOCUMENTO;
+
+
+
+            var extension = archivo.substring(
+                archivo.lastIndexOf(".")
+            );
+
+
+
+            var imagenUrl =
+                '/mostrarresponsable2recoergo/0/' +
+                recsensorial +
+                extension;
+
+
+
+            if ($('#INFORME_RESPONSABLE2DOCUMENTO')
+                .data('dropify')) {
+
+                $('#INFORME_RESPONSABLE2DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .destroy();
+
+
+
+                $('#INFORME_RESPONSABLE2DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .settings.defaultFile = imagenUrl;
+
+
+
+                $('#INFORME_RESPONSABLE2DOCUMENTO')
+                    .dropify()
+                    .data('dropify')
+                    .init();
+
+            }
+            else {
+
+                $('#INFORME_RESPONSABLE2DOCUMENTO')
+                    .attr('data-default-file', imagenUrl);
+
+
+
+                $('#INFORME_RESPONSABLE2DOCUMENTO')
+                    .dropify({
+
+                    messages: {
+                        'default': 'Arrastre la imagen aquí o haga click',
+                        'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                        'remove': 'Quitar',
+                        'error': 'Ooops, ha ocurrido un error.'
+                    },
+
+                    error: {
+                        'fileSize': 'Demasiado grande ({{ value }} max).',
+                        'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                        'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                        'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                        'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                        'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                    }
+
+                });
+
+            }
+
+            $('#INFORME_RESPONSABLE2DOCUMENTO')
+                .attr('required', false);
+
+
+
+            $("#boton_descargarresponsabledoc2")
+                .css('display', 'block');
+
+        }
+        else {
+
+            $("#boton_descargarresponsabledoc2")
+                .css('display', 'none');
+
+        }
+
+        }
+
+    );
+
+}
+
+/////////////// INTRODUCCION  //////////////
+
+
+$("#form_informe_introduccion").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+    formData.append('RECO_ID', recsensorial);
+
+    $.ajax({
+
+        url: '/guardarIntroduccionFreErgo',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_introduccion").prop('disabled', true);
+            $("#botonguardar_reporte_introduccion").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+
+            $("#botonguardar_reporte_introduccion").prop('disabled', false);
+            $("#botonguardar_reporte_introduccion").html('Guardar introducción <i class="fa fa-save"></i>');
+        }
+    });
+
+});
+
+/////////////// DEFINICIONES  //////////////
+
+
+$("#form_informe_listadefiniciones").on("submit", function(e)
+{
+    e.preventDefault();
+    let formData = new FormData(this);
+    formData.append('RECO_ID', recsensorial);
+
+    $.ajax({
+
+        url: '/guardarDefinicionesFreErgo',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_definiciones").prop('disabled', true);
+            $("#botonguardar_reporte_definiciones").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+        },
+        error: function(xhr)
+        {
+            console.log(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al guardar'
+            });
+
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_reporte_definiciones").prop('disabled', false);
+            $("#botonguardar_reporte_definiciones").html('Guardar definiciones <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+
+function cargarDefinicionesFreErgo()
+{
+
+    $.get(
+        '/obtenerDefinicionesFreErgo/' + recsensorial,
+
+        function(response)
+        {  
+            $('input[name="DEFINICONES_INFORME[]"]').prop('checked', false);
+            response.forEach(function(item)
+            {
+                $('input[name="DEFINICONES_INFORME[]"][value="' + item.CATALOGO_DEFINICIONES_ID + '"]').prop('checked', true);
+            });
+        }
+    );
+}
+
+
+
+/////////////// OBJETIVOS GENERALES Y ESPECIFICOS   //////////////
+
+
+$("#form_informe_objetivogeneral").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    formData.append('RECO_ID', recsensorial);
+
+    $.ajax({
+        url: '/guardarObjetivoGeneralFreErgo',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_objetivogeneral").prop('disabled', true);
+            $("#botonguardar_reporte_objetivogeneral").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_reporte_objetivogeneral").prop('disabled', false);
+            $("#botonguardar_reporte_objetivogeneral").html('Guardar objetivo general <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+
+$("#form_informe_objetivoespecifico").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    formData.append('RECO_ID', recsensorial);
+
+    $.ajax({
+        url: '/guardarObjetivoEspecificoFreErgo',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_objetivoespecifico").prop('disabled', true);
+            $("#botonguardar_reporte_objetivoespecifico").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_reporte_objetivoespecifico").prop('disabled', false);
+            $("#botonguardar_reporte_objetivoespecifico").html('Guardar objetivos específicos <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+/////////////// RECONOCIMIENTO   //////////////
+
+$("#form_informe_reconocimiento").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    formData.append('RECO_ID', recsensorial);
+
+    $.ajax({
+        url: '/guardarReconocimientoFreErgo',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_reconocimiento").prop('disabled', true);
+            $("#botonguardar_reporte_reconocimiento").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_reporte_reconocimiento").prop('disabled', false);
+            $("#botonguardar_reporte_reconocimiento").html('Guardar reconocimiento <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+
+////// MAPA DE RIESGO
+
+
+function cargarMapaPeligros()
+{
+    $.get(
+        '/getMapaPeligros/' + recsensorial,
+        function (response)
+        {
+            generarTablaMapaPeligros(response);
+        }
+    );
+}
+
+
+
+function generarTablaMapaPeligros(response)
+{
+
+    $('#TABLE_MAPEOPELIGRO').empty();
+
+    let fichas = response.fichas;
+    let criterios = response.criterios;
+
+
+    let html = `
+
+        <div style="width:100%; overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; text-align:center; font-size:16px; border:3px solid #0B2C6B;">
+                <thead>
+                    <tr>
+                        <th
+                            colspan="${fichas.length + 1}"
+                            style="
+                                background:#FFF;
+                                font-size:32px;
+                                font-weight:bold;
+                                text-align:center;
+                                padding:12px;
+                                border:3px solid #0B2C6B;">
+                            MAPA DE PELIGROS
+                        </th>
+                    </tr>
+                    <tr>
+                        <th
+                            rowspan="2"
+                            style="
+                                width:450px;
+                                text-align:center;
+                                vertical-align:middle;
+                                padding:10px;
+                                font-size:20px;
+                                font-weight:bold;
+                                border:2px solid #000;">
+                            Criterios de carga física
+                        </th>
+                        <th
+                            colspan="${fichas.length}"
+                            style="
+                                text-align:center;
+                                vertical-align:middle;
+                                font-size:20px;
+                                font-weight:bold;
+                                border:2px solid #000;">
+                            Personas evaluadas
+                        </th>
+                    </tr>
+                    <tr>
+    `;
+
+
+
+    fichas.forEach(function (ficha)
+    {
+        html += `
+            <th
+                style="
+                    width:60px;
+                    padding:8px;
+                    text-align:center;
+                    vertical-align:middle;
+                    font-size:20px;
+                    font-weight:bold;
+                    border:2px solid #000;">
+                ${ficha.PE_EVALUADAS || '-'}
+            </th>
+        `;
+    });
+
+
+
+    html += `
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+
+
+    criterios.forEach(function (criterio)
+    {
+
+        html += `
+            <tr>
+                <td
+                    style="
+                        text-align:left;
+                        padding:10px;
+                        font-size:18px;
+                        border:2px solid #000;">
+                    ${criterio.titulo}
+                </td>
+        `;
+
+
+
+        fichas.forEach(function (ficha)
+        {
+
+            let resultado =
+                criterio.resultados[ficha.ID_FICHAS_TECNICAS];
+
+            let color = '#28a745';
+
+            if (resultado === 'ROJO')
+            {
+                color = '#dc3545';
+            }
+
+            html += `
+                <td
+                    style="
+                        background:${color};
+                        height:55px;
+                        border:2px solid #000;">
+                </td>
+            `;
+        });
+
+
+
+        html += `
+            </tr>
+        `;
+    });
+
+
+
+    html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    $('#TABLE_MAPEOPELIGRO').html(html);
+
+}
+
+
+/////////////// DESCRIPCION DEL PROCESO DE LA INSTALACION   //////////////
+
+
+$("#form_reporte_procesoinstalacion").on(
+    "submit",
+    function(e)
+{
+
+    e.preventDefault();
+    let formData = new FormData(this);
+    
+    formData.append('RECO_ID',recsensorial);
+
+    $.ajax({
+        url: '/guardarProcesoInstalacionFreErgo',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_procesoinstalacion").prop('disabled', true);
+            $("#botonguardar_reporte_procesoinstalacion").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+        complete: function()
+        {
+            $("#botonguardar_reporte_procesoinstalacion").prop('disabled', false);
+            $("#botonguardar_reporte_procesoinstalacion").html('Guardar proceso instalación <i class="fa fa-save"></i>');
+        }
+    });
+});
+

@@ -1003,7 +1003,7 @@ use Illuminate\Support\Str;
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
     {{-- pagina --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js_sitio/reconocimientoergo.js?v=60"></script>
+    <script src="/js_sitio/reconocimientoergo.js?v=61"></script>
     <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 
@@ -1049,7 +1049,7 @@ use Illuminate\Support\Str;
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
     {{-- pagina --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js_sitio/evaluacionfre.js?v=10"></script>
+    <script src="/js_sitio/evaluacionfre.js?v=11"></script>
     <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 

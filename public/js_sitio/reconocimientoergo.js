@@ -2714,6 +2714,8 @@ function cargarAreasFicha(valoresSeleccionados = []) {
     });
 }
 
+/// ACTIVIDADES  - TAREAS 
+
 function agregarActividad() {
 
     let contenedor = document.getElementById("contenedorActividades");
@@ -2722,32 +2724,34 @@ function agregarActividad() {
     let html = `
     <div class="actividad-item" id="actividad_${total}">
         <div class="actividad-card">
+
             <div class="d-flex justify-content-between mb-2">
                 <strong>Actividad ${total}</strong>
-                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)">
-                    <i class="fa fa-trash"></i>
-                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)"> <i class="fa fa-trash"></i></button>
             </div>
+
             <div class="actividad-row">
+
                 <div class="actividad-left">
-                    <input type="text" 
-                        class="form-control actividad-nombre" 
-                        placeholder="Nombre de la actividad">
+                    <label class="d-block">Nombre de la actividad
+                        <textarea class="form-control actividad-nombre mt-1" rows="3" placeholder="Nombre de la actividad"></textarea>
+                    </label>
                 </div>
+
                 <div class="actividad-right">
-                    <button type="button" 
-                        class="btn btn-agregar-tarea"
-                        onclick="agregarTarea(${total})">
-                        + Agregar tarea
-                    </button>
+                    <button type="button" class="btn btn-agregar-tarea" onclick="agregarTarea(${total})"> + Agregar tarea</button>
+
                     <div id="tareas_${total}"></div>
                 </div>
+
             </div>
         </div>
     </div>
     `;
 
     contenedor.insertAdjacentHTML('beforeend', html);
+
+    reindexarActividades();
 }
 
 function eliminarActividad(btn) {
@@ -2759,7 +2763,9 @@ function eliminarActividad(btn) {
 
 function reindexarActividades() {
 
-    let actividades = document.querySelectorAll('#contenedorActividades .actividad-item');
+    let actividades = document.querySelectorAll(
+        '#contenedorActividades .actividad-item'
+    );
 
     actividades.forEach((el, index) => {
 
@@ -2769,17 +2775,15 @@ function reindexarActividades() {
 
         el.querySelector('strong').innerText = `Actividad ${num}`;
 
-        let input = el.querySelector('.actividad-left input');
-        input.name = `actividades[${num}][nombre]`;
+        let textarea = el.querySelector('.actividad-nombre');
+        textarea.name = `actividades[${num}][nombre]`;
 
         let btnTarea = el.querySelector('.btn-agregar-tarea');
         btnTarea.setAttribute('onclick', `agregarTarea(${num})`);
 
-     
         let tareasDiv = el.querySelector('[id^="tareas_"]');
         tareasDiv.id = `tareas_${num}`;
 
-       
         reindexarTareasActividad(tareasDiv, num);
     });
 }
@@ -2791,20 +2795,51 @@ function agregarTarea(idActividad) {
 
     let html = `
     <div class="tarea-item">
-        <div class="d-flex justify-content-between">
+
+        <div class="d-flex justify-content-between mb-2">
             <small>Tarea ${total}</small>
-            <button type="button" class="btn btn-danger btn-sm"
-                onclick="eliminarTarea(this)">
-                <i class="fa fa-trash"></i>
-            </button>
+
+            <button type="button"  class="btn btn-danger btn-sm" onclick="eliminarTarea(this)"> <i class="fa fa-trash"></i></button>
         </div>
-        <input type="text" class="form-control mt-1 tarea-nombre" placeholder="Nombre">
-        <input type="text" class="form-control mt-1 tarea-frecuencia" placeholder="Frecuencia (No de veces durante la jornada)">
-        <input type="text" class="form-control mt-1 tarea-duracion" placeholder="Duración (tiempo en Min)">
+
+        <div class="form-group mb-2">
+            <label class="d-block">Nombre de la tarea
+                <textarea class="form-control mt-1 tarea-nombre" rows="3" ></textarea>
+            </label>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group mb-2">
+                    <label class="d-block">Frecuencia
+                        <input type="text" class="form-control mt-1 tarea-frecuencia">
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="form-group mb-2">
+                    <label class="d-block">
+                        No de veces
+                        <input type="text" class="form-control mt-1 tarea-numero-veces" >
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group mb-2">
+            <label class="d-block"> Duración (tiempo en Min)
+                <input type="text"
+                    class="form-control mt-1 tarea-duracion" >
+            </label>
+        </div>
     </div>
     `;
 
     contenedor.insertAdjacentHTML('beforeend', html);
+
+    reindexarTareasActividad(contenedor, idActividad);
 }
 
 function eliminarTarea(btn) {
@@ -2827,17 +2862,27 @@ function reindexarTareasActividad(contenedor, idActividad) {
 
         let num = index + 1;
 
-     
         let titulo = el.querySelector('small');
-        if (titulo) titulo.innerText = `Tarea ${num}`;
 
-        let inputs = el.querySelectorAll('input');
+        if (titulo) {
+            titulo.innerText = `Tarea ${num}`;
+        }
 
-        inputs[0].name = `actividades[${idActividad}][tareas][${num}][nombre]`;
-        inputs[1].name = `actividades[${idActividad}][tareas][${num}][frecuencia]`;
-        inputs[2].name = `actividades[${idActividad}][tareas][${num}][duracion]`;
+        el.querySelector('.tarea-nombre').name =
+            `actividades[${idActividad}][tareas][${num}][nombre]`;
+
+        el.querySelector('.tarea-frecuencia').name =
+            `actividades[${idActividad}][tareas][${num}][frecuencia]`;
+
+        el.querySelector('.tarea-numero-veces').name =
+            `actividades[${idActividad}][tareas][${num}][numero_veces]`;
+
+        el.querySelector('.tarea-duracion').name =
+            `actividades[${idActividad}][tareas][${num}][duracion]`;
     });
 }
+
+/// FIN TAREA 
 
 function toggleSeccion(id) {
 
@@ -4351,6 +4396,7 @@ function generarJSONActividades() {
             actividad.tareas.push({
                 nombre: $(this).find('.tarea-nombre').val(),
                 frecuencia: $(this).find('.tarea-frecuencia').val(),
+                numero_veces: $(this).find('.tarea-numero-veces').val(),
                 duracion: $(this).find('.tarea-duracion').val()
             });
 
@@ -4627,7 +4673,7 @@ function pintarActividades(json) {
 
         let htmlActividad = `
         <div class="actividad-item" id="actividad_${num}">
-            
+
             <div class="actividad-card">
 
                 <div class="d-flex justify-content-between mb-2">
@@ -4636,21 +4682,19 @@ function pintarActividades(json) {
                         <i class="fa fa-trash"></i>
                     </button>
                 </div>
+
                 <div class="actividad-row">
                     <div class="actividad-left">
-                        <input type="text" 
-                            class="form-control actividad-nombre" 
-                            value="${actividad.nombre || ''}">
+                        <label class="d-block"> Nombre de la actividad
+                            <textarea class="form-control actividad-nombre mt-1" rows="3">${actividad.nombre || ''}</textarea>
+                        </label>
                     </div>
                     <div class="actividad-right">
-                        <button type="button" 
-                            class="btn btn-agregar-tarea"
-                            onclick="agregarTarea(${num})">
-                            + Agregar tarea
-                        </button>
+                        <button type="button" class="btn btn-agregar-tarea" onclick="agregarTarea(${num})"> + Agregar tarea</button>
                         <div id="tareas_${num}"></div>
                     </div>
                 </div>
+
             </div>
         </div>
         `;
@@ -4668,24 +4712,39 @@ function pintarActividades(json) {
 
                     <div class="d-flex justify-content-between">
                         <small>Tarea ${numT}</small>
-                        <button type="button" class="btn btn-danger btn-sm"
-                            onclick="eliminarTarea(this)">
-                            <i class="fa fa-trash"></i>
-                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarTarea(this)"><i class="fa fa-trash"></i></button>
                     </div>
 
-                    <input type="text" 
-                        class="form-control mt-1 tarea-nombre" 
-                        value="${tarea.nombre || ''}">
+                    <div class="form-group mb-2">
+                        <label class="d-block">Nombre de la tarea
+                            <textarea class="form-control mt-1 tarea-nombre" rows="3">${tarea.nombre || ''}</textarea>
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group mb-2">
+                                <label class="d-block">Frecuencia
+                                    <input type="text" class="form-control mt-1 tarea-frecuencia"value="${tarea.frecuencia || ''}">
+                                </label>
+                            </div>
+                        </div>
 
-                    <input type="text" 
-                        class="form-control mt-1 tarea-frecuencia" 
-                        value="${tarea.frecuencia || ''}">
+                        <div class="col-6">
+                            <div class="form-group mb-2">
+                                <label class="d-block">No de veces
+                                    <input type="text" class="form-control mt-1 tarea-numero-veces" value="${tarea.numero_veces ?? ''}">
+                                </label>
+                            </div>
+                        </div>
 
-                    <input type="text" 
-                        class="form-control mt-1 tarea-duracion" 
-                        value="${tarea.duracion || ''}">
+                    </div>
 
+                    <div class="form-group mb-2">
+                        <label class="d-block">
+                            Duración (tiempo en Min)
+                            <input type="text" class="form-control mt-1 tarea-duracion" value="${tarea.duracion || ''}">
+                        </label>
+                    </div>
                 </div>
                 `;
 
