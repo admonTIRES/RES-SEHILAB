@@ -94,22 +94,6 @@ $(document).ready(function () {
 		});
 	
 	
-		$('#inputfotomapaderiesgo').dropify({
-		messages: {
-			'default': 'Arrastre la imagen aquí o haga click',
-			'replace': 'Arrastre la imagen o haga clic para reemplazar',
-			'remove': 'Quitar',
-			'error': 'Ooops, ha ocurrido un error.'
-		},
-		error: {
-			'fileSize': 'Demasiado grande ({{ value }} max).',
-			'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-			'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-			'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-			'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-			'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-		}
-		});
 	
 	
 	// Inicializar tooltip
@@ -397,7 +381,7 @@ $("#boton_nuevo_reconocimiento").click(function () {
 
 	$("#estructura-container").css('display', 'none');
 
-	// mostrar TAB principal
+		// mostrar TAB principal
 	$("#tab_menu2").css('display', 'block');
 	$("#tab_menu3").css('display', 'none');
 	$("#tab_menu4").css('display', 'none');
@@ -418,6 +402,7 @@ $("#boton_nuevo_reconocimiento").click(function () {
 
 	// Borrar border warning
 	$('#divListaAgentes').removeClass('checkbox_warning');
+
 
 
     // Resetear campo FOTO INSTALACION
@@ -495,27 +480,6 @@ $("#boton_nuevo_reconocimiento").click(function () {
 	$('#inputfotoinstalacion').dropify().data('dropify').clearElement();
 
 
-	// inicializar campo FOTO plano instalacion
-	$('#inputfotomapaderiesgo').dropify({
-		messages: {
-			'default': 'Arrastre la imagen aquí o haga click',
-			'replace': 'Arrastre la imagen o haga clic para reemplazar',
-			'remove': 'Quitar',
-			'error': 'Ooops, ha ocurrido un error.'
-		},
-		error: {
-			'fileSize': 'Demasiado grande ({{ value }} max).',
-			'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-			'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-			'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-			'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-			'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-		}
-	});
-
-	$('#inputfotomapaderiesgo').val('');
-	$('#inputfotomapaderiesgo').dropify().data('dropify').resetPreview();
-	$('#inputfotomapaderiesgo').dropify().data('dropify').clearElement();
 
 
 	// inicializar campo FOTO mapa ubicacion
@@ -976,53 +940,7 @@ $('#tabla_reconocimiento_sensorial tbody').on('click', 'td.mostrar', function ()
 		else {
 			$("#boton_descargarfotoinstalacion").css('display', 'none');
 	}
-
-	//////////// OBTENER MAPA DE RIESGO ////////////
 	
-		if (row.data().fotomapariesgo) {
-			var archivo = row.data().fotomapariesgo;
-			var extension = archivo.substring(archivo.lastIndexOf("."));
-			var imagenUrl = '/mostrarmapariesgoergo/0/' + row.data().id + extension;
-
-			rutaMapa = imagenUrl
-
-			if ($('#inputfotomapaderiesgo').data('dropify')) {
-				$('#inputfotomapaderiesgo').dropify().data('dropify').destroy();
-				// $('.dropify-wrapper').css('height', 400);
-				$('#inputfotomapaderiesgo').dropify().data('dropify').settings.defaultFile = imagenUrl;
-				$('#inputfotomapaderiesgo').dropify().data('dropify').init();
-			}
-			else {
-				// $('#inputfotomapa').attr('data-height', 400);
-				$('#inputfotomapaderiesgo').attr('data-default-file', imagenUrl);
-				$('#inputfotomapaderiesgo').dropify({
-					messages: {
-						'default': 'Arrastre la imagen aquí o haga click',
-						'replace': 'Arrastre la imagen o haga clic para reemplazar',
-						'remove': 'Quitar',
-						'error': 'Ooops, ha ocurrido un error.'
-					},
-					error: {
-						'fileSize': 'Demasiado grande ({{ value }} max).',
-						'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-						'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-						'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-						'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-						'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-					}
-				});
-			}
-
-			// No requerir campo FOTO
-			$('#inputfotomapaderiesgo').attr('required', false);
-
-			// Activar boton descarga
-			$("#boton_descargarmapaderiesgo").css('display', 'block');
-		}
-		else {
-			$("#boton_descargarmapaderiesgo").css('display', 'none');
-	}
-
 
 
 	// Perfil
