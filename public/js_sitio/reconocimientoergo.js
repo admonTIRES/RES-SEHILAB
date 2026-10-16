@@ -6082,7 +6082,7 @@ Se localiza en las coordenadas  COORDENADAS.`);
                 $('#INTRODUCCION_GRAFICASISO12995').val(response.INTRODUCCION_GRAFICASISO12995);
             } else {
                 $('#INTRODUCCION_GRAFICASISO12995')
-                    .val(`En el presente apartado se muestran cada uno de los criterios de la carga física estática de acuerdo con la ISO TR-12295 en cuanto a: manejo de cargas, movimientos repetitivos, posturas; y los aspectos que cada una de las fichas contenga. El resultado final de la aplicación de estás dentro del análisis de la tarea que realiza el trabajador, se utiliza para determinar si hay riesgo ergonómico que conlleve a un análisis específico con métodos para estimar el riesgo y que permita establecer las medidas de control según sea el caso.`);
+                    .val(`En el presente apartado se muestran cada uno de los criterios de la carga física estática de acuerdo con la ISO TR-12295 en cuanto a: manejo de cargas, movimientos repetitivos, posturas; y los aspectos que cada una de las fichas contenga. El resultado final del análisis de la tarea que realiza el trabajador, se utiliza para determinar si hay riesgo ergonómico que conlleve a un evaluación específica con métodos para estimar el riesgo y que permita establecer las medidas de control según sea el caso.`);
 
             }
 
