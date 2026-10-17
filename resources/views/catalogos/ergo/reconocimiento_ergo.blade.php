@@ -2554,7 +2554,7 @@ DESCRIPCIONACTIVIDAD
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-                    @if (auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador']))
+                    @if (auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE']))
                     <button type="submit" class="btn btn-danger botonguardar_moduloproyecto" id="boton_guardar_evidencia_planos">
                         Guardar <i class="fa fa-save"></i>
                     </button>
