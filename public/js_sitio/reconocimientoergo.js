@@ -135,7 +135,45 @@ $('.link_menuprincipal').click(function () {
 			$("#steps_menu_tab1").click();
 			break;
 		
-		case "tab_menu3":
+        case "tab_menu3":
+            
+            
+            const introduccion = document.querySelector('#INFORME_INTRODUCCION');
+
+            if (introduccion) {
+                $('#INFORME_INTRODUCCION').summernote('code', introduccion.defaultValue);
+            }            
+            const textareasInformeFre = [
+                  
+                '#INFORME_OBJETIVOGENERALES',
+                '#INFORME_OBJETIVOSESPECIFICOS',
+                '#INFORME_UBICACIONINSTALACION',
+                '#INFORME_PROCESOINSTALACION',
+                '#INFORME_ACTIVIDADPRINCIPAL',
+                '#INTRODUCCION_GRAFICASNOM036',
+                '#CONCLUSION_GRAFICASNOM036',
+                '#INTRODUCCION_GRAFICASISO12995',
+                '#CONCLUSION_GRAFICASISO12995',
+                '#INFORME_CONCLUSION',
+                '#INFORME_RESPONSABLE1',
+                '#INFORME_RESPONSABLE1CARGO',
+                '#INFORME_RESPONSABLE2',
+                '#INFORME_RESPONSABLE2CARGO',
+            ];
+
+            textareasInformeFre.forEach(function(selector) {
+                const textarea = document.querySelector(selector);
+
+                if (textarea) {
+                    textarea.value = textarea.defaultValue;
+                }
+            });
+
+    
+            $('#SELECT_CONCLUSION').val('').trigger('change');
+            
+
+
 			$("#tab_3").css('display', 'block');
 			$("#tab_1").css('display', 'none');
 			$("#tab_2").css('display', 'none');
