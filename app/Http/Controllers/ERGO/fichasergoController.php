@@ -165,17 +165,70 @@ class fichasergoController extends Controller
 
 
 
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         switch (intval($request->api)) {
+    //             case 1:
+
+
+    //                 $camposArray = [
+    //                     'CAT_AREAS_FICHA',
+    //                     'TURNO_EMPLEADO_FICHA',
+    //                 ];
+
+    //                 foreach ($camposArray as $campo) {
+    //                     if (!isset($request[$campo]) || empty($request[$campo])) {
+    //                         $request[$campo] = null;
+    //                     }
+    //                 }
+
+    //                 if ($request->ID_FICHAS_TECNICAS == 0) {
+    //                     DB::statement('ALTER TABLE recoergo_fichastecnicas AUTO_INCREMENT=1;');
+    //                     $fichas = recoergofichastecnicasModel::create($request->all());
+    //                 } else {
+
+    //                     if (isset($request->ELIMINAR)) {
+    //                         if ($request->ELIMINAR == 1) {
+    //                             $fichas = recoergofichastecnicasModel::where('ID_FICHAS_TECNICAS', $request['ID_FICHAS_TECNICAS'])->update(['ACTIVO' => 0]);
+    //                             $response['code'] = 1;
+    //                             $response['fichas'] = 'Desactivada';
+    //                         } else {
+    //                             $fichas = recoergofichastecnicasModel::where('ID_FICHAS_TECNICAS', $request['ID_FICHAS_TECNICAS'])->update(['ACTIVO' => 1]);
+    //                             $response['code'] = 1;
+    //                             $response['fichas'] = 'Activada';
+    //                         }
+    //                     } else {
+    //                         $fichas = recoergofichastecnicasModel::find($request->ID_FICHAS_TECNICAS);
+    //                         $fichas->update($request->all());
+    //                         $response['code'] = 1;
+    //                         $response['fichas'] = 'Actualizada';
+    //                     }
+    //                     return response()->json($response);
+    //                 }
+    //                 $response['code']  = 1;
+    //                 $response['fichas']  = $fichas;
+    //                 return response()->json($response);
+    //                 break;
+    //             default:
+    //                 $response['code']  = 1;
+    //                 $response['msj']  = 'Api no encontrada';
+    //                 return response()->json($response);
+    //         }
+    //     } catch (Exception $e) {
+    //         return response()->json('Error al guardar ');
+    //     }
+    // }
+
+
+
     public function store(Request $request)
     {
         try {
             switch (intval($request->api)) {
                 case 1:
 
-
-                    $camposArray = [
-                        'CAT_AREAS_FICHA',
-                        'TURNO_EMPLEADO_FICHA',
-                    ];
+                    $camposArray = ['CAT_AREAS_FICHA','TURNO_EMPLEADO_FICHA',];
 
                     foreach ($camposArray as $campo) {
                         if (!isset($request[$campo]) || empty($request[$campo])) {
@@ -183,43 +236,102 @@ class fichasergoController extends Controller
                         }
                     }
 
-
                     if ($request->ID_FICHAS_TECNICAS == 0) {
+
                         DB::statement('ALTER TABLE recoergo_fichastecnicas AUTO_INCREMENT=1;');
-                        $fichas = recoergofichastecnicasModel::create($request->all());
+
+                        $recoId = $request->RECO_ID;
+
+                        if (empty($recoId)) {
+                            return response()->json([
+                                'code' => 0,
+                                'msj' => 'No se recibió el RECO_ID.'
+                            ]);
+                        }
+                        
+                        $nombreBloqueo = 'pe_ficha_reco_' . $recoId;
+                        $bloqueo = DB::selectOne('SELECT GET_LOCK(?, 10) AS lock_status',[$nombreBloqueo]);
+
+                        if (!$bloqueo || (int) $bloqueo->lock_status !== 1) {
+                            return response()->json([
+                                'code' => 0,
+                                'msj' => 'No fue posible generar el consecutivo. Intenta nuevamente.'
+                            ]);
+                        }
+
+                        try {
+
+                            $fichas = DB::transaction(function () use ($request, $recoId) {
+
+                                $ultimoPE = recoergofichastecnicasModel::where('RECO_ID', $recoId)
+                                    ->whereRaw("PE_EVALUADAS REGEXP '^PE[0-9]+$'")
+                                    ->orderByRaw('CAST(SUBSTRING(PE_EVALUADAS, 3) AS UNSIGNED) DESC')
+                                    ->value('PE_EVALUADAS');
+
+                                $numero = $ultimoPE ? ((int) substr($ultimoPE, 2)) + 1: 1;
+
+                                $request->merge(['PE_EVALUADAS' => 'PE' . $numero]);
+
+                                return recoergofichastecnicasModel::create($request->all());
+                            });
+                        } finally {
+
+                            DB::selectOne('SELECT RELEASE_LOCK(?) AS released',[$nombreBloqueo]);
+                        }
                     } else {
 
                         if (isset($request->ELIMINAR)) {
+
                             if ($request->ELIMINAR == 1) {
-                                $fichas = recoergofichastecnicasModel::where('ID_FICHAS_TECNICAS', $request['ID_FICHAS_TECNICAS'])->update(['ACTIVO' => 0]);
+
+                                $fichas = recoergofichastecnicasModel::where('ID_FICHAS_TECNICAS',$request['ID_FICHAS_TECNICAS'])->update(['ACTIVO' => 0]);
+
                                 $response['code'] = 1;
                                 $response['fichas'] = 'Desactivada';
                             } else {
-                                $fichas = recoergofichastecnicasModel::where('ID_FICHAS_TECNICAS', $request['ID_FICHAS_TECNICAS'])->update(['ACTIVO' => 1]);
+
+                                $fichas = recoergofichastecnicasModel::where('ID_FICHAS_TECNICAS',$request['ID_FICHAS_TECNICAS'])->update(['ACTIVO' => 1]);
+
                                 $response['code'] = 1;
                                 $response['fichas'] = 'Activada';
                             }
                         } else {
+
                             $fichas = recoergofichastecnicasModel::find($request->ID_FICHAS_TECNICAS);
                             $fichas->update($request->all());
+
                             $response['code'] = 1;
                             $response['fichas'] = 'Actualizada';
                         }
+
                         return response()->json($response);
                     }
-                    $response['code']  = 1;
-                    $response['fichas']  = $fichas;
+
+                    $response['code'] = 1;
+                    $response['fichas'] = $fichas;
+
                     return response()->json($response);
+
                     break;
+
                 default:
-                    $response['code']  = 1;
-                    $response['msj']  = 'Api no encontrada';
+                    $response['code'] = 1;
+                    $response['msj'] = 'Api no encontrada';
+
                     return response()->json($response);
             }
-        } catch (Exception $e) {
-            return response()->json('Error al guardar ');
+        } catch (\Throwable $e) {
+
+            \Log::error('Error al guardar ficha técnica: ' . $e->getMessage());
+
+            return response()->json([
+                'code' => 0,
+                'msj' => 'Error al guardar la ficha técnica.'
+            ], 500);
         }
     }
 
 
-    }
+
+
+}
