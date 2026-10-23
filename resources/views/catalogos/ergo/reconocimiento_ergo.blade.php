@@ -1417,8 +1417,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                 </ul>
 
                                                 <p style="text-align: justify;">
-                                                    Que para el caso de la re
-                                                    pública Mexicana, está contemplada la NOM-036-1-STPS-2018 en los aspectos de la ficha 1, 2 y 3;
+                                                    Que para el caso de la república Mexicana, está contemplada la NOM-036-1-STPS-2018 en los aspectos de la ficha 1, 2 y 3;
                                                     para lo cual se busca identificar los peligros de DESÓRDENES MUSCULOESQUELÉTICOS DE COLUMNA LUMBAR (TME),
                                                     para posteriormente estimar el riesgo y construir un mapa de estimación de riesgos por los aspectos referidos en las fichas ya mencionadas.
                                                     Posterior a esta fase se debe elaborar un plan estratégico para la prevención de los TME de origen laboral

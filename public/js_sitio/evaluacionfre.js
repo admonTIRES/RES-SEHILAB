@@ -17,12 +17,12 @@ var HIGIENE = 1;
 var Tablarecocategoriasergo = null;
 var Tablarecoareasergo = null;
 var Tablafichasevaluacionfre = null;
-
 var tabla_reporte_categoria = null;
 var tabla_reporte_area = null;
-
 var tabla_reporte_revisiones  = null 
-
+var datatableTablaActividadesFre = null;
+var datatableTablaImcFre = null;
+var tabla_reporte_trabajadores_ergo = null;
 
 var instalacionreco = '';
 
@@ -101,23 +101,7 @@ $(document).ready(function () {
 		}
 		});
 	
-	
-		$('#inputfotomapaderiesgo').dropify({
-		messages: {
-			'default': 'Arrastre la imagen aquí o haga click',
-			'replace': 'Arrastre la imagen o haga clic para reemplazar',
-			'remove': 'Quitar',
-			'error': 'Ooops, ha ocurrido un error.'
-		},
-		error: {
-			'fileSize': 'Demasiado grande ({{ value }} max).',
-			'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-			'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-			'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-			'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-			'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-		}
-		});
+
 	
 	
 	// Inicializar tooltip
@@ -175,10 +159,18 @@ case "tab_menu3":
             cargarDefinicionesFreErgo();
             cargarDatosGeneralesInformeReco();
             cargarMapaPeligros();
-
+            mostrartablaactividadesfre();
+            tablaReporteAreasErgo();
+            mostrartablaimcfre();
+             cargarGraficaPregunta1();
+            cargarGraficaPregunta2();
+            cargarGraficaPregunta3();
+            cargarGraficaPregunta4();
+            cargarGraficaPregunta5();
+            cargarGraficaPregunta6();
+            tablaReporteTrabajadoresErgo();
 			// cargarGraficas();
 			// tablaReporteCategoriasErgo();
-            // tablaReporteAreasErgo();
             // totalPlanosErgo();
 			// cargarRecomendacionesInformeErgo();
 			// tablaVersionesRecoErgo();
@@ -502,28 +494,6 @@ $("#boton_nuevo_reconocimiento").click(function () {
 	$('#inputfotoinstalacion').dropify().data('dropify').resetPreview();
 	$('#inputfotoinstalacion').dropify().data('dropify').clearElement();
 
-
-	// inicializar campo FOTO plano instalacion
-	$('#inputfotomapaderiesgo').dropify({
-		messages: {
-			'default': 'Arrastre la imagen aquí o haga click',
-			'replace': 'Arrastre la imagen o haga clic para reemplazar',
-			'remove': 'Quitar',
-			'error': 'Ooops, ha ocurrido un error.'
-		},
-		error: {
-			'fileSize': 'Demasiado grande ({{ value }} max).',
-			'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-			'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-			'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-			'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-			'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-		}
-	});
-
-	$('#inputfotomapaderiesgo').val('');
-	$('#inputfotomapaderiesgo').dropify().data('dropify').resetPreview();
-	$('#inputfotomapaderiesgo').dropify().data('dropify').clearElement();
 
 
 	// inicializar campo FOTO mapa ubicacion
@@ -989,52 +959,6 @@ $('#tabla_reconocimiento_sensorial tbody').on('click', 'td.mostrar', function ()
 		}
 		else {
 			$("#boton_descargarfotoinstalacion").css('display', 'none');
-	}
-
-	//////////// OBTENER MAPA DE RIESGO ////////////
-	
-		if (row.data().fotomapariesgo) {
-			var archivo = row.data().fotomapariesgo;
-			var extension = archivo.substring(archivo.lastIndexOf("."));
-			var imagenUrl = '/mostrarmapariesgoergo/0/' + row.data().id + extension;
-
-			rutaMapa = imagenUrl
-
-			if ($('#inputfotomapaderiesgo').data('dropify')) {
-				$('#inputfotomapaderiesgo').dropify().data('dropify').destroy();
-				// $('.dropify-wrapper').css('height', 400);
-				$('#inputfotomapaderiesgo').dropify().data('dropify').settings.defaultFile = imagenUrl;
-				$('#inputfotomapaderiesgo').dropify().data('dropify').init();
-			}
-			else {
-				// $('#inputfotomapa').attr('data-height', 400);
-				$('#inputfotomapaderiesgo').attr('data-default-file', imagenUrl);
-				$('#inputfotomapaderiesgo').dropify({
-					messages: {
-						'default': 'Arrastre la imagen aquí o haga click',
-						'replace': 'Arrastre la imagen o haga clic para reemplazar',
-						'remove': 'Quitar',
-						'error': 'Ooops, ha ocurrido un error.'
-					},
-					error: {
-						'fileSize': 'Demasiado grande ({{ value }} max).',
-						'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-						'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-						'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-						'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-						'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-					}
-				});
-			}
-
-			// No requerir campo FOTO
-			$('#inputfotomapaderiesgo').attr('required', false);
-
-			// Activar boton descarga
-			$("#boton_descargarmapaderiesgo").css('display', 'block');
-		}
-		else {
-			$("#boton_descargarmapaderiesgo").css('display', 'none');
 	}
 
 
@@ -3604,7 +3528,11 @@ function mostrarTablafichasevaluacionfre() {
                 {
 					"data": "PE_EVALUADAS",
 					"defaultContent": "-"
-				},
+                },
+                 {
+                    "data": "NOMBRE_AREA",
+                    "defaultContent": "-"
+                },
 				{
 					"data": "NOMBRE_CATEGORIA",
 					"defaultContent": "-"
@@ -7013,12 +6941,18 @@ En la aplicación de las fichas técnicas de identificación del riesgo ergonóm
             }
 		
 
-			$('#SELECT_CONCLUSION')
-				.val(response.SELECT_CONCLUSION)
-				.trigger('change');
 
-			$('#INFORME_CONCLUSION')
-				.val(response.INFORME_CONCLUSION);
+	        $('#INFORME_ANTROPOMETRICAS').val(response.INFORME_ANTROPOMETRICAS);
+
+            $('#OBSERVACIONES_ESQUELETICAS1').val(response.OBSERVACIONES_ESQUELETICAS1);
+	        $('#OBSERVACIONES_ESQUELETICAS2').val(response.OBSERVACIONES_ESQUELETICAS2);
+	        $('#OBSERVACIONES_ESQUELETICAS3').val(response.OBSERVACIONES_ESQUELETICAS3);
+	        $('#OBSERVACIONES_ESQUELETICAS4').val(response.OBSERVACIONES_ESQUELETICAS4);
+	        $('#OBSERVACIONES_ESQUELETICAS5').val(response.OBSERVACIONES_ESQUELETICAS5);
+	        $('#OBSERVACIONES_ESQUELETICAS6').val(response.OBSERVACIONES_ESQUELETICAS6);
+
+            $('#SELECT_CONCLUSION').val(response.SELECT_CONCLUSION);
+			$('#INFORME_CONCLUSION').val(response.INFORME_CONCLUSION);
 			
 			$('#INFORME_RESPONSABLE1')
 				.val(response.INFORME_RESPONSABLE1);
@@ -7740,3 +7674,690 @@ $("#form_reporte_procesoinstalacion").on(
     });
 });
 
+/////////////// CICLO   //////////////
+
+
+$("#form_informe_ciclos").on(
+    "submit",
+    function(e)
+{
+
+    e.preventDefault();
+    let formData = new FormData(this);
+    
+    formData.append('RECO_ID',recsensorial);
+
+    $.ajax({
+        url: '/guardarCicloFreErgo',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_ciclos").prop('disabled', true);
+            $("#botonguardar_reporte_ciclos").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+        complete: function()
+        {
+            $("#botonguardar_reporte_ciclos").prop('disabled', false);
+            $("#botonguardar_reporte_ciclos").html('Guardar ciclo <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+
+function mostrartablaactividadesfre() {
+    try {
+
+        if (datatableTablaActividadesFre !== null) {
+            datatableTablaActividadesFre.ajax.reload();
+            return;
+        }
+
+        datatableTablaActividadesFre = $('#TablaActividadesFre').DataTable({
+            "ajax": {
+                "url": "/TablaActividadesFre",
+                "type": "GET",
+                "cache": false,
+                "dataSrc": "data",
+
+                "data": function (data) {
+                    data.ergoid = recsensorial;
+                },
+
+                "error": function (xhr, error, code) {
+                    console.error(
+                        "Error en TablaActividadesFre:",
+                        xhr.responseJSON || xhr.responseText
+                    );
+                }
+            },
+
+            "columns": [
+                {
+                    "data": "CATEGORIA",
+					"defaultContent": "-",
+                    "className": "text-center"
+                },
+                {
+                    "data": "TURNO",
+					"defaultContent": "-",
+                    "className": "text-center"
+                },
+                {
+                    "data": "ACTIVIDAD",
+					"defaultContent": "-",
+                },
+                {
+                    "data": "TAREA",
+					"defaultContent": "-",
+                },
+                {
+                    "data": "DURACION",
+					"defaultContent": "-",
+                    "className": "text-center"
+                },
+                {
+                    "data": "FRECUENCIA",
+					"defaultContent": "-",
+                    "className": "text-center"
+                },
+                {
+                    "data": "NUMERO_VECES",
+					"defaultContent": "-",
+                    "className": "text-center"
+                }
+            ],
+
+            "columnDefs": [
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": $.fn.dataTable.render.text()
+                }
+            ],
+
+            "lengthMenu": [
+                [20, 50, 100, -1],
+                [20, 50, 100, "Todos"]
+            ],
+			 rowsGroup: [0,1,2,4,5,6], //agrupar filas
+            "pageLength": 20,
+            "ordering": false,
+            "processing": true,
+            "serverSide": false,
+            "responsive": true,
+            "autoWidth": false,
+
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "zeroRecords": "No se encontraron registros",
+                "info": "Página _PAGE_ de _PAGES_ (Total _TOTAL_ registros)",
+                "infoEmpty": "No se encontraron registros",
+                "infoFiltered": "(Filtrado de _MAX_ registros)",
+                "emptyTable": "No hay datos disponibles en la tabla",
+                "loadingRecords": "Cargando datos...",
+                "processing": "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Última",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+
+    } catch (exception) {
+        console.error("Error en TablaActividadesFre:", exception);
+    }
+}
+
+/// CONDICIONES DE OPERACION DURANTE LA EVALUACION
+
+function tablaReporteAreasErgo()
+{
+	try {
+
+		var ruta = "/tablaReporteAreasErgo";
+
+		if ($.fn.DataTable.isDataTable('#tabla_reporte_area')) {
+
+			tabla_reporte_area.clear().destroy();
+
+			$('#tabla_reporte_area tbody').empty();
+		}
+
+		tabla_reporte_area = $('#tabla_reporte_area').DataTable({
+
+			"ajax": {
+				"url": ruta,
+				"type": "GET",
+				"cache": false,
+				"data": {
+					ergoid: recsensorial
+				},
+				"dataSrc": "data"
+			},
+
+			"columns": [
+				{
+					"data": "AREA",
+					"defaultContent": "-"
+				},
+				{
+					"data": "CATEGORIA",
+					"defaultContent": "-"
+                },
+			],
+
+			"paging": false,
+			"searching": false,
+			"info": false,
+			"ordering": false,
+			"processing": true,
+			"responsive": true,
+			"autoWidth": false,
+
+            
+
+			"drawCallback": function () {
+				var api = this.api();
+				var rows = api.rows({
+					page: 'current'
+				}).nodes();
+				var lastArea = null;
+				var rowspan = 1;
+				var firstRow = null;
+
+				api.column(0, {
+					page: 'current'
+				}).data().each(function (area, i) {
+
+					var row = rows[i];
+					var cell = $('td:eq(0)', row);
+
+					if (lastArea === area) {
+
+						rowspan++;
+						cell.remove();
+						$('td:eq(0)', firstRow).attr('rowspan', rowspan);
+
+					} else {
+
+						lastArea = area;
+						rowspan = 1;
+						firstRow = row;
+					}
+				});
+			},
+
+			"language": {
+				"lengthMenu": "Mostrar _MENU_ registros",
+				"zeroRecords": "No se encontraron registros",
+				"info": "Página _PAGE_ de _PAGES_",
+				"infoEmpty": "No hay registros",
+				"infoFiltered": "(Filtrado de _MAX_ registros)",
+				"emptyTable": "No hay datos disponibles en la tabla",
+				"loadingRecords": "Cargando...",
+				"processing": "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+				"search": "Buscar:",
+				"paginate": {
+					"first": "Primero",
+					"last": "Último",
+					"next": "Siguiente",
+					"previous": "Anterior"
+				}
+			}
+		});
+
+	}
+	catch (exception) {
+
+		console.error("Error en tablaReporteAreasErgo:", exception);
+
+	}
+}
+
+/// ANTROPOMETRICAS
+
+
+function mostrartablaimcfre() {
+    try {
+        if (datatableTablaImcFre !== null) {
+            datatableTablaImcFre.ajax.reload();
+            return;
+        }
+
+        datatableTablaImcFre = $('#TablaImcFre').DataTable({
+            "ajax": {
+                "url": "/TablaImcFre",
+                "type": "GET",
+                "cache": false,
+                "dataSrc": "data",
+
+                "data": function (data) {
+                    data.ergoid = recsensorial;
+                },
+
+                "error": function (xhr, error, code) {
+                    console.error(
+                        "Error en TablaImcFre:",
+                        xhr.responseJSON || xhr.responseText
+                    );
+                }
+            },
+
+            "columns": [
+                {
+                    "data": "NUMERO",
+                    "className": "text-center"
+                },
+                {
+                    "data": "CATEGORIA",
+                    "defaultContent": "-"
+                },
+                {
+                    "data": "AREA",
+                    "defaultContent": "-"
+                },
+                {
+                    "data": "ESTATURA",
+                    "defaultContent": "-",
+                    "className": "text-center"
+                },
+                {
+                    "data": "PESO",
+                    "defaultContent": "-",
+                    "className": "text-center"
+                },
+                {
+                    "data": "IMC",
+                    "defaultContent": "-",
+                    "className": "text-center"
+                },
+                {
+                    "data": "INTERPRETACION",
+                    "defaultContent": "-",
+                    "className": "text-center"
+                }
+            ],
+
+            "columnDefs": [
+                {
+                    "targets": "_all",
+                    "defaultContent": "-",
+                    "render": $.fn.dataTable.render.text()
+                }
+            ],
+
+            "lengthMenu": [
+                [20, 50, 100, -1],
+                [20, 50, 100, "Todos"]
+            ],
+
+            "pageLength": 20,
+            "ordering": false,
+            "processing": true,
+            "serverSide": false,
+            "responsive": true,
+            "autoWidth": false,
+
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "zeroRecords": "No se encontraron registros",
+                "info": "Página _PAGE_ de _PAGES_ (Total _TOTAL_ registros)",
+                "infoEmpty": "No se encontraron registros",
+                "infoFiltered": "(Filtrado de _MAX_ registros)",
+                "emptyTable": "No hay datos disponibles en la tabla",
+                "loadingRecords": "Cargando datos...",
+                "processing": "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Última",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+
+    } catch (exception) {
+        console.error("Error en TablaImcFre:", exception);
+    }
+}
+
+
+
+$("#form_informe_antropometricas").on("submit",function(e)
+{
+
+    e.preventDefault();
+    let formData = new FormData(this);
+    
+    formData.append('RECO_ID',recsensorial);
+
+    $.ajax({
+        url: '/guardarAntopometricasFreErgo',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_antropometricas").prop('disabled', true);
+            $("#botonguardar_reporte_antropometricas").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+        complete: function()
+        {
+            $("#botonguardar_reporte_antropometricas").prop('disabled', false);
+            $("#botonguardar_reporte_antropometricas").html('Guardar antropométricas <i class="fa fa-save"></i>');
+        }
+    });
+    });
+
+
+
+/// MUSCULO ESQUELETICO
+
+$("#form_informe_esqueletico").on("submit",function(e)
+{
+
+    e.preventDefault();
+    let formData = new FormData(this);
+    
+    formData.append('RECO_ID',recsensorial);
+
+    $.ajax({
+        url: '/guardarMusculoFreErgo',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_esqueletico").prop('disabled', true);
+            $("#botonguardar_reporte_esqueletico").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+        complete: function()
+        {
+            $("#botonguardar_reporte_esqueletico").prop('disabled', false);
+            $("#botonguardar_reporte_esqueletico").html('Guardar músculo esqueléticos <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+/// CATEGORIAS EVALUADAS
+
+
+
+function tablaReporteTrabajadoresErgo() {
+
+    try {
+
+        var ruta = "/tablaReporteTrabajadoresErgo";
+
+        if ($.fn.DataTable.isDataTable('#tabla_reporte_trabajadores_ergo'))
+        {
+            $('#tabla_reporte_trabajadores_ergo').DataTable().clear().destroy();
+            $('#tabla_reporte_trabajadores_ergo tbody').empty();
+        }
+
+        tabla_reporte_trabajadores_ergo =  $('#tabla_reporte_trabajadores_ergo').DataTable({
+
+                ajax: {
+                    url: ruta,
+                    type: "GET",
+                    cache: false,
+                    data: {ergoid: recsensorial},
+                    dataSrc: function (json) {
+                        console.log('Datos recibidos del controlador:',json.data);
+                        (json.data || []).forEach(function (fila) {
+                            console.log('Área:',fila.AREA,'| Categoría:',fila.CATEGORIA,'| Total:',fila.TRABAJADORES_EVALUADOS);
+                        });
+
+                        return json.data || [];
+                    },
+
+                    error: function (xhr, error, thrown) {
+                        console.error('Error al cargar trabajadores evaluados:',xhr.responseText || error || thrown);
+                    }
+                },
+
+                columns: [
+                    {
+                        data: "AREA",
+                        defaultContent: "-"
+                    },
+                    {
+                        data: "CATEGORIA",
+                        defaultContent: "-"
+                    },
+                    {
+                        data: "TRABAJADORES_EVALUADOS",
+                        defaultContent: ""
+                    }
+                ],
+
+                paging: false,
+                searching: false,
+                info: false,
+                ordering: false,
+                processing: true,
+                responsive: false,
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: [0, 1, 2],
+                        className: "text-center align-middle"
+                    }
+                ],
+
+                drawCallback: function () {
+
+                    var api = this.api();
+
+                    var filas = api.rows({
+                        page: 'current'
+                    }).nodes().toArray();
+
+                    var datos = api.rows({
+                        page: 'current'
+                    }).data().toArray();
+
+                    if (datos.length === 0) {
+                        return;
+                    }
+
+                    var grupos = [];
+                    var grupoActual = null;
+
+                    datos.forEach(function (fila, i) {
+
+                        var nombreArea = String(fila.AREA ?? '').trim();
+
+                        if (grupoActual === null || grupoActual.area !== nombreArea)
+                        {
+                            grupoActual = {
+                                area: nombreArea,
+                                filas: [],
+                                total: ''
+                            };
+
+                            grupos.push(grupoActual);
+                        }
+
+                        grupoActual.filas.push({
+                            datos: fila,
+                            nodo: filas[i]
+                        });
+
+                        var valorTotal = fila.TRABAJADORES_EVALUADOS;
+
+                        if (grupoActual.total === '' && valorTotal !== null && valorTotal !== undefined && String(valorTotal).trim() !== '')
+                        {
+                            grupoActual.total = valorTotal;
+                        }
+                    });
+
+                    grupos.forEach(function (grupo) {
+
+                        if (grupo.filas.length === 0) {
+                            return;
+                        }
+
+                        var primeraFila = grupo.filas[0].nodo;
+
+                        var celdaArea = $(primeraFila).children('td').eq(0);
+                        var celdaTotal = $(primeraFila).children('td').eq(2);
+
+                        celdaArea.text(grupo.area || '-').attr('rowspan', grupo.filas.length).css('vertical-align', 'middle');
+                        celdaTotal.text(grupo.total !== ''? grupo.total : '0').attr('rowspan', grupo.filas.length).css('vertical-align', 'middle');
+
+                        for (var i = 1; i < grupo.filas.length; i++)
+                        {
+
+                            var filaHTML = $(grupo.filas[i].nodo);
+                            filaHTML.children('td').eq(2).remove();
+                            filaHTML.children('td').eq(0).remove();
+                        }
+                    });
+
+                },
+
+                language: {
+                    lengthMenu: "Mostrar _MENU_ registros",
+                    zeroRecords: "No se encontraron registros",
+                    info: "Página _PAGE_ de _PAGES_",
+                    infoEmpty: "No hay registros",
+                    infoFiltered: "(Filtrado de _MAX_ registros)",
+                    emptyTable: "No hay datos disponibles en la tabla",
+                    loadingRecords: "Cargando...",
+                    "processing": "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
+                    search: "Buscar:",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    }
+                }
+            });
+
+    } catch (exception) {
+
+        console.error("Error en tablaReporteTrabajadoresErgo:",exception);
+    }
+}   
+
+/// CONCLUSION
+
+$('#SELECT_CONCLUSION').on('change', function () {
+    var selectedOption = $(this).find('option:selected');
+    var conclusion = selectedOption.data('conclusion');
+    $('#INFORME_CONCLUSION').val(conclusion);
+});
+
+
+$("#form_informe_conclusiones").on(
+    "submit",
+    function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    formData.append('RECO_ID',recsensorial);
+
+    $.ajax({
+        url: '/guardarConclusionFreErgo',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_conclusion").prop('disabled', true);
+            $("#botonguardar_reporte_conclusion").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_reporte_conclusion").prop('disabled', false);
+            $("#botonguardar_reporte_conclusion").html('Guardar conclusión <i class="fa fa-save"></i>');
+        }
+    });
+});

@@ -59,6 +59,9 @@ use App\modelos\reconocimientoergo\datosgeneralesinformeRecoModel;
 use App\modelos\reconocimientoergo\recoergofichastecnicasModel;
 use App\modelos\evaluacionfre\evaluacionfreModel;
 
+use App\modelos\evaluacionfre\recursosPortadaFreErgoModel;
+use App\modelos\evaluacionfre\datosgeneralesinformeFreModel;
+use App\modelos\evaluacionfre\definicionesinformeFreModel;
 
 
 ///// CAT EPP
@@ -88,43 +91,32 @@ class evaluacionfreController extends Controller
         $catregimen = catergo_regimencontractualModel::where('ACTIVO', 1)->get();
         $catjornada = catergo_jornada::where('ACTIVO', 1)->get();
         $caturno = catergo_turnoModel::where('ACTIVO', 1)->get();
-        $catdefiniciones = catergo_definicionesModel::whereIn('USO_DEFINICIONES', ['Reconocimiento', 'Ambos'])
+        $catdefiniciones = catergo_definicionesModel::whereIn('USO_DEFINICIONES', ['Informe', 'Ambos'])
             ->orderBy('CONCEPTO_DEFINICION', 'ASC')
             ->get();
 
         $catintroduccion = catergo_introduccionModel::where('ACTIVO', 1)->get();
         $catconclusion = catergo_conclusionModel::where('ACTIVO', 1)->get();
-        $catrecomendaciones = catergo_recomendacionesModel::whereIn('USO_RECOMENDACIONES', ['Reconocimiento', 'Ambos'])->get();
+        $catrecomendaciones = catergo_recomendacionesModel::whereIn('USO_RECOMENDACIONES', ['Informe'])->get();
 
         //// CAT EPP
         $catregionanatomica = catregionanatomicaModel::where('ACTIVO', 1)->get();
         $catclaveyepp = catclaveyeppModel::where('ACTIVO', 1)->get();
 
-
-
         return view('catalogos.ergo.evaluacionfre', compact('catdepartamento', 'catmovilfijo', 'catregimen', 'catjornada', 'caturno', 'catdefiniciones', 'catintroduccion', 'catconclusion', 'catrecomendaciones', 'catregionanatomica', 'catclaveyepp'));
     }
 
 
-
-     public function Tablafichasevaluacionfre(Request $request)
+    public function Tablafichasevaluacionfre(Request $request)
     {
         try {
 
             $ergo = $request->get('ergoid');
 
-            // $tabla = recoergofichastecnicasModel::select(
-            //     'recoergo_fichastecnicas.*',
-            //     'recoergocategorias.NOMBRE_CATEGORIA_ERGO as NOMBRE_CATEGORIA'
-            // )
-            //     ->leftJoin(
-            //         'recoergocategorias',
-            //         'recoergo_fichastecnicas.CATEGORIA_ID_FICHA',
-            //         '=',
-            //         'recoergocategorias.ID_CATEGORIA_ERGO'
-            //     )
-            //     ->where('recoergo_fichastecnicas.RECO_ID', $ergo)
-            //     ->get();
+            $areas = recoergoareasModel::pluck(
+                'NOMBRE_AREA_ERGO',
+                'ID_AREA_ERGO'
+            )->toArray();
 
             $tabla = recoergofichastecnicasModel::select(
                 'recoergo_fichastecnicas.*',
@@ -144,11 +136,36 @@ class evaluacionfreController extends Controller
                     'recoergo_fichastecnicas.ID_FICHAS_TECNICAS'
                 )
                 ->where('recoergo_fichastecnicas.RECO_ID', $ergo)
+                ->orderBy('recoergo_fichastecnicas.ID_FICHAS_TECNICAS', 'asc')
                 ->get();
-
 
             foreach ($tabla as $value) {
 
+             
+                $idsAreas = $value->CAT_AREAS_FICHA ?? [];
+
+                if (is_string($idsAreas)) {
+                    $idsAreas = json_decode($idsAreas, true) ?? [];
+                }
+
+                if (!is_array($idsAreas)) {
+                    $idsAreas = [];
+                }
+
+                $listaAreas = [];
+
+                foreach ($idsAreas as $idArea) {
+
+                    if (isset($areas[$idArea])) {
+                        $listaAreas[] = '<li>' . e($areas[$idArea]) . '</li>';
+                    }
+                }
+
+                $value->NOMBRE_AREA = count($listaAreas)
+                    ? '<ul class="mb-0 ps-3">' . implode('', $listaAreas) . '</ul>'
+                    : '';
+
+            
                 if ($value->ACTIVO == 0) {
 
                     $value->BTN_EDITAR = '
@@ -160,6 +177,8 @@ class evaluacionfreController extends Controller
                     <button type="button" class="btn btn-primary btn-custom rounded-pill VISUALIZAR">
                         <i class="bi bi-eye"></i>
                     </button>';
+
+                    $value->BTN_FICHA = '';
                 } else {
 
                     $value->BTN_EDITAR = '
@@ -167,33 +186,30 @@ class evaluacionfreController extends Controller
                         <i class="fa fa-eye"></i>
                     </button>';
 
+                    $value->BTN_VISUALIZAR = '';
 
-                     $value->BTN_FICHA = '
-                    <button type="button" class="btn btn-info  btn-circle iniciarfre">
+                    $value->BTN_FICHA = '
+                    <button type="button" class="btn btn-info btn-circle iniciarfre">
                         <i class="fa fa-check-circle"></i>
                     </button>';
-
-
                 }
-
 
                 if ($value->ID_EVALUACION_FRE) {
 
-                    $value->ESTATUS_FRE =
-                        '<div class="text-center">
-                            <span class="badge badge-pill badge-success" style="font-size:12px">
-                                Iniciado
-                            </span>
-                        </div>';
-                
+                    $value->ESTATUS_FRE = '
+                    <div class="text-center">
+                        <span class="badge badge-pill badge-success" style="font-size:12px">
+                            Iniciado
+                        </span>
+                    </div>';
                 } else {
 
-                    $value->ESTATUS_FRE =
-                        '<div class="text-center">
-                            <span class="badge badge-pill badge-danger" style="font-size:12px">
-                                Sin iniciar
-                            </span>
-                        </div>';
+                    $value->ESTATUS_FRE = '
+                    <div class="text-center">
+                        <span class="badge badge-pill badge-danger" style="font-size:12px">
+                            Sin iniciar
+                        </span>
+                    </div>';
                 }
             }
 
@@ -201,16 +217,14 @@ class evaluacionfreController extends Controller
                 'data' => $tabla,
                 'msj' => 'Información consultada correctamente'
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             return response()->json([
-                'msj' => 'Error ' . $e->getMessage(),
-                'data' => 0
+                'msj' => 'Error: ' . $e->getMessage(),
+                'data' => []
             ]);
         }
     }
-
-
     public function obtenerEvaluacionFre(Request $request)
     {
         $evaluacion = evaluacionfreModel::where('FICHA_ID', $request->FICHA_ID)
@@ -991,6 +1005,1057 @@ class evaluacionfreController extends Controller
     }
 
 
+    ///// INFORME
 
 
+
+    public function obtenerDatosInformesFreErgo($ID)
+    {
+        try {
+
+            $opciones_select = '<option value="">&nbsp;</option>';
+            $html  = '<option value="">&nbsp;</option>';
+
+            $info = DB::select('SELECT 
+                                ID_FRE_INFORME,
+                                RECO_ID,
+                                AGENTE_ID,
+                                NORMA_ID,
+                                RUTA_IMAGEN_PORTADA,
+                                OPCION_PORTADA1,
+                                OPCION_PORTADA2,
+                                OPCION_PORTADA3,
+                                OPCION_PORTADA4,
+                                OPCION_PORTADA5,
+                                OPCION_PORTADA6,                                        
+                                NIVEL1,
+                                NIVEL2,
+                                NIVEL3,
+                                NIVEL4,
+                                NIVEL5,
+                                INFORME_MES,
+                                INFORME_ANIO
+                            FROM recursosPortadasFreErgo
+                            WHERE RECO_ID = ?', [$ID]);
+
+
+            $niveles = DB::select('
+
+                SELECT 
+                    "Instalación" AS ETIQUETA,
+                    p.proyecto_clienteinstalacion AS OPCION,
+                    0 NIVEL
+
+                FROM reconocimientoergo re
+
+                LEFT JOIN proyecto p 
+                    ON p.proyecto_folio COLLATE utf8mb3_general_ci =
+                    re.proyecto_folio COLLATE utf8mb3_general_ci
+
+                WHERE re.id = ?
+
+                UNION
+
+                SELECT
+
+                    IFNULL(ce.NOMBRE_ETIQUETA, "NO") AS ETIQUETA,
+
+                    IFNULL(co.NOMBRE_OPCIONES, "NO") AS OPCION,
+
+                    IFNULL(ep.NIVEL, 0) NIVEL
+
+                FROM reconocimientoergo re
+
+                LEFT JOIN proyecto p 
+                    ON p.proyecto_folio COLLATE utf8mb3_general_ci =
+                    re.proyecto_folio COLLATE utf8mb3_general_ci
+
+                LEFT JOIN estructuraProyectos ep 
+                    ON p.id = ep.PROYECTO_ID
+
+                LEFT JOIN cat_etiquetas ce 
+                    ON ep.ETIQUETA_ID = ce.ID_ETIQUETA
+
+                LEFT JOIN catetiquetas_opciones co 
+                    ON ep.OPCION_ID = co.ID_OPCIONES_ETIQUETAS
+
+                WHERE re.id = ?
+
+                UNION
+
+                SELECT 
+                    "Folio" AS ETIQUETA,
+
+                    p.proyecto_folio AS OPCION,
+
+                    0 NIVEL
+
+                FROM reconocimientoergo re
+
+                LEFT JOIN proyecto p 
+                    ON p.proyecto_folio COLLATE utf8mb3_general_ci =
+                    re.proyecto_folio COLLATE utf8mb3_general_ci
+
+                WHERE re.id = ?
+
+                UNION
+
+                SELECT
+
+                    "Razón social" AS ETIQUETA,
+
+                    p.proyecto_clienterazonsocial AS OPCION,
+
+                    0 NIVEL
+
+                FROM reconocimientoergo re
+
+                LEFT JOIN proyecto p 
+                    ON p.proyecto_folio COLLATE utf8mb3_general_ci =
+                    re.proyecto_folio COLLATE utf8mb3_general_ci
+
+                WHERE re.id = ?
+
+                UNION
+
+                SELECT 
+
+                    "Nombre comercial" AS ETIQUETA,
+
+                    c.cliente_NombreComercial AS OPCION,
+
+                    0 NIVEL
+
+                FROM reconocimientoergo re
+
+                LEFT JOIN proyecto p 
+                    ON p.proyecto_folio COLLATE utf8mb3_general_ci =
+                    re.proyecto_folio COLLATE utf8mb3_general_ci
+
+                LEFT JOIN cliente c 
+                    ON p.cliente_id = c.id
+
+                WHERE re.id = ?
+
+                ORDER BY NIVEL
+
+            ', [$ID, $ID, $ID, $ID, $ID]);
+
+
+            foreach ($niveles as $key => $value) {
+
+                if ($value->ETIQUETA == 'NO') {
+
+                    $opciones_select .= '<option value="" disabled>
+                                        Proyecto vinculado sin Estructura organizacional para mostrar
+                                     </option>';
+                } else {
+
+                    if ($value->NIVEL == 0) {
+
+                        $opciones_select .= '<option value="' . $value->OPCION . '"  >
+                                            ' . $value->ETIQUETA . ' : ' . $value->OPCION  . '
+                                         </option>';
+                    } else {
+
+                        $opciones_select .= '<option value="' . $value->OPCION . '"  >
+                                            ' . $value->ETIQUETA . ' : ' . $value->OPCION . '
+                                            [ Nivel ' . $value->NIVEL . ']
+                                         </option>';
+                    }
+                }
+            }
+
+
+
+            foreach ($niveles as $key => $value) {
+
+                if ($value->ETIQUETA == 'Instalación' || $value->NIVEL != 0) {
+
+                    $html .= '<option value="' . $value->OPCION . '">'
+                        . $value->ETIQUETA . ' : ' . $value->OPCION;
+
+                    if ($value->NIVEL != 0) {
+
+                        $html .= ' [ Nivel ' . $value->NIVEL . ']';
+                    }
+
+                    $html .= '</option>';
+                }
+            }
+
+
+            $dato["opciones"] = $opciones_select;
+            $dato["checks"] = $html;
+
+
+            if ($info) {
+
+                $dato["data"] = $info;
+                return response()->json($dato);
+            } else {
+
+                $dato["data"] = 'No se encontraron datos';
+                return response()->json($dato);
+            }
+        } catch (Exception $e) {
+
+            $dato["msj"] = 'Error ' . $e->getMessage();
+            return response()->json($dato, 500);
+        }
+    }
+
+
+
+    public function guardarPortadaFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+
+            $recurso = recursosPortadaFreErgoModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->first();
+
+            if (!$recurso) {
+                $recurso = new recursosPortadaFreErgoModel();
+                $recurso->RECO_ID = $request->RECO_ID;
+                $recurso->save();
+            }
+
+            $recurso->NIVEL1 = $request->NIVEL1;
+            $recurso->NIVEL2 = $request->NIVEL2;
+            $recurso->NIVEL3 = $request->NIVEL3;
+            $recurso->NIVEL4 = $request->NIVEL4;
+            $recurso->NIVEL5 = $request->NIVEL5;
+
+            $recurso->OPCION_PORTADA1 = $request->OPCION_PORTADA1;
+            $recurso->OPCION_PORTADA2 = $request->OPCION_PORTADA2;
+            $recurso->OPCION_PORTADA3 = $request->OPCION_PORTADA3;
+            $recurso->OPCION_PORTADA4 = $request->OPCION_PORTADA4;
+            $recurso->OPCION_PORTADA5 = $request->OPCION_PORTADA5;
+            $recurso->OPCION_PORTADA6 = $request->OPCION_PORTADA6;
+
+            $recurso->INFORME_MES = $request->INFORME_MES;
+            $recurso->INFORME_ANIO = $request->INFORME_ANIO;
+
+
+            if ($request->file('RUTA_IMAGEN_PORTADA')) {
+
+                $extension = $request->file('RUTA_IMAGEN_PORTADA')->getClientOriginalExtension();
+
+
+                $ruta = $request->file('RUTA_IMAGEN_PORTADA')->storeAs(
+                    'evaluacionfre_ergo/' . $request->RECO_ID . '/foto_portada',
+                    $request->RECO_ID . '.' . $extension
+                );
+
+                $recurso->RUTA_IMAGEN_PORTADA = $ruta;
+            }
+
+            $recurso->save();
+
+            DB::commit();
+
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function mostrarportadafreergo($archivo_opcion, $reco_id,  $extension)
+    {
+        $recurso = recursosPortadaFreErgoModel::where(
+            'RECO_ID',
+            $reco_id
+        )->firstOrFail();
+
+        if (($archivo_opcion + 0) == 0) {
+            return Storage::response($recurso->RUTA_IMAGEN_PORTADA);
+        } else {
+            return Storage::download($recurso->RUTA_IMAGEN_PORTADA);
+        }
+    }
+
+    //// DATOS GENERALES 
+
+
+    public function obtenerDatosGeneralesInformeFre($RECO_ID)
+    {
+        try {
+
+            $dato = datosgeneralesinformeFreModel::where(
+                'RECO_ID',
+                $RECO_ID
+            )->first();
+
+            if ($dato) {
+                return response()->json($dato);
+            } else {
+                return response()->json([
+                    'msj' => 'No se encontraron datos'
+                ]);
+            }
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function guardarIntroduccionFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where('RECO_ID',$request->RECO_ID)->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+            }
+
+            $dato->INFORME_INTRODUCCION = $request->INFORME_INTRODUCCION;
+
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Introducción guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
+    public function guardarDefinicionesFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+
+            definicionesinformeFreModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->delete();
+
+            if ($request->DEFINICONES_INFORME) {
+
+                foreach ($request->DEFINICONES_INFORME as $definicion) {
+                    $dato = new definicionesinformeFreModel();
+                    $dato->RECO_ID = $request->RECO_ID;
+                    $dato->CATALOGO_DEFINICIONES_ID = $definicion;
+                    $dato->save();
+                }
+            }
+            DB::commit();
+
+
+            return response()->json([
+                'msj' => 'Definiciones guardadas correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function obtenerDefinicionesFreErgo($RECO_ID)
+    {
+        $datos = definicionesinformeFreModel::where(
+            'RECO_ID',
+            $RECO_ID
+        )->get();
+        return response()->json($datos);
+    }
+
+    public function guardarObjetivoGeneralFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+            }
+
+            $dato->INFORME_OBJETIVOGENERALES = $request->INFORME_OBJETIVOGENERALES;
+            $dato->save();
+            DB::commit();
+
+
+            return response()->json([
+                'msj' => 'Objetivo general guardado correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardarObjetivoEspecificoFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->first();
+
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+            }
+
+            $dato->INFORME_OBJETIVOSESPECIFICOS = $request->INFORME_OBJETIVOSESPECIFICOS;
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Objetivos específicos guardados correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardarReconocimientoFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+            }
+
+            $dato->INFORME_RECONOCIMIENTO = $request->INFORME_RECONOCIMIENTO;
+            $dato->save();
+            DB::commit();
+
+
+            return response()->json([
+                'msj' => 'Objetivo general guardado correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardarProcesoInstalacionFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+                $dato->save();
+            }
+
+            $dato->INFORME_PROCESOINSTALACION = $request->INFORME_PROCESOINSTALACION;
+            $dato->INFORME_ACTIVIDADPRINCIPAL = $request->INFORME_ACTIVIDADPRINCIPAL;
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Proceso de instalación guardado correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function guardarCicloFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+                $dato->save();
+            }
+
+            $dato->INFORME_CICLOS = $request->INFORME_CICLOS;
+            $dato->save();
+
+            DB::commit();
+
+            return response()->json([
+                'msj' => 'Proceso de instalación guardado correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function TablaActividadesFre(Request $request)
+    {
+        $this->validate($request, [
+            'ergoid' => 'required|integer|min:1',
+        ]);
+
+        try {
+            $evaluaciones = DB::table('evaluacion_fre_ergo as evaluacion')
+                ->leftJoin(
+                    'recoergocategorias as categoria',
+                    'categoria.ID_CATEGORIA_ERGO',
+                    '=',
+                    'evaluacion.CATEGORIA_ID_FRE'
+                )
+                ->leftJoin(
+                    'recoergo_fichastecnicas as ficha',
+                    'ficha.ID_FICHAS_TECNICAS',
+                    '=',
+                    'evaluacion.FICHA_ID'
+                )
+                ->where('evaluacion.RECO_ID', $request->input('ergoid'))
+                ->select(
+                    'evaluacion.ID_EVALUACION_FRE',
+                    'evaluacion.JSON_ACTIVIDADES_FRE',
+                    'categoria.NOMBRE_CATEGORIA_ERGO',
+                    'ficha.TURNO_EMPLEADO_FICHA'
+                )
+                ->orderBy('evaluacion.ID_EVALUACION_FRE', 'asc')
+                ->get();
+
+            $catalogoTurnos = DB::table('catergo_turno')
+                ->pluck('NOMBRE_TURNO', 'ID_TURNO')
+                ->all();
+
+            $datos = [];
+
+            foreach ($evaluaciones as $evaluacion) {
+
+                $idsTurnos = json_decode(
+                    $evaluacion->TURNO_EMPLEADO_FICHA ?: '[]',
+                    true
+                );
+
+                if (!is_array($idsTurnos)) {
+                    $idsTurnos = [];
+                }
+
+                $nombresTurnos = [];
+
+                foreach ($idsTurnos as $idTurno) {
+                    if (is_scalar($idTurno) && isset($catalogoTurnos[$idTurno])) 
+                    {
+                        $nombresTurnos[] = $catalogoTurnos[$idTurno];
+                    }
+                }
+
+                $turnos = !empty($nombresTurnos) ? implode(', ', array_unique($nombresTurnos)): '-';
+                $actividades = json_decode($evaluacion->JSON_ACTIVIDADES_FRE ?: '[]',true);
+
+                if (!is_array($actividades) || empty($actividades)) {
+                    $actividades = [
+                        [
+                            'nombre' => '-',
+                            'tareas' => [],
+                        ],
+                    ];
+                }
+
+                foreach ($actividades as $actividad) {
+                    if (!is_array($actividad)) {
+                        continue;
+                    }
+
+                    $tareas = isset($actividad['tareas']) && is_array($actividad['tareas']) ? $actividad['tareas'] : [];
+
+                    if (empty($tareas)) {
+                        $tareas = [[]];
+                    }
+
+                    foreach ($tareas as $tarea) {
+                        if (!is_array($tarea)) {
+                            continue;
+                        }
+
+                        $datos[] = [
+                            'ID_EVALUACION_FRE' => $evaluacion->ID_EVALUACION_FRE,
+                            'CATEGORIA' => $evaluacion->NOMBRE_CATEGORIA_ERGO ?: '-',
+                            'TURNO' => $turnos,
+                            'ACTIVIDAD' => $actividad['nombre'] ?? '-',
+                            'TAREA' => $tarea['nombre'] ?? '-',
+                            'DURACION' => $tarea['duracion'] ?? '-',
+                            'FRECUENCIA' => $tarea['frecuencia'] ?? '-',
+                            'NUMERO_VECES' => $tarea['numero_veces'] ?? '-',
+                        ];
+                    }
+                }
+            }
+
+            return response()->json([
+                'data' => $datos,
+            ]);
+        } catch (\Exception $e) {
+
+            \Log::error('Error al consultar las actividades FRE', [
+                'RECO_ID' => $request->input('ergoid'),
+                'exception' => $e,
+            ]);
+
+            return response()->json([
+                'data' => [],
+                'msj' => 'No fue posible consultar las actividades FRE.',
+            ], 500);
+        }
+    }
+
+    public function TablaImcFre(Request $request)
+    {
+        $this->validate($request, [
+            'ergoid' => 'required|integer|min:1',
+        ]);
+
+        try {
+            $evaluaciones = DB::table('evaluacion_fre_ergo as evaluacion')
+                ->leftJoin(
+                    'recoergo_fichastecnicas as ficha',
+                    'ficha.ID_FICHAS_TECNICAS',
+                    '=',
+                    'evaluacion.FICHA_ID'
+                )
+                ->leftJoin(
+                    'recoergocategorias as categoria',
+                    'categoria.ID_CATEGORIA_ERGO',
+                    '=',
+                    'ficha.CATEGORIA_ID_FICHA'
+                )
+                ->where('evaluacion.RECO_ID', $request->input('ergoid'))
+                ->select(
+                    'evaluacion.ID_EVALUACION_FRE',
+                    'evaluacion.FICHA_ID',
+                    'evaluacion.PESO_FRE',
+                    'evaluacion.TALLA_FRE',
+                    'ficha.CAT_AREAS_FICHA',
+                    'categoria.NOMBRE_CATEGORIA_ERGO'
+                )
+                ->orderBy('evaluacion.ID_EVALUACION_FRE', 'asc')
+                ->get();
+
+            $catalogoAreas = DB::table('recoergoareas')
+                ->pluck('NOMBRE_AREA_ERGO', 'ID_AREA_ERGO')
+                ->all();
+
+            $datos = [];
+
+            foreach ($evaluaciones as $indice => $evaluacion) {
+
+                $idsAreas = json_decode(
+                    $evaluacion->CAT_AREAS_FICHA ?: '[]',
+                    true
+                );
+
+                if (!is_array($idsAreas)) {
+                    $idsAreas = [];
+                }
+
+                $nombresAreas = [];
+
+                foreach ($idsAreas as $idArea) {
+                    if (
+                        is_scalar($idArea) &&
+                        isset($catalogoAreas[$idArea])
+                    ) {
+                        $nombresAreas[] = $catalogoAreas[$idArea];
+                    }
+                }
+
+                $areas = !empty($nombresAreas)
+                    ? implode(', ', array_unique($nombresAreas))
+                    : '-';
+
+                $peso = is_numeric($evaluacion->PESO_FRE)
+                    ? (float) $evaluacion->PESO_FRE
+                    : null;
+
+                $estaturaCm = is_numeric($evaluacion->TALLA_FRE)
+                    ? (float) $evaluacion->TALLA_FRE
+                    : null;
+
+                $imc = null;
+                $interpretacion = 'Sin datos válidos';
+
+                if (
+                    $peso !== null &&
+                    $estaturaCm !== null &&
+                    $peso > 0 &&
+                    $estaturaCm > 0
+                ) {
+                    $estaturaMetros = $estaturaCm / 100;
+
+                    $imc = $peso / ($estaturaMetros * $estaturaMetros);
+
+                    if ($imc < 18.5) {
+                        $interpretacion = 'Peso bajo';
+                    } elseif ($imc < 25) {
+                        $interpretacion = 'Ideal';
+                    } elseif ($imc < 30) {
+                        $interpretacion = 'Sobrepeso';
+                    } elseif ($imc < 35) {
+                        $interpretacion = 'Obesidad';
+                    } elseif ($imc < 40) {
+                        $interpretacion = 'Obesidad severa';
+                    } else {
+                        $interpretacion = 'Obesidad mórbida';
+                    }
+                }
+
+                $datos[] = [
+                    'NUMERO' => $indice + 1,
+                    'ID_EVALUACION_FRE' => $evaluacion->ID_EVALUACION_FRE,
+                    'FICHA_ID' => $evaluacion->FICHA_ID,
+                    'CATEGORIA' => $evaluacion->NOMBRE_CATEGORIA_ERGO ?: '-',
+                    'AREA' => $areas,
+                    'ESTATURA' => $estaturaCm ?? '-',
+                    'PESO' => $peso ?? '-',
+                    'IMC' => $imc !== null
+                        ? number_format($imc, 2, '.', '')
+                        : '-',
+
+                    'INTERPRETACION' => $interpretacion,
+                ];
+            }
+
+            return response()->json([
+                'data' => $datos,
+            ]);
+        } catch (\Exception $e) {
+
+            \Log::error('Error al consultar la tabla de IMC FRE', [
+                'RECO_ID' => $request->input('ergoid'),
+                'exception' => $e,
+            ]);
+
+            return response()->json([
+                'data' => [],
+                'msj' => 'No fue posible consultar la tabla de IMC FRE.',
+            ], 500);
+        }
+    }
+
+    public function guardarAntopometricasFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+            }
+
+            $dato->INFORME_ANTROPOMETRICAS = $request->INFORME_ANTROPOMETRICAS;
+            $dato->save();
+            DB::commit();
+
+
+            return response()->json([
+                'msj' => 'Objetivo general guardado correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function guardarMusculoFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+            }
+
+            $dato->OBSERVACIONES_ESQUELETICAS1 = $request->OBSERVACIONES_ESQUELETICAS1;
+            $dato->OBSERVACIONES_ESQUELETICAS2 = $request->OBSERVACIONES_ESQUELETICAS2;
+            $dato->OBSERVACIONES_ESQUELETICAS3 = $request->OBSERVACIONES_ESQUELETICAS3;
+            $dato->OBSERVACIONES_ESQUELETICAS4 = $request->OBSERVACIONES_ESQUELETICAS4;
+            $dato->OBSERVACIONES_ESQUELETICAS5 = $request->OBSERVACIONES_ESQUELETICAS5;
+            $dato->OBSERVACIONES_ESQUELETICAS6 = $request->OBSERVACIONES_ESQUELETICAS6;
+
+
+            $dato->save();
+            DB::commit();
+
+
+            return response()->json([
+                'msj' => 'Objetivo general guardado correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function tablaReporteTrabajadoresErgo(Request $request)
+    {
+        $recoId = $request->ergoid;
+
+        $categorias = recoergocategoriasModel::where('RECO_ID', $recoId)
+            ->where('ACTIVO', 1)
+            ->get();
+
+        $fichas = recoergofichastecnicasModel::where('RECO_ID', $recoId)
+            ->get();
+
+        $areasAgrupadas = [];
+
+        foreach ($categorias as $categoria) {
+
+            if (
+                empty($categoria->CATEGORIA_AREAS_ID) ||
+                !is_array($categoria->CATEGORIA_AREAS_ID)
+            ) {
+                continue;
+            }
+
+            foreach ($categoria->CATEGORIA_AREAS_ID as $areaId) {
+
+                $area = recoergoareasModel::find($areaId);
+
+                if (!$area) {
+                    continue;
+                }
+
+                if (!isset($areasAgrupadas[$areaId])) {
+                    $areasAgrupadas[$areaId] = [
+                        'AREA' => trim($area->NOMBRE_AREA_ERGO),
+                        'CATEGORIAS' => [],
+                        'PUESTOS_AREA' => []
+                    ];
+                }
+
+                $categoriaId = $categoria->ID_CATEGORIA_ERGO;
+
+                $areasAgrupadas[$areaId]['CATEGORIAS'][$categoriaId] = [
+                    'NOMBRE' => $categoria->NOMBRE_CATEGORIA_ERGO,
+                    'PUESTOS' => []
+                ];
+
+                foreach ($fichas as $ficha) {
+
+                    if ((string) $ficha->CATEGORIA_ID_FICHA !== (string) $categoriaId || !is_array($ficha->CAT_AREAS_FICHA) || !in_array((string) $areaId, array_map('strval', $ficha->CAT_AREAS_FICHA)))
+                    {
+                        continue;
+                    }
+
+                    $puestos = $ficha->PE_EVALUADAS;
+
+                    if (is_string($puestos)) {
+                        $puestos = [$puestos];
+                    }
+
+                    if (!is_array($puestos)) {
+                        continue;
+                    }
+
+                    foreach ($puestos as $puesto) {
+
+                        $puesto = trim((string) $puesto);
+
+                        if ($puesto === '') {
+                            continue;
+                        }
+
+                        $areasAgrupadas[$areaId]['CATEGORIAS'][$categoriaId]['PUESTOS'][] = $puesto;
+
+                        $areasAgrupadas[$areaId]['PUESTOS_AREA'][] = $puesto;
+                    }
+                }
+            }
+        }
+
+        $data = [];
+        $numero = 1;
+
+        foreach ($areasAgrupadas as $area) {
+
+            ksort($area['CATEGORIAS']);
+
+            $puestosUnicosArea = array_values(array_unique($area['PUESTOS_AREA']));
+            $totalTrabajadoresArea = count($puestosUnicosArea);
+            $primeraCategoria = true;
+
+            foreach ($area['CATEGORIAS'] as $categoria) {
+
+                $obj = new \stdClass();
+
+                $obj->NUMERO = $numero++;
+                $obj->AREA = $area['AREA'];
+                $obj->CATEGORIA = $categoria['NOMBRE'];
+
+                $puestosCategoria = array_values(
+                    array_unique($categoria['PUESTOS'])
+                );
+
+                sort($puestosCategoria);
+
+                $obj->PUESTOS_EVALUADOS = count($puestosCategoria) ? '<ul class="mb-0 ps-3"><li>' .implode('</li><li>', $puestosCategoria) .'</li></ul>': '-';
+
+
+                $obj->TRABAJADORES_EVALUADOS = $primeraCategoria ? $totalTrabajadoresArea : '';
+
+                $primeraCategoria = false;
+
+                $data[] = $obj;
+            }
+        }
+
+        usort($data, function ($a, $b) {
+
+            if ($a->AREA === $b->AREA) {
+                return strcmp($a->CATEGORIA, $b->CATEGORIA);
+            }
+
+            return strcmp($a->AREA, $b->AREA);
+        });
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+
+
+
+    public function guardarConclusionFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+                $dato->save();
+            }
+
+            $dato->SELECT_CONCLUSION = $request->SELECT_CONCLUSION;
+            $dato->INFORME_CONCLUSION = $request->INFORME_CONCLUSION;
+            $dato->save();
+            DB::commit();
+            return response()->json([
+                'msj' => 'Conclusión guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

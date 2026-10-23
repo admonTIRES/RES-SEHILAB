@@ -5361,21 +5361,119 @@ function cargarGraficasFichas() {
     );
 }
 
+// function generarGraficasFichas(data) {
+
+//     $('#contenedorGraficasfichas').empty();
+
+//     data.sort(function (a, b) {
+//         return parseFloat(a.ficha) - parseFloat(b.ficha);
+
+//     });
+
+
+//     data.forEach(function (ficha, index) {
+
+//         let titulo = `
+//             <div style="width:100%; text-align:center; margin-top:50px; margin-bottom:30px;">
+//                 <div style=" font-size:28px; color:#1b3c59; font-weight:bold;">
+//                     ${ficha.titulo}
+//                 </div>
+//             </div>
+//         `;
+
+//         $('#contenedorGraficasfichas').append(titulo);
+
+//             let fila = `
+
+//                 <div id="fila_${index}" style=" width:100%; display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-bottom:30px; background:#FFFFFF;">
+//                 </div>
+//             `;
+
+//         $('#contenedorGraficasfichas').append(fila);
+
+//         Object.entries(ficha.preguntas)
+
+//             .sort(function (a, b) {
+
+//                 let incisoA = obtenerIncisoReal(
+//                     a[1].texto,
+//                     a[0]
+//                 );
+
+//                 let incisoB = obtenerIncisoReal(
+//                     b[1].texto,
+//                     b[0]
+//                 );
+
+//                 return incisoA.localeCompare(incisoB);
+
+//             })
+
+//             .forEach(function ([letra, pregunta], i) {
+
+//                 let inciso = obtenerIncisoReal(
+
+//                     pregunta.texto,
+
+//                     letra
+
+//                 );
+
+
+//                 let idChart = 'chart_' + index + '_' + i;
+
+//                 let card = `
+
+//                     <div style=" width:180px; background:#FFF; border-radius:20px; box-shadow:0 4px 12px rgba(0,0,0,.10); padding:15px; display:flex; flex-direction:column; align-items:center;">
+//                         <div style=" font-size:28px; font-weight:bold; color:#1b3c59; margin-bottom:10px;">
+//                             ${inciso}
+//                         </div>
+//                         <div id="${idChart}" style="width:100%;">
+//                         </div>
+//                     </div>
+//                 `;
+
+//                 $('#fila_' + index).append(card);
+
+//                 crearTermometroFicha(
+//                     idChart,
+//                     pregunta.SI,
+//                     pregunta.NO
+//                 );
+//             });
+//     });
+// }
+
+
 function generarGraficasFichas(data) {
 
     $('#contenedorGraficasfichas').empty();
 
+    const numerosGraficas = {
+        '1.1': 7,
+        '1.2': 8,
+        '2.1': 9,
+        '3.1': 10,
+        '4.1': 11,
+        '4.2': 12
+    };
+
     data.sort(function (a, b) {
         return parseFloat(a.ficha) - parseFloat(b.ficha);
-
     });
-
 
     data.forEach(function (ficha, index) {
 
+        let numeroGrafica = numerosGraficas[String(ficha.ficha)];
+
+        if (!numeroGrafica) {
+            console.warn('Ficha sin número de gráfica:', ficha.ficha);
+            return;
+        }
+
         let titulo = `
             <div style="width:100%; text-align:center; margin-top:50px; margin-bottom:30px;">
-                <div style=" font-size:28px; color:#1b3c59; font-weight:bold;">
+                <div style="font-size:28px; color:#1b3c59; font-weight:bold;">
                     ${ficha.titulo}
                 </div>
             </div>
@@ -5383,16 +5481,18 @@ function generarGraficasFichas(data) {
 
         $('#contenedorGraficasfichas').append(titulo);
 
-            let fila = `
-
-                <div id="fila_${index}" style=" width:100%; display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-bottom:30px; background:#FFFFFF;">
-                </div>
-            `;
+        let fila = `
+            <div
+                id="fila_${index}"
+                data-numero-grafica="${numeroGrafica}"
+                data-ficha="${ficha.ficha}"
+                style="width:100%; display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-bottom:30px; background:#FFFFFF;"
+            ></div>
+        `;
 
         $('#contenedorGraficasfichas').append(fila);
 
         Object.entries(ficha.preguntas)
-
             .sort(function (a, b) {
 
                 let incisoA = obtenerIncisoReal(
@@ -5406,30 +5506,22 @@ function generarGraficasFichas(data) {
                 );
 
                 return incisoA.localeCompare(incisoB);
-
             })
-
             .forEach(function ([letra, pregunta], i) {
 
                 let inciso = obtenerIncisoReal(
-
                     pregunta.texto,
-
                     letra
-
                 );
-
 
                 let idChart = 'chart_' + index + '_' + i;
 
                 let card = `
-
-                    <div style=" width:180px; background:#FFF; border-radius:20px; box-shadow:0 4px 12px rgba(0,0,0,.10); padding:15px; display:flex; flex-direction:column; align-items:center;">
-                        <div style=" font-size:28px; font-weight:bold; color:#1b3c59; margin-bottom:10px;">
+                    <div style="width:180px; background:#FFF; border-radius:20px; box-shadow:0 4px 12px rgba(0,0,0,.10); padding:15px; display:flex; flex-direction:column; align-items:center;">
+                        <div style="font-size:28px; font-weight:bold; color:#1b3c59; margin-bottom:10px;">
                             ${inciso}
                         </div>
-                        <div id="${idChart}" style="width:100%;">
-                        </div>
+                        <div id="${idChart}" style="width:100%;"></div>
                     </div>
                 `;
 
@@ -5443,6 +5535,7 @@ function generarGraficasFichas(data) {
             });
     });
 }
+
 
 function obtenerIncisoReal(texto, letra) {
 
@@ -7517,354 +7610,379 @@ function validarEdicionRecoErgo()
 
 
 
-// function descargarRevisionRecoErgo(
-//     RECO_ID
-// ) {
+
+
+
+
+// async function descargarRevisionRecoErgo(RECO_ID)
+// {
 
 //     let graficas = [];
 
+//     $('#contenedorGraficas > div').find('[id^="chart_p"]').each(function () {
+           
+//             if (!this.id.includes('chart_p'))
+//             {
+//                 return;
+//             }
 
-
-
-//     $('#contenedorGraficas > div').each(function () {
-
-//         let charts =
-//             $(this).find('[id^="chart_"]');
-
-
-
-//         charts.each(function () {
-
-//             let instancia =
-//                 echarts.getInstanceByDom(this);
-
-
+//             let instancia = echarts.getInstanceByDom(this);
 
 //             if (instancia) {
 
 //                 graficas.push({
 
-//                     imagen:
-//                         instancia.getDataURL({
-
+//                     imagen: instancia.getDataURL({
 //                             type: 'png',
-
 //                             pixelRatio: 2,
-
 //                             backgroundColor: '#FFFFFF'
-
 //                         })
-
 //                 });
-
 //             }
-
 //         });
 
-//     });
+//     let graficasFichas = [];
 
+//     let filas = $('#contenedorGraficasfichas').find('[id^="fila_"]');
+
+//     for (let i = 0; i < filas.length; i++) {
+
+//         try {
+
+//             let canvas = await html2canvas(
+
+//                 filas[i],
+
+//                 {
+//                     backgroundColor: '#FFFFFF',
+//                     scale: 1,
+//                     logging: false,
+//                     useCORS: true,
+//                     allowTaint: false,
+//                     ignoreElements: function(element) {
+//                         return (element.tagName === 'IMG');
+//                     }
+//                 }
+//             );
+
+//             let imagen = canvas.toDataURL('image/png');
+//             graficasFichas.push({imagen: imagen});
+
+//         }
+//         catch (error) {
+
+//             console.error('ERROR FILA:',i,error);
+
+//         }
+
+//     }
 
 
 //     let form = $('<form>', {
 
-//         action:
-//             '/descargarRevisionRecoErgo/' +
-//             RECO_ID,
-
-//         method:
-//             'POST',
-
-//         target:
-//             '_blank'
+//         action: '/descargarRevisionRecoErgo/' + RECO_ID,
+//         method: 'POST',
+//         target: '_blank'
 
 //     });
 
 
-
 //     form.append(
 
 //         $('<input>', {
-
 //             type: 'hidden',
-
 //             name: '_token',
-
-//             value:
-//                 $('meta[name="csrf-token"]')
-//                 .attr('content')
-
+//             value: $('meta[name="csrf-token"]').attr('content')
 //         })
-
 //     );
 
 //     form.append(
 
 //         $('<input>', {
-
 //             type: 'hidden',
-
 //             name: 'GRAFICAS',
+//             value: JSON.stringify(graficas)
+//         })
+//     );
 
-//             value:
-//                 JSON.stringify(graficas)
 
+//     form.append(
+
+//         $('<input>', {
+//             type: 'hidden',
+//             name: 'GRAFICAS_FICHAS',
+//             value: JSON.stringify(graficasFichas)
 //         })
 
 //     );
+
 
 //     $('body').append(form);
 
 //     form.submit();
 
-//     form.remove();
+//     setTimeout(function () {
+//         form.remove();
+//     }, 1000);
 
 // }
 
 
 
+// async function descargarRevisionRecoErgo(RECO_ID)
+// {
+//     let graficas = [];
+
+//     $('#contenedorGraficas > div')
+//         .find('[id^="chart_p"]')
+//         .each(function () {
+
+//             let instancia = echarts.getInstanceByDom(this);
+
+//             if (instancia) {
+//                 graficas.push({
+//                     imagen: instancia.getDataURL({
+//                         type: 'png',
+//                         pixelRatio: 2,
+//                         backgroundColor: '#FFFFFF'
+//                     })
+//                 });
+//             }
+//         });
+
+  
+    
+
+//         let graficasFichas = [];
+
+//         let filas = $('#contenedorGraficasfichas')
+//             .find('[id^="fila_"]');
+
+//         console.log('Filas encontradas:', filas.length);
+
+//         for (let i = 0; i < filas.length; i++) {
+
+//             try {
+
+//                 let fila = filas[i];
+
+//                 let numeroGrafica = parseInt($(fila).attr('data-numero-grafica'),10);
+
+//                 if (isNaN(numeroGrafica) || numeroGrafica < 7 || numeroGrafica > 12)
+//                 {
+//                     console.warn('Número de gráfica inválido:',fila.id,$(fila).attr('data-ficha'),numeroGrafica);
+//                     continue;
+//                 }
+
+//                 let canvas = await html2canvas(fila, {
+//                     backgroundColor: '#FFFFFF',
+//                     scale: 2,
+//                     logging: false,
+//                     useCORS: true,
+//                     allowTaint: false,
+//                     ignoreElements: function (element) {
+//                         return element.tagName === 'IMG';
+//                     }
+//                 });
+
+//                 graficasFichas.push({numero: numeroGrafica,imagen: canvas.toDataURL('image/png')});
+
+//                 console.log('Gráfica capturada:',numeroGrafica,'Ficha:',$(fila).attr('data-ficha'));
+
+//             } catch (error) {
+//                 console.error('ERROR FILA:', i, error);
+//             }
+//         }
+
+//         console.log('Números de gráficas enviadas:',graficasFichas.map(function (g) {return g.numero;}));
+
+    
+
+//     let form = $('<form>', {
+//         action: '/descargarRevisionRecoErgo/' + RECO_ID,
+//         method: 'POST',
+//         target: '_blank'
+//     });
+
+//     form.append($('<input>', {
+//         type: 'hidden',
+//         name: '_token',
+//         value: $('meta[name="csrf-token"]').attr('content')
+//     }));
+
+//     form.append($('<input>', {
+//         type: 'hidden',
+//         name: 'GRAFICAS',
+//         value: JSON.stringify(graficas)
+//     }));
+
+//     form.append($('<input>', {
+//         type: 'hidden',
+//         name: 'GRAFICAS_FICHAS',
+//         value: JSON.stringify(graficasFichas)
+//     }));
+
+//     $('body').append(form);
+
+//     form[0].submit();
+
+//     setTimeout(function () {
+//         form.remove();
+//     }, 1000);
+// }
+
+
 
 async function descargarRevisionRecoErgo(RECO_ID)
 {
-
- 
-
-
-
-    let graficas = [];
-
-
-
-    $('#contenedorGraficas > div')
-
-        .find('[id^="chart_p"]')
-
-        .each(function () {
-
-           
-            if (
-                !this.id.includes('chart_p')
-            ) {
-                return;
-            }
-
-          
-
-            let instancia =
-                echarts.getInstanceByDom(this);
-
-            if (instancia) {
-
-                graficas.push({
-
-                    imagen:
-                        instancia.getDataURL({
-
-                            type: 'png',
-
-                            pixelRatio: 2,
-
-                            backgroundColor: '#FFFFFF'
-
-                        })
-
-                });
-
-            }
-
-        });
-
-
-
-
-
-    let graficasFichas = [];
-
-
-
-    let filas =
-        $('#contenedorGraficasfichas')
-        .find('[id^="fila_"]');
-
-
-
-
-
-
-    for (let i = 0; i < filas.length; i++) {
-
-      
-
-        try {
-
-            let canvas = await html2canvas(
-
-                filas[i],
-
-                {
-
-                    backgroundColor:
-                        '#FFFFFF',
-
-                    scale: 1,
-
-                    logging: false,
-
-                    useCORS: true,
-
-                    allowTaint: false,
-
-                    ignoreElements: function(element) {
-
-                        return (
-
-                            element.tagName === 'IMG'
-
-                        );
-
-                    }
-
-                }
-
-            );
-
-
-            let imagen =
-                canvas.toDataURL(
-                    'image/png'
-                );
-
-
-            graficasFichas.push({
-
-                imagen: imagen
-
-            });
-
-
-
+    Swal.fire({
+        title: 'Descargando reporte...',
+        html: 'Por favor, espera mientras se generan las gráficas y se prepara el documento.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
         }
-        catch (error) {
-
-            console.error(
-                'ERROR FILA:',
-                i,
-                error
-            );
-
-        }
-
-    }
-
-
-  
-
-    let form = $('<form>', {
-
-        action:
-            '/descargarRevisionRecoErgo/' +
-            RECO_ID,
-
-        method:
-            'POST',
-
-        target:
-            '_blank'
-
     });
 
+    try {
 
+        let graficas = [];
 
-    form.append(
+        $('#contenedorGraficas > div')
+            .find('[id^="chart_p"]')
+            .each(function () {
 
-        $('<input>', {
+                let instancia = echarts.getInstanceByDom(this);
 
+                if (instancia) {
+                    graficas.push({
+                        imagen: instancia.getDataURL({
+                            type: 'png',
+                            pixelRatio: 2,
+                            backgroundColor: '#FFFFFF'
+                        })
+                    });
+                }
+            });
+
+        let graficasFichas = [];
+
+        let filas = $('#contenedorGraficasfichas')
+            .find('[id^="fila_"]');
+
+        console.log('Filas encontradas:', filas.length);
+
+        for (let i = 0; i < filas.length; i++) {
+
+            try {
+
+                let fila = filas[i];
+
+                let numeroGrafica = parseInt(
+                    $(fila).attr('data-numero-grafica'),
+                    10
+                );
+
+                if (
+                    isNaN(numeroGrafica) ||
+                    numeroGrafica < 7 ||
+                    numeroGrafica > 12
+                ) {
+                    console.warn(
+                        'Número de gráfica inválido:',
+                        fila.id,
+                        $(fila).attr('data-ficha'),
+                        numeroGrafica
+                    );
+
+                    continue;
+                }
+
+                let canvas = await html2canvas(fila, {
+                    backgroundColor: '#FFFFFF',
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: false,
+                    ignoreElements: function (element) {
+                        return element.tagName === 'IMG';
+                    }
+                });
+
+                graficasFichas.push({
+                    numero: numeroGrafica,
+                    imagen: canvas.toDataURL('image/png')
+                });
+
+                console.log(
+                    'Gráfica capturada:',
+                    numeroGrafica,
+                    'Ficha:',
+                    $(fila).attr('data-ficha')
+                );
+
+            } catch (error) {
+                console.error('ERROR FILA:', i, error);
+            }
+        }
+
+        console.log(
+            'Números de gráficas enviadas:',
+            graficasFichas.map(function (g) {
+                return g.numero;
+            })
+        );
+
+        let form = $('<form>', {
+            action: '/descargarRevisionRecoErgo/' + RECO_ID,
+            method: 'POST',
+            target: '_blank'
+        });
+
+        form.append($('<input>', {
             type: 'hidden',
-
             name: '_token',
+            value: $('meta[name="csrf-token"]').attr('content')
+        }));
 
-            value:
-                $('meta[name="csrf-token"]')
-                .attr('content')
-
-        })
-
-    );
-
-
-
-
-    form.append(
-
-        $('<input>', {
-
+        form.append($('<input>', {
             type: 'hidden',
-
             name: 'GRAFICAS',
+            value: JSON.stringify(graficas)
+        }));
 
-            value:
-                JSON.stringify(
-                    graficas
-                )
-
-        })
-
-    );
-
-
-
-    form.append(
-
-        $('<input>', {
-
+        form.append($('<input>', {
             type: 'hidden',
-
             name: 'GRAFICAS_FICHAS',
+            value: JSON.stringify(graficasFichas)
+        }));
 
-            value:
-                JSON.stringify(
-                    graficasFichas
-                )
+        $('body').append(form);
 
-        })
+        form[0].submit();
 
-    );
+        setTimeout(function () {
+            form.remove();
+        }, 1000);
 
+        Swal.close();
 
+    } catch (error) {
 
-   
+        console.error(
+            'Error al descargar el reporte:',
+            error
+        );
 
-
-    $('body').append(form);
-
-  
-
-    form.submit();
-
-
-    setTimeout(function () {
-
-        form.remove();
-
-     
-    }, 1000);
-
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al preparar la descarga',
+            text: 'Ocurrió un problema al generar las gráficas o preparar el documento.'
+        });
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ///// GUARDAR 7.1 INTRODUCCION
