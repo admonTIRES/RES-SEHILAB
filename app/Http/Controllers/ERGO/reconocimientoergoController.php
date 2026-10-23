@@ -61,6 +61,8 @@ use App\modelos\reconocimientoergo\datosgeneralesinformeRecoModel;
 use App\modelos\reconocimientoergo\recoergofichastecnicasModel;
 use App\modelos\reconocimientoergo\planosergoModel;
 
+use App\modelos\clientes\clientepartidasModel;
+use App\modelos\clientes\clienteModel;
 
 class reconocimientoergoController extends Controller
 {
@@ -2678,6 +2680,7 @@ class reconocimientoergoController extends Controller
             $proyecto = proyectoModel::where('reconocimiento_ergo_id', $RECO_ID)->first();
             $contrato = clientecontratoModel::find($proyecto->contrato_id);
 
+            $cliente = clienteModel::findOrFail($reco->cliente_id);
 
             $recursos = recursosPortadaRecoErgoModel::where('RECO_ID', $RECO_ID)->get();
             $rutaPlantilla = storage_path('app/plantillas_reportes/plantilla_ergo/Plantilla_informe_ergonomia.docx');
@@ -2685,10 +2688,9 @@ class reconocimientoergoController extends Controller
 
 
             $numeroContrato = $contrato->NUMERO_CONTRATO ?? 'No cargado';
-            $plantillaword->setValue('proyecto_portada', 'Evaluación del Factor de Riesgo Ergonómico ' . $numeroContrato);
+            // $plantillaword->setValue('proyecto_portada', 'Evaluación del Factor de Riesgo Ergonómico ' . $numeroContrato);
             $plantillaword->setValue('folio_portada', $reco->proyecto_folio ?? 'No cargado');
             $plantillaword->setValue('razon_social_portada', $proyecto->proyecto_clienterazonsocial ?? 'No cargado');
-            $plantillaword->setValue('instalación_portada', $reco->instalacion ?? 'No cargado');
 
 
             $mes = $recursos[0]->INFORME_MES ?? 'No cargado';
@@ -2771,6 +2773,62 @@ class reconocimientoergoController extends Controller
             }
 
             $plantillaword->setValue('PIE_PAGINA', $contrato->CONTRATO_PLANTILLA_PIEPAGINA ?? 'SIN PIE DE PAGINA');
+
+
+            ################ PORTADA EXTERNA ####################
+
+
+            if ($proyecto->requiereContrato == 1) {
+
+                $contratoId = $proyecto->contrato_id;
+
+                $clienteInfo = DB::table('contratos_clientes as cc')
+                    ->leftJoin('cliente as c', 'c.id', '=', 'cc.CLIENTE_ID')
+                    ->where('cc.ID_CONTRATO', $contratoId)
+                    ->select(
+                        'cc.NUMERO_CONTRATO',
+                        'cc.DESCRIPCION_CONTRATO',
+                        'cc.CONTRATO_PLANTILLA_LOGODERECHO',
+                        'cc.CONTRATO_PLANTILLA_LOGOIZQUIERDO',
+                        'cc.CONTRATO_PLANTILLA_PIEPAGINA',
+                        'c.cliente_RazonSocial'
+                    )
+                    ->get();
+            } else {
+                $clienteInfo = clienteModel::where('id', $proyecto->cliente_id)->get();
+            }
+
+
+            $titulo_partida = clientepartidasModel::where('CONTRATO_ID', $proyecto->contrato_id)
+                ->where('clientepartidas_tipo', 2) // Informe de resultados
+                ->where('catprueba_id', 13) // Iluminacion
+                ->orderBy('updated_at', 'DESC')
+                ->get();
+
+            if (count($titulo_partida) > 0) {
+
+                //Para el valor que lleva proyecto se utilizo: descripcion de la partida, Numero del contrato y la descripcion del contrato
+                $plantillaword->setValue('proyecto_portada', str_replace("\n", "<w:br/>", $titulo_partida[0]->clientepartidas_descripcion) . ' - Contrato: ' . $clienteInfo[0]->NUMERO_CONTRATO);
+
+                $plantillaword->setValue('PARTIDA', str_replace("\n", "<w:br/>", $titulo_partida[0]->clientepartidas_descripcion));
+            } else {
+
+                $plantillaword->setValue('PARTIDA', "");
+                $plantillaword->setValue('proyecto_portada', 'El proyecto no esta vinculado a ningun contrato.');
+            }
+
+            $plantillaword->setValue('folio_portada', $proyecto->proyecto_folio);
+            $plantillaword->setValue('razon_social_portada', $cliente->cliente_RazonSocial);
+
+            // PARTE INTALACION PORTADA
+            $OPCION_PORTADA1 = is_null($recursos[0]->OPCION_PORTADA1) ? "" : $recursos[0]->OPCION_PORTADA1 . " | ";
+            $OPCION_PORTADA2 = is_null($recursos[0]->OPCION_PORTADA2) ? "" : $recursos[0]->OPCION_PORTADA2 . " | ";
+            $OPCION_PORTADA3 = is_null($recursos[0]->OPCION_PORTADA3) ? "" : $recursos[0]->OPCION_PORTADA3 . " | ";
+            $OPCION_PORTADA4 = is_null($recursos[0]->OPCION_PORTADA4) ? "" : $recursos[0]->OPCION_PORTADA4 . " | ";
+            $OPCION_PORTADA5 = is_null($recursos[0]->OPCION_PORTADA5) ? "" : $recursos[0]->OPCION_PORTADA5 . " | ";
+            $OPCION_PORTADA6 = is_null($recursos[0]->OPCION_PORTADA6) ? "" : $recursos[0]->OPCION_PORTADA6;
+
+            $plantillaword->setValue('instalación_portada', $OPCION_PORTADA1 . $OPCION_PORTADA2 . $OPCION_PORTADA3 . $OPCION_PORTADA4 . $OPCION_PORTADA5 . $OPCION_PORTADA6);
 
             $niveles = [];
             if (isset($recursos[0])) {
@@ -3606,103 +3664,208 @@ class reconocimientoergoController extends Controller
                 }
             }
 
-            //// GRAFICA 7.1 
-            if ($request->filled('GRAFICAS_FICHAS')) {
 
+            //// GRAFICA 7.1 
+            // if ($request->filled('GRAFICAS_FICHAS')) {
+
+            //     $graficasFichas = json_decode(
+            //         $request->GRAFICAS_FICHAS,
+            //         true
+            //     );
+
+            //     if (
+            //         is_array($graficasFichas) &&
+            //         count($graficasFichas) > 0
+            //     ) {
+
+            //         $imagenesFinales = [];
+
+            //         $marcadores = [
+
+            //             'GRAFICA_7',
+            //             'GRAFICA_8',
+            //             'GRAFICA_9',
+            //             'GRAFICA_10',
+            //             'GRAFICA_11',
+            //             'GRAFICA_12'
+
+            //         ];
+
+            //         foreach ($graficasFichas as $index => $grafica) {
+
+            //             if (
+            //                 !isset($grafica['imagen']) ||
+            //                 empty($grafica['imagen'])
+            //             ) {
+            //                 continue;
+            //             }
+
+            //             if (!isset($marcadores[$index])) {
+            //                 continue;
+            //             }
+
+            //             $base64 = preg_replace(
+            //                 '#^data:image/\w+;base64,#i',
+            //                 '',
+            //                 $grafica['imagen']
+            //             );
+
+            //             $base64 = str_replace(
+            //                 ' ',
+            //                 '+',
+            //                 $base64
+            //             );
+
+            //             $imageData =
+            //                 base64_decode($base64);
+
+            //             $rutaFinal = storage_path(
+            //                 'app/grafica_ficha_' .
+            //                     uniqid() .
+            //                     '.png'
+            //             );
+
+            //             file_put_contents(
+            //                 $rutaFinal,
+            //                 $imageData
+            //             );
+
+            //             $imagenesFinales[] =
+            //                 $rutaFinal;
+
+            //             $plantillaword->setImageValue(
+
+            //                 $marcadores[$index],
+
+            //                 [
+
+            //                     'path' => $rutaFinal,
+            //                     'width' => 650,
+            //                     'height' => 720,
+
+            //                     'ratio' => true
+
+            //                 ]
+
+            //             );
+            //         }
+
+            //         register_shutdown_function(function () use ($imagenesFinales) {
+
+            //             foreach ($imagenesFinales as $imagen) {
+
+            //                 if (file_exists($imagen)) {
+
+            //                     unlink($imagen);
+            //                 }
+            //             }
+            //         });
+            //     }
+            // }
+
+
+
+
+
+            $graficasFichas = [];
+
+            if ($request->filled('GRAFICAS_FICHAS')) {
                 $graficasFichas = json_decode(
-                    $request->GRAFICAS_FICHAS,
+                    $request->input('GRAFICAS_FICHAS'),
                     true
                 );
 
-                if (
-                    is_array($graficasFichas) &&
-                    count($graficasFichas) > 0
-                ) {
-
-                    $imagenesFinales = [];
-
-                    $marcadores = [
-
-                        'GRAFICA_7',
-                        'GRAFICA_8',
-                        'GRAFICA_9',
-                        'GRAFICA_10',
-                        'GRAFICA_11',
-                        'GRAFICA_12'
-
-                    ];
-
-                    foreach ($graficasFichas as $index => $grafica) {
-
-                        if (
-                            !isset($grafica['imagen']) ||
-                            empty($grafica['imagen'])
-                        ) {
-                            continue;
-                        }
-
-                        if (!isset($marcadores[$index])) {
-                            continue;
-                        }
-
-                        $base64 = preg_replace(
-                            '#^data:image/\w+;base64,#i',
-                            '',
-                            $grafica['imagen']
-                        );
-
-                        $base64 = str_replace(
-                            ' ',
-                            '+',
-                            $base64
-                        );
-
-                        $imageData =
-                            base64_decode($base64);
-
-                        $rutaFinal = storage_path(
-                            'app/grafica_ficha_' .
-                                uniqid() .
-                                '.png'
-                        );
-
-                        file_put_contents(
-                            $rutaFinal,
-                            $imageData
-                        );
-
-                        $imagenesFinales[] =
-                            $rutaFinal;
-
-                        $plantillaword->setImageValue(
-
-                            $marcadores[$index],
-
-                            [
-
-                                'path' => $rutaFinal,
-                                'width' => 650,
-                                'height' => 720,
-
-                                'ratio' => true
-
-                            ]
-
-                        );
-                    }
-
-                    register_shutdown_function(function () use ($imagenesFinales) {
-
-                        foreach ($imagenesFinales as $imagen) {
-
-                            if (file_exists($imagen)) {
-
-                                unlink($imagen);
-                            }
-                        }
-                    });
+                if (!is_array($graficasFichas)) {
+                    $graficasFichas = [];
                 }
             }
+
+            $imagenesFinales = [];
+
+            $marcadores = [
+                7  => 'GRAFICA_7',
+                8  => 'GRAFICA_8',
+                9  => 'GRAFICA_9',
+                10 => 'GRAFICA_10',
+                11 => 'GRAFICA_11',
+                12 => 'GRAFICA_12'
+            ];
+
+            $graficasDisponibles = [];
+
+            foreach ($graficasFichas as $grafica) {
+
+                if (
+                    !isset($grafica['numero']) ||
+                    !isset($grafica['imagen']) ||
+                    empty($grafica['imagen'])
+                ) {
+                    continue;
+                }
+
+                $numeroGrafica = (int) $grafica['numero'];
+
+                if (!isset($marcadores[$numeroGrafica])) {
+                    continue;
+                }
+
+                $base64 = preg_replace(
+                    '#^data:image/\w+;base64,#i',
+                    '',
+                    $grafica['imagen']
+                );
+
+                $base64 = str_replace(' ', '+', $base64);
+
+                $imageData = base64_decode($base64, true);
+
+                if ($imageData === false) {
+                    continue;
+                }
+
+                // Crear la imagen en una ruta temporal.
+                $rutaFinal = storage_path(
+                    'app/grafica_ficha_' . uniqid() . '.png'
+                );
+
+                if (file_put_contents($rutaFinal, $imageData) === false) {
+                    continue;
+                }
+
+                $imagenesFinales[] = $rutaFinal;
+
+                $plantillaword->setImageValue(
+                    $marcadores[$numeroGrafica],
+                    [
+                        'path' => $rutaFinal,
+                        'width' => 650,
+                        'height' => 720,
+                        'ratio' => true
+                    ]
+                );
+
+                $graficasDisponibles[$numeroGrafica] = true;
+            }
+
+            // Identificar las gráficas que no llegaron.
+            $graficasAusentes = [];
+
+            foreach ($marcadores as $numero => $marcador) {
+                if (!isset($graficasDisponibles[$numero])) {
+                    $graficasAusentes[] = $numero;
+                }
+            }
+
+            register_shutdown_function(function () use ($imagenesFinales) {
+                foreach ($imagenesFinales as $imagen) {
+                    if (file_exists($imagen)) {
+                        unlink($imagen);
+                    }
+                }
+            });
+
+
+
 
 
             ////// TABLA 7.2
@@ -4028,6 +4191,113 @@ class reconocimientoergoController extends Controller
             $rutaWord = storage_path('app/temp/' . $nombreWord);
 
             $plantillaword->saveAs($rutaWord);
+
+
+
+
+
+            if (
+                !empty($graficasAusentes) &&
+                file_exists($rutaWord)
+            ) {
+
+                $zip = new \ZipArchive();
+
+                if ($zip->open($rutaWord) === true) {
+
+                    $xml = $zip->getFromName('word/document.xml');
+
+                    if ($xml !== false) {
+
+                        $dom = new \DOMDocument();
+                        $dom->preserveWhiteSpace = true;
+
+                        if (@$dom->loadXML($xml)) {
+
+                            $xpath = new \DOMXPath($dom);
+
+                            $xpath->registerNamespace(
+                                'w',
+                                'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
+                            );
+
+                            $titulos = [
+                                7  => 'Levantamiento de cargas',
+                                8  => 'Transporte de cargas',
+                                9  => 'Empuje y tracción de cargas',
+                                10 => 'Movimientos repetitivos',
+                                11 => 'Posturas estáticas forzadas',
+                                12 => 'Posturas dinámicas forzadas'
+                            ];
+
+                            foreach ($graficasAusentes as $numero) {
+
+                                if (!isset($titulos[$numero])) {
+                                    continue;
+                                }
+
+                                $marcador = '${GRAFICA_' . $numero . '}';
+
+                                // Eliminar la fila que contiene el marcador de la gráfica.
+                                $filasWord = $xpath->query('//w:tr');
+
+                                foreach ($filasWord as $fila) {
+
+                                    if (
+                                        strpos(
+                                            $fila->textContent,
+                                            $marcador
+                                        ) !== false
+                                    ) {
+
+                                        if ($fila->parentNode) {
+                                            $fila->parentNode->removeChild($fila);
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                // Eliminar la fila que contiene el título correspondiente.
+                                $filasWord = $xpath->query('//w:tr');
+
+                                foreach ($filasWord as $filaTitulo) {
+
+                                    if (
+                                        strpos(
+                                            $filaTitulo->textContent,
+                                            $titulos[$numero]
+                                        ) !== false
+                                    ) {
+
+                                        if ($filaTitulo->parentNode) {
+                                            $filaTitulo->parentNode->removeChild(
+                                                $filaTitulo
+                                            );
+                                        }
+
+                                        break;
+                                    }
+                                }
+                            }
+
+                            // Guardar el XML actualizado dentro del documento Word.
+                            $xmlActualizado = $dom->saveXML();
+
+                            if ($xmlActualizado !== false) {
+
+                                $zip->addFromString(
+                                    'word/document.xml',
+                                    $xmlActualizado
+                                );
+                            }
+                        }
+                    }
+
+                    $zip->close();
+                }
+            }
+
 
             return response()->download(
                 $rutaWord
