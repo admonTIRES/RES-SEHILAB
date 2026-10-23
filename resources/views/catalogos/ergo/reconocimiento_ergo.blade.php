@@ -744,7 +744,6 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                     <thead>
                                                                         <tr>
                                                                             <th>#</th>
-                                                                            <th>P.Trabajo</th>
                                                                             <th>Categoría</th>
                                                                             <th>Área</th>
                                                                             <th>Descripcion</th>
@@ -1796,7 +1795,7 @@ DESCRIPCIONACTIVIDAD
                                 <input type="text" class="form-control" name="NOMBRE_CATEGORIA_ERGO" id="NOMBRE_CATEGORIA_ERGO" required>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label> Tipo puesto*</label>
                                 <select class="custom-select form-control" id="CAT_TIPOPUESTO" name="CAT_TIPOPUESTO" required>
@@ -1805,12 +1804,6 @@ DESCRIPCIONACTIVIDAD
                                     <option value="{{$dato->id}}">{{$dato->catmovilfijo_nombre}}</option>
                                     @endforeach
                                 </select>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>P.Trabajo*</label>
-                                <input type="text" class="form-control" name="PT_CATEGORIA" id="PT_CATEGORIA" required readonly>
                             </div>
                         </div>
                         <div class="col-12">

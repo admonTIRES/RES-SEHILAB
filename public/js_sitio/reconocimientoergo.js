@@ -1683,23 +1683,6 @@ $("#boton_nueva_categoria").click(function (e) {
 
     $('#modal_categoria .modal-title').html('Nueva categoría');
 
-	$.ajax({
-        url: 'obtenerPTCategoria',
-        type: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: {
-            reco_id: recsensorial
-        },
-        success: function (resp) {
-            $('#PT_CATEGORIA').val(resp.pt);
-        },
-        error: function (xhr) {
-            console.log(xhr.responseText);
-        }
-    });
-
 
 	cargarareaSelect();
 
@@ -1986,10 +1969,6 @@ function mostrartablarecocategoriasergo() {
 					}
 				},
 				{
-					"data": "PT_CATEGORIA",
-					"defaultContent": "-"
-				},
-				{
 					"data": "NOMBRE_CATEGORIA_ERGO",
 					"defaultContent": "-"
                 },
@@ -2071,30 +2050,7 @@ $('#Tablarecocategoriasergo tbody').on('click', 'td>button.editar', function () 
 
 
 
-    if (
-        row.data().PT_CATEGORIA === null ||
-        row.data().PT_CATEGORIA === '' ||
-        typeof row.data().PT_CATEGORIA === 'undefined'
-    ) {
-
-        $.ajax({
-            url: 'obtenerPTCategoria',
-            type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                reco_id: recsensorial
-            },
-            success: function (resp) {
-                $('#PT_CATEGORIA').val(resp.pt);
-            },
-            error: function (xhr) {
-                console.log(xhr.responseText);
-            }
-        });
-
-    }
+  
 
 });
 
