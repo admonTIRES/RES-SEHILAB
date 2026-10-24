@@ -415,6 +415,20 @@ function portadaInfo() {
 
 function menureporte_estado(menu_nombre, menu_estado)
 {
+
+
+	 if (menu_nombre === "menureporte_7_1" || menu_nombre === "menureporte_7_2" || menu_nombre === "menureporte_7_3")
+    {
+        $('#' + menu_nombre).css('color', '#64bd44');
+
+        $('#' + menu_nombre).removeClass('fa fa-times');
+        $('#' + menu_nombre).addClass('fa fa-check');
+
+        return;
+	}
+	
+
+
 	if (parseInt(menu_estado) > 0)
 	{
 		$('#'+menu_nombre).css('color', '#64bd44'); // Verde
@@ -10088,14 +10102,26 @@ function reporte_concluido(reporte_id, perfil, checkbox)
 
 			var pendientes = 0;
 			var pendientes_puntos = '';
+
 			$('#top-menu .fa-times').each(function()
 			{
+				var texto = this.id;
+
+				if (
+					texto === "menureporte_7_1" ||
+					texto === "menureporte_7_2" ||
+					texto === "menureporte_7_3"
+				)
+				{
+					return;
+				}
+
 				pendientes += 1;
 
-				var texto = this.id;
 				texto = texto.replace("menureporte_", "");
 				texto = texto.replace("_", ".");
-				pendientes_puntos += '\nPunto: '+texto;
+
+				pendientes_puntos += '\nPunto: ' + texto;
 			});
 
 
@@ -10140,6 +10166,7 @@ function reporte_concluido(reporte_id, perfil, checkbox)
 								tabla_reporte_5_6_equipoauditivo(proyecto.id, reporteregistro_id);
 								tabla_reporte_epp(proyecto.id, reporteregistro_id);
 								tabla_reporte_6_2(proyecto.id, reporteregistro_id);
+
 								tabla_reporte_7_1(proyecto.id, reporteregistro_id);
 								tabla_reporte_7_2(proyecto.id, reporteregistro_id);
 								tabla_reporte_7_3(proyecto.id, reporteregistro_id);
