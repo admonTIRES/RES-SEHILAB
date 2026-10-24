@@ -597,7 +597,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                     <div class="col-12" id="seccion_foto_ubicacion">
                                                                         <div class="card">
                                                                             <div class="card-body">
-                                                                                <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: -4px; margin-left: 160px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar mapa ubicación" id="boton_descargarmapaubicacion"></i>
+
                                                                                 <h4 class="card-title">Mapa ubicación </h4>
                                                                                 <div class="row">
                                                                                     <div class="col-12 clienteblock">
@@ -618,7 +618,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                     <div class="col-12 clienteblock" id="seccion_foto_plano">
                                                                         <div class="card">
                                                                             <div class="card-body">
-                                                                                <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: -4px; margin-left: 160px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 0px -1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar plano instalación" id="boton_descargarplanoinstalacion"></i>
+
                                                                                 <h4 class="card-title">Plano instalación <br> con áreas </h4>
                                                                                 <div class="row">
                                                                                     <div class="col-12 clienteblock">
@@ -639,7 +639,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                                                     <div class="col-12 clienteblock" id="seccion_foto_instalacion">
                                                                         <div class="card">
                                                                             <div class="card-body">
-                                                                                <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: -4px; margin-left: 160px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar foto instalación" id="boton_descargarfotoinstalacion"></i>
+
                                                                                 <h4 class="card-title">Foto instalación </h4>
                                                                                 <div class="row">
                                                                                     <div class="col-12 clienteblock">
@@ -1019,7 +1019,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     <a href="#6" class="list-group-item">6.- Evaluación</a>
                                     <a href="#6_1" class="list-group-item submenu">6.1.- Preguntas NOM-036-1-STPS-2018 <i class="fa " id="menureporte_6_1"></i></a>
                                     <a href="#7" class="list-group-item">7.- Resultados fichas <i class="fa " id="menureporte_7"></i></a>
-                                    <a href="#7_1" class="list-group-item submenu">7.1.- Resultados de la evaluación conforme a las fichas de la ISO 12995-2014 <i class="fa " id="menureporte_7_1"></i></a>
+                                    <a href="#7_1" class="list-group-item submenu">7.1.- Resultados de la evaluación conforme a las fichas de la ISO 12295-2014 <i class="fa " id="menureporte_7_1"></i></a>
                                     <a href="#7_2" class="list-group-item submenu">7.2.- Mapeo de Peligros/Riesgos Ergonómicos<i class="fa " id="menureporte_7_2"></i></a>
                                     <a href="#8" class="list-group-item">8.- Peligro /Riesgo Ergonómico en Áreas de Trabajo de la Planta <i class="fa" id="menureporte_8"></i></a>
                                     <a href="#9" class="list-group-item">9.- Conclusiones <i class="fa" id="menureporte_9"></i></a>
@@ -1399,7 +1399,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
                                     <form method="post" enctype="multipart/form-data" name="form_reporte_metodologia_4_1" id="form_reporte_metodologia_4_1">
                                         <div class="row">
                                             <div class="col-12">
-                                                <p class="justificado">La metodología utilizada para la identificación del peligro y riesgo ergonómico se basa en el modelo aplicando la ISO 12995-2014 donde se contemplan los aspectos de la ergonomía física: </p>
+                                                <p class="justificado">La metodología utilizada para la identificación del peligro y riesgo ergonómico se basa en el modelo aplicando la ISO 12295-2014 donde se contemplan los aspectos de la ergonomía física: </p>
                                                 <div class="text-center mb-3">
                                                     <img src="{{ asset('assets/images/ergo/metodologiaergo1.png') }}"
                                                         style="max-width: 50%; height: auto;">
@@ -1448,7 +1448,6 @@ Se localiza en las coordenadas  COORDENADAS.
                                                 </div>
                                             </div>
                                             <div class="col-6">
-                                                <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: 6px; margin-left: 8px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 0px -1px 0 #FFFFFF; cursor: pointer; display: block;" data-toggle="tooltip" title="Descargar mapa ubicación" id="boton_descargarmapaubicacion"></i>
 
                                                 <input type="file" accept="image/jpeg,image/x-png" id="RUTA_IMAGEN_UBICACION" name="RUTA_IMAGEN_UBICACION" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" required />
                                             </div>
@@ -1564,7 +1563,7 @@ DESCRIPCIONACTIVIDAD
 
 
                                     <h4 class="card-title mt-2" id="7">7.- Resultados</h4>
-                                    <h4 class="card-title" id="7_1">7.1.- Resultados de la evaluación conforme a las fichas de la ISO 12995-2014</h4>
+                                    <h4 class="card-title" id="7_1">7.1.- Resultados de la evaluación conforme a las fichas de la ISO 12295-2014</h4>
                                     <form method="post" enctype="multipart/form-data" name="form_fichas-iso12995" id="form_fichas-iso12995">
                                         <div class="form-group">
                                             <label>Descripción de las siguientes gráficas</label>
@@ -1668,7 +1667,7 @@ DESCRIPCIONACTIVIDAD
                                                     <div class="col-12">
                                                         <div class="form-group">
                                                             <label>Foto documento del responsable técnico</label>
-                                                            <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: 6px; margin-left: 8px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 0px -1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar foto documento" id="boton_descargarresponsabledoc1"></i>
+
                                                             <input type="file" accept="image/jpeg,image/x-png" id="INFORME_RESPONSABLE1DOCUMENTO" name="INFORME_RESPONSABLE1DOCUMENTO" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" required />
                                                         </div>
                                                     </div>
@@ -1691,7 +1690,6 @@ DESCRIPCIONACTIVIDAD
                                                     <div class="col-12">
                                                         <div class="form-group">
                                                             <label>Foto documento del prestador de servicio</label>
-                                                            <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: 6px; margin-left: 8px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 0px -1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar foto documento" id="boton_descargarresponsabledoc2"></i>
                                                             <input type="file" accept="image/jpeg,image/x-png" id="INFORME_RESPONSABLE2DOCUMENTO" name="INFORME_RESPONSABLE2DOCUMENTO" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" required />
                                                         </div>
                                                     </div>
@@ -2298,7 +2296,19 @@ DESCRIPCIONACTIVIDAD
                                     </div>
                                 </div>
 
-                                <div class="card mt-5">
+                                <div class="col-3 mt-5">
+                                    <div class="form-group">
+                                        <label>Aplica Movimientos repetitivos *</label>
+                                        <select class="form-control" name="APLICA_MOVIMIENTO" id="APLICA_MOVIMIENTO" required>
+                                            <option value="">Seleccione</option>
+                                            <option value="SI">Sí</option>
+                                            <option value="NO">No</option>
+                                        </select>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="card mt-5" id="TEXTO_MOVIMIENTO" style="display: block;">
                                     <div class="card-header header-verde-res d-flex align-items-center">
                                         <i class="fa fa-info mr-2" aria-hidden="true"></i>
                                         <div class="text-center w-100">
@@ -2310,14 +2320,25 @@ DESCRIPCIONACTIVIDAD
                                     </div>
                                 </div>
 
+
+                                <div class="card mt-2" id="TEXTO_NO_APLICAMOVIMIENTO" style="display: none;">
+                                    <div class="card-header header-verde-res d-flex align-items-center">
+                                        <i class="fa fa-info mr-2" aria-hidden="true"></i>
+                                        <div class="text-center w-100">
+                                            <b>No aplica movimientos repetitivos</b>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        El trabajador no realiza tareas forzadas que involucren movimientos repetitivos, es decir no hay una secuencia de acciones continuas y reiteradas de un mismo grupo muscular o articular que se repitan de forma idéntica, con una duración de más del 50% de un ciclo de trabajo corto (igual o menor a 30 segundos) y en una actividad que se realiza de manera continuada durante una hora o más de la jornada laboral.
+                                    </div>
+                                </div>
+
                                 <div class="mt-2 card-header header-res d-flex justify-content-between align-items-center cursor-pointer"
-                                    onclick="toggleSeccion('contenido5')" style="display:block !important;">
+                                    onclick="toggleSeccion('contenido5')" id="MOVIMIENTO_REPETITIVOS" style="display:block !important;">
                                     <div class="text-center">
                                         <b>5.Movimientos repetitivos de la extremidad superior</b><br>
                                     </div>
                                 </div>
-
-
                                 <div id="contenido5" style="display:none;">
                                     <div class="card-body">
                                         <div class="container-fluid">

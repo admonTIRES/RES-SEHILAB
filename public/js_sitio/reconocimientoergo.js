@@ -2437,8 +2437,7 @@ $("#boton_nueva_ficha").click(function (e) {
     $("#contenedorActividades").empty(); 
     $('#contenido2, #contenido3, #contenido4, #contenido5, #contenido6, #contenido7').hide();
 
-   $('#TEXTO_MANIPULACION, #LEVANTAMIENTO_CARGA, #TRANSPORTE_CARGAS, #EMPUJE_TRACCION')
-    .attr('style', 'display:block !important;');
+   $('#TEXTO_MANIPULACION, #LEVANTAMIENTO_CARGA, #TRANSPORTE_CARGAS, #EMPUJE_TRACCION').attr('style', 'display:block !important;');
 
     $("#modal_fichas").modal("show");
 
@@ -2446,8 +2445,10 @@ $("#boton_nueva_ficha").click(function (e) {
 	
     $('#JSON_ACTIVIDADES').val('')
 
-
+    $('#TEXTO_MOVIMIENTO, #MOVIMIENTO_REPETITIVOS').attr('style', 'display:block !important;');
     
+    $('#TEXTO_NO_APLICAMOVIMIENTO').attr('style', 'display:none !important;');
+
     var selectTurno = $('#TURNO_EMPLEADO_FICHA').selectize({
         placeholder: 'Seleccione una o varias opciones',
         allowEmptyOption: true,
@@ -4292,6 +4293,36 @@ $(document).ready(function(){
 
 });
 
+$(document).ready(function(){
+
+    $('[name="APLICA_MOVIMIENTO"]').on('change', function(){
+
+        let p1 = $(this).val();
+
+        if (p1 === "SI") {
+
+            $('#TEXTO_MOVIMIENTO, #MOVIMIENTO_REPETITIVOS').attr('style', 'display:block !important;');
+            $('#TEXTO_NO_APLICAMOVIMIENTO').attr('style', 'display:none !important;');
+
+
+        } else if (p1 === "NO") {
+
+            $('#TEXTO_MOVIMIENTO, #MOVIMIENTO_REPETITIVOS').attr('style', 'display:none !important;');
+            $('#TEXTO_NO_APLICAMOVIMIENTO').attr('style', 'display:block !important;');
+
+			
+		} else {
+			
+            $('#TEXTO_MOVIMIENTO, #MOVIMIENTO_REPETITIVOS').attr('style', 'display:block !important;');
+            $('#TEXTO_NO_APLICAMOVIMIENTO').attr('style', 'display:none !important;');
+
+
+		}
+
+    });
+
+});
+
 function generarJSONActividades() {
 
     let data = [];
@@ -4742,6 +4773,26 @@ $('#Tablarecofichasergo tbody').on('click', 'td>button.editar', function () {
 			$('#TEXTO_MANIPULACION, #LEVANTAMIENTO_CARGA, #TRANSPORTE_CARGAS, #EMPUJE_TRACCION')
 				.attr('style', 'display:block !important;');
 		}
+
+
+       if (data.APLICA_MOVIMIENTO === "SI") {
+
+            $('#TEXTO_MOVIMIENTO, #MOVIMIENTO_REPETITIVOS').attr('style', 'display:block !important;');
+            $('#TEXTO_NO_APLICAMOVIMIENTO').attr('style', 'display:none !important;');
+
+        } else if (data.APLICA_MOVIMIENTO === "NO") {
+
+            $('#TEXTO_MOVIMIENTO, #MOVIMIENTO_REPETITIVOS').attr('style', 'display:none !important;');
+            $('#TEXTO_NO_APLICAMOVIMIENTO').attr('style', 'display:block !important;');
+
+        } else {
+
+            $('#TEXTO_MOVIMIENTO, #MOVIMIENTO_REPETITIVOS').attr('style', 'display:block !important;');
+            $('#TEXTO_NO_APLICAMOVIMIENTO').attr('style', 'display:none !important;');
+
+        }
+        
+
 
 		fichas["1.1"].render();
 		fichas["1.3"].render();

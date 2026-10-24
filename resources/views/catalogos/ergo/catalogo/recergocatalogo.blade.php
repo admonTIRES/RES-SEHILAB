@@ -472,10 +472,7 @@
                                 <label>Uso *</label>
                                 <select class="custom-select form-control" id="USO_RECOMENDACIONES" name="USO_RECOMENDACIONES" required="">
                                     <option value=""></option>
-                                    <option value="Reconocimiento">Reconocimiento</option>
                                     <option value="Informe">Informe</option>
-                                    <option value="Ambos">Ambos</option>
-
                                 </select>
                             </div>
                         </div>

@@ -31,7 +31,8 @@ class recoergofichastecnicasModel extends Model
         'P3_MANIPULACION_CARGA',
         'JSON_ACTIVIDADES',
         'JSON_FICHAS',
-        'ACTIVO'
+        'ACTIVO',
+        'APLICA_MOVIMIENTO'
 
     ];
 
