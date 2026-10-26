@@ -4088,6 +4088,26 @@ class reporteruidowordController extends Controller
 
             $plantillaword->setComplexValue('INDICE_RUIDO_7',$indice7);
 
+            // $bloquesRuido = [
+            //     'BLOQUE_RUIDO_6_2' => $mostrar['6_2'],
+            //     'BLOQUE_RUIDO_6_3' => $mostrar['6_3'],
+            //     'BLOQUE_RUIDO_7_1' => $mostrar['7_1'],
+            //     'BLOQUE_RUIDO_7_2' => $mostrar['7_2'],
+            //     'BLOQUE_RUIDO_7_3' => $mostrar['7_3'],
+            //     'BLOQUE_RUIDO_7_6' => $mostrar['7_6'],
+            // ];
+
+            // foreach ($bloquesRuido as $bloque => $visible) {
+
+            //     $plantillaword->cloneBlock(
+            //         $bloque,
+            //         $visible ? 1 : 0,
+            //         true,
+            //         false
+            //     );
+            // }
+
+
             $bloquesRuido = [
                 'BLOQUE_RUIDO_6_2' => $mostrar['6_2'],
                 'BLOQUE_RUIDO_6_3' => $mostrar['6_3'],
@@ -4099,12 +4119,11 @@ class reporteruidowordController extends Controller
 
             foreach ($bloquesRuido as $bloque => $visible) {
 
-                $plantillaword->cloneBlock(
-                    $bloque,
-                    $visible ? 1 : 0,
-                    true,
-                    false
-                );
+                if ($visible) {
+                    $plantillaword->cloneBlock($bloque,1,true,false);
+                } else {
+                    $plantillaword->deleteBlock($bloque);
+                }
             }
 
 
