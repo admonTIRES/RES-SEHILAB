@@ -62,6 +62,7 @@ use App\modelos\evaluacionfre\evaluacionfreModel;
 use App\modelos\evaluacionfre\recursosPortadaFreErgoModel;
 use App\modelos\evaluacionfre\datosgeneralesinformeFreModel;
 use App\modelos\evaluacionfre\definicionesinformeFreModel;
+use App\modelos\evaluacionfre\recomendacionesinformefreModel;
 
 
 ///// CAT EPP
@@ -2056,6 +2057,145 @@ class evaluacionfreController extends Controller
             return response()->json([
                 'msj' => 'Error: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+
+    public function guardarRecomendacionesInformeFreErgo(Request $request)
+     {
+
+        try {
+
+            DB::beginTransaction();
+
+            recomendacionesinformefreModel::where('RECO_ID',$request->RECO_ID)->delete();
+
+            if ($request->DESCRIPCION_RECOMENDACIONES) {
+
+                foreach ($request->DESCRIPCION_RECOMENDACIONES as $recomendacion) 
+                {
+                    $dato = new recomendacionesinformefreModel();
+                    $dato->RECO_ID = $request->RECO_ID;
+                    $dato->CATALOGO_RECOMENDACIONES_ID = $recomendacion;
+                    $dato->save();
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'msj' =>
+                'Recomendaciones guardadas correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' =>
+                'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
+    public function obtenerRecomendacionesInformeFreErgo($RECO_ID)
+    {
+        $datos = recomendacionesinformefreModel::where('RECO_ID',$RECO_ID)->get();
+        return response()->json($datos);
+    }
+
+
+
+
+    public function guardarResponsablesInformeRecoErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where('RECO_ID',$request->RECO_ID)->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+                $dato->save();
+            }
+
+            $dato->INFORME_RESPONSABLE1 = $request->INFORME_RESPONSABLE1;
+            $dato->INFORME_RESPONSABLE1CARGO = $request->INFORME_RESPONSABLE1CARGO;
+            $dato->INFORME_RESPONSABLE2 = $request->INFORME_RESPONSABLE2;
+            $dato->INFORME_RESPONSABLE2CARGO = $request->INFORME_RESPONSABLE2CARGO;
+
+            if ($request->file('INFORME_RESPONSABLE1DOCUMENTO')) {
+
+                $extension = $request->file('INFORME_RESPONSABLE1DOCUMENTO')->getClientOriginalExtension();
+                $ruta = $request->file(
+                    'INFORME_RESPONSABLE1DOCUMENTO'
+                )->storeAs(
+                    'evaluacionfre_ergo/' . $request->RECO_ID . '/responsables_informe',
+                    'responsable1.' . $extension
+
+                );
+
+                $dato->INFORME_RESPONSABLE1DOCUMENTO = $ruta;
+            }
+
+            if ($request->file('INFORME_RESPONSABLE2DOCUMENTO')) {
+
+                $extension = $request->file('INFORME_RESPONSABLE2DOCUMENTO')->getClientOriginalExtension();
+                $ruta = $request->file(
+                    'INFORME_RESPONSABLE2DOCUMENTO'
+                )->storeAs(
+                    'evaluacionfre_ergo/' . $request->RECO_ID . '/responsables_informe',
+                    'responsable2.' . $extension
+                );
+                $dato->INFORME_RESPONSABLE2DOCUMENTO = $ruta;
+            }
+
+            $dato->save();
+            DB::commit();
+
+            return response()->json([
+                'msj' =>
+                'Responsables guardados correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' =>
+                'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
+    public function mostrarresponsable1freergo($archivo_opcion, $reco_id, $extension)
+    {
+
+        $recurso = datosgeneralesinformeFreModel::where('RECO_ID',$reco_id)->firstOrFail();
+
+        if (($archivo_opcion + 0) == 0) {
+            return Storage::response($recurso->INFORME_RESPONSABLE1DOCUMENTO);
+        } else {
+            return Storage::download($recurso->INFORME_RESPONSABLE1DOCUMENTO);
+        }
+    }
+
+
+
+    public function mostrarresponsable2freergo($archivo_opcion, $reco_id, $extension)
+    {
+
+        $recurso = datosgeneralesinformeFreModel::where('RECO_ID',$reco_id)->firstOrFail();
+        if (($archivo_opcion + 0) == 0) {
+            return Storage::response($recurso->INFORME_RESPONSABLE2DOCUMENTO);
+        } else {
+            return Storage::download($recurso->INFORME_RESPONSABLE2DOCUMENTO);
         }
     }
 }

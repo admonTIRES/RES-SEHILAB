@@ -2308,7 +2308,10 @@ Route::get('areascategoriaspsico/{proyecto_id}', ['as' => 'areascategoriaspsico'
 
 Route::resource('reconocimientoergo', 'ERGO\reconocimientoergoController');
 Route::get('/folioproyectoergp/{proyecto_folio}', ['as' => 'ERGO.folioproyectoergp', 'uses' => 'ERGO\reconocimientoergoController@folioproyectoergp']);
+
+
 Route::get('/estructuraproyectosergo/{FOLIO}', ['as' => 'ERGO.estructuraproyectosergo', 'uses' => 'ERGO\reconocimientoergoController@estructuraproyectosergo']);
+
 Route::get('tablareconocimientoergo', ['as' => 'ERGO.tablareconocimientoergo', 'uses' => 'ERGO\reconocimientoergoController@tablareconocimientoergo']);
 Route::get('mostrarmapaubicacionergo/{archivo_opcion}/{recsensorial_id}', ['as' => 'mostrarmapa', 'uses' => 'ERGO\reconocimientoergoController@mostrarmapaubicacionergo']);
 Route::get('mostraplanoergo/{archivo_opcion}/{recsensorial_id}', ['as' => 'mostrarmapa', 'uses' => 'ERGO\reconocimientoergoController@mostraplanoergo']);
@@ -2429,8 +2432,6 @@ Route::get('ergocatalogodesactiva/{catalogo}/{registro}/{estado}', ['as' => 'ERG
 
 
 ////// DESCARGAR FICHAS EN ZIP 
-
-
 Route::get('reporteFichasZip/{RECO_ID}', ['as' => 'reporteFichasZip', 'uses' => 'ERGO\reconocimientoergoController@reporteFichasZip']);
 
 
@@ -2444,14 +2445,53 @@ Route::get('Tablafichasevaluacionfre', ['as' => 'ERGO.Tablafichasevaluacionfre',
 
 
 Route::post('obtenerEvaluacionFre', ['as' => 'obtenerEvaluacionFre', 'uses' => 'ERGO\evaluacionfreController@obtenerEvaluacionFre']);
-
-
 Route::post('cargarGraficaPregunta1', ['as' => 'cargarGraficaPregunta1', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta1']);
 Route::post('cargarGraficaPregunta2', ['as' => 'cargarGraficaPregunta2', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta2']);
 Route::post('cargarGraficaPregunta3', ['as' => 'cargarGraficaPregunta3', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta3']);
 Route::post('cargarGraficaPregunta4', ['as' => 'cargarGraficaPregunta4', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta4']);
 Route::post('cargarGraficaPregunta5', ['as' => 'cargarGraficaPregunta5', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta5']);
 Route::post('cargarGraficaPregunta6', ['as' => 'cargarGraficaPregunta6', 'uses' => 'ERGO\evaluacionfreController@cargarGraficaPregunta6']);
+
+
+
+Route::get('obtenerDatosInformesFreErgo/{ID}', ['as' => 'obtenerDatosInformesFreErgo', 'uses' => 'ERGO\evaluacionfreController@obtenerDatosInformesFreErgo']);
+Route::post('guardarPortadaFreErgo', ['as' => 'guardarPortadaFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarPortadaFreErgo']);
+Route::get('mostrarportadafreergo/{archivo_opcion}/{reco_id}.{extension}', ['as' => 'mostrarportadafreergo', 'uses' => 'ERGO\evaluacionfreController@mostrarportadafreergo']);
+Route::get('obtenerDatosGeneralesInformeFre/{RECO_ID}', ['as' => 'obtenerDatosGeneralesInformeFre', 'uses' => 'ERGO\evaluacionfreController@obtenerDatosGeneralesInformeFre']);
+
+///// INTRODUCCION 
+Route::post('guardarIntroduccionFreErgo', ['as' => 'guardarIntroduccionFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarIntroduccionFreErgo']);
+/// DEFINICIONES
+Route::post('guardarDefinicionesFreErgo', ['as' => 'guardarDefinicionesFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarDefinicionesFreErgo']);
+Route::get('obtenerDefinicionesFreErgo/{RECO_ID}', ['as' => 'obtenerDefinicionesFreErgo', 'uses' => 'ERGO\evaluacionfreController@obtenerDefinicionesFreErgo']);
+/// OBJETIVOS GENERALES Y ESPECIFICOS 
+Route::post('guardarObjetivoGeneralFreErgo', ['as' => 'guardarObjetivoGeneralFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarObjetivoGeneralFreErgo']);
+Route::post('guardarObjetivoEspecificoFreErgo', ['as' => 'guardarObjetivoEspecificoFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarObjetivoEspecificoFreErgo']);
+/// RECONOCIMIENTO
+Route::post('guardarReconocimientoFreErgo', ['as' => 'guardarReconocimientoFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarReconocimientoFreErgo']);
+/// DESCRIPCION DEL PROCESO DE LA INSTALACION 
+Route::post('guardarProcesoInstalacionFreErgo', ['as' => 'guardarProcesoInstalacionFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarProcesoInstalacionFreErgo']);
+/// CICLO 
+Route::post('guardarCicloFreErgo', ['as' => 'guardarCicloFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarCicloFreErgo']);
+Route::get('TablaActividadesFre', ['as' => 'TablaActividadesFre', 'uses' => 'ERGO\evaluacionfreController@TablaActividadesFre']);
+/// ANTROPOMETRICAS 
+Route::get('TablaImcFre', ['as' => 'TablaImcFre', 'uses' => 'ERGO\evaluacionfreController@TablaImcFre']);
+Route::post('guardarAntopometricasFreErgo', ['as' => 'guardarAntopometricasFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarAntopometricasFreErgo']);
+/// MUSCULO ESQUELETICO
+Route::post('guardarMusculoFreErgo', ['as' => 'guardarAntopometricasFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarMusculoFreErgo']);
+/// CATEGORIAS EVALUADAS
+Route::get('tablaReporteTrabajadoresErgo', ['as' => 'tablaReporteTrabajadoresErgo', 'uses' => 'ERGO\evaluacionfreController@tablaReporteTrabajadoresErgo']);
+///  CONCLUSION
+Route::post('guardarConclusionFreErgo', ['as' => 'guardarConclusionFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarConclusionFreErgo']);
+/// RECOMENDACIONES
+Route::post('guardarRecomendacionesInformeFreErgo', ['as' => 'guardarRecomendacionesInformeFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarRecomendacionesInformeFreErgo']);
+Route::get('obtenerRecomendacionesInformeFreErgo/{RECO_ID}', ['as' => 'obtenerRecomendacionesInformeFreErgo', 'uses' => 'ERGO\evaluacionfreController@obtenerRecomendacionesInformeFreErgo']);
+/// RESPONSABLES
+Route::post('guardarResponsablesInformeFreErgo', ['as' => 'guardarResponsablesInformeFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarResponsablesInformeFreErgo']);
+Route::get('mostrarresponsable1freergo/{archivo_opcion}/{reco_id}.{extension}', ['as' => 'mostrarresponsable1freergo', 'uses' => 'ERGO\evaluacionfreController@mostrarresponsable1freergo']);
+Route::get('mostrarresponsable2freergo/{archivo_opcion}/{reco_id}.{extension}', ['as' => 'mostrarresponsable2freergo', 'uses' => 'ERGO\evaluacionfreController@mostrarresponsable2freergo']);
+
+
 
 
 

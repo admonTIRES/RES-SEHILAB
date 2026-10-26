@@ -500,7 +500,7 @@
                                                                     <div class="col-12" id="seccion_foto_ubicacion">
                                                                         <div class="card">
                                                                             <div class="card-body">
-                                                                                <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: -4px; margin-left: 160px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar mapa ubicación" id="boton_descargarmapaubicacion"></i>
+
                                                                                 <h4 class="card-title">Mapa ubicación </h4>
                                                                                 <div class="row">
                                                                                     <div class="col-12 clienteblock">
@@ -521,7 +521,7 @@
                                                                     <div class="col-12 clienteblock" id="seccion_foto_plano">
                                                                         <div class="card">
                                                                             <div class="card-body">
-                                                                                <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: -4px; margin-left: 160px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 0px -1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar plano instalación" id="boton_descargarplanoinstalacion"></i>
+
                                                                                 <h4 class="card-title">Plano instalación <br> con áreas </h4>
                                                                                 <div class="row">
                                                                                     <div class="col-12 clienteblock">
@@ -542,7 +542,7 @@
                                                                     <div class="col-12 clienteblock" id="seccion_foto_instalacion">
                                                                         <div class="card">
                                                                             <div class="card-body">
-                                                                                <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: -4px; margin-left: 160px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar foto instalación" id="boton_descargarfotoinstalacion"></i>
+
                                                                                 <h4 class="card-title">Foto instalación </h4>
                                                                                 <div class="row">
                                                                                     <div class="col-12 clienteblock">
@@ -1745,8 +1745,6 @@ Se localiza en las coordenadas  COORDENADAS.
                                                 </div>
                                             </div>
                                             <div class="col-6">
-                                                <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: 6px; margin-left: 8px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 0px -1px 0 #FFFFFF; cursor: pointer; display: block;" data-toggle="tooltip" title="Descargar mapa ubicación" id="boton_descargarmapaubicacion"></i>
-
                                                 <input type="file" accept="image/jpeg,image/x-png" id="RUTA_IMAGEN_UBICACION" name="RUTA_IMAGEN_UBICACION" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" required />
                                             </div>
                                         </div>
@@ -2393,7 +2391,49 @@ DESCRIPCIONACTIVIDAD
                                             </div>
                                         </div>
                                     </form>
-                                    <h4 class="card-title" id="9">9.- Recomendaciones de control </h4>
+                                    <h4 class="card-title" id="9">9.- Recomendaciones de control</h4>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <form enctype="multipart/form-data" method="post" name="form_informe_listarecomendaciones" id="form_informe_listarecomendaciones">
+                                                <div class="row mb-3">
+                                                    <table class="table-sm" style="width: 96%; table-layout: fixed;">
+                                                        <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_recomendaciones">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Tipo</th>
+                                                                    <th>Descripción</th>
+                                                                    <th width="80">Activo</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($catrecomendaciones as $dato)
+                                                                <tr>
+                                                                    <td class="justificado">{{ $dato->TIPO_RECOMENDACIONES }}</td>
+                                                                    <td class="justificado">{{ $dato->DESCRIPCION_RECOMENDACIONES }}</td>
+                                                                    <td class="text-center">
+                                                                        <div class="switch">
+                                                                            <label>
+                                                                                <input type="checkbox"
+                                                                                    class="recomendacion_checkbox"
+                                                                                    name="DESCRIPCION_RECOMENDACIONES[]"
+                                                                                    value="{{ $dato->ID_RECOMENDACIONES }}"
+                                                                                    onclick="activa_recomendacion(this);"
+                                                                                    {{ $dato->ACTIVO == 1 ? '' : '' }}>
+                                                                                <span class="lever switch-col-light-blue"></span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                </div>
+                                                <div class="col-12" style="text-align: right;">
+                                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_recomendaciones">Guardar recomendaciones <i class="fa fa-save"></i></button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
 
 
                                     <h4 class="card-title" id="10">10.- Responsables del informe</h4>
@@ -2416,7 +2456,6 @@ DESCRIPCIONACTIVIDAD
                                                     <div class="col-12">
                                                         <div class="form-group">
                                                             <label>Foto documento del responsable técnico</label>
-                                                            <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: 6px; margin-left: 8px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 0px -1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar foto documento" id="boton_descargarresponsabledoc1"></i>
                                                             <input type="file" accept="image/jpeg,image/x-png" id="INFORME_RESPONSABLE1DOCUMENTO" name="INFORME_RESPONSABLE1DOCUMENTO" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" required />
                                                         </div>
                                                     </div>
@@ -2439,7 +2478,6 @@ DESCRIPCIONACTIVIDAD
                                                     <div class="col-12">
                                                         <div class="form-group">
                                                             <label>Foto documento del prestador de servicio</label>
-                                                            <i class="fa fa-download fa-2x text-success" style="position: absolute; margin-top: 6px; margin-left: 8px; z-index: 50; text-shadow: 1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, 1px 0px 0 #FFFFFF, 0px 1px 0 #FFFFFF, -1px 0px 0 #FFFFFF, 0px -1px 0 #FFFFFF; cursor: pointer; display: none;" data-toggle="tooltip" title="Descargar foto documento" id="boton_descargarresponsabledoc2"></i>
                                                             <input type="file" accept="image/jpeg,image/x-png" id="INFORME_RESPONSABLE2DOCUMENTO" name="INFORME_RESPONSABLE2DOCUMENTO" data-allowed-file-extensions="jpg png JPG PNG" data-height="300" data-default-file="" required />
                                                         </div>
                                                     </div>
@@ -3503,7 +3541,14 @@ DESCRIPCIONACTIVIDAD
                                 </tbody>
                             </table>
                         </div>
-
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Recomendaciones EPP</label>
+                                <div class="input-group">
+                                    <textarea class="form-control" name="RECOMENDACIONES_EPP" id="RECOMENDACIONES_EPP" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-12">
                             <div class="table-responsive">
                                 <h5 class="text-center mb-3"><strong>Máquinas, herramientas y utensilios</strong></h5>
@@ -3548,6 +3593,8 @@ DESCRIPCIONACTIVIDAD
                                     <option value="1">Natural</option>
                                     <option value="2">Artificial</option>
                                     <option value="3">Mixta</option>
+                                    <option value="4">N/A</option>
+
                                 </select>
                             </div>
                         </div>
@@ -3560,6 +3607,8 @@ DESCRIPCIONACTIVIDAD
                                     <option value="1">Normal</option>
                                     <option value="2">Deficiente</option>
                                     <option value="3">Excesiva</option>
+                                    <option value="4">N/A</option>
+
                                 </select>
                             </div>
                         </div>
@@ -3590,6 +3639,8 @@ DESCRIPCIONACTIVIDAD
                                     <option value="1">Calor</option>
                                     <option value="2">Frío</option>
                                     <option value="3">Otros</option>
+                                    <option value="4">N/A</option>
+
                                 </select>
                             </div>
                         </div>
@@ -3602,6 +3653,8 @@ DESCRIPCIONACTIVIDAD
                                     <option value="1">Leve</option>
                                     <option value="2">Moderada</option>
                                     <option value="3">Severa</option>
+                                    <option value="4">N/A</option>
+
                                 </select>
                             </div>
                         </div>
@@ -3669,6 +3722,8 @@ DESCRIPCIONACTIVIDAD
                                     <option value="1">Leve</option>
                                     <option value="2">Moderada</option>
                                     <option value="3">Severa</option>
+                                    <option value="4">N/A</option>
+
                                 </select>
                             </div>
                         </div>
@@ -3680,6 +3735,8 @@ DESCRIPCIONACTIVIDAD
                                     <option value="">Seleccione</option>
                                     <option value="1">Continuo</option>
                                     <option value="2">Intermitente</option>
+                                    <option value="4">N/A</option>
+
                                 </select>
                             </div>
                         </div>
@@ -3742,6 +3799,8 @@ DESCRIPCIONACTIVIDAD
                                     <option value="1">Leve</option>
                                     <option value="2">Moderada</option>
                                     <option value="3">Severa</option>
+                                    <option value="4">N/A</option>
+
                                 </select>
                             </div>
                         </div>
@@ -3754,6 +3813,8 @@ DESCRIPCIONACTIVIDAD
                                     <option value="1">Mano brazo</option>
                                     <option value="2">Cuerpo entero</option>
                                     <option value="3">Columna y miembros inferiores</option>
+                                    <option value="4">N/A</option>
+
                                 </select>
                             </div>
                         </div>
@@ -6108,34 +6169,24 @@ DESCRIPCIONACTIVIDAD
 
                         </div>
 
-
+                        <div class="col-12 mt-3">
+                            <div class="form-group">
+                                <label>Observaciones Cuestionario Nórdico</label>
+                                <div class="input-group">
+                                    <textarea class="form-control" name="OBSERVACIONES_CUESTIONARIO" id="OBSERVACIONES_CUESTIONARIO" rows="4"></textarea>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-12">
                             <h4>
                                 Fuerza manual:
                             </h4>
                         </div>
 
-
                         <div class="col-6">
                             <div class="form-group">
-                                <label>Mano derecha *</label>
-                                <input type="text" class="form-control" id="FUERZA_MANO_DERECHA" name="FUERZA_MANO_DERECHA" placeholder="Valor">
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Mano izquierda *</label>
-                                <input type="text" class="form-control" id="FUERZA_MANO_IZQUIERDA" name="FUERZA_MANO_IZQUIERDA" placeholder="Valor">
-                            </div>
-                        </div>
-
-
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Indique si su tarea requiere uso de fuerza manual: </label>
-                                <select class="form-control" name="REQUIERE_FUERZA_MANUAL" id="REQUIERE_FUERZA_MANUAL">
+                                <label>¿Las tareas habituales del trabajador requieren ejercer fuerza muscular manual con las extremidades superiores (hombros, brazos, antebrazos y manos) para realizar acciones como presionar, apretar o sujetar objeto? </label>
+                                <select class="form-control" name="REQUIERE_FUERZA_MANUAL" id="REQUIERE_FUERZA_MANUAL" required>
                                     <option value="">Seleccionar</option>
                                     <option value="1">Sí</option>
                                     <option value="2">No</option>
@@ -6143,7 +6194,7 @@ DESCRIPCIONACTIVIDAD
                             </div>
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-6 mt-5">
                             <div class="form-group">
                                 <label>Tipo de Dominancia: </label>
                                 <select class="form-control" name="TIPO_DOMINANCIA" id="TIPO_DOMINANCIA">
@@ -6154,55 +6205,328 @@ DESCRIPCIONACTIVIDAD
                             </div>
                         </div>
 
-                        <div class="col-12">
-                            <h4>
-                                LEY SILLA: DOF 19/12/24.
-                            </h4>
-                        </div>
+                        <div class="col-12" id="datosFuerzaManual" style="display:none;">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Escala de Borg:</label>
+                                        <select class="form-control" name="ESCALA_BORG" id="ESCALA_BORG">
+                                            <option value="">Seleccionar nivel</option>
+
+                                            <option value="0" data-color="#009944" style="background-color:#009944; color:#fff;">
+                                                0 - Nada en absoluto (0% CVM)
+                                            </option>
+                                            <option value="0.5" data-color="#009944" style="background-color:#009944; color:#fff;">
+                                                0.5 - Muy, muy débil (casi ausente)
+                                            </option>
+                                            <option value="1" data-color="#009944" style="background-color:#009944; color:#fff;">
+                                                1 - Muy débil (10% CVM)
+                                            </option>
+                                            <option value="2" data-color="#009944" style="background-color:#009944; color:#fff;">
+                                                2 - Débil (20% CVM)
+                                            </option>
+                                            <option value="3" data-color="#8fd14f" style="background-color:#8fd14f; color:#222;">
+                                                3 - Moderado (30% CVM)
+                                            </option>
+                                            <option value="4" data-color="#d6e600" style="background-color:#d6e600; color:#222;">
+                                                4 - Moderado + (40% CVM)
+                                            </option>
+                                            <option value="5" data-color="#ffeb00" style="background-color:#ffeb00; color:#222;">
+                                                5 - Fuerte (50% CVM)
+                                            </option>
+                                            <option value="6" data-color="#ffc000" style="background-color:#ffc000; color:#222;">
+                                                6 - Fuerte + (60% CVM)
+                                            </option>
+                                            <option value="7" data-color="#ff8000" style="background-color:#ff8000; color:#222;">
+                                                7 - Muy fuerte (70% CVM)
+                                            </option>
+                                            <option value="8" data-color="#ff4d00" style="background-color:#ff4d00; color:#fff;">
+                                                8 - Muy, muy fuerte (80% CVM)
+                                            </option>
+                                            <option value="9" data-color="#ff0000" style="background-color:#ff0000; color:#fff;">
+                                                9 - Extremadamente fuerte (90% CVM)
+                                            </option>
+                                            <option value="10" data-color="#ff0000" style="background-color:#ff0000; color:#fff;">
+                                                10 - Máximo (100% CVM)
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <style>
+                                    #ESCALA_BORG {
+                                        font-family: 'Poppins', sans-serif;
+                                        font-size: 14px;
+                                    }
+
+                                    #ESCALA_BORG option {
+                                        font-weight: 500;
+                                        padding: 8px;
+                                    }
+
+                                    #ESCALA_BORG option[value=""] {
+                                        background-color: #fff;
+                                        color: #555;
+                                    }
+                                </style>
+
+                                <style>
+                                    #tablaReferenciaFuerzaManual {
+                                        width: 100%;
+                                        border-collapse: collapse;
+                                        font-family: 'Poppins', sans-serif;
+                                        font-size: 14px;
+                                        text-align: center;
+                                        color: #222;
+                                        background: #d9eeee;
+                                    }
+
+                                    #tablaReferenciaFuerzaManual th,
+                                    #tablaReferenciaFuerzaManual td {
+                                        border: 1px solid #7b8c8c;
+                                        padding: 6px 10px;
+                                        font-family: 'Poppins', sans-serif;
+                                        white-space: nowrap;
+                                    }
+
+                                    #tablaReferenciaFuerzaManual thead th {
+                                        background: #c6e4e3;
+                                        font-weight: 600;
+                                    }
+
+                                    #tablaReferenciaFuerzaManual .encabezado-sexo td {
+                                        background: #e6e6e6;
+                                        font-weight: 700;
+                                        font-size: 15px;
+                                        padding: 5px;
+                                    }
+
+                                    #tablaReferenciaFuerzaManual .edad {
+                                        background: #f5f5f5;
+                                        font-weight: 500;
+                                    }
+
+                                    #tablaReferenciaFuerzaManual tbody tr:not(.encabezado-sexo):hover {
+                                        background: #c5e5e4;
+                                    }
+                                </style>
+
+                                <div class="col-12 mt-3">
+                                    <h5>Valores de referencia de fuerza manual</h5>
+
+                                    <div class="table-responsive">
+                                        <table class="table" id="tablaReferenciaFuerzaManual">
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="2">Edad</th>
+                                                    <th colspan="5">Mano derecha</th>
+                                                    <th colspan="5">Mano izquierda</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>P10</th>
+                                                    <th>P30</th>
+                                                    <th>P50</th>
+                                                    <th>P70</th>
+                                                    <th>P90</th>
+                                                    <th>P10</th>
+                                                    <th>P30</th>
+                                                    <th>P50</th>
+                                                    <th>P70</th>
+                                                    <th>P90</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr class="encabezado-sexo">
+                                                    <td colspan="11">Hombres</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">20-29</td>
+                                                    <td>33.9</td>
+                                                    <td>41.3</td>
+                                                    <td>45.1</td>
+                                                    <td>50.6</td>
+                                                    <td>56.3</td>
+                                                    <td>34.0</td>
+                                                    <td>39.4</td>
+                                                    <td>43.6</td>
+                                                    <td>47.8</td>
+                                                    <td>53.7</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">30-39</td>
+                                                    <td>36.6</td>
+                                                    <td>42.2</td>
+                                                    <td>45.8</td>
+                                                    <td>50.0</td>
+                                                    <td>56.9</td>
+                                                    <td>34.7</td>
+                                                    <td>40.4</td>
+                                                    <td>44.1</td>
+                                                    <td>48.3</td>
+                                                    <td>53.5</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">40-49</td>
+                                                    <td>34.3</td>
+                                                    <td>37.5</td>
+                                                    <td>42.5</td>
+                                                    <td>46.7</td>
+                                                    <td>53.6</td>
+                                                    <td>32.4</td>
+                                                    <td>37.1</td>
+                                                    <td>40.9</td>
+                                                    <td>45.3</td>
+                                                    <td>50.9</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">50-59</td>
+                                                    <td>30.2</td>
+                                                    <td>36.2</td>
+                                                    <td>41.4</td>
+                                                    <td>44.3</td>
+                                                    <td>50.1</td>
+                                                    <td>29.6</td>
+                                                    <td>35.0</td>
+                                                    <td>38.9</td>
+                                                    <td>42.8</td>
+                                                    <td>48.3</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">60-69</td>
+                                                    <td>26.5</td>
+                                                    <td>32.9</td>
+                                                    <td>37.0</td>
+                                                    <td>40.8</td>
+                                                    <td>45.5</td>
+                                                    <td>26.4</td>
+                                                    <td>30.8</td>
+                                                    <td>34.4</td>
+                                                    <td>37.5</td>
+                                                    <td>41.9</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">≥70</td>
+                                                    <td>22.8</td>
+                                                    <td>27.7</td>
+                                                    <td>32.1</td>
+                                                    <td>35.7</td>
+                                                    <td>40.6</td>
+                                                    <td>21.0</td>
+                                                    <td>26.6</td>
+                                                    <td>28.9</td>
+                                                    <td>31.3</td>
+                                                    <td>36.0</td>
+                                                </tr>
+
+                                                <tr class="encabezado-sexo">
+                                                    <td colspan="11">Mujeres</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">20-29</td>
+                                                    <td>19.5</td>
+                                                    <td>23.8</td>
+                                                    <td>27.4</td>
+                                                    <td>30.0</td>
+                                                    <td>34.0</td>
+                                                    <td>18.6</td>
+                                                    <td>22.3</td>
+                                                    <td>25.8</td>
+                                                    <td>28.4</td>
+                                                    <td>31.8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">30-39</td>
+                                                    <td>20.7</td>
+                                                    <td>25.0</td>
+                                                    <td>27.6</td>
+                                                    <td>30.7</td>
+                                                    <td>35.0</td>
+                                                    <td>20.1</td>
+                                                    <td>23.5</td>
+                                                    <td>26.4</td>
+                                                    <td>29.3</td>
+                                                    <td>32.9</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">40-49</td>
+                                                    <td>19.8</td>
+                                                    <td>24.4</td>
+                                                    <td>26.9</td>
+                                                    <td>29.4</td>
+                                                    <td>33.6</td>
+                                                    <td>18.4</td>
+                                                    <td>22.9</td>
+                                                    <td>25.7</td>
+                                                    <td>28.1</td>
+                                                    <td>31.7</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">50-59</td>
+                                                    <td>16.6</td>
+                                                    <td>21.1</td>
+                                                    <td>24.3</td>
+                                                    <td>26.4</td>
+                                                    <td>30.9</td>
+                                                    <td>15.4</td>
+                                                    <td>19.9</td>
+                                                    <td>23.0</td>
+                                                    <td>25.3</td>
+                                                    <td>29.8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">60-69</td>
+                                                    <td>16.6</td>
+                                                    <td>19.6</td>
+                                                    <td>21.7</td>
+                                                    <td>24.6</td>
+                                                    <td>27.5</td>
+                                                    <td>15.0</td>
+                                                    <td>18.2</td>
+                                                    <td>20.5</td>
+                                                    <td>22.8</td>
+                                                    <td>27.1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="edad">≥70</td>
+                                                    <td>9.9</td>
+                                                    <td>13.7</td>
+                                                    <td>16.8</td>
+                                                    <td>20.0</td>
+                                                    <td>23.8</td>
+                                                    <td>9.0</td>
+                                                    <td>13.0</td>
+                                                    <td>16.0</td>
+                                                    <td>19.2</td>
+                                                    <td>22.6</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Mano derecha *</label>
+                                        <input type="text" class="form-control" id="FUERZA_MANO_DERECHA" name="FUERZA_MANO_DERECHA" placeholder="Valor">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Mano izquierda *</label>
+                                        <input type="text" class="form-control" id="FUERZA_MANO_IZQUIERDA" name="FUERZA_MANO_IZQUIERDA" placeholder="Valor">
+                                    </div>
+                                </div>
 
 
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label><br> A) Realiza sus tareas laborales de pie por más de tres horas continuas durante su jornada laboral:</label>
-                                <select class="form-control" name="REALIZA_TAREAS_PIE" id="REALIZA_TAREAS_PIE">
-                                    <option value="">Seleccionar</option>
-                                    <option value="1">Si</option>
-                                    <option value="2">No</option>
-                                </select>
-                            </div>
-                        </div>
-
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>B) Bipedestación estática. La postura de las personas trabajadoras que realizan sus tareas de pie y prácticamente sin moverse o
-                                    con desplazamientos mínimos:</label>
-                                <select class="form-control" name="BIPEDESTACION_ESTATICA" id="BIPEDESTACION_ESTATICA">
-                                    <option value="">Seleccionar</option>
-                                    <option value="1">Si</option>
-                                    <option value="2">No</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>C) Bipedestación dinámica. La postura de las personas trabajadoras que tienen la posibilidad de realizar desplazamientos más
-                                    amplios que en la bipedestación estática:</label>
-                                <select class="form-control" name="BIPEDESTACION_DINAMICA" id="BIPEDESTACION_DINAMICA">
-                                    <option value="">Seleccionar</option>
-                                    <option value="1">Si</option>
-                                    <option value="2">No</option>
-                                </select>
                             </div>
                         </div>
 
 
                         <div class="col-12 mt-3">
                             <div class="form-group">
-                                <label>Observaciones Generales: Llenar solo si aplica.</label>
+                                <label>Observaciones fuerza manual</label>
                                 <div class="input-group">
-                                    <textarea class="form-control" name="OBSERVACIONES_GENERALES" id="OBSERVACIONES_GENERALES" rows="4"></textarea>
+                                    <textarea class="form-control" name="OBSERVACIONES_FUERZAMANUAL" id="OBSERVACIONES_FUERZAMANUAL" rows="4"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -6210,10 +6534,87 @@ DESCRIPCIONACTIVIDAD
 
 
 
+                        <div class="col-12">
+                            <h4>
+                                LEY SILLA: DOF 19/12/24.
+                            </h4>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>¿Aplica ley silla? </label>
+                                <select class="form-control" name="APLICA_LEY_SILLA" id="APLICA_LEY_SILLA" required>
+                                    <option value="">Seleccionar</option>
+                                    <option value="1">Sí</option>
+                                    <option value="2">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-12" id="datosLeySilla" style="display:none;">
+                            <div class="row">
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label><br> A) Realiza sus tareas laborales de pie por más de tres horas continuas durante su jornada laboral:</label>
+                                        <select class="form-control" name="REALIZA_TAREAS_PIE" id="REALIZA_TAREAS_PIE">
+                                            <option value="">Seleccionar</option>
+                                            <option value="1">Si</option>
+                                            <option value="2">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>B) Bipedestación estática. La postura de las personas trabajadoras que realizan sus tareas de pie y prácticamente sin moverse o
+                                            con desplazamientos mínimos:</label>
+                                        <select class="form-control" name="BIPEDESTACION_ESTATICA" id="BIPEDESTACION_ESTATICA">
+                                            <option value="">Seleccionar</option>
+                                            <option value="1">Si</option>
+                                            <option value="2">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>C) Bipedestación dinámica. La postura de las personas trabajadoras que tienen la posibilidad de realizar desplazamientos más
+                                            amplios que en la bipedestación estática:</label>
+                                        <select class="form-control" name="BIPEDESTACION_DINAMICA" id="BIPEDESTACION_DINAMICA">
+                                            <option value="">Seleccionar</option>
+                                            <option value="1">Si</option>
+                                            <option value="2">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-3">
+                                    <div class="form-group">
+                                        <label>Observaciones ley silla </label>
+                                        <div class="input-group">
+                                            <textarea class="form-control" name="OBSERVACIONES_GENERALES" id="OBSERVACIONES_GENERALES" rows="4"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card mt-2" id="TEXTO_NO_APLICALEY" style="display: none;">
+                            <div class="card-header header-verde-res d-flex align-items-center">
+                                <i class="fa fa-info mr-2" aria-hidden="true"></i>
+                                <div class="text-center w-100">
+                                    <b>No aplica ley silla</b>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                La actividad evaluada no cumple con el criterio de bipedestación prolongada, debido a que el tiempo de permanencia de pie no supera las tres horas continuas durante la jornada laboral, conforme a la definición establecida en las Disposiciones de la STPS. Por lo tanto, no se identifica exposición a este factor bajo dicho criterio.
+                            </div>
+                        </div>
 
                     </div>
-
-
                 </div>
                 <div class="modal-footer" style="display: flex; justify-content: space-between;">
                     <div>

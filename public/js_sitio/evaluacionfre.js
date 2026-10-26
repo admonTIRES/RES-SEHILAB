@@ -144,7 +144,39 @@ $('.link_menuprincipal').click(function () {
 			break;
 		
 
-case "tab_menu3":
+    case "tab_menu3":
+            
+            
+        const textareasInformeFre = [
+            '#INFORME_INTRODUCCION',
+            '#INFORME_OBJETIVOGENERALES',
+            '#INFORME_OBJETIVOSESPECIFICOS',
+            '#INFORME_RECONOCIMIENTO',
+            '#INFORME_UBICACIONINSTALACION',
+            '#INFORME_PROCESOINSTALACION',
+            '#INFORME_ACTIVIDADPRINCIPAL',
+            '#INFORME_ANTROPOMETRICAS',
+            '#OBSERVACIONES_ESQUELETICAS1',
+            '#OBSERVACIONES_ESQUELETICAS2',
+            '#OBSERVACIONES_ESQUELETICAS3',
+            '#OBSERVACIONES_ESQUELETICAS4',
+            '#OBSERVACIONES_ESQUELETICAS5',
+            '#OBSERVACIONES_ESQUELETICAS6',
+            '#INFORME_CONCLUSION'
+        ];
+
+        textareasInformeFre.forEach(function(selector) {
+            const textarea = document.querySelector(selector);
+
+            if (textarea) {
+                textarea.value = textarea.defaultValue;
+            }
+        });
+
+    
+            $('#SELECT_CONCLUSION').val('').trigger('change');
+            
+
 			$("#tab_3").css('display', 'block');
 			$("#tab_1").css('display', 'none');
 			$("#tab_2").css('display', 'none');
@@ -169,14 +201,7 @@ case "tab_menu3":
             cargarGraficaPregunta5();
             cargarGraficaPregunta6();
             tablaReporteTrabajadoresErgo();
-			// cargarGraficas();
-			// tablaReporteCategoriasErgo();
-            // totalPlanosErgo();
-			// cargarRecomendacionesInformeErgo();
-			// tablaVersionesRecoErgo();
-			// validarEdicionRecoErgo();
-            // cargarGraficasFichas();
-
+            cargarDefinicionesInformeFreErgo()
             
             $.ajax({
                     url: 'obtenerDatosPlantilla',
@@ -4560,9 +4585,15 @@ function cargarEvaluacionFre(data) {
     $('input[name="HOMBRO_P7"][value="' + data.HOMBRO_P7 + '"]').prop('checked', true);
     $('input[name="HOMBRO_P8"][value="' + data.HOMBRO_P8 + '"]').prop('checked', true);
 
+    $("#REQUIERE_FUERZA_MANUAL").val(data.REQUIERE_FUERZA_MANUAL).trigger('change');
+    $("#APLICA_LEY_SILLA").val(data.APLICA_LEY_SILLA).trigger('change');
+
+
+    
+
+
     $("#FUERZA_MANO_DERECHA").val(data.FUERZA_MANO_DERECHA);
     $("#FUERZA_MANO_IZQUIERDA").val(data.FUERZA_MANO_IZQUIERDA);
-    $("#REQUIERE_FUERZA_MANUAL").val(data.REQUIERE_FUERZA_MANUAL);
     $("#TIPO_DOMINANCIA").val(data.TIPO_DOMINANCIA);
 
     $("#REALIZA_TAREAS_PIE").val(data.REALIZA_TAREAS_PIE);
@@ -4591,6 +4622,10 @@ function cargarEvaluacionFre(data) {
         pintarEPP(data.JSON_EPP);
     }
 
+    $("#OBSERVACIONES_CUESTIONARIO").val(data.OBSERVACIONES_CUESTIONARIO);
+    $("#RECOMENDACIONES_EPP").val(data.RECOMENDACIONES_EPP);
+    $("#OBSERVACIONES_FUERZAMANUAL").val(data.OBSERVACIONES_FUERZAMANUAL);
+    $("#ESCALA_BORG").val(data.ESCALA_BORG).trigger('change');
 
 	$('#ENFERMEDAD_MUSCULOESQUELETICA').trigger('change');
 	$('#PERCEPCION_TERMICA').trigger('change');
@@ -4604,6 +4639,9 @@ function cargarEvaluacionFre(data) {
 	$('input[name="HOMBRO_P1"]:checked').trigger('change');
 	$('input[name="HOMBRO_P4"]:checked').trigger('change');
 	$('#SUFRIDO_LESION_ACCIDENTE').trigger('change');
+    $('#REQUIERE_FUERZA_MANUAL').trigger('change');
+	$('#APLICA_LEY_SILLA').trigger('change');
+
 
 }
 
@@ -4816,7 +4854,11 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
     $('#JSON_EPP').val('')
 	$('#datosLesion').hide();
 	$('#datosEnfermedadMusculo').hide();
-	
+	$('#datosFuerzaManual').hide();
+    $('#ESCALA_BORG').css({ 'background-color': '', 'color': '' });
+	$('#datosLeySilla').hide();
+    $('#TEXTO_NO_APLICALEY').hide();
+    
 	$('#tablaEquiposTrabajo tbody').empty();
 	$('#tablaFuentesTermicas tbody').empty();
 	$('#tablaFuentesRuido tbody').empty();
@@ -4858,6 +4900,62 @@ $(document).on('change', '#ENFERMEDAD_MUSCULOESQUELETICA', function () {
     }
 
 });
+
+$(document).on('change', '#REQUIERE_FUERZA_MANUAL', function () {
+
+    if ($(this).val() == 1) {
+        $('#datosFuerzaManual').show();
+    } else {
+        $('#datosFuerzaManual').hide();
+    }
+
+});
+
+$(document).on('change', '#APLICA_LEY_SILLA', function () {
+
+    if ($(this).val() == 1) {
+
+    $('#datosLeySilla').show();
+    $('#TEXTO_NO_APLICALEY').hide();
+
+    } else if ($(this).val() == 2) {
+
+        $('#TEXTO_NO_APLICALEY').show();
+        $('#datosLeySilla').hide();
+
+        $('#REALIZA_TAREAS_PIE').val('');
+        $('#BIPEDESTACION_ESTATICA').val('');
+        $('#BIPEDESTACION_DINAMICA').val('');
+        $('#OBSERVACIONES_GENERALES').val('');
+
+    } else {
+
+        $('#datosLeySilla').hide();
+        $('#TEXTO_NO_APLICALEY').hide();
+
+    }
+
+});
+
+
+$('#ESCALA_BORG').on('change', function () {
+    const opcion = this.options[this.selectedIndex];
+    const color = opcion.dataset.color;
+
+    if (!this.value) {
+        $(this).css({
+            'background-color': '',
+            'color': ''
+        });
+        return;
+    }
+
+    $(this).css({
+        'background-color': color,
+        'color': (this.value >= 8 || this.value <= 2) ? '#fff' : '#222'
+    });
+});
+
 
 $(document).on('change', '#SUFRIDO_LESION_ACCIDENTE', function () {
 
@@ -7012,7 +7110,7 @@ En la aplicación de las fichas técnicas de identificación del riesgo ergonóm
 
 
             var imagenUrl =
-                '/mostrarresponsable1recoergo/0/' +
+                '/mostrarresponsable1freergo/0/' +
                 recsensorial +
                 extension;
 
@@ -7110,7 +7208,7 @@ En la aplicación de las fichas técnicas de identificación del riesgo ergonóm
 
 
             var imagenUrl =
-                '/mostrarresponsable2recoergo/0/' +
+                '/mostrarresponsable2freergo/0/' +
                 recsensorial +
                 extension;
 
@@ -8360,4 +8458,132 @@ $("#form_informe_conclusiones").on(
             $("#botonguardar_reporte_conclusion").html('Guardar conclusión <i class="fa fa-save"></i>');
         }
     });
+    });
+
+
+    ///// RECOMENDACIONES
+
+$("#form_informe_listarecomendaciones").on(
+    "submit",
+    function(e)
+{
+
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    formData.append('RECO_ID',recsensorial);
+
+    $.ajax({
+        url: '/guardarRecomendacionesInformeFreErgo',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+
+        headers: {
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_recomendaciones").prop('disabled', true);
+            $("#botonguardar_reporte_recomendaciones").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_reporte_recomendaciones").prop('disabled', false);
+            $("#botonguardar_reporte_recomendaciones").html('Guardar recomendaciones <i class="fa fa-save"></i>');
+        }
+    });
 });
+
+
+
+
+
+function cargarDefinicionesInformeFreErgo()
+{
+
+    $.get(
+        '/obtenerRecomendacionesInformeFreErgo/' + recsensorial,
+
+        function(response)
+        {  
+            $('input[name="DESCRIPCION_RECOMENDACIONES[]"]').prop('checked', false);
+            response.forEach(function(item)
+            {
+                $('input[name="DESCRIPCION_RECOMENDACIONES[]"][value="' + item.CATALOGO_RECOMENDACIONES_ID + '"]').prop('checked', true);
+            });
+        }
+    );
+}
+
+/// RESPONSABLES
+
+
+$("#form_informe_responsablesinforme").on("submit",function(e)
+{
+
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    formData.append('RECO_ID',recsensorial);
+
+    $.ajax({
+        url: '/guardarResponsablesInformeFreErgo',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+
+        headers: {
+            'X-CSRF-TOKEN':
+                $('meta[name="csrf-token"]')
+                .attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_responsablesinforme").prop('disabled', true);
+            $("#botonguardar_reporte_responsablesinforme").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_reporte_responsablesinforme").prop('disabled', false);
+            $("#botonguardar_reporte_responsablesinforme").html('Guardar responsables del informe <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+
+
