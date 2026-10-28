@@ -3868,29 +3868,281 @@ class reconocimientoergoController extends Controller
 
 
 
-            ////// TABLA 7.2
+            // ////// TABLA 7.2
 
+
+            // $criteriosMapa = [
+
+            //     '1.1' => 'Levantamiento de cargas',
+            //     '1.2' => 'Transporte de cargas',
+            //     '2.1' => 'Empuje y tracción de cargas',
+            //     '3.1' => 'Movimientos repetitivos',
+            //     '4.1' => 'Posturas estáticas forzadas',
+            //     '4.2' => 'Posturas dinámicas forzadas'
+
+            // ];
+
+            // $fichas = recoergofichastecnicasModel::where(
+            //     'RECO_ID',
+            //     $RECO_ID
+            // )
+            //     ->where('ACTIVO', 1)
+            //     ->whereNotNull('PE_EVALUADAS')
+            //     ->where('PE_EVALUADAS', '!=', '')
+            //     ->orderBy('ID_FICHAS_TECNICAS')
+            //     ->get();
+
+            // $fuente = 'Poppins';
+
+            // $textoTitulo = [
+            //     'name' => $fuente,
+            //     'size' => 13,
+            //     'bold' => true,
+            //     'color' => '000000'
+            // ];
+
+            // $textoHeader = [
+            //     'name' => $fuente,
+            //     'size' => 9,
+            //     'bold' => true,
+            //     'color' => '000000'
+            // ];
+
+            // $texto = [
+            //     'name' => $fuente,
+            //     'size' => 8,
+            //     'color' => '000000'
+            // ];
+
+            // $cantidadPE = max(count($fichas), 1);
+
+
+
+            // if ($cantidadPE >= 10) {
+
+            //     $textoHeader['size'] = 8;
+            //     $texto['size'] = 7;
+            // }
+
+            // if ($cantidadPE >= 15) {
+
+            //     $textoHeader['size'] = 7;
+            //     $texto['size'] = 6;
+            // }
+
+
+            // $centrado = [
+            //     'alignment' => 'center',
+            //     'valign' => 'center'
+            // ];
+
+            // $izquierda = [
+            //     'alignment' => 'left',
+            //     'valign' => 'center'
+            // ];
+
+
+            // $totalAnchoTabla = 14000;
+
+            // $anchoTitulo = 4200;
+
+            // $anchoDisponible =
+            //     $totalAnchoTabla -
+            //     $anchoTitulo;
+
+            // $anchoPE = floor(
+            //     $anchoDisponible /
+            //         $cantidadPE
+            // );
+
+            // $ultimoAnchoPE =
+            //     $anchoDisponible -
+            //     ($anchoPE * ($cantidadPE - 1));
+
+
+            // $table = new Table([
+
+            //     'borderSize' => 12,
+            //     'borderColor' => '0B2C6B',
+            //     'cellMargin' => 20,
+            //     'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::START
+
+            // ]);
+
+
+
+            // $table->addRow(450);
+
+            // $table->addCell(
+            //     $totalAnchoTabla,
+            //     [
+            //         'gridSpan' => $cantidadPE + 1,
+            //         'bgColor' => 'FFFFFF',
+            //         'valign' => 'center'
+            //     ]
+            // )->addTextRun($centrado)->addText(
+            //     'MAPA DE PELIGROS',
+            //     $textoTitulo
+            // );
+
+
+            // $table->addRow(400);
+
+            // $table->addCell(
+            //     $anchoTitulo,
+            //     [
+            //         'vMerge' => 'restart',
+            //         'valign' => 'center',
+            //         'bgColor' => 'FFFFFF'
+            //     ]
+            // )->addTextRun($centrado)->addText(
+            //     'Criterios de carga física',
+            //     $textoHeader
+            // );
+
+            // $table->addCell(
+            //     $anchoDisponible,
+            //     [
+            //         'gridSpan' => $cantidadPE,
+            //         'valign' => 'center',
+            //         'bgColor' => 'FFFFFF'
+            //     ]
+            // )->addTextRun($centrado)->addText(
+            //     'Personas evaluadas',
+            //     $textoHeader
+            // );
+
+
+
+            // $table->addRow(350);
+
+            // $table->addCell(
+            //     $anchoTitulo,
+            //     [
+            //         'vMerge' => 'continue'
+            //     ]
+            // );
+
+            // $indice = 0;
+
+            // foreach ($fichas as $ficha) {
+
+            //     $indice++;
+
+            //     $anchoActual =
+            //         ($indice == $cantidadPE)
+            //         ? $ultimoAnchoPE
+            //         : $anchoPE;
+
+            //     $table->addCell(
+            //         $anchoActual,
+            //         [
+            //             'valign' => 'center',
+            //             'bgColor' => 'FFFFFF'
+            //         ]
+            //     )->addTextRun($centrado)->addText(
+            //         $ficha->PE_EVALUADAS,
+            //         $textoHeader
+            //     );
+            // }
+
+
+            // foreach ($criteriosMapa as $codigo => $titulo) {
+
+            //     $table->addRow(300);
+
+            //     $table->addCell(
+            //         $anchoTitulo,
+            //         [
+            //             'valign' => 'center'
+            //         ]
+            //     )->addTextRun($izquierda)->addText(
+            //         $titulo,
+            //         $texto
+            //     );
+
+            //     $indice = 0;
+
+            //     foreach ($fichas as $fichaDB) {
+
+            //         $indice++;
+
+            //         $anchoActual =
+            //             ($indice == $cantidadPE)
+            //             ? $ultimoAnchoPE
+            //             : $anchoPE;
+
+            //         $resultadoFinal = 'VERDE';
+
+            //         $json = json_decode(
+            //             $fichaDB->JSON_FICHAS,
+            //             true
+            //         );
+
+            //         if ($json) {
+
+            //             foreach ($json as $bloque) {
+
+            //                 if (
+            //                     isset($bloque['ficha']) &&
+            //                     $bloque['ficha'] == $codigo
+            //                 ) {
+
+            //                     if (
+            //                         isset($bloque['resultado']) &&
+            //                         strtoupper($bloque['resultado']) == 'ROJO'
+            //                     ) {
+
+            //                         $resultadoFinal = 'ROJO';
+            //                         break;
+            //                     }
+            //                 }
+            //             }
+            //         }
+
+            //         $colorCelda = '28A745';
+
+            //         if ($resultadoFinal == 'ROJO') {
+
+            //             $colorCelda = 'DC3545';
+            //         }
+
+            //         $table->addCell(
+            //             $anchoActual,
+            //             [
+            //                 'bgColor' => $colorCelda,
+            //                 'valign' => 'center'
+            //             ]
+            //         )->addTextRun($centrado)->addText('');
+            //     }
+            // }
+
+            // $plantillaword->setComplexBlock('TABLA_7_2',$table);
+
+
+
+            // ============================================================
+            // TABLA 7.2 - MAPA DE PELIGROS
+            // ============================================================
 
             $criteriosMapa = [
-
                 '1.1' => 'Levantamiento de cargas',
                 '1.2' => 'Transporte de cargas',
                 '2.1' => 'Empuje y tracción de cargas',
                 '3.1' => 'Movimientos repetitivos',
                 '4.1' => 'Posturas estáticas forzadas',
                 '4.2' => 'Posturas dinámicas forzadas'
-
             ];
 
-            $fichas = recoergofichastecnicasModel::where(
-                'RECO_ID',
-                $RECO_ID
-            )
+
+            $fichas = recoergofichastecnicasModel::where('RECO_ID',$RECO_ID)
                 ->where('ACTIVO', 1)
                 ->whereNotNull('PE_EVALUADAS')
                 ->where('PE_EVALUADAS', '!=', '')
                 ->orderBy('ID_FICHAS_TECNICAS')
                 ->get();
+
+        
 
             $fuente = 'Poppins';
 
@@ -3914,23 +4166,6 @@ class reconocimientoergoController extends Controller
                 'color' => '000000'
             ];
 
-            $cantidadPE = max(count($fichas), 1);
-
-
-
-            if ($cantidadPE >= 10) {
-
-                $textoHeader['size'] = 8;
-                $texto['size'] = 7;
-            }
-
-            if ($cantidadPE >= 15) {
-
-                $textoHeader['size'] = 7;
-                $texto['size'] = 6;
-            }
-
-
             $centrado = [
                 'alignment' => 'center',
                 'valign' => 'center'
@@ -3946,178 +4181,181 @@ class reconocimientoergoController extends Controller
 
             $anchoTitulo = 4200;
 
-            $anchoDisponible =
-                $totalAnchoTabla -
-                $anchoTitulo;
+            $anchoDisponible = $totalAnchoTabla - $anchoTitulo;
 
-            $anchoPE = floor(
-                $anchoDisponible /
-                    $cantidadPE
-            );
+            $maxPersonasPorBloque = 10;
 
-            $ultimoAnchoPE =
-                $anchoDisponible -
-                ($anchoPE * ($cantidadPE - 1));
+            $anchoPE = (int) floor($anchoDisponible / $maxPersonasPorBloque);
 
+            $ultimoAnchoPE = $anchoDisponible - ($anchoPE * ($maxPersonasPorBloque - 1));
 
-            $table = new Table([
+            
 
+            $table = new \PhpOffice\PhpWord\Element\Table([
                 'borderSize' => 12,
                 'borderColor' => '0B2C6B',
                 'cellMargin' => 20,
-                'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::START
-
+                'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::START,
+                'layout' => \PhpOffice\PhpWord\Style\Table::LAYOUT_FIXED
             ]);
 
+           
+
+            $bloquesFichas = $fichas->chunk($maxPersonasPorBloque);
 
 
-            $table->addRow(450);
+            foreach ($bloquesFichas as $bloqueFichas) {
 
-            $table->addCell(
-                $totalAnchoTabla,
-                [
-                    'gridSpan' => $cantidadPE + 1,
-                    'bgColor' => 'FFFFFF',
-                    'valign' => 'center'
-                ]
-            )->addTextRun($centrado)->addText(
-                'MAPA DE PELIGROS',
-                $textoTitulo
-            );
+                $cantidadPE = $bloqueFichas->count();
 
+                
 
-            $table->addRow(400);
-
-            $table->addCell(
-                $anchoTitulo,
-                [
-                    'vMerge' => 'restart',
-                    'valign' => 'center',
-                    'bgColor' => 'FFFFFF'
-                ]
-            )->addTextRun($centrado)->addText(
-                'Criterios de carga física',
-                $textoHeader
-            );
-
-            $table->addCell(
-                $anchoDisponible,
-                [
-                    'gridSpan' => $cantidadPE,
-                    'valign' => 'center',
-                    'bgColor' => 'FFFFFF'
-                ]
-            )->addTextRun($centrado)->addText(
-                'Personas evaluadas',
-                $textoHeader
-            );
-
-
-
-            $table->addRow(350);
-
-            $table->addCell(
-                $anchoTitulo,
-                [
-                    'vMerge' => 'continue'
-                ]
-            );
-
-            $indice = 0;
-
-            foreach ($fichas as $ficha) {
-
-                $indice++;
-
-                $anchoActual =
-                    ($indice == $cantidadPE)
-                    ? $ultimoAnchoPE
-                    : $anchoPE;
+                $table->addRow(450);
 
                 $table->addCell(
-                    $anchoActual,
+                    $totalAnchoTabla,
                     [
-                        'valign' => 'center',
-                        'bgColor' => 'FFFFFF'
+                        'gridSpan' => $maxPersonasPorBloque + 1,
+                        'bgColor' => 'FFFFFF',
+                        'valign' => 'center'
                     ]
-                )->addTextRun($centrado)->addText(
-                    $ficha->PE_EVALUADAS,
-                    $textoHeader
-                );
-            }
+                )->addTextRun($centrado)->addText('MAPA DE PELIGROS',$textoTitulo);
 
 
-            foreach ($criteriosMapa as $codigo => $titulo) {
-
-                $table->addRow(300);
+                $table->addRow(400);
 
                 $table->addCell(
                     $anchoTitulo,
                     [
+                        'vMerge' => 'restart',
+                        'valign' => 'center',
+                        'bgColor' => 'FFFFFF'
+                    ]
+                )->addTextRun($centrado)->addText('Criterios de carga física',$textoHeader);
+
+                $table->addCell(
+                    $anchoDisponible,
+                    [
+                        'gridSpan' => $maxPersonasPorBloque,
+                        'valign' => 'center',
+                        'bgColor' => 'FFFFFF'
+                    ]
+                )->addTextRun($centrado)->addText('Personas evaluadas',$textoHeader);
+
+
+                $table->addRow(350);
+
+                $table->addCell(
+                    $anchoTitulo,
+                    [
+                        'vMerge' => 'continue',
                         'valign' => 'center'
                     ]
-                )->addTextRun($izquierda)->addText(
-                    $titulo,
-                    $texto
                 );
 
-                $indice = 0;
+                foreach ($bloqueFichas as $ficha) {
 
-                foreach ($fichas as $fichaDB) {
-
-                    $indice++;
-
-                    $anchoActual =
-                        ($indice == $cantidadPE)
+                    $anchoActual = (
+                        $ficha === $bloqueFichas->last()
+                    )
                         ? $ultimoAnchoPE
                         : $anchoPE;
-
-                    $resultadoFinal = 'VERDE';
-
-                    $json = json_decode(
-                        $fichaDB->JSON_FICHAS,
-                        true
-                    );
-
-                    if ($json) {
-
-                        foreach ($json as $bloque) {
-
-                            if (
-                                isset($bloque['ficha']) &&
-                                $bloque['ficha'] == $codigo
-                            ) {
-
-                                if (
-                                    isset($bloque['resultado']) &&
-                                    strtoupper($bloque['resultado']) == 'ROJO'
-                                ) {
-
-                                    $resultadoFinal = 'ROJO';
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    $colorCelda = '28A745';
-
-                    if ($resultadoFinal == 'ROJO') {
-
-                        $colorCelda = 'DC3545';
-                    }
 
                     $table->addCell(
                         $anchoActual,
                         [
-                            'bgColor' => $colorCelda,
-                            'valign' => 'center'
+                            'valign' => 'center',
+                            'bgColor' => 'FFFFFF'
                         ]
-                    )->addTextRun($centrado)->addText('');
+                    )
+                        ->addTextRun($centrado)->addText($ficha->PE_EVALUADAS,$textoHeader);
+                }
+
+               
+
+                for ($i = $cantidadPE; $i < $maxPersonasPorBloque; $i++) 
+                {
+
+                    $anchoActual = ($i === $maxPersonasPorBloque - 1) ? $ultimoAnchoPE : $anchoPE;
+                    $table->addCell(
+                        $anchoActual,
+                        [
+                            'valign' => 'center',
+                            'bgColor' => 'FFFFFF'
+                        ]
+                    );
+                }
+
+
+                foreach ($criteriosMapa as $codigo => $titulo) {
+
+                    $table->addRow(300);
+
+                    $table->addCell($anchoTitulo,['valign' => 'center','bgColor' => 'FFFFFF'])->addTextRun($izquierda)->addText($titulo,$texto);
+
+                
+
+                    foreach ($bloqueFichas as $fichaDB) {
+
+                        $resultadoFinal = 'VERDE';
+
+                        $json = json_decode($fichaDB->JSON_FICHAS,true);
+
+                        if (is_array($json)) {
+
+                            foreach ($json as $bloque) {
+
+                                if (isset($bloque['ficha']) && $bloque['ficha'] == $codigo) 
+                                {
+
+                                    if (isset($bloque['resultado']) && strtoupper(trim($bloque['resultado'])
+                                        ) === 'ROJO') 
+                                    {
+
+                                        $resultadoFinal = 'ROJO';
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        $colorCelda = '28A745';
+
+                        if ($resultadoFinal === 'ROJO') {
+
+                            $colorCelda = 'DC3545';
+                        }
+
+                        $table->addCell(
+                            $anchoPE,
+                            [
+                                'bgColor' => $colorCelda,
+                                'valign' => 'center'
+                            ]
+                        )->addTextRun($centrado) ->addText('');
+                    }
+
+
+                    for (
+                        $i = $cantidadPE;
+                        $i < $maxPersonasPorBloque;
+                        $i++
+                    ) {
+
+                        $table->addCell(
+                            $anchoPE,
+                            [
+                                'bgColor' => 'FFFFFF',
+                                'valign' => 'center'
+                            ]
+                        )
+                            ->addText('');
+                    }
                 }
             }
 
             $plantillaword->setComplexBlock('TABLA_7_2',$table);
+
 
             ///// PUNTO 8 INSERCION DE LOS MAPAS 
 
@@ -4153,8 +4391,8 @@ class reconocimientoergoController extends Controller
 
                             [
                                 'path'   => $ruta,
-                                'width'  => 580,
-                                'height' => 400,
+                                'width'  => 680,
+                                'height' => 700,
                                 'ratio'  => true
                             ]
 
