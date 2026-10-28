@@ -4305,14 +4305,19 @@ class reconocimientoergoController extends Controller
 
                             foreach ($json as $bloque) {
 
-                                if (isset($bloque['ficha']) && $bloque['ficha'] == $codigo) 
+                                if (isset($bloque['ficha']) && $bloque['ficha'] == $codigo
+                                ) 
                                 {
 
-                                    if (isset($bloque['resultado']) && strtoupper(trim($bloque['resultado'])
-                                        ) === 'ROJO') 
-                                    {
+                                    if (
+                                        isset($bloque['resultado']) &&
+                                        strtoupper(
+                                            trim($bloque['resultado'])
+                                        ) === 'ROJO'
+                                    ) {
 
                                         $resultadoFinal = 'ROJO';
+
                                         break;
                                     }
                                 }
@@ -4391,8 +4396,8 @@ class reconocimientoergoController extends Controller
 
                             [
                                 'path'   => $ruta,
-                                'width'  => 680,
-                                'height' => 700,
+                                'width'  => 580,
+                                'height' => 400,
                                 'ratio'  => true
                             ]
 
