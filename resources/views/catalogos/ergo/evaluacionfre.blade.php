@@ -1849,6 +1849,7 @@ DESCRIPCIONACTIVIDAD
                                                     <thead>
                                                         <tr>
                                                             <th>No.</th>
+                                                            <th>Nombre del empleado</th>
                                                             <th>Categoría</th>
                                                             <th>Área</th>
                                                             <th>Estatura (cm)</th>
@@ -2350,9 +2351,57 @@ DESCRIPCIONACTIVIDAD
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-12">
+
                                                 {!! csrf_field() !!}
+
                                                 <p>
                                                     A continuación se presenta una breve descripción de las diferentes metodologías validadas por la normatividad mexicana e internacionalmente, para la evaluación del factor de riesgo ergonómico en el centro de trabajo, las cuales son utilizadas en el presente informe.
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <style>
+                                        .metodo-fre-descripcion {
+                                            width: 100%;
+                                            margin-bottom: 20px;
+                                            padding: 15px;
+                                            border: 1px solid #dee2e6;
+                                            border-radius: 5px;
+                                            background-color: #ffffff;
+                                        }
+
+                                        .metodo-fre-titulo {
+                                            margin-bottom: 5px;
+                                            font-weight: bold;
+                                            font-size: 16px;
+                                        }
+
+                                        .metodo-fre-nombre-ingles {
+                                            margin-bottom: 8px;
+                                            font-style: italic;
+                                        }
+
+                                        .metodo-fre-nombre-espanol {
+                                            margin-bottom: 10px;
+                                            font-weight: 600;
+                                        }
+
+                                        .metodo-fre-texto {
+                                            margin-bottom: 0;
+                                            line-height: 1.6;
+                                            text-align: justify;
+                                            white-space: pre-line;
+                                        }
+                                    </style>
+                                    <!-- CONTENEDOR DE METODOLOGÍAS FRE -->
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-12" id="contenedorMetodosFre">
+
+                                                <p class="text-muted">
+                                                    Cargando metodologías...
                                                 </p>
 
                                             </div>
@@ -3566,7 +3615,7 @@ DESCRIPCIONACTIVIDAD
                                         </div>
                                         <div class="col-12">
                                             <div class="table-responsive">
-                                                <h5 class="text-center mb-3"><strong>Máquinas, herramientas y utensilios</strong></h5>
+                                                <h5 class="text-center mb-3"><strong>Máquinas, herramientas y periféricos</strong></h5>
                                                 <button type="button" class="btn btn-danger mb-2" id="agregarFilaEquipo">
                                                     Agregar fila
                                                 </button>
@@ -3589,7 +3638,7 @@ DESCRIPCIONACTIVIDAD
 
                                         <div class="col-12 text-center">
                                             <h4>
-                                                <b> Descripción de las condiciones ambientales (apercepción del trabajador) </b>
+                                                <b> Descripción de las condiciones ambientales (a percepción del trabajador) </b>
                                             </h4>
 
                                         </div>
@@ -9103,7 +9152,7 @@ DESCRIPCIONACTIVIDAD
 
 
 <!-- ============================================================== -->
-<!-- MODAL DOCUMENTACION  -->
+<!-- MODAL ANGULO   -->
 <!-- ============================================================== -->
 
 

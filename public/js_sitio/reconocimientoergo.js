@@ -7430,9 +7430,7 @@ function tablaVersionesRecoErgo()
 
 }
 
-
-$("#boton_reporte_nuevarevision")
-.on("click", function()
+$("#boton_reporte_nuevarevision").on("click", function()
 {
 
     $.ajax({
@@ -7459,8 +7457,6 @@ $("#boton_reporte_nuevarevision")
         }
     });
 });
-
-
 
 function cancelarRevisionRecoErgo(ID_VERSION_RECO_ERGO,checkbox)
 {
@@ -7529,11 +7525,6 @@ function cancelarRevisionRecoErgo(ID_VERSION_RECO_ERGO,checkbox)
     });
 }
 
-
-
-
-
-
 function validarEdicionRecoErgo()
 {
 
@@ -7583,7 +7574,7 @@ function validarEdicionRecoErgo()
 
                $('input, textarea, select')
 				.not('.checkbox_cancelado_revision')
-				.prop('disabled', true);
+				.prop('disabled', false);
 
 
                 //---------------------------------------
