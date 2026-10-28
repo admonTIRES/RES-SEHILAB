@@ -2491,9 +2491,13 @@ Route::post('guardarResponsablesInformeFreErgo', ['as' => 'guardarResponsablesIn
 Route::get('mostrarresponsable1freergo/{archivo_opcion}/{reco_id}.{extension}', ['as' => 'mostrarresponsable1freergo', 'uses' => 'ERGO\evaluacionfreController@mostrarresponsable1freergo']);
 Route::get('mostrarresponsable2freergo/{archivo_opcion}/{reco_id}.{extension}', ['as' => 'mostrarresponsable2freergo', 'uses' => 'ERGO\evaluacionfreController@mostrarresponsable2freergo']);
 
+/// ANGULOS
+
+Route::get('tablangulosfre/{fre_id}', ['as' => 'tablangulosfre', 'uses' => 'ERGO\evaluacionfreController@tablangulosfre']);
+Route::get('verfotoangulofre/{id}', ['as' => 'verfotoangulofre', 'uses' => 'ERGO\evaluacionfreController@verfotoangulofre']);
 
 
-
+Route::get('/calcularangulos', function () {return view('catalogos.ergo.calcular_angulos');});
 
 Route::get('/clear-cache', function () {
     Artisan::call('config:cache');

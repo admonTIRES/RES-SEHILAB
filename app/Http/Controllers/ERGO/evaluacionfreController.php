@@ -64,6 +64,7 @@ use App\modelos\evaluacionfre\datosgeneralesinformeFreModel;
 use App\modelos\evaluacionfre\definicionesinformeFreModel;
 use App\modelos\evaluacionfre\recomendacionesinformefreModel;
 
+use App\modelos\evaluacionfre\angulosfreModel;
 
 ///// CAT EPP
 
@@ -963,11 +964,26 @@ class evaluacionfreController extends Controller
         }
     }
 
+
+
+
     public function store(Request $request)
     {
         try {
             switch (intval($request->api)) {
                 case 1:
+
+
+                    $camposArray = [
+                        'CAT_METODOS_FRE',
+                    ];
+
+                    foreach ($camposArray as $campo) {
+                        if (!isset($request[$campo]) || empty($request[$campo])) {
+                            $request[$campo] = null;
+                        }
+                    }
+
                     if ($request->ID_EVALUACION_FRE == 0) {
                         DB::statement('ALTER TABLE evaluacion_fre_ergo AUTO_INCREMENT=1;');
                         $fre = evaluacionfreModel::create($request->all());
@@ -995,6 +1011,92 @@ class evaluacionfreController extends Controller
                     $response['fre']  = $fre;
                     return response()->json($response);
                     break;
+
+
+                case 2:
+
+                    if ($request->ID_ANGULOS_FRE == 0) {
+
+                        DB::statement('ALTER TABLE angulos_fre_ergo AUTO_INCREMENT=1;');
+                        $angulos = angulosfreModel::create($request->all());
+
+                        $freid = $angulos->FRE_ID;
+                        $registroId = $angulos->ID_ANGULOS_FRE;
+
+                        // ================= FOTO =================
+
+
+                    if ($request->hasFile('FOTO_ANGULO')) {
+
+                        $foto = $request->file('FOTO_ANGULO');
+                        $extension = strtolower($foto->getClientOriginalExtension());
+                        $nombreArchivo = 'angulo_' . $registroId . '_' . time() . '.' . $extension;
+                        $rutaFoto = "evaluacionfre_ergo/{$freid}/Ángulos/{$registroId}";
+                        $rutaFotoCompleta = $foto->storeAs($rutaFoto, $nombreArchivo);
+                        $angulos->FOTO_ANGULO = $rutaFotoCompleta;
+                    }
+
+                       
+
+                        $angulos->save();
+                    } else {
+
+                        if (isset($request->ELIMINAR)) {
+
+                            if ($request->ELIMINAR == 1) {
+                                angulosfreModel::where('ID_ANGULOS_FRE', $request['ID_ANGULOS_FRE'])
+                                    ->update(['ACTIVO' => 0]);
+
+                                $response['code'] = 1;
+                                $response['angulos'] = 'Desactivada';
+                            } else {
+
+                                angulosfreModel::where('ID_ANGULOS_FRE', $request['ID_ANGULOS_FRE'])
+                                    ->update(['ACTIVO' => 1]);
+
+                                $response['code'] = 1;
+                                $response['angulos'] = 'Activada';
+                            }
+                        } else {
+
+                            $angulos = angulosfreModel::find($request->ID_ANGULOS_FRE);
+                            $angulos->update($request->all());
+
+                            $freid = $angulos->FRE_ID;
+                            $registroId = $angulos->ID_ANGULOS_FRE;
+
+
+
+                            // ================= FOTO =================
+                            if ($request->hasFile('FOTO_ANGULO')) {
+
+                                $foto = $request->file('FOTO_ANGULO');
+                                $extension = strtolower($foto->getClientOriginalExtension());
+                                $nombreArchivo = 'angulo_' . $registroId . '_' . time() . '.' . $extension;
+                                $rutaFoto = "evaluacionfre_ergo/{$freid}/Ángulos/{$registroId}";
+                                $rutaFotoCompleta = $foto->storeAs($rutaFoto, $nombreArchivo);
+                                $angulos->FOTO_ANGULO = $rutaFotoCompleta;
+                            }
+
+
+                            $angulos->save();
+
+                            $response['code'] = 1;
+                            $response['angulos'] = 'Actualizada';
+                        }
+
+                        return response()->json($response);
+                    }
+
+                    $response['code'] = 1;
+                    $response['angulos'] = $angulos;
+                    return response()->json($response);
+
+                    break;
+
+
+
+
                 default:
                     $response['code']  = 1;
                     $response['msj']  = 'Api no encontrada';
@@ -1003,6 +1105,98 @@ class evaluacionfreController extends Controller
         } catch (Exception $e) {
             return response()->json('Error al guardar ');
         }
+    }
+
+
+
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         switch (intval($request->api)) {
+    //             case 1:
+    //                 if ($request->ID_EVALUACION_FRE == 0) {
+    //                     DB::statement('ALTER TABLE evaluacion_fre_ergo AUTO_INCREMENT=1;');
+    //                     $fre = evaluacionfreModel::create($request->all());
+    //                 } else {
+
+    //                     if (isset($request->ELIMINAR)) {
+    //                         if ($request->ELIMINAR == 1) {
+    //                             $fre = evaluacionfreModel::where('ID_EVALUACION_FRE', $request['ID_EVALUACION_FRE'])->update(['ACTIVO' => 0]);
+    //                             $response['code'] = 1;
+    //                             $response['fre'] = 'Desactivada';
+    //                         } else {
+    //                             $fre = evaluacionfreModel::where('ID_EVALUACION_FRE', $request['ID_EVALUACION_FRE'])->update(['ACTIVO' => 1]);
+    //                             $response['code'] = 1;
+    //                             $response['fre'] = 'Activada';
+    //                         }
+    //                     } else {
+    //                         $fre = evaluacionfreModel::find($request->ID_EVALUACION_FRE);
+    //                         $fre->update($request->all());
+    //                         $response['code'] = 1;
+    //                         $response['fre'] = 'Actualizada';
+    //                     }
+    //                     return response()->json($response);
+    //                 }
+    //                 $response['code']  = 1;
+    //                 $response['fre']  = $fre;
+    //                 return response()->json($response);
+    //                 break;
+    //             default:
+    //                 $response['code']  = 1;
+    //                 $response['msj']  = 'Api no encontrada';
+    //                 return response()->json($response);
+    //         }
+    //     } catch (Exception $e) {
+    //         return response()->json('Error al guardar ');
+    //     }
+    // }
+
+
+    ////  ANGULOS
+
+    public function tablangulosfre($fre_id)
+    {
+        try {
+
+            $documentos = angulosfreModel::where('FRE_ID', $fre_id)
+                ->where('ACTIVO', 1)
+                ->get();
+
+            $numero_registro = 0;
+
+            foreach ($documentos  as $key => $value) {
+                $numero_registro += 1;
+                $value->numero_registro = $numero_registro;
+
+
+                $value->FOTO_TABLA_DOCUMENTO = '<img src="/verfotoangulofre/' . $value->ID_ANGULOS_FRE . '" alt="" class="img-fluid" width="50" height="60">';
+
+
+                // Botones
+                if (auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador', 'Coordinador FRE'])) {
+                    $value->accion_activa = 1;
+                    $value->boton_editar = '<button type="button" class="btn btn-warning btn-circle"><i class="fa fa-pencil"></i></button>';
+                    $value->boton_eliminar = '<button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash"></i></button>';
+                } else {
+                    $value->accion_activa = 1;
+                    $value->boton_editar = '<button type="button" class="btn btn-success btn-circle"><i class="fa fa-eye"></i></button>';
+                    $value->boton_eliminar = '<button type="button" class="btn btn-secondary btn-circle"><i class="fa fa-ban"></i></button>';
+                }
+            }
+
+            $listado['data'] = $documentos;
+            return response()->json($listado);
+        } catch (exception $e) {
+            $listado['data'] = 0;
+            return response()->json($listado);
+        }
+    }
+
+
+    public function verfotoangulofre($fre_id)
+    {
+        $foto = angulosfreModel::findOrFail($fre_id);
+        return Storage::response($foto->FOTO_ANGULO);
     }
 
 

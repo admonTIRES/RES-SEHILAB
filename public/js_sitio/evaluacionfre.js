@@ -26,6 +26,7 @@ var tabla_reporte_trabajadores_ergo = null;
 
 var instalacionreco = '';
 
+var TablangulosFre = null;
 
 
 ID_CATEGORIA_ERGO = 0;
@@ -34,7 +35,11 @@ ID_FICHAS_TECNICAS = 0;
 
 ID_EVALUACION_FRE = 0;
 
+ID_ANGULOS_FRE = 0;
+
 var fichas_id = null; 
+
+var fre_id = null; 
 
 
 //--------------------------------------------------CARGA PRINCIPAL---------------------------------------------------------//
@@ -3987,6 +3992,12 @@ $('#Tablafichasevaluacionfre tbody').on('click', 'td>button.iniciarfre', functio
     $("#ID_FICHAS_TECNICAS").val(row.data().ID_FICHAS_TECNICAS);
    
 
+
+    
+    $("#tab1_fre_info").click();
+
+    
+
 	let areasGuardadas = row.data().CAT_AREAS_FICHA;
 
     if (typeof areasGuardadas === "string") {
@@ -4054,7 +4065,28 @@ $('#Tablafichasevaluacionfre tbody').on('click', 'td>button.iniciarfre', functio
 		}
 	});
 	
+    $("#tab1_fre_info").off("click").on("click", function (e) {
+        e.preventDefault();
 
+        $("#tab1_fre_info").addClass("active");
+        $("#tab2_imagenes_angulos").removeClass("active");
+
+        $("#tab1_fre").show().addClass("active");
+        $("#tab2_angulos").hide().removeClass("active");
+    });
+
+    $("#tab2_imagenes_angulos").off("click").on("click", function (e) {
+        e.preventDefault();
+
+        $("#tab2_imagenes_angulos").addClass("active");
+        $("#tab1_fre_info").removeClass("active");
+
+        $("#tab2_angulos").show().addClass("active");
+        $("#tab1_fre").hide().removeClass("active");
+
+        tabla_angulos_fre();
+    });
+    
     $('#modal_evalfre').modal({backdrop:false});
 });
 
@@ -4453,7 +4485,10 @@ function cargarDatosFicha(data) {
 function cargarEvaluacionFre(data) {
 
     ID_EVALUACION_FRE = data.ID_EVALUACION_FRE;
-    
+
+
+    fre_id = data.ID_EVALUACION_FRE;
+
 	$("#ID_EVALUACION_FRE").val(data.ID_EVALUACION_FRE);
 
     $("#FECHA_EVALUACION_FRE").val(data.FECHA_EVALUACION_FRE);
@@ -4625,6 +4660,11 @@ function cargarEvaluacionFre(data) {
     $("#OBSERVACIONES_CUESTIONARIO").val(data.OBSERVACIONES_CUESTIONARIO);
     $("#RECOMENDACIONES_EPP").val(data.RECOMENDACIONES_EPP);
     $("#OBSERVACIONES_FUERZAMANUAL").val(data.OBSERVACIONES_FUERZAMANUAL);
+    $("#INTERPRETACION_ESCALA_BORG").val(data.INTERPRETACION_ESCALA_BORG);
+
+    
+
+    
     $("#ESCALA_BORG").val(data.ESCALA_BORG).trigger('change');
 
 	$('#ENFERMEDAD_MUSCULOESQUELETICA').trigger('change');
@@ -4641,6 +4681,145 @@ function cargarEvaluacionFre(data) {
 	$('#SUFRIDO_LESION_ACCIDENTE').trigger('change');
     $('#REQUIERE_FUERZA_MANUAL').trigger('change');
 	$('#APLICA_LEY_SILLA').trigger('change');
+
+
+
+   let metodoGuardadas = data.CAT_METODOS_FRE;
+
+    if (typeof metodoGuardadas === "string") {
+        try {
+            metodoGuardadas = JSON.parse(metodoGuardadas);
+        } catch (e) {
+            metodoGuardadas = [];
+        }
+    }
+
+    if (!Array.isArray(metodoGuardadas)) {
+        metodoGuardadas = [];
+    }
+
+    if (selectMetodosFRE) {
+        selectMetodosFRE.setValue(metodoGuardadas);
+    }
+
+
+    // Recuperar los valores guardados.
+    $("#OWAS_ESPALDA").val(data.OWAS_ESPALDA);
+    $("#OWAS_BRAZOS").val(data.OWAS_BRAZOS);
+    $("#OWAS_PIERNAS").val(data.OWAS_PIERNAS);
+    $("#OWAS_CARGA").val(data.OWAS_CARGA);
+
+    $("#ANALISIS_METODO_OWAS").val(data.ANALISIS_METODO_OWAS);
+
+    setTimeout(function () {
+
+        document.getElementById('OWAS_ESPALDA').dispatchEvent(
+            new Event('change', { bubbles: true })
+        );
+
+    }, 100);
+
+
+  
+        $("#ROSA_ALTURA_ASIENTO").val(data.ROSA_ALTURA_ASIENTO);
+        $("#ROSA_PROFUNDIDAD_ASIENTO").val(data.ROSA_PROFUNDIDAD_ASIENTO);
+        $("#ROSA_REPOSABRAZOS").val(data.ROSA_REPOSABRAZOS);
+        $("#ROSA_RESPALDO").val(data.ROSA_RESPALDO);
+        $("#ROSA_TIEMPO_A").val(data.ROSA_TIEMPO_A);
+        $("#ROSA_TELEFONO").val(data.ROSA_TELEFONO);
+        $("#ROSA_TIEMPO_B1").val(data.ROSA_TIEMPO_B1);
+        $("#ROSA_PANTALLA").val(data.ROSA_PANTALLA);
+        $("#ROSA_TIEMPO_B2").val(data.ROSA_TIEMPO_B2);
+        $("#ROSA_RATON").val(data.ROSA_RATON);
+        $("#ROSA_TIEMPO_C1").val(data.ROSA_TIEMPO_C1);
+        $("#ROSA_TECLADO").val(data.ROSA_TECLADO);
+        $("#ROSA_TIEMPO_C2").val(data.ROSA_TIEMPO_C2);
+        $("#ANALISIS_METODO_ROSA").val(data.ANALISIS_METODO_ROSA);
+
+
+        let datosROSA = data.ROSA_DATOS_JSON;
+
+        if (typeof datosROSA === "string" && datosROSA !== "") {
+            try {
+                datosROSA = JSON.parse(datosROSA);
+            } catch (e) {
+                console.error("Error al recuperar ROSA_DATOS_JSON:", e);
+                datosROSA = null;
+            }
+        }
+
+        if (datosROSA && Array.isArray(datosROSA.extras))
+        {
+
+            $("#contenedorMetodoROSA .rosa-extra").prop("checked", false);
+
+            datosROSA.extras.forEach(extra => {
+
+                $("#contenedorMetodoROSA .rosa-extra").each(function () {
+
+                    const coincideApartado = this.dataset.apartado === String(extra.apartado);
+                    const coincideValor = Number(this.value) === Number(extra.valor);
+                    if (coincideApartado && coincideValor) {
+                        $(this).prop("checked", true);
+                    }
+
+                });
+
+            });
+
+        }
+
+
+        setTimeout(function () {
+
+            const contenedorROSA = document.getElementById("contenedorMetodoROSA");
+
+            if (!contenedorROSA) {
+                return;
+            }
+
+            contenedorROSA.querySelectorAll(".rosa-campo, .rosa-extra, .rosa-tiempo").forEach(function (elemento) {
+                elemento.dispatchEvent(
+                    new Event("change", {
+                        bubbles: true
+                    })
+                );
+
+            });
+
+        }, 150);
+
+    
+    
+    $("#RULA_BRAZO").val(data.RULA_BRAZO);
+    $("#RULA_ANTEBRAZO").val(data.RULA_ANTEBRAZO);
+    $("#RULA_MUNECA").val(data.RULA_MUNECA);
+    $("#RULA_GIRO_MUNECA").val(data.RULA_GIRO_MUNECA);
+    $("#RULA_CUELLO").val(data.RULA_CUELLO);
+    $("#RULA_TRONCO").val(data.RULA_TRONCO);
+    $("#RULA_PIERNAS").val(data.RULA_PIERNAS);
+    $("#RULA_BRAZO_ABDUCIDO").val(data.RULA_BRAZO_ABDUCIDO);
+    $("#RULA_HOMBRO_ELEVADO").val(data.RULA_HOMBRO_ELEVADO);
+    $("#RULA_BRAZO_APOYADO").val(data.RULA_BRAZO_APOYADO);
+    $("#RULA_ANTEBRAZO_PROYECCION").val(data.RULA_ANTEBRAZO_PROYECCION);
+    $("#RULA_ANTEBRAZO_CRUZA").val(data.RULA_ANTEBRAZO_CRUZA);
+    $("#RULA_MUNECA_DESVIACION").val(data.RULA_MUNECA_DESVIACION);
+    $("#RULA_CUELLO_ROTADO").val(data.RULA_CUELLO_ROTADO);
+    $("#RULA_CUELLO_LATERAL").val(data.RULA_CUELLO_LATERAL);
+    $("#RULA_TRONCO_TORSION").val(data.RULA_TRONCO_TORSION);
+    $("#RULA_TRONCO_LATERAL").val(data.RULA_TRONCO_LATERAL);
+    $("#RULA_ACTIVIDAD").val(data.RULA_ACTIVIDAD);
+    $("#RULA_CARGA").val(data.RULA_CARGA);
+    $("#ANALISIS_METODO_RULA").val(data.ANALISIS_METODO_RULA);
+
+
+   setTimeout(function () {
+        document.getElementById('RULA_BRAZO').dispatchEvent(
+            new Event('change', { bubbles: true })
+        );
+    }, 100);
+
+
 
 
 }
@@ -4884,6 +5063,15 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
 	
     
     selectAreasFRE.clear();
+    selectMetodosFRE.clear();
+
+
+    $('#contenedorMetodoOWAS').hide();
+    $('#contenedorMetodoROSA').hide();
+    $('#contenedorMetodoRULA').hide();
+    
+    $('#ROSA_DATOS_JSON').val('')
+    $('#RULA_DATOS_JSON').val('')
 
 
 })
@@ -5734,17 +5922,48 @@ $("#boton_guardar_fre").click(function (e) {
         if (!$('#JSON_EPP').length) {
         $('#form_evalfre').append('<input type="hidden" name="JSON_EPP" id="JSON_EPP">');
         }
-
-       
-        
 		
 		$('#JSON_ACTIVIDADES_FRE').val(json);
 		$('#JSON_EQUIPOS_TRABAJO').val(jsonEquipos);
 		$('#JSON_FUENTES_TERMICAS').val(jsonTermicas);
 		$('#JSON_FUENTES_RUIDO').val(jsonRuido);
 		$('#JSON_FUENTES_VIBRACION').val(jsonVibracion);
-		 $('#JSON_EPP').val(jsonEPP);
+        $('#JSON_EPP').val(jsonEPP);
+        
 
+        let datosROSA = {
+            extras: []
+        };
+
+        $('#contenedorMetodoROSA .rosa-extra:checked').each(function () {
+
+            datosROSA.extras.push({
+                apartado: $(this).data('apartado'),
+                valor: parseInt($(this).val(), 10),
+                texto: $(this).data('texto')
+            });
+
+        });
+
+        $('#ROSA_DATOS_JSON').val(JSON.stringify(datosROSA));
+
+
+
+        let datosRULA = {
+    extras: []
+};
+
+$('#contenedorMetodoRULA .rula-extra:checked').each(function () {
+
+    datosRULA.extras.push({
+        apartado: $(this).data('apartado'),
+        valor: parseInt($(this).val(), 10),
+        texto: $(this).data('texto')
+    });
+
+});
+
+$('#RULA_DATOS_JSON').val(JSON.stringify(datosRULA));
     if (ID_EVALUACION_FRE == 0) {
         
         alertMensajeConfirm({
@@ -8587,3 +8806,1737 @@ $("#form_informe_responsablesinforme").on("submit",function(e)
 
 
 
+//// METODOS
+
+
+
+
+let selectMetodosFRE;
+
+$(document).ready(function () {
+
+    selectMetodosFRE = $('#CAT_METODOS_FRE').selectize({
+        placeholder: 'Seleccione una o varias opciones',
+        maxItems: null,
+    })[0].selectize;
+
+});
+
+
+
+
+/// METODOS 
+
+
+
+$(document).ready(function () {
+
+    function mostrarMetodosSeleccionados() {
+
+        const seleccionados = $('#CAT_METODOS_FRE').val() || [];
+
+        $('#contenedorMetodoOWAS').hide();
+        $('#contenedorMetodoROSA').hide();
+        $('#contenedorMetodoRULA').hide();
+
+        if (seleccionados.includes('1')) {
+            $('#contenedorMetodoOWAS').show();
+        }
+
+        if (seleccionados.includes('2')) {
+            $('#contenedorMetodoROSA').show();
+        }
+
+        if (seleccionados.includes('3')) {
+            $('#contenedorMetodoRULA').show();
+        }
+    }
+
+    $('#CAT_METODOS_FRE').on('change', function () {
+        mostrarMetodosSeleccionados();
+    });
+
+    mostrarMetodosSeleccionados();
+
+});
+
+
+/// OWAS
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    /* ========================= OWAS ========================= */
+
+    const owasCampos = {
+        espalda: document.getElementById('OWAS_ESPALDA'),
+        brazos: document.getElementById('OWAS_BRAZOS'),
+        piernas: document.getElementById('OWAS_PIERNAS'),
+        carga: document.getElementById('OWAS_CARGA')
+    };
+
+    const owasCodigos = {
+        espalda: document.getElementById('OWAS_COD_ESPALDA'),
+        brazos: document.getElementById('OWAS_COD_BRAZOS'),
+        piernas: document.getElementById('OWAS_COD_PIERNAS'),
+        carga: document.getElementById('OWAS_COD_CARGA')
+    };
+
+    const owasCodigoCompleto = document.getElementById('OWAS_CODIGO_COMPLETO');
+    const owasCardResultado = document.getElementById('OWAS_CARD_RESULTADO');
+    const owasResultadoCategoria = document.getElementById('OWAS_RESULTADO_CATEGORIA');
+
+   
+    const tablaOWAS = {
+        1: {
+            1: {
+                1: [1, 1, 1],
+                2: [1, 1, 1],
+                3: [1, 1, 1],
+                4: [2, 2, 2],
+                5: [2, 2, 2],
+                6: [1, 1, 1],
+                7: [1, 1, 1]
+            },
+            2: {
+                1: [1, 1, 1],
+                2: [1, 1, 1],
+                3: [1, 1, 1],
+                4: [2, 2, 2],
+                5: [2, 2, 2],
+                6: [1, 1, 1],
+                7: [1, 1, 1]
+            },
+            3: {
+                1: [1, 1, 1],
+                2: [1, 1, 1],
+                3: [1, 1, 1],
+                4: [2, 2, 3],
+                5: [2, 2, 3],
+                6: [1, 1, 1],
+                7: [1, 1, 2]
+            }
+        },
+
+        2: {
+            1: {
+                1: [2, 2, 3],
+                2: [2, 2, 3],
+                3: [2, 2, 3],
+                4: [3, 3, 3],
+                5: [3, 3, 3],
+                6: [2, 2, 2],
+                7: [3, 3, 3]
+            },
+            2: {
+                1: [2, 2, 3],
+                2: [2, 2, 3],
+                3: [2, 3, 3],
+                4: [3, 4, 4],
+                5: [3, 4, 3],
+                6: [3, 3, 4],
+                7: [2, 3, 4]
+            },
+            3: {
+                1: [3, 3, 4],
+                2: [2, 2, 3],
+                3: [3, 3, 3],
+                4: [3, 4, 4],
+                5: [4, 4, 4],
+                6: [4, 4, 4],
+                7: [2, 3, 4]
+            }
+        },
+
+        3: {
+            1: {
+                1: [1, 1, 1],
+                2: [1, 1, 1],
+                3: [1, 1, 2],
+                4: [3, 3, 3],
+                5: [4, 4, 4],
+                6: [1, 1, 1],
+                7: [1, 1, 1]
+            },
+            2: {
+                1: [2, 2, 3],
+                2: [1, 1, 1],
+                3: [1, 1, 2],
+                4: [4, 4, 4],
+                5: [4, 4, 4],
+                6: [3, 3, 3],
+                7: [1, 1, 1]
+            },
+            3: {
+                1: [2, 2, 3],
+                2: [1, 1, 1],
+                3: [2, 3, 3],
+                4: [4, 4, 4],
+                5: [4, 4, 4],
+                6: [4, 4, 4],
+                7: [1, 1, 1]
+            }
+        },
+
+        4: {
+            1: {
+                1: [2, 3, 3],
+                2: [2, 2, 3],
+                3: [2, 2, 3],
+                4: [4, 4, 4],
+                5: [4, 4, 4],
+                6: [4, 4, 4],
+                7: [2, 3, 4]
+            },
+            2: {
+                1: [3, 3, 4],
+                2: [2, 3, 4],
+                3: [3, 3, 4],
+                4: [4, 4, 4],
+                5: [4, 4, 4],
+                6: [4, 4, 4],
+                7: [2, 3, 4]
+            },
+            3: {
+                1: [4, 4, 4],
+                2: [2, 3, 4],
+                3: [3, 3, 4],
+                4: [4, 4, 4],
+                5: [4, 4, 4],
+                6: [4, 4, 4],
+                7: [2, 3, 4]
+            }
+        }
+    };
+
+    /*
+     * Textos de la tabla 7 del PDF OWAS.
+     */
+    const resultadosOWAS = {
+        1: {
+            efecto: 'Postura normal y natural sin efectos dañinos en el sistema músculo-esquelético.',
+            accion: 'No requiere acción.'
+        },
+        2: {
+            efecto: 'Postura con posibilidad de causar daño al sistema músculo-esquelético.',
+            accion: 'Se requieren acciones correctivas en un futuro cercano.'
+        },
+        3: {
+            efecto: 'Postura con efectos dañinos sobre el sistema músculo-esquelético.',
+            accion: 'Se requieren acciones correctivas lo antes posible.'
+        },
+        4: {
+            efecto: 'La carga causada por esta postura tiene efectos sumamente dañinos sobre el sistema músculo-esquelético.',
+            accion: 'Se requieren tomar acciones correctivas inmediatamente.'
+        }
+    };
+
+    /*
+     * Calcula la categoría, actualiza el código y marca la fila
+     * correspondiente en la tabla completa.
+     */
+    function calcularOWAS() {
+
+        const espalda = owasCampos.espalda.value;
+        const brazos = owasCampos.brazos.value;
+        const piernas = owasCampos.piernas.value;
+        const carga = owasCampos.carga.value;
+
+        // Mostrar individualmente cada dígito.
+        owasCodigos.espalda.textContent = espalda || '—';
+        owasCodigos.brazos.textContent = brazos || '—';
+        owasCodigos.piernas.textContent = piernas || '—';
+        owasCodigos.carga.textContent = carga || '—';
+
+        // Limpiar la selección anterior de la tabla.
+        document.querySelectorAll(
+            '#OWAS_TABLA_RESULTADOS tbody tr'
+        ).forEach(function (fila) {
+            fila.classList.remove('owas-fila-seleccionada');
+        });
+
+        // Si falta algún dato, no mostrar resultados.
+        if (!espalda || !brazos || !piernas || !carga) {
+            owasCodigoCompleto.value = '';
+            owasCardResultado.style.display = 'none';
+
+            owasResultadoCategoria.textContent = '';
+            owasResultadoCategoria.className = 'badge ml-2';
+
+            return;
+        }
+
+        // Construir el código completo de cuatro dígitos.
+        owasCodigoCompleto.value =
+            String(espalda) +
+            String(brazos) +
+            String(piernas) +
+            String(carga);
+
+        /*
+         * Obtener la categoría usando la tabla 4:
+         * la carga 1 corresponde al índice 0,
+         * la carga 2 al índice 1,
+         * la carga 3 al índice 2.
+         */
+        const categoriasPierna =
+            tablaOWAS[espalda] &&
+            tablaOWAS[espalda][brazos] &&
+            tablaOWAS[espalda][brazos][piernas];
+
+        if (!categoriasPierna) {
+            owasCardResultado.style.display = 'none';
+            console.error('No se encontró la combinación en la tabla OWAS.');
+            return;
+        }
+
+        const categoria = categoriasPierna[Number(carga) - 1];
+
+        if (!resultadosOWAS[categoria]) {
+            owasCardResultado.style.display = 'none';
+            console.error('La categoría OWAS obtenida no es válida.');
+            return;
+        }
+
+        const resultado = resultadosOWAS[categoria];
+
+        // Mostrar categoría obtenida.
+        owasResultadoCategoria.textContent = categoria;
+        owasResultadoCategoria.className =
+            'badge ml-2 owas-riesgo-' + categoria;
+
+        // Marcar con borde rojo la fila correspondiente.
+        const filaResultado = document.getElementById(
+            'OWAS_FILA_' + categoria
+        );
+
+        if (filaResultado) {
+            filaResultado.classList.add('owas-fila-seleccionada');
+        }
+
+        // Mostrar el resultado.
+        owasCardResultado.style.display = 'block';
+    }
+
+    // Recalcular cuando cambie cualquiera de los cuatro selects.
+    Object.values(owasCampos).forEach(function (campo) {
+        campo.addEventListener('change', calcularOWAS);
+    });
+
+    // Estado inicial.
+    calcularOWAS();
+
+});
+
+
+/// ROSA
+
+(function () {
+
+    const contenedor = document.getElementById('contenedorMetodoROSA');
+
+    if (!contenedor || contenedor.dataset.rosaInicializado === '1') {
+        return;
+    }
+
+    contenedor.dataset.rosaInicializado = '1';
+
+    const matrices = {
+
+        A: [
+            [2, 2, 3, 4, 5, 6, 7, 8],
+            [2, 2, 3, 4, 5, 6, 7, 8],
+            [3, 3, 3, 4, 5, 6, 7, 8],
+            [4, 4, 4, 4, 5, 6, 7, 8],
+            [5, 5, 5, 5, 6, 7, 8, 9],
+            [6, 6, 6, 6, 7, 8, 8, 9],
+            [7, 7, 7, 7, 8, 9, 9, 9]
+        ],
+
+        B: [
+            [1, 1, 1, 2, 3, 4, 5, 6, 6],
+            [1, 1, 2, 2, 3, 4, 5, 6, 6],
+            [1, 2, 2, 3, 3, 4, 6, 7, 7],
+            [2, 2, 3, 3, 4, 5, 6, 8, 8],
+            [3, 3, 4, 4, 5, 6, 7, 8, 8],
+            [4, 4, 5, 5, 6, 7, 8, 9, 9],
+            [5, 5, 6, 7, 8, 8, 9, 9, 9]
+        ],
+
+        C: [
+            [1, 1, 1, 2, 3, 4, 5],
+            [1, 1, 2, 3, 4, 5, 6],
+            [2, 3, 3, 3, 5, 6, 7],
+            [3, 4, 4, 5, 5, 6, 7],
+            [4, 5, 5, 6, 6, 7, 8],
+            [5, 6, 6, 7, 7, 8, 8],
+            [6, 7, 7, 8, 8, 9, 9],
+            [7, 8, 8, 9, 9, 9, 9]
+        ],
+
+        D: [
+            [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            [2, 2, 3, 4, 5, 6, 7, 8, 9],
+            [3, 3, 3, 4, 5, 6, 7, 8, 9],
+            [4, 4, 4, 4, 5, 6, 7, 8, 9],
+            [5, 5, 5, 5, 5, 6, 7, 8, 9],
+            [6, 6, 6, 6, 6, 6, 7, 8, 9],
+            [7, 7, 7, 7, 7, 7, 7, 8, 9],
+            [8, 8, 8, 8, 8, 8, 8, 8, 9],
+            [9, 9, 9, 9, 9, 9, 9, 9, 9]
+        ],
+
+        E: [
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            [2, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            [3, 3, 3, 4, 5, 6, 7, 8, 9, 10],
+            [4, 4, 4, 4, 4, 6, 7, 8, 9, 10],
+            [5, 5, 5, 5, 5, 6, 7, 8, 9, 10],
+            [6, 6, 6, 6, 6, 6, 7, 8, 9, 10],
+            [7, 7, 7, 7, 7, 7, 7, 8, 9, 10],
+            [8, 8, 8, 8, 8, 8, 8, 8, 9, 10],
+            [9, 9, 9, 9, 9, 9, 9, 9, 9, 10],
+            [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+        ]
+
+    };
+
+    const campos = {
+        A1: 'ROSA_ALTURA_ASIENTO',
+        A2: 'ROSA_PROFUNDIDAD_ASIENTO',
+        A3: 'ROSA_REPOSABRAZOS',
+        A4: 'ROSA_RESPALDO',
+        B1: 'ROSA_TELEFONO',
+        B2: 'ROSA_PANTALLA',
+        C1: 'ROSA_RATON',
+        C2: 'ROSA_TECLADO'
+    };
+
+    const nombres = {
+        A1: 'Silla: altura (A-1)',
+        A2: 'Silla: profundidad (A-2)',
+        A3: 'Silla: reposabrazos (A-3)',
+        A4: 'Silla: respaldo (A-4)',
+        B1: 'Teléfono (B-1)',
+        B2: 'Pantalla (B-2)',
+        C1: 'Ratón (C-1)',
+        C2: 'Teclado (C-2)'
+    };
+
+    function valorCampo(id) {
+
+        const elemento = document.getElementById(id);
+
+        return elemento && elemento.value !== ''
+            ? Number(elemento.value)
+            : null;
+
+    }
+
+    function adicionales(apartado) {
+
+        return Array.from(
+            contenedor.querySelectorAll('.rosa-extra:checked')
+        ).filter(c => c.dataset.apartado === apartado);
+
+    }
+
+    function sumaAdicionales(apartado) {
+
+        return adicionales(apartado).reduce((total, checkbox) => {
+            return total + Number(checkbox.value || 0);
+        }, 0);
+
+    }
+
+    function tiempo(id) {
+
+        const elemento = document.getElementById(id);
+
+        return elemento && elemento.value !== ''
+            ? Number(elemento.value)
+            : 0;
+
+    }
+
+    function puntuacionApartado(apartado) {
+
+        const base = valorCampo(campos[apartado]);
+
+        if (base === null) {
+            return null;
+        }
+
+        return Math.max(
+            1,
+            base + sumaAdicionales(apartado)
+        );
+
+    }
+
+    function limitar(valor, minimo, maximo) {
+
+        return Math.max(minimo, Math.min(maximo, valor));
+
+    }
+
+    function buscarMatriz(matriz, fila, columna, inicioFila, inicioColumna) {
+
+        const f = fila - inicioFila;
+        const c = columna - inicioColumna;
+
+        if (
+            f < 0 ||
+            c < 0 ||
+            f >= matriz.length ||
+            c >= matriz[f].length
+        ) {
+            return null;
+        }
+
+        return matriz[f][c];
+
+    }
+
+    function crearMatriz(id, matriz, tituloFila, columnas, inicioFila, inicioColumna) {
+
+        const tabla = document.getElementById(id);
+
+        if (!tabla) {
+            return;
+        }
+
+        let html = '<thead><tr><th>' + tituloFila + '</th>';
+
+        columnas.forEach(columna => {
+            html += '<th>' + columna + '</th>';
+        });
+
+        html += '</tr></thead><tbody>';
+
+        matriz.forEach((fila, indice) => {
+
+            html += '<tr><th>' + (inicioFila + indice) + '</th>';
+
+            fila.forEach((valor, indiceColumna) => {
+
+                html += '<td data-fila="' + (inicioFila + indice) +
+                    '" data-columna="' + (inicioColumna + indiceColumna) +
+                    '">' + valor + '</td>';
+
+            });
+
+            html += '</tr>';
+
+        });
+
+        html += '</tbody>';
+
+        tabla.innerHTML = html;
+
+    }
+
+    function generarMatrices() {
+
+        crearMatriz(
+            'ROSA_MATRIZ_A',
+            matrices.A,
+            'A-1 + A-2 / A-3 + A-4',
+            [2, 3, 4, 5, 6, 7, 8, 9],
+            2,
+            2
+        );
+
+        crearMatriz(
+            'ROSA_MATRIZ_B',
+            matrices.B,
+            'B-1',
+            [0, 1, 2, 3, 4, 5, 6, 7, 8],
+            0,
+            0
+        );
+
+        crearMatriz(
+            'ROSA_MATRIZ_C',
+            matrices.C,
+            'C-1',
+            [0, 1, 2, 3, 4, 5, 6],
+            0,
+            0
+        );
+
+        crearMatriz(
+            'ROSA_MATRIZ_D',
+            matrices.D,
+            'B',
+            [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            1,
+            1
+        );
+
+        crearMatriz(
+            'ROSA_MATRIZ_E',
+            matrices.E,
+            'Combinación',
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            1,
+            1
+        );
+
+    }
+
+    function marcarCelda(id, fila, columna) {
+
+        const tabla = document.getElementById(id);
+
+        if (!tabla) {
+            return;
+        }
+
+        tabla.querySelectorAll('.rosa-celda-seleccionada').forEach(celda => {
+            celda.classList.remove('rosa-celda-seleccionada');
+        });
+
+        const celda = tabla.querySelector(
+            'td[data-fila="' + fila + '"][data-columna="' + columna + '"]'
+        );
+
+        if (celda) {
+            celda.classList.add('rosa-celda-seleccionada');
+        }
+
+    }
+
+    function marcarRiesgo(puntuacion) {
+
+        contenedor.querySelectorAll('[data-rosa-rango]').forEach(fila => {
+            fila.classList.remove('rosa-seleccionada');
+        });
+
+        let rango;
+
+        if (puntuacion === 1) {
+            rango = '1';
+        } else if (puntuacion >= 2 && puntuacion <= 4) {
+            rango = '2-4';
+        } else if (puntuacion === 5) {
+            rango = '5';
+        } else if (puntuacion >= 6 && puntuacion <= 8) {
+            rango = '6-8';
+        } else {
+            rango = '9-10';
+        }
+
+        const fila = contenedor.querySelector(
+            '[data-rosa-rango="' + rango + '"]'
+        );
+
+        if (fila) {
+            fila.classList.add('rosa-seleccionada');
+        }
+
+        const puntuacionElemento =
+            document.getElementById('ROSA_PUNTUACION_FINAL');
+
+        const riesgoElemento =
+            document.getElementById('ROSA_RIESGO_FINAL');
+
+        if (puntuacionElemento) {
+            puntuacionElemento.textContent = puntuacion;
+        }
+
+        if (riesgoElemento) {
+
+            const interpretaciones = {
+                '1': 'Riesgo inapreciable — Nivel 0. No es necesaria actuación.',
+                '2-4': 'Riesgo mejorable — Nivel 1. Pueden mejorarse algunos elementos del puesto.',
+                '5': 'Riesgo alto — Nivel 2. Es necesaria la actuación.',
+                '6-8': 'Riesgo muy alto — Nivel 3. Es necesaria la actuación cuanto antes.',
+                '9-10': 'Riesgo extremo — Nivel 4. Es necesaria la actuación urgentemente.'
+            };
+
+            riesgoElemento.textContent = interpretaciones[rango] || '';
+
+        }
+
+    }
+
+    function calcularROSA() {
+
+        const valores = {};
+
+        Object.keys(campos).forEach(apartado => {
+            valores[apartado] = puntuacionApartado(apartado);
+        });
+
+        const tiempoA = tiempo('ROSA_TIEMPO_A');
+        const tiempoB1 = tiempo('ROSA_TIEMPO_B1');
+        const tiempoB2 = tiempo('ROSA_TIEMPO_B2');
+        const tiempoC1 = tiempo('ROSA_TIEMPO_C1');
+        const tiempoC2 = tiempo('ROSA_TIEMPO_C2');
+
+        const completosA =
+            valores.A1 !== null &&
+            valores.A2 !== null &&
+            valores.A3 !== null &&
+            valores.A4 !== null;
+
+        const completosB =
+            valores.B1 !== null &&
+            valores.B2 !== null;
+
+        const completosC =
+            valores.C1 !== null &&
+            valores.C2 !== null;
+
+        let resultadoA = null;
+        let resultadoB = null;
+        let resultadoC = null;
+        let resultadoD = null;
+        let resultadoE = null;
+
+        if (completosA) {
+
+            const asiento = limitar(
+                valores.A1 + valores.A2,
+                2,
+                8
+            );
+
+            const reposabrazosRespaldo = limitar(
+                valores.A3 + valores.A4,
+                2,
+                9
+            );
+
+            resultadoA = buscarMatriz(
+                matrices.A,
+                asiento,
+                reposabrazosRespaldo,
+                2,
+                2
+            );
+
+            if (resultadoA !== null) {
+                resultadoA = limitar(resultadoA + tiempoA, 1, 10);
+            }
+
+            marcarCelda(
+                'ROSA_MATRIZ_A',
+                asiento,
+                reposabrazosRespaldo
+            );
+
+        }
+
+        if (completosB) {
+
+            // B-1: el tiempo de uso solo modifica la puntuación del teléfono.
+            const telefono = limitar(
+                valores.B1 + sumaAdicionales('B1') + tiempoB1,
+                0,
+                matrices.B.length - 1
+            );
+
+            // B-2: el tiempo de uso solo modifica la puntuación de la pantalla.
+            const pantalla = limitar(
+                valores.B2 + sumaAdicionales('B2') + tiempoB2,
+                0,
+                matrices.B[0].length - 1
+            );
+
+            resultadoB = buscarMatriz(
+                matrices.B,
+                telefono,
+                pantalla,
+                0,
+                0
+            );
+
+            marcarCelda(
+                'ROSA_MATRIZ_B',
+                telefono,
+                pantalla
+            );
+
+        } else {
+
+            const tablaB = document.getElementById('ROSA_MATRIZ_B');
+
+            if (tablaB) {
+                tablaB.querySelectorAll('.rosa-celda-seleccionada').forEach(celda => {
+                    celda.classList.remove('rosa-celda-seleccionada');
+                });
+            }
+
+        }
+
+        if (completosC) {
+
+            const raton = limitar(
+                valores.C1 + sumaAdicionales('C1') + tiempoC1,
+                0,
+                7
+            );
+
+            const teclado = limitar(
+                valores.C2 + sumaAdicionales('C2') + tiempoC2,
+                0,
+                6
+            );
+
+            resultadoC = buscarMatriz(
+                matrices.C,
+                raton,
+                teclado,
+                0,
+                0
+            );
+
+            marcarCelda(
+                'ROSA_MATRIZ_C',
+                raton,
+                teclado
+            );
+
+        }
+
+        if (resultadoB !== null && resultadoC !== null) {
+
+            resultadoD = buscarMatriz(
+                matrices.D,
+                resultadoB,
+                resultadoC,
+                1,
+                1
+            );
+
+            marcarCelda(
+                'ROSA_MATRIZ_D',
+                resultadoB,
+                resultadoC
+            );
+
+        }
+
+        if (resultadoA !== null && resultadoD !== null) {
+
+            resultadoE = buscarMatriz(
+                matrices.E,
+                resultadoA,
+                resultadoD,
+                1,
+                1
+            );
+
+            marcarCelda(
+                'ROSA_MATRIZ_E',
+                resultadoA,
+                resultadoD
+            );
+
+        }
+
+        if (resultadoE !== null) {
+
+            marcarRiesgo(resultadoE);
+
+        } else {
+
+            contenedor.querySelectorAll('[data-rosa-rango]').forEach(fila => {
+                fila.classList.remove('rosa-seleccionada');
+            });
+
+            const puntuacionElemento =
+                document.getElementById('ROSA_PUNTUACION_FINAL');
+
+            const riesgoElemento =
+                document.getElementById('ROSA_RIESGO_FINAL');
+
+            if (puntuacionElemento) {
+                puntuacionElemento.textContent = 'Pendiente';
+            }
+
+            if (riesgoElemento) {
+                riesgoElemento.textContent =
+                    'Completa todos los campos de las secciones A, B y C para obtener la puntuación final.';
+            }
+
+        }
+
+        // =====================================================
+        // NUEVO: GUARDAR EXTRAS Y RESULTADOS EN ROSA_DATOS_JSON
+        // =====================================================
+
+        let rangoRiesgo = null;
+        let riesgo = null;
+        let nivel = null;
+        let actuacion = null;
+
+        if (resultadoE !== null) {
+
+            if (resultadoE === 1) {
+                rangoRiesgo = '1';
+                riesgo = 'Inapreciable';
+                nivel = 0;
+                actuacion = 'No es necesaria actuación.';
+
+            } else if (resultadoE >= 2 && resultadoE <= 4) {
+                rangoRiesgo = '2-4';
+                riesgo = 'Mejorable';
+                nivel = 1;
+                actuacion = 'Pueden mejorarse algunos elementos del puesto.';
+
+            } else if (resultadoE === 5) {
+                rangoRiesgo = '5';
+                riesgo = 'Alto';
+                nivel = 2;
+                actuacion = 'Es necesaria la actuación.';
+
+            } else if (resultadoE >= 6 && resultadoE <= 8) {
+                rangoRiesgo = '6-8';
+                riesgo = 'Muy alto';
+                nivel = 3;
+                actuacion = 'Es necesaria la actuación cuanto antes.';
+
+            } else {
+                rangoRiesgo = '9-10';
+                riesgo = 'Extremo';
+                nivel = 4;
+                actuacion = 'Es necesaria la actuación urgentemente.';
+            }
+
+        }
+
+        const datosROSA = {
+
+            extras: Array.from(
+                contenedor.querySelectorAll('.rosa-extra:checked')
+            ).map(checkbox => ({
+                apartado: checkbox.dataset.apartado,
+                valor: Number(checkbox.value),
+                texto: checkbox.dataset.texto
+            })),
+
+            matrices: {
+                matriz_A: resultadoA,
+                matriz_B: resultadoB,
+                matriz_C: resultadoC,
+                matriz_D: resultadoD,
+                matriz_E: resultadoE
+            },
+
+            resultados: {
+                puntuacion_final: resultadoE,
+                riesgo: riesgo,
+                nivel: nivel,
+                actuacion: actuacion
+            }
+
+        };
+
+        const campoJSON = document.getElementById('ROSA_DATOS_JSON');
+
+        if (campoJSON) {
+            campoJSON.value = JSON.stringify(datosROSA);
+        }
+
+    }
+
+    function inicializarEventos() {
+
+        contenedor.querySelectorAll(
+            '.rosa-campo, .rosa-extra, .rosa-tiempo'
+        ).forEach(elemento => {
+
+            elemento.addEventListener('change', calcularROSA);
+
+        });
+
+    }
+
+    generarMatrices();
+
+    inicializarEventos();
+
+    calcularROSA();
+
+})();
+
+
+/// RULA
+
+
+
+(function() {
+    'use strict';
+
+    const contenedor = document.getElementById('contenedorMetodoRULA');
+
+    if (!contenedor || contenedor.dataset.rulaInicializado === '1') {
+        return;
+    }
+
+    contenedor.dataset.rulaInicializado = '1';
+
+    const obtener = id => contenedor.querySelector('#' + id);
+
+    const idsSelectores = [
+        'RULA_BRAZO',
+        'RULA_BRAZO_ABDUCIDO',
+        'RULA_HOMBRO_ELEVADO',
+        'RULA_BRAZO_APOYADO',
+        'RULA_ANTEBRAZO',
+        'RULA_ANTEBRAZO_PROYECCION',
+        'RULA_ANTEBRAZO_CRUZA',
+        'RULA_MUNECA',
+        'RULA_MUNECA_DESVIACION',
+        'RULA_GIRO_MUNECA',
+        'RULA_CUELLO',
+        'RULA_CUELLO_ROTADO',
+        'RULA_CUELLO_LATERAL',
+        'RULA_TRONCO',
+        'RULA_TRONCO_TORSION',
+        'RULA_TRONCO_LATERAL',
+        'RULA_PIERNAS',
+        'RULA_ACTIVIDAD',
+        'RULA_CARGA'
+    ];
+
+    const tablaA = {
+        '1-1': [1, 2, 2, 2, 2, 3, 3, 3],
+        '1-2': [2, 2, 2, 2, 3, 3, 3, 3],
+        '1-3': [2, 3, 3, 3, 3, 3, 4, 4],
+
+        '2-1': [2, 3, 3, 3, 3, 4, 4, 4],
+        '2-2': [3, 3, 3, 3, 3, 4, 4, 4],
+        '2-3': [3, 4, 4, 4, 4, 4, 5, 5],
+
+        '3-1': [3, 3, 4, 4, 4, 4, 5, 5],
+        '3-2': [3, 4, 4, 4, 4, 4, 5, 5],
+        '3-3': [4, 4, 4, 4, 4, 5, 5, 5],
+
+        '4-1': [4, 4, 4, 4, 4, 5, 5, 5],
+        '4-2': [4, 4, 4, 4, 4, 5, 5, 5],
+        '4-3': [4, 4, 4, 5, 5, 5, 6, 6],
+
+        '5-1': [5, 5, 5, 5, 5, 6, 6, 7],
+        '5-2': [5, 6, 6, 6, 6, 7, 7, 7],
+        '5-3': [6, 6, 6, 7, 7, 7, 7, 8],
+
+        '6-1': [7, 7, 7, 7, 7, 8, 8, 9],
+        '6-2': [8, 8, 8, 8, 8, 9, 9, 9],
+        '6-3': [9, 9, 9, 9, 9, 9, 9, 9]
+    };
+
+    const tablaB = {
+        1: {
+            1: [1, 3],
+            2: [2, 3],
+            3: [3, 4],
+            4: [5, 5],
+            5: [6, 6],
+            6: [7, 7]
+        },
+        2: {
+            1: [2, 3],
+            2: [2, 3],
+            3: [4, 5],
+            4: [5, 5],
+            5: [6, 7],
+            6: [7, 7]
+        },
+        3: {
+            1: [3, 3],
+            2: [3, 4],
+            3: [4, 5],
+            4: [5, 6],
+            5: [6, 7],
+            6: [7, 7]
+        },
+        4: {
+            1: [5, 5],
+            2: [5, 6],
+            3: [6, 7],
+            4: [7, 7],
+            5: [7, 7],
+            6: [8, 8]
+        },
+        5: {
+            1: [7, 7],
+            2: [7, 7],
+            3: [7, 8],
+            4: [8, 8],
+            5: [8, 8],
+            6: [8, 8]
+        },
+        6: {
+            1: [8, 8],
+            2: [8, 8],
+            3: [8, 8],
+            4: [8, 9],
+            5: [9, 9],
+            6: [9, 9]
+        }
+    };
+
+    const tablaFinal = [
+        [1, 2, 3, 3, 4, 5, 5],
+        [2, 2, 3, 4, 4, 5, 5],
+        [2, 3, 3, 4, 4, 5, 6],
+        [3, 3, 3, 4, 5, 6, 6],
+        [4, 4, 4, 5, 6, 7, 7],
+        [4, 4, 5, 6, 6, 7, 7],
+        [5, 5, 5, 6, 7, 7, 7],
+        [5, 6, 6, 7, 7, 7, 7]
+    ];
+
+    const limitar = (valor, minimo, maximo) =>
+        Math.max(minimo, Math.min(maximo, valor));
+
+    function numero(id) {
+        const campo = obtener(id);
+
+        if (!campo || campo.value === '') {
+            return null;
+        }
+
+        const valor = Number(campo.value);
+
+        return Number.isFinite(valor) ? valor : null;
+    }
+
+    function adicional(id) {
+        const valor = numero(id);
+        return valor === null ? 0 : valor;
+    }
+
+    function limpiarSeleccion(tabla) {
+        if (!tabla) return;
+
+        tabla.querySelectorAll('.rula-celda-seleccionada')
+            .forEach(celda => celda.classList.remove('rula-celda-seleccionada'));
+
+        tabla.querySelectorAll('.rula-fila-seleccionada')
+            .forEach(fila => fila.classList.remove('rula-fila-seleccionada'));
+    }
+
+    function construirTablaA() {
+        const tbody = obtener('RULA_TABLA_A').querySelector('tbody');
+        tbody.innerHTML = '';
+
+        for (let brazo = 1; brazo <= 6; brazo++) {
+            for (let antebrazo = 1; antebrazo <= 3; antebrazo++) {
+                const fila = document.createElement('tr');
+
+                fila.dataset.brazo = brazo;
+                fila.dataset.antebrazo = antebrazo;
+
+                if (antebrazo === 1) {
+                    const celdaBrazo = document.createElement('th');
+                    celdaBrazo.rowSpan = 3;
+                    celdaBrazo.className = 'rula-fila-azul';
+                    celdaBrazo.textContent = brazo;
+                    fila.appendChild(celdaBrazo);
+                }
+
+                const celdaAntebrazo = document.createElement('th');
+                celdaAntebrazo.className = 'rula-fila-azul';
+                celdaAntebrazo.textContent = antebrazo;
+                fila.appendChild(celdaAntebrazo);
+
+                tablaA[brazo + '-' + antebrazo].forEach((valor, indice) => {
+                    const td = document.createElement('td');
+                    td.textContent = valor;
+                    td.dataset.indice = indice;
+                    td.dataset.valor = valor;
+                    fila.appendChild(td);
+                });
+
+                tbody.appendChild(fila);
+            }
+        }
+    }
+
+    function construirTablaB() {
+        const tbody = obtener('RULA_TABLA_B').querySelector('tbody');
+        tbody.innerHTML = '';
+
+        for (let cuello = 1; cuello <= 6; cuello++) {
+            const fila = document.createElement('tr');
+            fila.dataset.cuello = cuello;
+
+            const th = document.createElement('th');
+            th.className = 'rula-fila-azul';
+            th.textContent = cuello;
+            fila.appendChild(th);
+
+            for (let tronco = 1; tronco <= 6; tronco++) {
+                for (let piernas = 1; piernas <= 2; piernas++) {
+                    const td = document.createElement('td');
+                    td.textContent = tablaB[cuello][tronco][piernas - 1];
+                    td.dataset.tronco = tronco;
+                    td.dataset.piernas = piernas;
+                    td.dataset.valor = td.textContent;
+                    fila.appendChild(td);
+                }
+            }
+
+            tbody.appendChild(fila);
+        }
+    }
+
+    function nivelActuacion(puntuacion) {
+        if (puntuacion <= 2) {
+            return {
+                nivel: 1,
+                texto: 'Riesgo aceptable.'
+            };
+        }
+
+        if (puntuacion <= 4) {
+            return {
+                nivel: 2,
+                texto: 'Pueden requerirse cambios en la tarea; es conveniente profundizar en el estudio.'
+            };
+        }
+
+        if (puntuacion <= 6) {
+            return {
+                nivel: 3,
+                texto: 'Se requiere el rediseño de la tarea.'
+            };
+        }
+
+        return {
+            nivel: 4,
+            texto: 'Se requieren cambios urgentes en la tarea.'
+        };
+    }
+
+    function actualizarJson(datos) {
+        const campo = obtener('RULA_DATOS_JSON');
+
+        if (campo) {
+            campo.value = JSON.stringify(datos);
+        }
+    }
+
+    function calcularRULA() {
+        const principales = [
+            'RULA_BRAZO',
+            'RULA_ANTEBRAZO',
+            'RULA_MUNECA',
+            'RULA_GIRO_MUNECA',
+            'RULA_CUELLO',
+            'RULA_TRONCO',
+            'RULA_PIERNAS'
+        ];
+
+        const completos = principales.every(id => numero(id) !== null);
+
+        contenedor.querySelectorAll('.rula-modificador').forEach(campo => {
+            campo.classList.toggle(
+                'rula-adicional-activo',
+                campo.value !== '' && Number(campo.value) !== 0
+            );
+        });
+
+        const tablaMatrizA = obtener('RULA_TABLA_A');
+        const tablaMatrizB = obtener('RULA_TABLA_B');
+        const tablaMatrizFinal = obtener('RULA_TABLA_FINAL');
+
+        limpiarSeleccion(tablaMatrizA);
+        limpiarSeleccion(tablaMatrizB);
+        limpiarSeleccion(tablaMatrizFinal);
+
+        if (!completos) {
+            obtener('RULA_PUNTUACION_A').textContent = '—';
+            obtener('RULA_PUNTUACION_B').textContent = '—';
+            obtener('RULA_PUNTUACION').textContent = '—';
+
+            obtener('RULA_RESUMEN_FINAL').textContent =
+                'Puntuación final: — | Nivel de actuación: —';
+
+            actualizarJson({});
+            return;
+        }
+
+        const brazoBase = numero('RULA_BRAZO');
+
+        const brazoCalculado = limitar(
+            brazoBase +
+            adicional('RULA_BRAZO_ABDUCIDO') +
+            adicional('RULA_HOMBRO_ELEVADO') +
+            adicional('RULA_BRAZO_APOYADO'),
+            1,
+            6
+        );
+
+        const antebrazoBase = numero('RULA_ANTEBRAZO');
+
+        const antebrazoCalculado = limitar(
+            antebrazoBase +
+            adicional('RULA_ANTEBRAZO_PROYECCION') +
+            adicional('RULA_ANTEBRAZO_CRUZA'),
+            1,
+            3
+        );
+
+        const munecaBase = numero('RULA_MUNECA');
+
+        const munecaCalculada = limitar(munecaBase + adicional('RULA_MUNECA_DESVIACION'),1,4);
+
+        const giroMuneca = numero('RULA_GIRO_MUNECA');
+
+        const claveA = brazoCalculado + '-' + antebrazoCalculado;
+        const indiceA = ((munecaCalculada - 1) * 2) + (giroMuneca - 1);
+
+        const puntuacionBaseA = tablaA[claveA][indiceA];
+
+        const cuelloBase = numero('RULA_CUELLO');
+
+        const cuelloCalculado = limitar(
+            cuelloBase +
+            adicional('RULA_CUELLO_ROTADO') +
+            adicional('RULA_CUELLO_LATERAL'),
+            1,
+            6
+        );
+
+        const troncoBase = numero('RULA_TRONCO');
+
+        const troncoCalculado = limitar(
+            troncoBase +
+            adicional('RULA_TRONCO_TORSION') +
+            adicional('RULA_TRONCO_LATERAL'),
+            1,
+            6
+        );
+
+        const piernas = numero('RULA_PIERNAS');
+
+        const puntuacionBaseB = tablaB[cuelloCalculado][troncoCalculado][piernas - 1];
+
+        const actividad = adicional('RULA_ACTIVIDAD');
+        const carga = adicional('RULA_CARGA');
+
+        const puntuacionA = limitar(
+            puntuacionBaseA + actividad + carga,
+            1,
+            8
+        );
+
+        const puntuacionB = limitar(
+            puntuacionBaseB + actividad + carga,
+            1,
+            8
+        );
+
+        const filaA = tablaMatrizA.querySelector(
+            'tr[data-brazo="' + brazoCalculado +
+            '"][data-antebrazo="' + antebrazoCalculado + '"]'
+        );
+
+        if (filaA) {
+            filaA.classList.add('rula-fila-seleccionada');
+
+            const celdaA = filaA.querySelector(
+                'td[data-indice="' + indiceA + '"]'
+            );
+
+            if (celdaA) {
+                celdaA.classList.add('rula-celda-seleccionada');
+            }
+        }
+
+        const filaB = tablaMatrizB.querySelector(
+            'tr[data-cuello="' + cuelloCalculado + '"]'
+        );
+
+        if (filaB) {
+            filaB.classList.add('rula-fila-seleccionada');
+
+            const celdaB = filaB.querySelector(
+                'td[data-tronco="' + troncoCalculado +
+                '"][data-piernas="' + piernas + '"]'
+            );
+
+            if (celdaB) {
+                celdaB.classList.add('rula-celda-seleccionada');
+            }
+        }
+
+        const indiceFilaFinal = puntuacionB - 1;
+        const indiceColumnaFinal = limitar(puntuacionA, 1, 7) - 1;
+
+        const puntuacionFinal =
+            tablaFinal[indiceFilaFinal][indiceColumnaFinal];
+
+        const filaFinal = tablaMatrizFinal.querySelector(
+            'tr[data-c="' + puntuacionB + '"]'
+        );
+
+        if (filaFinal) {
+            filaFinal.classList.add('rula-fila-seleccionada');
+
+            const celdaFinal = filaFinal.querySelector(
+                'td[data-d="' + limitar(puntuacionA, 1, 7) + '"]'
+            );
+
+            if (celdaFinal) {
+                celdaFinal.classList.add('rula-celda-seleccionada');
+            }
+        }
+
+        obtener('RULA_PUNTUACION_A').textContent = puntuacionA;
+        obtener('RULA_PUNTUACION_B').textContent = puntuacionB;
+        obtener('RULA_PUNTUACION').textContent = puntuacionFinal;
+
+        const nivel = nivelActuacion(puntuacionFinal);
+
+        obtener('RULA_RESUMEN_FINAL').textContent =
+            'Puntuación final: ' + puntuacionFinal +
+            ' | Nivel de actuación: ' + nivel.nivel +
+            ' | ' + nivel.texto;
+
+        const filasNivel = obtener('RULA_TABLA_NIVEL')
+            .querySelectorAll('tbody tr');
+
+        filasNivel.forEach(fila => {
+            fila.classList.remove('rula-fila-seleccionada');
+
+            if (Number(fila.dataset.nivel) === nivel.nivel) {
+                fila.classList.add('rula-fila-seleccionada');
+            }
+        });
+
+        actualizarJson({
+            puntuacion_base_brazo: brazoBase,
+            puntuacion_brazo: brazoCalculado,
+            puntuacion_base_antebrazo: antebrazoBase,
+            puntuacion_antebrazo: antebrazoCalculado,
+            puntuacion_base_muneca: munecaBase,
+            puntuacion_muneca: munecaCalculada,
+            giro_muneca: giroMuneca,
+            puntuacion_base_A: puntuacionBaseA,
+            puntuacion_A: puntuacionA,
+            puntuacion_base_cuello: cuelloBase,
+            puntuacion_cuello: cuelloCalculado,
+            puntuacion_base_tronco: troncoBase,
+            puntuacion_tronco: troncoCalculado,
+            puntuacion_piernas: piernas,
+            puntuacion_base_B: puntuacionBaseB,
+            puntuacion_B: puntuacionB,
+            actividad_muscular: actividad,
+            fuerza_carga: carga,
+            puntuacion_final: puntuacionFinal,
+            nivel_actuacion: nivel.nivel,
+            actuacion: nivel.texto
+        });
+    }
+
+    idsSelectores.forEach(id => {
+        const campo = obtener(id);
+
+        if (campo) {
+            campo.addEventListener('change', calcularRULA);
+            campo.addEventListener('input', calcularRULA);
+        }
+    });
+
+    construirTablaA();
+    construirTablaB();
+    calcularRULA();
+
+    window.cargarDatosRULA = function(data) {
+        if (!data) return;
+
+        idsSelectores.forEach(id => {
+            const campo = obtener(id);
+
+            if (
+                campo &&
+                data[id] !== undefined &&
+                data[id] !== null
+            ) {
+                campo.value = String(data[id]);
+            }
+        });
+
+        const analisis = obtener('ANALISIS_METODO_RULA');
+
+        if (
+            analisis &&
+            data.ANALISIS_METODO_RULA !== undefined &&
+            data.ANALISIS_METODO_RULA !== null
+        ) {
+            analisis.value = data.ANALISIS_METODO_RULA;
+        }
+
+        
+
+        calcularRULA();
+    };
+
+    
+
+})();
+
+
+
+//// ANGULOS
+
+
+
+
+$('#modal_angulos').on('hidden.bs.modal', function (e) {
+
+	ID_ANGULOS_FRE = 0;
+
+    $('#form_angulo')[0].reset();
+
+})
+
+
+
+$("#boton_nuevo_angulos").click(function (e) {
+    e.preventDefault();
+
+    $('#form_angulo').each(function(){
+        this.reset();
+    });
+
+
+    var drEvent = $('#FOTO_ANGULO').dropify({
+        messages: {
+            'default': 'Arrastre la imagen aquí o haga clic',
+            'replace': 'Arrastre la imagen aquí o haga clic para reemplazar',
+            'remove': 'Quitar',
+            'error': 'Ooops, ha ocurrido un error.'
+        },
+        error: {
+            'fileSize': 'El archivo es demasiado grande (máx. {{ value }}).',
+            'minWidth': 'El ancho de la imagen es demasiado pequeño (mín. {{ value }}px).',
+            'maxWidth': 'El ancho de la imagen es demasiado grande (máx. {{ value }}px).',
+            'minHeight': 'La altura de la imagen es demasiado pequeña (mín. {{ value }}px).',
+            'maxHeight': 'La altura de la imagen es demasiado grande (máx. {{ value }}px).',
+            'imageFormat': 'Formato no permitido, sólo se aceptan: ({{ value }}).'
+        }
+    });
+
+        
+
+    drEvent = drEvent.data('dropify');
+    drEvent.resetPreview();  
+    drEvent.clearElement();  
+    
+
+    $("#modal_angulos").modal("show");
+   
+
+});
+
+
+
+
+
+$("#boton_guardar_angulo").click(function (e) {
+    e.preventDefault();
+
+    formularioValido = validarFormulario3($('#form_angulo'))
+
+    if (formularioValido) {
+
+    if (ID_ANGULOS_FRE == 0) {
+        
+        alertMensajeConfirm({
+            title: "¿Desea guardar la información?",
+            text: "Al guardarla, se podra usar",
+            icon: "question",
+        },async function () { 
+
+            await loaderbtn('boton_guardar_angulo')
+            await ajaxAwaitFormData({ api: 2,FRE_ID:fre_id, ID_ANGULOS_FRE: ID_ANGULOS_FRE }, 'evaluacionfre', 'form_angulo', 'boton_guardar_angulo', { callbackAfter: true, callbackBefore: true }, () => {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Espere un momento',
+                    text: 'Estamos guardando la información',
+                    showConfirmButton: false
+                })
+
+                $('.swal2-popup').addClass('ld ld-breath')
+                
+            }, function (data) {
+                    
+                ID_ANGULOS_FRE = data.angulos.ID_ANGULOS_FRE
+                    alertMensaje('success','Información guardada correctamente', 'Esta información esta lista para usarse',null,null, 1500)
+                     $('#modal_angulos').modal('hide')
+                    document.getElementById('form_angulo').reset();
+
+
+                    
+                    if ($.fn.DataTable.isDataTable('#tabla_angulos_fre')) {
+                        TablangulosFre.ajax.reload(null, false); 
+                    }
+
+            })
+            
+        }, 1)
+        
+    } else {
+            alertMensajeConfirm({
+            title: "¿Desea editar la información de este formulario?",
+            text: "Al guardarla, se podra usar",
+            icon: "question",
+        },async function () { 
+
+            await loaderbtn('boton_guardar_angulo')
+            await ajaxAwaitFormData({ api: 2,FRE_ID:fre_id ,ID_ANGULOS_FRE: ID_ANGULOS_FRE }, 'evaluacionfre', 'form_angulo', 'boton_guardar_angulo', { callbackAfter: true, callbackBefore: true }, () => {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Espere un momento',
+                    text: 'Estamos guardando la información',
+                    showConfirmButton: false
+                })
+
+                $('.swal2-popup').addClass('ld ld-breath')
+        
+            }, function (data) {
+                    
+                setTimeout(() => {
+
+                    ID_ANGULOS_FRE = data.angulos.ID_ANGULOS_FRE
+                    alertMensaje('success', 'Información editada correctamente', 'Información guardada')
+                     $('#modal_angulos').modal('hide')
+                    document.getElementById('form_angulo').reset();
+
+
+                    
+                    if ($.fn.DataTable.isDataTable('#tabla_angulos_fre')) {
+                        TablangulosFre.ajax.reload(null, false); 
+                    }
+
+                }, 300);  
+            })
+        }, 1)
+    }
+
+    } else {
+        alertToast('Por favor, complete todos los campos del formulario.', 'error', 2000)
+
+    }
+    
+});
+
+
+
+
+
+function tabla_angulos_fre()
+{
+    try 
+    {
+        var ruta = "/tablangulosfre/" + fre_id;
+
+        if (TablangulosFre != null)
+        {
+            // Recargar tabla
+            TablangulosFre.clear().draw();
+            TablangulosFre.ajax.url(ruta).load();
+        }
+        else
+        {
+            TablangulosFre = $('#tabla_angulos_fre').DataTable({
+                "ajax": {
+                    "url": ruta,
+                    "type": "get",
+                    "cache": false,
+                    error: function (xhr, error, code)
+                    {
+                        console.error("Error AJAX tabla_angulos_fre:", xhr.responseText);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "numero_registro" 
+                    },
+                     {
+                        "data": "FOTO_TABLA_DOCUMENTO"
+                    },
+                    {
+                        "className": 'Editar',
+                        "orderable": false,
+                        "data": "boton_editar",
+                        "defaultContent": "-"
+                    }
+                ],
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "Todos"]],
+                "order": [[0, "asc"]],
+                "processing": true,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ Registros",
+                    "zeroRecords": "No se encontraron registros",
+                    "info": "Página _PAGE_ de _PAGES_ (Total _TOTAL_ registros)",
+                    "infoEmpty": "No se encontraron registros",
+                    "infoFiltered": "(Filtrado de _MAX_ registros)",
+                    "emptyTable": "No hay datos disponibles en la tabla",
+                    "loadingRecords": "Cargando datos....",
+                    "processing": "Procesando <i class=\"fa fa-spin fa-spinner fa-3x\"></i>",
+                    "search": "Buscar",
+                    "paginate": {
+                        "first": "Primera",
+                        "last": "Ultima",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+        }
+    }
+    catch (exception)
+    {
+        console.error("Error general tabla_angulos_fre():", exception);
+    }
+}
+
+
+
+$('#tabla_angulos_fre tbody').on('click', 'td.Editar', function () {
+    var tr = $(this).closest('tr');
+    var row = TablangulosFre.row(tr);
+
+
+    ID_ANGULOS_FRE = row.data().ID_ANGULOS_FRE;
+
+    editarDatoTabla(row.data(), 'form_angulo', 'modal_angulos',1);
+
+
+
+
+	 if (row.data().FOTO_ANGULO) {
+        var archivo = row.data().FOTO_ANGULO;
+        var extension = archivo.substring(archivo.lastIndexOf("."));
+        var imagenUrl = '/verfotoangulofre/' + row.data().ID_ANGULOS_FRE + extension;
+
+        if ($('#FOTO_ANGULO').data('dropify')) {
+            $('#FOTO_ANGULO').dropify().data('dropify').destroy();
+            $('#FOTO_ANGULO').dropify().data('dropify').settings.defaultFile = imagenUrl;
+            $('#FOTO_ANGULO').dropify().data('dropify').init();
+        } else {
+            $('#FOTO_ANGULO').attr('data-default-file', imagenUrl);
+            $('#FOTO_ANGULO').dropify({
+                messages: {
+                    'default': 'Arrastre la imagen aquí o haga click',
+                    'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                    'remove': 'Quitar',
+                    'error': 'Ooops, ha ocurrido un error.'
+                }
+            });
+        }
+    } else {
+        $('#FOTO_ANGULO').dropify().data('dropify').resetPreview();
+        $('#FOTO_ANGULO').dropify().data('dropify').clearElement();
+        }
+  
+
+});

@@ -129,9 +129,69 @@ class evaluacionfreModel extends Model
         'OBSERVACIONES_FUERZAMANUAL',
         'OBSERVACIONES_CUESTIONARIO',
         'ESCALA_BORG',
-        'APLICA_LEY_SILLA'
+        'APLICA_LEY_SILLA',
+        'INTERPRETACION_ESCALA_BORG',
+        'CAT_METODOS_FRE',
+
+        // OWAS 
+        'OWAS_ESPALDA',
+        'OWAS_BRAZOS',
+        'OWAS_PIERNAS',
+        'OWAS_CARGA',
+        'OWAS_CODIGO_COMPLETO',
+        'ANALISIS_METODO_OWAS',
+
+        // ROSA 
+
+        'ROSA_ALTURA_ASIENTO',
+        'ROSA_PROFUNDIDAD_ASIENTO',
+        'ROSA_REPOSABRAZOS',
+        'ROSA_RESPALDO',
+        'ROSA_TIEMPO_A',
+        'ROSA_TELEFONO',
+        'ROSA_TIEMPO_B1',
+        'ROSA_PANTALLA',
+        'ROSA_TIEMPO_B2',
+        'ROSA_RATON',
+        'ROSA_TIEMPO_C1',
+        'ROSA_TECLADO',
+        'ROSA_TIEMPO_C2',
+        'ANALISIS_METODO_ROSA',
+        'ROSA_DATOS_JSON',
 
 
-        
+        // RULA 
+
+        'RULA_BRAZO',
+        'RULA_ANTEBRAZO',
+        'RULA_MUNECA',
+        'RULA_GIRO_MUNECA',
+        'RULA_CUELLO',
+        'RULA_TRONCO',
+        'RULA_PIERNAS',
+
+        'RULA_BRAZO_ABDUCIDO',
+        'RULA_HOMBRO_ELEVADO',
+        'RULA_BRAZO_APOYADO',
+        'RULA_ANTEBRAZO_PROYECCION',
+        'RULA_ANTEBRAZO_CRUZA',
+        'RULA_MUNECA_DESVIACION',
+        'RULA_CUELLO_ROTADO',
+        'RULA_CUELLO_LATERAL',
+        'RULA_TRONCO_TORSION',
+        'RULA_TRONCO_LATERAL',
+        'RULA_ACTIVIDAD',
+        'RULA_CARGA',
+
+        'ANALISIS_METODO_RULA',
+        'RULA_DATOS_JSON',
     ];
+
+
+
+    protected $casts = [
+        'CAT_METODOS_FRE' => 'array',
+    ];
+
+
 }

@@ -3162,3469 +3162,6037 @@ DESCRIPCIONACTIVIDAD
 <!-- ============================================================== -->
 
 <div id="modal_evalfre" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg" style="min-width: 90%!important;">
+    <div class="modal-dialog modal-lg" style="min-width: 90%!important;background-color: #ffffff;">
         <div class="modal-content">
-            <form enctype="multipart/form-data" method="post" name="form_evalfre" id="form_evalfre">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Evaluación FRE </h4>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+
+                    <ul class="nav nav-tabs profile-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tab1_fre" id="tab1_fre_info" role="tab">Información FRE</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab2_angulos" id="tab2_imagenes_angulos" role="tab">Ángulos</a>
+                        </li>
+                    </ul>
+
+
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1_fre" role="tabpanel">
+                            <div class="card-body">
+
+                                <form enctype="multipart/form-data" method="post" name="form_evalfre" id="form_evalfre">
+                                    {!! csrf_field() !!}
+                                    <input type="hidden" name="ID_EVALUACION_FRE" id="ID_EVALUACION_FRE">
+                                    <input type="hidden" name="JSON_ACTIVIDADES_FRE" id="JSON_ACTIVIDADES_FRE">
+                                    <input type="hidden" name="JSON_EQUIPOS_TRABAJO" id="JSON_EQUIPOS_TRABAJO">
+                                    <input type="hidden" name="JSON_FUENTES_TERMICAS" id="JSON_FUENTES_TERMICAS">
+                                    <input type="hidden" name="JSON_FUENTES_RUIDO" id="JSON_FUENTES_RUIDO">
+                                    <input type="hidden" name="JSON_FUENTES_VIBRACION" id="JSON_FUENTES_VIBRACION">
+                                    <input type="hidden" name="JSON_EPP" id="JSON_EPP">
+
+                                    <div class="row">
+
+
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Fecha de evaluación *</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control mydatepicker" placeholder="aaaa-mm-dd" id="FECHA_EVALUACION_FRE" name="FECHA_EVALUACION_FRE" required>
+                                                    <span class="input-group-addon"><i class="icon-calender"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Instalación *</label>
+                                                <input type="text" class="form-control" name="INSTALACION_FRE" id="INSTALACION_FRE">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Áreas *</label>
+                                                <select class="custom-select form-control" id="CAT_AREAS_FRE" name="CAT_AREAS_FRE[]" multiple>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Categoría *</label>
+                                                <select class="form-control" id="CATEGORIA_ID_FRE" name="CATEGORIA_ID_FRE" required>
+                                                    <option value="">Selecciona un tipo de valor</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label> Departamento *</label>
+                                                <select class="custom-select form-control" id="CAT_DEPARTAMENTO_FRE" name="CAT_DEPARTAMENTO_FRE" required style="pointer-events:none; background-color:#e9ecef;">
+                                                    <option value=""></option>
+                                                    @foreach($catdepartamento as $dato)
+                                                    <option value="{{$dato->id}}">{{$dato->catdepartamento_nombre}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12 mt-2 p-2 d-flex justify-content-start  clienteblock">
+                                            <h3 class="clienteblock">¿La evaluación es para el mismo trabajador ?</h3>
+                                            <div class="form-check mx-4 clienteblock">
+                                                <input class="form-check-input" type="radio" name="EVALUACION_TRABAJADOR" id="informe_del_trabajador_si" value="1" checked>
+                                                <label class="form-check-label" for="informe_del_trabajador_si">
+                                                    Si
+                                                </label>
+                                            </div>
+                                            <div class="form-check mx-4 clienteblock">
+                                                <input class="form-check-input" type="radio" name="EVALUACION_TRABAJADOR" id="informe_del_trabajador_no" value="0">
+                                                <label class="form-check-label" for="informe_del_trabajador_no">
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- NOMBRE -->
+                                        <div class="col-8">
+                                            <div class="form-group">
+                                                <label>Nombre del empleado *</label>
+                                                <input type="text" class="form-control" name="NOMBRE_EMPLEADO_FRE" id="NOMBRE_EMPLEADO_FRE" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label>Ficha / No empleado </label>
+                                                <input type="text" class="form-control" name="NO_EMPLEADO_FRE" id="NO_EMPLEADO_FRE">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Último grado de estudio </label>
+                                                <input type="text" class="form-control" name="ULTIMO_GRADO_FRE" id="ULTIMO_GRADO_FRE">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Indique la ubicación de sus principales actividades o puesto de trabajo </label>
+                                                <select class="form-control" name="INDIQUE_UBICACION_FRE" id="INDIQUE_UBICACION_FRE">
+                                                    <option value="">Seleccionar</option>
+                                                    <option value="1">Campo</option>
+                                                    <option value="2">Instalación</option>
+                                                    <option value="3">Oficina </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- SEXO -->
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Sexo *</label>
+                                                <select class="form-control" name="SEXO_EMPLEADO_FRE" id="SEXO_EMPLEADO_FRE" required>
+                                                    <option value="">Seleccionar</option>
+                                                    <option value="M">Masculino</option>
+                                                    <option value="F">Femenino</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Edad </label>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="EDAD_EMPLEADO_FRE" id="EDAD_EMPLEADO_FRE">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label>Régimen Contractual </label>
+
+                                                <select class="custom-select form-control" id="REGIMEN_CONTRACTUAL_FRE" name="REGIMEN_CONTRACTUAL_FRE">
+                                                    <option value=""></option>
+                                                    @foreach($catregimen as $dato)
+                                                    <option value="{{$dato->ID_REGIMEN_CONTRACTUAL}}">{{$dato->NOMBRE_REGIMEN_CONTRACTUAL}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label>Jornada </label>
+                                                <select class="custom-select form-control" id="JORNADA_EMPLEADO_FRE" name="JORNADA_EMPLEADO_FRE">
+                                                    <option value=""></option>
+                                                    @foreach($catjornada as $dato)
+                                                    <option value="{{$dato->ID_JORNADA}}">{{$dato->NOMBRE_JORNADA}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label>¿Cuánto tiempo lleva en la empresa?</label>
+                                                <input type="text" class="form-control" name="TIEMPO_EMPRESA_FRE" id="TIEMPO_EMPRESA_FRE">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label>Antigüedad en la categoría</label>
+                                                <input type="text" class="form-control" name="ANTIGUEDAD_CATEOGORIA_FRE" id="ANTIGUEDAD_CATEOGORIA_FRE">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Pausas de descanso que toma durante la
+                                                    jornada de trabajo (Mencione cuantas y
+                                                    duración en minutos)</label>
+                                                <input type="text" class="form-control" name="PAUSAS_DESCANSO" id="PAUSAS_DESCANSO">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 mt-5">
+                                            <div class="form-group">
+                                                <label>
+                                                    ¿HA SUFRIDO ALGUNA LESIÓN O ACCIDENTES LABORAL DURANTE LA JORNADA LABORAL?
+                                                </label>
+
+                                                <select class="form-control" id="SUFRIDO_LESION_ACCIDENTE" name="SUFRIDO_LESION_ACCIDENTE">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="SI">SI</option>
+                                                    <option value="NO">NO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" id="datosLesion" style="display:none;">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>¿Cuándo?</label>
+                                                        <input type="text" class="form-control" id="CUANDO_LESION_ACCIDENTE" name="CUANDO_LESION_ACCIDENTE">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>¿Cuál?</label>
+                                                        <input type="text" class="form-control" id="CUAL_LESION_ACCIDENTE" name="CUAL_LESION_ACCIDENTE">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <br><br>
+                                        <div class="col-12 mt-2">
+                                            <button type="button" class="btn btn-danger" onclick="agregarActividadFRE()">
+                                                + Agregar Actividad
+                                            </button>
+                                        </div>
+
+                                        <div class="col-12 mt-2">
+                                            <div id="contenedorActividadesfre" class="mt-2"></div>
+                                        </div>
+
+                                        <br><br>
+
+                                        <style>
+                                            /* ACTIVIDADES */
+
+                                            #contenedorActividadesfre {
+                                                width: 100%;
+                                            }
+
+                                            .actividad-card {
+                                                width: 100%;
+                                                border: 1px solid #ddd;
+                                                border-radius: 10px;
+                                                padding: 15px;
+                                                margin-bottom: 10px;
+                                                background: #fff;
+                                            }
+
+                                            .actividad-row {
+                                                display: flex;
+                                                gap: 15px;
+                                                align-items: flex-start;
+                                            }
+
+                                            .actividad-left {
+                                                width: 30%;
+                                            }
+
+                                            .actividad-right {
+                                                width: 70%;
+                                            }
+
+                                            .btn-agregar-tarea {
+                                                width: 20%;
+                                                background: linear-gradient(90deg, #6dd6e4, #6dd6e4);
+                                                color: white;
+                                                border: none;
+                                            }
+
+                                            .tarea-item {
+                                                border: 1px solid #e5e7eb;
+                                                border-radius: 8px;
+                                                padding: 10px;
+                                                margin-top: 8px;
+                                                background: #f9fafb;
+                                            }
+
+
+
+                                            /* FICHAS */
+                                            .custom-container-left {
+                                                width: 100%;
+                                                max-width: 100%;
+                                                /* evita límite */
+                                                padding-left: !important;
+                                                padding-right: !important;
+                                            }
+
+                                            .no-padding {
+                                                padding-left: !important;
+                                                padding-right: !important;
+                                            }
+
+
+
+                                            .custom-card-header {
+                                                width: 100%;
+                                                text-align: left;
+                                            }
+
+                                            .custom-card-nom .card-body {
+                                                padding: 20px;
+                                            }
+
+                                            .custom-card-nom .row {
+                                                justify-content: flex-start;
+                                            }
+                                        </style>
+
+
+                                        <div class="col-12 mt-5">
+                                            <div class="form-group">
+                                                <label>
+                                                    1. ¿SU MÉDICO LE HA DIAGNOSTICADO ALGUNA ENFERMEDAD MUSCULO-ESQUELÉTICA?
+                                                </label>
+
+                                                <select class="form-control" id="ENFERMEDAD_MUSCULOESQUELETICA" name="ENFERMEDAD_MUSCULOESQUELETICA">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="SI">SI</option>
+                                                    <option value="NO">NO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" id="datosEnfermedadMusculo" style="display:none;">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>¿Cuál?</label>
+                                                        <input type="text" class="form-control" id="ENFERMEDAD_MUSCULOESQUELETICA_CUAL" name="ENFERMEDAD_MUSCULOESQUELETICA_CUAL">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>¿Hace cuánto tiempo?</label>
+                                                        <input type="text" class="form-control" id="ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO" name="ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>
+                                                    2. ¿HA ESTADO INCAPACITADO (A) A CAUSA DEL DOLOR MUSCULO ESQUELÉTICO EN EL ÚLTIMO AÑO?
+                                                </label>
+
+                                                <select class="form-control" id="INCAPACITADO_DOLOR_MUSCULO" name="INCAPACITADO_DOLOR_MUSCULO">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="SI">SI</option>
+                                                    <option value="NO">NO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 mt-4">
+                                            <h4><b>Equipo de Protección Personal (EPP)</b></h4>
+                                        </div>
+
+                                        <div class="col-12 mb-3">
+                                            <button type="button"
+                                                class="btn btn-danger "
+                                                id="agregarEPP">
+                                                <i class="fa fa-plus"></i>
+                                                Agregar EPP
+                                            </button>
+                                        </div>
+                                        <div class="col-12">
+                                            <table class="table table-bordered table-hover" id="tablaEPP">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th width="25%">Región Anatómica</th>
+                                                        <th width="35%">Clave y EPP</th>
+                                                        <th width="30%">Tipo de Riesgo</th>
+                                                        <th width="10%" class="text-center">Acción</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Recomendaciones EPP</label>
+                                                <div class="input-group">
+                                                    <textarea class="form-control" name="RECOMENDACIONES_EPP" id="RECOMENDACIONES_EPP" rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="table-responsive">
+                                                <h5 class="text-center mb-3"><strong>Máquinas, herramientas y utensilios</strong></h5>
+                                                <button type="button" class="btn btn-danger mb-2" id="agregarFilaEquipo">
+                                                    Agregar fila
+                                                </button>
+                                                <table class="table table-bordered align-middle" id="tablaEquiposTrabajo">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="15%">Tipo</th>
+                                                            <th width="20%">Nombre</th>
+                                                            <th width="25%">Características</th>
+                                                            <th width="20%">Peso</th>
+                                                            <th width="15%">Método (agarres, técnicas, ayudas)</th>
+                                                            <th width="5%">Acción</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 text-center">
+                                            <h4>
+                                                <b> Descripción de las condiciones ambientales (apercepción del trabajador) </b>
+                                            </h4>
+
+                                        </div>
+
+                                        <div class="col-12">
+                                            <h4 style="color: #95C12D; font-weight: bold;">
+                                                Iluminación (Del área de trabajo)
+                                            </h4>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Fuente</label>
+                                                <select class="form-control" name="FUENTE_ILUMINACION" id="FUENTE_ILUMINACION">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Natural</option>
+                                                    <option value="2">Artificial</option>
+                                                    <option value="3">Mixta</option>
+                                                    <option value="4">N/A</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Intensidad</label>
+                                                <select class="form-control" name="INTENSIDAD_ILUMINACION" id="INTENSIDAD_ILUMINACION">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Normal</option>
+                                                    <option value="2">Deficiente</option>
+                                                    <option value="3">Excesiva</option>
+                                                    <option value="4">N/A</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Observaciones</label>
+                                                <div class="input-group">
+                                                    <textarea class="form-control" name="OBSERVACION_ILUMINACION" id="OBSERVACION_ILUMINACION" rows="3"></textarea>
+                                                    <button type="button" class="btn btn-info btnMicrofono" data-target="OBSERVACION_ILUMINACION">
+                                                        <i class="fa fa-microphone"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 mt-3">
+                                            <h4 style="color: #95C12D; font-weight: bold;">
+                                                Condiciones térmicas (Percepción de frío o calor)
+                                            </h4>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Percepción</label>
+                                                <select class="form-control" name="PERCEPCION_TERMICA" id="PERCEPCION_TERMICA">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Calor</option>
+                                                    <option value="2">Frío</option>
+                                                    <option value="3">Otros</option>
+                                                    <option value="4">N/A</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Intensidad</label>
+                                                <select class="form-control" name="INTENSIDAD_TERMICA" id="INTENSIDAD_TERMICA">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Leve</option>
+                                                    <option value="2">Moderada</option>
+                                                    <option value="3">Severa</option>
+                                                    <option value="4">N/A</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" id="CONDICION_TERMINCA_CUAL" style="display: none;">
+                                            <div class="form-group">
+                                                <label>Cuál ? *</label>
+                                                <input type="text" class="form-control" name="CUAL_PERCEPCION" id="CUAL_PERCEPCION" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 mt-2">
+                                            <label>Fuentes</label>
+
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="tablaFuentesTermicas">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Fuente</th>
+                                                            <th width="80">Acción</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <button type="button"
+                                                class="btn btn-danger"
+                                                id="agregarFuenteTermica">
+                                                Agregar fuente
+                                            </button>
+                                        </div>
+
+                                        <div class="col-12 mt-3">
+                                            <div class="form-group">
+                                                <label>Observaciones</label>
+
+                                                <div class="input-group">
+                                                    <textarea class="form-control"
+                                                        name="OBSERVACIONES_TERMICAS"
+                                                        id="OBSERVACIONES_TERMICAS"
+                                                        rows="3"></textarea>
+
+                                                    <button type="button"
+                                                        class="btn btn-info btnMicrofono"
+                                                        data-target="OBSERVACIONES_TERMICAS">
+                                                        <i class="fa fa-microphone"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 mt-4">
+                                            <h4 style="color: #95C12D; font-weight: bold;">
+                                                Ambiente sonoro (Ruido ambiental)
+                                            </h4>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Intensidad</label>
+                                                <select class="form-control" name="INTENSIDAD_RUIDO" id="INTENSIDAD_RUIDO">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Leve</option>
+                                                    <option value="2">Moderada</option>
+                                                    <option value="3">Severa</option>
+                                                    <option value="4">N/A</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Continuidad</label>
+                                                <select class="form-control" name="CONTINUIDAD_RUIDO" id="CONTINUIDAD_RUIDO">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Continuo</option>
+                                                    <option value="2">Intermitente</option>
+                                                    <option value="4">N/A</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 mt-2">
+                                            <label>Fuentes</label>
+
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="tablaFuentesRuido">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Fuente</th>
+                                                            <th width="80">Acción</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <button type="button"
+                                                class="btn btn-danger"
+                                                id="agregarFuenteRuido">
+                                                Agregar fuente
+                                            </button>
+                                        </div>
+
+                                        <div class="col-12 mt-3">
+                                            <div class="form-group">
+                                                <label>Observaciones</label>
+
+                                                <div class="input-group">
+
+                                                    <textarea class="form-control"
+                                                        name="OBSERVACIONES_RUIDO"
+                                                        id="OBSERVACIONES_RUIDO"
+                                                        rows="3"></textarea>
+
+                                                    <button type="button"
+                                                        class="btn btn-info btnMicrofono"
+                                                        data-target="OBSERVACIONES_RUIDO">
+                                                        <i class="fa fa-microphone"></i>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 mt-4">
+                                            <h4 style="color: #95C12D; font-weight: bold;">
+                                                Vibración (Generada por máquinas) si usa herramientas que vibren especifique cuál y su uso (diario, mensual, etc.)
+                                            </h4>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Intensidad</label>
+                                                <select class="form-control" name="INTENSIDAD_VIBRACION" id="INTENSIDAD_VIBRACION">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Leve</option>
+                                                    <option value="2">Moderada</option>
+                                                    <option value="3">Severa</option>
+                                                    <option value="4">N/A</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Segmentos corporales</label>
+                                                <select class="form-control" name="SEGMENTO_VIBRACION" id="SEGMENTO_VIBRACION">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Mano brazo</option>
+                                                    <option value="2">Cuerpo entero</option>
+                                                    <option value="3">Columna y miembros inferiores</option>
+                                                    <option value="4">N/A</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 mt-2">
+                                            <label>Fuentes</label>
+
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="tablaFuentesVibracion">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Fuente</th>
+                                                            <th width="80">Acción</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <button type="button"
+                                                class="btn btn-danger"
+                                                id="agregarFuenteVibracion">
+                                                Agregar fuente
+                                            </button>
+                                        </div>
+
+                                        <div class="col-12 mt-3">
+                                            <div class="form-group">
+                                                <label>Observaciones</label>
+
+                                                <div class="input-group">
+
+                                                    <textarea class="form-control"
+                                                        name="OBSERVACIONES_VIBRACION"
+                                                        id="OBSERVACIONES_VIBRACION"
+                                                        rows="3"></textarea>
+
+                                                    <button type="button"
+                                                        class="btn btn-info btnMicrofono"
+                                                        data-target="OBSERVACIONES_VIBRACION">
+                                                        <i class="fa fa-microphone"></i>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <h4>
+                                                <b>Cuestionario Nórdico:</b> Traducido directamente de la publicación original “Standardised Nordic questionnaires for the
+                                                of músculoskeletal symptoms” de Kuoirinka et col, por Jaime Ibacache Araya Profesional Ergónomo del Instituto de
+                                                Salud Pública de Chile.
+                                            </h4>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Peso (kg) </label>
+                                                <input type="number" class="form-control" name="PESO_FRE" id="PESO_FRE">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>Talla (cm) </label>
+                                                <input type="number" class="form-control" name="TALLA_FRE" id="TALLA_FRE">
+                                            </div>
+                                        </div>
+
+                                        <!-- CUESTIONARIO NORDICO  -->
+
+                                        <div class="col-12">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td width="75%" valign="top">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th width="45%">Problemas en el aparato locomotor</th>
+                                                                    <th width="15%" class="text-center">No</th>
+                                                                    <th width="15%" class="text-center">Sí</th>
+                                                                    <th width="12%" class="text-center">Izq.</th>
+                                                                    <th width="13%" class="text-center">Der.</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td colspan="5">
+                                                                        <strong>Para ser respondido por todos</strong><br>
+                                                                        ¿En algún momento durante los últimos 12 meses, ha tenido problemas
+                                                                        (dolor, molestias, disconfort) en:
+                                                                    </td>
+                                                                </tr>
+                                                                <!-- CUELLO -->
+                                                                <tr>
+                                                                    <td>Cuello</td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="CUELLO" id="CUELLO_NO" value="0">
+                                                                            <label class="form-check-label" for="CUELLO_NO">No</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="CUELLO" id="CUELLO_SI" value="1">
+                                                                            <label class="form-check-label" for="CUELLO_SI">Sí</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                                <!-- HOMBRO -->
+                                                                <tr>
+                                                                    <td>Hombro</td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="HOMBRO" id="HOMBRO_NO" value="0">
+                                                                            <label class="form-check-label" for="HOMBRO_NO">No</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="HOMBRO" id="HOMBRO_SI" value="1">
+                                                                            <label class="form-check-label" for="HOMBRO_SI">Sí</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="checkbox" name="HOMBRO_IZQ" id="HOMBRO_IZQ" disabled>
+                                                                            <label class="form-check-label" for="HOMBRO_IZQ">Izq.</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="checkbox" name="HOMBRO_DER" id="HOMBRO_DER" disabled>
+                                                                            <label class="form-check-label" for="HOMBRO_DER">Der.</label>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <!-- CODO -->
+                                                                <tr>
+                                                                    <td>Codo</td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="CODO" id="CODO_NO" value="0">
+                                                                            <label class="form-check-label" for="CODO_NO">No</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="CODO" id="CODO_SI" value="1">
+                                                                            <label class="form-check-label" for="CODO_SI">Sí</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="checkbox" name="CODO_IZQ" id="CODO_IZQ" disabled>
+                                                                            <label class="form-check-label" for="CODO_IZQ">Izq.</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="checkbox" name="CODO_DER" id="CODO_DER" disabled>
+                                                                            <label class="form-check-label" for="CODO_DER">Der.</label>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <!-- MUÑECA -->
+                                                                <tr>
+                                                                    <td>Muñeca</td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="MUNECA" id="MUNECA_NO" value="0">
+                                                                            <label class="form-check-label" for="MUNECA_NO">No</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="MUNECA" id="MUNECA_SI" value="1">
+                                                                            <label class="form-check-label" for="MUNECA_SI">Sí</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="checkbox" name="MUNECA_IZQ" id="MUNECA_IZQ" disabled>
+                                                                            <label class="form-check-label" for="MUNECA_IZQ">Izq</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="checkbox" name="MUNECA_DER" id="MUNECA_DER" disabled>
+                                                                            <label class="form-check-label" for="MUNECA_DER">Der</label>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <!-- ESPALDA ALTA (REGIÓN DORSAL) -->
+                                                                <tr>
+                                                                    <td>Espalda alta (región dorsal)</td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="ESPALDA_ALTA" id="ESPALDA_ALTA_NO" value="0">
+                                                                            <label class="form-check-label" for="ESPALDA_ALTA_NO">No</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="ESPALDA_ALTA" id="ESPALDA_ALTA_SI" value="1">
+                                                                            <label class="form-check-label" for="ESPALDA_ALTA_SI">Sí</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                                <!-- ESPALDA BAJA (REGIÓN LUMBAR) -->
+                                                                <tr>
+                                                                    <td>Espalda baja (región lumbar)</td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="ESPALDA_BAJA" id="ESPALDA_BAJA_NO" value="0">
+                                                                            <label class="form-check-label" for="ESPALDA_BAJA_NO">
+                                                                                No
+                                                                            </label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="ESPALDA_BAJA" id="ESPALDA_BAJA_SI" value="1">
+                                                                            <label class="form-check-label" for="ESPALDA_BAJA_SI">Sí</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                                <!-- CADERAS / PIERNAS -->
+                                                                <tr>
+                                                                    <td>Una o ambas caderas / piernas</td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="CADERAS_PIERNAS" id="CADERAS_PIERNAS_NO" value="0">
+                                                                            <label class="form-check-label" for="CADERAS_PIERNAS_NO">No</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="CADERAS_PIERNAS" id="CADERAS_PIERNAS_SI" value="1">
+                                                                            <label class="form-check-label" for="CADERAS_PIERNAS_SI">Sí</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                                <!-- RODILLAS -->
+                                                                <tr>
+                                                                    <td>Una o ambas rodillas</td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="RODILLAS" id="RODILLAS_NO" value="0">
+                                                                            <label class="form-check-label" for="RODILLAS_NO">No</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="RODILLAS" id="RODILLAS_SI" value="1">
+                                                                            <label class="form-check-label" for="RODILLAS_SI">Sí</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                                <!-- TOBILLOS / PIES -->
+                                                                <tr>
+                                                                    <td>Uno o ambos tobillos / pies</td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="TOBILLOS_PIES" id="TOBILLOS_PIES_NO" value="0">
+                                                                            <label class="form-check-label" for="TOBILLOS_PIES_NO">No</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="form-check mx-4 clienteblock">
+                                                                            <input class="form-check-input" type="radio" name="TOBILLOS_PIES" id="TOBILLOS_PIES_SI" value="1">
+                                                                            <label class="form-check-label" for="TOBILLOS_PIES_SI">Sí</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+
+                                                    </td>
+
+                                                    <td width="25%" class="text-center" valign="top">
+
+                                                        <img src="{{ asset('assets/images/ergo/imagencuerpo.png') }}"
+                                                            class="img-fluid"
+                                                            style="max-width: 337px;">
+
+                                                    </td>
+
+                                                </tr>
+                                            </table>
+
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="3" class="text-center">
+                                                            PROBLEMAS EN EL APARATO LOCOMOTOR
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            <strong>
+                                                                Para ser respondido solo por aquellos que han presentado problemas en el aparato locomotor durante los últimos 12 meses
+                                                            </strong>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="32%">
+                                                            <strong>Segmento</strong>
+                                                        </td>
+                                                        <td width="34%" class="text-center">
+                                                            ¿En algún momento, durante los últimos 12 meses, ha tenido algún impedimento para hacer su trabajo normal (en casa o fuera de casa) debido a sus molestias?
+                                                        </td>
+                                                        <td width="34%" class="text-center">
+                                                            ¿En algún momento, durante los últimos 7 días, ha tenido algún impedimento para hacer su trabajo normal debido a sus molestias?
+                                                        </td>
+                                                    </tr>
+
+                                                    <!-- CUELLO -->
+                                                    <tr>
+                                                        <td>
+                                                            Cuello
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CUELLO_12_MESES" id="CUELLO_12_MESES_NO" value="0">
+                                                                    <label class="form-check-label" for="CUELLO_12_MESES_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CUELLO_12_MESES" id="CUELLO_12_MESES_SI" value="1">
+                                                                    <label class="form-check-label" for="CUELLO_12_MESES_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CUELLO_7_DIAS" id="CUELLO_7_DIAS_NO" value="0">
+                                                                    <label class="form-check-label" for="CUELLO_7_DIAS_NO"> No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CUELLO_7_DIAS" id="CUELLO_7_DIAS_SI" value="1">
+                                                                    <label class="form-check-label" for="CUELLO_7_DIAS_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+
+                                                    <!-- HOMBRO -->
+
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <span>Hombro</span>
+                                                                <div class="form-check mx-3 clienteblock">
+                                                                    <input class="form-check-input" type="checkbox" id="HOMBRO_IZQ_2" name="HOMBRO_IZQ_2">
+                                                                    <label class="form-check-label" for="HOMBRO_IZQ_2">Izq.</label>
+                                                                </div>
+                                                                <div class="form-check mx-3 clienteblock">
+                                                                    <input class="form-check-input" type="checkbox" id="HOMBRO_DER_2" name="HOMBRO_DER_2">
+                                                                    <label class="form-check-label" for="HOMBRO_DER_2">Der,</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="HOMBRO_12_MESES" id="HOMBRO_12_MESES_NO" value="0">
+                                                                    <label class="form-check-label" for="HOMBRO_12_MESES_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="HOMBRO_12_MESES" id="HOMBRO_12_MESES_SI" value="1">
+                                                                    <label class="form-check-label" for="HOMBRO_12_MESES_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="HOMBRO_7_DIAS" id="HOMBRO_7_DIAS_NO" value="0">
+                                                                    <label class="form-check-label" for="HOMBRO_7_DIAS_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="HOMBRO_7_DIAS" id="HOMBRO_7_DIAS_SI" value="1">
+                                                                    <label class="form-check-label" for="HOMBRO_7_DIAS_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <span>Codo</span>
+                                                                <div class="form-check mx-3 clienteblock">
+                                                                    <input class="form-check-input" type="checkbox" id="CODO_IZQ_2" name="CODO_IZQ_2">
+                                                                    <label class="form-check-label" for="CODO_IZQ_2">Izq.</label>
+                                                                </div>
+                                                                <div class="form-check mx-3 clienteblock">
+                                                                    <input class="form-check-input" type="checkbox" id="CODO_DER_2" name="CODO_DER_2">
+                                                                    <label class="form-check-label" for="CODO_DER_2">Der.</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CODO_12_MESES" id="CODO_12_MESES_NO" value="0">
+                                                                    <label class="form-check-label" for="CODO_12_MESES_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CODO_12_MESES" id="CODO_12_MESES_SI" value="1">
+                                                                    <label class="form-check-label" for="CODO_12_MESES_SI">Sí </label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CODO_7_DIAS" id="CODO_7_DIAS_NO" value="0">
+                                                                    <label class="form-check-label" for="CODO_7_DIAS_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CODO_7_DIAS" id="CODO_7_DIAS_SI" value="1">
+                                                                    <label class="form-check-label" for="CODO_7_DIAS_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <span>Muñeca</span>
+                                                                <div class="form-check mx-3 clienteblock">
+                                                                    <input class="form-check-input" type="checkbox" id="MUNECA_IZQ_2" name="MUNECA_IZQ_2">
+                                                                    <label class="form-check-label" for="MUNECA_IZQ_2">Izq.</label>
+                                                                </div>
+                                                                <div class="form-check mx-3 clienteblock">
+                                                                    <input class="form-check-input" type="checkbox" id="MUNECA_DER_2" name="MUNECA_DER_2">
+                                                                    <label class="form-check-label" for="MUNECA_DER_2">Der.</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="MUNECA_12_MESES" id="MUNECA_12_MESES_NO" value="0">
+                                                                    <label class="form-check-label" for="MUNECA_12_MESES_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="MUNECA_12_MESES" id="MUNECA_12_MESES_SI" value="1">
+                                                                    <label class="form-check-label" for="MUNECA_12_MESES_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="MUNECA_7_DIAS" id="MUNECA_7_DIAS_NO" value="0">
+                                                                    <label class="form-check-label" for="MUNECA_7_DIAS_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="MUNECA_7_DIAS" id="MUNECA_7_DIAS_SI" value="1">
+                                                                    <label class="form-check-label" for="MUNECA_7_DIAS_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+
+
+
+                                                    <tr>
+                                                        <td>
+                                                            Espalda alta (región dorsal)
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="ESPALDA_ALTA_12_MESES" id="ESPALDA_ALTA_12_MESES_NO" value="0">
+                                                                    <label class="form-check-label" for="ESPALDA_ALTA_12_MESES_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="ESPALDA_ALTA_12_MESES" id="ESPALDA_ALTA_12_MESES_SI" value="1">
+                                                                    <label class="form-check-label" for="ESPALDA_ALTA_12_MESES_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="ESPALDA_ALTA_7_DIAS" id="ESPALDA_ALTA_7_DIAS_NO" value="0">
+                                                                    <label class="form-check-label" for="ESPALDA_ALTA_7_DIAS_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="ESPALDA_ALTA_7_DIAS" id="ESPALDA_ALTA_7_DIAS_SI" value="1">
+                                                                    <label class="form-check-label" for="ESPALDA_ALTA_7_DIAS_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            Espalda baja (región lumbar)
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="ESPALDA_BAJA_12_MESES" id="ESPALDA_BAJA_12_MESES_NO" value="0">
+                                                                    <label class="form-check-label" for="ESPALDA_BAJA_12_MESES_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="ESPALDA_BAJA_12_MESES" id="ESPALDA_BAJA_12_MESES_SI" value="1">
+                                                                    <label class="form-check-label" for="ESPALDA_BAJA_12_MESES_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="ESPALDA_BAJA_7_DIAS" id="ESPALDA_BAJA_7_DIAS_NO" value="0">
+                                                                    <label class="form-check-label" for="ESPALDA_BAJA_7_DIAS_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="ESPALDA_BAJA_7_DIAS" id="ESPALDA_BAJA_7_DIAS_SI" value="1">
+                                                                    <label class="form-check-label" for="ESPALDA_BAJA_7_DIAS_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            Una o ambas caderas / piernas
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CADERAS_PIERNAS_12_MESES" id="CADERAS_PIERNAS_12_MESES_NO" value="0">
+                                                                    <label class="form-check-label" for="CADERAS_PIERNAS_12_MESES_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CADERAS_PIERNAS_12_MESES" id="CADERAS_PIERNAS_12_MESES_SI" value="1">
+                                                                    <label class="form-check-label" for="CADERAS_PIERNAS_12_MESES_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CADERAS_PIERNAS_7_DIAS" id="CADERAS_PIERNAS_7_DIAS_NO" value="0">
+                                                                    <label class="form-check-label" for="CADERAS_PIERNAS_7_DIAS_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="CADERAS_PIERNAS_7_DIAS" id="CADERAS_PIERNAS_7_DIAS_SI" value="1">
+                                                                    <label class="form-check-label" for="CADERAS_PIERNAS_7_DIAS_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            Una o ambas rodillas
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="RODILLAS_12_MESES" id="RODILLAS_12_MESES_NO" value="0">
+                                                                    <label class="form-check-label" for="RODILLAS_12_MESES_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="RODILLAS_12_MESES" id="RODILLAS_12_MESES_SI" value="1">
+                                                                    <label class="form-check-label" for="RODILLAS_12_MESES_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="RODILLAS_7_DIAS" id="RODILLAS_7_DIAS_NO" value="0">
+                                                                    <label class="form-check-label" for="RODILLAS_7_DIAS_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="RODILLAS_7_DIAS" id="RODILLAS_7_DIAS_SI" value="1">
+                                                                    <label class="form-check-label" for="RODILLAS_7_DIAS_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            Uno o ambos tobillos / pies
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="TOBILLOS_PIES_12_MESES" id="TOBILLOS_PIES_12_MESES_NO" value="0">
+                                                                    <label class="form-check-label" for="TOBILLOS_PIES_12_MESES_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="TOBILLOS_PIES_12_MESES" id="TOBILLOS_PIES_12_MESES_SI" value="1">
+                                                                    <label class="form-check-label" for="TOBILLOS_PIES_12_MESES_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="TOBILLOS_PIES_7_DIAS" id="TOBILLOS_PIES_7_DIAS_NO" value="0">
+                                                                    <label class="form-check-label" for="TOBILLOS_PIES_7_DIAS_NO">No</label>
+                                                                </div>
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="TOBILLOS_PIES_7_DIAS" id="TOBILLOS_PIES_7_DIAS_SI" value="1">
+                                                                    <label class="form-check-label" for="TOBILLOS_PIES_7_DIAS_SI">Sí</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                            <table class="table table-bordered">
+
+                                                <thead>
+
+                                                    <tr>
+                                                        <th colspan="2" class="text-center">
+                                                            COLUMNA LUMBAR (Espalda baja)
+                                                        </th>
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <!-- PREGUNTA 1 -->
+                                                    <tr>
+                                                        <td width="70%">
+                                                            <strong>1.</strong>
+                                                            ¿Alguna vez ha tenido problemas en la parte baja de la espalda
+                                                            (molestias, dolor o disconfort)?
+                                                        </td>
+                                                        <td width="30%">
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="form-check mx-4 clienteblock">
+                                                                    <input class="form-check-input" type="radio" name="COLUMNA_LUMBAR_P1" id="COLUMNA_LUMBAR_P1_NO" value="0">
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P1_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P1"
+                                                                        id="COLUMNA_LUMBAR_P1_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P1_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- MENSAJE -->
+                                                    <tr>
+
+                                                        <td colspan="2" style="background:#efefef;">
+
+                                                            <strong>
+                                                                Si respondió "<b> NO </b>" a la pregunta 1,
+                                                                entonces <b>NO </b> responda las preguntas 2 a la 8.
+                                                            </strong>
+
+                                                        </td>
+
+                                                    </tr>
+
+
+                                                    <!-- PREGUNTA 2 -->
+                                                    <tr class="bloque-lumbar-p2">
+
+                                                        <td>
+
+                                                            <strong>2.</strong>
+                                                            ¿Ha sido hospitalizado por problemas
+                                                            en la parte baja de la espalda?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P2"
+                                                                        id="COLUMNA_LUMBAR_P2_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P2_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P2"
+                                                                        id="COLUMNA_LUMBAR_P2_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P2_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 3 -->
+                                                    <tr class="bloque-lumbar-p3">
+
+                                                        <td>
+
+                                                            <strong>3.</strong>
+
+                                                            ¿Alguna vez ha tenido que cambiar de trabajo
+                                                            o deberes debido a problemas en la espalda baja?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P3"
+                                                                        id="COLUMNA_LUMBAR_P3_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P3_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P3"
+                                                                        id="COLUMNA_LUMBAR_P3_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P3_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+
+                                                    <!-- PREGUNTA 4 -->
+                                                    <tr class="bloque-lumbar-p4">
+
+                                                        <td>
+
+                                                            <strong>4.</strong>
+                                                            ¿Cuántos días aproximadamente le ha impedido realizar
+                                                            su trabajo (en casa o fuera de casa) durante los últimos
+                                                            12 meses?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="COLUMNA_LUMBAR_P4"
+                                                                    id="COLUMNA_LUMBAR_P4_0_DIAS"
+                                                                    value="0">
+
+                                                                <label class="form-check-label"
+                                                                    for="COLUMNA_LUMBAR_P4_0_DIAS">
+                                                                    0 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="COLUMNA_LUMBAR_P4"
+                                                                    id="COLUMNA_LUMBAR_P4_1_7"
+                                                                    value="1">
+
+                                                                <label class="form-check-label"
+                                                                    for="COLUMNA_LUMBAR_P4_1_7">
+                                                                    1 - 7 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="COLUMNA_LUMBAR_P4"
+                                                                    id="COLUMNA_LUMBAR_P4_8_30"
+                                                                    value="2">
+
+                                                                <label class="form-check-label"
+                                                                    for="COLUMNA_LUMBAR_P4_8_30">
+                                                                    8 - 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="COLUMNA_LUMBAR_P4"
+                                                                    id="COLUMNA_LUMBAR_P4_MAS30"
+                                                                    value="3">
+
+                                                                <label class="form-check-label"
+                                                                    for="COLUMNA_LUMBAR_P4_MAS30">
+                                                                    Más de 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="COLUMNA_LUMBAR_P4"
+                                                                    id="COLUMNA_LUMBAR_P4_TODOS"
+                                                                    value="4">
+
+                                                                <label class="form-check-label"
+                                                                    for="COLUMNA_LUMBAR_P4_TODOS">
+                                                                    Todos los días
+                                                                </label>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+
+                                                    <tr>
+
+                                                        <td colspan="2" style="background:#efefef;">
+
+                                                            <strong>
+                                                                Si usted respondió <b>"0 días"</b> en la pregunta 4,
+                                                                entonces <b>NO</b> responda las preguntas 5 a la 8.
+                                                            </strong>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 5 -->
+
+                                                    <tr class="bloque-lumbar-p5">
+
+                                                        <td>
+
+                                                            <strong>5.</strong>
+                                                            ¿Los problemas de la parte baja de la espalda le han hecho reducir
+                                                            su actividad durante los últimos 12 meses?
+
+                                                            <br><br>
+
+                                                            <strong>a)</strong>
+                                                            ¿Actividad laboral (en casa o fuera de casa)?
+
+                                                            <br><br>
+
+                                                            <strong>b)</strong>
+                                                            ¿Actividad de ocio?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <!-- ACTIVIDAD LABORAL -->
+                                                            <div class="d-flex justify-content-center mb-3">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL"
+                                                                        id="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL"
+                                                                        id="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ACTIVIDAD DE OCIO -->
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO"
+                                                                        id="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO"
+                                                                        id="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 6 -->
+                                                    <tr class="bloque-lumbar-p6">
+
+                                                        <td>
+
+                                                            <strong>6.</strong>
+                                                            ¿Durante cuántos días aproximadamente ha tenido
+                                                            problemas en la parte baja de la espalda durante
+                                                            los últimos 12 meses?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="COLUMNA_LUMBAR_P6"
+                                                                    id="COLUMNA_LUMBAR_P6_0_DIAS"
+                                                                    value="0">
+
+                                                                <label class="form-check-label"
+                                                                    for="COLUMNA_LUMBAR_P6_0_DIAS">
+                                                                    0 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="COLUMNA_LUMBAR_P6"
+                                                                    id="COLUMNA_LUMBAR_P6_1_7"
+                                                                    value="1">
+
+                                                                <label class="form-check-label"
+                                                                    for="COLUMNA_LUMBAR_P6_1_7">
+                                                                    1 - 7 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="COLUMNA_LUMBAR_P6"
+                                                                    id="COLUMNA_LUMBAR_P6_8_30"
+                                                                    value="2">
+
+                                                                <label class="form-check-label"
+                                                                    for="COLUMNA_LUMBAR_P6_8_30">
+                                                                    8 - 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="COLUMNA_LUMBAR_P6"
+                                                                    id="COLUMNA_LUMBAR_P6_MAS30"
+                                                                    value="3">
+
+                                                                <label class="form-check-label"
+                                                                    for="COLUMNA_LUMBAR_P6_MAS30">
+                                                                    Más de 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+
+                                                    <!-- PREGUNTA 7 -->
+                                                    <tr class="bloque-lumbar-p7">
+
+                                                        <td>
+
+                                                            <strong>7.</strong>
+                                                            ¿Ha sido visto por un médico, fisioterapeuta,
+                                                            quiropráctico u otro profesional de la salud debido
+                                                            a problemas en la parte baja de la espalda durante
+                                                            los últimos 12 meses?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P7"
+                                                                        id="COLUMNA_LUMBAR_P7_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P7_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P7"
+                                                                        id="COLUMNA_LUMBAR_P7_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P7_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 8 -->
+                                                    <tr class="bloque-lumbar-p8">
+
+                                                        <td>
+
+                                                            <strong>8.</strong>
+                                                            ¿Ha tenido problemas en la parte baja de la espalda
+                                                            en algún momento durante los últimos 7 días?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P8"
+                                                                        id="COLUMNA_LUMBAR_P8_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P8_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="COLUMNA_LUMBAR_P8"
+                                                                        id="COLUMNA_LUMBAR_P8_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="COLUMNA_LUMBAR_P8_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+
+
+                                            <table class="table table-bordered">
+
+                                                <thead>
+
+                                                    <tr>
+                                                        <th colspan="2" class="text-center">
+                                                            CUELLO
+                                                        </th>
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <!-- PREGUNTA 1 -->
+                                                    <tr>
+
+                                                        <td width="70%">
+
+                                                            <strong>1.</strong>
+                                                            ¿Alguna vez ha tenido problemas en el cuello
+                                                            (molestias, dolor o disconfort)?
+
+                                                        </td>
+
+                                                        <td width="30%">
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P1"
+                                                                        id="CUELLO_P1_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P1_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P1"
+                                                                        id="CUELLO_P1_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P1_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- MENSAJE -->
+                                                    <tr>
+
+                                                        <td colspan="2" style="background:#efefef;">
+
+                                                            <strong>
+                                                                Si respondió <b>"NO"</b> a la pregunta 1,
+                                                                entonces <b>NO</b> responda las preguntas 2 a la 8.
+                                                            </strong>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 2 -->
+                                                    <tr class="bloque-cuello-p2">
+
+                                                        <td>
+
+                                                            <strong>2.</strong>
+
+                                                            ¿Alguna vez se lastimó el cuello
+                                                            en un accidente?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P2"
+                                                                        id="CUELLO_P2_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P2_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P2"
+                                                                        id="CUELLO_P2_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P2_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 3 -->
+                                                    <tr class="bloque-cuello-p3">
+
+                                                        <td>
+
+                                                            <strong>3.</strong>
+
+                                                            ¿Alguna vez ha tenido que cambiar
+                                                            de trabajo o deberes debido
+                                                            a problemas en el cuello?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P3"
+                                                                        id="CUELLO_P3_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P3_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P3"
+                                                                        id="CUELLO_P3_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P3_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <!-- PREGUNTA 4 -->
+                                                    <tr class="bloque-cuello-p4">
+
+                                                        <td>
+
+                                                            <strong>4.</strong>
+                                                            ¿Cuál es el tiempo total que ha tenido problemas en el cuello
+                                                            durante los últimos 12 meses?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO_P4"
+                                                                    id="CUELLO_P4_0_DIAS"
+                                                                    value="0">
+
+                                                                <label class="form-check-label"
+                                                                    for="CUELLO_P4_0_DIAS">
+                                                                    0 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO_P4"
+                                                                    id="CUELLO_P4_1_7"
+                                                                    value="1">
+
+                                                                <label class="form-check-label"
+                                                                    for="CUELLO_P4_1_7">
+                                                                    1 - 7 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO_P4"
+                                                                    id="CUELLO_P4_8_30"
+                                                                    value="2">
+
+                                                                <label class="form-check-label"
+                                                                    for="CUELLO_P4_8_30">
+                                                                    8 - 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO_P4"
+                                                                    id="CUELLO_P4_MAS30"
+                                                                    value="3">
+
+                                                                <label class="form-check-label"
+                                                                    for="CUELLO_P4_MAS30">
+                                                                    Más de 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO_P4"
+                                                                    id="CUELLO_P4_TODOS"
+                                                                    value="4">
+
+                                                                <label class="form-check-label"
+                                                                    for="CUELLO_P4_TODOS">
+                                                                    Todos los días
+                                                                </label>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- MENSAJE -->
+                                                    <tr class="bloque-cuello-p5">
+
+                                                        <td colspan="2" style="background:#efefef;">
+
+                                                            <strong>
+                                                                Si usted respondió <b>"0 días"</b> en la pregunta 4,
+                                                                entonces <b>NO</b> responda las preguntas 5 a la 8.
+                                                            </strong>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 5 -->
+                                                    <tr class="bloque-cuello-p5">
+
+                                                        <td>
+
+                                                            <strong>5.</strong>
+
+                                                            ¿Los problemas del cuello le han hecho reducir
+                                                            su actividad durante los últimos 12 meses?
+
+                                                            <br><br>
+
+                                                            <strong>a)</strong>
+                                                            ¿Actividad laboral (en casa o fuera de casa)?
+
+                                                            <br><br>
+
+                                                            <strong>b)</strong>
+                                                            ¿Actividad de ocio?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <!-- ACTIVIDAD LABORAL -->
+                                                            <div class="d-flex justify-content-center mb-3">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P5_ACTIVIDAD_LABORAL"
+                                                                        id="CUELLO_P5_ACTIVIDAD_LABORAL_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P5_ACTIVIDAD_LABORAL_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P5_ACTIVIDAD_LABORAL"
+                                                                        id="CUELLO_P5_ACTIVIDAD_LABORAL_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P5_ACTIVIDAD_LABORAL_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ACTIVIDAD DE OCIO -->
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P5_ACTIVIDAD_OCIO"
+                                                                        id="CUELLO_P5_ACTIVIDAD_OCIO_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P5_ACTIVIDAD_OCIO_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P5_ACTIVIDAD_OCIO"
+                                                                        id="CUELLO_P5_ACTIVIDAD_OCIO_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P5_ACTIVIDAD_OCIO_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 6 -->
+                                                    <tr class="bloque-cuello-p6">
+
+                                                        <td>
+
+                                                            <strong>6.</strong>
+                                                            ¿Durante cuántos días aproximadamente ha tenido
+                                                            problemas en el cuello durante los últimos 12 meses?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO_P6"
+                                                                    id="CUELLO_P6_0_DIAS"
+                                                                    value="0">
+
+                                                                <label class="form-check-label"
+                                                                    for="CUELLO_P6_0_DIAS">
+                                                                    0 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO_P6"
+                                                                    id="CUELLO_P6_1_7"
+                                                                    value="1">
+
+                                                                <label class="form-check-label"
+                                                                    for="CUELLO_P6_1_7">
+                                                                    1 - 7 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO_P6"
+                                                                    id="CUELLO_P6_8_30"
+                                                                    value="2">
+
+                                                                <label class="form-check-label"
+                                                                    for="CUELLO_P6_8_30">
+                                                                    8 - 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="CUELLO_P6"
+                                                                    id="CUELLO_P6_MAS30"
+                                                                    value="3">
+
+                                                                <label class="form-check-label"
+                                                                    for="CUELLO_P6_MAS30">
+                                                                    Más de 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 7 -->
+                                                    <tr class="bloque-cuello-p7">
+
+                                                        <td>
+
+                                                            <strong>7.</strong>
+                                                            ¿Ha sido visto por un médico, fisioterapeuta,
+                                                            quiropráctico u otro profesional de la salud
+                                                            debido a problemas en el cuello durante los
+                                                            últimos 12 meses?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P7"
+                                                                        id="CUELLO_P7_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P7_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P7"
+                                                                        id="CUELLO_P7_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P7_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 8 -->
+                                                    <tr class="bloque-cuello-p8">
+
+                                                        <td>
+
+                                                            <strong>8.</strong>
+                                                            ¿Ha tenido problemas en el cuello
+                                                            durante los últimos 7 días?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P8"
+                                                                        id="CUELLO_P8_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P8_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="CUELLO_P8"
+                                                                        id="CUELLO_P8_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="CUELLO_P8_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+
+                                            </table>
+
+
+
+                                            <table class="table table-bordered">
+
+                                                <thead>
+
+                                                    <tr>
+                                                        <th colspan="2" class="text-center">
+                                                            HOMBROS
+                                                        </th>
+                                                    </tr>
+
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <!-- PREGUNTA 1 -->
+                                                    <tr>
+
+                                                        <td width="70%">
+
+                                                            <strong>1.</strong>
+                                                            ¿Alguna vez ha tenido problemas en el hombro
+                                                            (molestias, dolor o disconfort)?
+
+                                                        </td>
+
+                                                        <td width="30%">
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P1"
+                                                                        id="HOMBRO_P1_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="HOMBRO_P1_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P1"
+                                                                        id="HOMBRO_P1_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="HOMBRO_P1_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- MENSAJE -->
+                                                    <tr>
+
+                                                        <td colspan="2" style="background:#efefef;">
+
+                                                            <strong>
+                                                                Si respondió <b>"NO"</b> a la pregunta 1,
+                                                                entonces <b>NO</b> responda las preguntas 2 a la 8.
+                                                            </strong>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 2 -->
+                                                    <tr class="bloque-hombro-p2">
+
+                                                        <td>
+
+                                                            <strong>2.</strong>
+                                                            ¿Alguna vez se lastimó el hombro en un accidente?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P2"
+                                                                        id="HOMBRO_P2_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="HOMBRO_P2_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P2"
+                                                                        id="HOMBRO_P2_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="HOMBRO_P2_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 3 -->
+                                                    <tr class="bloque-hombro-p3">
+
+                                                        <td>
+
+                                                            <strong>3.</strong>
+                                                            ¿Alguna vez ha tenido que cambiar de trabajo
+                                                            o deberes debido a problemas en el hombro?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P3"
+                                                                        id="HOMBRO_P3_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="HOMBRO_P3_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P3"
+                                                                        id="HOMBRO_P3_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="HOMBRO_P3_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 4 -->
+                                                    <tr class="bloque-hombro-p4">
+
+                                                        <td>
+
+                                                            <strong>4.</strong>
+                                                            ¿Cuál es el tiempo total que ha tenido problemas en el hombro durante los últimos 12 meses?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO_P4"
+                                                                    id="HOMBRO_P4_0_DIAS"
+                                                                    value="0">
+
+                                                                <label class="form-check-label"
+                                                                    for="HOMBRO_P4_0_DIAS">
+                                                                    0 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO_P4"
+                                                                    id="HOMBRO_P4_1_7"
+                                                                    value="1">
+
+                                                                <label class="form-check-label"
+                                                                    for="HOMBRO_P4_1_7">
+                                                                    1 - 7 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO_P4"
+                                                                    id="HOMBRO_P4_8_30"
+                                                                    value="2">
+
+                                                                <label class="form-check-label"
+                                                                    for="HOMBRO_P4_8_30">
+                                                                    8 - 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO_P4"
+                                                                    id="HOMBRO_P4_MAS30"
+                                                                    value="3">
+
+                                                                <label class="form-check-label"
+                                                                    for="HOMBRO_P4_MAS30">
+                                                                    Más de 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO_P4"
+                                                                    id="HOMBRO_P4_TODOS"
+                                                                    value="4">
+
+                                                                <label class="form-check-label"
+                                                                    for="HOMBRO_P4_TODOS">
+                                                                    Todos los días
+                                                                </label>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- MENSAJE -->
+                                                    <tr class="bloque-hombro-p5">
+
+                                                        <td colspan="2" style="background:#efefef;">
+
+                                                            <strong>
+                                                                Si usted respondió <b>"0 días"</b> en la pregunta 4,
+                                                                entonces <b>NO</b> responda las preguntas 5 a la 8.
+                                                            </strong>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 5 -->
+                                                    <tr class="bloque-hombro-p5">
+
+                                                        <td>
+
+                                                            <strong>5.</strong>
+
+                                                            ¿Los problemas de hombro le han hecho reducir
+                                                            su actividad durante los últimos 12 meses?
+
+                                                            <br><br>
+
+                                                            <strong>a)</strong>
+                                                            ¿Actividad laboral (en casa o fuera de casa)?
+
+                                                            <br><br>
+
+                                                            <strong>b)</strong>
+                                                            ¿Actividad de ocio?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <!-- ACTIVIDAD LABORAL -->
+                                                            <div class="d-flex justify-content-center mb-3">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P5_ACTIVIDAD_LABORAL"
+                                                                        id="HOMBRO_P5_ACTIVIDAD_LABORAL_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="HOMBRO_P5_ACTIVIDAD_LABORAL_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P5_ACTIVIDAD_LABORAL"
+                                                                        id="HOMBRO_P5_ACTIVIDAD_LABORAL_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="HOMBRO_P5_ACTIVIDAD_LABORAL_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- ACTIVIDAD DE OCIO -->
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P5_ACTIVIDAD_OCIO"
+                                                                        id="HOMBRO_P5_ACTIVIDAD_OCIO_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label"
+                                                                        for="HOMBRO_P5_ACTIVIDAD_OCIO_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P5_ACTIVIDAD_OCIO"
+                                                                        id="HOMBRO_P5_ACTIVIDAD_OCIO_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label"
+                                                                        for="HOMBRO_P5_ACTIVIDAD_OCIO_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+
+                                                    <!-- PREGUNTA 6 -->
+                                                    <tr class="bloque-hombro-p6">
+
+                                                        <td>
+
+                                                            <strong>6.</strong>
+                                                            ¿Cuál es el tiempo total que los problemas de hombro
+                                                            le han impedido hacer su trabajo normal
+                                                            (en casa o fuera de casa) durante los últimos 12 meses?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO_P6"
+                                                                    id="HOMBRO_P6_0_DIAS"
+                                                                    value="0">
+
+                                                                <label class="form-check-label" for="HOMBRO_P6_0_DIAS">
+                                                                    0 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO_P6"
+                                                                    id="HOMBRO_P6_1_7"
+                                                                    value="1">
+
+                                                                <label class="form-check-label" for="HOMBRO_P6_1_7">
+                                                                    1 - 7 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO_P6"
+                                                                    id="HOMBRO_P6_8_30"
+                                                                    value="2">
+
+                                                                <label class="form-check-label" for="HOMBRO_P6_8_30">
+                                                                    8 - 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                            <div class="form-check clienteblock">
+
+                                                                <input class="form-check-input"
+                                                                    type="radio"
+                                                                    name="HOMBRO_P6"
+                                                                    id="HOMBRO_P6_MAS30"
+                                                                    value="3">
+
+                                                                <label class="form-check-label" for="HOMBRO_P6_MAS30">
+                                                                    Más de 30 días
+                                                                </label>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 7 -->
+                                                    <tr class="bloque-hombro-p7">
+
+                                                        <td>
+
+                                                            <strong>7.</strong>
+                                                            ¿Ha sido atendido por un médico, kinesiólogo,
+                                                            quiropráctico u otra persona por problemas
+                                                            en el hombro durante los últimos 12 meses?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P7"
+                                                                        id="HOMBRO_P7_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label" for="HOMBRO_P7_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P7"
+                                                                        id="HOMBRO_P7_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label" for="HOMBRO_P7_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <!-- PREGUNTA 8 -->
+                                                    <tr class="bloque-hombro-p8">
+
+                                                        <td>
+
+                                                            <strong>8.</strong>
+                                                            ¿Ha tenido problemas de hombro
+                                                            en algún momento durante los últimos 7 días?
+
+                                                        </td>
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-center">
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P8"
+                                                                        id="HOMBRO_P8_NO"
+                                                                        value="0">
+
+                                                                    <label class="form-check-label" for="HOMBRO_P8_NO">
+                                                                        No
+                                                                    </label>
+
+                                                                </div>
+
+                                                                <div class="form-check mx-4 clienteblock">
+
+                                                                    <input class="form-check-input"
+                                                                        type="radio"
+                                                                        name="HOMBRO_P8"
+                                                                        id="HOMBRO_P8_SI"
+                                                                        value="1">
+
+                                                                    <label class="form-check-label" for="HOMBRO_P8_SI">
+                                                                        Sí
+                                                                    </label>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+
+                                        <div class="col-12 mt-3">
+                                            <div class="form-group">
+                                                <label>Observaciones Cuestionario Nórdico</label>
+                                                <div class="input-group">
+                                                    <textarea class="form-control" name="OBSERVACIONES_CUESTIONARIO" id="OBSERVACIONES_CUESTIONARIO" rows="4"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <h4>
+                                                Fuerza manual:
+                                            </h4>
+                                        </div>
+
+
+
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Escala de Borg:</label>
+                                                <select class="form-control" name="ESCALA_BORG" id="ESCALA_BORG">
+                                                    <option value="">Seleccionar nivel</option>
+
+                                                    <option value="0" data-color="#009944" style="background-color:#009944; color:#fff;">
+                                                        0 - Nada en absoluto (0% CVM)
+                                                    </option>
+                                                    <option value="0.5" data-color="#009944" style="background-color:#009944; color:#fff;">
+                                                        0.5 - Muy, muy débil (casi ausente)
+                                                    </option>
+                                                    <option value="1" data-color="#009944" style="background-color:#009944; color:#fff;">
+                                                        1 - Muy débil (10% CVM)
+                                                    </option>
+                                                    <option value="2" data-color="#009944" style="background-color:#009944; color:#fff;">
+                                                        2 - Débil (20% CVM)
+                                                    </option>
+                                                    <option value="3" data-color="#8fd14f" style="background-color:#8fd14f; color:#222;">
+                                                        3 - Moderado (30% CVM)
+                                                    </option>
+                                                    <option value="4" data-color="#d6e600" style="background-color:#d6e600; color:#222;">
+                                                        4 - Moderado + (40% CVM)
+                                                    </option>
+                                                    <option value="5" data-color="#ffeb00" style="background-color:#ffeb00; color:#222;">
+                                                        5 - Fuerte (50% CVM)
+                                                    </option>
+                                                    <option value="6" data-color="#ffc000" style="background-color:#ffc000; color:#222;">
+                                                        6 - Fuerte + (60% CVM)
+                                                    </option>
+                                                    <option value="7" data-color="#ff8000" style="background-color:#ff8000; color:#222;">
+                                                        7 - Muy fuerte (70% CVM)
+                                                    </option>
+                                                    <option value="8" data-color="#ff4d00" style="background-color:#ff4d00; color:#fff;">
+                                                        8 - Muy, muy fuerte (80% CVM)
+                                                    </option>
+                                                    <option value="9" data-color="#ff0000" style="background-color:#ff0000; color:#fff;">
+                                                        9 - Extremadamente fuerte (90% CVM)
+                                                    </option>
+                                                    <option value="10" data-color="#ff0000" style="background-color:#ff0000; color:#fff;">
+                                                        10 - Máximo (100% CVM)
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 mt-3">
+                                            <div class="form-group">
+                                                <label>Interpretación Escala de BORG</label>
+                                                <div class="input-group">
+                                                    <textarea class="form-control" name="INTERPRETACION_ESCALA_BORG" id="INTERPRETACION_ESCALA_BORG" rows="4"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <style>
+                                            #ESCALA_BORG {
+                                                font-family: 'Poppins', sans-serif;
+                                                font-size: 14px;
+                                            }
+
+                                            #ESCALA_BORG option {
+                                                font-weight: 500;
+                                                padding: 8px;
+                                            }
+
+                                            #ESCALA_BORG option[value=""] {
+                                                background-color: #fff;
+                                                color: #555;
+                                            }
+                                        </style>
+
+
+
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label>¿Las tareas habituales del trabajador requieren ejercer fuerza muscular manual con las extremidades superiores (hombros, brazos, antebrazos y manos) para realizar acciones como presionar, apretar o sujetar objeto? </label>
+                                                <select class="form-control" name="REQUIERE_FUERZA_MANUAL" id="REQUIERE_FUERZA_MANUAL" required>
+                                                    <option value="">Seleccionar</option>
+                                                    <option value="1">Sí</option>
+                                                    <option value="2">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 mt-5">
+                                            <div class="form-group">
+                                                <label>Tipo de Dominancia: </label>
+                                                <select class="form-control" name="TIPO_DOMINANCIA" id="TIPO_DOMINANCIA">
+                                                    <option value="">Seleccionar</option>
+                                                    <option value="1">Derecha</option>
+                                                    <option value="2">Izquierda</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+                                        <div class="col-12" id="datosFuerzaManual" style="display:none;">
+                                            <div class="row">
+                                                <style>
+                                                    #tablaReferenciaFuerzaManual {
+                                                        width: 100%;
+                                                        border-collapse: collapse;
+                                                        font-family: 'Poppins', sans-serif;
+                                                        font-size: 14px;
+                                                        text-align: center;
+                                                        color: #222;
+                                                        background: #d9eeee;
+                                                    }
+
+                                                    #tablaReferenciaFuerzaManual th,
+                                                    #tablaReferenciaFuerzaManual td {
+                                                        border: 1px solid #7b8c8c;
+                                                        padding: 6px 10px;
+                                                        font-family: 'Poppins', sans-serif;
+                                                        white-space: nowrap;
+                                                    }
+
+                                                    #tablaReferenciaFuerzaManual thead th {
+                                                        background: #c6e4e3;
+                                                        font-weight: 600;
+                                                    }
+
+                                                    #tablaReferenciaFuerzaManual .encabezado-sexo td {
+                                                        background: #e6e6e6;
+                                                        font-weight: 700;
+                                                        font-size: 15px;
+                                                        padding: 5px;
+                                                    }
+
+                                                    #tablaReferenciaFuerzaManual .edad {
+                                                        background: #f5f5f5;
+                                                        font-weight: 500;
+                                                    }
+
+                                                    #tablaReferenciaFuerzaManual tbody tr:not(.encabezado-sexo):hover {
+                                                        background: #c5e5e4;
+                                                    }
+                                                </style>
+
+                                                <div class="col-12 mt-3">
+                                                    <h5>Valores de referencia de fuerza manual</h5>
+
+                                                    <div class="table-responsive">
+                                                        <table class="table" id="tablaReferenciaFuerzaManual">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th rowspan="2">Edad</th>
+                                                                    <th colspan="5">Mano derecha</th>
+                                                                    <th colspan="5">Mano izquierda</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>P10</th>
+                                                                    <th>P30</th>
+                                                                    <th>P50</th>
+                                                                    <th>P70</th>
+                                                                    <th>P90</th>
+                                                                    <th>P10</th>
+                                                                    <th>P30</th>
+                                                                    <th>P50</th>
+                                                                    <th>P70</th>
+                                                                    <th>P90</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                <tr class="encabezado-sexo">
+                                                                    <td colspan="11">Hombres</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">20-29</td>
+                                                                    <td>33.9</td>
+                                                                    <td>41.3</td>
+                                                                    <td>45.1</td>
+                                                                    <td>50.6</td>
+                                                                    <td>56.3</td>
+                                                                    <td>34.0</td>
+                                                                    <td>39.4</td>
+                                                                    <td>43.6</td>
+                                                                    <td>47.8</td>
+                                                                    <td>53.7</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">30-39</td>
+                                                                    <td>36.6</td>
+                                                                    <td>42.2</td>
+                                                                    <td>45.8</td>
+                                                                    <td>50.0</td>
+                                                                    <td>56.9</td>
+                                                                    <td>34.7</td>
+                                                                    <td>40.4</td>
+                                                                    <td>44.1</td>
+                                                                    <td>48.3</td>
+                                                                    <td>53.5</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">40-49</td>
+                                                                    <td>34.3</td>
+                                                                    <td>37.5</td>
+                                                                    <td>42.5</td>
+                                                                    <td>46.7</td>
+                                                                    <td>53.6</td>
+                                                                    <td>32.4</td>
+                                                                    <td>37.1</td>
+                                                                    <td>40.9</td>
+                                                                    <td>45.3</td>
+                                                                    <td>50.9</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">50-59</td>
+                                                                    <td>30.2</td>
+                                                                    <td>36.2</td>
+                                                                    <td>41.4</td>
+                                                                    <td>44.3</td>
+                                                                    <td>50.1</td>
+                                                                    <td>29.6</td>
+                                                                    <td>35.0</td>
+                                                                    <td>38.9</td>
+                                                                    <td>42.8</td>
+                                                                    <td>48.3</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">60-69</td>
+                                                                    <td>26.5</td>
+                                                                    <td>32.9</td>
+                                                                    <td>37.0</td>
+                                                                    <td>40.8</td>
+                                                                    <td>45.5</td>
+                                                                    <td>26.4</td>
+                                                                    <td>30.8</td>
+                                                                    <td>34.4</td>
+                                                                    <td>37.5</td>
+                                                                    <td>41.9</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">≥70</td>
+                                                                    <td>22.8</td>
+                                                                    <td>27.7</td>
+                                                                    <td>32.1</td>
+                                                                    <td>35.7</td>
+                                                                    <td>40.6</td>
+                                                                    <td>21.0</td>
+                                                                    <td>26.6</td>
+                                                                    <td>28.9</td>
+                                                                    <td>31.3</td>
+                                                                    <td>36.0</td>
+                                                                </tr>
+
+                                                                <tr class="encabezado-sexo">
+                                                                    <td colspan="11">Mujeres</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">20-29</td>
+                                                                    <td>19.5</td>
+                                                                    <td>23.8</td>
+                                                                    <td>27.4</td>
+                                                                    <td>30.0</td>
+                                                                    <td>34.0</td>
+                                                                    <td>18.6</td>
+                                                                    <td>22.3</td>
+                                                                    <td>25.8</td>
+                                                                    <td>28.4</td>
+                                                                    <td>31.8</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">30-39</td>
+                                                                    <td>20.7</td>
+                                                                    <td>25.0</td>
+                                                                    <td>27.6</td>
+                                                                    <td>30.7</td>
+                                                                    <td>35.0</td>
+                                                                    <td>20.1</td>
+                                                                    <td>23.5</td>
+                                                                    <td>26.4</td>
+                                                                    <td>29.3</td>
+                                                                    <td>32.9</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">40-49</td>
+                                                                    <td>19.8</td>
+                                                                    <td>24.4</td>
+                                                                    <td>26.9</td>
+                                                                    <td>29.4</td>
+                                                                    <td>33.6</td>
+                                                                    <td>18.4</td>
+                                                                    <td>22.9</td>
+                                                                    <td>25.7</td>
+                                                                    <td>28.1</td>
+                                                                    <td>31.7</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">50-59</td>
+                                                                    <td>16.6</td>
+                                                                    <td>21.1</td>
+                                                                    <td>24.3</td>
+                                                                    <td>26.4</td>
+                                                                    <td>30.9</td>
+                                                                    <td>15.4</td>
+                                                                    <td>19.9</td>
+                                                                    <td>23.0</td>
+                                                                    <td>25.3</td>
+                                                                    <td>29.8</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">60-69</td>
+                                                                    <td>16.6</td>
+                                                                    <td>19.6</td>
+                                                                    <td>21.7</td>
+                                                                    <td>24.6</td>
+                                                                    <td>27.5</td>
+                                                                    <td>15.0</td>
+                                                                    <td>18.2</td>
+                                                                    <td>20.5</td>
+                                                                    <td>22.8</td>
+                                                                    <td>27.1</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="edad">≥70</td>
+                                                                    <td>9.9</td>
+                                                                    <td>13.7</td>
+                                                                    <td>16.8</td>
+                                                                    <td>20.0</td>
+                                                                    <td>23.8</td>
+                                                                    <td>9.0</td>
+                                                                    <td>13.0</td>
+                                                                    <td>16.0</td>
+                                                                    <td>19.2</td>
+                                                                    <td>22.6</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>Mano derecha *</label>
+                                                        <input type="text" class="form-control" id="FUERZA_MANO_DERECHA" name="FUERZA_MANO_DERECHA" placeholder="Valor">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>Mano izquierda *</label>
+                                                        <input type="text" class="form-control" id="FUERZA_MANO_IZQUIERDA" name="FUERZA_MANO_IZQUIERDA" placeholder="Valor">
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12 mt-3">
+                                            <div class="form-group">
+                                                <label>Observaciones fuerza manual</label>
+                                                <div class="input-group">
+                                                    <textarea class="form-control" name="OBSERVACIONES_FUERZAMANUAL" id="OBSERVACIONES_FUERZAMANUAL" rows="4"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="col-12">
+                                            <h4>
+                                                LEY SILLA: DOF 19/12/24.
+                                            </h4>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>¿Aplica ley silla? </label>
+                                                <select class="form-control" name="APLICA_LEY_SILLA" id="APLICA_LEY_SILLA" required>
+                                                    <option value="">Seleccionar</option>
+                                                    <option value="1">Sí</option>
+                                                    <option value="2">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" id="datosLeySilla" style="display:none;">
+                                            <div class="row">
+
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label><br> A) Realiza sus tareas laborales de pie por más de tres horas continuas durante su jornada laboral:</label>
+                                                        <select class="form-control" name="REALIZA_TAREAS_PIE" id="REALIZA_TAREAS_PIE">
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">Si</option>
+                                                            <option value="2">No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label>B) Bipedestación estática. La postura de las personas trabajadoras que realizan sus tareas de pie y prácticamente sin moverse o
+                                                            con desplazamientos mínimos:</label>
+                                                        <select class="form-control" name="BIPEDESTACION_ESTATICA" id="BIPEDESTACION_ESTATICA">
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">Si</option>
+                                                            <option value="2">No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label>C) Bipedestación dinámica. La postura de las personas trabajadoras que tienen la posibilidad de realizar desplazamientos más
+                                                            amplios que en la bipedestación estática:</label>
+                                                        <select class="form-control" name="BIPEDESTACION_DINAMICA" id="BIPEDESTACION_DINAMICA">
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">Si</option>
+                                                            <option value="2">No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 mt-3">
+                                                    <div class="form-group">
+                                                        <label>Observaciones ley silla </label>
+                                                        <div class="input-group">
+                                                            <textarea class="form-control" name="OBSERVACIONES_GENERALES" id="OBSERVACIONES_GENERALES" rows="4"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="card mt-2" id="TEXTO_NO_APLICALEY" style="display: none;">
+                                            <div class="card-header header-verde-res d-flex align-items-center">
+                                                <i class="fa fa-info mr-2" aria-hidden="true"></i>
+                                                <div class="text-center w-100">
+                                                    <b>No aplica ley silla</b>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                La actividad evaluada no cumple con el criterio de bipedestación prolongada, debido a que el tiempo de permanencia de pie no supera las tres horas continuas durante la jornada laboral, conforme a la definición establecida en las Disposiciones de la STPS. Por lo tanto, no se identifica exposición a este factor bajo dicho criterio.
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-12">
+                                            <h4>Métodos</h4>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="CAT_METODOS_FRE">Seleccionar métodos</label>
+                                                <select class="custom-select form-control"
+                                                    id="CAT_METODOS_FRE"
+                                                    name="CAT_METODOS_FRE[]"
+                                                    multiple>
+                                                    <option value="1">Método OWAS</option>
+                                                    <option value="2">Método ROSA</option>
+                                                    <option value="3">Método RULA</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- ========================= OWAS ========================= -->
+                                        <div id="contenedorMetodoOWAS" class="col-12" style="display: none;">
+
+                                            <div class="card mt-3">
+                                                <div class="card-header">
+                                                    <strong>Método OWAS</strong>
+                                                </div>
+
+                                                <div class="card-body">
+
+                                                    <div class="card mb-3">
+                                                        <div class="card-header">
+                                                            <strong>Codificación de la postura</strong>
+                                                        </div>
+
+                                                        <div class="card-body">
+                                                            <div class="row">
+
+                                                                <div class="col-12 col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Posición de espalda (primer dígito)</label>
+                                                                        <select class="form-control" id="OWAS_ESPALDA" name="OWAS_ESPALDA">
+                                                                            <option value="">Seleccionar</option>
+                                                                            <option value="1">1 — Espalda derecha</option>
+                                                                            <option value="2">2 — Espalda doblada</option>
+                                                                            <option value="3">3 — Espalda con giro</option>
+                                                                            <option value="4">4 — Espalda doblada con giro</option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label>
+                                                                            Código de espalda:
+                                                                            <strong id="OWAS_COD_ESPALDA">—</strong>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-12 col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>
+                                                                            Posición de los brazos (segundo dígito)
+                                                                        </label>
+
+                                                                        <select class="form-control" id="OWAS_BRAZOS" name="OWAS_BRAZOS">
+                                                                            <option value="">Seleccionar</option>
+                                                                            <option value="1">1 — Los dos brazos bajos</option>
+                                                                            <option value="2">2 — Un brazo bajo y el otro elevado</option>
+                                                                            <option value="3">3 — Los dos brazos elevados</option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label>
+                                                                            Código de brazos:
+                                                                            <strong id="OWAS_COD_BRAZOS">—</strong>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-12 col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>
+                                                                            Posición de las piernas (tercer dígito)
+                                                                        </label>
+
+                                                                        <select class="form-control" id="OWAS_PIERNAS" name="OWAS_PIERNAS">
+                                                                            <option value="">Seleccionar</option>
+                                                                            <option value="1">1 — Sentado</option>
+                                                                            <option value="2">2 — De pie con las dos piernas rectas y peso equilibrado</option>
+                                                                            <option value="3">3 — De pie con las dos piernas rectas y peso desequilibrado</option>
+                                                                            <option value="4">4 — De pie o en cuclillas con las dos piernas flexionadas y peso equilibrado</option>
+                                                                            <option value="5">5 — De pie o en cuclillas con las dos piernas flexionadas y peso desequilibrado</option>
+                                                                            <option value="6">6 — Arrodillado</option>
+                                                                            <option value="7">7 — Andando</option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label>
+                                                                            Código de piernas:
+                                                                            <strong id="OWAS_COD_PIERNAS">—</strong>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-12 col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>
+                                                                            Cargas y fuerzas soportadas (cuarto dígito)
+                                                                        </label>
+
+                                                                        <select class="form-control" id="OWAS_CARGA" name="OWAS_CARGA">
+                                                                            <option value="">Seleccionar</option>
+                                                                            <option value="1">1 — Menos de 10 kg</option>
+                                                                            <option value="2">2 — Entre 10 y 20 kg</option>
+                                                                            <option value="3">3 — Más de 20 kg</option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label>
+                                                                            Código de carga:
+                                                                            <strong id="OWAS_COD_CARGA">—</strong>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-12">
+                                                                    <div class="form-group mb-0">
+                                                                        <label>
+                                                                            Código de postura completo
+                                                                        </label>
+                                                                        <input type="text" class="form-control" id="OWAS_CODIGO_COMPLETO" name="OWAS_CODIGO_COMPLETO" readonly
+                                                                            placeholder="Se genera al completar los cuatro dígitos" style="max-width: 400px;">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card mb-3" id="OWAS_CARD_RESULTADO" style="display: none;">
+                                                        <div class="card-header">
+                                                            <strong>Resultado de la evaluación OWAS</strong>
+                                                        </div>
+
+                                                        <div class="card-body">
+
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered mb-0" id="OWAS_TABLA_RESULTADOS">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th colspan="3" class="owas-titulo-principal">
+                                                                                OWAS
+                                                                            </th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th class="owas-encabezado">Categoría de Riesgo</th>
+                                                                            <th class="owas-encabezado">Efecto de la postura</th>
+                                                                            <th class="owas-encabezado">Acción requerida</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr id="OWAS_FILA_1">
+                                                                            <td class="owas-categoria owas-color-1">1</td>
+                                                                            <td>
+                                                                                Postura normal y natural sin efectos dañinos
+                                                                                en el sistema músculo-esquelético.
+                                                                            </td>
+                                                                            <td>No requiere acción.</td>
+                                                                        </tr>
+                                                                        <tr id="OWAS_FILA_2">
+                                                                            <td class="owas-categoria owas-color-2">2</td>
+                                                                            <td>
+                                                                                Postura con posibilidad de causar daño al
+                                                                                sistema músculo-esquelético.
+                                                                            </td>
+                                                                            <td>
+                                                                                Se requieren acciones correctivas en un
+                                                                                futuro cercano.
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr id="OWAS_FILA_3">
+                                                                            <td class="owas-categoria owas-color-3">3</td>
+                                                                            <td>
+                                                                                Postura con efectos dañinos sobre el
+                                                                                sistema músculo-esquelético.
+                                                                            </td>
+                                                                            <td>
+                                                                                Se requieren acciones correctivas lo
+                                                                                antes posible.
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr id="OWAS_FILA_4">
+                                                                            <td class="owas-categoria owas-color-4">4</td>
+                                                                            <td>
+                                                                                La carga causada por esta postura tiene
+                                                                                efectos sumamente dañinos sobre el sistema
+                                                                                músculo-esquelético.
+                                                                            </td>
+                                                                            <td>
+                                                                                Se requieren tomar acciones correctivas
+                                                                                inmediatamente.
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                            <div class="mt-3">
+                                                                <strong>Categoría de riesgo obtenida:</strong>
+                                                                <span id="OWAS_RESULTADO_CATEGORIA" class="badge ml-2"></span>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-12 mt-3">
+                                                    <div class="form-group">
+                                                        <label> Análisis método</label>
+                                                        <div class="input-group">
+                                                            <textarea class="form-control" name="ANALISIS_METODO_OWAS" id="ANALISIS_METODO_OWAS" rows="4"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+
+                                        <style>
+                                            /* Colores OWAS */
+                                            #DIV_METODO_OWAS {
+                                                --owas-verde: #A4D65E;
+                                                --owas-azul: #007DBA;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS {
+                                                width: 100%;
+                                                border-collapse: collapse;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS th,
+                                            #OWAS_TABLA_RESULTADOS td {
+                                                border: 2px solid #173F68 !important;
+                                                padding: 8px 12px;
+                                                vertical-align: middle;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS .owas-titulo-principal {
+                                                background-color: #A4D65E !important;
+                                                color: #000000 !important;
+                                                text-align: center;
+                                                font-size: 24px;
+                                                font-weight: bold;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS .owas-encabezado {
+                                                background-color: #007DBA !important;
+                                                color: #FFFFFF !important;
+                                                text-align: center;
+                                                font-weight: bold;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS .owas-categoria {
+                                                text-align: center;
+                                                font-weight: bold;
+                                                font-size: 20px;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS .owas-color-1 {
+                                                background-color: #A4D65E !important;
+                                                color: #000000;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS .owas-color-2 {
+                                                background-color: #FFF200 !important;
+                                                color: #000000;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS .owas-color-3 {
+                                                background-color: #F9A52B !important;
+                                                color: #000000;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS .owas-color-4 {
+                                                background-color: #ED2939 !important;
+                                                color: #FFFFFF;
+                                            }
+
+                                            /* Borde rojo en la fila de la categoría obtenida */
+                                            #OWAS_TABLA_RESULTADOS tr.owas-fila-seleccionada>td {
+                                                border-top: 3px solid #FF0000 !important;
+                                                border-bottom: 3px solid #FF0000 !important;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS tr.owas-fila-seleccionada>td:first-child {
+                                                border-left: 3px solid #FF0000 !important;
+                                            }
+
+                                            #OWAS_TABLA_RESULTADOS tr.owas-fila-seleccionada>td:last-child {
+                                                border-right: 3px solid #FF0000 !important;
+                                            }
+
+                                            #OWAS_RESULTADO_CATEGORIA {
+                                                font-size: 16px;
+                                                padding: 8px 12px;
+                                            }
+
+                                            #OWAS_RESULTADO_CATEGORIA.owas-riesgo-1 {
+                                                background-color: #A4D65E;
+                                                color: #000000;
+                                            }
+
+                                            #OWAS_RESULTADO_CATEGORIA.owas-riesgo-2 {
+                                                background-color: #FFF200;
+                                                color: #000000;
+                                            }
+
+                                            #OWAS_RESULTADO_CATEGORIA.owas-riesgo-3 {
+                                                background-color: #F9A52B;
+                                                color: #000000;
+                                            }
+
+                                            #OWAS_RESULTADO_CATEGORIA.owas-riesgo-4 {
+                                                background-color: #ED2939;
+                                                color: #FFFFFF;
+                                            }
+                                        </style>
+                                        <!-- ========================= ROSA ========================= -->
+
+
+                                        <div class="col-12 metodo-fre-contenedor" id="contenedorMetodoROSA" style="display:none;">
+                                            <div class="rosa-card">
+                                                <input type="hidden" id="ROSA_DATOS_JSON" name="ROSA_DATOS_JSON" value="">
+                                                <div class="rosa-titulo-principal">MÉTODO ROSA</div>
+                                                <h5 class="rosa-seccion">A. Evaluación de la silla</h5>
+                                                <div class="rosa-grid">
+
+                                                    <div class="rosa-campo-contenedor">
+
+                                                        <label>A-1. Altura del asiento</label>
+
+                                                        <select id="ROSA_ALTURA_ASIENTO" name="ROSA_ALTURA_ASIENTO" class="form-control rosa-campo" required>
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">1 — Postura neutra: rodillas a 90°</option>
+                                                            <option value="2">2 — Asiento bajo, rodillas menores de 90°</option>
+                                                            <option value="2">2 — Asiento alto, rodillas mayores de 90°</option>
+                                                            <option value="3">3 — Pies sin tocar el suelo</option>
+                                                        </select>
+
+                                                        <div class="rosa-adicionales">
+
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A1" value="1" data-texto="Espacio insuficiente para las piernas">
+                                                                +1 Espacio insuficiente para las piernas
+                                                            </label>
+
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A1" value="1" data-texto="Altura no regulable">
+                                                                +1 Altura no regulable
+                                                            </label>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="rosa-campo-contenedor">
+                                                        <label>A-2. Profundidad del asiento</label>
+                                                        <select id="ROSA_PROFUNDIDAD_ASIENTO" name="ROSA_PROFUNDIDAD_ASIENTO" class="form-control rosa-campo" required>
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">1 — 8 cm entre el borde y la pierna</option>
+                                                            <option value="2">2 — Menos de 8 cm</option>
+                                                            <option value="2">2 — Más de 8 cm</option>
+                                                        </select>
+
+                                                        <div class="rosa-adicionales">
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A2" value="1" data-texto="Profundidad no regulable">
+                                                                +1 Profundidad no regulable
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="rosa-campo-contenedor">
+                                                        <label>A-3. Reposabrazos</label>
+                                                        <select id="ROSA_REPOSABRAZOS" name="ROSA_REPOSABRAZOS" class="form-control rosa-campo" required>
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">1 — Codos a 90° y hombros relajados</option>
+                                                            <option value="2">2 — Codos altos o bajos sin apoyo</option>
+                                                        </select>
+
+                                                        <div class="rosa-adicionales">
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A3" value="1" data-texto="Bordes afilados o duros">
+                                                                +1 Bordes afilados o duros
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A3" value="1" data-texto="Reposabrazos demasiado anchos">
+                                                                +1 Reposabrazos demasiado anchos
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A3" value="1" data-texto="Reposabrazos no regulables">
+                                                                +1 Reposabrazos no regulables
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="rosa-campo-contenedor">
+                                                        <label>A-4. Respaldo</label>
+                                                        <select id="ROSA_RESPALDO" name="ROSA_RESPALDO" class="form-control rosa-campo" required>
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">1 — Apoyo lumbar e inclinación adecuada</option>
+                                                            <option value="2">2 — Sin apoyo lumbar o apoyo inadecuado</option>
+                                                            <option value="2">2 — Inclinación inadecuada</option>
+                                                        </select>
+
+                                                        <div class="rosa-adicionales">
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A4" value="1" data-texto="No se utiliza el respaldo">
+                                                                +1 No se utiliza el respaldo
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A4" value="1" data-texto="Superficie alta u hombros encogidos">
+                                                                +1 Superficie alta u hombros encogidos
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A4" value="1" data-texto="Respaldo no regulable">
+                                                                +1 Respaldo no regulable
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="rosa-tiempo-contenedor">
+                                                    <label for="ROSA_TIEMPO_A">
+                                                        Tiempo de uso diario de la silla
+                                                    </label>
+                                                    <select id="ROSA_TIEMPO_A" name="ROSA_TIEMPO_A" class="form-control rosa-tiempo">
+                                                        <option value="">Seleccionar</option>
+                                                        <option value="1">+1 — Uso continuo durante más de una hora o más de 4 horas diarias</option>
+                                                        <option value="-1">-1 — Uso continuo menor de 30 minutos o menos de una hora diaria</option>
+                                                    </select>
+                                                </div>
+
+                                                <h5 class="rosa-seccion">B. Teléfono y pantalla</h5>
+                                                <div class="rosa-grid">
+                                                    <div class="rosa-campo-contenedor">
+                                                        <label>B-1. Teléfono</label>
+                                                        <select id="ROSA_TELEFONO" name="ROSA_TELEFONO" class="form-control rosa-campo" required>
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">1 — Cuello recto y manos libres</option>
+                                                            <option value="2">2 — Teléfono alejado más de 30 cm</option>
+                                                        </select>
+
+                                                        <div class="rosa-adicionales">
+
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B1" value="2" data-texto="Sujeción con el hombro o cuello">
+                                                                +2 Sujeción con el hombro o cuello
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B1" value="1" data-texto="No existe opción de manos libres">
+                                                                +1 No existe opción de manos libres
+                                                            </label>
+
+                                                        </div>
+
+                                                        <label>Tiempo de uso diario del teléfono</label>
+                                                        <select id="ROSA_TIEMPO_B1" name="ROSA_TIEMPO_B1" class="form-control rosa-tiempo">
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">+1 — Uso prolongado</option>
+                                                            <option value="-1">-1 — Uso breve</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="rosa-campo-contenedor">
+                                                        <label>B-2. Pantalla</label>
+                                                        <select id="ROSA_PANTALLA" name="ROSA_PANTALLA" class="form-control rosa-campo" required>
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">1 — Pantalla a 40–75 cm y a la altura de los ojos</option>
+                                                            <option value="2">2 — Pantalla demasiado baja</option>
+                                                            <option value="3">3 — Pantalla demasiado alta</option>
+                                                        </select>
+
+                                                        <div class="rosa-adicionales">
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="Distancia mayor de 75 cm">
+                                                                +1 Distancia mayor de 75 cm
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="Giro de cuello">
+                                                                +1 Giro de cuello
+                                                            </label>
+
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="No hay portadocumentos y se necesita">
+                                                                +1 No hay portadocumentos y se necesita
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="Reflejos en pantalla">
+                                                                +1 Reflejos en pantalla
+                                                            </label>
+
+                                                        </div>
+                                                        <label class="rosa-tiempo-label">Tiempo de uso diario de la pantalla</label>
+                                                        <select id="ROSA_TIEMPO_B2" name="ROSA_TIEMPO_B2" class="form-control rosa-tiempo">
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">+1 — Uso prolongado</option>
+                                                            <option value="-1">-1 — Uso breve</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <h5 class="rosa-seccion">C. Ratón y teclado</h5>
+                                                <div class="rosa-grid">
+                                                    <div class="rosa-campo-contenedor">
+                                                        <label>C-1. Ratón</label>
+                                                        <select id="ROSA_RATON" name="ROSA_RATON" class="form-control rosa-campo" required>
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">1 — Ratón alineado con el hombro</option>
+                                                            <option value="2">2 — Ratón fuera del alcance o desalineado</option>
+                                                        </select>
+                                                        <div class="rosa-adicionales">
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C1" value="1" data-texto="Ratón pequeño o agarre en pinza">
+                                                                +1 Ratón pequeño o agarre en pinza
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C1" value="2" data-texto="Ratón y teclado a diferentes alturas">
+                                                                +2 Ratón y teclado a diferentes alturas
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C1" value="1" data-texto="Reposamanos duro o puntos de presión">
+                                                                +1 Reposamanos duro o puntos de presión
+                                                            </label>
+                                                        </div>
+                                                        <label>Tiempo de uso diario del ratón</label>
+                                                        <select id="ROSA_TIEMPO_C1" name="ROSA_TIEMPO_C1" class="form-control rosa-tiempo">
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">+1 — Uso prolongado</option>
+                                                            <option value="-1">-1 — Uso breve</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="rosa-campo-contenedor">
+                                                        <label>C-2. Teclado</label>
+                                                        <select id="ROSA_TECLADO" name="ROSA_TECLADO" class="form-control rosa-campo" required>
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">1 — Muñeca recta y hombros relajados</option>
+                                                            <option value="2">2 — Extensión de muñeca mayor de 15°</option>
+                                                        </select>
+                                                        <div class="rosa-adicionales">
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Desviación al escribir">
+                                                                +1 Desviación al escribir
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Teclado elevado u hombros encogidos">
+                                                                +1 Teclado elevado u hombros encogidos
+                                                            </label>
+
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Alcance por encima de la cabeza">
+                                                                +1 Alcance por encima de la cabeza
+                                                            </label>
+                                                            <label>
+                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Soporte de teclado no ajustable">
+                                                                +1 Soporte de teclado no ajustable
+                                                            </label>
+                                                        </div>
+
+                                                        <label> Tiempo de uso diario del teclado</label>
+                                                        <select id="ROSA_TIEMPO_C2" name="ROSA_TIEMPO_C2" class="form-control rosa-tiempo">
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">+1 — Uso prolongado</option>
+                                                            <option value="-1">-1 — Uso breve</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <h5 class="rosa-seccion">Matriz A. Puntuación de la silla</h5>
+
+                                                <div class="table-responsive">
+                                                    <table class="rosa-matriz" id="ROSA_MATRIZ_A"></table>
+                                                </div>
+
+                                                <h5 class="rosa-seccion">Matriz B. Puntuación de teléfono y pantalla</h5>
+
+                                                <div class="table-responsive">
+                                                    <table class="rosa-matriz" id="ROSA_MATRIZ_B"></table>
+                                                </div>
+
+                                                <h5 class="rosa-seccion">Matriz C. Puntuación de ratón y teclado</h5>
+
+                                                <div class="table-responsive">
+                                                    <table class="rosa-matriz" id="ROSA_MATRIZ_C"></table>
+                                                </div>
+
+                                                <h5 class="rosa-seccion">Matriz D. Puntuación de pantalla y periféricos</h5>
+
+                                                <div class="table-responsive">
+                                                    <table class="rosa-matriz" id="ROSA_MATRIZ_D"></table>
+                                                </div>
+
+                                                <h5 class="rosa-seccion">Matriz E. Puntuación final ROSA</h5>
+
+                                                <div class="table-responsive">
+                                                    <table class="rosa-matriz" id="ROSA_MATRIZ_E"></table>
+                                                </div>
+
+                                                <div class="table-responsive">
+
+                                                    <table class="table table-bordered mb-0" id="ROSA_TABLA_RESULTADOS">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="4" class="rosa-titulo-principal">
+                                                                    ROSA
+                                                                </th>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <th class="rosa-encabezado">Puntuación</th>
+                                                                <th class="rosa-encabezado">Riesgo</th>
+                                                                <th class="rosa-encabezado">Nivel</th>
+                                                                <th class="rosa-encabezado">Actuación</th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+
+                                                            <tr data-rosa-rango="1">
+                                                                <td class="rosa-categoria">1</td>
+                                                                <td class="rosa-categoria">Inapreciable</td>
+                                                                <td class="rosa-categoria rosa-nivel rosa-nivel-0">0</td>
+                                                                <td class="rosa-categoria">No es necesaria actuación.</td>
+                                                            </tr>
+
+                                                            <tr data-rosa-rango="2-4">
+                                                                <td class="rosa-categoria">2–4</td>
+                                                                <td class="rosa-categoria">Mejorable</td>
+                                                                <td class="rosa-categoria rosa-nivel rosa-nivel-1">1</td>
+                                                                <td class="rosa-categoria">Pueden mejorarse algunos elementos del puesto.</td>
+                                                            </tr>
+
+                                                            <tr data-rosa-rango="5">
+                                                                <td class="rosa-categoria">5</td>
+                                                                <td class="rosa-categoria">Alto</td>
+                                                                <td class="rosa-categoria rosa-nivel rosa-nivel-2">2</td>
+                                                                <td class="rosa-categoria">Es necesaria la actuación.</td>
+                                                            </tr>
+
+                                                            <tr data-rosa-rango="6-8">
+                                                                <td class="rosa-categoria">6–8</td>
+                                                                <td class="rosa-categoria">Muy alto</td>
+                                                                <td class="rosa-categoria rosa-nivel rosa-nivel-3">3</td>
+                                                                <td class="rosa-categoria">Es necesaria la actuación cuanto antes.</td>
+                                                            </tr>
+
+                                                            <tr data-rosa-rango="9-10">
+                                                                <td class="rosa-categoria">9–10</td>
+                                                                <td class="rosa-categoria">Extremo</td>
+                                                                <td class="rosa-categoria rosa-nivel rosa-nivel-4">4</td>
+                                                                <td class="rosa-categoria">Es necesaria la actuación urgentemente.</td>
+                                                            </tr>
+
+                                                        </tbody>
+
+                                                    </table>
+
+                                                </div>
+
+                                                <div class="col-12 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="ANALISIS_METODO_ROSA">Análisis método</label>
+                                                        <div class="input-group">
+                                                            <textarea class="form-control" name="ANALISIS_METODO_ROSA" id="ANALISIS_METODO_ROSA" rows="4"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <style>
+                                            #ROSA_TABLA_RESULTADOS th,
+                                            #ROSA_TABLA_RESULTADOS td {
+                                                border: 2px solid #173F68 !important;
+                                                padding: 8px 12px;
+                                                vertical-align: middle;
+                                            }
+
+                                            #ROSA_TABLA_RESULTADOS {
+                                                width: 100%;
+                                                border-collapse: collapse;
+                                            }
+
+                                            #ROSA_TABLA_RESULTADOS .rosa-categoria {
+                                                text-align: center;
+                                                font-weight: bold;
+                                                font-size: 20px;
+                                            }
+
+                                            #ROSA_TABLA_RESULTADOS .rosa-encabezado {
+                                                background-color: #007DBA !important;
+                                                color: #FFFFFF !important;
+                                                text-align: center;
+                                                font-weight: bold;
+                                            }
+
+                                            #ROSA_TABLA_RESULTADOS .rosa-titulo-principal {
+                                                background-color: #A4D65E !important;
+                                                color: #000000 !important;
+                                                text-align: center;
+                                                font-size: 24px;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoROSA {
+                                                width: 100%;
+                                                font-family: Arial, sans-serif;
+                                                color: #000000;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-panel {
+                                                width: 100%;
+                                                padding: 0;
+                                                background: #ffffff;
+                                                border: none;
+                                                border-radius: 0;
+                                                box-shadow: none;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-titulo-principal {
+                                                width: 100%;
+                                                box-sizing: border-box;
+                                                background: #A4D65E !important;
+                                                color: #000000 !important;
+                                                border: 1px solid #173F73;
+                                                padding: 10px;
+                                                margin: 0 0 15px;
+                                                text-align: center;
+                                                font-size: 24px;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-seccion-titulo,
+                                            #contenedorMetodoROSA .rosa-seccion {
+                                                background: #A4D65E !important;
+                                                color: #000000 !important;
+                                                border-left: 4px solid #007DBA;
+                                                padding: 8px 12px;
+                                                margin: 18px 0 12px;
+                                                font-size: 14px;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-grid {
+                                                display: grid;
+                                                grid-template-columns: repeat(2, minmax(0, 1fr));
+                                                gap: 12px;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-campo,
+                                            #contenedorMetodoROSA .rosa-campo-contenedor {
+                                                min-width: 0;
+                                                padding: 10px;
+                                                background: #ffffff;
+                                                border: 1px solid #d5e0e8;
+                                                border-radius: 3px;
+                                                color: #000000;
+                                            }
+
+                                            #contenedorMetodoROSA *.rosa-campo>*label,
+                                            #contenedorMetodoROSA *.rosa-campo-contenedor>*label {
+                                                display: block;
+                                                margin-bottom: 7px;
+                                                color: #000000;
+                                                font-size: 13px;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-select,
+                                            #contenedorMetodoROSA .rosa-campo,
+                                            #contenedorMetodoROSA .rosa-tiempo-select,
+                                            #contenedorMetodoROSA .rosa-tiempo {
+                                                max-width: 100%;
+                                            }
+
+                                            #contenedorMetodoROSA select.form-control {
+                                                width: 100%;
+                                                min-height: 35px;
+                                                padding: 6px 9px;
+                                                margin-bottom: 8px;
+                                                background: #ffffff;
+                                                color: #000000;
+                                                border: 1px solid #ced4da;
+                                                border-radius: 3px;
+                                                font-size: 12px;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-adicionales {
+                                                display: flex;
+                                                flex-direction: column;
+                                                gap: 5px;
+                                                margin-top: 6px;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-adicionales label {
+                                                display: flex;
+                                                align-items: flex-start;
+                                                gap: 7px;
+                                                padding: 6px 8px;
+                                                margin: 0;
+                                                background: #ffffff;
+                                                border: 1px solid #d5e0e8;
+                                                border-radius: 3px;
+                                                color: #000000;
+                                                font-size: 12px;
+                                                font-weight: normal;
+                                                line-height: 1.4;
+                                                cursor: pointer;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-adicionales label:has(input:checked) {
+                                                background: #e2f1cd;
+                                                border-color: #70ad35;
+                                                color: #000000;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-adicionales input[type="checkbox"] {
+                                                flex: 0 0 auto;
+                                                margin-top: 2px;
+                                                accent-color: #007DBA;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-label-tiempo,
+                                            #contenedorMetodoROSA .rosa-tiempo-label {
+                                                display: block;
+                                                margin-top: 10px;
+                                                margin-bottom: 5px;
+                                                color: #000000;
+                                                font-size: 12px;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-puntuacion {
+                                                display: flex;
+                                                flex-wrap: wrap;
+                                                gap: 8px 14px;
+                                                margin-top: 12px;
+                                                padding: 10px 12px;
+                                                background: #e7f3f8;
+                                                border-left: 4px solid #007DBA;
+                                                color: #000000;
+                                                font-size: 12px;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-puntuacion strong {
+                                                color: #000000;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-tabla-contenedor,
+                                            #contenedorMetodoROSA .table-responsive {
+                                                width: 100%;
+                                                overflow-x: auto;
+                                                margin-bottom: 15px;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-tabla,
+                                            #contenedorMetodoROSA .rosa-matriz {
+                                                width: 100%;
+                                                max-width: 100%;
+                                                margin: 0 auto 15px;
+                                                border-collapse: collapse !important;
+                                                border-spacing: 0;
+                                                table-layout: auto;
+                                                background: #ffffff;
+                                                color: #000000;
+                                                font-size: 12px;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-tabla th,
+                                            #contenedorMetodoROSA .rosa-tabla td,
+                                            #contenedorMetodoROSA .rosa-matriz th,
+                                            #contenedorMetodoROSA .rosa-matriz td {
+                                                border: 1px solid #007DBA !important;
+                                                padding: 7px 8px;
+                                                text-align: center;
+                                                vertical-align: middle;
+                                                color: #000000;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-tabla thead th,
+                                            #contenedorMetodoROSA .rosa-matriz thead th {
+                                                background: #007DBA !important;
+                                                color: #ffffff !important;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-tabla .rosa-titulo,
+                                            #contenedorMetodoROSA .rosa-matriz .rosa-titulo {
+                                                background: #A4D65E !important;
+                                                color: #000000 !important;
+                                                text-align: center;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-matriz .rosa-eje {
+                                                background: #A4D65E !important;
+                                                color: #000000 !important;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-tabla tbody td,
+                                            #contenedorMetodoROSA .rosa-matriz tbody td {
+                                                background: #ffffff;
+                                                color: #000000;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-tabla .rosa-nivel,
+                                            #contenedorMetodoROSA .rosa-tabla-riesgo .rosa-nivel {
+                                                text-align: center;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-nivel-0 {
+                                                background: #A4D65E !important;
+                                                color: #000000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-nivel-1 {
+                                                background: #00B050 !important;
+                                                color: #ffffff !important;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-nivel-2 {
+                                                background: #FFFF00 !important;
+                                                color: #000000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-nivel-3 {
+                                                background: #F9A825 !important;
+                                                color: #000000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-nivel-4 {
+                                                background: #ED2939 !important;
+                                                color: #ffffff !important;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-celda-seleccionada {
+                                                outline: 3px solid #ff0000 !important;
+                                                outline-offset: -3px;
+                                                font-weight: bold !important;
+                                            }
+
+                                            #contenedorMetodoROSA *#ROSA_TABLA_RIESGO* tbody tr.rosa-riesgo-seleccionado td,
+                                            #contenedorMetodoROSA *#ROSA_TABLA_INTERPRETACION* tbody tr.rosa-riesgo-seleccionado td {
+                                                border-top: 2px solid #ff0000 !important;
+                                                border-bottom: 2px solid #ff0000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA *#ROSA_TABLA_RIESGO* tbody tr.rosa-riesgo-seleccionado td:first-child,
+                                            #contenedorMetodoROSA *#ROSA_TABLA_INTERPRETACION* tbody tr.rosa-riesgo-seleccionado td:first-child {
+                                                border-left: 2px solid #ff0000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA *#ROSA_TABLA_RIESGO* tbody tr.rosa-riesgo-seleccionado td:last-child,
+                                            #contenedorMetodoROSA *#ROSA_TABLA_INTERPRETACION* tbody tr.rosa-riesgo-seleccionado td:last-child {
+                                                border-right: 2px solid #ff0000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-resultado {
+                                                padding: 12px;
+                                                margin: 15px 0;
+                                                background: #ffffff;
+                                                color: #000000;
+                                            }
+
+                                            *@media (max-width: 768px) {
+                                                #contenedorMetodoROSA .rosa-grid {
+                                                    grid-template-columns: 1fr;
+                                                }
+
+                                                #contenedorMetodoROSA .rosa-tabla,
+                                                #contenedorMetodoROSA .rosa-matriz {
+                                                    min-width: 600px;
+                                                }
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-card {
+                                                border: 0 !important;
+                                                box-shadow: none !important;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-titulo,
+                                            #contenedorMetodoROSA .rosa-seccion,
+                                            #contenedorMetodoROSA .rosa-seccion-titulo {
+                                                background: #A4D65E !important;
+                                                color: #000000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA table.rosa-tabla,
+                                            #contenedorMetodoROSA table.rosa-matriz,
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS {
+                                                width: 100% !important;
+                                                border-collapse: collapse !important;
+                                                border-spacing: 0 !important;
+                                                background: #ffffff !important;
+                                                color: #000000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA table.rosa-tabla th,
+                                            #contenedorMetodoROSA table.rosa-tabla td,
+                                            #contenedorMetodoROSA table.rosa-matriz th,
+                                            #contenedorMetodoROSA table.rosa-matriz td,
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS th,
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS td {
+                                                border: 1px solid #007DBA !important;
+                                                padding: 7px 8px !important;
+                                                color: #000000 !important;
+                                                vertical-align: middle !important;
+                                            }
+
+                                            #contenedorMetodoROSA table.rosa-tabla thead th,
+                                            #contenedorMetodoROSA table.rosa-matriz thead th,
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS thead tr:nth-child(2) th {
+                                                background: #007DBA !important;
+                                                color: #ffffff !important;
+                                                font-weight: bold !important;
+                                                text-align: center !important;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS thead tr:first-child th,
+                                            #contenedorMetodoROSA table.rosa-tabla thead th.rosa-titulo,
+                                            #contenedorMetodoROSA table.rosa-matriz thead th.rosa-titulo {
+                                                background: #A4D65E !important;
+                                                color: #000000 !important;
+                                                font-weight: bold !important;
+                                                text-align: center !important;
+                                            }
+
+                                            #contenedorMetodoROSA table.rosa-matriz th.rosa-eje,
+                                            #contenedorMetodoROSA table.rosa-tabla th.rosa-encabezado-verde {
+                                                background: #A4D65E !important;
+                                                color: #000000 !important;
+                                                font-weight: bold !important;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td {
+                                                background: #ffffff !important;
+                                                color: #000000 !important;
+                                                text-align: center !important;
+                                                font-weight: normal !important;
+                                                font-size: 13px !important;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel {
+                                                font-weight: bold !important;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel-0 {
+                                                background: #A4D65E !important;
+                                                color: #000000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel-1 {
+                                                background: #00B050 !important;
+                                                color: #ffffff !important;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel-2 {
+                                                background: #FFFF00 !important;
+                                                color: #000000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel-3 {
+                                                background: #F9A825 !important;
+                                                color: #000000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel-4 {
+                                                background: #ED2939 !important;
+                                                color: #ffffff !important;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-resultado-resumen {
+                                                margin: 10px 0;
+                                                padding: 12px;
+                                                border: 1px solid #007DBA;
+                                                background: #f3f9fc;
+                                                font-size: 16px;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_PUNTUACION_FINAL {
+                                                display: inline-block;
+                                                min-width: 32px;
+                                                padding: 3px 8px;
+                                                border-radius: 4px;
+                                                background: #007DBA;
+                                                color: #ffffff;
+                                                text-align: center;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_RIESGO_FINAL {
+                                                display: block;
+                                                margin-top: 5px;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody tr.rosa-seleccionada td {
+                                                border-top: 3px solid #ff0000 !important;
+                                                border-bottom: 3px solid #ff0000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody tr.rosa-seleccionada td:first-child {
+                                                border-left: 2px solid #ff0000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody tr.rosa-seleccionada td:last-child {
+                                                border-right: 2px solid #ff0000 !important;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-tiempo-label {
+                                                display: block !important;
+                                                margin-top: 10px !important;
+                                            }
+                                        </style>
+
+
+                                        <!-- ========================= RULA ========================= -->
+                                        <div class="col-12 metodo-fre-contenedor" id="contenedorMetodoRULA">
+
+                                            <div class="rula-titulo-principal">MÉTODO RULA</div>
+
+
+                                            <input type="hidden" id="RULA_DATOS_JSON" name="RULA_DATOS_JSON" value="">
+
+
+                                            <div class="rula-seccion">
+
+                                                <div class="rula-titulo-seccion">2.1 Brazo</div>
+
+                                                <div class="rula-grid">
+                                                    <div>
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_BRAZO">
+                                                                Posición del brazo
+                                                            </label>
+
+                                                            <select class="rula-campo rula-selector"
+                                                                id="RULA_BRAZO" name="RULA_BRAZO">
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="1">1 — Desde 20° de extensión a 20° de flexión</option>
+                                                                <option value="2">2 — Extensión mayor de 20° o flexión entre 20° y 45°</option>
+                                                                <option value="3">3 — Flexión entre 45° y 90°</option>
+                                                                <option value="4">4 — Flexión mayor de 90°</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_BRAZO_ABDUCIDO">
+                                                                Modificación: brazos abducidos (+1)
+                                                            </label>
+                                                            <select class="rula-campo rula-selector rula-modificador"
+                                                                id="RULA_BRAZO_ABDUCIDO" name="RULA_BRAZO_ABDUCIDO">
+                                                                <option value=""></option>
+                                                                <option value="0">No</option>
+                                                                <option value="1">Sí (+1)</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_HOMBRO_ELEVADO">
+                                                                Modificación: hombro elevado (+1)
+                                                            </label>
+                                                            <select class="rula-campo rula-selector rula-modificador"
+                                                                id="RULA_HOMBRO_ELEVADO" name="RULA_HOMBRO_ELEVADO">
+                                                                <option value=""></option>
+                                                                <option value="0">No</option>
+                                                                <option value="1">Sí (+1)</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_BRAZO_APOYADO">
+                                                                Modificación: brazo con punto de apoyo (−1)
+                                                            </label>
+                                                            <select class="rula-campo rula-selector rula-modificador"
+                                                                id="RULA_BRAZO_APOYADO" name="RULA_BRAZO_APOYADO">
+                                                                <option value=""></option>
+                                                                <option value="0">Sin punto de apoyo</option>
+                                                                <option value="-1">Con punto de apoyo (−1)</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <div class="rula-panel">
+                                                            <div class="rula-panel-titulo">Tabla 2.1. Puntuación del brazo</div>
+                                                            <div class="rula-panel-contenido">
+                                                                <table class="rula-tabla">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="rula-azul">Puntos</th>
+                                                                            <th class="rula-azul">Posición</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <td>Extensión de 20° a flexión de 20°</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>2</td>
+                                                                            <td>Extensión mayor de 20° o flexión entre 20° y 45°</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>3</td>
+                                                                            <td>Flexión entre 45° y 90°</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>4</td>
+                                                                            <td>Flexión mayor de 90°</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="rula-panel">
+                                                            <div class="rula-panel-titulo">Tabla 2.2. Modificaciones del brazo</div>
+                                                            <div class="rula-panel-contenido">
+                                                                <table class="rula-tabla">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="rula-azul">Puntos</th>
+                                                                            <th class="rula-azul">Posición</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>+1</td>
+                                                                            <td>Si los brazos están abducidos.</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>+1</td>
+                                                                            <td>Si el hombro está elevado.</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>−1</td>
+                                                                            <td>Si el brazo tiene un punto de apoyo.</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="rula-seccion">
+                                                <div class="rula-titulo-seccion">2.2 Antebrazo</div>
+
+                                                <div class="rula-grid">
+                                                    <div>
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_ANTEBRAZO">
+                                                                Posición del antebrazo
+                                                            </label>
+
+                                                            <select class="rula-campo rula-selector"
+                                                                id="RULA_ANTEBRAZO" name="RULA_ANTEBRAZO">
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="1">1 — Flexión entre 60° y 100°</option>
+                                                                <option value="2">2 — Flexión menor de 60° o mayor de 100°</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_ANTEBRAZO_PROYECCION">
+                                                                Modificación: antebrazo fuera de la proyección vertical del codo (+1)
+                                                            </label>
+                                                            <select class="rula-campo rula-selector rula-modificador"
+                                                                id="RULA_ANTEBRAZO_PROYECCION"
+                                                                name="RULA_ANTEBRAZO_PROYECCION">
+                                                                <option value=""></option>
+                                                                <option value="0">No</option>
+                                                                <option value="1">Sí (+1)</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_ANTEBRAZO_CRUZA">
+                                                                Modificación: antebrazo cruza la línea central del cuerpo (+1)
+                                                            </label>
+                                                            <select class="rula-campo rula-selector rula-modificador"
+                                                                id="RULA_ANTEBRAZO_CRUZA"
+                                                                name="RULA_ANTEBRAZO_CRUZA">
+                                                                <option value=""></option>
+                                                                <option value="0">No</option>
+                                                                <option value="1">Sí (+1)</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="rula-panel">
+                                                        <div class="rula-panel-titulo">Tabla 2.3. Puntuación del antebrazo</div>
+                                                        <div class="rula-panel-contenido">
+                                                            <table class="rula-tabla">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="rula-azul">Puntos</th>
+                                                                        <th class="rula-azul">Posición</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Flexión entre 60° y 100°</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <td>Flexión menor de 60° o mayor de 100°</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <table class="rula-tabla">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="rula-azul">Puntos</th>
+                                                                        <th class="rula-azul">Modificación</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>+1</td>
+                                                                        <td>La proyección vertical del antebrazo se encuentra más allá de la proyección vertical del codo.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>+1</td>
+                                                                        <td>El antebrazo cruza la línea central del cuerpo.</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="rula-seccion">
+                                                <div class="rula-titulo-seccion">2.3 Muñeca</div>
+
+                                                <div class="rula-grid">
+                                                    <div>
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_MUNECA">
+                                                                Posición de la muñeca
+                                                            </label>
+
+                                                            <select class="rula-campo rula-selector"
+                                                                id="RULA_MUNECA" name="RULA_MUNECA">
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="1">1 — Posición neutra</option>
+                                                                <option value="2">2 — Flexión o extensión entre 0° y 15°</option>
+                                                                <option value="3">3 — Flexión o extensión mayor de 15°</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_MUNECA_DESVIACION">
+                                                                Modificación: desviación radial o cubital (+1)
+                                                            </label>
+
+                                                            <select class="rula-campo rula-selector rula-modificador"
+                                                                id="RULA_MUNECA_DESVIACION"
+                                                                name="RULA_MUNECA_DESVIACION">
+                                                                <option value=""></option>
+                                                                <option value="0">Sin desviación</option>
+                                                                <option value="1">Con desviación (+1)</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_GIRO_MUNECA">
+                                                                Giro de muñeca
+                                                            </label>
+
+                                                            <select class="rula-campo rula-selector"
+                                                                id="RULA_GIRO_MUNECA" name="RULA_GIRO_MUNECA">
+                                                                <option value=""></option>
+                                                                <option value="1">1 — Rango medio</option>
+                                                                <option value="2">2 — Rango extremo</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="rula-panel">
+                                                        <div class="rula-panel-titulo">Tablas 2.5, 2.6 y 2.7. Puntuación de la muñeca</div>
+                                                        <div class="rula-panel-contenido">
+                                                            <table class="rula-tabla">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="rula-azul">Puntos</th>
+                                                                        <th class="rula-azul">Posición</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Posición neutra respecto a la flexión.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <td>Flexionada o extendida entre 0° y 15°.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>3</td>
+                                                                        <td>Flexión o extensión mayor de 15°.</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <table class="rula-tabla">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="rula-azul">Puntos</th>
+                                                                        <th class="rula-azul">Modificación</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>+1</td>
+                                                                        <td>Desviación radial o cubital.</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <table class="rula-tabla">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="rula-azul">Puntos</th>
+                                                                        <th class="rula-azul">Giro de muñeca</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Pronación o supinación en rango medio.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <td>Pronación o supinación en rango extremo.</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="rula-seccion">
+                                                <div class="rula-titulo-seccion">2.4 Cuello</div>
+
+                                                <div class="rula-grid">
+                                                    <div>
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_CUELLO">
+                                                                Posición del cuello
+                                                            </label>
+
+                                                            <select class="rula-campo rula-selector"
+                                                                id="RULA_CUELLO" name="RULA_CUELLO">
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="1">1 — Flexión entre 0° y 10°</option>
+                                                                <option value="2">2 — Flexión entre 10° y 20°</option>
+                                                                <option value="3">3 — Flexión mayor de 20°</option>
+                                                                <option value="4">4 — Extensión</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_CUELLO_ROTADO">
+                                                                Modificación: cuello rotado (+1)
+                                                            </label>
+                                                            <select class="rula-campo rula-selector rula-modificador"
+                                                                id="RULA_CUELLO_ROTADO" name="RULA_CUELLO_ROTADO">
+                                                                <option value=""></option>
+                                                                <option value="0">No</option>
+                                                                <option value="1">Sí (+1)</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_CUELLO_LATERAL">
+                                                                Modificación: inclinación lateral del cuello (+1)
+                                                            </label>
+                                                            <select class="rula-campo rula-selector rula-modificador"
+                                                                id="RULA_CUELLO_LATERAL" name="RULA_CUELLO_LATERAL">
+                                                                <option value=""></option>
+                                                                <option value="0">No</option>
+                                                                <option value="1">Sí (+1)</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="rula-panel">
+                                                        <div class="rula-panel-titulo">Tabla 2.8 y 2.9. Puntuación del cuello</div>
+                                                        <div class="rula-panel-contenido">
+                                                            <table class="rula-tabla">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="rula-azul">Puntos</th>
+                                                                        <th class="rula-azul">Posición</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Flexión entre 0° y 10°.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <td>Flexión entre 10° y 20°.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>3</td>
+                                                                        <td>Flexión mayor de 20°.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>4</td>
+                                                                        <td>Cuello extendido.</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <table class="rula-tabla">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="rula-azul">Puntos</th>
+                                                                        <th class="rula-azul">Modificación</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>+1</td>
+                                                                        <td>Si el cuello está rotado.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>+1</td>
+                                                                        <td>Si hay inclinación lateral.</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="rula-seccion">
+                                                <div class="rula-titulo-seccion">2.5 Tronco</div>
+
+                                                <div class="rula-grid">
+                                                    <div>
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_TRONCO">
+                                                                Posición del tronco
+                                                            </label>
+
+                                                            <select class="rula-campo rula-selector"
+                                                                id="RULA_TRONCO" name="RULA_TRONCO">
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="1">1 — Sentado, bien apoyado, tronco-caderas mayor de 90°</option>
+                                                                <option value="2">2 — Flexión entre 0° y 20°</option>
+                                                                <option value="3">3 — Flexión entre 20° y 60°</option>
+                                                                <option value="4">4 — Flexión mayor de 60°</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_TRONCO_TORSION">
+                                                                Modificación: torsión del tronco (+1)
+                                                            </label>
+                                                            <select class="rula-campo rula-selector rula-modificador"
+                                                                id="RULA_TRONCO_TORSION" name="RULA_TRONCO_TORSION">
+                                                                <option value=""></option>
+                                                                <option value="0">No</option>
+                                                                <option value="1">Sí (+1)</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="rula-campo-contenedor">
+                                                            <label class="rula-etiqueta" for="RULA_TRONCO_LATERAL">
+                                                                Modificación: inclinación lateral del tronco (+1)
+                                                            </label>
+                                                            <select class="rula-campo rula-selector rula-modificador"
+                                                                id="RULA_TRONCO_LATERAL" name="RULA_TRONCO_LATERAL">
+                                                                <option value=""></option>
+                                                                <option value="0">No</option>
+                                                                <option value="1">Sí (+1)</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="rula-panel">
+                                                        <div class="rula-panel-titulo">Tabla 2.10 y 2.11. Puntuación del tronco</div>
+                                                        <div class="rula-panel-contenido">
+                                                            <table class="rula-tabla">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="rula-azul">Puntos</th>
+                                                                        <th class="rula-azul">Posición</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Sentado, bien apoyado y con un ángulo tronco-caderas mayor de 90°.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <td>Flexión entre 0° y 20°.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>3</td>
+                                                                        <td>Flexión entre 20° y 60°.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>4</td>
+                                                                        <td>Flexión mayor de 60°.</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <table class="rula-tabla">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="rula-azul">Puntos</th>
+                                                                        <th class="rula-azul">Modificación</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>+1</td>
+                                                                        <td>Si hay torsión del tronco.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>+1</td>
+                                                                        <td>Si hay inclinación lateral del tronco.</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="rula-seccion">
+                                                <div class="rula-titulo-seccion">2.6 Piernas</div>
+
+                                                <div class="rula-grid">
+                                                    <div class="rula-campo-contenedor">
+                                                        <label class="rula-etiqueta" for="RULA_PIERNAS">
+                                                            Posición de las piernas
+                                                        </label>
+
+                                                        <select class="rula-campo rula-selector"
+                                                            id="RULA_PIERNAS" name="RULA_PIERNAS">
+                                                            <option value=""></option>
+                                                            <option value="1">1 — Sentado, con pies y piernas bien apoyados; o de pie con peso equilibrado</option>
+                                                            <option value="2">2 — Pies sin apoyo o peso no distribuido simétricamente</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="rula-panel">
+                                                        <div class="rula-panel-titulo">Tabla 2.12. Puntuación de las piernas</div>
+                                                        <div class="rula-panel-contenido">
+                                                            <table class="rula-tabla">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="rula-azul">Puntos</th>
+                                                                        <th class="rula-azul">Posición</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Sentado, con pies y piernas bien apoyados.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>De pie con el peso simétricamente distribuido.</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <td>Pies sin apoyo o peso no distribuido simétricamente.</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="rula-seccion">
+                                                <div class="rula-titulo-seccion">3. Puntuaciones globales</div>
+
+                                                <div class="rula-subtitulo">Tabla 3.1. Puntuación global para el grupo A</div>
+
+                                                <div class="rula-tabla-contenedor">
+                                                    <table class="rula-tabla rula-tabla-matriz" id="RULA_TABLA_A">
+                                                        <thead>
+                                                            <tr>
+                                                                <th rowspan="4" class="rula-verde">Brazo</th>
+                                                                <th rowspan="4" class="rula-verde">Antebrazo</th>
+                                                                <th colspan="8" class="rula-verde">Muñeca</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2" class="rula-azul">1</th>
+                                                                <th colspan="2" class="rula-azul">2</th>
+                                                                <th colspan="2" class="rula-azul">3</th>
+                                                                <th colspan="2" class="rula-azul">4</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2" class="rula-azul">Giro de muñeca</th>
+                                                                <th colspan="2" class="rula-azul">Giro de muñeca</th>
+                                                                <th colspan="2" class="rula-azul">Giro de muñeca</th>
+                                                                <th colspan="2" class="rula-azul">Giro de muñeca</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="rula-azul">1</th>
+                                                                <th class="rula-azul">2</th>
+                                                                <th class="rula-azul">1</th>
+                                                                <th class="rula-azul">2</th>
+                                                                <th class="rula-azul">1</th>
+                                                                <th class="rula-azul">2</th>
+                                                                <th class="rula-azul">1</th>
+                                                                <th class="rula-azul">2</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="rula-subtitulo">Tabla 3.2. Puntuación global para el grupo B</div>
+
+                                                <div class="rula-tabla-contenedor">
+                                                    <table class="rula-tabla rula-tabla-matriz" id="RULA_TABLA_B">
+                                                        <thead>
+                                                            <tr>
+                                                                <th rowspan="3" class="rula-verde">Cuello</th>
+                                                                <th colspan="12" class="rula-verde">Tronco</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="2" class="rula-azul">1</th>
+                                                                <th colspan="2" class="rula-azul">2</th>
+                                                                <th colspan="2" class="rula-azul">3</th>
+                                                                <th colspan="2" class="rula-azul">4</th>
+                                                                <th colspan="2" class="rula-azul">5</th>
+                                                                <th colspan="2" class="rula-azul">6</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="rula-azul">Piernas 1</th>
+                                                                <th class="rula-azul">Piernas 2</th>
+                                                                <th class="rula-azul">Piernas 1</th>
+                                                                <th class="rula-azul">Piernas 2</th>
+                                                                <th class="rula-azul">Piernas 1</th>
+                                                                <th class="rula-azul">Piernas 2</th>
+                                                                <th class="rula-azul">Piernas 1</th>
+                                                                <th class="rula-azul">Piernas 2</th>
+                                                                <th class="rula-azul">Piernas 1</th>
+                                                                <th class="rula-azul">Piernas 2</th>
+                                                                <th class="rula-azul">Piernas 1</th>
+                                                                <th class="rula-azul">Piernas 2</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="rula-subtitulo">
+                                                    Tabla 3.3 y 3.4. Actividad muscular y fuerza o carga
+                                                </div>
+
+                                                <div class="rula-grid">
+                                                    <div class="rula-campo-contenedor">
+                                                        <label class="rula-etiqueta" for="RULA_ACTIVIDAD">
+                                                            Actividad muscular
+                                                        </label>
+                                                        <select class="rula-campo rula-selector"
+                                                            id="RULA_ACTIVIDAD" name="RULA_ACTIVIDAD">
+                                                            <option value=""></option>
+                                                            <option value="0">0 — Actividad dinámica, ocasional</option>
+                                                            <option value="1">+1 — Actividad estática durante más de un minuto</option>
+                                                            <option value="1">+1 — Actividad repetitiva más de 4 veces por minuto</option>
+                                                            <option value="1">+1 — Ambas condiciones</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="rula-campo-contenedor">
+                                                        <label class="rula-etiqueta" for="RULA_CARGA">
+                                                            Fuerza o carga manejada
+                                                        </label>
+                                                        <select class="rula-campo rula-selector"
+                                                            id="RULA_CARGA" name="RULA_CARGA">
+                                                            <option value=""></option>
+                                                            <option value="0">0 — Menos de 2 kg, intermitente</option>
+                                                            <option value="1">+1 — De 2 a 10 kg, intermitente</option>
+                                                            <option value="2">+2 — De 2 a 10 kg, estática o repetitiva</option>
+                                                            <option value="2">+2 — Más de 10 kg, intermitente</option>
+                                                            <option value="3">+3 — Más de 10 kg, estática o repetitiva</option>
+                                                            <option value="3">+3 — Fuerza brusca o repentina</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="rula-seccion">
+                                                <div class="rula-titulo-seccion">4. Puntuación final</div>
+
+                                                <div class="rula-resultados-grid">
+                                                    <div class="rula-resultado-card">
+                                                        <div class="rula-resultado-titulo">Puntuación A</div>
+                                                        <div class="rula-resultado-valor" id="RULA_PUNTUACION_A">—</div>
+                                                    </div>
+
+                                                    <div class="rula-resultado-card">
+                                                        <div class="rula-resultado-titulo">Puntuación B</div>
+                                                        <div class="rula-resultado-valor" id="RULA_PUNTUACION_B">—</div>
+                                                    </div>
+
+                                                    <div class="rula-resultado-card">
+                                                        <div class="rula-resultado-titulo">Puntuación final RULA</div>
+                                                        <div class="rula-resultado-valor" id="RULA_PUNTUACION">—</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="rula-subtitulo">Tabla 4.1. Puntuación final</div>
+
+                                                <div class="rula-tabla-contenedor">
+                                                    <table class="rula-tabla rula-tabla-final" id="RULA_TABLA_FINAL">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="rula-verde">Puntuación C</th>
+                                                                <th colspan="7" class="rula-verde">Puntuación D</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="rula-verde"></th>
+                                                                <th class="rula-azul">1</th>
+                                                                <th class="rula-azul">2</th>
+                                                                <th class="rula-azul">3</th>
+                                                                <th class="rula-azul">4</th>
+                                                                <th class="rula-azul">5</th>
+                                                                <th class="rula-azul">6</th>
+                                                                <th class="rula-azul">7+</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr data-c="1">
+                                                                <th class="rula-azul">1</th>
+                                                                <td data-d="1">1</td>
+                                                                <td data-d="2">2</td>
+                                                                <td data-d="3">3</td>
+                                                                <td data-d="4">3</td>
+                                                                <td data-d="5">4</td>
+                                                                <td data-d="6">5</td>
+                                                                <td data-d="7">5</td>
+                                                            </tr>
+                                                            <tr data-c="2">
+                                                                <th class="rula-azul">2</th>
+                                                                <td data-d="1">2</td>
+                                                                <td data-d="2">2</td>
+                                                                <td data-d="3">3</td>
+                                                                <td data-d="4">4</td>
+                                                                <td data-d="5">4</td>
+                                                                <td data-d="6">5</td>
+                                                                <td data-d="7">5</td>
+                                                            </tr>
+                                                            <tr data-c="3">
+                                                                <th class="rula-azul">3</th>
+                                                                <td data-d="1">2</td>
+                                                                <td data-d="2">3</td>
+                                                                <td data-d="3">3</td>
+                                                                <td data-d="4">4</td>
+                                                                <td data-d="5">4</td>
+                                                                <td data-d="6">5</td>
+                                                                <td data-d="7">6</td>
+                                                            </tr>
+                                                            <tr data-c="4">
+                                                                <th class="rula-azul">4</th>
+                                                                <td data-d="1">3</td>
+                                                                <td data-d="2">3</td>
+                                                                <td data-d="3">3</td>
+                                                                <td data-d="4">4</td>
+                                                                <td data-d="5">5</td>
+                                                                <td data-d="6">6</td>
+                                                                <td data-d="7">6</td>
+                                                            </tr>
+                                                            <tr data-c="5">
+                                                                <th class="rula-azul">5</th>
+                                                                <td data-d="1">4</td>
+                                                                <td data-d="2">4</td>
+                                                                <td data-d="3">4</td>
+                                                                <td data-d="4">5</td>
+                                                                <td data-d="5">6</td>
+                                                                <td data-d="6">7</td>
+                                                                <td data-d="7">7</td>
+                                                            </tr>
+                                                            <tr data-c="6">
+                                                                <th class="rula-azul">6</th>
+                                                                <td data-d="1">4</td>
+                                                                <td data-d="2">4</td>
+                                                                <td data-d="3">5</td>
+                                                                <td data-d="4">6</td>
+                                                                <td data-d="5">6</td>
+                                                                <td data-d="6">7</td>
+                                                                <td data-d="7">7</td>
+                                                            </tr>
+                                                            <tr data-c="7">
+                                                                <th class="rula-azul">7</th>
+                                                                <td data-d="1">5</td>
+                                                                <td data-d="2">5</td>
+                                                                <td data-d="3">5</td>
+                                                                <td data-d="4">6</td>
+                                                                <td data-d="5">7</td>
+                                                                <td data-d="6">7</td>
+                                                                <td data-d="7">7</td>
+                                                            </tr>
+                                                            <tr data-c="8">
+                                                                <th class="rula-azul">8+</th>
+                                                                <td data-d="1">5</td>
+                                                                <td data-d="2">6</td>
+                                                                <td data-d="3">6</td>
+                                                                <td data-d="4">7</td>
+                                                                <td data-d="5">7</td>
+                                                                <td data-d="6">7</td>
+                                                                <td data-d="7">7</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div id="RULA_RESUMEN_FINAL" class="rula-resumen-final">
+                                                    Puntuación final: — | Nivel de actuación: —
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="rula-seccion">
+                                                <div class="rula-titulo-seccion">5. Nivel de actuación</div>
+
+                                                <div class="rula-tabla-contenedor">
+                                                    <table class="rula-tabla rula-tabla-nivel" id="RULA_TABLA_NIVEL">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="3" class="rula-verde">RULA — Nivel de actuación</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="rula-azul">Puntuación</th>
+                                                                <th class="rula-azul">Nivel</th>
+                                                                <th class="rula-azul">Actuación</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr data-nivel="1">
+                                                                <td>1 o 2</td>
+                                                                <td class="rula-nivel-1">1</td>
+                                                                <td>Riesgo aceptable.</td>
+                                                            </tr>
+                                                            <tr data-nivel="2">
+                                                                <td>3 o 4</td>
+                                                                <td class="rula-nivel-2">2</td>
+                                                                <td>Pueden requerirse cambios en la tarea; es conveniente profundizar en el estudio.</td>
+                                                            </tr>
+                                                            <tr data-nivel="3">
+                                                                <td>5 o 6</td>
+                                                                <td class="rula-nivel-3">3</td>
+                                                                <td>Se requiere el rediseño de la tarea.</td>
+                                                            </tr>
+                                                            <tr data-nivel="4">
+                                                                <td>7</td>
+                                                                <td class="rula-nivel-4">4</td>
+                                                                <td>Se requieren cambios urgentes en la tarea.</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 mt-3">
+                                                <div class="form-group">
+                                                    <label>Análisis método</label>
+                                                    <div class="input-group">
+                                                        <textarea class="form-control" name="ANALISIS_METODO_RULA" id="ANALISIS_METODO_RULA" rows="4"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <style>
+                                            #contenedorMetodoRULA .rula-titulo-principal {
+                                                width: 100%;
+                                                box-sizing: border-box;
+                                                background: #A4D65E !important;
+                                                color: #000000 !important;
+                                                border: 1px solid #173F73;
+                                                padding: 10px;
+                                                margin: 0 0 15px;
+                                                text-align: center;
+                                                font-size: 24px;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoRULA {
+                                                width: 100%;
+                                                font-family: Arial, sans-serif;
+                                                color: #2c2a29;
+                                            }
+
+                                            #contenedorMetodoRULA * {
+                                                box-sizing: border-box;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-seccion {
+                                                width: 100%;
+                                                margin-bottom: 28px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-titulo-seccion {
+                                                font-size: 19px;
+                                                font-weight: bold;
+                                                color: #007DBA;
+                                                border-bottom: 1px solid #007DBA;
+                                                padding: 8px 4px;
+                                                margin-bottom: 15px;
+                                                text-align: left;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-subtitulo {
+                                                font-size: 15px;
+                                                font-weight: bold;
+                                                color: #236192;
+                                                margin: 15px 0 10px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-grid {
+                                                display: grid;
+                                                grid-template-columns: repeat(2, minmax(0, 1fr));
+                                                gap: 18px 25px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-campo-contenedor {
+                                                margin-bottom: 14px;
+                                                min-width: 0;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-etiqueta {
+                                                display: block;
+                                                margin-bottom: 7px;
+                                                font-size: 13px;
+                                                font-weight: bold;
+                                                color: #2c2a29;
+                                                text-align: left;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-campo {
+                                                display: block;
+                                                width: 100%;
+                                                min-height: 38px;
+                                                padding: 7px 10px;
+                                                border: 1px solid #a8bed4;
+                                                border-radius: 3px;
+                                                background: #fff;
+                                                color: #2c2a29;
+                                                font-size: 13px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-campo:focus {
+                                                outline: none;
+                                                border-color: #007DBA;
+                                                box-shadow: 0 0 0 2px rgba(0, 125, 186, .15);
+                                            }
+
+                                            #contenedorMetodoRULA .rula-campo.rula-adicional-activo {
+                                                background: #fff1c9;
+                                                border: 2px solid #f6a32d;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-panel {
+                                                border: 1px solid #a8bed4;
+                                                margin-bottom: 18px;
+                                                background: #fff;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-panel-titulo {
+                                                padding: 11px;
+                                                background: #a4d65e;
+                                                color: #2c2a29;
+                                                font-size: 15px;
+                                                font-weight: bold;
+                                                text-align: center;
+                                                border-bottom: 1px solid #236192;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-panel-contenido {
+                                                padding: 16px;
+                                            }
+
+
+                                            #contenedorMetodoRULA .rula-tabla-contenedor {
+                                                width: 100%;
+                                                overflow-x: auto;
+                                                margin: 12px 0 20px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla {
+                                                width: 100%;
+                                                /* min-width: 760px; */
+                                                border-collapse: collapse;
+                                                border: 1px solid #236192;
+                                                table-layout: auto;
+                                                text-align: center;
+                                                font-size: 13px;
+                                                background: #fff;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla th,
+                                            #contenedorMetodoRULA .rula-tabla td {
+                                                border: 1px solid #236192;
+                                                padding: 10px 8px;
+                                                vertical-align: middle;
+                                                text-align: center;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla th {
+                                                font-weight: bold;
+                                            }
+
+                                            /* Encabezado verde */
+                                            #contenedorMetodoRULA .rula-verde {
+                                                background: #a4d65e !important;
+                                                color: #2c2a29 !important;
+                                                font-weight: bold;
+                                                text-align: center;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-azul {
+                                                background: #287fb5 !important;
+                                                color: #fff !important;
+                                                font-weight: bold;
+                                                text-align: center;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-fila-azul {
+                                                background: #287fb5 !important;
+                                                color: #fff !important;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla .rula-celda-seleccionada {
+                                                background: #ffeb3b !important;
+                                                color: #2c2a29 !important;
+                                                font-weight: bold;
+                                                outline: 3px solid #ff585d;
+                                                outline-offset: -3px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla tr.rula-fila-seleccionada>td,
+                                            #contenedorMetodoRULA .rula-tabla tr.rula-fila-seleccionada>th {
+                                                border-top: 2px solid #ff585d !important;
+                                                border-bottom: 2px solid #ff585d !important;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla tr.rula-fila-seleccionada>td:first-child,
+                                            #contenedorMetodoRULA .rula-tabla tr.rula-fila-seleccionada>th:first-child {
+                                                border-left: 2px solid #ff585d !important;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla tr.rula-fila-seleccionada>td:last-child,
+                                            #contenedorMetodoRULA .rula-tabla tr.rula-fila-seleccionada>th:last-child {
+                                                border-right: 2px solid #ff585d !important;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla-matriz {
+                                                min-width: 1050px;
+                                                font-size: 13px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla-matriz th,
+                                            #contenedorMetodoRULA .rula-tabla-matriz td {
+                                                padding: 11px 8px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla-matriz td {
+                                                height: 38px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla-final {
+                                                min-width: 620px;
+                                                max-width: 850px;
+                                                margin: 0 auto;
+                                                font-size: 14px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla-final th,
+                                            #contenedorMetodoRULA .rula-tabla-final td {
+                                                padding: 12px 10px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla-nivel {
+                                                min-width: 650px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla-nivel th,
+                                            #contenedorMetodoRULA .rula-tabla-nivel td {
+                                                text-align: center !important;
+                                                vertical-align: middle;
+                                                padding: 12px 10px;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla-nivel td:last-child {
+                                                text-align: center !important;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-nivel-1 {
+                                                background: #00a96b !important;
+                                                color: #fff !important;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-nivel-2 {
+                                                background: #ffeb00 !important;
+                                                color: #222 !important;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-nivel-3 {
+                                                background: #f6a32d !important;
+                                                color: #222 !important;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-nivel-4 {
+                                                background: #ed3045 !important;
+                                                color: #fff !important;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-resultados-grid {
+                                                display: grid;
+                                                grid-template-columns: repeat(3, minmax(0, 1fr));
+                                                gap: 14px;
+                                                margin: 18px 0;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-resultado-card {
+                                                border: 1px solid #236192;
+                                                min-height: 110px;
+                                                display: flex;
+                                                flex-direction: column;
+                                                align-items: center;
+                                                justify-content: center;
+                                                text-align: center;
+                                                padding: 12px;
+                                                background: #fff;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-resultado-titulo {
+                                                color: #236192;
+                                                font-size: 13px;
+                                                font-weight: bold;
+                                                margin-bottom: 12px;
+                                                text-align: center;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-resultado-valor {
+                                                font-size: 30px;
+                                                font-weight: bold;
+                                                color: #236192;
+                                                text-align: center;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-resumen-final {
+                                                padding: 13px 16px;
+                                                margin: 15px 0;
+                                                background: #f6a32d;
+                                                border-left: 4px solid #007DBA;
+                                                color: #2c2a29;
+                                                font-weight: bold;
+                                                text-align: left;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-resultado-oculto {
+                                                display: none;
+                                            }
+
+                                            #contenedorMetodoRULA #ANALISIS_METODO_RULA {
+                                                width: 100%;
+                                                min-height: 100px;
+                                                resize: vertical;
+                                                padding: 10px;
+                                                border: 1px solid #a8bed4;
+                                                border-radius: 3px;
+                                            }
+
+                                            @media (max-width: 768px) {
+                                                #contenedorMetodoRULA .rula-grid {
+                                                    grid-template-columns: 1fr;
+                                                    gap: 0;
+                                                }
+
+                                                #contenedorMetodoRULA .rula-resultados-grid {
+                                                    grid-template-columns: 1fr;
+                                                }
+
+                                                #contenedorMetodoRULA .rula-tabla {
+                                                    font-size: 12px;
+                                                }
+                                            }
+
+                                            /* .modal-dialog {
+                                                max-width: 95vw !important;
+                                                width: 95vw !important;
+                                            } */
+
+                                            .modal-content {
+                                                width: 100% !important;
+                                                max-width: 100% !important;
+                                                overflow: hidden !important;
+                                                box-sizing: border-box !important;
+                                            }
+
+                                            .modal-body {
+                                                width: 100% !important;
+                                                max-width: 100% !important;
+                                                min-width: 0 !important;
+                                                overflow-x: auto !important;
+                                                box-sizing: border-box !important;
+                                            }
+
+                                            #contenedorMetodoRULA {
+                                                width: 100% !important;
+                                                max-width: 100% !important;
+                                                min-width: 0 !important;
+                                                box-sizing: border-box !important;
+                                            }
+
+                                            #contenedorMetodoRULA>div,
+                                            #contenedorMetodoRULA .row,
+                                            #contenedorMetodoRULA [class*="col-"] {
+                                                max-width: 100% !important;
+                                                min-width: 0 !important;
+                                                box-sizing: border-box !important;
+                                            }
+
+                                            #contenedorMetodoRULA table:not(.rula-tabla-matriz) {
+                                                width: 100% !important;
+                                                max-width: 100% !important;
+                                                table-layout: fixed !important;
+                                                box-sizing: border-box !important;
+                                            }
+
+                                            #contenedorMetodoRULA table th,
+                                            #contenedorMetodoRULA table td {
+                                                white-space: normal !important;
+                                                overflow-wrap: anywhere !important;
+                                                word-break: normal !important;
+                                                box-sizing: border-box !important;
+                                            }
+
+                                            #contenedorMetodoRULA .rula-tabla-matriz {
+                                                max-width: 100% !important;
+                                                box-sizing: border-box !important;
+                                            }
+                                        </style>
+
+
+
+                                        <div class="col-12" style="text-align: right;">
+                                            <div class="form-group">
+                                                @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE','Especialista FRE']))
+                                                <button type="submit" class="btn btn-danger waves-effect waves-light botonguardar_modulorecsensorial" id="boton_guardar_fre">
+                                                    Guardar <i class="fa fa-save"></i>
+                                                </button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--tab 2 -->
+                    <div class="tab-pane" id="tab2_angulos" role="tabpanel" style="display: none;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <ol class="breadcrumb m-b-10">
+                                        <button type="button" class="btn btn-block btn-outline-secondary" style="width: auto;" id="boton_nuevo_angulos">
+                                            <span class="btn-label"><i class="fa fa-plus"></i></span> Ángulos
+                                        </button>
+                                    </ol><br>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover stylish-table" id="tabla_angulos_fre" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th width="50">No.</th>
+                                                    <th width="800">Foto</th>
+                                                    <th width="70">Editar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<!-- ============================================================== -->
+<!-- MODAL DOCUMENTACION  -->
+<!-- ============================================================== -->
+
+
+
+<div id="modal_angulos" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form enctype="multipart/form-data" method="post" name="form_angulo" id="form_angulo">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Evaluación FRE </h4>
+                    <h4 class="modal-title">Angulos</h4>
                 </div>
                 <div class="modal-body">
                     {!! csrf_field() !!}
-                    <div class="row">
 
-                        <input type="hidden" name="ID_EVALUACION_FRE" id="ID_EVALUACION_FRE">
-                        <input type="hidden" name="JSON_ACTIVIDADES_FRE" id="JSON_ACTIVIDADES_FRE">
-                        <input type="hidden" name="JSON_EQUIPOS_TRABAJO" id="JSON_EQUIPOS_TRABAJO">
-                        <input type="hidden" name="JSON_FUENTES_TERMICAS" id="JSON_FUENTES_TERMICAS">
-                        <input type="hidden" name="JSON_FUENTES_RUIDO" id="JSON_FUENTES_RUIDO">
-                        <input type="hidden" name="JSON_FUENTES_VIBRACION" id="JSON_FUENTES_VIBRACION">
-                        <input type="hidden" name="JSON_EPP" id="JSON_EPP">
-
-
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Fecha de evaluación *</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control mydatepicker" placeholder="aaaa-mm-dd" id="FECHA_EVALUACION_FRE" name="FECHA_EVALUACION_FRE">
-                                    <span class="input-group-addon"><i class="icon-calender"></i></span>
-                                </div>
-                            </div>
+                    <div class="row mb-3">
+                        <div class="col-12 text-right">
+                            <a href="{{ url('/calcularangulos') }}"
+                                target="_blank"
+                                class="btn btn-info ">
+                                <i class="fas fa-calculator"></i>
+                                Calcular ángulos
+                            </a>
                         </div>
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Instalación *</label>
-                                <input type="text" class="form-control" name="INSTALACION_FRE" id="INSTALACION_FRE">
-                            </div>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Áreas *</label>
-                                <select class="custom-select form-control" id="CAT_AREAS_FRE" name="CAT_AREAS_FRE[]" multiple>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Categoría *</label>
-                                <select class="form-control" id="CATEGORIA_ID_FRE" name="CATEGORIA_ID_FRE" required>
-                                    <option value="">Selecciona un tipo de valor</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label> Departamento *</label>
-                                <select class="custom-select form-control" id="CAT_DEPARTAMENTO_FRE" name="CAT_DEPARTAMENTO_FRE" required style="pointer-events:none; background-color:#e9ecef;">
-                                    <option value=""></option>
-                                    @foreach($catdepartamento as $dato)
-                                    <option value="{{$dato->id}}">{{$dato->catdepartamento_nombre}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                    </div>
 
 
-                        <div class="col-12 mt-2 p-2 d-flex justify-content-start  clienteblock">
-                            <h3 class="clienteblock">¿La evaluación es para el mismo trabajador ?</h3>
-                            <div class="form-check mx-4 clienteblock">
-                                <input class="form-check-input" type="radio" name="EVALUACION_TRABAJADOR" id="informe_del_trabajador_si" value="1" checked>
-                                <label class="form-check-label" for="informe_del_trabajador_si">
-                                    Si
-                                </label>
-                            </div>
-                            <div class="form-check mx-4 clienteblock">
-                                <input class="form-check-input" type="radio" name="EVALUACION_TRABAJADOR" id="informe_del_trabajador_no" value="0">
-                                <label class="form-check-label" for="informe_del_trabajador_no">
-                                    No
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- NOMBRE -->
-                        <div class="col-8">
-                            <div class="form-group">
-                                <label>Nombre del empleado *</label>
-                                <input type="text" class="form-control" name="NOMBRE_EMPLEADO_FRE" id="NOMBRE_EMPLEADO_FRE" required>
-                            </div>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Ficha / No empleado </label>
-                                <input type="text" class="form-control" name="NO_EMPLEADO_FRE" id="NO_EMPLEADO_FRE">
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Último grado de estudio </label>
-                                <input type="text" class="form-control" name="ULTIMO_GRADO_FRE" id="ULTIMO_GRADO_FRE">
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Indique la ubicación de sus principales actividades o puesto de trabajo </label>
-                                <select class="form-control" name="INDIQUE_UBICACION_FRE" id="INDIQUE_UBICACION_FRE">
-                                    <option value="">Seleccionar</option>
-                                    <option value="1">Campo</option>
-                                    <option value="2">Instalación</option>
-                                    <option value="3">Oficina </option>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- SEXO -->
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Sexo *</label>
-                                <select class="form-control" name="SEXO_EMPLEADO_FRE" id="SEXO_EMPLEADO_FRE" required>
-                                    <option value="">Seleccionar</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Femenino</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Edad </label>
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12" id="IMAGEN_DOCUMENTOS">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="EDAD_EMPLEADO_FRE" id="EDAD_EMPLEADO_FRE">
+                                    <label class="form-label"> Foto </label>
+                                    <input type="file" accept="image/jpeg,image/x-png,image/gif" id="FOTO_ANGULO" name="FOTO_ANGULO" data-allowed-file-extensions="jpg png JPG PNG" data-height="240" data-default-file="" />
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label>Régimen Contractual </label>
-
-                                <select class="custom-select form-control" id="REGIMEN_CONTRACTUAL_FRE" name="REGIMEN_CONTRACTUAL_FRE">
-                                    <option value=""></option>
-                                    @foreach($catregimen as $dato)
-                                    <option value="{{$dato->ID_REGIMEN_CONTRACTUAL}}">{{$dato->NOMBRE_REGIMEN_CONTRACTUAL}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label>Jornada </label>
-                                <select class="custom-select form-control" id="JORNADA_EMPLEADO_FRE" name="JORNADA_EMPLEADO_FRE">
-                                    <option value=""></option>
-                                    @foreach($catjornada as $dato)
-                                    <option value="{{$dato->ID_JORNADA}}">{{$dato->NOMBRE_JORNADA}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label>¿Cuánto tiempo lleva en la empresa?</label>
-                                <input type="text" class="form-control" name="TIEMPO_EMPRESA_FRE" id="TIEMPO_EMPRESA_FRE">
-                            </div>
-                        </div>
-
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label>Antigüedad en la categoría</label>
-                                <input type="text" class="form-control" name="ANTIGUEDAD_CATEOGORIA_FRE" id="ANTIGUEDAD_CATEOGORIA_FRE">
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>Pausas de descanso que toma durante la
-                                    jornada de trabajo (Mencione cuantas y
-                                    duración en minutos)</label>
-                                <input type="text" class="form-control" name="PAUSAS_DESCANSO" id="PAUSAS_DESCANSO">
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-5">
-                            <div class="form-group">
-                                <label>
-                                    ¿HA SUFRIDO ALGUNA LESIÓN O ACCIDENTES LABORAL DURANTE LA JORNADA LABORAL?
-                                </label>
-
-                                <select class="form-control" id="SUFRIDO_LESION_ACCIDENTE" name="SUFRIDO_LESION_ACCIDENTE">
-                                    <option value="">Seleccione</option>
-                                    <option value="SI">SI</option>
-                                    <option value="NO">NO</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12" id="datosLesion" style="display:none;">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>¿Cuándo?</label>
-                                        <input type="text" class="form-control" id="CUANDO_LESION_ACCIDENTE" name="CUANDO_LESION_ACCIDENTE">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>¿Cuál?</label>
-                                        <input type="text" class="form-control" id="CUAL_LESION_ACCIDENTE" name="CUAL_LESION_ACCIDENTE">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <br><br>
-                        <div class="col-12 mt-2">
-                            <button type="button" class="btn btn-danger" onclick="agregarActividadFRE()">
-                                + Agregar Actividad
-                            </button>
-                        </div>
-
-                        <div class="col-12 mt-2">
-                            <div id="contenedorActividadesfre" class="mt-2"></div>
-                        </div>
-
-                        <br><br>
-
-                        <style>
-                            /* ACTIVIDADES */
-
-                            #contenedorActividadesfre {
-                                width: 100%;
-                            }
-
-                            .actividad-card {
-                                width: 100%;
-                                border: 1px solid #ddd;
-                                border-radius: 10px;
-                                padding: 15px;
-                                margin-bottom: 10px;
-                                background: #fff;
-                            }
-
-                            .actividad-row {
-                                display: flex;
-                                gap: 15px;
-                                align-items: flex-start;
-                            }
-
-                            .actividad-left {
-                                width: 30%;
-                            }
-
-                            .actividad-right {
-                                width: 70%;
-                            }
-
-                            .btn-agregar-tarea {
-                                width: 20%;
-                                background: linear-gradient(90deg, #6dd6e4, #6dd6e4);
-                                color: white;
-                                border: none;
-                            }
-
-                            .tarea-item {
-                                border: 1px solid #e5e7eb;
-                                border-radius: 8px;
-                                padding: 10px;
-                                margin-top: 8px;
-                                background: #f9fafb;
-                            }
-
-
-
-                            /* FICHAS */
-                            .custom-container-left {
-                                width: 100%;
-                                max-width: 100%;
-                                /* evita límite */
-                                padding-left: !important;
-                                padding-right: !important;
-                            }
-
-                            .no-padding {
-                                padding-left: !important;
-                                padding-right: !important;
-                            }
-
-
-
-                            .custom-card-header {
-                                width: 100%;
-                                text-align: left;
-                            }
-
-                            .custom-card-nom .card-body {
-                                padding: 20px;
-                            }
-
-                            .custom-card-nom .row {
-                                justify-content: flex-start;
-                            }
-                        </style>
-
-
-                        <div class="col-12 mt-5">
-                            <div class="form-group">
-                                <label>
-                                    1. ¿SU MÉDICO LE HA DIAGNOSTICADO ALGUNA ENFERMEDAD MUSCULO-ESQUELÉTICA?
-                                </label>
-
-                                <select class="form-control" id="ENFERMEDAD_MUSCULOESQUELETICA" name="ENFERMEDAD_MUSCULOESQUELETICA">
-                                    <option value="">Seleccione</option>
-                                    <option value="SI">SI</option>
-                                    <option value="NO">NO</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12" id="datosEnfermedadMusculo" style="display:none;">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>¿Cuál?</label>
-                                        <input type="text" class="form-control" id="ENFERMEDAD_MUSCULOESQUELETICA_CUAL" name="ENFERMEDAD_MUSCULOESQUELETICA_CUAL">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>¿Hace cuánto tiempo?</label>
-                                        <input type="text" class="form-control" id="ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO" name="ENFERMEDAD_MUSCULOESQUELETICA_TIEMPO">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>
-                                    2. ¿HA ESTADO INCAPACITADO (A) A CAUSA DEL DOLOR MUSCULO ESQUELÉTICO EN EL ÚLTIMO AÑO?
-                                </label>
-
-                                <select class="form-control" id="INCAPACITADO_DOLOR_MUSCULO" name="INCAPACITADO_DOLOR_MUSCULO">
-                                    <option value="">Seleccione</option>
-                                    <option value="SI">SI</option>
-                                    <option value="NO">NO</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-4">
-                            <h4><b>Equipo de Protección Personal (EPP)</b></h4>
-                        </div>
-
-                        <div class="col-12 mb-3">
-                            <button type="button"
-                                class="btn btn-danger "
-                                id="agregarEPP">
-                                <i class="fa fa-plus"></i>
-                                Agregar EPP
-                            </button>
-                        </div>
-                        <div class="col-12">
-                            <table class="table table-bordered table-hover" id="tablaEPP">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th width="25%">Región Anatómica</th>
-                                        <th width="35%">Clave y EPP</th>
-                                        <th width="30%">Tipo de Riesgo</th>
-                                        <th width="10%" class="text-center">Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>Recomendaciones EPP</label>
-                                <div class="input-group">
-                                    <textarea class="form-control" name="RECOMENDACIONES_EPP" id="RECOMENDACIONES_EPP" rows="3"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="table-responsive">
-                                <h5 class="text-center mb-3"><strong>Máquinas, herramientas y utensilios</strong></h5>
-                                <button type="button" class="btn btn-danger mb-2" id="agregarFilaEquipo">
-                                    Agregar fila
-                                </button>
-                                <table class="table table-bordered align-middle" id="tablaEquiposTrabajo">
-                                    <thead>
-                                        <tr>
-                                            <th width="15%">Tipo</th>
-                                            <th width="20%">Nombre</th>
-                                            <th width="25%">Características</th>
-                                            <th width="20%">Peso</th>
-                                            <th width="15%">Método (agarres, técnicas, ayudas)</th>
-                                            <th width="5%">Acción</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="col-12 text-center">
-                            <h4>
-                                <b> Descripción de las condiciones ambientales (apercepción del trabajador) </b>
-                            </h4>
-
-                        </div>
-
-                        <div class="col-12">
-                            <h4 style="color: #95C12D; font-weight: bold;">
-                                Iluminación (Del área de trabajo)
-                            </h4>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Fuente</label>
-                                <select class="form-control" name="FUENTE_ILUMINACION" id="FUENTE_ILUMINACION">
-                                    <option value="">Seleccione</option>
-                                    <option value="1">Natural</option>
-                                    <option value="2">Artificial</option>
-                                    <option value="3">Mixta</option>
-                                    <option value="4">N/A</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Intensidad</label>
-                                <select class="form-control" name="INTENSIDAD_ILUMINACION" id="INTENSIDAD_ILUMINACION">
-                                    <option value="">Seleccione</option>
-                                    <option value="1">Normal</option>
-                                    <option value="2">Deficiente</option>
-                                    <option value="3">Excesiva</option>
-                                    <option value="4">N/A</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>Observaciones</label>
-                                <div class="input-group">
-                                    <textarea class="form-control" name="OBSERVACION_ILUMINACION" id="OBSERVACION_ILUMINACION" rows="3"></textarea>
-                                    <button type="button" class="btn btn-info btnMicrofono" data-target="OBSERVACION_ILUMINACION">
-                                        <i class="fa fa-microphone"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-3">
-                            <h4 style="color: #95C12D; font-weight: bold;">
-                                Condiciones térmicas (Percepción de frío o calor)
-                            </h4>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Percepción</label>
-                                <select class="form-control" name="PERCEPCION_TERMICA" id="PERCEPCION_TERMICA">
-                                    <option value="">Seleccione</option>
-                                    <option value="1">Calor</option>
-                                    <option value="2">Frío</option>
-                                    <option value="3">Otros</option>
-                                    <option value="4">N/A</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Intensidad</label>
-                                <select class="form-control" name="INTENSIDAD_TERMICA" id="INTENSIDAD_TERMICA">
-                                    <option value="">Seleccione</option>
-                                    <option value="1">Leve</option>
-                                    <option value="2">Moderada</option>
-                                    <option value="3">Severa</option>
-                                    <option value="4">N/A</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12" id="CONDICION_TERMINCA_CUAL" style="display: none;">
-                            <div class="form-group">
-                                <label>Cuál ? *</label>
-                                <input type="text" class="form-control" name="CUAL_PERCEPCION" id="CUAL_PERCEPCION" required>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-2">
-                            <label>Fuentes</label>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="tablaFuentesTermicas">
-                                    <thead>
-                                        <tr>
-                                            <th>Fuente</th>
-                                            <th width="80">Acción</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <button type="button"
-                                class="btn btn-danger"
-                                id="agregarFuenteTermica">
-                                Agregar fuente
-                            </button>
-                        </div>
-
-                        <div class="col-12 mt-3">
-                            <div class="form-group">
-                                <label>Observaciones</label>
-
-                                <div class="input-group">
-                                    <textarea class="form-control"
-                                        name="OBSERVACIONES_TERMICAS"
-                                        id="OBSERVACIONES_TERMICAS"
-                                        rows="3"></textarea>
-
-                                    <button type="button"
-                                        class="btn btn-info btnMicrofono"
-                                        data-target="OBSERVACIONES_TERMICAS">
-                                        <i class="fa fa-microphone"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-4">
-                            <h4 style="color: #95C12D; font-weight: bold;">
-                                Ambiente sonoro (Ruido ambiental)
-                            </h4>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Intensidad</label>
-                                <select class="form-control" name="INTENSIDAD_RUIDO" id="INTENSIDAD_RUIDO">
-                                    <option value="">Seleccione</option>
-                                    <option value="1">Leve</option>
-                                    <option value="2">Moderada</option>
-                                    <option value="3">Severa</option>
-                                    <option value="4">N/A</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Continuidad</label>
-                                <select class="form-control" name="CONTINUIDAD_RUIDO" id="CONTINUIDAD_RUIDO">
-                                    <option value="">Seleccione</option>
-                                    <option value="1">Continuo</option>
-                                    <option value="2">Intermitente</option>
-                                    <option value="4">N/A</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-2">
-                            <label>Fuentes</label>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="tablaFuentesRuido">
-                                    <thead>
-                                        <tr>
-                                            <th>Fuente</th>
-                                            <th width="80">Acción</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <button type="button"
-                                class="btn btn-danger"
-                                id="agregarFuenteRuido">
-                                Agregar fuente
-                            </button>
-                        </div>
-
-                        <div class="col-12 mt-3">
-                            <div class="form-group">
-                                <label>Observaciones</label>
-
-                                <div class="input-group">
-
-                                    <textarea class="form-control"
-                                        name="OBSERVACIONES_RUIDO"
-                                        id="OBSERVACIONES_RUIDO"
-                                        rows="3"></textarea>
-
-                                    <button type="button"
-                                        class="btn btn-info btnMicrofono"
-                                        data-target="OBSERVACIONES_RUIDO">
-                                        <i class="fa fa-microphone"></i>
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-4">
-                            <h4 style="color: #95C12D; font-weight: bold;">
-                                Vibración (Generada por máquinas) si usa herramientas que vibren especifique cuál y su uso (diario, mensual, etc.)
-                            </h4>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Intensidad</label>
-                                <select class="form-control" name="INTENSIDAD_VIBRACION" id="INTENSIDAD_VIBRACION">
-                                    <option value="">Seleccione</option>
-                                    <option value="1">Leve</option>
-                                    <option value="2">Moderada</option>
-                                    <option value="3">Severa</option>
-                                    <option value="4">N/A</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Segmentos corporales</label>
-                                <select class="form-control" name="SEGMENTO_VIBRACION" id="SEGMENTO_VIBRACION">
-                                    <option value="">Seleccione</option>
-                                    <option value="1">Mano brazo</option>
-                                    <option value="2">Cuerpo entero</option>
-                                    <option value="3">Columna y miembros inferiores</option>
-                                    <option value="4">N/A</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-2">
-                            <label>Fuentes</label>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="tablaFuentesVibracion">
-                                    <thead>
-                                        <tr>
-                                            <th>Fuente</th>
-                                            <th width="80">Acción</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <button type="button"
-                                class="btn btn-danger"
-                                id="agregarFuenteVibracion">
-                                Agregar fuente
-                            </button>
-                        </div>
-
-                        <div class="col-12 mt-3">
-                            <div class="form-group">
-                                <label>Observaciones</label>
-
-                                <div class="input-group">
-
-                                    <textarea class="form-control"
-                                        name="OBSERVACIONES_VIBRACION"
-                                        id="OBSERVACIONES_VIBRACION"
-                                        rows="3"></textarea>
-
-                                    <button type="button"
-                                        class="btn btn-info btnMicrofono"
-                                        data-target="OBSERVACIONES_VIBRACION">
-                                        <i class="fa fa-microphone"></i>
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <h4>
-                                <b>Cuestionario Nórdico:</b> Traducido directamente de la publicación original “Standardised Nordic questionnaires for the
-                                of músculoskeletal symptoms” de Kuoirinka et col, por Jaime Ibacache Araya Profesional Ergónomo del Instituto de
-                                Salud Pública de Chile.
-                            </h4>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Peso (kg) </label>
-                                <input type="number" class="form-control" name="PESO_FRE" id="PESO_FRE">
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>Talla (cm) </label>
-                                <input type="number" class="form-control" name="TALLA_FRE" id="TALLA_FRE">
-                            </div>
-                        </div>
-
-                        <!-- CUESTIONARIO NORDICO  -->
-
-                        <div class="col-12">
-                            <table width="100%">
-                                <tr>
-                                    <td width="75%" valign="top">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th width="45%">Problemas en el aparato locomotor</th>
-                                                    <th width="15%" class="text-center">No</th>
-                                                    <th width="15%" class="text-center">Sí</th>
-                                                    <th width="12%" class="text-center">Izq.</th>
-                                                    <th width="13%" class="text-center">Der.</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="5">
-                                                        <strong>Para ser respondido por todos</strong><br>
-                                                        ¿En algún momento durante los últimos 12 meses, ha tenido problemas
-                                                        (dolor, molestias, disconfort) en:
-                                                    </td>
-                                                </tr>
-                                                <!-- CUELLO -->
-                                                <tr>
-                                                    <td>Cuello</td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="CUELLO" id="CUELLO_NO" value="0">
-                                                            <label class="form-check-label" for="CUELLO_NO">No</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="CUELLO" id="CUELLO_SI" value="1">
-                                                            <label class="form-check-label" for="CUELLO_SI">Sí</label>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <!-- HOMBRO -->
-                                                <tr>
-                                                    <td>Hombro</td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="HOMBRO" id="HOMBRO_NO" value="0">
-                                                            <label class="form-check-label" for="HOMBRO_NO">No</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="HOMBRO" id="HOMBRO_SI" value="1">
-                                                            <label class="form-check-label" for="HOMBRO_SI">Sí</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="checkbox" name="HOMBRO_IZQ" id="HOMBRO_IZQ" disabled>
-                                                            <label class="form-check-label" for="HOMBRO_IZQ">Izq.</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="checkbox" name="HOMBRO_DER" id="HOMBRO_DER" disabled>
-                                                            <label class="form-check-label" for="HOMBRO_DER">Der.</label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <!-- CODO -->
-                                                <tr>
-                                                    <td>Codo</td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="CODO" id="CODO_NO" value="0">
-                                                            <label class="form-check-label" for="CODO_NO">No</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="CODO" id="CODO_SI" value="1">
-                                                            <label class="form-check-label" for="CODO_SI">Sí</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="checkbox" name="CODO_IZQ" id="CODO_IZQ" disabled>
-                                                            <label class="form-check-label" for="CODO_IZQ">Izq.</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="checkbox" name="CODO_DER" id="CODO_DER" disabled>
-                                                            <label class="form-check-label" for="CODO_DER">Der.</label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <!-- MUÑECA -->
-                                                <tr>
-                                                    <td>Muñeca</td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="MUNECA" id="MUNECA_NO" value="0">
-                                                            <label class="form-check-label" for="MUNECA_NO">No</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="MUNECA" id="MUNECA_SI" value="1">
-                                                            <label class="form-check-label" for="MUNECA_SI">Sí</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="checkbox" name="MUNECA_IZQ" id="MUNECA_IZQ" disabled>
-                                                            <label class="form-check-label" for="MUNECA_IZQ">Izq</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="checkbox" name="MUNECA_DER" id="MUNECA_DER" disabled>
-                                                            <label class="form-check-label" for="MUNECA_DER">Der</label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <!-- ESPALDA ALTA (REGIÓN DORSAL) -->
-                                                <tr>
-                                                    <td>Espalda alta (región dorsal)</td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="ESPALDA_ALTA" id="ESPALDA_ALTA_NO" value="0">
-                                                            <label class="form-check-label" for="ESPALDA_ALTA_NO">No</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="ESPALDA_ALTA" id="ESPALDA_ALTA_SI" value="1">
-                                                            <label class="form-check-label" for="ESPALDA_ALTA_SI">Sí</label>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <!-- ESPALDA BAJA (REGIÓN LUMBAR) -->
-                                                <tr>
-                                                    <td>Espalda baja (región lumbar)</td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="ESPALDA_BAJA" id="ESPALDA_BAJA_NO" value="0">
-                                                            <label class="form-check-label" for="ESPALDA_BAJA_NO">
-                                                                No
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="ESPALDA_BAJA" id="ESPALDA_BAJA_SI" value="1">
-                                                            <label class="form-check-label" for="ESPALDA_BAJA_SI">Sí</label>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <!-- CADERAS / PIERNAS -->
-                                                <tr>
-                                                    <td>Una o ambas caderas / piernas</td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="CADERAS_PIERNAS" id="CADERAS_PIERNAS_NO" value="0">
-                                                            <label class="form-check-label" for="CADERAS_PIERNAS_NO">No</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="CADERAS_PIERNAS" id="CADERAS_PIERNAS_SI" value="1">
-                                                            <label class="form-check-label" for="CADERAS_PIERNAS_SI">Sí</label>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <!-- RODILLAS -->
-                                                <tr>
-                                                    <td>Una o ambas rodillas</td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="RODILLAS" id="RODILLAS_NO" value="0">
-                                                            <label class="form-check-label" for="RODILLAS_NO">No</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="RODILLAS" id="RODILLAS_SI" value="1">
-                                                            <label class="form-check-label" for="RODILLAS_SI">Sí</label>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <!-- TOBILLOS / PIES -->
-                                                <tr>
-                                                    <td>Uno o ambos tobillos / pies</td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="TOBILLOS_PIES" id="TOBILLOS_PIES_NO" value="0">
-                                                            <label class="form-check-label" for="TOBILLOS_PIES_NO">No</label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check mx-4 clienteblock">
-                                                            <input class="form-check-input" type="radio" name="TOBILLOS_PIES" id="TOBILLOS_PIES_SI" value="1">
-                                                            <label class="form-check-label" for="TOBILLOS_PIES_SI">Sí</label>
-                                                        </div>
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-
-                                    </td>
-
-                                    <td width="25%" class="text-center" valign="top">
-
-                                        <img src="{{ asset('assets/images/ergo/imagencuerpo.png') }}"
-                                            class="img-fluid"
-                                            style="max-width: 337px;">
-
-                                    </td>
-
-                                </tr>
-                            </table>
-
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th colspan="3" class="text-center">
-                                            PROBLEMAS EN EL APARATO LOCOMOTOR
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="3">
-                                            <strong>
-                                                Para ser respondido solo por aquellos que han presentado problemas en el aparato locomotor durante los últimos 12 meses
-                                            </strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width="32%">
-                                            <strong>Segmento</strong>
-                                        </td>
-                                        <td width="34%" class="text-center">
-                                            ¿En algún momento, durante los últimos 12 meses, ha tenido algún impedimento para hacer su trabajo normal (en casa o fuera de casa) debido a sus molestias?
-                                        </td>
-                                        <td width="34%" class="text-center">
-                                            ¿En algún momento, durante los últimos 7 días, ha tenido algún impedimento para hacer su trabajo normal debido a sus molestias?
-                                        </td>
-                                    </tr>
-
-                                    <!-- CUELLO -->
-                                    <tr>
-                                        <td>
-                                            Cuello
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CUELLO_12_MESES" id="CUELLO_12_MESES_NO" value="0">
-                                                    <label class="form-check-label" for="CUELLO_12_MESES_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CUELLO_12_MESES" id="CUELLO_12_MESES_SI" value="1">
-                                                    <label class="form-check-label" for="CUELLO_12_MESES_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CUELLO_7_DIAS" id="CUELLO_7_DIAS_NO" value="0">
-                                                    <label class="form-check-label" for="CUELLO_7_DIAS_NO"> No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CUELLO_7_DIAS" id="CUELLO_7_DIAS_SI" value="1">
-                                                    <label class="form-check-label" for="CUELLO_7_DIAS_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-
-                                    <!-- HOMBRO -->
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <span>Hombro</span>
-                                                <div class="form-check mx-3 clienteblock">
-                                                    <input class="form-check-input" type="checkbox" id="HOMBRO_IZQ_2" name="HOMBRO_IZQ_2">
-                                                    <label class="form-check-label" for="HOMBRO_IZQ_2">Izq.</label>
-                                                </div>
-                                                <div class="form-check mx-3 clienteblock">
-                                                    <input class="form-check-input" type="checkbox" id="HOMBRO_DER_2" name="HOMBRO_DER_2">
-                                                    <label class="form-check-label" for="HOMBRO_DER_2">Der,</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="HOMBRO_12_MESES" id="HOMBRO_12_MESES_NO" value="0">
-                                                    <label class="form-check-label" for="HOMBRO_12_MESES_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="HOMBRO_12_MESES" id="HOMBRO_12_MESES_SI" value="1">
-                                                    <label class="form-check-label" for="HOMBRO_12_MESES_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="HOMBRO_7_DIAS" id="HOMBRO_7_DIAS_NO" value="0">
-                                                    <label class="form-check-label" for="HOMBRO_7_DIAS_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="HOMBRO_7_DIAS" id="HOMBRO_7_DIAS_SI" value="1">
-                                                    <label class="form-check-label" for="HOMBRO_7_DIAS_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <span>Codo</span>
-                                                <div class="form-check mx-3 clienteblock">
-                                                    <input class="form-check-input" type="checkbox" id="CODO_IZQ_2" name="CODO_IZQ_2">
-                                                    <label class="form-check-label" for="CODO_IZQ_2">Izq.</label>
-                                                </div>
-                                                <div class="form-check mx-3 clienteblock">
-                                                    <input class="form-check-input" type="checkbox" id="CODO_DER_2" name="CODO_DER_2">
-                                                    <label class="form-check-label" for="CODO_DER_2">Der.</label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CODO_12_MESES" id="CODO_12_MESES_NO" value="0">
-                                                    <label class="form-check-label" for="CODO_12_MESES_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CODO_12_MESES" id="CODO_12_MESES_SI" value="1">
-                                                    <label class="form-check-label" for="CODO_12_MESES_SI">Sí </label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CODO_7_DIAS" id="CODO_7_DIAS_NO" value="0">
-                                                    <label class="form-check-label" for="CODO_7_DIAS_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CODO_7_DIAS" id="CODO_7_DIAS_SI" value="1">
-                                                    <label class="form-check-label" for="CODO_7_DIAS_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <span>Muñeca</span>
-                                                <div class="form-check mx-3 clienteblock">
-                                                    <input class="form-check-input" type="checkbox" id="MUNECA_IZQ_2" name="MUNECA_IZQ_2">
-                                                    <label class="form-check-label" for="MUNECA_IZQ_2">Izq.</label>
-                                                </div>
-                                                <div class="form-check mx-3 clienteblock">
-                                                    <input class="form-check-input" type="checkbox" id="MUNECA_DER_2" name="MUNECA_DER_2">
-                                                    <label class="form-check-label" for="MUNECA_DER_2">Der.</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="MUNECA_12_MESES" id="MUNECA_12_MESES_NO" value="0">
-                                                    <label class="form-check-label" for="MUNECA_12_MESES_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="MUNECA_12_MESES" id="MUNECA_12_MESES_SI" value="1">
-                                                    <label class="form-check-label" for="MUNECA_12_MESES_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="MUNECA_7_DIAS" id="MUNECA_7_DIAS_NO" value="0">
-                                                    <label class="form-check-label" for="MUNECA_7_DIAS_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="MUNECA_7_DIAS" id="MUNECA_7_DIAS_SI" value="1">
-                                                    <label class="form-check-label" for="MUNECA_7_DIAS_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-
-
-
-                                    <tr>
-                                        <td>
-                                            Espalda alta (región dorsal)
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="ESPALDA_ALTA_12_MESES" id="ESPALDA_ALTA_12_MESES_NO" value="0">
-                                                    <label class="form-check-label" for="ESPALDA_ALTA_12_MESES_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="ESPALDA_ALTA_12_MESES" id="ESPALDA_ALTA_12_MESES_SI" value="1">
-                                                    <label class="form-check-label" for="ESPALDA_ALTA_12_MESES_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="ESPALDA_ALTA_7_DIAS" id="ESPALDA_ALTA_7_DIAS_NO" value="0">
-                                                    <label class="form-check-label" for="ESPALDA_ALTA_7_DIAS_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="ESPALDA_ALTA_7_DIAS" id="ESPALDA_ALTA_7_DIAS_SI" value="1">
-                                                    <label class="form-check-label" for="ESPALDA_ALTA_7_DIAS_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            Espalda baja (región lumbar)
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="ESPALDA_BAJA_12_MESES" id="ESPALDA_BAJA_12_MESES_NO" value="0">
-                                                    <label class="form-check-label" for="ESPALDA_BAJA_12_MESES_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="ESPALDA_BAJA_12_MESES" id="ESPALDA_BAJA_12_MESES_SI" value="1">
-                                                    <label class="form-check-label" for="ESPALDA_BAJA_12_MESES_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="ESPALDA_BAJA_7_DIAS" id="ESPALDA_BAJA_7_DIAS_NO" value="0">
-                                                    <label class="form-check-label" for="ESPALDA_BAJA_7_DIAS_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="ESPALDA_BAJA_7_DIAS" id="ESPALDA_BAJA_7_DIAS_SI" value="1">
-                                                    <label class="form-check-label" for="ESPALDA_BAJA_7_DIAS_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            Una o ambas caderas / piernas
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CADERAS_PIERNAS_12_MESES" id="CADERAS_PIERNAS_12_MESES_NO" value="0">
-                                                    <label class="form-check-label" for="CADERAS_PIERNAS_12_MESES_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CADERAS_PIERNAS_12_MESES" id="CADERAS_PIERNAS_12_MESES_SI" value="1">
-                                                    <label class="form-check-label" for="CADERAS_PIERNAS_12_MESES_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CADERAS_PIERNAS_7_DIAS" id="CADERAS_PIERNAS_7_DIAS_NO" value="0">
-                                                    <label class="form-check-label" for="CADERAS_PIERNAS_7_DIAS_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="CADERAS_PIERNAS_7_DIAS" id="CADERAS_PIERNAS_7_DIAS_SI" value="1">
-                                                    <label class="form-check-label" for="CADERAS_PIERNAS_7_DIAS_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            Una o ambas rodillas
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="RODILLAS_12_MESES" id="RODILLAS_12_MESES_NO" value="0">
-                                                    <label class="form-check-label" for="RODILLAS_12_MESES_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="RODILLAS_12_MESES" id="RODILLAS_12_MESES_SI" value="1">
-                                                    <label class="form-check-label" for="RODILLAS_12_MESES_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="RODILLAS_7_DIAS" id="RODILLAS_7_DIAS_NO" value="0">
-                                                    <label class="form-check-label" for="RODILLAS_7_DIAS_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="RODILLAS_7_DIAS" id="RODILLAS_7_DIAS_SI" value="1">
-                                                    <label class="form-check-label" for="RODILLAS_7_DIAS_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            Uno o ambos tobillos / pies
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="TOBILLOS_PIES_12_MESES" id="TOBILLOS_PIES_12_MESES_NO" value="0">
-                                                    <label class="form-check-label" for="TOBILLOS_PIES_12_MESES_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="TOBILLOS_PIES_12_MESES" id="TOBILLOS_PIES_12_MESES_SI" value="1">
-                                                    <label class="form-check-label" for="TOBILLOS_PIES_12_MESES_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="TOBILLOS_PIES_7_DIAS" id="TOBILLOS_PIES_7_DIAS_NO" value="0">
-                                                    <label class="form-check-label" for="TOBILLOS_PIES_7_DIAS_NO">No</label>
-                                                </div>
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="TOBILLOS_PIES_7_DIAS" id="TOBILLOS_PIES_7_DIAS_SI" value="1">
-                                                    <label class="form-check-label" for="TOBILLOS_PIES_7_DIAS_SI">Sí</label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-                            <table class="table table-bordered">
-
-                                <thead>
-
-                                    <tr>
-                                        <th colspan="2" class="text-center">
-                                            COLUMNA LUMBAR (Espalda baja)
-                                        </th>
-                                    </tr>
-
-                                </thead>
-
-                                <tbody>
-
-                                    <!-- PREGUNTA 1 -->
-                                    <tr>
-                                        <td width="70%">
-                                            <strong>1.</strong>
-                                            ¿Alguna vez ha tenido problemas en la parte baja de la espalda
-                                            (molestias, dolor o disconfort)?
-                                        </td>
-                                        <td width="30%">
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check mx-4 clienteblock">
-                                                    <input class="form-check-input" type="radio" name="COLUMNA_LUMBAR_P1" id="COLUMNA_LUMBAR_P1_NO" value="0">
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P1_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P1"
-                                                        id="COLUMNA_LUMBAR_P1_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P1_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- MENSAJE -->
-                                    <tr>
-
-                                        <td colspan="2" style="background:#efefef;">
-
-                                            <strong>
-                                                Si respondió "<b> NO </b>" a la pregunta 1,
-                                                entonces <b>NO </b> responda las preguntas 2 a la 8.
-                                            </strong>
-
-                                        </td>
-
-                                    </tr>
-
-
-                                    <!-- PREGUNTA 2 -->
-                                    <tr class="bloque-lumbar-p2">
-
-                                        <td>
-
-                                            <strong>2.</strong>
-                                            ¿Ha sido hospitalizado por problemas
-                                            en la parte baja de la espalda?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P2"
-                                                        id="COLUMNA_LUMBAR_P2_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P2_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P2"
-                                                        id="COLUMNA_LUMBAR_P2_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P2_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 3 -->
-                                    <tr class="bloque-lumbar-p3">
-
-                                        <td>
-
-                                            <strong>3.</strong>
-
-                                            ¿Alguna vez ha tenido que cambiar de trabajo
-                                            o deberes debido a problemas en la espalda baja?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P3"
-                                                        id="COLUMNA_LUMBAR_P3_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P3_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P3"
-                                                        id="COLUMNA_LUMBAR_P3_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P3_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-
-                                    <!-- PREGUNTA 4 -->
-                                    <tr class="bloque-lumbar-p4">
-
-                                        <td>
-
-                                            <strong>4.</strong>
-                                            ¿Cuántos días aproximadamente le ha impedido realizar
-                                            su trabajo (en casa o fuera de casa) durante los últimos
-                                            12 meses?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="COLUMNA_LUMBAR_P4"
-                                                    id="COLUMNA_LUMBAR_P4_0_DIAS"
-                                                    value="0">
-
-                                                <label class="form-check-label"
-                                                    for="COLUMNA_LUMBAR_P4_0_DIAS">
-                                                    0 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="COLUMNA_LUMBAR_P4"
-                                                    id="COLUMNA_LUMBAR_P4_1_7"
-                                                    value="1">
-
-                                                <label class="form-check-label"
-                                                    for="COLUMNA_LUMBAR_P4_1_7">
-                                                    1 - 7 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="COLUMNA_LUMBAR_P4"
-                                                    id="COLUMNA_LUMBAR_P4_8_30"
-                                                    value="2">
-
-                                                <label class="form-check-label"
-                                                    for="COLUMNA_LUMBAR_P4_8_30">
-                                                    8 - 30 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="COLUMNA_LUMBAR_P4"
-                                                    id="COLUMNA_LUMBAR_P4_MAS30"
-                                                    value="3">
-
-                                                <label class="form-check-label"
-                                                    for="COLUMNA_LUMBAR_P4_MAS30">
-                                                    Más de 30 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="COLUMNA_LUMBAR_P4"
-                                                    id="COLUMNA_LUMBAR_P4_TODOS"
-                                                    value="4">
-
-                                                <label class="form-check-label"
-                                                    for="COLUMNA_LUMBAR_P4_TODOS">
-                                                    Todos los días
-                                                </label>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-
-                                    <tr>
-
-                                        <td colspan="2" style="background:#efefef;">
-
-                                            <strong>
-                                                Si usted respondió <b>"0 días"</b> en la pregunta 4,
-                                                entonces <b>NO</b> responda las preguntas 5 a la 8.
-                                            </strong>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 5 -->
-
-                                    <tr class="bloque-lumbar-p5">
-
-                                        <td>
-
-                                            <strong>5.</strong>
-                                            ¿Los problemas de la parte baja de la espalda le han hecho reducir
-                                            su actividad durante los últimos 12 meses?
-
-                                            <br><br>
-
-                                            <strong>a)</strong>
-                                            ¿Actividad laboral (en casa o fuera de casa)?
-
-                                            <br><br>
-
-                                            <strong>b)</strong>
-                                            ¿Actividad de ocio?
-
-                                        </td>
-
-                                        <td>
-
-                                            <!-- ACTIVIDAD LABORAL -->
-                                            <div class="d-flex justify-content-center mb-3">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL"
-                                                        id="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL"
-                                                        id="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P5_ACTIVIDAD_LABORAL_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                            <!-- ACTIVIDAD DE OCIO -->
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO"
-                                                        id="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO"
-                                                        id="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P5_ACTIVIDAD_OCIO_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 6 -->
-                                    <tr class="bloque-lumbar-p6">
-
-                                        <td>
-
-                                            <strong>6.</strong>
-                                            ¿Durante cuántos días aproximadamente ha tenido
-                                            problemas en la parte baja de la espalda durante
-                                            los últimos 12 meses?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="COLUMNA_LUMBAR_P6"
-                                                    id="COLUMNA_LUMBAR_P6_0_DIAS"
-                                                    value="0">
-
-                                                <label class="form-check-label"
-                                                    for="COLUMNA_LUMBAR_P6_0_DIAS">
-                                                    0 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="COLUMNA_LUMBAR_P6"
-                                                    id="COLUMNA_LUMBAR_P6_1_7"
-                                                    value="1">
-
-                                                <label class="form-check-label"
-                                                    for="COLUMNA_LUMBAR_P6_1_7">
-                                                    1 - 7 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="COLUMNA_LUMBAR_P6"
-                                                    id="COLUMNA_LUMBAR_P6_8_30"
-                                                    value="2">
-
-                                                <label class="form-check-label"
-                                                    for="COLUMNA_LUMBAR_P6_8_30">
-                                                    8 - 30 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="COLUMNA_LUMBAR_P6"
-                                                    id="COLUMNA_LUMBAR_P6_MAS30"
-                                                    value="3">
-
-                                                <label class="form-check-label"
-                                                    for="COLUMNA_LUMBAR_P6_MAS30">
-                                                    Más de 30 días
-                                                </label>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-
-                                    <!-- PREGUNTA 7 -->
-                                    <tr class="bloque-lumbar-p7">
-
-                                        <td>
-
-                                            <strong>7.</strong>
-                                            ¿Ha sido visto por un médico, fisioterapeuta,
-                                            quiropráctico u otro profesional de la salud debido
-                                            a problemas en la parte baja de la espalda durante
-                                            los últimos 12 meses?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P7"
-                                                        id="COLUMNA_LUMBAR_P7_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P7_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P7"
-                                                        id="COLUMNA_LUMBAR_P7_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P7_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 8 -->
-                                    <tr class="bloque-lumbar-p8">
-
-                                        <td>
-
-                                            <strong>8.</strong>
-                                            ¿Ha tenido problemas en la parte baja de la espalda
-                                            en algún momento durante los últimos 7 días?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P8"
-                                                        id="COLUMNA_LUMBAR_P8_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P8_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="COLUMNA_LUMBAR_P8"
-                                                        id="COLUMNA_LUMBAR_P8_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="COLUMNA_LUMBAR_P8_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-                                </tbody>
-
-                            </table>
-
-
-                            <table class="table table-bordered">
-
-                                <thead>
-
-                                    <tr>
-                                        <th colspan="2" class="text-center">
-                                            CUELLO
-                                        </th>
-                                    </tr>
-
-                                </thead>
-
-                                <tbody>
-
-                                    <!-- PREGUNTA 1 -->
-                                    <tr>
-
-                                        <td width="70%">
-
-                                            <strong>1.</strong>
-                                            ¿Alguna vez ha tenido problemas en el cuello
-                                            (molestias, dolor o disconfort)?
-
-                                        </td>
-
-                                        <td width="30%">
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P1"
-                                                        id="CUELLO_P1_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P1_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P1"
-                                                        id="CUELLO_P1_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P1_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- MENSAJE -->
-                                    <tr>
-
-                                        <td colspan="2" style="background:#efefef;">
-
-                                            <strong>
-                                                Si respondió <b>"NO"</b> a la pregunta 1,
-                                                entonces <b>NO</b> responda las preguntas 2 a la 8.
-                                            </strong>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 2 -->
-                                    <tr class="bloque-cuello-p2">
-
-                                        <td>
-
-                                            <strong>2.</strong>
-
-                                            ¿Alguna vez se lastimó el cuello
-                                            en un accidente?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P2"
-                                                        id="CUELLO_P2_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P2_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P2"
-                                                        id="CUELLO_P2_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P2_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 3 -->
-                                    <tr class="bloque-cuello-p3">
-
-                                        <td>
-
-                                            <strong>3.</strong>
-
-                                            ¿Alguna vez ha tenido que cambiar
-                                            de trabajo o deberes debido
-                                            a problemas en el cuello?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P3"
-                                                        id="CUELLO_P3_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P3_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P3"
-                                                        id="CUELLO_P3_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P3_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-                                    <!-- PREGUNTA 4 -->
-                                    <tr class="bloque-cuello-p4">
-
-                                        <td>
-
-                                            <strong>4.</strong>
-                                            ¿Cuál es el tiempo total que ha tenido problemas en el cuello
-                                            durante los últimos 12 meses?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="CUELLO_P4"
-                                                    id="CUELLO_P4_0_DIAS"
-                                                    value="0">
-
-                                                <label class="form-check-label"
-                                                    for="CUELLO_P4_0_DIAS">
-                                                    0 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="CUELLO_P4"
-                                                    id="CUELLO_P4_1_7"
-                                                    value="1">
-
-                                                <label class="form-check-label"
-                                                    for="CUELLO_P4_1_7">
-                                                    1 - 7 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="CUELLO_P4"
-                                                    id="CUELLO_P4_8_30"
-                                                    value="2">
-
-                                                <label class="form-check-label"
-                                                    for="CUELLO_P4_8_30">
-                                                    8 - 30 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="CUELLO_P4"
-                                                    id="CUELLO_P4_MAS30"
-                                                    value="3">
-
-                                                <label class="form-check-label"
-                                                    for="CUELLO_P4_MAS30">
-                                                    Más de 30 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="CUELLO_P4"
-                                                    id="CUELLO_P4_TODOS"
-                                                    value="4">
-
-                                                <label class="form-check-label"
-                                                    for="CUELLO_P4_TODOS">
-                                                    Todos los días
-                                                </label>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- MENSAJE -->
-                                    <tr class="bloque-cuello-p5">
-
-                                        <td colspan="2" style="background:#efefef;">
-
-                                            <strong>
-                                                Si usted respondió <b>"0 días"</b> en la pregunta 4,
-                                                entonces <b>NO</b> responda las preguntas 5 a la 8.
-                                            </strong>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 5 -->
-                                    <tr class="bloque-cuello-p5">
-
-                                        <td>
-
-                                            <strong>5.</strong>
-
-                                            ¿Los problemas del cuello le han hecho reducir
-                                            su actividad durante los últimos 12 meses?
-
-                                            <br><br>
-
-                                            <strong>a)</strong>
-                                            ¿Actividad laboral (en casa o fuera de casa)?
-
-                                            <br><br>
-
-                                            <strong>b)</strong>
-                                            ¿Actividad de ocio?
-
-                                        </td>
-
-                                        <td>
-
-                                            <!-- ACTIVIDAD LABORAL -->
-                                            <div class="d-flex justify-content-center mb-3">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P5_ACTIVIDAD_LABORAL"
-                                                        id="CUELLO_P5_ACTIVIDAD_LABORAL_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P5_ACTIVIDAD_LABORAL_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P5_ACTIVIDAD_LABORAL"
-                                                        id="CUELLO_P5_ACTIVIDAD_LABORAL_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P5_ACTIVIDAD_LABORAL_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                            <!-- ACTIVIDAD DE OCIO -->
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P5_ACTIVIDAD_OCIO"
-                                                        id="CUELLO_P5_ACTIVIDAD_OCIO_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P5_ACTIVIDAD_OCIO_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P5_ACTIVIDAD_OCIO"
-                                                        id="CUELLO_P5_ACTIVIDAD_OCIO_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P5_ACTIVIDAD_OCIO_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 6 -->
-                                    <tr class="bloque-cuello-p6">
-
-                                        <td>
-
-                                            <strong>6.</strong>
-                                            ¿Durante cuántos días aproximadamente ha tenido
-                                            problemas en el cuello durante los últimos 12 meses?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="CUELLO_P6"
-                                                    id="CUELLO_P6_0_DIAS"
-                                                    value="0">
-
-                                                <label class="form-check-label"
-                                                    for="CUELLO_P6_0_DIAS">
-                                                    0 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="CUELLO_P6"
-                                                    id="CUELLO_P6_1_7"
-                                                    value="1">
-
-                                                <label class="form-check-label"
-                                                    for="CUELLO_P6_1_7">
-                                                    1 - 7 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="CUELLO_P6"
-                                                    id="CUELLO_P6_8_30"
-                                                    value="2">
-
-                                                <label class="form-check-label"
-                                                    for="CUELLO_P6_8_30">
-                                                    8 - 30 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="CUELLO_P6"
-                                                    id="CUELLO_P6_MAS30"
-                                                    value="3">
-
-                                                <label class="form-check-label"
-                                                    for="CUELLO_P6_MAS30">
-                                                    Más de 30 días
-                                                </label>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 7 -->
-                                    <tr class="bloque-cuello-p7">
-
-                                        <td>
-
-                                            <strong>7.</strong>
-                                            ¿Ha sido visto por un médico, fisioterapeuta,
-                                            quiropráctico u otro profesional de la salud
-                                            debido a problemas en el cuello durante los
-                                            últimos 12 meses?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P7"
-                                                        id="CUELLO_P7_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P7_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P7"
-                                                        id="CUELLO_P7_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P7_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 8 -->
-                                    <tr class="bloque-cuello-p8">
-
-                                        <td>
-
-                                            <strong>8.</strong>
-                                            ¿Ha tenido problemas en el cuello
-                                            durante los últimos 7 días?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P8"
-                                                        id="CUELLO_P8_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P8_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="CUELLO_P8"
-                                                        id="CUELLO_P8_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="CUELLO_P8_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                </tbody>
-
-                            </table>
-
-
-
-                            <table class="table table-bordered">
-
-                                <thead>
-
-                                    <tr>
-                                        <th colspan="2" class="text-center">
-                                            HOMBROS
-                                        </th>
-                                    </tr>
-
-                                </thead>
-
-                                <tbody>
-
-                                    <!-- PREGUNTA 1 -->
-                                    <tr>
-
-                                        <td width="70%">
-
-                                            <strong>1.</strong>
-                                            ¿Alguna vez ha tenido problemas en el hombro
-                                            (molestias, dolor o disconfort)?
-
-                                        </td>
-
-                                        <td width="30%">
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P1"
-                                                        id="HOMBRO_P1_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="HOMBRO_P1_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P1"
-                                                        id="HOMBRO_P1_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="HOMBRO_P1_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- MENSAJE -->
-                                    <tr>
-
-                                        <td colspan="2" style="background:#efefef;">
-
-                                            <strong>
-                                                Si respondió <b>"NO"</b> a la pregunta 1,
-                                                entonces <b>NO</b> responda las preguntas 2 a la 8.
-                                            </strong>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 2 -->
-                                    <tr class="bloque-hombro-p2">
-
-                                        <td>
-
-                                            <strong>2.</strong>
-                                            ¿Alguna vez se lastimó el hombro en un accidente?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P2"
-                                                        id="HOMBRO_P2_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="HOMBRO_P2_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P2"
-                                                        id="HOMBRO_P2_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="HOMBRO_P2_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 3 -->
-                                    <tr class="bloque-hombro-p3">
-
-                                        <td>
-
-                                            <strong>3.</strong>
-                                            ¿Alguna vez ha tenido que cambiar de trabajo
-                                            o deberes debido a problemas en el hombro?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P3"
-                                                        id="HOMBRO_P3_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="HOMBRO_P3_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P3"
-                                                        id="HOMBRO_P3_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="HOMBRO_P3_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 4 -->
-                                    <tr class="bloque-hombro-p4">
-
-                                        <td>
-
-                                            <strong>4.</strong>
-                                            ¿Cuál es el tiempo total que ha tenido problemas en el hombro durante los últimos 12 meses?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="HOMBRO_P4"
-                                                    id="HOMBRO_P4_0_DIAS"
-                                                    value="0">
-
-                                                <label class="form-check-label"
-                                                    for="HOMBRO_P4_0_DIAS">
-                                                    0 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="HOMBRO_P4"
-                                                    id="HOMBRO_P4_1_7"
-                                                    value="1">
-
-                                                <label class="form-check-label"
-                                                    for="HOMBRO_P4_1_7">
-                                                    1 - 7 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="HOMBRO_P4"
-                                                    id="HOMBRO_P4_8_30"
-                                                    value="2">
-
-                                                <label class="form-check-label"
-                                                    for="HOMBRO_P4_8_30">
-                                                    8 - 30 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="HOMBRO_P4"
-                                                    id="HOMBRO_P4_MAS30"
-                                                    value="3">
-
-                                                <label class="form-check-label"
-                                                    for="HOMBRO_P4_MAS30">
-                                                    Más de 30 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="HOMBRO_P4"
-                                                    id="HOMBRO_P4_TODOS"
-                                                    value="4">
-
-                                                <label class="form-check-label"
-                                                    for="HOMBRO_P4_TODOS">
-                                                    Todos los días
-                                                </label>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- MENSAJE -->
-                                    <tr class="bloque-hombro-p5">
-
-                                        <td colspan="2" style="background:#efefef;">
-
-                                            <strong>
-                                                Si usted respondió <b>"0 días"</b> en la pregunta 4,
-                                                entonces <b>NO</b> responda las preguntas 5 a la 8.
-                                            </strong>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 5 -->
-                                    <tr class="bloque-hombro-p5">
-
-                                        <td>
-
-                                            <strong>5.</strong>
-
-                                            ¿Los problemas de hombro le han hecho reducir
-                                            su actividad durante los últimos 12 meses?
-
-                                            <br><br>
-
-                                            <strong>a)</strong>
-                                            ¿Actividad laboral (en casa o fuera de casa)?
-
-                                            <br><br>
-
-                                            <strong>b)</strong>
-                                            ¿Actividad de ocio?
-
-                                        </td>
-
-                                        <td>
-
-                                            <!-- ACTIVIDAD LABORAL -->
-                                            <div class="d-flex justify-content-center mb-3">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P5_ACTIVIDAD_LABORAL"
-                                                        id="HOMBRO_P5_ACTIVIDAD_LABORAL_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="HOMBRO_P5_ACTIVIDAD_LABORAL_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P5_ACTIVIDAD_LABORAL"
-                                                        id="HOMBRO_P5_ACTIVIDAD_LABORAL_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="HOMBRO_P5_ACTIVIDAD_LABORAL_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                            <!-- ACTIVIDAD DE OCIO -->
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P5_ACTIVIDAD_OCIO"
-                                                        id="HOMBRO_P5_ACTIVIDAD_OCIO_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label"
-                                                        for="HOMBRO_P5_ACTIVIDAD_OCIO_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P5_ACTIVIDAD_OCIO"
-                                                        id="HOMBRO_P5_ACTIVIDAD_OCIO_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label"
-                                                        for="HOMBRO_P5_ACTIVIDAD_OCIO_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-
-                                    <!-- PREGUNTA 6 -->
-                                    <tr class="bloque-hombro-p6">
-
-                                        <td>
-
-                                            <strong>6.</strong>
-                                            ¿Cuál es el tiempo total que los problemas de hombro
-                                            le han impedido hacer su trabajo normal
-                                            (en casa o fuera de casa) durante los últimos 12 meses?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="HOMBRO_P6"
-                                                    id="HOMBRO_P6_0_DIAS"
-                                                    value="0">
-
-                                                <label class="form-check-label" for="HOMBRO_P6_0_DIAS">
-                                                    0 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="HOMBRO_P6"
-                                                    id="HOMBRO_P6_1_7"
-                                                    value="1">
-
-                                                <label class="form-check-label" for="HOMBRO_P6_1_7">
-                                                    1 - 7 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="HOMBRO_P6"
-                                                    id="HOMBRO_P6_8_30"
-                                                    value="2">
-
-                                                <label class="form-check-label" for="HOMBRO_P6_8_30">
-                                                    8 - 30 días
-                                                </label>
-
-                                            </div>
-
-                                            <div class="form-check clienteblock">
-
-                                                <input class="form-check-input"
-                                                    type="radio"
-                                                    name="HOMBRO_P6"
-                                                    id="HOMBRO_P6_MAS30"
-                                                    value="3">
-
-                                                <label class="form-check-label" for="HOMBRO_P6_MAS30">
-                                                    Más de 30 días
-                                                </label>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 7 -->
-                                    <tr class="bloque-hombro-p7">
-
-                                        <td>
-
-                                            <strong>7.</strong>
-                                            ¿Ha sido atendido por un médico, kinesiólogo,
-                                            quiropráctico u otra persona por problemas
-                                            en el hombro durante los últimos 12 meses?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P7"
-                                                        id="HOMBRO_P7_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label" for="HOMBRO_P7_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P7"
-                                                        id="HOMBRO_P7_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label" for="HOMBRO_P7_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                    <!-- PREGUNTA 8 -->
-                                    <tr class="bloque-hombro-p8">
-
-                                        <td>
-
-                                            <strong>8.</strong>
-                                            ¿Ha tenido problemas de hombro
-                                            en algún momento durante los últimos 7 días?
-
-                                        </td>
-
-                                        <td>
-
-                                            <div class="d-flex justify-content-center">
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P8"
-                                                        id="HOMBRO_P8_NO"
-                                                        value="0">
-
-                                                    <label class="form-check-label" for="HOMBRO_P8_NO">
-                                                        No
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="form-check mx-4 clienteblock">
-
-                                                    <input class="form-check-input"
-                                                        type="radio"
-                                                        name="HOMBRO_P8"
-                                                        id="HOMBRO_P8_SI"
-                                                        value="1">
-
-                                                    <label class="form-check-label" for="HOMBRO_P8_SI">
-                                                        Sí
-                                                    </label>
-
-                                                </div>
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                        <div class="col-12 mt-3">
-                            <div class="form-group">
-                                <label>Observaciones Cuestionario Nórdico</label>
-                                <div class="input-group">
-                                    <textarea class="form-control" name="OBSERVACIONES_CUESTIONARIO" id="OBSERVACIONES_CUESTIONARIO" rows="4"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <h4>
-                                Fuerza manual:
-                            </h4>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>¿Las tareas habituales del trabajador requieren ejercer fuerza muscular manual con las extremidades superiores (hombros, brazos, antebrazos y manos) para realizar acciones como presionar, apretar o sujetar objeto? </label>
-                                <select class="form-control" name="REQUIERE_FUERZA_MANUAL" id="REQUIERE_FUERZA_MANUAL" required>
-                                    <option value="">Seleccionar</option>
+                            <div class="col-4 mt-2">
+                                <label>Postura</label>
+                                <select class="form-control" id="APLICA_POSTURA" name="APLICA_POSTURA" required>
+                                    <option value="" selected disabled>Seleccione una opción</option>
                                     <option value="1">Sí</option>
                                     <option value="2">No</option>
                                 </select>
                             </div>
-                        </div>
-
-                        <div class="col-6 mt-5">
-                            <div class="form-group">
-                                <label>Tipo de Dominancia: </label>
-                                <select class="form-control" name="TIPO_DOMINANCIA" id="TIPO_DOMINANCIA">
-                                    <option value="">Seleccionar</option>
-                                    <option value="1">Derecha</option>
-                                    <option value="2">Izquierda</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-12" id="datosFuerzaManual" style="display:none;">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label>Escala de Borg:</label>
-                                        <select class="form-control" name="ESCALA_BORG" id="ESCALA_BORG">
-                                            <option value="">Seleccionar nivel</option>
-
-                                            <option value="0" data-color="#009944" style="background-color:#009944; color:#fff;">
-                                                0 - Nada en absoluto (0% CVM)
-                                            </option>
-                                            <option value="0.5" data-color="#009944" style="background-color:#009944; color:#fff;">
-                                                0.5 - Muy, muy débil (casi ausente)
-                                            </option>
-                                            <option value="1" data-color="#009944" style="background-color:#009944; color:#fff;">
-                                                1 - Muy débil (10% CVM)
-                                            </option>
-                                            <option value="2" data-color="#009944" style="background-color:#009944; color:#fff;">
-                                                2 - Débil (20% CVM)
-                                            </option>
-                                            <option value="3" data-color="#8fd14f" style="background-color:#8fd14f; color:#222;">
-                                                3 - Moderado (30% CVM)
-                                            </option>
-                                            <option value="4" data-color="#d6e600" style="background-color:#d6e600; color:#222;">
-                                                4 - Moderado + (40% CVM)
-                                            </option>
-                                            <option value="5" data-color="#ffeb00" style="background-color:#ffeb00; color:#222;">
-                                                5 - Fuerte (50% CVM)
-                                            </option>
-                                            <option value="6" data-color="#ffc000" style="background-color:#ffc000; color:#222;">
-                                                6 - Fuerte + (60% CVM)
-                                            </option>
-                                            <option value="7" data-color="#ff8000" style="background-color:#ff8000; color:#222;">
-                                                7 - Muy fuerte (70% CVM)
-                                            </option>
-                                            <option value="8" data-color="#ff4d00" style="background-color:#ff4d00; color:#fff;">
-                                                8 - Muy, muy fuerte (80% CVM)
-                                            </option>
-                                            <option value="9" data-color="#ff0000" style="background-color:#ff0000; color:#fff;">
-                                                9 - Extremadamente fuerte (90% CVM)
-                                            </option>
-                                            <option value="10" data-color="#ff0000" style="background-color:#ff0000; color:#fff;">
-                                                10 - Máximo (100% CVM)
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <style>
-                                    #ESCALA_BORG {
-                                        font-family: 'Poppins', sans-serif;
-                                        font-size: 14px;
-                                    }
-
-                                    #ESCALA_BORG option {
-                                        font-weight: 500;
-                                        padding: 8px;
-                                    }
-
-                                    #ESCALA_BORG option[value=""] {
-                                        background-color: #fff;
-                                        color: #555;
-                                    }
-                                </style>
-
-                                <style>
-                                    #tablaReferenciaFuerzaManual {
-                                        width: 100%;
-                                        border-collapse: collapse;
-                                        font-family: 'Poppins', sans-serif;
-                                        font-size: 14px;
-                                        text-align: center;
-                                        color: #222;
-                                        background: #d9eeee;
-                                    }
-
-                                    #tablaReferenciaFuerzaManual th,
-                                    #tablaReferenciaFuerzaManual td {
-                                        border: 1px solid #7b8c8c;
-                                        padding: 6px 10px;
-                                        font-family: 'Poppins', sans-serif;
-                                        white-space: nowrap;
-                                    }
-
-                                    #tablaReferenciaFuerzaManual thead th {
-                                        background: #c6e4e3;
-                                        font-weight: 600;
-                                    }
-
-                                    #tablaReferenciaFuerzaManual .encabezado-sexo td {
-                                        background: #e6e6e6;
-                                        font-weight: 700;
-                                        font-size: 15px;
-                                        padding: 5px;
-                                    }
-
-                                    #tablaReferenciaFuerzaManual .edad {
-                                        background: #f5f5f5;
-                                        font-weight: 500;
-                                    }
-
-                                    #tablaReferenciaFuerzaManual tbody tr:not(.encabezado-sexo):hover {
-                                        background: #c5e5e4;
-                                    }
-                                </style>
-
-                                <div class="col-12 mt-3">
-                                    <h5>Valores de referencia de fuerza manual</h5>
-
-                                    <div class="table-responsive">
-                                        <table class="table" id="tablaReferenciaFuerzaManual">
-                                            <thead>
-                                                <tr>
-                                                    <th rowspan="2">Edad</th>
-                                                    <th colspan="5">Mano derecha</th>
-                                                    <th colspan="5">Mano izquierda</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>P10</th>
-                                                    <th>P30</th>
-                                                    <th>P50</th>
-                                                    <th>P70</th>
-                                                    <th>P90</th>
-                                                    <th>P10</th>
-                                                    <th>P30</th>
-                                                    <th>P50</th>
-                                                    <th>P70</th>
-                                                    <th>P90</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                <tr class="encabezado-sexo">
-                                                    <td colspan="11">Hombres</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">20-29</td>
-                                                    <td>33.9</td>
-                                                    <td>41.3</td>
-                                                    <td>45.1</td>
-                                                    <td>50.6</td>
-                                                    <td>56.3</td>
-                                                    <td>34.0</td>
-                                                    <td>39.4</td>
-                                                    <td>43.6</td>
-                                                    <td>47.8</td>
-                                                    <td>53.7</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">30-39</td>
-                                                    <td>36.6</td>
-                                                    <td>42.2</td>
-                                                    <td>45.8</td>
-                                                    <td>50.0</td>
-                                                    <td>56.9</td>
-                                                    <td>34.7</td>
-                                                    <td>40.4</td>
-                                                    <td>44.1</td>
-                                                    <td>48.3</td>
-                                                    <td>53.5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">40-49</td>
-                                                    <td>34.3</td>
-                                                    <td>37.5</td>
-                                                    <td>42.5</td>
-                                                    <td>46.7</td>
-                                                    <td>53.6</td>
-                                                    <td>32.4</td>
-                                                    <td>37.1</td>
-                                                    <td>40.9</td>
-                                                    <td>45.3</td>
-                                                    <td>50.9</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">50-59</td>
-                                                    <td>30.2</td>
-                                                    <td>36.2</td>
-                                                    <td>41.4</td>
-                                                    <td>44.3</td>
-                                                    <td>50.1</td>
-                                                    <td>29.6</td>
-                                                    <td>35.0</td>
-                                                    <td>38.9</td>
-                                                    <td>42.8</td>
-                                                    <td>48.3</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">60-69</td>
-                                                    <td>26.5</td>
-                                                    <td>32.9</td>
-                                                    <td>37.0</td>
-                                                    <td>40.8</td>
-                                                    <td>45.5</td>
-                                                    <td>26.4</td>
-                                                    <td>30.8</td>
-                                                    <td>34.4</td>
-                                                    <td>37.5</td>
-                                                    <td>41.9</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">≥70</td>
-                                                    <td>22.8</td>
-                                                    <td>27.7</td>
-                                                    <td>32.1</td>
-                                                    <td>35.7</td>
-                                                    <td>40.6</td>
-                                                    <td>21.0</td>
-                                                    <td>26.6</td>
-                                                    <td>28.9</td>
-                                                    <td>31.3</td>
-                                                    <td>36.0</td>
-                                                </tr>
-
-                                                <tr class="encabezado-sexo">
-                                                    <td colspan="11">Mujeres</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">20-29</td>
-                                                    <td>19.5</td>
-                                                    <td>23.8</td>
-                                                    <td>27.4</td>
-                                                    <td>30.0</td>
-                                                    <td>34.0</td>
-                                                    <td>18.6</td>
-                                                    <td>22.3</td>
-                                                    <td>25.8</td>
-                                                    <td>28.4</td>
-                                                    <td>31.8</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">30-39</td>
-                                                    <td>20.7</td>
-                                                    <td>25.0</td>
-                                                    <td>27.6</td>
-                                                    <td>30.7</td>
-                                                    <td>35.0</td>
-                                                    <td>20.1</td>
-                                                    <td>23.5</td>
-                                                    <td>26.4</td>
-                                                    <td>29.3</td>
-                                                    <td>32.9</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">40-49</td>
-                                                    <td>19.8</td>
-                                                    <td>24.4</td>
-                                                    <td>26.9</td>
-                                                    <td>29.4</td>
-                                                    <td>33.6</td>
-                                                    <td>18.4</td>
-                                                    <td>22.9</td>
-                                                    <td>25.7</td>
-                                                    <td>28.1</td>
-                                                    <td>31.7</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">50-59</td>
-                                                    <td>16.6</td>
-                                                    <td>21.1</td>
-                                                    <td>24.3</td>
-                                                    <td>26.4</td>
-                                                    <td>30.9</td>
-                                                    <td>15.4</td>
-                                                    <td>19.9</td>
-                                                    <td>23.0</td>
-                                                    <td>25.3</td>
-                                                    <td>29.8</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">60-69</td>
-                                                    <td>16.6</td>
-                                                    <td>19.6</td>
-                                                    <td>21.7</td>
-                                                    <td>24.6</td>
-                                                    <td>27.5</td>
-                                                    <td>15.0</td>
-                                                    <td>18.2</td>
-                                                    <td>20.5</td>
-                                                    <td>22.8</td>
-                                                    <td>27.1</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="edad">≥70</td>
-                                                    <td>9.9</td>
-                                                    <td>13.7</td>
-                                                    <td>16.8</td>
-                                                    <td>20.0</td>
-                                                    <td>23.8</td>
-                                                    <td>9.0</td>
-                                                    <td>13.0</td>
-                                                    <td>16.0</td>
-                                                    <td>19.2</td>
-                                                    <td>22.6</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>Mano derecha *</label>
-                                        <input type="text" class="form-control" id="FUERZA_MANO_DERECHA" name="FUERZA_MANO_DERECHA" placeholder="Valor">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>Mano izquierda *</label>
-                                        <input type="text" class="form-control" id="FUERZA_MANO_IZQUIERDA" name="FUERZA_MANO_IZQUIERDA" placeholder="Valor">
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-
-
-                        <div class="col-12 mt-3">
-                            <div class="form-group">
-                                <label>Observaciones fuerza manual</label>
-                                <div class="input-group">
-                                    <textarea class="form-control" name="OBSERVACIONES_FUERZAMANUAL" id="OBSERVACIONES_FUERZAMANUAL" rows="4"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-                        <div class="col-12">
-                            <h4>
-                                LEY SILLA: DOF 19/12/24.
-                            </h4>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label>¿Aplica ley silla? </label>
-                                <select class="form-control" name="APLICA_LEY_SILLA" id="APLICA_LEY_SILLA" required>
-                                    <option value="">Seleccionar</option>
+                            <div class="col-4 mt-2">
+                                <label>Movimiento</label>
+                                <select class="form-control" id="APLICA_MOVIMIENTO" name="APLICA_MOVIMIENTO" required>
+                                    <option value="" selected disabled>Seleccione una opción</option>
                                     <option value="1">Sí</option>
                                     <option value="2">No</option>
                                 </select>
                             </div>
-                        </div>
+                            <div class="col-4 mt-2">
+                                <label>Fuerza</label>
+                                <select class="form-control" id="APLICA_FUERZA" name="APLICA_FUERZA" required>
+                                    <option value="" selected disabled>Seleccione una opción</option>
+                                    <option value="1">Sí</option>
+                                    <option value="2">No</option>
+                                </select>
+                            </div>
 
-                        <div class="col-12" id="datosLeySilla" style="display:none;">
-                            <div class="row">
-
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label><br> A) Realiza sus tareas laborales de pie por más de tres horas continuas durante su jornada laboral:</label>
-                                        <select class="form-control" name="REALIZA_TAREAS_PIE" id="REALIZA_TAREAS_PIE">
-                                            <option value="">Seleccionar</option>
-                                            <option value="1">Si</option>
-                                            <option value="2">No</option>
-                                        </select>
-                                    </div>
+                            <div class="col-4 mt-3">
+                                <div class="form-group">
+                                    <label> Descripción postura</label>
+                                    <textarea class="form-control" id="DESCRIPCION_POSTURA" name="DESCRIPCION_POSTURA" rows="5" required></textarea>
                                 </div>
-
-
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label>B) Bipedestación estática. La postura de las personas trabajadoras que realizan sus tareas de pie y prácticamente sin moverse o
-                                            con desplazamientos mínimos:</label>
-                                        <select class="form-control" name="BIPEDESTACION_ESTATICA" id="BIPEDESTACION_ESTATICA">
-                                            <option value="">Seleccionar</option>
-                                            <option value="1">Si</option>
-                                            <option value="2">No</option>
-                                        </select>
-                                    </div>
+                            </div>
+                            <div class="col-4 mt-3">
+                                <div class="form-group">
+                                    <label> Descripción movimiento</label>
+                                    <textarea class="form-control" id="DESCRIPCION_MOVIMIENTO" name="DESCRIPCION_MOVIMIENTO" rows="5" required></textarea>
                                 </div>
-
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label>C) Bipedestación dinámica. La postura de las personas trabajadoras que tienen la posibilidad de realizar desplazamientos más
-                                            amplios que en la bipedestación estática:</label>
-                                        <select class="form-control" name="BIPEDESTACION_DINAMICA" id="BIPEDESTACION_DINAMICA">
-                                            <option value="">Seleccionar</option>
-                                            <option value="1">Si</option>
-                                            <option value="2">No</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 mt-3">
-                                    <div class="form-group">
-                                        <label>Observaciones ley silla </label>
-                                        <div class="input-group">
-                                            <textarea class="form-control" name="OBSERVACIONES_GENERALES" id="OBSERVACIONES_GENERALES" rows="4"></textarea>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="col-4 mt-3">
+                                <div class="form-group">
+                                    <label> Descripción fuerza</label>
+                                    <textarea class="form-control" id="DESCRIPCION_FUERZA" name="DESCRIPCION_FUERZA" rows="5" required></textarea>
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="card mt-2" id="TEXTO_NO_APLICALEY" style="display: none;">
-                            <div class="card-header header-verde-res d-flex align-items-center">
-                                <i class="fa fa-info mr-2" aria-hidden="true"></i>
-                                <div class="text-center w-100">
-                                    <b>No aplica ley silla</b>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                La actividad evaluada no cumple con el criterio de bipedestación prolongada, debido a que el tiempo de permanencia de pie no supera las tres horas continuas durante la jornada laboral, conforme a la definición establecida en las Disposiciones de la STPS. Por lo tanto, no se identifica exposición a este factor bajo dicho criterio.
-                            </div>
-                        </div>
-
                     </div>
                 </div>
-                <div class="modal-footer" style="display: flex; justify-content: space-between;">
-                    <div>
-                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
-                        @if(auth()->user()->hasRoles(['Superusuario', 'Administrador', 'Coordinador','Coordinador FRE','Especialista FRE']))
-                        <button type="submit" class="btn btn-danger waves-effect waves-light botonguardar_modulorecsensorial" id="boton_guardar_fre">
-                            Guardar <i class="fa fa-save"></i>
-                        </button>
-                        @endif
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cerrar</button>
+                    @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador','Coordinador FRE']))
+                    <button type="submit" class="btn btn-danger waves-effect waves-light " id="boton_guardar_angulo">
+                        Guardar <i class="fa fa-save"></i>
+                    </button>
+                    @endif
                 </div>
             </form>
         </div>
@@ -6632,63 +9200,12 @@ DESCRIPCIONACTIVIDAD
 </div>
 
 
-<!-- ============================================================== -->
-<!-- VISOR-MODAL -->
-<!-- ============================================================== -->
-<style type="text/css" media="screen">
-    #modal_visor>.modal-dialog {
-        min-width: 900px !important;
-    }
 
-    #visor_menu_bloqueado {
-        width: 851px;
-        height: 52px;
-        background: #555555;
-        position: absolute;
-        z-index: 500;
-        border: 0px #F00 solid;
-    }
 
-    #visor_contenido_bloqueado {
-        width: 852px;
-        height: 600px;
-        /*background: #555555;*/
-        position: absolute;
-        z-index: 600;
-        border: 0px #FFF solid;
-    }
 
-    iframe {
-        width: 100%;
-        height: 600px;
-        border: 0px #fff solid;
-    }
-</style>
-<div id="modal_visor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="nombre_documento_visor"></h4>
-            </div>
-            <div class="modal-body" style="background: #555555;">
-                <div class="row">
-                    <div class="col-12">
-                        {{-- <div id="visor_menu_bloqueado"></div> --}}
-                        {{-- <div id="visor_contenido_bloqueado"></div> --}}
-                        <iframe src="/assets/images/cargando.gif" name="visor_documento" id="visor_documento" style=""></iframe>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal" id="modalvisor_boton_cerrar">Cerrar</button>
-                {{-- <button type="button" class="btn btn-danger waves-effect waves-light">Guardar</button> --}}
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- ============================================================== -->
-<!-- VISOR-MODAL -->
+<!-- -->
 <!-- ============================================================== -->
 
 {{-- ========================================================================= --}}
@@ -6697,12 +9214,8 @@ DESCRIPCIONACTIVIDAD
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css">
-
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-
 
 <script>
     $(document).ready(function() {
