@@ -199,6 +199,7 @@ $('.link_menuprincipal').click(function () {
             mostrartablaactividadesfre();
             tablaReporteAreasErgo();
             mostrartablaimcfre();
+            cargarMetodosFre();
              cargarGraficaPregunta1();
             cargarGraficaPregunta2();
             cargarGraficaPregunta3();
@@ -207,6 +208,9 @@ $('.link_menuprincipal').click(function () {
             cargarGraficaPregunta6();
             tablaReporteTrabajadoresErgo();
             cargarDefinicionesInformeFreErgo()
+            
+            tablaVersionesRecoErgo();
+            validarEdicionRecoErgo();
             
             $.ajax({
                     url: 'obtenerDatosPlantilla',
@@ -4842,8 +4846,8 @@ function pintarEquiposTrabajo(json) {
                         <option value="">Seleccione</option>
                         <option value="M" ${item.tipo == 'M' ? 'selected' : ''}>M (Máquinas)</option>
                         <option value="H" ${item.tipo == 'H' ? 'selected' : ''}>H (Herramientas)</option>
-                        <option value="U" ${item.tipo == 'U' ? 'selected' : ''}>U (Utensilios)</option>
-                        <option value="OTROS" ${item.tipo == 'OTROS' ? 'selected' : ''}>Otros</option>
+                        <option value="U" ${item.tipo == 'U' ? 'selected' : ''}>P (Periféricos)</option>
+                        <option value="OTROS" ${item.tipo == 'OTROS' ? 'selected' : ''}>Accesorios u otros</option>
                     </select>
                 </td>
 
@@ -5169,8 +5173,8 @@ $(document).on('click', '#agregarFilaEquipo', function () {
                     <option value="">Seleccione</option>
                     <option value="M">M (Máquinas)</option>
                     <option value="H">H (Herramientas)</option>
-                    <option value="U">U (Utensilios)</option>
-                    <option value="OTROS">Otros</option>
+                    <option value="U">P (Periféricos)</option>
+                    <option value="OTROS">Accesorios u otros</option>
                 </select>
             </td>
 
@@ -8289,10 +8293,15 @@ function mostrartablaimcfre() {
                     "data": "NUMERO",
                     "className": "text-center"
                 },
+                  {
+                    "data": "EMPLEADO",
+                    "defaultContent": "-"
+                },
                 {
                     "data": "CATEGORIA",
                     "defaultContent": "-"
                 },
+              
                 {
                     "data": "AREA",
                     "defaultContent": "-"
@@ -8458,6 +8467,127 @@ $("#form_informe_esqueletico").on("submit",function(e)
         }
     });
 });
+
+
+/// METODOS
+
+
+function cargarMetodosFre() {
+
+    try {
+
+        if (
+            typeof recsensorial === 'undefined' ||
+            !recsensorial ||
+            !Number.isInteger(Number(recsensorial)) ||
+            Number(recsensorial) < 1
+        ) {
+            $('#contenedorMetodosFre').html(
+                '<p class="text-muted">No se ha seleccionado un reconocimiento.</p>'
+            );
+
+            return;
+        }
+
+        $('#contenedorMetodosFre').html(
+            '<p class="text-muted">Cargando metodologías...</p>'
+        );
+
+        $.ajax({
+
+            url: '/ObtenerMetodosFre',
+
+            type: 'GET',
+
+            dataType: 'json',
+
+            cache: false,
+
+            data: {
+                ergoid: recsensorial
+            },
+
+            success: function (respuesta) {
+
+                const contenedor = $('#contenedorMetodosFre');
+
+                contenedor.empty();
+
+                if (
+                    !respuesta.success ||
+                    !Array.isArray(respuesta.data) ||
+                    respuesta.data.length === 0
+                ) {
+
+                    contenedor.append(
+                        $('<p>')
+                            .addClass('text-muted')
+                            .text('No hay metodologías registradas para este reconocimiento.')
+                    );
+
+                    return;
+                }
+
+                // Mostrar cada metodología una sola vez
+                respuesta.data.forEach(function (metodo) {
+
+                    const tarjeta = $('<div>')
+                        .addClass('metodo-fre-descripcion');
+
+                    const titulo = $('<h5>')
+                        .addClass('metodo-fre-titulo')
+                        .text(metodo.NOMBRE);
+
+                    const nombreIngles = $('<p>')
+                        .addClass('metodo-fre-nombre-ingles')
+                        .text(metodo.NOMBRE_INGLES);
+
+                    const nombreEspanol = $('<p>')
+                        .addClass('metodo-fre-nombre-espanol')
+                        .text('Nombre en español: ' + metodo.NOMBRE_ESPANOL);
+
+                    const descripcion = $('<p>')
+                        .addClass('metodo-fre-texto')
+                        .text(metodo.DESCRIPCION);
+
+                    tarjeta.append(titulo);
+                    tarjeta.append(nombreIngles);
+                    tarjeta.append(nombreEspanol);
+                    tarjeta.append(descripcion);
+
+                    contenedor.append(tarjeta);
+
+                });
+
+            },
+
+            error: function (xhr, error, code) {
+
+                console.error(
+                    'Error al consultar las metodologías FRE:',
+                    xhr.responseJSON || xhr.responseText
+                );
+
+                $('#contenedorMetodosFre').empty().append(
+                    $('<p>')
+                        .addClass('text-danger')
+                        .text('No fue posible cargar las metodologías.')
+                );
+
+            }
+
+        });
+
+    } catch (exception) {
+
+        console.error(
+            'Error en cargarMetodosFre:',
+            exception
+        );
+
+    }
+}
+
 
 /// CATEGORIAS EVALUADAS
 
@@ -10540,3 +10670,432 @@ $('#tabla_angulos_fre tbody').on('click', 'td.Editar', function () {
   
 
 });
+
+
+
+$(document).ready(function () {
+
+    const textosPredeterminados = {
+        APLICA_POSTURA: {
+            textarea: '#DESCRIPCION_POSTURA',
+            texto: 'No se identificó exposición postural relevante, debido a que las actividades se realizan dentro de los ángulos de confort articular, con variabilidad postural y sin mantenimiento prolongado de posiciones estáticas o forzadas.'
+        },
+
+        APLICA_MOVIMIENTO: {
+            textarea: '#DESCRIPCION_MOVIMIENTO',
+            texto: 'No se considera necesario aplicar la evaluación por movimientos repetitivos, ya que las actividades del trabajador no implican una secuencia continua y reiterada de acciones técnicas que cumpla los criterios de repetitividad, duración del ciclo y tiempo de exposición establecidos en la metodología de referencia.'
+        },
+
+        APLICA_FUERZA: {
+            textarea: '#DESCRIPCION_FUERZA',
+            texto: 'El trabajador durante su jornada laboral presenta una postura adecuada al realizar las tareas que le implican manejo de cargas al levantar y bajar cargas, así como tracción sin generar fatiga muscular que le ocasione molestias en espalda baja.'
+        }
+    };
+
+
+    Object.keys(textosPredeterminados).forEach(function (selectId) {
+
+        const configuracion = textosPredeterminados[selectId];
+
+        $('#' + selectId).on('change', function () {
+
+            const valorSeleccionado = $(this).val();
+            const $textarea = $(configuracion.textarea);
+
+            if (valorSeleccionado === '2') {
+
+                $textarea.val(configuracion.texto);
+
+            } else if (valorSeleccionado === '1') {
+
+                $textarea.val('');
+
+            }
+
+        });
+
+    });
+
+});
+
+
+/// VERSIONES
+
+
+
+
+/////// versiones
+	
+
+
+function tablaVersionesRecoErgo()
+{
+
+    try {
+
+        let ruta =
+            "/tablaVersionesFreErgo/" +
+            recsensorial;
+
+        if(tabla_reporte_revisiones != null)
+        {
+            tabla_reporte_revisiones
+                .destroy();
+        }
+
+        tabla_reporte_revisiones =
+            $('#tabla_reporte_revisiones')
+            .DataTable({
+
+            ajax: {
+                url: ruta,
+                type: "get",
+                cache: false
+            },
+
+            columns: [
+                {
+                    data: "NUMERO_REVISION"
+                },
+                {
+                    data: "FECHA_FINALIZADO"
+                },
+                {
+                    data: "FINALIZADO_NOMBRE"
+                },
+                {
+                    data: "CHECKBOX_CANCELADO"
+                },
+                {
+                    data: "CANCELADO_NOMBRE"
+                },
+                {
+                    data: "ESTADO"
+                },
+                {
+                    data: "BOTON_DESCARGAR"
+                }
+            ],
+            
+            ordering: true,
+            processing: true,
+            responsive: true,
+            
+            language: {
+                emptyTable:
+                    "No hay revisiones"
+            }
+        });
+    }
+    catch(exception) {
+        console.error(exception);
+    }
+
+}
+
+$("#boton_reporte_nuevarevision").on("click", function()
+{
+
+    $.ajax({
+
+        url: '/crearRevisionFreErgo',
+        type: 'POST',
+        data: {
+            RECO_ID: recsensorial,
+            _token:
+                $('meta[name="csrf-token"]')
+                .attr('content')
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj
+            });
+
+            tablaVersionesRecoErgo();
+			validarEdicionRecoErgo()
+        }
+    });
+});
+
+function cancelarRevisionRecoErgo(ID_VERSION_RECO_ERGO,checkbox)
+{
+
+    if(!checkbox.checked)
+    {
+        return;
+    }
+
+    Swal.fire({
+        title: 'Cancelar revisión',
+        input: 'textarea',
+        inputLabel: 'Motivo de cancelación',
+        inputPlaceholder:
+        'Escriba el motivo...',
+        inputAttributes: {
+            'required': true
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Cancelar revisión',
+        cancelButtonText: 'Cerrar'
+    }).then((result) => {
+
+
+        if(result.isConfirmed)
+        {
+            $.ajax({
+                url:'/cancelarRevisionFreErgo',
+                type: 'POST',
+                data: {
+                    ID_VERSION_RECO_ERGO: ID_VERSION_RECO_ERGO,
+                    MOTIVO_CANCELACION: result.value,
+
+                    _token:
+                        $('meta[name="csrf-token"]')
+                        .attr('content')
+                },
+
+                success: function(response)
+                {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Correcto',
+                        text: response.msj
+                    });
+
+                    tablaVersionesRecoErgo();
+                    validarEdicionRecoErgo();
+                },
+
+                error: function(xhr)
+                {
+                    console.log(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text:'No se pudo cancelar'
+                    });
+                }
+            });
+        }
+        else {
+
+            checkbox.checked = false;
+        }
+    });
+}
+
+
+function validarEdicionRecoErgo() {
+
+    $.get(
+        '/validarEdicionFreErgo/' + recsensorial,
+        function(response) {
+
+            let botones = [
+                '#botonguardar_reporte_introduccion',
+                '#botonguardar_reporte_definiciones',
+                '#botonguardar_reporte_objetivogeneral',
+                '#botonguardar_reporte_objetivoespecifico',
+                '#botonguardar_reporte_reconocimiento',
+                '#botonguardar_reporte_procesoinstalacion',
+                '#botonguardar_reporte_antropometricas',
+                '#botonguardar_reporte_esqueletico',
+                '#botonguardar_reporte_conclusion',
+                '#botonguardar_reporte_recomendaciones',
+                '#botonguardar_reporte_responsablesinforme',
+                '#boton_reporte_nuevarevision'
+            ].join(',');
+
+            if (response.permite_guardar == 0) {
+
+                $(botones).prop('disabled', true);
+
+                $('input, textarea, select').not('.checkbox_cancelado_revision').prop('disabled', false);
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Informe finalizado',
+                    text: 'La revisión fue finalizada y ya no puede editarse'
+                });
+
+            } else {
+
+                $(botones).prop('disabled', false);
+
+                $('input, textarea, select').prop('disabled', false);
+
+            }
+
+            if (response.cancelado == 1) {
+
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Revisión cancelada',
+                    text: 'La última revisión fue cancelada, puede continuar editando'
+                });
+
+            }
+
+        }
+    );
+
+}
+
+
+
+
+async function descargarRevisionFreErgo(RECO_ID)
+{
+    Swal.fire({
+        title: 'Descargando reporte...',
+        html: 'Por favor, espera mientras se generan las gráficas y se prepara el documento.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
+        }
+    });
+
+
+    try {
+
+        let graficas = [];
+
+        $('#contenedorGraficas > div')
+            .find('[id^="chart_p"]')
+            .each(function () {
+
+                let instancia = echarts.getInstanceByDom(this);
+
+                if (instancia) {
+                    graficas.push({
+                        imagen: instancia.getDataURL({
+                            type: 'png',
+                            pixelRatio: 2,
+                            backgroundColor: '#FFFFFF'
+                        })
+                    });
+                }
+            });
+
+        let graficasFichas = [];
+
+        let filas = $('#contenedorGraficasfichas')
+            .find('[id^="fila_"]');
+
+        console.log('Filas encontradas:', filas.length);
+
+        for (let i = 0; i < filas.length; i++) {
+
+            try {
+
+                let fila = filas[i];
+
+                let numeroGrafica = parseInt(
+                    $(fila).attr('data-numero-grafica'),
+                    10
+                );
+
+                if (
+                    isNaN(numeroGrafica) ||
+                    numeroGrafica < 7 ||
+                    numeroGrafica > 12
+                ) {
+                    console.warn(
+                        'Número de gráfica inválido:',
+                        fila.id,
+                        $(fila).attr('data-ficha'),
+                        numeroGrafica
+                    );
+
+                    continue;
+                }
+
+                let canvas = await html2canvas(fila, {
+                    backgroundColor: '#FFFFFF',
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: false,
+                    ignoreElements: function (element) {
+                        return element.tagName === 'IMG';
+                    }
+                });
+
+                graficasFichas.push({
+                    numero: numeroGrafica,
+                    imagen: canvas.toDataURL('image/png')
+                });
+
+                console.log(
+                    'Gráfica capturada:',
+                    numeroGrafica,
+                    'Ficha:',
+                    $(fila).attr('data-ficha')
+                );
+
+            } catch (error) {
+                console.error('ERROR FILA:', i, error);
+            }
+        }
+
+        console.log(
+            'Números de gráficas enviadas:',
+            graficasFichas.map(function (g) {
+                return g.numero;
+            })
+        );
+
+        let form = $('<form>', {
+            action: '/descargarRevisionFreErgo/' + RECO_ID,
+            method: 'POST',
+            target: '_blank'
+        });
+
+        form.append($('<input>', {
+            type: 'hidden',
+            name: '_token',
+            value: $('meta[name="csrf-token"]').attr('content')
+        }));
+
+        form.append($('<input>', {
+            type: 'hidden',
+            name: 'GRAFICAS',
+            value: JSON.stringify(graficas)
+        }));
+
+        form.append($('<input>', {
+            type: 'hidden',
+            name: 'GRAFICAS_FICHAS',
+            value: JSON.stringify(graficasFichas)
+        }));
+
+        $('body').append(form);
+
+        form[0].submit();
+
+        setTimeout(function () {
+            form.remove();
+        }, 1000);
+
+        Swal.close();
+
+    } catch (error) {
+
+        console.error(
+            'Error al descargar el reporte:',
+            error
+        );
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al preparar la descarga',
+            text: 'Ocurrió un problema al generar las gráficas o preparar el documento.'
+        });
+    }
+}
