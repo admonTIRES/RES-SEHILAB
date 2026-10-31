@@ -2490,14 +2490,25 @@ Route::get('obtenerRecomendacionesInformeFreErgo/{RECO_ID}', ['as' => 'obtenerRe
 Route::post('guardarResponsablesInformeFreErgo', ['as' => 'guardarResponsablesInformeFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarResponsablesInformeFreErgo']);
 Route::get('mostrarresponsable1freergo/{archivo_opcion}/{reco_id}.{extension}', ['as' => 'mostrarresponsable1freergo', 'uses' => 'ERGO\evaluacionfreController@mostrarresponsable1freergo']);
 Route::get('mostrarresponsable2freergo/{archivo_opcion}/{reco_id}.{extension}', ['as' => 'mostrarresponsable2freergo', 'uses' => 'ERGO\evaluacionfreController@mostrarresponsable2freergo']);
+/// METODOS 
+Route::get('ObtenerMetodosFre', ['as' => 'ObtenerMetodosFre', 'uses' => 'ERGO\evaluacionfreController@ObtenerMetodosFre']);
+
 
 /// ANGULOS
 
 Route::get('tablangulosfre/{fre_id}', ['as' => 'tablangulosfre', 'uses' => 'ERGO\evaluacionfreController@tablangulosfre']);
 Route::get('verfotoangulofre/{id}', ['as' => 'verfotoangulofre', 'uses' => 'ERGO\evaluacionfreController@verfotoangulofre']);
-
-
 Route::get('/calcularangulos', function () {return view('catalogos.ergo.calcular_angulos');});
+
+/// VERSIONES FRE 
+
+Route::get('tablaVersionesFreErgo/{reco_id}', ['as' => 'tablaVersionesFreErgo', 'uses' => 'ERGO\evaluacionfreController@tablaVersionesFreErgo']);
+Route::post('crearRevisionFreErgo', ['as' => 'crearRevisionFreErgo', 'uses' => 'ERGO\evaluacionfreController@crearRevisionFreErgo']);
+Route::post('cancelarRevisionFreErgo', ['as' => 'cancelarRevisionFreErgo', 'uses' => 'ERGO\evaluacionfreController@cancelarRevisionFreErgo']);
+Route::get('validarEdicionFreErgo/{reco_id}', ['as' => 'validarEdicionFreErgo', 'uses' => 'ERGO\evaluacionfreController@validarEdicionFreErgo']);
+
+//// descargar 
+Route::post('descargarRevisionFreErgo/{RECO_ID}', 'ERGO\evaluacionfreController@descargarRevisionFreErgo');
 
 Route::get('/clear-cache', function () {
     Artisan::call('config:cache');

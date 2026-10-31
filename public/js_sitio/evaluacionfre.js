@@ -5928,10 +5928,12 @@ $("#boton_guardar_fre").click(function (e) {
         }
 		
 		$('#JSON_ACTIVIDADES_FRE').val(json);
-		$('#JSON_EQUIPOS_TRABAJO').val(jsonEquipos);
+        $('#JSON_EQUIPOS_TRABAJO').val(jsonEquipos);
+        
 		$('#JSON_FUENTES_TERMICAS').val(jsonTermicas);
 		$('#JSON_FUENTES_RUIDO').val(jsonRuido);
-		$('#JSON_FUENTES_VIBRACION').val(jsonVibracion);
+        $('#JSON_FUENTES_VIBRACION').val(jsonVibracion);
+        
         $('#JSON_EPP').val(jsonEPP);
         
 
@@ -5967,7 +5969,9 @@ $('#contenedorMetodoRULA .rula-extra:checked').each(function () {
 
 });
 
-$('#RULA_DATOS_JSON').val(JSON.stringify(datosRULA));
+        $('#RULA_DATOS_JSON').val(JSON.stringify(datosRULA));
+        
+
     if (ID_EVALUACION_FRE == 0) {
         
         alertMensajeConfirm({
@@ -10946,13 +10950,64 @@ function validarEdicionRecoErgo() {
 }
 
 
+// async function descargarRevisionFreErgo(RECO_ID)
+// {
+//     Swal.fire({
+//         title: 'Descargando reporte...',
+//         html: 'Por favor, espera mientras se prepara el documento.',
+//         allowOutsideClick: false,
+//         allowEscapeKey: false,
+//         showConfirmButton: false,
+//         didOpen: function () {
+//             Swal.showLoading();
+//         }
+//     });
+
+//     try {
+
+//         let form = $('<form>', {
+//             action: '/descargarRevisionFreErgo/' + RECO_ID,
+//             method: 'POST',
+//             target: '_blank'
+//         });
+
+//         form.append($('<input>', {
+//             type: 'hidden',
+//             name: '_token',
+//             value: $('meta[name="csrf-token"]').attr('content')
+//         }));
+
+//         $('body').append(form);
+
+//         form[0].submit();
+
+//         setTimeout(function () {
+//             form.remove();
+//         }, 1000);
+
+//         Swal.close();
+
+//     } catch (error) {
+
+//         console.error(
+//             'Error al descargar el reporte:',
+//             error
+//         );
+
+//         Swal.fire({
+//             icon: 'error',
+//             title: 'Error al preparar la descarga',
+//             text: 'Ocurrió un problema al preparar el documento.'
+//         });
+//     }
+// }
 
 
-async function descargarRevisionFreErgo(RECO_ID)
-{
+async function descargarRevisionFreErgo(RECO_ID) {
+
     Swal.fire({
         title: 'Descargando reporte...',
-        html: 'Por favor, espera mientras se generan las gráficas y se prepara el documento.',
+        html: 'Capturando las seis tarjetas y preparando el documento Word.',
         allowOutsideClick: false,
         allowEscapeKey: false,
         showConfirmButton: false,
@@ -10961,141 +11016,138 @@ async function descargarRevisionFreErgo(RECO_ID)
         }
     });
 
+    let form = null;
+
+    const tarjetas = [
+        { id: 'cardPregunta1', marcador: 'GRAFICA_1' },
+        { id: 'cardPregunta2', marcador: 'GRAFICA_2' },
+        { id: 'cardPregunta3', marcador: 'GRAFICA_3' },
+        { id: 'cardPregunta4', marcador: 'GRAFICA_4' },
+        { id: 'cardPregunta5', marcador: 'GRAFICA_5' },
+        { id: 'cardPregunta6', marcador: 'GRAFICA_6' }
+    ];
 
     try {
 
-        let graficas = [];
-
-        $('#contenedorGraficas > div')
-            .find('[id^="chart_p"]')
-            .each(function () {
-
-                let instancia = echarts.getInstanceByDom(this);
-
-                if (instancia) {
-                    graficas.push({
-                        imagen: instancia.getDataURL({
-                            type: 'png',
-                            pixelRatio: 2,
-                            backgroundColor: '#FFFFFF'
-                        })
-                    });
-                }
-            });
-
-        let graficasFichas = [];
-
-        let filas = $('#contenedorGraficasfichas')
-            .find('[id^="fila_"]');
-
-        console.log('Filas encontradas:', filas.length);
-
-        for (let i = 0; i < filas.length; i++) {
-
-            try {
-
-                let fila = filas[i];
-
-                let numeroGrafica = parseInt(
-                    $(fila).attr('data-numero-grafica'),
-                    10
-                );
-
-                if (
-                    isNaN(numeroGrafica) ||
-                    numeroGrafica < 7 ||
-                    numeroGrafica > 12
-                ) {
-                    console.warn(
-                        'Número de gráfica inválido:',
-                        fila.id,
-                        $(fila).attr('data-ficha'),
-                        numeroGrafica
-                    );
-
-                    continue;
-                }
-
-                let canvas = await html2canvas(fila, {
-                    backgroundColor: '#FFFFFF',
-                    scale: 2,
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: false,
-                    ignoreElements: function (element) {
-                        return element.tagName === 'IMG';
-                    }
-                });
-
-                graficasFichas.push({
-                    numero: numeroGrafica,
-                    imagen: canvas.toDataURL('image/png')
-                });
-
-                console.log(
-                    'Gráfica capturada:',
-                    numeroGrafica,
-                    'Ficha:',
-                    $(fila).attr('data-ficha')
-                );
-
-            } catch (error) {
-                console.error('ERROR FILA:', i, error);
-            }
+        if (typeof html2canvas === 'undefined') {
+            throw new Error(
+                'No está cargada la librería html2canvas.'
+            );
         }
 
-        console.log(
-            'Números de gráficas enviadas:',
-            graficasFichas.map(function (g) {
-                return g.numero;
-            })
+        const metaToken = document.querySelector(
+            'meta[name="csrf-token"]'
         );
 
-        let form = $('<form>', {
-            action: '/descargarRevisionFreErgo/' + RECO_ID,
-            method: 'POST',
-            target: '_blank'
-        });
+        if (!metaToken) {
+            throw new Error(
+                'No se encontró el token CSRF de Laravel.'
+            );
+        }
 
-        form.append($('<input>', {
-            type: 'hidden',
-            name: '_token',
-            value: $('meta[name="csrf-token"]').attr('content')
-        }));
+        await document.fonts.ready;
 
-        form.append($('<input>', {
-            type: 'hidden',
-            name: 'GRAFICAS',
-            value: JSON.stringify(graficas)
-        }));
+        form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/descargarRevisionFreErgo/' +
+            encodeURIComponent(RECO_ID);
+        form.target = '_blank';
 
-        form.append($('<input>', {
-            type: 'hidden',
-            name: 'GRAFICAS_FICHAS',
-            value: JSON.stringify(graficasFichas)
-        }));
+        const inputToken = document.createElement('input');
 
-        $('body').append(form);
+        inputToken.type = 'hidden';
+        inputToken.name = '_token';
+        inputToken.value = metaToken.content;
 
-        form[0].submit();
+        form.appendChild(inputToken);
 
-        setTimeout(function () {
-            form.remove();
-        }, 1000);
+        for (const tarjetaInfo of tarjetas) {
+
+            const tarjeta = document.getElementById(
+                tarjetaInfo.id
+            );
+
+            if (!tarjeta) {
+                console.warn(
+                    'No se encontró la tarjeta:',
+                    tarjetaInfo.id
+                );
+
+                continue;
+            }
+
+            const imagenes = Array.from(
+                tarjeta.querySelectorAll('img')
+            );
+
+            await Promise.all(
+                imagenes.map(function (img) {
+
+                    if (img.complete) {
+                        return Promise.resolve();
+                    }
+
+                    return new Promise(function (resolve) {
+                        img.onload = resolve;
+                        img.onerror = resolve;
+                    });
+                })
+            );
+
+            const canvas = await html2canvas(tarjeta, {
+                scale: 3,
+                useCORS: true,
+                allowTaint: false,
+                backgroundColor: '#FFFFFF',
+                logging: false,
+                scrollX: 0,
+                scrollY: 0
+            });
+
+            const imagenBase64 = canvas.toDataURL('image/png');
+
+            const inputImagen = document.createElement('input');
+
+            inputImagen.type = 'hidden';
+            inputImagen.name = tarjetaInfo.marcador;
+            inputImagen.value = imagenBase64;
+
+            form.appendChild(inputImagen);
+
+            console.log(
+                'Tarjeta capturada:',
+                tarjetaInfo.id,
+                'Marcador:',
+                tarjetaInfo.marcador
+            );
+        }
+
+        document.body.appendChild(form);
+
+        form.submit();
 
         Swal.close();
 
     } catch (error) {
 
         console.error(
-            'Error al descargar el reporte:',
+            'Error al preparar las tarjetas del reporte:',
             error
         );
 
         Swal.fire({
             icon: 'error',
             title: 'Error al preparar la descarga',
-            text: 'Ocurrió un problema al generar las gráficas o preparar el documento.'
+            text: error.message ||
+                'Ocurrió un problema al preparar el documento.'
         });
+
+    } finally {
+
+        if (form) {
+            setTimeout(function () {
+                form.remove();
+            }, 5000);
+        }
     }
 }

@@ -225,10 +225,6 @@
                                                 <i class="fa fa-address-card"></i><br>
                                                 <span>Fichas técnicas</span>
                                             </div>
-                                            <div class="multisteps-form__progress-btn" id="steps_menu_tab5">
-                                                <i class="fa fa-address-card"></i><br>
-                                                <span>Gráficas</span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1264,9 +1260,12 @@
                                     <a href="#8" class="list-group-item">8.- Conclusiones <i class="fa" id="menureporte_8"></i></a>
                                     <a href="#9" class="list-group-item">9.- Recomendaciones de control <i class="fa" id="menureporte_9"></i></a>
                                     <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
+                                    @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador']))
+
                                     <a href="#11" class="list-group-item">11.- Anexos <i class="fa" id="menureporte_11"></i></a>
-                                    <a href="#11_1" class="list-group-item submenu">11.1.- Anexo 1 Equipo utilizado en la medición <i class="fa " id="menureporte_11_1"></i></a>
+                                    <a href="#11_1" class="list-group-item submenu">11.1.- Anexo 1: Métodos aplicados <i class="fa " id="menureporte_11_1"></i></a>
                                     <a href="#12" class="list-group-item">12.- Generar informe <i class="fa" id="menureporte_12"></i></a>
+                                    @endif
 
 
 
@@ -2541,8 +2540,10 @@ DESCRIPCIONACTIVIDAD
                                             </div>
                                         </div>
                                     </form>
+                                    @if(auth()->user()->hasRoles(['Superusuario', 'Administrador']))
+
                                     <h4 class="card-title mt-2" id="11">11.- Anexos </h4>
-                                    <h4 class="card-title" id="11_1">11.1.- Anexo 1 Equipo utilizado en la medición </h4>
+                                    <h4 class="card-title" id="11_1">11.1.- Anexo 1: Métodos aplicados </h4>
                                     <div class="row mb-5">
                                         <div class="col-12">
                                         </div>
@@ -2573,6 +2574,8 @@ DESCRIPCIONACTIVIDAD
                                             </table>
                                         </div>
                                     </div>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
@@ -3607,7 +3610,7 @@ DESCRIPCIONACTIVIDAD
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label>Recomendaciones EPP</label>
+                                                <label>Observaciones / recomendaciones EPP</label>
                                                 <div class="input-group">
                                                     <textarea class="form-control" name="RECOMENDACIONES_EPP" id="RECOMENDACIONES_EPP" rows="3"></textarea>
                                                 </div>
@@ -7855,15 +7858,15 @@ DESCRIPCIONACTIVIDAD
                                                                 id="RULA_BRAZO" name="RULA_BRAZO">
                                                                 <option value="">Seleccionar...</option>
                                                                 <option value="1">1 — Desde 20° de extensión a 20° de flexión</option>
-                                                                <option value="2">2 — Extensión mayor de 20° o flexión entre 20° y 45°</option>
+                                                                <option value="2">2 — Extensión >20° o flexión entre 20° y 45°</option>
                                                                 <option value="3">3 — Flexión entre 45° y 90°</option>
-                                                                <option value="4">4 — Flexión mayor de 90°</option>
+                                                                <option value="4">4 — Flexión >90°</option>
                                                             </select>
                                                         </div>
 
                                                         <div class="rula-campo-contenedor">
                                                             <label class="rula-etiqueta" for="RULA_BRAZO_ABDUCIDO">
-                                                                Modificación: brazos abducidos (+1)
+                                                                Modificación: Si los brazos están abducidos. (+1)
                                                             </label>
                                                             <select class="rula-campo rula-selector rula-modificador"
                                                                 id="RULA_BRAZO_ABDUCIDO" name="RULA_BRAZO_ABDUCIDO">
@@ -7875,7 +7878,7 @@ DESCRIPCIONACTIVIDAD
 
                                                         <div class="rula-campo-contenedor">
                                                             <label class="rula-etiqueta" for="RULA_HOMBRO_ELEVADO">
-                                                                Modificación: hombro elevado (+1)
+                                                                Modificación: Si el hombro está elevado. (+1)
                                                             </label>
                                                             <select class="rula-campo rula-selector rula-modificador"
                                                                 id="RULA_HOMBRO_ELEVADO" name="RULA_HOMBRO_ELEVADO">
@@ -7887,7 +7890,7 @@ DESCRIPCIONACTIVIDAD
 
                                                         <div class="rula-campo-contenedor">
                                                             <label class="rula-etiqueta" for="RULA_BRAZO_APOYADO">
-                                                                Modificación: brazo con punto de apoyo (−1)
+                                                                Modificación: Si el brazo tiene un punto de apoyo. (−1)
                                                             </label>
                                                             <select class="rula-campo rula-selector rula-modificador"
                                                                 id="RULA_BRAZO_APOYADO" name="RULA_BRAZO_APOYADO">
@@ -7912,11 +7915,11 @@ DESCRIPCIONACTIVIDAD
                                                                     <tbody>
                                                                         <tr>
                                                                             <td>1</td>
-                                                                            <td>Extensión de 20° a flexión de 20°</td>
+                                                                            <td>Desde 20° de extensión a 20° de flexión</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>2</td>
-                                                                            <td>Extensión mayor de 20° o flexión entre 20° y 45°</td>
+                                                                            <td>Extensión >20° o flexión entre 20° y 45°</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td>3</td>
@@ -7924,7 +7927,7 @@ DESCRIPCIONACTIVIDAD
                                                                         </tr>
                                                                         <tr>
                                                                             <td>4</td>
-                                                                            <td>Flexión mayor de 90°</td>
+                                                                            <td>Flexión >90°</td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -7978,13 +7981,13 @@ DESCRIPCIONACTIVIDAD
                                                                 id="RULA_ANTEBRAZO" name="RULA_ANTEBRAZO">
                                                                 <option value="">Seleccionar...</option>
                                                                 <option value="1">1 — Flexión entre 60° y 100°</option>
-                                                                <option value="2">2 — Flexión menor de 60° o mayor de 100°</option>
+                                                                <option value="2">2 — Flexión < 60° ó>100°</option>
                                                             </select>
                                                         </div>
 
                                                         <div class="rula-campo-contenedor">
                                                             <label class="rula-etiqueta" for="RULA_ANTEBRAZO_PROYECCION">
-                                                                Modificación: antebrazo fuera de la proyección vertical del codo (+1)
+                                                                Modificación: A un lado del cuerpo (+1)
                                                             </label>
                                                             <select class="rula-campo rula-selector rula-modificador"
                                                                 id="RULA_ANTEBRAZO_PROYECCION"
@@ -7997,7 +8000,7 @@ DESCRIPCIONACTIVIDAD
 
                                                         <div class="rula-campo-contenedor">
                                                             <label class="rula-etiqueta" for="RULA_ANTEBRAZO_CRUZA">
-                                                                Modificación: antebrazo cruza la línea central del cuerpo (+1)
+                                                                Modificación: Cruza la línea media (+1)
                                                             </label>
                                                             <select class="rula-campo rula-selector rula-modificador"
                                                                 id="RULA_ANTEBRAZO_CRUZA"
@@ -8026,7 +8029,7 @@ DESCRIPCIONACTIVIDAD
                                                                     </tr>
                                                                     <tr>
                                                                         <td>2</td>
-                                                                        <td>Flexión menor de 60° o mayor de 100°</td>
+                                                                        <td>Flexión < 60° ó>100°</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -8041,11 +8044,11 @@ DESCRIPCIONACTIVIDAD
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>+1</td>
-                                                                        <td>La proyección vertical del antebrazo se encuentra más allá de la proyección vertical del codo.</td>
+                                                                        <td>A un lado del cuerpo</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>+1</td>
-                                                                        <td>El antebrazo cruza la línea central del cuerpo.</td>
+                                                                        <td>Cruza la línea media</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -8069,15 +8072,15 @@ DESCRIPCIONACTIVIDAD
                                                             <select class="rula-campo rula-selector"
                                                                 id="RULA_MUNECA" name="RULA_MUNECA">
                                                                 <option value="">Seleccionar...</option>
-                                                                <option value="1">1 — Posición neutra</option>
-                                                                <option value="2">2 — Flexión o extensión entre 0° y 15°</option>
-                                                                <option value="3">3 — Flexión o extensión mayor de 15°</option>
+                                                                <option value="1">1 — Si está en posición neutra.</option>
+                                                                <option value="2">2 — Si está flexionada o extendida entre > 0° y < 15°</option>
+                                                                <option value="3">3 — Para flexión o extensión mayor de 15°.</option>
                                                             </select>
                                                         </div>
 
                                                         <div class="rula-campo-contenedor">
                                                             <label class="rula-etiqueta" for="RULA_MUNECA_DESVIACION">
-                                                                Modificación: desviación radial o cubital (+1)
+                                                                Modificación: Si está desviada radial o cubitalmente (+1)
                                                             </label>
 
                                                             <select class="rula-campo rula-selector rula-modificador"
@@ -8097,8 +8100,8 @@ DESCRIPCIONACTIVIDAD
                                                             <select class="rula-campo rula-selector"
                                                                 id="RULA_GIRO_MUNECA" name="RULA_GIRO_MUNECA">
                                                                 <option value=""></option>
-                                                                <option value="1">1 — Rango medio</option>
-                                                                <option value="2">2 — Rango extremo</option>
+                                                                <option value="1">1 — Si existe pronación o supinación medio.</option>
+                                                                <option value="2">2 — Si existe pronación o supinación extremo.</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -8116,11 +8119,11 @@ DESCRIPCIONACTIVIDAD
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>1</td>
-                                                                        <td>Posición neutra respecto a la flexión.</td>
+                                                                        <td>Si está en posición neutra.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>2</td>
-                                                                        <td>Flexionada o extendida entre 0° y 15°.</td>
+                                                                        <td>Si está flexionada o extendida entre > 0° y < 15°.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>3</td>
@@ -8139,7 +8142,7 @@ DESCRIPCIONACTIVIDAD
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>+1</td>
-                                                                        <td>Desviación radial o cubital.</td>
+                                                                        <td>Si está desviada radial o cubitalmente..</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -8154,11 +8157,11 @@ DESCRIPCIONACTIVIDAD
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>1</td>
-                                                                        <td>Pronación o supinación en rango medio.</td>
+                                                                        <td>Si existe pronación o supinación medio.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>2</td>
-                                                                        <td>Pronación o supinación en rango extremo.</td>
+                                                                        <td>Si existe pronación o supinación extremo.</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -8182,16 +8185,16 @@ DESCRIPCIONACTIVIDAD
                                                             <select class="rula-campo rula-selector"
                                                                 id="RULA_CUELLO" name="RULA_CUELLO">
                                                                 <option value="">Seleccionar...</option>
-                                                                <option value="1">1 — Flexión entre 0° y 10°</option>
-                                                                <option value="2">2 — Flexión entre 10° y 20°</option>
-                                                                <option value="3">3 — Flexión mayor de 20°</option>
-                                                                <option value="4">4 — Extensión</option>
+                                                                <option value="1">1 — Si existe flexión entre 0° y 10°</option>
+                                                                <option value="2">2 — Si está flexionado entre > 10° y ≤ 20°</option>
+                                                                <option value="3">3 — Para flexión mayor de 20°</option>
+                                                                <option value="4">4 — Extensión en cualquier grado.</option>
                                                             </select>
                                                         </div>
 
                                                         <div class="rula-campo-contenedor">
                                                             <label class="rula-etiqueta" for="RULA_CUELLO_ROTADO">
-                                                                Modificación: cuello rotado (+1)
+                                                                Modificación: Cabeza rotada. (+1)
                                                             </label>
                                                             <select class="rula-campo rula-selector rula-modificador"
                                                                 id="RULA_CUELLO_ROTADO" name="RULA_CUELLO_ROTADO">
@@ -8203,7 +8206,7 @@ DESCRIPCIONACTIVIDAD
 
                                                         <div class="rula-campo-contenedor">
                                                             <label class="rula-etiqueta" for="RULA_CUELLO_LATERAL">
-                                                                Modificación: inclinación lateral del cuello (+1)
+                                                                Modificación: Cabeza con inclinación lateral (+1)
                                                             </label>
                                                             <select class="rula-campo rula-selector rula-modificador"
                                                                 id="RULA_CUELLO_LATERAL" name="RULA_CUELLO_LATERAL">
@@ -8227,19 +8230,19 @@ DESCRIPCIONACTIVIDAD
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>1</td>
-                                                                        <td>Flexión entre 0° y 10°.</td>
+                                                                        <td>Si existe flexión entre 0° y 10°.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>2</td>
-                                                                        <td>Flexión entre 10° y 20°.</td>
+                                                                        <td>Si está flexionado entre > 10° y ≤ 20°.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>3</td>
-                                                                        <td>Flexión mayor de 20°.</td>
+                                                                        <td>Para flexión mayor de 20°.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>4</td>
-                                                                        <td>Cuello extendido.</td>
+                                                                        <td>Extensión en cualquier grado.</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -8254,11 +8257,11 @@ DESCRIPCIONACTIVIDAD
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>+1</td>
-                                                                        <td>Si el cuello está rotado.</td>
+                                                                        <td>Cabeza rotada.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>+1</td>
-                                                                        <td>Si hay inclinación lateral.</td>
+                                                                        <td>Cabeza con inclinación lateral.</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -8281,16 +8284,16 @@ DESCRIPCIONACTIVIDAD
                                                             <select class="rula-campo rula-selector"
                                                                 id="RULA_TRONCO" name="RULA_TRONCO">
                                                                 <option value="">Seleccionar...</option>
-                                                                <option value="1">1 — Sentado, bien apoyado, tronco-caderas mayor de 90°</option>
-                                                                <option value="2">2 — Flexión entre 0° y 20°</option>
-                                                                <option value="3">3 — Flexión entre 20° y 60°</option>
-                                                                <option value="4">4 — Flexión mayor de 60°</option>
+                                                                <option value="1">1 — Sentado, bien apoyado y con un ángulo tronco-caderas >90°</option>
+                                                                <option value="2">2 — Flexión entre > 0° y 20°</option>
+                                                                <option value="3">3 — Flexión entre > 20° y ≤ 60°</option>
+                                                                <option value="4">4 — Flexión más de 60°</option>
                                                             </select>
                                                         </div>
 
                                                         <div class="rula-campo-contenedor">
                                                             <label class="rula-etiqueta" for="RULA_TRONCO_TORSION">
-                                                                Modificación: torsión del tronco (+1)
+                                                                Modificación: Tronco rotado (+1)
                                                             </label>
                                                             <select class="rula-campo rula-selector rula-modificador"
                                                                 id="RULA_TRONCO_TORSION" name="RULA_TRONCO_TORSION">
@@ -8302,7 +8305,7 @@ DESCRIPCIONACTIVIDAD
 
                                                         <div class="rula-campo-contenedor">
                                                             <label class="rula-etiqueta" for="RULA_TRONCO_LATERAL">
-                                                                Modificación: inclinación lateral del tronco (+1)
+                                                                Modificación: Si hay inclinación lateral del tronco (+1)
                                                             </label>
                                                             <select class="rula-campo rula-selector rula-modificador"
                                                                 id="RULA_TRONCO_LATERAL" name="RULA_TRONCO_LATERAL">
@@ -8326,19 +8329,19 @@ DESCRIPCIONACTIVIDAD
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>1</td>
-                                                                        <td>Sentado, bien apoyado y con un ángulo tronco-caderas mayor de 90°.</td>
+                                                                        <td>Sentado, bien apoyado y con un ángulo tronco-caderas >90°.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>2</td>
-                                                                        <td>Flexión entre 0° y 20°.</td>
+                                                                        <td>Flexión entre > 0° y 20°.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>3</td>
-                                                                        <td>Flexión entre 20° y 60°.</td>
+                                                                        <td>Flexión entre > 20° y ≤ 60°.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>4</td>
-                                                                        <td>Flexión mayor de 60°.</td>
+                                                                        <td>Flexión más de 60°.</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -8353,11 +8356,11 @@ DESCRIPCIONACTIVIDAD
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>+1</td>
-                                                                        <td>Si hay torsión del tronco.</td>
+                                                                        <td>Tronco rotado.</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>+1</td>
-                                                                        <td>Si hay inclinación lateral del tronco.</td>
+                                                                        <td>Si hay inclinación lateral del tronco..</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -8505,10 +8508,10 @@ DESCRIPCIONACTIVIDAD
                                                         <select class="rula-campo rula-selector"
                                                             id="RULA_ACTIVIDAD" name="RULA_ACTIVIDAD">
                                                             <option value=""></option>
-                                                            <option value="0">0 — Actividad dinámica, ocasional</option>
-                                                            <option value="1">+1 — Actividad estática durante más de un minuto</option>
-                                                            <option value="1">+1 — Actividad repetitiva más de 4 veces por minuto</option>
-                                                            <option value="1">+1 — Ambas condiciones</option>
+                                                            <option value="0">0 — Ocasional, poco frecuente y de corta duración</option>
+                                                            <option value="1">+1 — Estática (se mantiene la postura más de un minuto
+                                                                seguido).</option>
+                                                            <option value="1">+1 — Repetitiva (se repite más de 4 veces por minuto).</option>
                                                         </select>
                                                     </div>
 

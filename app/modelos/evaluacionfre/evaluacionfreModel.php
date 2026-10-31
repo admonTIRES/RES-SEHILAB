@@ -184,6 +184,8 @@ class evaluacionfreModel extends Model
         'RULA_CARGA',
 
         'ANALISIS_METODO_RULA',
+
+        
         'RULA_DATOS_JSON',
     ];
 
