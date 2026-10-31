@@ -4791,330 +4791,103 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
 
 
 
+
+
             $evaluacionesFre_7_2 = DB::table('evaluacion_fre_ergo as evaluacion')
 
-                ->leftJoin(
-
-                    'recoergocategorias as categoria',
-
-                    'categoria.ID_CATEGORIA_ERGO',
-
-                    '=',
-
-                    'evaluacion.CATEGORIA_ID_FRE'
-
-                )
-
+                ->leftJoin('recoergocategorias as categoria','categoria.ID_CATEGORIA_ERGO','=','evaluacion.CATEGORIA_ID_FRE')
                 ->where('evaluacion.RECO_ID', $RECO_ID)
-
-                ->select(
-
-                    'evaluacion.*',
-
-                    'categoria.NOMBRE_CATEGORIA_ERGO'
-
-                )
-
+                ->select('evaluacion.*','categoria.NOMBRE_CATEGORIA_ERGO')
                 ->orderBy('evaluacion.ID_EVALUACION_FRE', 'ASC')
-
                 ->get();
 
+            $categoriasFre_7_2 = DB::table('recoergocategorias')->pluck('NOMBRE_CATEGORIA_ERGO', 'ID_CATEGORIA_ERGO')->toArray();
+            $areasFre_7_2 = DB::table('recoergoareas')->pluck('NOMBRE_AREA_ERGO', 'ID_AREA_ERGO')->toArray();
+            $turnosFre_7_2 = DB::table('catergo_turno')->pluck('NOMBRE_TURNO', 'ID_TURNO')->toArray();
+            $catalogoEppFre_7_2 = DB::table('cat_claveyepp')->pluck('EPP', 'ID_CLAVE_EPP')->toArray();
 
-
-
-
-
-
-            $categoriasFre_7_2 = DB::table('recoergocategorias')
-
-                ->pluck('NOMBRE_CATEGORIA_ERGO', 'ID_CATEGORIA_ERGO')
-
-                ->toArray();
-
-
-
-
-
-            $areasFre_7_2 = DB::table('recoergoareas')
-
-                ->pluck('NOMBRE_AREA_ERGO', 'ID_AREA_ERGO')
-
-                ->toArray();
-
-
-
-
-
-            $turnosFre_7_2 = DB::table('catergo_turno')
-
-                ->pluck('NOMBRE_TURNO', 'ID_TURNO')
-
-                ->toArray();
-
-
-
-
-
-            $catalogoEppFre_7_2 = DB::table('cat_claveyepp')
-
-                ->pluck('EPP', 'ID_CLAVE_EPP')
-
-                ->toArray();
-
-
-
-
-
-
-
-            $idsFichasFre_7_2 = $evaluacionesFre_7_2
-
-                ->pluck('FICHA_ID')
-
-                ->filter()
-
-                ->unique()
-
-                ->values()
-
-                ->all();
-
-
-
-
+            $idsFichasFre_7_2 = $evaluacionesFre_7_2 ->pluck('FICHA_ID')->filter()->unique()->values()->all();
 
             $fichasFre_7_2 = collect();
 
 
-
-
-
             if (!empty($idsFichasFre_7_2)) {
-
-
-
-                $fichasFre_7_2 = DB::table('recoergo_fichastecnicas')
-
-                    ->whereIn(
-
-                        'ID_FICHAS_TECNICAS',
-
-                        $idsFichasFre_7_2
-
-                    )
-
-                    ->get()
-
-                    ->keyBy('ID_FICHAS_TECNICAS');
+                $fichasFre_7_2 = DB::table('recoergo_fichastecnicas')->whereIn('ID_FICHAS_TECNICAS',$idsFichasFre_7_2)
+                    ->get()->keyBy('ID_FICHAS_TECNICAS');
             }
 
 
 
-
-
-
-
-
-
             $estiloEtiquetaFre_7_2 = [
-
                 'name' => 'Poppins',
-
                 'size' => 10,
-
                 'bold' => true,
-
                 'color' => 'FFFFFF',
-
             ];
-
-
-
-
 
             $estiloValorFre_7_2 = [
-
                 'name' => 'Poppins',
-
                 'size' => 10,
-
                 'color' => '000000',
-
             ];
-
-
-
-
 
             $estiloCeldaEtiquetaFre_7_2 = [
-
                 'bgColor' => '12466A',
-
                 'valign' => 'center',
-
                 'borderSize' => 6,
-
                 'borderColor' => '000000',
-
             ];
-
-
-
-
 
             $estiloCeldaValorFre_7_2 = [
-
                 'valign' => 'center',
-
                 'borderSize' => 6,
-
                 'borderColor' => '000000',
-
             ];
-
-
-
-
 
             $estiloTituloAngulosFre_7_2 = [
-
                 'name' => 'Poppins',
-
                 'size' => 10,
-
                 'bold' => true,
-
                 'color' => 'FFFFFF',
-
             ];
-
-
-
-
 
             $estiloTextoAngulosFre_7_2 = [
-
                 'name' => 'Poppins',
-
                 'size' => 9,
-
                 'color' => '000000',
-
             ];
-
-
-
-
 
             $estiloCeldaTituloAngulosFre_7_2 = [
-
                 'bgColor' => '12466A',
-
                 'valign' => 'center',
-
                 'borderSize' => 6,
-
                 'borderColor' => '000000',
-
             ];
-
-
-
-
 
             $estiloCeldaAngulosFre_7_2 = [
-
                 'valign' => 'center',
-
                 'borderSize' => 6,
-
                 'borderColor' => '000000',
-
             ];
 
-
-
-
-
-
-
-
-
-            $agregarFilaResultadoFre_7_2 = function (
-
-                $tablaFre_7_2,
-
-                $etiquetaFre_7_2,
-
-                $valorFre_7_2
-
-            ) use (
-
-                $estiloEtiquetaFre_7_2,
-
-                $estiloValorFre_7_2,
-
-                $estiloCeldaEtiquetaFre_7_2,
-
-                $estiloCeldaValorFre_7_2
-
-            ) {
-
-
+            $agregarFilaResultadoFre_7_2 = function ($tablaFre_7_2,$etiquetaFre_7_2,$valorFre_7_2)
+            use ($estiloEtiquetaFre_7_2,$estiloValorFre_7_2,$estiloCeldaEtiquetaFre_7_2,$estiloCeldaValorFre_7_2) 
+            {
 
                 $tablaFre_7_2->addRow();
-
-
-
-                $tablaFre_7_2->addCell(
-
-                    3400,
-
-                    $estiloCeldaEtiquetaFre_7_2
-
-                )->addText(
-
+                $tablaFre_7_2->addCell(3400,$estiloCeldaEtiquetaFre_7_2)->addText(
                     (string) $etiquetaFre_7_2,
-
                     $estiloEtiquetaFre_7_2
-
                 );
 
+                $valorFre_7_2 = is_scalar($valorFre_7_2) ? trim((string) $valorFre_7_2) : '';
 
-
-
-
-                $valorFre_7_2 = is_scalar($valorFre_7_2)
-
-                    ? trim((string) $valorFre_7_2)
-
-                    : '';
-
-
-
-
-
-                $tablaFre_7_2->addCell(
-
-                    7900,
-
-                    $estiloCeldaValorFre_7_2
-
+                $tablaFre_7_2->addCell(7900,$estiloCeldaValorFre_7_2
                 )->addText(
-
                     $valorFre_7_2 !== '' ? $valorFre_7_2 : ' ',
-
                     $estiloValorFre_7_2
-
                 );
             };
-
-
-
-
-
-
-
 
 
             $tablasDatosFre_7_2 = [];
@@ -5122,587 +4895,139 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
             $tablasMetodosFre_7_2 = [];
             $bloquesMetodosXmlFre_7_2 = [];
             $imagenesAngulosFre_7_2 = [];
-
-
-
             $imagenesAngulosFre_7_2 = [];
 
 
-
-
-
-            foreach (
-
-                $evaluacionesFre_7_2 as $indiceFre_7_2 => $evaluacionFre_7_2
-
-            ) {
-
-
-
+            foreach ($evaluacionesFre_7_2 as $indiceFre_7_2 => $evaluacionFre_7_2) 
+            {
 
 
                 $tablaDatosFre_7_2 = new \PhpOffice\PhpWord\Element\Table([
-
                     'borderSize' => 6,
-
                     'borderColor' => '000000',
-
                     'cellMargin' => 80,
-
                     'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER,
-
                 ]);
 
+                $categoriaFre_7_2 = isset($categoriasFre_7_2[$evaluacionFre_7_2->CATEGORIA_ID_FRE]) ? $categoriasFre_7_2[$evaluacionFre_7_2->CATEGORIA_ID_FRE] : '';
 
-
-                $categoriaFre_7_2 = isset(
-
-                    $categoriasFre_7_2[$evaluacionFre_7_2->CATEGORIA_ID_FRE]
-
-                )
-
-                    ? $categoriasFre_7_2[$evaluacionFre_7_2->CATEGORIA_ID_FRE]
-
-                    : '';
-
-
-
-
-
-                $fichaFre_7_2 = $fichasFre_7_2->get(
-
-                    $evaluacionFre_7_2->FICHA_ID
-
-                );
-
-
-
-
-
-
+                $fichaFre_7_2 = $fichasFre_7_2->get($evaluacionFre_7_2->FICHA_ID);
 
                 $nombresAreasFre_7_2 = [];
 
 
+                if ($fichaFre_7_2 && !empty($fichaFre_7_2->CAT_AREAS_FICHA)) 
+                {
 
-
-
-                if (
-
-                    $fichaFre_7_2 &&
-
-                    !empty($fichaFre_7_2->CAT_AREAS_FICHA)
-
-                ) {
-
-
-
-                    $idsAreasFre_7_2 = json_decode(
-
-                        $fichaFre_7_2->CAT_AREAS_FICHA,
-
-                        true
-
-                    );
-
-
-
-
+                    $idsAreasFre_7_2 = json_decode($fichaFre_7_2->CAT_AREAS_FICHA,true);
 
                     if (is_array($idsAreasFre_7_2)) {
 
-
-
-                        foreach (
-
-                            $idsAreasFre_7_2 as $idAreaFre_7_2
-
-                        ) {
-
-
+                        foreach ($idsAreasFre_7_2 as $idAreaFre_7_2) 
+                        {
 
                             $idAreaFre_7_2 = (string) $idAreaFre_7_2;
 
-
-
-
-
-                            if (
-
-                                isset(
-
-                                    $areasFre_7_2[$idAreaFre_7_2]
-
-                                )
-
-                            ) {
-
-
-
-                                $nombresAreasFre_7_2[] =
-
-                                    $areasFre_7_2[$idAreaFre_7_2];
+                            if (isset($areasFre_7_2[$idAreaFre_7_2])) 
+                        {
+                                $nombresAreasFre_7_2[] = $areasFre_7_2[$idAreaFre_7_2];
                             }
                         }
                     }
                 }
 
-
-
-
-
-                $nombreAreaFre_7_2 = implode(
-
-                    ', ',
-
-                    array_unique($nombresAreasFre_7_2)
-
-                );
-
-
-
-
-
-
+                $nombreAreaFre_7_2 = implode(', ',array_unique($nombresAreasFre_7_2));
 
                 $nombresTurnosFre_7_2 = [];
 
+                if ($fichaFre_7_2 && !empty($fichaFre_7_2->TURNO_EMPLEADO_FICHA)) 
+                {
 
-
-
-
-                if (
-
-                    $fichaFre_7_2 &&
-
-                    !empty($fichaFre_7_2->TURNO_EMPLEADO_FICHA)
-
-                ) {
-
-
-
-                    $idsTurnosFre_7_2 = json_decode(
-
-                        $fichaFre_7_2->TURNO_EMPLEADO_FICHA,
-
-                        true
-
-                    );
-
-
-
-
+                    $idsTurnosFre_7_2 = json_decode($fichaFre_7_2->TURNO_EMPLEADO_FICHA,true);
 
                     if (is_array($idsTurnosFre_7_2)) {
 
-
-
-                        foreach (
-
-                            $idsTurnosFre_7_2 as $idTurnoFre_7_2
-
-                        ) {
-
-
+                        foreach ($idsTurnosFre_7_2 as $idTurnoFre_7_2) 
+                        {
 
                             $idTurnoFre_7_2 = (string) $idTurnoFre_7_2;
 
-
-
-
-
-                            if (
-
-                                isset(
-
-                                    $turnosFre_7_2[$idTurnoFre_7_2]
-
-                                )
-
-                            ) {
-
-
-
-                                $nombresTurnosFre_7_2[] =
-
-                                    $turnosFre_7_2[$idTurnoFre_7_2];
+                            if (isset($turnosFre_7_2[$idTurnoFre_7_2])) 
+                        {
+                                $nombresTurnosFre_7_2[] = $turnosFre_7_2[$idTurnoFre_7_2];
                             }
                         }
                     }
                 }
 
-
-
-
-
-                $nombreTurnoFre_7_2 = implode(
-
-                    ', ',
-
-                    array_unique($nombresTurnosFre_7_2)
-
-                );
-
-
-
-
+                $nombreTurnoFre_7_2 = implode(', ',array_unique($nombresTurnosFre_7_2));
 
                 $dominanciaFre_7_2 = '';
 
-
-
-
-
-                if (
-
-                    (string) $evaluacionFre_7_2->TIPO_DOMINANCIA === '1'
-
-                ) {
-
-
-
+                if ((string) $evaluacionFre_7_2->TIPO_DOMINANCIA === '1') 
+                {
                     $dominanciaFre_7_2 = 'Derecha';
-                } elseif (
-
-                    (string) $evaluacionFre_7_2->TIPO_DOMINANCIA === '2'
-
-                ) {
-
-
-
+                } elseif ((string) $evaluacionFre_7_2->TIPO_DOMINANCIA === '2') 
+                {
                     $dominanciaFre_7_2 = 'Izquierda';
                 }
 
-
-
-
-
                 $eppEncontradoFre_7_2 = [];
 
-
-
-
-
-                $jsonEppFre_7_2 = isset(
-
-                    $evaluacionFre_7_2->JSON_EPP
-
-                )
-
-                    ? trim((string) $evaluacionFre_7_2->JSON_EPP)
-
-                    : '';
-
-
-
-
+                $jsonEppFre_7_2 = isset($evaluacionFre_7_2->JSON_EPP) ? trim((string) $evaluacionFre_7_2->JSON_EPP) : '';
 
                 if ($jsonEppFre_7_2 !== '') {
 
-
-
-                    $datosEppFre_7_2 = json_decode(
-
-                        $jsonEppFre_7_2,
-
-                        true
-
-                    );
-
-
-
-
+                    $datosEppFre_7_2 = json_decode($jsonEppFre_7_2,true);
 
                     if (is_array($datosEppFre_7_2)) {
 
+                        foreach ($datosEppFre_7_2 as $elementoEppFre_7_2) 
+                        {
 
-
-                        foreach (
-
-                            $datosEppFre_7_2 as $elementoEppFre_7_2
-
-                        ) {
-
-
-
-                            if (
-
-                                !is_array($elementoEppFre_7_2) ||
-
-                                !isset($elementoEppFre_7_2['clave'])
-
-                            ) {
-
-
-
+                            if (!is_array($elementoEppFre_7_2) || !isset($elementoEppFre_7_2['clave'])) 
+                            {
                                 continue;
                             }
 
+                            $claveEppFre_7_2 = (string) $elementoEppFre_7_2['clave'];
 
-
-
-
-                            $claveEppFre_7_2 =
-
-                                (string) $elementoEppFre_7_2['clave'];
-
-
-
-
-
-                            if (
-
-                                isset(
-
-                                    $catalogoEppFre_7_2[$claveEppFre_7_2]
-
-                                ) &&
-
-                                trim(
-
-                                    (string) $catalogoEppFre_7_2[$claveEppFre_7_2]
-
-                                ) !== ''
-
-                            ) {
-
-
-
-                                $eppEncontradoFre_7_2[] = trim(
-
-                                    (string) $catalogoEppFre_7_2[$claveEppFre_7_2]
-
-                                );
+                            if (isset($catalogoEppFre_7_2[$claveEppFre_7_2]) &&
+                                trim((string) $catalogoEppFre_7_2[$claveEppFre_7_2]) !== '') 
+                            {
+                                $eppEncontradoFre_7_2[] = trim((string) $catalogoEppFre_7_2[$claveEppFre_7_2]);
                             }
                         }
                     }
                 }
 
-
-
-
-
-                $eppEncontradoFre_7_2 = array_values(
-
-                    array_unique($eppEncontradoFre_7_2)
-
-                );
-
-
-
-
-
+                $eppEncontradoFre_7_2 = array_values(array_unique($eppEncontradoFre_7_2));
                 $hayEppFre_7_2 = !empty($eppEncontradoFre_7_2);
+                $nombreEppFre_7_2 = implode(', ',$eppEncontradoFre_7_2);
 
+                $recomendacionEppFre_7_2 = isset($evaluacionFre_7_2->RECOMENDACIONES_EPP)
+                    ? trim((string) $evaluacionFre_7_2->RECOMENDACIONES_EPP) : '';
 
+                $recomendacionNormalizadaFre_7_2 = mb_strtoupper($recomendacionEppFre_7_2,'UTF-8');
+                $mostrarRecomendacionEppFre_7_2 =  $hayEppFre_7_2 && $recomendacionEppFre_7_2 !== '' && !in_array($recomendacionNormalizadaFre_7_2,['NA', 'N.A', 'N/A'],true);
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Nombre del empleado',isset($evaluacionFre_7_2->NOMBRE_EMPLEADO_FRE) ? $evaluacionFre_7_2->NOMBRE_EMPLEADO_FRE : '');
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Categoría',$categoriaFre_7_2);
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Área',$nombreAreaFre_7_2);
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Turno',$nombreTurnoFre_7_2);
 
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Pausas de descanso que toma durante la jornada de trabajo (Mencione cuántas y duración en minutos)',
+                    isset($evaluacionFre_7_2->PAUSAS_DESCANSO) ? $evaluacionFre_7_2->PAUSAS_DESCANSO : '');
 
-
-                $nombreEppFre_7_2 = implode(
-
-                    ', ',
-
-                    $eppEncontradoFre_7_2
-
-                );
-
-
-
-
-
-                $recomendacionEppFre_7_2 = isset(
-
-                    $evaluacionFre_7_2->RECOMENDACIONES_EPP
-
-                )
-
-                    ? trim(
-
-                        (string) $evaluacionFre_7_2->RECOMENDACIONES_EPP
-
-                    )
-
-                    : '';
-
-
-
-
-
-                $recomendacionNormalizadaFre_7_2 = mb_strtoupper(
-
-                    $recomendacionEppFre_7_2,
-
-                    'UTF-8'
-
-                );
-
-
-
-
-
-                $mostrarRecomendacionEppFre_7_2 =
-
-                    $hayEppFre_7_2 &&
-
-                    $recomendacionEppFre_7_2 !== '' &&
-
-                    !in_array(
-
-                        $recomendacionNormalizadaFre_7_2,
-
-                        ['NA', 'N.A', 'N/A'],
-
-                        true
-
-                    );
-
-
-
-
-
-                $agregarFilaResultadoFre_7_2(
-
-                    $tablaDatosFre_7_2,
-
-                    'Nombre del empleado',
-
-                    isset(
-
-                        $evaluacionFre_7_2->NOMBRE_EMPLEADO_FRE
-
-                    )
-
-                        ? $evaluacionFre_7_2->NOMBRE_EMPLEADO_FRE
-
-                        : ''
-
-                );
-
-
-
-
-
-                $agregarFilaResultadoFre_7_2(
-
-                    $tablaDatosFre_7_2,
-
-                    'Categoría',
-
-                    $categoriaFre_7_2
-
-                );
-
-
-
-
-
-                $agregarFilaResultadoFre_7_2(
-
-                    $tablaDatosFre_7_2,
-
-                    'Área',
-
-                    $nombreAreaFre_7_2
-
-                );
-
-
-
-
-
-                $agregarFilaResultadoFre_7_2(
-
-                    $tablaDatosFre_7_2,
-
-                    'Turno',
-
-                    $nombreTurnoFre_7_2
-
-                );
-
-
-
-
-
-                $agregarFilaResultadoFre_7_2(
-
-                    $tablaDatosFre_7_2,
-
-                    'Pausas de descanso que toma durante la jornada de trabajo (Mencione cuántas y duración en minutos)',
-
-                    isset(
-
-                        $evaluacionFre_7_2->PAUSAS_DESCANSO
-
-                    )
-
-                        ? $evaluacionFre_7_2->PAUSAS_DESCANSO
-
-                        : ''
-
-                );
-
-
-
-
-
-                $agregarFilaResultadoFre_7_2(
-
-                    $tablaDatosFre_7_2,
-
-                    'Dominancia Manual',
-
-                    $dominanciaFre_7_2
-
-                );
-
-
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Dominancia Manual',$dominanciaFre_7_2);
 
                 if ($hayEppFre_7_2) {
-
-
-
-                    $agregarFilaResultadoFre_7_2(
-
-                        $tablaDatosFre_7_2,
-
-                        'EPP',
-
-                        $nombreEppFre_7_2
-
-                    );
-
-
-
-
-
+                    $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'EPP',$nombreEppFre_7_2);
                     if ($mostrarRecomendacionEppFre_7_2) {
-
-
-
-                        $agregarFilaResultadoFre_7_2(
-
-                            $tablaDatosFre_7_2,
-
-                            'Recomendación EPP',
-
-                            $recomendacionEppFre_7_2
-
-                        );
+                        $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Recomendación EPP',$recomendacionEppFre_7_2);
                     }
                 }
 
-
-
-
-
-
-
-
-                $tablasDatosFre_7_2[$indiceFre_7_2] =
-
-                    $tablaDatosFre_7_2;
-
+                $tablasDatosFre_7_2[$indiceFre_7_2] = $tablaDatosFre_7_2;
                 $metodosSeleccionadosFre_7_2 = [];
                 $jsonMetodosFre_7_2 = isset($evaluacionFre_7_2->CAT_METODOS_FRE)
                     ? $evaluacionFre_7_2->CAT_METODOS_FRE
@@ -5798,6 +5123,7 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                     return $xmlFre_7_2 . '</w:tbl><w:p><w:pPr><w:spacing w:after="0"/></w:pPr><w:r><w:t xml:space="preserve"> </w:t></w:r></w:p>';
                 };
 
+                /// OWAS 
                 $matrizOwasFre_7_2 = [
                     1 => [1 => [1 => [1, 1, 1], 2 => [1, 1, 1], 3 => [1, 1, 1], 4 => [2, 2, 2], 5 => [2, 2, 2], 6 => [1, 1, 1], 7 => [1, 1, 1]], 2 => [1 => [1, 1, 1], 2 => [1, 1, 1], 3 => [1, 1, 1], 4 => [2, 2, 2], 5 => [2, 2, 2], 6 => [1, 1, 1], 7 => [1, 1, 1]], 3 => [1 => [1, 1, 1], 2 => [1, 1, 1], 3 => [1, 1, 1], 4 => [2, 2, 3], 5 => [2, 2, 3], 6 => [1, 1, 1], 7 => [1, 1, 2]]],
                     2 => [1 => [1 => [2, 2, 3], 2 => [2, 2, 3], 3 => [2, 2, 3], 4 => [3, 3, 3], 5 => [3, 3, 3], 6 => [2, 2, 2], 7 => [3, 3, 3]], 2 => [1 => [2, 2, 3], 2 => [2, 2, 3], 3 => [2, 3, 3], 4 => [3, 4, 4], 5 => [3, 4, 3], 6 => [3, 3, 4], 7 => [2, 3, 4]], 3 => [1 => [3, 3, 4], 2 => [2, 2, 3], 3 => [3, 3, 3], 4 => [3, 4, 4], 5 => [4, 4, 4], 6 => [4, 4, 4], 7 => [2, 3, 4]]],
@@ -5836,8 +5162,7 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                 };
                 $resultadoRosaFre_7_2 = $buscarPuntuacionRosaFre_7_2($datosRosaFre_7_2);
 
-                // Si ROSA_DATOS_JSON solo contiene {"extras":[]} o no tiene resultado,
-                // calcular ROSA desde los campos guardados, usando las mismas matrices del JS.
+                // ROSA 
                 if ($resultadoRosaFre_7_2 === null) {
                     $matricesRosaFre_7_2 = [
                         'A' => [
@@ -5956,7 +5281,7 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                 }
 
 
-                // Recalcular RULA con los mismos campos y matrices que usa calcularRULA() en JavaScript.
+                // RULA
                 $resultadoRulaFre_7_2 = null;
                 $camposRulaBaseFre_7_2 = ['RULA_BRAZO', 'RULA_ANTEBRAZO', 'RULA_MUNECA', 'RULA_GIRO_MUNECA', 'RULA_CUELLO', 'RULA_TRONCO', 'RULA_PIERNAS'];
                 $valoresRulaFre_7_2 = [];
@@ -6036,7 +5361,6 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                     ]
                 ];
 
-                // Crear una tabla y un análisis independiente para cada método.
                 $xmlMetodosIndividualesFre_7_2 = [
                     '1' => '',
                     '2' => '',
@@ -6104,7 +5428,7 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                 }
 
 
-                // TABLA ESCALA DE BORG: resultado tomado de ESCALA_BORG.
+                // TABLA ESCALA DE BORG
                 $borgValorFre_7_2 = null;
                 if (isset($evaluacionFre_7_2->ESCALA_BORG) && $evaluacionFre_7_2->ESCALA_BORG !== '' && is_numeric($evaluacionFre_7_2->ESCALA_BORG)) {
                     $borgValorFre_7_2 = (float) $evaluacionFre_7_2->ESCALA_BORG;
@@ -6156,7 +5480,6 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                 }
                 $xmlResultadoBorgFre_7_2 = '';
                 if ($borgValorFre_7_2 !== null) {
-                    // Colocar la marca roja en la celda del valor seleccionado.
                     $filasBorgFre_7_2[$indiceBorgSeleccionadoFre_7_2][1] = (string) $borgValorFre_7_2;
                     $xmlResultadoBorgFre_7_2 = $tablaXmlFre_7_2(
                         'ESCALA DE BORG (CR-10) PARA LA PERCEPCIÓN DE ESFUERZO',
@@ -6178,7 +5501,7 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                     ? preg_replace('/[^A-Za-z0-9]/', '', (string) $evaluacionFre_7_2->ID_EVALUACION_FRE)
                     : (string) ($indiceFre_7_2 + 1);
 
-                // ASPECTOS AMBIENTALES: texto introductorio y tabla con las opciones registradas.
+                // ASPECTOS AMBIENTALES
                 $valorAmbientalFre_7_2 = function ($campoAmbientalFre_7_2) use ($evaluacionFre_7_2) {
                     if (!isset($evaluacionFre_7_2->{$campoAmbientalFre_7_2}) || !is_scalar($evaluacionFre_7_2->{$campoAmbientalFre_7_2})) {
                         return '';
@@ -6232,7 +5555,6 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                         $esObservacionAmbientalFre_7_2 = $subaspectoAmbientalFre_7_2 === 'Observaciones';
                         $fondoAmbientalFre_7_2 = '123F60';
                         $colorAmbientalFre_7_2 = 'FFFFFF';
-                        // Combinar verticalmente la celda Aspecto para que cada grupo aparezca una sola vez.
                         $aspectoAnteriorAmbientalFre_7_2 = ($indiceFilaAmbientalFre_7_2 > 1)
                             ? $filasAmbientalesFre_7_2[$indiceFilaAmbientalFre_7_2 - 2][0]
                             : null;
@@ -6240,8 +5562,7 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                         $propiedadFusionAmbientalFre_7_2 = $continuarFusionAmbientalFre_7_2
                             ? '<w:vMerge w:val="continue"/>'
                             : '<w:vMerge w:val="restart"/>';
-                        // Word exige que cada celda contenga al menos un párrafo,
-                        // incluso cuando es una continuación de combinación vertical.
+                        
                         $textoAspectoAmbientalFre_7_2 = $continuarFusionAmbientalFre_7_2
                             ? '<w:p/>'
                             : '<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:b/><w:color w:val="' . $colorAmbientalFre_7_2 . '"/><w:sz w:val="16"/></w:rPr><w:t>' . $escaparXmlFre_7_2($aspectoAmbientalFre_7_2) . '</w:t></w:r></w:p>';
@@ -6284,9 +5605,20 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                 $bloquesMetodosXmlFre_7_2[$tokenResultadoBorgFre_7_2] = $xmlResultadoBorgFre_7_2;
                 $bloquesMetodosXmlFre_7_2[$tokenAnalisisBorgFre_7_2] = $xmlAnalisisBorgFre_7_2;
 
+                // LEY SILLA: el título siempre se muestra; el texto adicional solo cuando APLICA_LEY_SILLA = 2.
+                $tokenLeySillaFre_7_2 = 'LEYSILLAFRE' . $idEvaluacionTokenFre_7_2 . 'X';
+                $xmlLeySillaFre_7_2 = '<w:p><w:pPr><w:spacing w:before="120" w:after="80"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:b/><w:sz w:val="22"/></w:rPr><w:t>APLICACIÓN DE LEY SILLA: DOF 19/12/24.</w:t></w:r></w:p>';
+                $aplicaLeySillaFre_7_2 = isset($evaluacionFre_7_2->APLICA_LEY_SILLA)
+                    ? trim((string) $evaluacionFre_7_2->APLICA_LEY_SILLA)
+                    : '';
+                if ($aplicaLeySillaFre_7_2 === '2') {
+                    $textoLeySillaFre_7_2 = 'La actividad evaluada no cumple con el criterio de bipedestación prolongada, debido a que el tiempo de permanencia de pie no supera las tres horas continuas durante la jornada laboral, conforme a la definición establecida en las Disposiciones de la STPS. Por lo tanto, no se identifica exposición a este factor bajo dicho criterio.';
+                    $xmlLeySillaFre_7_2 .= '<w:p><w:pPr><w:jc w:val="both"/><w:spacing w:before="0" w:after="100"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/></w:rPr><w:t xml:space="preserve">' . $escaparXmlFre_7_2($textoLeySillaFre_7_2) . '</w:t></w:r></w:p>';
+                }
+                $tablasMetodosFre_7_2[$indiceFre_7_2]['LEY_SILLA'] = $tokenLeySillaFre_7_2;
+                $bloquesMetodosXmlFre_7_2[$tokenLeySillaFre_7_2] = $xmlLeySillaFre_7_2;
 
-                // DINAMOMETRÍA MANUAL: solo se muestra cuando REQUIERE_FUERZA_MANUAL = 1.
-                // La observación se muestra siempre, independientemente de si se requiere la prueba.
+                // DINAMOMETRÍA MANUAL 
                 $requiereFuerzaManualFre_7_2 = isset($evaluacionFre_7_2->REQUIERE_FUERZA_MANUAL)
                     ? trim((string) $evaluacionFre_7_2->REQUIERE_FUERZA_MANUAL) : '';
 
@@ -6307,7 +5639,6 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                         && is_scalar($evaluacionFre_7_2->FUERZA_MANO_IZQUIERDA)
                         ? trim((string) $evaluacionFre_7_2->FUERZA_MANO_IZQUIERDA) : '';
 
-                    // Un solo título, en negritas y tamaño 12.
                     $xmlDinamometriaFre_7_2 .= $parrafoXmlFre_7_2('Dinamometría Manual Digital:', true, 24, 80, 60);
                     $xmlDinamometriaFre_7_2 .= $parrafoXmlFre_7_2(
                         'Evalúa la fuerza de prensión estática (agarre) de forma rápida y exacta. Es un indicador directo del estado muscular, nutricional y funcional del cuerpo y para medir la fuerza de agarre o prensión de la mano de forma precisa, rápida y objetiva. Existen diversos estudios que han propuesto valores de referencia para la FE. El más utilizado es el propuesto por Schlüssel et al., realizado en una población de 3050 adultos mayores de 20 años en Brasil. Referencia: https://www.sciencedirect.com/science/article/pii/S2095254624001741',
@@ -6317,8 +5648,8 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                         100
                     );
 
-                    // Tabla de valores de referencia por edad, sexo y mano (Schlüssel et al.).
-                    // Se inserta inmediatamente después del enlace de referencia y antes de los resultados del trabajador.
+                    // Tabla de valores de referencia por edad, sexo y mano 
+                    
                     $filasReferenciaFuerzaFre_7_2 = [
                         ['Edad', 'Mano derecha', '', '', '', '', 'Mano izquierda', '', '', '', ''],
                         ['', 'P10', 'P30', 'P50', 'P70', 'P90', 'P10', 'P30', 'P50', 'P70', 'P90'],
@@ -6348,7 +5679,6 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                         $esFilaGrupoReferenciaFuerzaFre_7_2 = in_array($indiceFilaReferenciaFuerzaFre_7_2, [2, 9], true);
                         $xmlTablaReferenciaFuerzaFre_7_2 .= '<w:tr><w:trPr><w:cantSplit/></w:trPr>';
                         if ($indiceFilaReferenciaFuerzaFre_7_2 === 0) {
-                            // Cabeceras superiores combinadas: Edad, Mano derecha y Mano izquierda.
                             foreach ($filaReferenciaFuerzaFre_7_2 as $indiceColReferenciaFuerzaFre_7_2 => $textoReferenciaFuerzaFre_7_2) {
                                 if ($indiceColReferenciaFuerzaFre_7_2 === 0) {
                                     $xmlTablaReferenciaFuerzaFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="1100" w:type="dxa"/><w:vMerge w:val="restart"/><w:shd w:fill="C6E4E3"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="0"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="14"/><w:b/><w:color w:val="222222"/></w:rPr><w:t>Edad</w:t></w:r></w:p></w:tc>';
@@ -6358,7 +5688,6 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                                 }
                             }
                         } elseif ($indiceFilaReferenciaFuerzaFre_7_2 === 1) {
-                            // Continuación de la celda Edad y encabezados de percentiles.
                             $xmlTablaReferenciaFuerzaFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="1100" w:type="dxa"/><w:vMerge/><w:shd w:fill="C6E4E3"/></w:tcPr><w:p/></w:tc>';
                             for ($jReferenciaFuerzaFre_7_2 = 1; $jReferenciaFuerzaFre_7_2 < 11; $jReferenciaFuerzaFre_7_2++) {
                                 $xmlTablaReferenciaFuerzaFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="' . $anchosReferenciaFuerzaFre_7_2[$jReferenciaFuerzaFre_7_2] . '" w:type="dxa"/><w:shd w:fill="C6E4E3"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="0"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="13"/><w:b/><w:color w:val="222222"/></w:rPr><w:t>' . $escaparXmlFre_7_2($filaReferenciaFuerzaFre_7_2[$jReferenciaFuerzaFre_7_2]) . '</w:t></w:r></w:p></w:tc>';
@@ -6377,7 +5706,6 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                     }
                     $xmlDinamometriaFre_7_2 .= $xmlTablaReferenciaFuerzaFre_7_2 . '</w:tbl><w:p><w:pPr><w:spacing w:before="0" w:after="80"/></w:pPr><w:r><w:t xml:space="preserve"> </w:t></w:r></w:p>';
 
-                    // Tabla compacta de resultados de la persona, sin título interno.
                     $filasDinamometriaFre_7_2 = [[
                         $sexoDinamometriaFre_7_2,
                         $manoDerechaFre_7_2,
@@ -6449,556 +5777,179 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
 
 
 
-
-
-
-
-
                 $tablaAngulosFre_7_2 = new \PhpOffice\PhpWord\Element\Table([
-
                     'borderSize' => 6,
-
                     'borderColor' => '000000',
-
                     'cellMargin' => 80,
-
                     'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER,
-
                 ]);
 
 
-
-
-
-
-
-
-
-                $angulosFre_7_2 = DB::table('angulos_fre_ergo')
-
-                    ->where(
-
-                        'FRE_ID',
-
-                        $evaluacionFre_7_2->ID_EVALUACION_FRE
-
-                    )
-
+                $angulosFre_7_2 = DB::table('angulos_fre_ergo')->where('FRE_ID',$evaluacionFre_7_2->ID_EVALUACION_FRE)
                     ->where('ACTIVO', 1)
-
                     ->orderBy('ID_ANGULOS_FRE', 'ASC')
-
                     ->get();
-
-
-
-
-
-
 
                 $tablaAngulosFre_7_2->addRow();
 
-
-
-
-
-                $tablaAngulosFre_7_2->addCell(
-
-                    4200,
-
-                    $estiloCeldaTituloAngulosFre_7_2
-
-                )->addText(
-
+                $tablaAngulosFre_7_2->addCell(4200,$estiloCeldaTituloAngulosFre_7_2)->addText(
                     'EVIDENCIA FOTOGRÁFICA',
-
                     $estiloTituloAngulosFre_7_2,
-
                     [
-
                         'alignment' => 'center',
-
                     ]
-
                 );
 
-
-
-
-
-                $tablaAngulosFre_7_2->addCell(
-
-                    7100,
-
-                    $estiloCeldaTituloAngulosFre_7_2
-
-                )->addText(
-
+                $tablaAngulosFre_7_2->addCell(7100,$estiloCeldaTituloAngulosFre_7_2)->addText(
                     'FACTORES ERGONÓMICOS',
-
                     $estiloTituloAngulosFre_7_2,
-
                     [
-
                         'alignment' => 'center',
-
                     ]
-
                 );
-
-
-
-
-
 
 
                 if ($angulosFre_7_2->isEmpty()) {
 
-
-
                     $tablaAngulosFre_7_2->addRow();
-
-
-
-
-
-                    $tablaAngulosFre_7_2->addCell(
-
-                        4200,
-
-                        $estiloCeldaAngulosFre_7_2
-
-                    )->addText(
-
+                    $tablaAngulosFre_7_2->addCell(4200,$estiloCeldaAngulosFre_7_2)->addText(
                         'Sin evidencia fotográfica registrada.',
+                        $estiloTextoAngulosFre_7_2);
 
-                        $estiloTextoAngulosFre_7_2
-
-                    );
-
-
-
-
-
-                    $tablaAngulosFre_7_2->addCell(
-
-                        7100,
-
-                        $estiloCeldaAngulosFre_7_2
-
-                    )->addText(
-
+                    $tablaAngulosFre_7_2->addCell(7100,$estiloCeldaAngulosFre_7_2)->addText(
                         'No hay ángulos registrados para esta evaluación.',
-
-                        $estiloTextoAngulosFre_7_2
-
-                    );
+                        $estiloTextoAngulosFre_7_2);
                 } else {
 
+                    foreach ($angulosFre_7_2 as $anguloFre_7_2) 
+                    {
 
-
-
-
-
-
-
-
-                    foreach (
-
-                        $angulosFre_7_2 as $anguloFre_7_2
-
-                    ) {
-
-
-
-
-
-                        $claveImagenFre_7_2 =
-
-                            'FREIMG72\_' .
-
-                            $evaluacionFre_7_2->ID_EVALUACION_FRE .
-
-                            '\_' .
-
-                            $anguloFre_7_2->ID_ANGULOS_FRE;
-
-
-
+                        $claveImagenFre_7_2 = 'FREIMG72\_' .$evaluacionFre_7_2->ID_EVALUACION_FRE .'\_' .$anguloFre_7_2->ID_ANGULOS_FRE;
                         $rutaFotoFre_7_2 = null;
 
-
-
-
-
-                        if (
-
-                            isset($anguloFre_7_2->FOTO_ANGULO) &&
-
-                            trim(
-
-                                (string) $anguloFre_7_2->FOTO_ANGULO
-
-                            ) !== ''
-
-                        ) {
-
-
-
-                            $rutaFotoFre_7_2 = storage_path(
-
-                                'app/' . ltrim(
-
-                                    str_replace(
-
-                                        '\\\\',
-
-                                        '/',
-
-                                        (string) $anguloFre_7_2->FOTO_ANGULO
-
-                                    ),
-
-                                    '/'
-
-                                )
-
-                            );
+                        if (isset($anguloFre_7_2->FOTO_ANGULO) && trim((string) $anguloFre_7_2->FOTO_ANGULO) !== '') 
+                        {
+                            $rutaFotoFre_7_2 = storage_path('app/' . ltrim(str_replace('\\\\','/',(string) $anguloFre_7_2->FOTO_ANGULO),'/'));
                         }
 
-
-
-
-
-
-
                         $factoresFre_7_2 = [
-
-
-
                             [
-
                                 'titulo' => 'Postura:',
-
-                                'descripcion' => isset(
-
-                                    $anguloFre_7_2->DESCRIPCION_POSTURA
-
-                                )
-
-                                    ? trim(
-
-                                        (string) $anguloFre_7_2->DESCRIPCION_POSTURA
-
-                                    )
-
-                                    : '',
-
+                                'descripcion' => isset($anguloFre_7_2->DESCRIPCION_POSTURA) ? trim((string) $anguloFre_7_2->DESCRIPCION_POSTURA): '',
                             ],
 
-
-
                             [
-
                                 'titulo' => 'Movimiento:',
-
-                                'descripcion' => isset(
-
-                                    $anguloFre_7_2->DESCRIPCION_MOVIMIENTO
-
-                                )
-
-                                    ? trim(
-
-                                        (string) $anguloFre_7_2->DESCRIPCION_MOVIMIENTO
-
-                                    )
-
-                                    : '',
-
+                                'descripcion' => isset($anguloFre_7_2->DESCRIPCION_MOVIMIENTO) ? trim((string) $anguloFre_7_2->DESCRIPCION_MOVIMIENTO) : '',
                             ],
-
-
 
                             [
-
                                 'titulo' => 'Fuerza:',
-
-                                'descripcion' => isset(
-
-                                    $anguloFre_7_2->DESCRIPCION_FUERZA
-
-                                )
-
-                                    ? trim(
-
-                                        (string) $anguloFre_7_2->DESCRIPCION_FUERZA
-
-                                    )
-
-                                    : '',
-
+                                'descripcion' => isset($anguloFre_7_2->DESCRIPCION_FUERZA) ? trim((string) $anguloFre_7_2->DESCRIPCION_FUERZA): '',
                             ],
-
-
 
                         ];
 
-
-
-
-
-                        foreach (
-
-                            $factoresFre_7_2 as $indiceFactorFre_7_2 => $factorFre_7_2
-
-                        ) {
-
-
-
-
+                        foreach ($factoresFre_7_2 as $indiceFactorFre_7_2 => $factorFre_7_2) 
+                        {
 
                             $tablaAngulosFre_7_2->addRow();
 
-
-
-
-
                             if ($indiceFactorFre_7_2 === 0) {
 
-
-
-
-
-
-
-                                $celdaFotoFre_7_2 =
-
-                                    $tablaAngulosFre_7_2->addCell(
-
+                                $celdaFotoFre_7_2 = $tablaAngulosFre_7_2->addCell(
                                         4200,
-
                                         [
-
                                             'valign' => 'center',
-
                                             'vMerge' => 'restart',
-
                                             'borderSize' => 6,
-
                                             'borderColor' => '000000',
-
                                             'marginTop' => 100,
-
                                             'marginBottom' => 100,
-
                                             'marginLeft' => 100,
-
                                             'marginRight' => 100,
-
                                         ]
-
                                     );
 
+                                if ($rutaFotoFre_7_2 !== null && is_file($rutaFotoFre_7_2) && is_readable($rutaFotoFre_7_2)) 
+                            {
 
-
-
-
-
-
-                                if (
-
-                                    $rutaFotoFre_7_2 !== null &&
-
-                                    is_file($rutaFotoFre_7_2) &&
-
-                                    is_readable($rutaFotoFre_7_2)
-
-                                ) {
-
-
-
-                                    $celdaFotoFre_7_2->addText(
-
-                                        '${' . $claveImagenFre_7_2 . '}',
-
-                                        $estiloTextoAngulosFre_7_2,
-
+                                    $celdaFotoFre_7_2->addText('${' . $claveImagenFre_7_2 . '}',$estiloTextoAngulosFre_7_2,
                                         [
-
                                             'alignment' => 'center',
-
                                             'spaceAfter' => 0,
-
                                         ]
 
                                     );
-
-
-
-
 
                                     $imagenesAngulosFre_7_2[$claveImagenFre_7_2] = $rutaFotoFre_7_2;
-                                } else {
 
+                                    } else {
 
 
                                     $celdaFotoFre_7_2->addText(
-
                                         'FALTA CARGAR IMAGEN DESDE EL SISTEMA.',
-
                                         $estiloTextoAngulosFre_7_2,
-
                                         [
-
                                             'alignment' => 'center',
-
                                         ]
-
                                     );
                                 }
                             } else {
 
 
-
-
-
-
-
-                                $tablaAngulosFre_7_2->addCell(
-
-                                    4200,
-
+                                $tablaAngulosFre_7_2->addCell(4200,
                                     [
-
                                         'vMerge' => 'continue',
-
                                         'borderSize' => 6,
-
                                         'borderColor' => '000000',
-
                                     ]
 
                                 );
                             }
 
-
-
-
-
-
-
-
-
-                            $celdaFactorFre_7_2 =
-
-                                $tablaAngulosFre_7_2->addCell(
-
-                                    7100,
-
+                            $celdaFactorFre_7_2 = $tablaAngulosFre_7_2->addCell(7100,
                                     [
-
                                         'valign' => 'center',
-
                                         'borderSize' => 6,
-
                                         'borderColor' => '000000',
-
                                         'marginTop' => 100,
-
                                         'marginBottom' => 100,
-
                                         'marginLeft' => 120,
-
                                         'marginRight' => 120,
-
                                     ]
 
                                 );
 
 
-
-
-
-
-
-
-
-                            $celdaFactorFre_7_2->addText(
-
-                                $factorFre_7_2['titulo'],
-
+                            $celdaFactorFre_7_2->addText($factorFre_7_2['titulo'],
                                 [
-
                                     'name' => 'Poppins',
-
                                     'size' => 9,
-
                                     'bold' => true,
-
                                     'color' => '000000',
-
                                 ],
 
                                 [
-
                                     'alignment' => 'left',
-
                                     'spaceAfter' => 40,
-
                                     'spaceBefore' => 0,
-
                                 ]
 
                             );
 
+                            $descripcionFactorFre_7_2 = $factorFre_7_2['descripcion'];
 
-
-
-
-
-
-
-
-                            $descripcionFactorFre_7_2 =
-
-                                $factorFre_7_2['descripcion'];
-
-
-
-
-
-                            if (
-
-                                $descripcionFactorFre_7_2 === ''
-
-                            ) {
-
-
-
-                                $descripcionFactorFre_7_2 =
-
-                                    'Sin descripción';
+                            if ($descripcionFactorFre_7_2 === '')
+                             {
+                                $descripcionFactorFre_7_2 = 'Sin descripción';
                             }
 
-
-
-
-
-                            $celdaFactorFre_7_2->addText(
-
-                                $descripcionFactorFre_7_2,
-
-                                $estiloTextoAngulosFre_7_2,
-
+                            $celdaFactorFre_7_2->addText($descripcionFactorFre_7_2,$estiloTextoAngulosFre_7_2,
                                 [
-
                                     'alignment' => 'both',
-
                                     'spaceAfter' => 0,
-
                                     'spaceBefore' => 0,
-
                                 ]
 
                             );
@@ -7006,230 +5957,320 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                     }
                 }
 
-
-
-
-
-
-
-
-
-                $tablasAngulosFre_7_2[$indiceFre_7_2] =
-
-                    $tablaAngulosFre_7_2;
+                $tablasAngulosFre_7_2[$indiceFre_7_2] = $tablaAngulosFre_7_2;
             }
 
 
 
-
-
-
-
-
-
             if ($evaluacionesFre_7_2->isNotEmpty()) {
-
-
-
-
-
-
-
-
-
-                $plantillaword->cloneBlock(
-
-                    'BLOQUE_FRE',
-
-                    $evaluacionesFre_7_2->count(),
-
-                    true,
-
-                    true
-
+                $propiedadXmlPreFre_7_2 = new \ReflectionProperty(
+                    $plantillaword,
+                    'tempDocumentMainPart'
                 );
+                $propiedadXmlPreFre_7_2->setAccessible(true);
+                $xmlPreFre_7_2 = $propiedadXmlPreFre_7_2->getValue($plantillaword);
 
+                $marcadoresNormalizarFre_7_2 = [
+                    '${BLOQUE_FRE}',
+                    '${/BLOQUE_FRE}',
+                    '${TABLA_DATOS_FRE}',
+                    '${TABLA_ANGULOS_FRE}',
+                    '${METODO_OWAS_FRE}',
+                    '${ANALISIS_OWAS_FRE}',
+                    '${METODO_ROSA_FRE}',
+                    '${ANALISIS_ROSA_FRE}',
+                    '${METODO_RULA_FRE}',
+                    '${ANALISIS_RULA_FRE}',
+                    '${RESULTADO_BORG}',
+                    '${ANALISIS_BORG}',
+                    '${DINAMOMETRIA_MARCADOR}',
+                    '${OBSERVACION_FUERZAMANUAL}',
+                    '${ASPECTOS_AMBIENTALES}',
+                    '${LEY_SILLA}',
+                ];
 
+                $xmlPreFre_7_2 = preg_replace_callback(
+                    '~<w:p\b[^>]*>.*?</w:p>~s',
+                    function ($coincidenciaPreFre_7_2) use ($marcadoresNormalizarFre_7_2) {
+                        $parrafoPreFre_7_2 = $coincidenciaPreFre_7_2[0];
+                        preg_match_all('~<w:t\b[^>]*>(.*?)</w:t>~s', $parrafoPreFre_7_2, $textosPreFre_7_2);
+                        if (empty($textosPreFre_7_2[1])) {
+                            return $parrafoPreFre_7_2;
+                        }
 
+                        $textoVisiblePreFre_7_2 = '';
+                        foreach ($textosPreFre_7_2[1] as $fragmentoPreFre_7_2) {
+                            $textoVisiblePreFre_7_2 .= html_entity_decode(
+                                $fragmentoPreFre_7_2,
+                                ENT_QUOTES | ENT_XML1,
+                                'UTF-8'
+                            );
+                        }
+                        $textoVisiblePreFre_7_2 = preg_replace('/\s+/u', '', $textoVisiblePreFre_7_2);
 
+                        $marcadorEncontradoPreFre_7_2 = null;
+                        foreach ($marcadoresNormalizarFre_7_2 as $marcadorPreFre_7_2) {
+                            if ($textoVisiblePreFre_7_2 === $marcadorPreFre_7_2) {
+                                $marcadorEncontradoPreFre_7_2 = $marcadorPreFre_7_2;
+                                break;
+                            }
+                        }
+                        if ($marcadorEncontradoPreFre_7_2 === null) {
+                            return $parrafoPreFre_7_2;
+                        }
 
-
-
-
-
-                foreach (
-
-                    $evaluacionesFre_7_2 as $indiceFre_7_2 => $evaluacionFre_7_2
-
-                ) {
-
-
-
-                    $numeroBloqueFre_7_2 =
-
-                        $indiceFre_7_2 + 1;
-
-
-
-
-
-
-
-                    $plantillaword->setComplexBlock(
-
-                        'TABLA_DATOS_FRE#' . $numeroBloqueFre_7_2,
-
-                        $tablasDatosFre_7_2[$indiceFre_7_2]
-
-                    );
-
-
-
-
-
-                    $plantillaword->setComplexBlock(
-
-                        'TABLA_ANGULOS_FRE#' . $numeroBloqueFre_7_2,
-
-                        $tablasAngulosFre_7_2[$indiceFre_7_2]
-
-                    );
-
-                    foreach (
-                        [
-                            'METODO_OWAS_FRE',
-                            'ANALISIS_OWAS_FRE',
-                            'METODO_ROSA_FRE',
-                            'ANALISIS_ROSA_FRE',
-                            'METODO_RULA_FRE',
-                            'ANALISIS_RULA_FRE',
-                            'RESULTADO_BORG',
-                            'ANALISIS_BORG',
-                            'DINAMOMETRIA_MARCADOR',
-                            'OBSERVACION_FUERZAMANUAL',
-                            'ASPECTOS_AMBIENTALES'
-                        ] as $marcadorMetodoFre_7_2
-                    ) {
-                        $plantillaword->setValue(
-                            $marcadorMetodoFre_7_2 . '#' . $numeroBloqueFre_7_2,
-                            isset($tablasMetodosFre_7_2[$indiceFre_7_2][$marcadorMetodoFre_7_2])
-                                ? $tablasMetodosFre_7_2[$indiceFre_7_2][$marcadorMetodoFre_7_2]
-                                : ''
+                        $propiedadesParrafoPreFre_7_2 = '';
+                        if (preg_match('~<w:pPr\b.*?</w:pPr>~s', $parrafoPreFre_7_2, $pPrPreFre_7_2)) {
+                            $propiedadesParrafoPreFre_7_2 = $pPrPreFre_7_2[0];
+                        }
+                        $marcadorXmlPreFre_7_2 = htmlspecialchars(
+                            $marcadorEncontradoPreFre_7_2,
+                            ENT_QUOTES | ENT_XML1,
+                            'UTF-8'
                         );
+                        return '<w:p>' . $propiedadesParrafoPreFre_7_2 .
+                            '<w:r><w:t xml:space="preserve">' . $marcadorXmlPreFre_7_2 .
+                            '</w:t></w:r></w:p>';
+                    },
+                    $xmlPreFre_7_2
+                );
+                $propiedadXmlPreFre_7_2->setValue($plantillaword, $xmlPreFre_7_2);
+
+                $cantidadBloquesFre_7_2 = $evaluacionesFre_7_2->count();
+
+                $propiedadXmlClonadoFre_7_2 = new \ReflectionProperty($plantillaword,'tempDocumentMainPart');
+                $propiedadXmlClonadoFre_7_2->setAccessible(true);
+                $xmlBaseClonadoFre_7_2 = $propiedadXmlClonadoFre_7_2->getValue($plantillaword);
+
+                $patronParrafoInicioFre_7_2 = '~<w:p\b[^>]*>(?:(?!</w:p>).)*\$\{BLOQUE_FRE\}(?:(?!</w:p>).)*</w:p>~s';
+                $patronParrafoFinFre_7_2 = '~<w:p\b[^>]*>(?:(?!</w:p>).)*\$\{/BLOQUE_FRE\}(?:(?!</w:p>).)*</w:p>~s';
+
+                if (
+                    preg_match($patronParrafoInicioFre_7_2, $xmlBaseClonadoFre_7_2, $coincidenciaInicioFre_7_2, PREG_OFFSET_CAPTURE) &&
+                    preg_match($patronParrafoFinFre_7_2, $xmlBaseClonadoFre_7_2, $coincidenciaFinFre_7_2, PREG_OFFSET_CAPTURE)
+                ) {
+                    $inicioBloqueFre_7_2 = $coincidenciaInicioFre_7_2[0][1];
+                    $longitudInicioFre_7_2 = strlen($coincidenciaInicioFre_7_2[0][0]);
+                    $inicioCierreFre_7_2 = $coincidenciaFinFre_7_2[0][1];
+                    $longitudCierreFre_7_2 = strlen($coincidenciaFinFre_7_2[0][0]);
+
+                    if ($inicioCierreFre_7_2 >= $inicioBloqueFre_7_2 + $longitudInicioFre_7_2) {
+                        $prefijoDocumentoFre_7_2 = substr($xmlBaseClonadoFre_7_2, 0, $inicioBloqueFre_7_2);
+                        $contenidoBaseBloqueFre_7_2 = substr(
+                            $xmlBaseClonadoFre_7_2,
+                            $inicioBloqueFre_7_2 + $longitudInicioFre_7_2,
+                            $inicioCierreFre_7_2 - ($inicioBloqueFre_7_2 + $longitudInicioFre_7_2)
+                        );
+                        $sufijoDocumentoFre_7_2 = substr(
+                            $xmlBaseClonadoFre_7_2,
+                            $inicioCierreFre_7_2 + $longitudCierreFre_7_2
+                        );
+
+                        $bloquesRepetidosFre_7_2 = '';
+                        for ($indiceBloqueManualFre_7_2 = 1; $indiceBloqueManualFre_7_2 <= $cantidadBloquesFre_7_2; $indiceBloqueManualFre_7_2++) {
+                            $bloqueConIndicesFre_7_2 = preg_replace_callback(
+                                '~\$\{([^{}]+)\}~',
+                                function ($coincidenciaVariableFre_7_2) use ($indiceBloqueManualFre_7_2) {
+                                    $nombreVariableFre_7_2 = $coincidenciaVariableFre_7_2[1];
+                                    if ($nombreVariableFre_7_2 === 'BLOQUE_FRE' || $nombreVariableFre_7_2 === '/BLOQUE_FRE') {
+                                        return $coincidenciaVariableFre_7_2[0];
+                                    }
+                                    $nombreVariableFre_7_2 = preg_replace('~#\d+$~', '', $nombreVariableFre_7_2);
+                                    return '${' . $nombreVariableFre_7_2 . '#' . $indiceBloqueManualFre_7_2 . '}';
+                                },
+                                $contenidoBaseBloqueFre_7_2
+                            );
+                            $bloquesRepetidosFre_7_2 .= $bloqueConIndicesFre_7_2;
+                        }
+
+                        $xmlBaseClonadoFre_7_2 = $prefijoDocumentoFre_7_2 . $bloquesRepetidosFre_7_2 . $sufijoDocumentoFre_7_2;
+                        $propiedadXmlClonadoFre_7_2->setValue($plantillaword, $xmlBaseClonadoFre_7_2);
+                    } else {
+                        throw new \RuntimeException('La sección 7.2 tiene los marcadores de apertura y cierre en orden incorrecto.');
                     }
+                } else {
+                    throw new \RuntimeException('No se encontraron los marcadores ${BLOQUE_FRE} y ${/BLOQUE_FRE} en el XML de la plantilla Word.');
                 }
 
+                foreach ($evaluacionesFre_7_2 as $indiceFre_7_2 => $evaluacionFre_7_2) {
 
+                    $numeroBloqueFre_7_2 = $indiceFre_7_2 + 1;
 
+                    $tablaDatosActualFre_7_2 = isset($tablasDatosFre_7_2[$indiceFre_7_2])
+                        ? $tablasDatosFre_7_2[$indiceFre_7_2]
+                        : new \PhpOffice\PhpWord\Element\Text('Sin datos de evaluación.');
 
+                    $tablaAngulosActualFre_7_2 = isset($tablasAngulosFre_7_2[$indiceFre_7_2])
+                        ? $tablasAngulosFre_7_2[$indiceFre_7_2]
+                        : new \PhpOffice\PhpWord\Element\Text('Sin ángulos registrados.');
 
+                    $plantillaword->setComplexBlock(
+                        'TABLA_DATOS_FRE#' . $numeroBloqueFre_7_2,
+                        $tablaDatosActualFre_7_2
+                    );
 
+                    $plantillaword->setComplexBlock(
+                        'TABLA_ANGULOS_FRE#' . $numeroBloqueFre_7_2,
+                        $tablaAngulosActualFre_7_2
+                    );
+                }
 
-
-
-                $propiedadXmlFre_7_2 = new \ReflectionProperty($plantillaword, 'tempDocumentMainPart');
+                $propiedadXmlFre_7_2 = new \ReflectionProperty(
+                    $plantillaword,
+                    'tempDocumentMainPart'
+                );
                 $propiedadXmlFre_7_2->setAccessible(true);
                 $xmlDocumentoFre_7_2 = $propiedadXmlFre_7_2->getValue($plantillaword);
-                foreach ($bloquesMetodosXmlFre_7_2 as $tokenFre_7_2 => $contenidoXmlFre_7_2) {
-                    $patronTokenFre_7_2 = '~<w:p\b[^>]*>(?:(?!</w:p>).)*' . preg_quote($tokenFre_7_2, '~') . '.*?</w:p>~s';
-                    $xmlDocumentoFre_7_2 = preg_replace_callback(
-                        $patronTokenFre_7_2,
-                        function () use ($contenidoXmlFre_7_2) {
-                            return $contenidoXmlFre_7_2;
-                        },
-                        $xmlDocumentoFre_7_2,
-                        1,
-                        $reemplazosFre_7_2
-                    );
-                    if (empty($reemplazosFre_7_2)) {
-                        $xmlDocumentoFre_7_2 = str_replace($tokenFre_7_2, $contenidoXmlFre_7_2, $xmlDocumentoFre_7_2);
+
+              
+                $marcadoresXmlFre_7_2 = [
+                    'METODO_OWAS_FRE'          => 'METODOTABLA1FRE',
+                    'ANALISIS_OWAS_FRE'        => 'METODOANALISIS1FRE',
+                    'METODO_ROSA_FRE'          => 'METODOTABLA2FRE',
+                    'ANALISIS_ROSA_FRE'        => 'METODOANALISIS2FRE',
+                    'METODO_RULA_FRE'          => 'METODOTABLA3FRE',
+                    'ANALISIS_RULA_FRE'        => 'METODOANALISIS3FRE',
+                    'RESULTADO_BORG'           => 'RESULTADOBORGFRE',
+                    'ANALISIS_BORG'            => 'ANALISISBORGFRE',
+                    'DINAMOMETRIA_MARCADOR'    => 'DINAMOMETRIAMARCADOR',
+                    'OBSERVACION_FUERZAMANUAL' => 'OBSERVACIONFUERZAMANUAL',
+                    'ASPECTOS_AMBIENTALES'     => 'ASPECTOSAMBIENTALESFRE',
+                    'LEY_SILLA'                => 'LEYSILLAFRE',
+                ];
+
+                foreach ($evaluacionesFre_7_2 as $indiceFre_7_2 => $evaluacionFre_7_2) {
+                    $numeroBloqueFre_7_2 = $indiceFre_7_2 + 1;
+
+                    foreach ($marcadoresXmlFre_7_2 as $nombreMarcadorFre_7_2 => $prefijoTokenFre_7_2) {
+                        $tokenFre_7_2 = isset($tablasMetodosFre_7_2[$indiceFre_7_2][$nombreMarcadorFre_7_2])
+                            ? $tablasMetodosFre_7_2[$indiceFre_7_2][$nombreMarcadorFre_7_2]
+                            : '';
+
+                        $contenidoXmlFre_7_2 = ($tokenFre_7_2 !== '' && isset($bloquesMetodosXmlFre_7_2[$tokenFre_7_2]))
+                            ? $bloquesMetodosXmlFre_7_2[$tokenFre_7_2]
+                            : '';
+
+                        $marcadorClonadoFre_7_2 = '${' . $nombreMarcadorFre_7_2 . '#' . $numeroBloqueFre_7_2 . '}';
+
+                        $reemplazosParrafoFre_7_2 = 0;
+                        $xmlDocumentoFre_7_2 = preg_replace_callback(
+                            '~<w:p\b[^>]*>.*?</w:p>~s',
+                            function ($coincidenciaFre_7_2) use (
+                                $marcadorClonadoFre_7_2,
+                                $contenidoXmlFre_7_2,
+                                &$reemplazosParrafoFre_7_2
+                            ) {
+                                $parrafoXmlFre_7_2 = $coincidenciaFre_7_2[0];
+                                $textoParrafoFre_7_2 = html_entity_decode(
+                                    strip_tags($parrafoXmlFre_7_2),
+                                    ENT_QUOTES | ENT_XML1,
+                                    'UTF-8'
+                                );
+                                $textoParrafoFre_7_2 = preg_replace('/\s+/u', '', $textoParrafoFre_7_2);
+                                $marcadorBuscadoFre_7_2 = preg_replace('/\s+/u', '', $marcadorClonadoFre_7_2);
+
+                                if (strpos($textoParrafoFre_7_2, $marcadorBuscadoFre_7_2) === false) {
+                                    return $parrafoXmlFre_7_2;
+                                }
+
+                            
+                                $reemplazosParrafoFre_7_2++;
+                                if (trim((string) $contenidoXmlFre_7_2) === '') {
+                                    return '';
+                                }
+
+                                return $contenidoXmlFre_7_2;
+                            },
+                            $xmlDocumentoFre_7_2
+                        );
+
+                        if (empty($reemplazosParrafoFre_7_2) && trim((string) $contenidoXmlFre_7_2) !== '') {
+                            $caracteresMarcadorClonadoFre_7_2 = preg_split(
+                                '//u',
+                                $marcadorClonadoFre_7_2,
+                                -1,
+                                PREG_SPLIT_NO_EMPTY
+                            );
+                            $partesPatronClonadoFre_7_2 = [];
+                            foreach ($caracteresMarcadorClonadoFre_7_2 as $caracterMarcadorClonadoFre_7_2) {
+                                $partesPatronClonadoFre_7_2[] = preg_quote($caracterMarcadorClonadoFre_7_2, '~');
+                            }
+                            $patronMarcadorClonadoFre_7_2 = '~' .
+                                implode('(?:<[^>]+>)*', $partesPatronClonadoFre_7_2) . '~s';
+                            $xmlDocumentoFre_7_2 = preg_replace_callback(
+                                $patronMarcadorClonadoFre_7_2,
+                                function () use ($contenidoXmlFre_7_2) {
+                                    return $contenidoXmlFre_7_2;
+                                },
+                                $xmlDocumentoFre_7_2,
+                                1
+                            );
+                        }
+
+                        if ($tokenFre_7_2 !== '') {
+                            $xmlDocumentoFre_7_2 = str_replace($tokenFre_7_2, '', $xmlDocumentoFre_7_2);
+                        }
                     }
                 }
+
+               
+                $xmlDocumentoFre_7_2 = str_replace(
+                    ['${BLOQUE_FRE}', '${/BLOQUE_FRE}'],
+                    '',
+                    $xmlDocumentoFre_7_2
+                );
+
+              
+                $marcadoresFrePendientes_7_2 = [
+                    'TABLA_DATOS_FRE',
+                    'TABLA_ANGULOS_FRE',
+                    'METODO_OWAS_FRE',
+                    'ANALISIS_OWAS_FRE',
+                    'METODO_ROSA_FRE',
+                    'ANALISIS_ROSA_FRE',
+                    'METODO_RULA_FRE',
+                    'ANALISIS_RULA_FRE',
+                    'RESULTADO_BORG',
+                    'ANALISIS_BORG',
+                    'DINAMOMETRIA_MARCADOR',
+                    'OBSERVACION_FUERZAMANUAL',
+                    'ASPECTOS_AMBIENTALES',
+                    'LEY_SILLA',
+                    'BLOQUE_FRE',
+                    '/BLOQUE_FRE',
+                ];
+
+               
+                $xmlDocumentoFre_7_2 = preg_replace(
+                    '~\$\{/?(?:BLOQUE_FRE|TABLA_DATOS_FRE|TABLA_ANGULOS_FRE|METODO_OWAS_FRE|ANALISIS_OWAS_FRE|METODO_ROSA_FRE|ANALISIS_ROSA_FRE|METODO_RULA_FRE|ANALISIS_RULA_FRE|RESULTADO_BORG|ANALISIS_BORG|DINAMOMETRIA_MARCADOR|OBSERVACION_FUERZAMANUAL|ASPECTOS_AMBIENTALES|LEY_SILLA)(?:#\d+)?\}~',
+                    '',
+                    $xmlDocumentoFre_7_2
+                );
+
                 $propiedadXmlFre_7_2->setValue($plantillaword, $xmlDocumentoFre_7_2);
 
-                foreach (
-
-                    $imagenesAngulosFre_7_2 as $claveImagenFre_7_2 => $rutaImagenFre_7_2
-
-                ) {
-
-
-
-                    if (
-
-                        is_string($rutaImagenFre_7_2) &&
-
-                        is_file($rutaImagenFre_7_2) &&
-
-                        is_readable($rutaImagenFre_7_2)
-
-                    ) {
-
-
-
-                        $plantillaword->setImageValue(
-
-                            $claveImagenFre_7_2,
-
-                            [
-
-                                'path' => $rutaImagenFre_7_2,
-
-                                'width' => 380,
-
-                                'height' => 280,
-
-                                'ratio' => true,
-
-                            ]
-
-                        );
+               
+                foreach ($imagenesAngulosFre_7_2 as $claveImagenFre_7_2 => $rutaImagenFre_7_2) {
+                    if (is_string($rutaImagenFre_7_2) && is_file($rutaImagenFre_7_2) && is_readable($rutaImagenFre_7_2)) {
+                        $plantillaword->setImageValue($claveImagenFre_7_2, [
+                            'path'   => $rutaImagenFre_7_2,
+                            'width'  => 380,
+                            'height' => 280,
+                            'ratio'  => true,
+                        ]);
                     }
                 }
             } else {
 
-
-
-
-
-
-
-
-
-                $plantillaword->cloneBlock(
-
-                    'BLOQUE_FRE',
-
-                    1,
-
-                    true,
-
-                    true
-
-                );
-
-
-
-
+                $plantillaword->cloneBlock('BLOQUE_FRE', 1, true, true);
 
                 $plantillaword->setValue(
-
                     'TABLA_DATOS_FRE#1',
-
                     'No hay registros de evaluación para este reconocimiento.'
-
                 );
-
-
-
-
-
                 $plantillaword->setValue(
-
                     'TABLA_ANGULOS_FRE#1',
-
                     'No hay ángulos registrados.'
-
                 );
 
                 foreach (
@@ -7243,15 +6284,26 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                         'RESULTADO_BORG',
                         'ANALISIS_BORG',
                         'DINAMOMETRIA_MARCADOR',
-                        'OBSERVACION_FUERZAMANUAL'
+                        'OBSERVACION_FUERZAMANUAL',
+                        'ASPECTOS_AMBIENTALES',
                     ] as $marcadorMetodoFre_7_2
                 ) {
                     $plantillaword->setValue($marcadorMetodoFre_7_2 . '#1', '');
                 }
+
+                $propiedadXmlFre_7_2 = new \ReflectionProperty(
+                    $plantillaword,
+                    'tempDocumentMainPart'
+                );
+                $propiedadXmlFre_7_2->setAccessible(true);
+                $xmlDocumentoFre_7_2 = $propiedadXmlFre_7_2->getValue($plantillaword);
+                $xmlDocumentoFre_7_2 = str_replace(
+                    ['${BLOQUE_FRE}', '${/BLOQUE_FRE}'],
+                    '',
+                    $xmlDocumentoFre_7_2
+                );
+                $propiedadXmlFre_7_2->setValue($plantillaword, $xmlDocumentoFre_7_2);
             }
-
-
-
 
 
             //// DESCARGAR INFORME 
