@@ -417,7 +417,7 @@ function menureporte_estado(menu_nombre, menu_estado)
 {
 
 
-	 if (menu_nombre === "menureporte_7_1" || menu_nombre === "menureporte_7_2" || menu_nombre === "menureporte_7_3")
+	 if (menu_nombre === "menureporte_7_1" || menu_nombre === "menureporte_7_2" || menu_nombre === "menureporte_7_3" || menu_nombre === 'menureporte_6_2')
     {
         $('#' + menu_nombre).css('color', '#64bd44');
 
@@ -10110,7 +10110,9 @@ function reporte_concluido(reporte_id, perfil, checkbox)
 				if (
 					texto === "menureporte_7_1" ||
 					texto === "menureporte_7_2" ||
-					texto === "menureporte_7_3"
+					texto === "menureporte_7_3" ||
+					texto === "menureporte_6_2"
+
 				)
 				{
 					return;
