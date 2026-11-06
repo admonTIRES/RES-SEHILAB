@@ -55,6 +55,7 @@
 
 
 
+
 <style>
     /* Estilo para el select */
     #JERARQUIACONTROL {
@@ -2592,7 +2593,7 @@
                                                             </label>
                                                         </div>
 
-                                                        <select class="custom-select form-control mb-1" style="width: 100%;" id="ID_CATCONCLUSION" name="ID_CATCONCLUSION">
+                                                        <select class="custom-select form-control mb-1" style="width: 50%;" id="ID_CATCONCLUSION" name="ID_CATCONCLUSION">
                                                             <option value="">&nbsp;</option>
                                                             @foreach($catConclusiones as $dato)
                                                             <option value="{{$dato->ID_CATCONCLUSION}}" data-descripcion="{{$dato->DESCRIPCION}}">{{$dato->NOMBRE}}</option>
