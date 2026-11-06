@@ -151,6 +151,14 @@ $('.link_menuprincipal').click(function () {
 
     case "tab_menu3":
             
+              
+            const introduccion = document.querySelector('#INFORME_INTRODUCCION');
+
+            if (introduccion) {
+                $('#INFORME_INTRODUCCION').summernote('code', introduccion.defaultValue);
+            } 
+
+
             
         const textareasInformeFre = [
             '#INFORME_INTRODUCCION',
@@ -228,6 +236,19 @@ $('.link_menuprincipal').click(function () {
                         }
 
                         // RECONOCIMIENTO
+
+
+                        let contenido = $('#INFORME_INTRODUCCION').summernote('code');
+
+                        if (contenido) {
+
+                            $.each(resp.data, function(marcador, valor) {
+                                contenido = contenido.split(marcador).join(valor || '');
+                            });
+
+                            $('#INFORME_INTRODUCCION').summernote('code', contenido);
+                        }
+
 
 
                          let reco = $('#INFORME_RECONOCIMIENTO').val();
@@ -4627,10 +4648,6 @@ function cargarEvaluacionFre(data) {
     $("#REQUIERE_FUERZA_MANUAL").val(data.REQUIERE_FUERZA_MANUAL).trigger('change');
     $("#APLICA_LEY_SILLA").val(data.APLICA_LEY_SILLA).trigger('change');
 
-
-    
-
-
     $("#FUERZA_MANO_DERECHA").val(data.FUERZA_MANO_DERECHA);
     $("#FUERZA_MANO_IZQUIERDA").val(data.FUERZA_MANO_IZQUIERDA);
     $("#TIPO_DOMINANCIA").val(data.TIPO_DOMINANCIA);
@@ -4665,8 +4682,6 @@ function cargarEvaluacionFre(data) {
     $("#RECOMENDACIONES_EPP").val(data.RECOMENDACIONES_EPP);
     $("#OBSERVACIONES_FUERZAMANUAL").val(data.OBSERVACIONES_FUERZAMANUAL);
     $("#INTERPRETACION_ESCALA_BORG").val(data.INTERPRETACION_ESCALA_BORG);
-
-    
 
     
     $("#ESCALA_BORG").val(data.ESCALA_BORG).trigger('change');
@@ -4707,7 +4722,8 @@ function cargarEvaluacionFre(data) {
     }
 
 
-    // Recuperar los valores guardados.
+    /// OWAS
+
     $("#OWAS_ESPALDA").val(data.OWAS_ESPALDA);
     $("#OWAS_BRAZOS").val(data.OWAS_BRAZOS);
     $("#OWAS_PIERNAS").val(data.OWAS_PIERNAS);
@@ -4724,77 +4740,78 @@ function cargarEvaluacionFre(data) {
     }, 100);
 
 
+    /// ROSA 
   
-        $("#ROSA_ALTURA_ASIENTO").val(data.ROSA_ALTURA_ASIENTO);
-        $("#ROSA_PROFUNDIDAD_ASIENTO").val(data.ROSA_PROFUNDIDAD_ASIENTO);
-        $("#ROSA_REPOSABRAZOS").val(data.ROSA_REPOSABRAZOS);
-        $("#ROSA_RESPALDO").val(data.ROSA_RESPALDO);
-        $("#ROSA_TIEMPO_A").val(data.ROSA_TIEMPO_A);
-        $("#ROSA_TELEFONO").val(data.ROSA_TELEFONO);
-        $("#ROSA_TIEMPO_B1").val(data.ROSA_TIEMPO_B1);
-        $("#ROSA_PANTALLA").val(data.ROSA_PANTALLA);
-        $("#ROSA_TIEMPO_B2").val(data.ROSA_TIEMPO_B2);
-        $("#ROSA_RATON").val(data.ROSA_RATON);
-        $("#ROSA_TIEMPO_C1").val(data.ROSA_TIEMPO_C1);
-        $("#ROSA_TECLADO").val(data.ROSA_TECLADO);
-        $("#ROSA_TIEMPO_C2").val(data.ROSA_TIEMPO_C2);
-        $("#ANALISIS_METODO_ROSA").val(data.ANALISIS_METODO_ROSA);
+    $("#ROSA_ALTURA_ASIENTO").val(data.ROSA_ALTURA_ASIENTO);
+    $("#ROSA_PROFUNDIDAD_ASIENTO").val(data.ROSA_PROFUNDIDAD_ASIENTO);
+    $("#ROSA_REPOSABRAZOS").val(data.ROSA_REPOSABRAZOS);
+    $("#ROSA_RESPALDO").val(data.ROSA_RESPALDO);
+    $("#ROSA_TIEMPO_A").val(data.ROSA_TIEMPO_A);
+    $("#ROSA_TELEFONO").val(data.ROSA_TELEFONO);
+    $("#ROSA_TIEMPO_B1").val(data.ROSA_TIEMPO_B1);
+    $("#ROSA_PANTALLA").val(data.ROSA_PANTALLA);
+    $("#ROSA_TIEMPO_B2").val(data.ROSA_TIEMPO_B2);
+    $("#ROSA_RATON").val(data.ROSA_RATON);
+    $("#ROSA_TIEMPO_C1").val(data.ROSA_TIEMPO_C1);
+    $("#ROSA_TECLADO").val(data.ROSA_TECLADO);
+    $("#ROSA_TIEMPO_C2").val(data.ROSA_TIEMPO_C2);
+    $("#ANALISIS_METODO_ROSA").val(data.ANALISIS_METODO_ROSA);
 
 
-        let datosROSA = data.ROSA_DATOS_JSON;
+    let datosROSA = data.ROSA_DATOS_JSON;
 
-        if (typeof datosROSA === "string" && datosROSA !== "") {
-            try {
-                datosROSA = JSON.parse(datosROSA);
-            } catch (e) {
-                console.error("Error al recuperar ROSA_DATOS_JSON:", e);
-                datosROSA = null;
-            }
+    if (typeof datosROSA === "string" && datosROSA !== "") {
+        try {
+            datosROSA = JSON.parse(datosROSA);
+        } catch (e) {
+            console.error("Error al recuperar ROSA_DATOS_JSON:", e);
+            datosROSA = null;
         }
+    }
 
-        if (datosROSA && Array.isArray(datosROSA.extras))
-        {
+    if (datosROSA && Array.isArray(datosROSA.extras))
+    {
 
-            $("#contenedorMetodoROSA .rosa-extra").prop("checked", false);
+        $("#contenedorMetodoROSA .rosa-extra").prop("checked", false);
 
-            datosROSA.extras.forEach(extra => {
+        datosROSA.extras.forEach(extra => {
 
-                $("#contenedorMetodoROSA .rosa-extra").each(function () {
+            $("#contenedorMetodoROSA .rosa-extra").each(function () {
 
-                    const coincideApartado = this.dataset.apartado === String(extra.apartado);
-                    const coincideValor = Number(this.value) === Number(extra.valor);
-                    if (coincideApartado && coincideValor) {
-                        $(this).prop("checked", true);
-                    }
-
-                });
+                const coincideApartado = this.dataset.apartado === String(extra.apartado);
+                const coincideValor = Number(this.value) === Number(extra.valor);
+                if (coincideApartado && coincideValor) {
+                    $(this).prop("checked", true);
+                }
 
             });
 
+        });
+
+    }
+
+    setTimeout(function () {
+
+        const contenedorROSA = document.getElementById("contenedorMetodoROSA");
+
+        if (!contenedorROSA) {
+            return;
         }
 
+        contenedorROSA.querySelectorAll(".rosa-campo, .rosa-extra, .rosa-tiempo").forEach(function (elemento) {
+            elemento.dispatchEvent(
+                new Event("change", {
+                    bubbles: true
+                })
+            );
 
-        setTimeout(function () {
+        });
 
-            const contenedorROSA = document.getElementById("contenedorMetodoROSA");
-
-            if (!contenedorROSA) {
-                return;
-            }
-
-            contenedorROSA.querySelectorAll(".rosa-campo, .rosa-extra, .rosa-tiempo").forEach(function (elemento) {
-                elemento.dispatchEvent(
-                    new Event("change", {
-                        bubbles: true
-                    })
-                );
-
-            });
-
-        }, 150);
+    }, 150);
 
     
-    
+    /// RULA
+
     $("#RULA_BRAZO").val(data.RULA_BRAZO);
     $("#RULA_ANTEBRAZO").val(data.RULA_ANTEBRAZO);
     $("#RULA_MUNECA").val(data.RULA_MUNECA);
@@ -4824,7 +4841,45 @@ function cargarEvaluacionFre(data) {
     }, 100);
 
 
+    /// REBA
 
+    $("#REBA_TRONCO").val(data.REBA_TRONCO);
+    $("#REBA_TRONCO_MOD").val(data.REBA_TRONCO_MOD);
+    $("#REBA_CUELLO").val(data.REBA_CUELLO);
+    $("#REBA_CUELLO_MOD").val(data.REBA_CUELLO_MOD);
+    $("#REBA_PIERNAS").val(data.REBA_PIERNAS);
+    $("#REBA_RODILLAS").val(data.REBA_RODILLAS);
+    $("#REBA_BRAZO").val(data.REBA_BRAZO);
+    $("#REBA_BRAZO_MOD").val(data.REBA_BRAZO_MOD);
+    $("#REBA_ANTEBRAZO").val(data.REBA_ANTEBRAZO);
+    $("#REBA_MUNECA").val(data.REBA_MUNECA);
+    $("#REBA_MUNECA_MOD").val(data.REBA_MUNECA_MOD);
+    $("#REBA_CARGA").val(data.REBA_CARGA);
+    $("#REBA_FUERZA_BRUSCA").val(data.REBA_FUERZA_BRUSCA);
+    $("#REBA_AGARRE").val(data.REBA_AGARRE);
+    $("#REBA_ACTIVIDAD_MUSCULAR").val(data.REBA_ACTIVIDAD_MUSCULAR);
+    $("#ANALISIS_METODO_REBA").val(data.ANALISIS_METODO_REBA);
+
+
+    setTimeout(function () {
+
+        const contenedorREBA = document.getElementById("contenedorMetodoREBA");
+
+        if (!contenedorREBA) {
+            return;
+        }
+
+        contenedorREBA.querySelectorAll("select").forEach(function (elemento) {
+
+            elemento.dispatchEvent(
+                new Event("change", {
+                    bubbles: true
+                })
+            );
+
+        });
+
+    }, 150);
 
 }
 
@@ -5073,6 +5128,8 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
     $('#contenedorMetodoOWAS').hide();
     $('#contenedorMetodoROSA').hide();
     $('#contenedorMetodoRULA').hide();
+    $('#contenedorMetodoREBA').hide();
+
     
     $('#ROSA_DATOS_JSON').val('')
     $('#RULA_DATOS_JSON').val('')
@@ -7178,7 +7235,7 @@ function cargarDatosGeneralesInformeFre()
             }
 
 
-          if (response.INFORME_INTRODUCCION &&
+            if (response.INFORME_INTRODUCCION &&
                 response.INFORME_INTRODUCCION.trim() != '') {
 
                 $('#INFORME_INTRODUCCION').summernote(
@@ -7190,19 +7247,24 @@ function cargarDatosGeneralesInformeFre()
 
                 $('#INFORME_INTRODUCCION').summernote(
                     'code',
-                    `<p>Los factores de riesgo ergonómico contribuyen a la aparición de enfermedades de tipo músculo esquelético, según los datos revelados por la Organización Internacional del Trabajo (OIT) estos a nivel mundial representan una de las principales causas de enfermedad laboral, seguido por exposición a material particulado, los gases, los humos, y el ruido (Discroll, 2018). Por otra parte, la OMS indicó que a nivel mundial cerca del 20% de los dolores lumbares y cervicales son atribuibles a exposiciones en el trabajo (2018).</p>
+                    `<p>Los trastornos musculoesqueléticos (TME) constituyen un problema prioritario de salud pública y de la salud en el trabajo, debido a su impacto sobre la capacidad funcional, el bienestar y la participación laboral. Según la Organización Mundial de la Salud (OMS, 2022)<sup>1</sup>, aproximadamente 1.710 millones de personas vivían con estas afecciones en el mundo, de acuerdo con los datos del estudio de carga mundial de enfermedad de 2019. Aunque esta cifra comprende los TME de origen laboral y no laboral, permite dimensionar la magnitud del problema y la importancia de prevenir la exposición que contribuya a su aparición o agravamiento en el trabajo.</p>
 
-<p>De acuerdo con el Instituto Mexicano del Seguro Social (IMSS) en 2020, se registraron más de 100.000 casos nuevos de enfermedades laborales, la naturaleza de la lesión indica que hay un número importante de enfermedades que se agrupan como trastornos músculo-esqueléticos (TME), entre ellas, síndrome del túnel carpiano, lesiones de hombro, tenosinovitis del pulgar (“De Quervain”), bursitis, epicondilitis y artrosis; por tal razón los TME representa en la actualidad un importante tipo de enfermedad laboral que afecta a la planta laboral de México. </p>
+            <p>En el ámbito laboral, las estimaciones conjuntas de la Organización Mundial de la Salud y la Organización Internacional del Trabajo (OMS y OIT, 2021)<sup>2</sup> atribuyen a los factores de riesgo ergonómico 12,27 millones de años de vida ajustados debido a la discapacidad por dolor de espalda y cuello en 2016. Esta carga aumentó un 20,1 % respecto al año 2000. El informe identifica, entre las exposiciones pertinentes, la manipulación manual de cargas, las vibraciones de cuerpo entero y la permanencia prolongada en posición sentada.</p>
 
-<p>En México el Reglamento Federal de Seguridad y Salud en el trabajo (RFST), publicado en el Diario Oficial de la Federación (DOF) el día 13 de noviembre de 2014, establece en su artículo 42, que las empresas deben contar con un análisis de los Factores de Riesgo Ergonómico de los puestos de trabajo. Además, la NOM-036-1-STPS-2018 establece los elementos para identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en los centros de trabajo derivados del manejo manual de cargas, a efecto de prevenir alteraciones a la salud de los trabajadores, y aplica en los centros de trabajo donde existan trabajadores cuya actividad implique realizar manejo manual de cargas de forma cotidiana (más de una vez al día); así mismo la LEY SILLA - DOF 19/12/24 en lo referente a el empleador.</p>
+            <p>En México, el Instituto Mexicano del Seguro Social (IMSS, 2025)<sup>3</sup>, registró un total de 19,803 casos reportados de enfermedad de trabajo, donde aproximadamente el 57% de los casos, están relacionados con TME, encontrando determinadas dorsopatías; lesiones del hombro; síndrome del túnel carpiano; tenosinovitis de estiloides radial de Quervain; otras sinovitis, tenosinovitis o bursitis y artrosis, donde la naturaleza de la lesión puede ser un indicador importante para atribuir la causalidad al factor de riesgo ergonómico; por tal razón los TME representan en la actualidad un importante tipo de enfermedad laboral que afecta a la población trabajadora en México. Por otra parte, el Reglamento Federal de Seguridad y Salud en el Trabajo (RFSST), publicado en el Diario Oficial de la Federación (DOF) el día 13 de noviembre de 2014, establece en su artículo 42, que las empresas deben contar con un análisis de los Factores de Riesgo Ergonómico de los puestos de trabajo; adicionalmente, la Secretaría de Trabajo y Previsión Social (STPS) emitió la Norma Oficial Mexicana (NOM-036-1-STPS-2018) la cual establece los elementos para identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en los centros de trabajo derivados del manejo manual de cargas, a efecto de prevenir alteraciones a la salud de los trabajadores, y aplica en los centros de trabajo donde existan trabajadores cuya actividad implique realizar manejo manual de cargas de forma cotidiana (más de una vez al día); así mismo el 19 diciembre de 2024 se publicó una reforma a la Ley Federal del Trabajo por el Congreso de la Unión, conocida como la “Ley Silla” y el 17 de julio de 2025, la STPS emitió las “Disposiciones sobre los factores de riesgos de trabajo para garantizar el derecho al descanso de las personas trabajadoras en bipedestación”.</p>
 
-<p>Dentro del medio ambiente laboral existen condiciones de riesgo de tipo ergonómico, que de no encontrarse identificados pueden poner en riesgo la salud y la productividad del trabajador; por lo que la identificación temprana y el establecimiento de estrategias de control son primordiales para mantener una condición de trabajo óptima.</p>
+            <p>En este contexto, la magnitud de los TME como problema de salud laboral y el marco normativo descrito sustentan la necesidad de identificar y evaluar los factores de riesgo ergonómico presentes en los centros de trabajo. El presente informe se realizó en el/la INSTALACION, durante <font color="#000000" style="background-color: rgb(255, 255, 0);">el mes de XX del AÑO</font>, donde se describen los resultados y evidencias obtenidas de la identificación del peligro y riesgo ergonómico mediante el uso de las fichas de la ISO-TR 12295-2014 y los criterios establecidos en la NOM-036-1-STPS-2018 (Reconocimiento), así como la valoración de los factores de riesgo ergonómico en las tareas y/o puestos de trabajo (categorías), mediante el uso de diferentes metodologías ergonómicas validadas a nivel internacional, que permiten al empleador cuantificar el riesgo ergonómico en el centro de trabajo y tomar las medidas de intervención o recomendaciones incluidas y acordes con las actividades o tareas que realiza el personal, para mantener una condición de trabajo óptima, que permita reducir la sobrecarga física, proteger la salud músculoesquelética y mejorar la productividad de los trabajadores.</p>
 
-<p>En el presente estudio se describen los resultados y evidencias obtenidas posterior a haber identificado el riesgo y peligro ergonómico por medio de las fichas de la ISO-TR 12295-2014 (Reconocimiento); posteriormente se aplican métodos ergonómicos específicos que permiten identificar el riesgo ergonómico para que la empresa tome las medidas preventivas respectivas</p>`
+            <p><sup>1</sup> World Health Organization. (2022, 14 de julio). <em>Musculoskeletal health</em>. <a href="https://www.who.int/news-room/fact-sheets/detail/musculoskeletal-conditions" target="_blank">https://www.who.int/news-room/fact-sheets/detail/musculoskeletal-conditions</a></p>
+
+            <p><sup>2</sup> World Health Organization, &amp; International Labour Organization. (2021). <em>WHO/ILO joint estimates of the work-related burden of disease and injury, 2000–2016: Global monitoring report</em>. World Health Organization.</p>
+
+            <p><a href="https://iris.who.int/bitstream/handle/10665/345242/9789240034945-eng.pdf" target="_blank">https://iris.who.int/bitstream/handle/10665/345242/9789240034945-eng.pdf</a></p>
+
+            <p><sup>3</sup> <a href="https://www.imss.gob.mx/conoce-al-imss/memoria-estadistica-2025" target="_blank">IMSS — Memoria Estadística 2025</a>. Selecciona “Capítulo VII. Salud en el Trabajo – (VII.28)”.</p>`
                 );
 
             }
-
 
 
           if (response.INFORME_OBJETIVOGENERALES &&
@@ -8972,6 +9034,8 @@ $(document).ready(function () {
         $('#contenedorMetodoOWAS').hide();
         $('#contenedorMetodoROSA').hide();
         $('#contenedorMetodoRULA').hide();
+        $('#contenedorMetodoREBA').hide();
+
 
         if (seleccionados.includes('1')) {
             $('#contenedorMetodoOWAS').show();
@@ -8983,6 +9047,10 @@ $(document).ready(function () {
 
         if (seleccionados.includes('3')) {
             $('#contenedorMetodoRULA').show();
+        }
+
+         if (seleccionados.includes('4')) {
+            $('#contenedorMetodoREBA').show();
         }
     }
 
@@ -8996,7 +9064,6 @@ $(document).ready(function () {
 
 
 /// OWAS
-
 document.addEventListener('DOMContentLoaded', function () {
 
     /* ========================= OWAS ========================= */
@@ -9261,9 +9328,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-
 /// ROSA
-
 (function () {
 
     const contenedor = document.getElementById('contenedorMetodoROSA');
@@ -9896,11 +9961,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 })();
 
-
 /// RULA
-
-
-
 (function() {
     'use strict';
 
@@ -10416,7 +10477,551 @@ document.addEventListener('DOMContentLoaded', function () {
 
 })();
 
+/// REBA
 
+
+(function () {
+
+    const contenedor = document.getElementById("contenedorMetodoREBA");
+
+    if (!contenedor || contenedor.dataset.rebaInicializado === "1") return;
+
+    contenedor.dataset.rebaInicializado = "1";
+
+   
+
+    const matrizA = [
+        [
+            [1, 2, 3, 4],
+            [1, 2, 3, 4],
+            [3, 3, 5, 6]
+        ],
+        [
+            [2, 3, 4, 5],
+            [3, 4, 5, 6],
+            [4, 5, 6, 7]
+        ],
+        [
+            [2, 4, 5, 6],
+            [4, 5, 6, 7],
+            [5, 6, 7, 8]
+        ],
+        [
+            [3, 5, 6, 7],
+            [5, 6, 7, 8],
+            [6, 7, 8, 9]
+        ],
+        [
+            [4, 6, 7, 8],
+            [6, 7, 8, 9],
+            [7, 8, 9, 9]
+        ]
+    ];
+
+
+
+    const matrizB = [
+        [[1, 2, 2], [1, 2, 3]],
+        [[1, 2, 3], [2, 3, 4]],
+        [[3, 4, 5], [4, 5, 5]],
+        [[4, 5, 5], [5, 6, 7]],
+        [[6, 7, 8], [7, 8, 8]],
+        [[7, 8, 8], [8, 9, 9]]
+    ];
+
+    
+
+    const matrizC = [
+        [1, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7, 7],
+        [1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7, 8],
+        [2, 3, 3, 3, 4, 5, 6, 7, 7, 8, 8, 8],
+        [3, 4, 4, 4, 5, 6, 7, 8, 8, 9, 9, 9],
+        [4, 4, 4, 5, 6, 7, 8, 8, 9, 9, 9, 9],
+        [6, 6, 6, 7, 8, 8, 9, 9, 10, 10, 10, 10],
+        [7, 7, 7, 8, 9, 9, 9, 10, 10, 11, 11, 11],
+        [8, 8, 8, 9, 10, 10, 10, 10, 10, 11, 11, 11],
+        [9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12],
+        [10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 12],
+        [11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12],
+        [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
+    ];
+
+
+
+    function generarTablaA() {
+
+        const tabla = document.getElementById("REBA_TABLA_A");
+
+        let html = `
+            <thead>
+                <tr>
+                    <th rowspan="2" class="reba-encabezado-verde">Tronco</th>
+                    <th colspan="12" class="reba-encabezado-verde">Cuello</th>
+                </tr>
+                <tr>
+                    <th colspan="4" class="reba-encabezado-verde">1</th>
+                    <th colspan="4" class="reba-encabezado-verde">2</th>
+                    <th colspan="4" class="reba-encabezado-verde">3</th>
+                </tr>
+                <tr>
+                    <th class="reba-encabezado-azul">Puntuación</th>
+                    <th colspan="4" class="reba-encabezado-azul">Piernas</th>
+                    <th colspan="4" class="reba-encabezado-azul">Piernas</th>
+                    <th colspan="4" class="reba-encabezado-azul">Piernas</th>
+                </tr>
+                <tr>
+                    <th class="reba-encabezado-azul"></th>
+                    ${Array(3).fill(
+                        [1, 2, 3, 4].map(n =>
+                            `<th class="reba-encabezado-azul">${n}</th>`
+                        ).join("")
+                    ).join("")}
+                </tr>
+            </thead>
+            <tbody>
+        `;
+
+        matrizA.forEach((fila, i) => {
+
+            html += `<tr><th class="reba-fila">${i + 1}</th>`;
+
+            fila.forEach((bloque, j) => {
+
+                bloque.forEach((puntuacion, k) => {
+
+                    html += `
+                        <td data-reba-a="${i + 1}-${j + 1}-${k + 1}">
+                            ${puntuacion}
+                        </td>
+                    `;
+
+                });
+
+            });
+
+            html += "</tr>";
+
+        });
+
+        tabla.innerHTML = html + "</tbody>";
+    }
+
+
+
+    function generarTablaB() {
+
+        const tabla = document.getElementById("REBA_TABLA_B");
+
+        let html = `
+            <thead>
+                <tr>
+                    <th rowspan="3" class="reba-encabezado-verde">Brazo</th>
+                    <th colspan="6" class="reba-encabezado-verde">Antebrazo</th>
+                </tr>
+                <tr>
+                    <th colspan="3" class="reba-encabezado-verde">1</th>
+                    <th colspan="3" class="reba-encabezado-verde">2</th>
+                </tr>
+                <tr>
+                    <th class="reba-encabezado-azul">Muñeca 1</th>
+                    <th class="reba-encabezado-azul">Muñeca 2</th>
+                    <th class="reba-encabezado-azul">Muñeca 3</th>
+                    <th class="reba-encabezado-azul">Muñeca 1</th>
+                    <th class="reba-encabezado-azul">Muñeca 2</th>
+                    <th class="reba-encabezado-azul">Muñeca 3</th>
+                </tr>
+            </thead>
+            <tbody>
+        `;
+
+        matrizB.forEach((fila, i) => {
+
+            html += `<tr><th class="reba-fila">${i + 1}</th>`;
+
+            fila.forEach((bloque, j) => {
+
+                bloque.forEach((puntuacion, k) => {
+
+                    html += `
+                        <td data-reba-b="${i + 1}-${j + 1}-${k + 1}">
+                            ${puntuacion}
+                        </td>
+                    `;
+
+                });
+
+            });
+
+            html += "</tr>";
+
+        });
+
+        tabla.innerHTML = html + "</tbody>";
+    }
+
+
+
+    function generarTablaC() {
+
+        const tabla = document.getElementById("REBA_TABLA_C");
+
+        let html = `
+            <thead>
+                <tr>
+                    <th class="reba-encabezado-verde"></th>
+                    <th colspan="12" class="reba-encabezado-verde">Puntuación B</th>
+                </tr>
+                <tr>
+                    <th class="reba-encabezado-azul">Puntuación A</th>
+        `;
+
+        for (let i = 1; i <= 12; i++) {
+            html += `<th class="reba-encabezado-azul">${i}</th>`;
+        }
+
+        html += "</tr></thead><tbody>";
+
+        matrizC.forEach((fila, i) => {
+
+            html += `<tr><th class="reba-fila">${i + 1}</th>`;
+
+            fila.forEach((puntuacion, j) => {
+
+                html += `
+                    <td data-reba-c="${i + 1}-${j + 1}">
+                        ${puntuacion}
+                    </td>
+                `;
+
+            });
+
+            html += "</tr>";
+
+        });
+
+        tabla.innerHTML = html + "</tbody>";
+    }
+
+
+    function valor(id) {
+
+        const elemento = document.getElementById(id);
+
+        if (!elemento || elemento.value === "") {
+            return null;
+        }
+
+        return Number(elemento.value);
+    }
+
+    function valorOpcional(id) {
+
+        const resultado = valor(id);
+
+        return resultado === null ? 0 : resultado;
+    }
+
+
+    function obtenerPuntuacionMuneca() {
+
+        const seleccion = document.getElementById("REBA_MUNECA").value;
+
+        if (seleccion === "1_neutra" || seleccion === "1_flexion") {
+            return 1;
+        }
+
+        if (seleccion === "2") {
+            return 2;
+        }
+
+        return null;
+    }
+
+   
+
+    function obtenerModificacionBrazo() {
+
+        const seleccion = document.getElementById("REBA_BRAZO_MOD").value;
+
+        if (seleccion === "abducido") {
+            return 1;
+        }
+
+        if (seleccion === "hombro") {
+            return 1;
+        }
+
+        if (seleccion === "apoyo") {
+            return -1;
+        }
+
+        return 0;
+    }
+
+
+
+    function calcularActividadREBA() {
+
+        const seleccion = document.getElementById("REBA_ACTIVIDAD_MUSCULAR").value;
+
+        if (
+            seleccion === "estatica" ||
+            seleccion === "repetitiva" ||
+            seleccion === "inestable"
+        ) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+
+    function mostrar(id, resultado) {
+
+        const elemento = document.getElementById(id);
+
+        if (!elemento) return;
+
+        elemento.textContent =
+            resultado === null ? "—" : resultado;
+    }
+
+
+
+    function limpiarResultados() {
+
+        const resultados = [
+            "REBA_RESULTADO_A",
+            "REBA_RESULTADO_B",
+            "REBA_RESULTADO_C",
+            "REBA_RESULTADO_A_FINAL",
+            "REBA_RESULTADO_B_FINAL",
+            "REBA_PUNTUACION_FINAL"
+        ];
+
+        resultados.forEach(id => mostrar(id, null));
+
+        document.getElementById("REBA_RESUMEN_FINAL").textContent =
+            "Completa las posiciones corporales para obtener el resultado.";
+
+        contenedor.querySelectorAll(".reba-celda-seleccionada").forEach(celda => {
+            celda.classList.remove("reba-celda-seleccionada");
+        });
+
+        contenedor.querySelectorAll("#REBA_TABLA_NIVEL tbody tr").forEach(fila => {
+            fila.style.outline = "none";
+            fila.style.fontWeight = "normal";
+        });
+    }
+
+
+
+    function calcularREBA() {
+
+        const camposObligatorios = [
+            "REBA_TRONCO",
+            "REBA_CUELLO",
+            "REBA_PIERNAS",
+            "REBA_BRAZO",
+            "REBA_ANTEBRAZO"
+        ];
+
+        const incompletos = camposObligatorios.some(id => valor(id) === null);
+
+        if (incompletos || obtenerPuntuacionMuneca() === null) {
+            limpiarResultados();
+            return;
+        }
+
+
+        const tronco = valor("REBA_TRONCO");
+        const cuello = valor("REBA_CUELLO");
+        const piernas = valor("REBA_PIERNAS");
+
+        const troncoMod = valorOpcional("REBA_TRONCO_MOD");
+        const cuelloMod = valorOpcional("REBA_CUELLO_MOD");
+        const rodillas = valorOpcional("REBA_RODILLAS");
+
+        const puntuacionTronco = Math.min(5, tronco + troncoMod);
+        const puntuacionCuello = Math.min(3, cuello + cuelloMod);
+        const puntuacionPiernas = Math.min(4, piernas + rodillas);
+
+        const puntuacionInicialA =
+            matrizA[puntuacionTronco - 1]
+                   [puntuacionCuello - 1]
+                   [puntuacionPiernas - 1];
+
+        const carga = valorOpcional("REBA_CARGA");
+        const fuerzaBrusca = valorOpcional("REBA_FUERZA_BRUSCA");
+
+        const puntuacionA =
+            puntuacionInicialA + carga + fuerzaBrusca;
+
+
+        const brazoBase = valor("REBA_BRAZO");
+        const modificacionBrazo = obtenerModificacionBrazo();
+
+        const puntuacionBrazo = Math.min(
+            6,
+            Math.max(1, brazoBase + modificacionBrazo)
+        );
+
+        const antebrazo = valor("REBA_ANTEBRAZO");
+        const munecaBase = obtenerPuntuacionMuneca();
+        const munecaMod = valorOpcional("REBA_MUNECA_MOD");
+
+        const puntuacionMuneca = Math.min(
+            3,
+            munecaBase + munecaMod
+        );
+
+        const puntuacionInicialB =
+            matrizB[puntuacionBrazo - 1]
+                   [antebrazo - 1]
+                   [puntuacionMuneca - 1];
+
+        const agarre = valorOpcional("REBA_AGARRE");
+
+        const puntuacionB =
+            puntuacionInicialB + agarre;
+
+
+        const puntuacionAjustada = Math.min(12, puntuacionA);
+        const puntuacionBAjustada = Math.min(12, puntuacionB);
+
+        const puntuacionC =
+            matrizC[puntuacionAjustada - 1]
+                   [puntuacionBAjustada - 1];
+
+
+        const actividadMuscular = calcularActividadREBA();
+
+        const puntuacionFinal =
+            puntuacionC + actividadMuscular;
+
+
+        let nivel;
+        let riesgo;
+        let actuacion;
+
+        if (puntuacionFinal === 1) {
+            nivel = 0;
+            riesgo = "Inapreciable";
+            actuacion = "No es necesaria actuación.";
+        } else if (puntuacionFinal <= 3) {
+            nivel = 1;
+            riesgo = "Bajo";
+            actuacion = "Puede ser necesaria la actuación.";
+        } else if (puntuacionFinal <= 7) {
+            nivel = 2;
+            riesgo = "Medio";
+            actuacion = "Es necesaria la actuación.";
+        } else if (puntuacionFinal <= 10) {
+            nivel = 3;
+            riesgo = "Alto";
+            actuacion = "Es necesaria la actuación cuanto antes.";
+        } else {
+            nivel = 4;
+            riesgo = "Muy alto";
+            actuacion = "Es necesaria la actuación de inmediato.";
+        }
+
+
+        mostrar("REBA_RESULTADO_A", puntuacionInicialA);
+        mostrar("REBA_RESULTADO_B", puntuacionInicialB);
+        mostrar("REBA_RESULTADO_C", puntuacionC);
+        mostrar("REBA_RESULTADO_A_FINAL", puntuacionA);
+        mostrar("REBA_RESULTADO_B_FINAL", puntuacionB);
+        mostrar("REBA_PUNTUACION_FINAL", puntuacionFinal);
+
+        document.getElementById("REBA_RESUMEN_FINAL").textContent =
+            "Puntuación final: " + puntuacionFinal +
+            " | Nivel de actuación: " + nivel +
+            " | Riesgo: " + riesgo +
+            " | " + actuacion;
+
+
+        contenedor.querySelectorAll("#REBA_TABLA_A td").forEach(celda => {
+            celda.classList.remove("reba-celda-seleccionada");
+        });
+
+        const celdaA = contenedor.querySelector(
+            `[data-reba-a="${puntuacionTronco}-${puntuacionCuello}-${puntuacionPiernas}"]`
+        );
+
+        if (celdaA) {
+            celdaA.classList.add("reba-celda-seleccionada");
+        }
+
+
+        contenedor.querySelectorAll("#REBA_TABLA_B td").forEach(celda => {
+            celda.classList.remove("reba-celda-seleccionada");
+        });
+
+        const celdaB = contenedor.querySelector(
+            `[data-reba-b="${puntuacionBrazo}-${antebrazo}-${puntuacionMuneca}"]`
+        );
+
+        if (celdaB) {
+            celdaB.classList.add("reba-celda-seleccionada");
+        }
+
+
+        contenedor.querySelectorAll("#REBA_TABLA_C td").forEach(celda => {
+            celda.classList.remove("reba-celda-seleccionada");
+        });
+
+        const celdaC = contenedor.querySelector(
+            `[data-reba-c="${puntuacionAjustada}-${puntuacionBAjustada}"]`
+        );
+
+        if (celdaC) {
+            celdaC.classList.add("reba-celda-seleccionada");
+        }
+
+
+        contenedor.querySelectorAll("#REBA_TABLA_NIVEL tbody tr").forEach(fila => {
+
+            fila.style.outline = "none";
+            fila.style.fontWeight = "normal";
+
+            if (Number(fila.dataset.rebaNivel) === nivel) {
+                fila.style.outline = "2px solid #ff0000";
+                fila.style.fontWeight = "bold";
+            }
+
+        });
+
+    }
+
+   
+
+    generarTablaA();
+    generarTablaB();
+    generarTablaC();
+
+   
+
+    contenedor.addEventListener("change", function (evento) {
+
+        if (
+            evento.target.matches("select") ||
+            evento.target.matches('input[type="checkbox"]')
+        ) {
+            calcularREBA();
+        }
+
+    });
+
+   
+
+    calcularREBA();
+
+  
+
+    window.calcularREBA = calcularREBA;
+
+})();
 
 //// ANGULOS
 

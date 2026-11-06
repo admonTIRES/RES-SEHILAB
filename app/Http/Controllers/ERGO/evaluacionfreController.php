@@ -2440,9 +2440,16 @@ El método OWAS permite valorar las posturas a nivel de espalda, brazos y pierna
                     'NOMBRE_ESPANOL' => 'Evaluación rápida de las extremidades superiores',
                     'DESCRIPCION' => 'El método RULA tiene como objetivo evaluar la exposición de los trabajadores a factores de riesgo que pueden causar trastornos músculo esqueléticos en las extremidades superiores, derivado de las posturas adoptadas, la repetitividad de los movimientos, la fuerza aplicada o si la actividad es de naturaleza estática.
 
-Para la correcta aplicación del método se debe realizar la observación directa de la actividad del trabajador durante varios ciclos de trabajo, posteriormente se seleccionan las tareas y posturas más significativas, ya sea por su duración o por presentar una mayor carga postural. El método debe ser aplicado al lado derecho y al lado izquierdo del cuerpo por separado, ya que tiene en cuenta las posturas adoptadas por las extremidades superiores, cuello, espalda y piernas. Al final, determina 4 niveles de acción relacionados con los valores que se van obteniendo de la calificación de cada aspecto evaluado.
+Para la correcta aplicación del método se debe realizar la observación directa de la actividad del trabajador durante varios ciclos de trabajo, posteriormente se seleccionan las tareas y posturas más significativas, ya sea por su duración o por presentar una mayor carga postural. El método debe ser aplicado al lado derecho y al lado izquierdo del cuerpo por separado, ya que tiene en cuenta las posturas adoptadas por las extremidades superiores, cuello, espalda y piernas. Al final, determina 4 niveles de acción relacionados con los valores que se van obteniendo de la calificación de cada aspecto evaluado.'
+                ],
 
-Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a mayor carga postural.'
+                '4' => [
+                    'NOMBRE' => 'Método REBA',
+                    'NOMBRE_INGLES' => '(Rapid Entire Body Assessment)',
+                    'NOMBRE_ESPANOL' => 'Evaluación Rápida del Cuerpo Completo',
+                    'DESCRIPCION' => 'El método REBA evalúa posturas individuales y no conjuntos o secuencias de posturas, por ello, es necesario seleccionar aquellas posturas que serán evaluadas de entre las que adopta el trabajador en el puesto. Se seleccionarán aquellas que, a priori, supongan una mayor carga postural bien por su duración, bien por su frecuencia o porque presentan mayor desviación respecto a la posición neutra.
+
+Para ello, el primer paso consiste en la observación de las tareas que desempeña el trabajador. Se observarán varios ciclos de trabajo y se determinarán las posturas que se evaluarán. Si el ciclo es muy largo o no existen ciclos, se pueden realizar evaluaciones a intervalos regulares. En este caso se considerará, además, el tiempo que pasa el trabajador en cada postura.'
                 ],
 
             ];
@@ -2918,14 +2925,68 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
             //// INTRODUCCION
 
             $introduccion = $datosGenerales2->INFORME_INTRODUCCION;
-            $introduccion = preg_replace('/<\/p>/i', "¶", $introduccion);
-            $introduccion = strip_tags($introduccion);
-            $introduccion = html_entity_decode($introduccion);
-            $introduccion = str_replace('¶', "\n\n", $introduccion);
+
+            if (!empty($introduccion)) {
+                $introduccion = preg_replace_callback(
+                    '/<sup[^>]*>(.*?)<\/sup>/is',
+                    function ($matches) {
+                        $superindices = array(
+                            '0' => '⁰',
+                            '1' => '¹',
+                            '2' => '²',
+                            '3' => '³',
+                            '4' => '⁴',
+                            '5' => '⁵',
+                            '6' => '⁶',
+                            '7' => '⁷',
+                            '8' => '⁸',
+                            '9' => '⁹'
+                        );
+
+                        return strtr(strip_tags($matches[1]), $superindices);
+                    },
+                    $introduccion
+                );
+
+                $introduccion = preg_replace('/<\/p\s*>/i', "\n\n", $introduccion);
+                $introduccion = preg_replace('/<br\s*\/?>/i', "\n", $introduccion);
+                $introduccion = strip_tags($introduccion);
+
+                $introduccion = html_entity_decode(
+                    $introduccion,
+                    ENT_QUOTES | ENT_HTML5,
+                    'UTF-8'
+                );
+
+                $introduccion = str_replace(
+                    array("\r\n", "\r"),
+                    "\n",
+                    $introduccion
+                );
+
+                $introduccion = preg_replace(
+                    '/[\x00-\x08\x0B\x0C\x0E-\x1F]/',
+                    '',
+                    $introduccion
+                );
+
+                $introduccion = trim($introduccion);
+            } else {
+
+                $introduccion = '';
+            }
+
+            \PhpOffice\PhpWord\Settings::setOutputEscapingEnabled(true);
 
             $plantillaword->setValue('INTRODUCCION', $introduccion);
 
+
             //// DEFINICIONES
+
+
+
+            //// DEFINICIONES
+
             $definiciones = DB::table('definicionesinformefre as di')
                 ->join(
                     'catergo_definiciones as cd',
@@ -2948,87 +3009,211 @@ Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a m
                 )
                 ->get();
 
-            $textoDefiniciones = '';
-
             $fuentes = [];
 
 
-            foreach ($definiciones as $key => $value) {
+            // =============================================
+            // NUMERAR FUENTES SIN DUPLICARLAS
+            // =============================================
 
-                $textoDefiniciones .=
-                    '<w:p>
-                        <w:r>
-                            <w:rPr>
-                                <w:b/>
-                            </w:rPr>
-                            <w:t>' .
-                    htmlspecialchars($value->CONCEPTO_DEFINICION) .
-                    ':</w:t>
-                        </w:r>
-                        <w:r>
-                            <w:t xml:space="preserve">
-                                ' . htmlspecialchars($value->DESCRIPCION_DEFINICION) . '
-                            </w:t>
-                        </w:r>
-                    </w:p>';
+            foreach ($definiciones as $value) {
 
+                $fuente = trim((string) $value->FUENTE_DEFINICION);
 
-                if (
-                    $value->FUENTE_DEFINICION
-                    &&
-                    !in_array(
-                        $value->FUENTE_DEFINICION,
-                        $fuentes
-                    )
-                ) {
-                    $fuentes[] = $value->FUENTE_DEFINICION;
+                if ($fuente !== '' && !isset($fuentes[$fuente])) {
+
+                    $fuentes[$fuente] = count($fuentes) + 1;
                 }
             }
 
 
-            if ($textoDefiniciones == '') {
-                $textoDefiniciones = 'No cargado';
+            // =============================================
+            // GENERAR DEFINICIONES
+            // =============================================
+
+            if ($definiciones->count() > 0) {
+
+                $bloqueDefiniciones = new \PhpOffice\PhpWord\Element\TextRun();
+
+                foreach ($definiciones as $key => $value) {
+
+                    if ($key > 0) {
+                        $bloqueDefiniciones->addTextBreak(1);
+                    }
+
+                    // CONCEPTO EN NEGRITAS
+                    $bloqueDefiniciones->addText(
+                        html_entity_decode(
+                            (string) $value->CONCEPTO_DEFINICION,
+                            ENT_QUOTES | ENT_HTML5,
+                            'UTF-8'
+                        ) . ':',
+                        [
+                            'bold' => true
+                        ]
+                    );
+
+                    // SEPARACIÓN ENTRE CONCEPTO Y DESCRIPCIÓN
+                    $bloqueDefiniciones->addText("\t");
+
+                    // DESCRIPCIÓN NORMAL
+                    $bloqueDefiniciones->addText(
+                        html_entity_decode(
+                            (string) $value->DESCRIPCION_DEFINICION,
+                            ENT_QUOTES | ENT_HTML5,
+                            'UTF-8'
+                        )
+                    );
+
+                    // OBTENER FUENTE CORRESPONDIENTE
+                    $fuente = trim((string) $value->FUENTE_DEFINICION);
+
+                    // AGREGAR NÚMERO EN SUPERÍNDICE
+                    if ($fuente !== '' && isset($fuentes[$fuente])) {
+
+                        $bloqueDefiniciones->addText(
+                            (string) $fuentes[$fuente],
+                            [
+                                'superScript' => true,
+                                'size' => 8
+                            ]
+                        );
+                    }
+                }
+
+                $plantillaword->setComplexBlock(
+                    'DEFINICIONES',
+                    $bloqueDefiniciones
+                );
+            } else {
+
+                $plantillaword->setValue(
+                    'DEFINICIONES',
+                    'No cargado'
+                );
             }
 
-            $textoFuentes = count($fuentes)
-                ? implode(
-                    '</w:t><w:br/><w:t>',
-                    $fuentes
-                )
-                : 'No cargado';
 
+            // =============================================
+            // GENERAR FUENTES BIBLIOGRÁFICAS
+            // =============================================
 
-            $plantillaword->setValue('DEFINICIONES', $textoDefiniciones);
+            if (count($fuentes) > 0) {
 
+                $bloqueFuentes = new \PhpOffice\PhpWord\Element\TextRun();
 
-            $plantillaword->setValue('DEFINICIONES_FUENTES', $textoFuentes);
+                foreach ($fuentes as $fuente => $numero) {
+
+                    // CADA FUENTE EN UNA LÍNEA INDEPENDIENTE
+                    if ($numero > 1) {
+                        $bloqueFuentes->addTextBreak(1);
+                    }
+
+                    // NÚMERO EN SUPERÍNDICE PEQUEÑO
+                    $bloqueFuentes->addText(
+                        (string) $numero,
+                        [
+                            'superScript' => true,
+                            'size' => 8,
+                            'bold' => true,
+                            'italic' => true
+                        ]
+                    );
+
+                    // ESPACIO
+                    $bloqueFuentes->addText(' ');
+
+                    // FUENTE ORIGINAL EN NEGRITAS Y CURSIVAS
+                    $bloqueFuentes->addText(
+                        html_entity_decode(
+                            $fuente,
+                            ENT_QUOTES | ENT_HTML5,
+                            'UTF-8'
+                        ),
+                        [
+                            'bold' => true,
+                            'italic' => true,
+                            'size' => 9
+                        ]
+                    );
+                }
+
+                $plantillaword->setComplexBlock(
+                    'DEFINICIONES_FUENTES',
+                    $bloqueFuentes
+                );
+            } else {
+
+                $plantillaword->setValue(
+                    'DEFINICIONES_FUENTES',
+                    'No cargado'
+                );
+            }
+
 
 
             //// OBEJTIVO GENERAL
             $plantillaword->setValue('OBJETIVO_GENERAL', $datosGenerales2->INFORME_OBJETIVOGENERALES ?? 'No cargado');
 
             //// OBEJTIVO ESPECIFICOS
+
+
+            //// OBJETIVOS ESPECÍFICOS
+
             $textoObjetivos = '';
 
             if (!empty($datosGenerales2->INFORME_OBJETIVOSESPECIFICOS)) {
+
                 $objetivos = preg_split(
                     "/\r\n|\n|\r/",
                     $datosGenerales2->INFORME_OBJETIVOSESPECIFICOS
                 );
-                foreach ($objetivos as $objetivo) {
-                    $objetivo = trim($objetivo);
-                    $objetivo = ltrim($objetivo, '•- ');
 
-                    if ($objetivo != '') {
-                        $textoObjetivos .= '• ' . $objetivo . '</w:t><w:br/><w:t>';
+                $bloqueObjetivos = new \PhpOffice\PhpWord\Element\TextRun();
+
+                $contadorObjetivos = 0;
+
+                foreach ($objetivos as $objetivo) {
+
+                    $objetivo = trim($objetivo);
+
+                    $objetivo = preg_replace(
+                        '/^[\s•\-]+/u',
+                        '',
+                        $objetivo
+                    );
+
+                    if ($objetivo !== '') {
+
+                        if ($contadorObjetivos > 0) {
+                            $bloqueObjetivos->addTextBreak(1);
+                        }
+
+                        $bloqueObjetivos->addText('•  ');
+
+                        $bloqueObjetivos->addText($objetivo);
+
+                        $contadorObjetivos++;
                     }
                 }
+
+                if ($contadorObjetivos > 0) {
+
+                    $plantillaword->setComplexBlock(
+                        'OBJETIVOS_ESPECIFICOS',
+                        $bloqueObjetivos
+                    );
+                } else {
+
+                    $plantillaword->setValue(
+                        'OBJETIVOS_ESPECIFICOS',
+                        'No cargado'
+                    );
+                }
             } else {
-                $textoObjetivos = 'No cargado';
+
+                $plantillaword->setValue('OBJETIVOS_ESPECIFICOS','No cargado');
             }
-
-
-            $plantillaword->setValue('OBJETIVOS_ESPECIFICOS', $textoObjetivos);
 
             // RECONOCIMIENTO
             
@@ -4548,9 +4733,17 @@ El método OWAS permite valorar las posturas a nivel de espalda, brazos y pierna
 
                     'DESCRIPCION' => 'El método RULA tiene como objetivo evaluar la exposición de los trabajadores a factores de riesgo que pueden causar trastornos musculoesqueléticos en las extremidades superiores, derivados de las posturas adoptadas, la repetitividad de los movimientos, la fuerza aplicada o si la actividad es de naturaleza estática.
 
-Para la correcta aplicación del método, se debe realizar la observación directa de la actividad del trabajador durante varios ciclos de trabajo. Posteriormente, se seleccionan las tareas y posturas más significativas, ya sea por su duración o por presentar una mayor carga postural. El método se aplica al lado derecho y al lado izquierdo del cuerpo por separado, ya que tiene en cuenta las posturas adoptadas por las extremidades superiores, cuello, espalda y piernas. Al final, determina cuatro niveles de acción relacionados con los valores obtenidos en la evaluación.
+Para la correcta aplicación del método, se debe realizar la observación directa de la actividad del trabajador durante varios ciclos de trabajo. Posteriormente, se seleccionan las tareas y posturas más significativas, ya sea por su duración o por presentar una mayor carga postural. El método se aplica al lado derecho y al lado izquierdo del cuerpo por separado, ya que tiene en cuenta las posturas adoptadas por las extremidades superiores, cuello, espalda y piernas. Al final, determina cuatro niveles de acción relacionados con los valores obtenidos en la evaluación.'
+                ],
 
-Nota: el profesional que evalúa elige el lado del cuerpo que está sometido a mayor carga postural.'
+                '4' => [
+                    'NOMBRE' => 'Método REBA',
+                    'NOMBRE_INGLES' => 'Rapid Entire Body Assessment',
+                    'NOMBRE_ESPANOL' => 'Evaluación Rápida del Cuerpo Completo',
+
+                    'DESCRIPCION' => 'El método REBA evalúa posturas individuales y no conjuntos o secuencias de posturas, por ello, es necesario seleccionar aquellas posturas que serán evaluadas de entre las que adopta el trabajador en el puesto. Se seleccionarán aquellas que, a priori, supongan una mayor carga postural bien por su duración, bien por su frecuencia o porque presentan mayor desviación respecto a la posición neutra.
+
+Para ello, el primer paso consiste en la observación de las tareas que desempeña el trabajador. Se observarán varios ciclos de trabajo y se determinarán las posturas que se evaluarán. Si el ciclo es muy largo o no existen ciclos, se pueden realizar evaluaciones a intervalos regulares. En este caso se considerará, además, el tiempo que pasa el trabajador en cada postura.'
                 ],
 
             ];

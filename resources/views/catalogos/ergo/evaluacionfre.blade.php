@@ -65,6 +65,24 @@
     tr.error {
         background-color: #ffe5e5 !important;
     }
+
+
+    select.form-control,
+    select.custom-select {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .modal select.form-control,
+    .modal select.custom-select {
+        width: 100%;
+        max-width: 93%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
 </style>
 
 
@@ -264,7 +282,7 @@
                                                                             <div class="col-6 text-center" id="primeraParte" data-toggle="tooltip" title="¡Asegúrese de vincular primero el Reconocimiento con un folio de la lista de proyectos!">
                                                                                 <div class="form-group">
                                                                                     <label style="font-weight: bold;font-size: 20px;">Relación a Proyecto (Folio) *</label>
-                                                                                    <select class="custom-select form-control" id="proyecto_folio" name="proyecto_folio" required>
+                                                                                    <select class="form-control" id="proyecto_folio" name="proyecto_folio" required>
                                                                                         <option value="">&nbsp;</option>
                                                                                     </select>
                                                                                 </div>
@@ -274,7 +292,7 @@
                                                                             <div class="col-6 text-center">
                                                                                 <div class="form-group" data-toggle="tooltip" title="No disponible por el momento.">
                                                                                     <label style="font-weight: bold;font-size: 20px;"> Relación a OT (Orden de trabajo)</label>
-                                                                                    <select class="custom-select form-control" id="ordentrabajo_id" name="ordentrabajo_id">
+                                                                                    <select class="form-control" id="ordentrabajo_id" name="ordentrabajo_id">
                                                                                         <option value="1" disabled></option>
                                                                                     </select>
                                                                                 </div>
@@ -1330,7 +1348,7 @@
                                                     <div class="col-12 mb-4">
                                                         <div class="form-group">
                                                             <label> Nivel 1 </label>
-                                                            <select class="custom-select form-control" style="width: 90%;" id="NIVEL1" name="NIVEL1">
+                                                            <select class="form-control" style="width: 90%;" id="NIVEL1" name="NIVEL1">
 
                                                             </select>
                                                         </div>
@@ -1339,7 +1357,7 @@
                                                     <div class="col-12 mb-4">
                                                         <div class="form-group">
                                                             <label> Nivel 2 </label>
-                                                            <select class="custom-select form-control" style="width: 90%;" id="NIVEL2" name="NIVEL2">
+                                                            <select class="form-control" style="width: 90%;" id="NIVEL2" name="NIVEL2">
 
                                                             </select>
                                                         </div>
@@ -1348,7 +1366,7 @@
                                                     <div class="col-12 mb-4">
                                                         <div class="form-group">
                                                             <label> Nivel 3 </label>
-                                                            <select class="custom-select form-control" style="width: 90%;" id="NIVEL3" name="NIVEL3">
+                                                            <select class="form-control" style="width: 90%;" id="NIVEL3" name="NIVEL3">
 
                                                             </select>
                                                         </div>
@@ -1357,7 +1375,7 @@
                                                     <div class="col-12 mb-4">
                                                         <div class="form-group">
                                                             <label> Nivel 4 </label>
-                                                            <select class="custom-select form-control" style="width: 90%;" id="NIVEL4" name="NIVEL4">
+                                                            <select class="form-control" style="width: 90%;" id="NIVEL4" name="NIVEL4">
 
                                                             </select>
                                                         </div>
@@ -1366,7 +1384,7 @@
                                                     <div class="col-12 mb-4">
                                                         <div class="form-group">
                                                             <label> Nivel 5 </label>
-                                                            <select class="custom-select form-control" style="width: 90%;" id="NIVEL5" name="NIVEL5">
+                                                            <select class="form-control" style="width: 90%;" id="NIVEL5" name="NIVEL5">
 
                                                             </select>
                                                         </div>
@@ -1384,7 +1402,7 @@
                                                     <div class="col-12 mb-2">
                                                         <div class="form-group">
                                                             <label> Opción 1 </label>
-                                                            <select class="custom-select form-control" style="width: 80%;" id="OPCION_PORTADA1" name="OPCION_PORTADA1">
+                                                            <select class="form-control" style="width: 80%;" id="OPCION_PORTADA1" name="OPCION_PORTADA1">
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1392,7 +1410,7 @@
                                                     <div class="col-12 mb-2">
                                                         <div class="form-group">
                                                             <label> Opción 2 </label>
-                                                            <select class="custom-select form-control" style="width: 80%;" id="OPCION_PORTADA2" name="OPCION_PORTADA2">
+                                                            <select class="form-control" style="width: 80%;" id="OPCION_PORTADA2" name="OPCION_PORTADA2">
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1400,7 +1418,7 @@
                                                     <div class="col-12 mb-2">
                                                         <div class="form-group">
                                                             <label> Opción 3 </label>
-                                                            <select class="custom-select form-control" style="width: 80%;" id="OPCION_PORTADA3" name="OPCION_PORTADA3">
+                                                            <select class="form-control" style="width: 80%;" id="OPCION_PORTADA3" name="OPCION_PORTADA3">
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1408,7 +1426,7 @@
                                                     <div class="col-12 mb-2">
                                                         <div class="form-group">
                                                             <label> Opción 4 </label>
-                                                            <select class="custom-select form-control" style="width: 80%;" id="OPCION_PORTADA4" name="OPCION_PORTADA4">
+                                                            <select class="form-control" style="width: 80%;" id="OPCION_PORTADA4" name="OPCION_PORTADA4">
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1416,14 +1434,14 @@
                                                     <div class="col-12 mb-2">
                                                         <div class="form-group">
                                                             <label> Opción 5 </label>
-                                                            <select class="custom-select form-control" style="width: 80%;" id="OPCION_PORTADA5" name="OPCION_PORTADA5">
+                                                            <select class="form-control" style="width: 80%;" id="OPCION_PORTADA5" name="OPCION_PORTADA5">
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 mb-2">
                                                         <div class="form-group">
                                                             <label> Opción 6 </label>
-                                                            <select class="custom-select form-control" style="width: 80%;" id="OPCION_PORTADA6" name="OPCION_PORTADA6">
+                                                            <select class="form-control" style="width: 80%;" id="OPCION_PORTADA6" name="OPCION_PORTADA6">
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1432,7 +1450,7 @@
                                                     <div class="col-12 text-center mt-4">
                                                         <div class="form-group">
                                                             <label>Mes</label>
-                                                            <select class="custom-select form-control" id="INFORME_MES" name="INFORME_MES">
+                                                            <select class="form-control" id="INFORME_MES" name="INFORME_MES">
                                                                 <option value="" selected disabled></option>
                                                                 <option value="Enero">Enero</option>
                                                                 <option value="Febrero">Febrero</option>
@@ -1455,7 +1473,7 @@
                                                     <div class="col-12 text-center">
                                                         <div class="form-group">
                                                             <label>Año</label>
-                                                            <select class="custom-select form-control" id="INFORME_ANIO" name="INFORME_ANIO">
+                                                            <select class=" form-control" id="INFORME_ANIO" name="INFORME_ANIO">
                                                                 <option value="" selected disabled></option>
                                                                 <script>
                                                                     const currentYear = new Date().getFullYear();
@@ -1487,15 +1505,23 @@
                                                         rows="20"
                                                         id="INFORME_INTRODUCCION"
                                                         name="INFORME_INTRODUCCION"
-                                                        required><p>Los factores de riesgo ergonómico contribuyen a la aparición de enfermedades de tipo músculo esquelético, según los datos revelados por la Organización Internacional del Trabajo (OIT) estos a nivel mundial representan una de las principales causas de enfermedad laboral, seguido por exposición a material particulado, los gases, los humos, y el ruido (Discroll, 2018). Por otra parte, la OMS indicó que a nivel mundial cerca del 20% de los dolores lumbares y cervicales son atribuibles a exposiciones en el trabajo (2018).</p>
+                                                        required><p>Los trastornos musculoesqueléticos (TME) constituyen un problema prioritario de salud pública y de la salud en el trabajo, debido a su impacto sobre la capacidad funcional, el bienestar y la participación laboral. Según la Organización Mundial de la Salud (OMS, 2022)<sup>1</sup>, aproximadamente 1.710 millones de personas vivían con estas afecciones en el mundo, de acuerdo con los datos del estudio de carga mundial de enfermedad de 2019. Aunque esta cifra comprende los TME de origen laboral y no laboral, permite dimensionar la magnitud del problema y la importancia de prevenir la exposición que contribuya a su aparición o agravamiento en el trabajo.</p>
 
-<p>De acuerdo con el Instituto Mexicano del Seguro Social (IMSS) en 2020, se registraron más de 100.000 casos nuevos de enfermedades laborales, la naturaleza de la lesión indica que hay un número importante de enfermedades que se agrupan como trastornos músculo-esqueléticos (TME), entre ellas, síndrome del túnel carpiano, lesiones de hombro, tenosinovitis del pulgar (“De Quervain”), bursitis, epicondilitis y artrosis; por tal razón los TME representa en la actualidad un importante tipo de enfermedad laboral que afecta a la planta laboral de México. </p>
+<p>En el ámbito laboral, las estimaciones conjuntas de la Organización Mundial de la Salud y la Organización Internacional del Trabajo (OMS y OIT, 2021)<sup>2</sup> atribuyen a los factores de riesgo ergonómico 12,27 millones de años de vida ajustados debido a la discapacidad por dolor de espalda y cuello en 2016. Esta carga aumentó un 20,1 % respecto al año 2000. El informe identifica, entre las exposiciones pertinentes, la manipulación manual de cargas, las vibraciones de cuerpo entero y la permanencia prolongada en posición sentada.</p>
 
-<p>En México el Reglamento Federal de Seguridad y Salud en el trabajo (RFST), publicado en el Diario Oficial de la Federación (DOF) el día 13 de noviembre de 2014, establece en su artículo 42, que las empresas deben contar con un análisis de los Factores de Riesgo Ergonómico de los puestos de trabajo. Además, la NOM-036-1-STPS-2018 establece los elementos para identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en los centros de trabajo derivados del manejo manual de cargas, a efecto de prevenir alteraciones a la salud de los trabajadores, y aplica en los centros de trabajo donde existan trabajadores cuya actividad implique realizar manejo manual de cargas de forma cotidiana (más de una vez al día); así mismo la LEY SILLA - DOF 19/12/24 en lo referente a el empleador.</p>
+<p>En México, el Instituto Mexicano del Seguro Social (IMSS, 2025)<sup>3</sup>, registró un total de 19,803 casos reportados de enfermedad de trabajo, donde aproximadamente el 57% de los casos, están relacionados con TME, encontrando determinadas dorsopatías; lesiones del hombro; síndrome del túnel carpiano; tenosinovitis de estiloides radial de Quervain; otras sinovitis, tenosinovitis o bursitis y artrosis, donde la naturaleza de la lesión puede ser un indicador importante para atribuir la causalidad al factor de riesgo ergonómico; por tal razón los TME representan en la actualidad un importante tipo de enfermedad laboral que afecta a la población trabajadora en México. Por otra parte, el Reglamento Federal de Seguridad y Salud en el Trabajo (RFSST), publicado en el Diario Oficial de la Federación (DOF) el día 13 de noviembre de 2014, establece en su artículo 42, que las empresas deben contar con un análisis de los Factores de Riesgo Ergonómico de los puestos de trabajo; adicionalmente, la Secretaría de Trabajo y Previsión Social (STPS) emitió la Norma Oficial Mexicana (NOM-036-1-STPS-2018) la cual establece los elementos para identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en los centros de trabajo derivados del manejo manual de cargas, a efecto de prevenir alteraciones a la salud de los trabajadores, y aplica en los centros de trabajo donde existan trabajadores cuya actividad implique realizar manejo manual de cargas de forma cotidiana (más de una vez al día); así mismo el 19 diciembre de 2024 se publicó una reforma a la Ley Federal del Trabajo por el Congreso de la Unión, conocida como la “Ley Silla” y el 17 de julio de 2025, la STPS emitió las “Disposiciones sobre los factores de riesgos de trabajo para garantizar el derecho al descanso de las personas trabajadoras en bipedestación”.</p>
 
-<p>Dentro del medio ambiente laboral existen condiciones de riesgo de tipo ergonómico, que de no encontrarse identificados pueden poner en riesgo la salud y la productividad del trabajador; por lo que la identificación temprana y el establecimiento de estrategias de control son primordiales para mantener una condición de trabajo óptima.</p>
+<p>En este contexto, la magnitud de los TME como problema de salud laboral y el marco normativo descrito sustentan la necesidad de identificar y evaluar los factores de riesgo ergonómico presentes en los centros de trabajo. El presente informe se realizó en el/la INSTALACION, durante <font color="#000000" style="background-color: rgb(255, 255, 0);">el mes de XX del AÑO</font>, donde se describen los resultados y evidencias obtenidas de la identificación del peligro y riesgo ergonómico mediante el uso de las fichas de la ISO-TR 12295-2014 y los criterios establecidos en la NOM-036-1-STPS-2018 (Reconocimiento), así como la valoración de los factores de riesgo ergonómico en las tareas y/o puestos de trabajo (categorías), mediante el uso de diferentes metodologías ergonómicas validadas a nivel internacional, que permiten al empleador cuantificar el riesgo ergonómico en el centro de trabajo y tomar las medidas de intervención o recomendaciones incluidas y acordes con las actividades o tareas que realiza el personal, para mantener una condición de trabajo óptima, que permita reducir la sobrecarga física, proteger la salud músculoesquelética y mejorar la productividad de los trabajadores.</p>
 
-<p>En el presente estudio se describen los resultados y evidencias obtenidas posterior a haber identificado el riesgo y peligro ergonómico por medio de las fichas de la ISO-TR 12295-2014 (Reconocimiento); posteriormente se aplican métodos ergonómicos específicos que permiten identificar el riesgo ergonómico para que la empresa tome las medidas preventivas respectivas</p> </textarea>
+<p><sup>1</sup> World Health Organization. (2022, 14 de julio). <em>Musculoskeletal health</em>. <a href="https://www.who.int/news-room/fact-sheets/detail/musculoskeletal-conditions" target="_blank">https://www.who.int/news-room/fact-sheets/detail/musculoskeletal-conditions</a></p>
+
+<p><sup>2</sup> World Health Organization, &amp; International Labour Organization. (2021). <em>WHO/ILO joint estimates of the work-related burden of disease and injury, 2000–2016: Global monitoring report</em>. World Health Organization.</p>
+
+<p><a href="https://iris.who.int/bitstream/handle/10665/345242/9789240034945-eng.pdf" target="_blank">https://iris.who.int/bitstream/handle/10665/345242/9789240034945-eng.pdf</a></p>
+
+<p><sup>3</sup> <a href="https://www.imss.gob.mx/conoce-al-imss/memoria-estadistica-2025" target="_blank">IMSS — Memoria Estadística 2025</a>. Selecciona “Capítulo VII. Salud en el Trabajo – (VII.28)”.</p>
+</textarea>
+                                                    </textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12" style="text-align: right;">
@@ -2418,7 +2444,7 @@ DESCRIPCIONACTIVIDAD
 
                                                     <div class="form-group">
                                                         <label>Seleccionar conclusión </label>
-                                                        <select class="custom-select form-control"
+                                                        <select class="form-control"
                                                             id="SELECT_CONCLUSION"
                                                             name="SELECT_CONCLUSION">
                                                             <option value=""></option>
@@ -2633,7 +2659,7 @@ DESCRIPCIONACTIVIDAD
                         <div class="col-3">
                             <div class="form-group">
                                 <label> Departamento *</label>
-                                <select class="custom-select form-control" id="CAT_DEPARTAMENTO_FICHA" name="CAT_DEPARTAMENTO_FICHA" required style="pointer-events:none; background-color:#e9ecef;">
+                                <select class="form-control" id="CAT_DEPARTAMENTO_FICHA" name="CAT_DEPARTAMENTO_FICHA" required style="pointer-events:none; background-color:#e9ecef;">
                                     <option value=""></option>
                                     @foreach($catdepartamento as $dato)
                                     <option value="{{$dato->id}}">{{$dato->catdepartamento_nombre}}</option>
@@ -2645,7 +2671,7 @@ DESCRIPCIONACTIVIDAD
                         <div class="col-3">
                             <div class="form-group">
                                 <label>Áreas *</label>
-                                <select class="custom-select form-control" id="CAT_AREAS_FICHA" name="CAT_AREAS_FICHA[]" multiple>
+                                <select class="form-control" id="CAT_AREAS_FICHA" name="CAT_AREAS_FICHA[]" multiple>
                                 </select>
                             </div>
                         </div>
@@ -2718,7 +2744,7 @@ DESCRIPCIONACTIVIDAD
                             <div class="form-group">
                                 <label>Régimen Contractual </label>
 
-                                <select class="custom-select form-control" id="REGIMEN_CONTRACTUAL_FICHA" name="REGIMEN_CONTRACTUAL_FICHA">
+                                <select class="form-control" id="REGIMEN_CONTRACTUAL_FICHA" name="REGIMEN_CONTRACTUAL_FICHA">
                                     <option value=""></option>
                                     @foreach($catregimen as $dato)
                                     <option value="{{$dato->ID_REGIMEN_CONTRACTUAL}}">{{$dato->NOMBRE_REGIMEN_CONTRACTUAL}}</option>
@@ -2730,7 +2756,7 @@ DESCRIPCIONACTIVIDAD
                         <div class="col-4">
                             <div class="form-group">
                                 <label>Jornada </label>
-                                <select class="custom-select form-control" id="JORNADA_EMPLEADO_FICHA" name="JORNADA_EMPLEADO_FICHA">
+                                <select class="form-control" id="JORNADA_EMPLEADO_FICHA" name="JORNADA_EMPLEADO_FICHA">
                                     <option value=""></option>
                                     @foreach($catjornada as $dato)
                                     <option value="{{$dato->ID_JORNADA}}">{{$dato->NOMBRE_JORNADA}}</option>
@@ -2743,7 +2769,7 @@ DESCRIPCIONACTIVIDAD
                             <div class="form-group">
                                 <label>Turno </label>
 
-                                <select class="custom-select form-control" id="TURNO_EMPLEADO_FICHA" name="TURNO_EMPLEADO_FICHA[]" multiple>
+                                <select class="form-control" id="TURNO_EMPLEADO_FICHA" name="TURNO_EMPLEADO_FICHA[]" multiple>
                                     <option value=""></option>
                                     @foreach($caturno as $dato)
                                     <option value="{{$dato->ID_TURNO}}">{{$dato->NOMBRE_TURNO}}</option>
@@ -3270,7 +3296,7 @@ DESCRIPCIONACTIVIDAD
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label>Áreas *</label>
-                                                <select class="custom-select form-control" id="CAT_AREAS_FRE" name="CAT_AREAS_FRE[]" multiple>
+                                                <select class="form-control" id="CAT_AREAS_FRE" name="CAT_AREAS_FRE[]" multiple>
                                                 </select>
                                             </div>
                                         </div>
@@ -3287,7 +3313,7 @@ DESCRIPCIONACTIVIDAD
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label> Departamento *</label>
-                                                <select class="custom-select form-control" id="CAT_DEPARTAMENTO_FRE" name="CAT_DEPARTAMENTO_FRE" required style="pointer-events:none; background-color:#e9ecef;">
+                                                <select class="form-control" id="CAT_DEPARTAMENTO_FRE" name="CAT_DEPARTAMENTO_FRE" required style="pointer-events:none; background-color:#e9ecef;">
                                                     <option value=""></option>
                                                     @foreach($catdepartamento as $dato)
                                                     <option value="{{$dato->id}}">{{$dato->catdepartamento_nombre}}</option>
@@ -3371,7 +3397,7 @@ DESCRIPCIONACTIVIDAD
                                             <div class="form-group">
                                                 <label>Régimen Contractual </label>
 
-                                                <select class="custom-select form-control" id="REGIMEN_CONTRACTUAL_FRE" name="REGIMEN_CONTRACTUAL_FRE">
+                                                <select class="form-control" id="REGIMEN_CONTRACTUAL_FRE" name="REGIMEN_CONTRACTUAL_FRE">
                                                     <option value=""></option>
                                                     @foreach($catregimen as $dato)
                                                     <option value="{{$dato->ID_REGIMEN_CONTRACTUAL}}">{{$dato->NOMBRE_REGIMEN_CONTRACTUAL}}</option>
@@ -3383,7 +3409,7 @@ DESCRIPCIONACTIVIDAD
                                         <div class="col-3">
                                             <div class="form-group">
                                                 <label>Jornada </label>
-                                                <select class="custom-select form-control" id="JORNADA_EMPLEADO_FRE" name="JORNADA_EMPLEADO_FRE">
+                                                <select class="form-control" id="JORNADA_EMPLEADO_FRE" name="JORNADA_EMPLEADO_FRE">
                                                     <option value=""></option>
                                                     @foreach($catjornada as $dato)
                                                     <option value="{{$dato->ID_JORNADA}}">{{$dato->NOMBRE_JORNADA}}</option>
@@ -6709,13 +6735,14 @@ DESCRIPCIONACTIVIDAD
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="CAT_METODOS_FRE">Seleccionar métodos</label>
-                                                <select class="custom-select form-control"
+                                                <select class="form-control"
                                                     id="CAT_METODOS_FRE"
                                                     name="CAT_METODOS_FRE[]"
                                                     multiple>
                                                     <option value="1">Método OWAS</option>
                                                     <option value="2">Método ROSA</option>
                                                     <option value="3">Método RULA</option>
+                                                    <option value="4">Método REBA</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -6741,7 +6768,7 @@ DESCRIPCIONACTIVIDAD
                                                                 <div class="col-12 col-md-6">
                                                                     <div class="form-group">
                                                                         <label>Posición de espalda (primer dígito)</label>
-                                                                        <select class="form-control" id="OWAS_ESPALDA" name="OWAS_ESPALDA">
+                                                                        <select class="form-control" id="OWAS_ESPALDA" name="OWAS_ESPALDA" required>
                                                                             <option value="">Seleccionar</option>
                                                                             <option value="1">1 — Espalda derecha</option>
                                                                             <option value="2">2 — Espalda doblada</option>
@@ -6764,7 +6791,7 @@ DESCRIPCIONACTIVIDAD
                                                                             Posición de los brazos (segundo dígito)
                                                                         </label>
 
-                                                                        <select class="form-control" id="OWAS_BRAZOS" name="OWAS_BRAZOS">
+                                                                        <select class="form-control" id="OWAS_BRAZOS" name="OWAS_BRAZOS" required>
                                                                             <option value="">Seleccionar</option>
                                                                             <option value="1">1 — Los dos brazos bajos</option>
                                                                             <option value="2">2 — Un brazo bajo y el otro elevado</option>
@@ -6786,7 +6813,7 @@ DESCRIPCIONACTIVIDAD
                                                                             Posición de las piernas (tercer dígito)
                                                                         </label>
 
-                                                                        <select class="form-control" id="OWAS_PIERNAS" name="OWAS_PIERNAS">
+                                                                        <select class="form-control" id="OWAS_PIERNAS" name="OWAS_PIERNAS" required>
                                                                             <option value="">Seleccionar</option>
                                                                             <option value="1">1 — Sentado</option>
                                                                             <option value="2">2 — De pie con las dos piernas rectas y peso equilibrado</option>
@@ -6812,7 +6839,7 @@ DESCRIPCIONACTIVIDAD
                                                                             Cargas y fuerzas soportadas (cuarto dígito)
                                                                         </label>
 
-                                                                        <select class="form-control" id="OWAS_CARGA" name="OWAS_CARGA">
+                                                                        <select class="form-control" id="OWAS_CARGA" name="OWAS_CARGA" required>
                                                                             <option value="">Seleccionar</option>
                                                                             <option value="1">1 — Menos de 10 kg</option>
                                                                             <option value="2">2 — Entre 10 y 20 kg</option>
@@ -6922,9 +6949,9 @@ DESCRIPCIONACTIVIDAD
 
                                                 <div class="col-12 mt-3">
                                                     <div class="form-group">
-                                                        <label> Análisis método</label>
+                                                        <label>Análisis de los resultados del método OWAS</label>
                                                         <div class="input-group">
-                                                            <textarea class="form-control" name="ANALISIS_METODO_OWAS" id="ANALISIS_METODO_OWAS" rows="4"></textarea>
+                                                            <textarea class="form-control" name="ANALISIS_METODO_OWAS" id="ANALISIS_METODO_OWAS" rows="4" required></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -7033,8 +7060,8 @@ DESCRIPCIONACTIVIDAD
                                                 color: #FFFFFF;
                                             }
                                         </style>
-                                        <!-- ========================= ROSA ========================= -->
 
+                                        <!-- ========================= ROSA ========================= -->
 
                                         <div class="col-12 metodo-fre-contenedor" id="contenedorMetodoROSA" style="display:none;">
                                             <div class="rosa-card">
@@ -7138,14 +7165,15 @@ DESCRIPCIONACTIVIDAD
                                                     </div>
                                                 </div>
 
-                                                <div class="rosa-tiempo-contenedor">
+                                                <div class="rosa-tiempo-contenedor mt-2">
                                                     <label for="ROSA_TIEMPO_A">
                                                         Tiempo de uso diario de la silla
                                                     </label>
                                                     <select id="ROSA_TIEMPO_A" name="ROSA_TIEMPO_A" class="form-control rosa-tiempo">
                                                         <option value="">Seleccionar</option>
-                                                        <option value="1">+1 — Uso continuo durante más de una hora o más de 4 horas diarias</option>
-                                                        <option value="-1">-1 — Uso continuo menor de 30 minutos o menos de una hora diaria</option>
+                                                        <option value="1">+1 — Más de 4 horas o más de 1 hora ininterrumpida</option>
+                                                        <option value="0">0 — Entre 1 y 4 horas en total o entre 30 minutos y 1 hora ininterrumpida</option>
+                                                        <option value="-1">-1 — Menos de 1 hora en total o menos de 30 minutos ininterrumpidos</option>
                                                     </select>
                                                 </div>
 
@@ -7378,9 +7406,9 @@ DESCRIPCIONACTIVIDAD
 
                                                 <div class="col-12 mt-3">
                                                     <div class="form-group">
-                                                        <label for="ANALISIS_METODO_ROSA">Análisis método</label>
+                                                        <label for="ANALISIS_METODO_ROSA">Análisis de los resultados del método ROSA</label>
                                                         <div class="input-group">
-                                                            <textarea class="form-control" name="ANALISIS_METODO_ROSA" id="ANALISIS_METODO_ROSA" rows="4"></textarea>
+                                                            <textarea class="form-control" name="ANALISIS_METODO_ROSA" id="ANALISIS_METODO_ROSA" rows="4" required></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -7493,7 +7521,7 @@ DESCRIPCIONACTIVIDAD
                                             }
 
                                             #contenedorMetodoROSA select.form-control {
-                                                width: 100%;
+                                                width: 93%;
                                                 min-height: 35px;
                                                 padding: 6px 9px;
                                                 margin-bottom: 8px;
@@ -7833,7 +7861,6 @@ DESCRIPCIONACTIVIDAD
                                             }
                                         </style>
 
-
                                         <!-- ========================= RULA ========================= -->
                                         <div class="col-12 metodo-fre-contenedor" id="contenedorMetodoRULA">
 
@@ -7850,12 +7877,11 @@ DESCRIPCIONACTIVIDAD
                                                 <div class="rula-grid">
                                                     <div>
                                                         <div class="rula-campo-contenedor">
-                                                            <label class="rula-etiqueta" for="RULA_BRAZO">
+                                                            <label class="rula-etiqueta">
                                                                 Posición del brazo
                                                             </label>
 
-                                                            <select class="rula-campo rula-selector"
-                                                                id="RULA_BRAZO" name="RULA_BRAZO">
+                                                            <select class="rula-campo rula-selector" id="RULA_BRAZO" name="RULA_BRAZO" required>
                                                                 <option value="">Seleccionar...</option>
                                                                 <option value="1">1 — Desde 20° de extensión a 20° de flexión</option>
                                                                 <option value="2">2 — Extensión >20° o flexión entre 20° y 45°</option>
@@ -7973,12 +7999,11 @@ DESCRIPCIONACTIVIDAD
                                                 <div class="rula-grid">
                                                     <div>
                                                         <div class="rula-campo-contenedor">
-                                                            <label class="rula-etiqueta" for="RULA_ANTEBRAZO">
+                                                            <label class="rula-etiqueta">
                                                                 Posición del antebrazo
                                                             </label>
 
-                                                            <select class="rula-campo rula-selector"
-                                                                id="RULA_ANTEBRAZO" name="RULA_ANTEBRAZO">
+                                                            <select class="rula-campo rula-selector" id="RULA_ANTEBRAZO" name="RULA_ANTEBRAZO" required>
                                                                 <option value="">Seleccionar...</option>
                                                                 <option value="1">1 — Flexión entre 60° y 100°</option>
                                                                 <option value="2">2 — Flexión < 60° ó>100°</option>
@@ -8065,12 +8090,11 @@ DESCRIPCIONACTIVIDAD
                                                 <div class="rula-grid">
                                                     <div>
                                                         <div class="rula-campo-contenedor">
-                                                            <label class="rula-etiqueta" for="RULA_MUNECA">
+                                                            <label class="rula-etiqueta">
                                                                 Posición de la muñeca
                                                             </label>
 
-                                                            <select class="rula-campo rula-selector"
-                                                                id="RULA_MUNECA" name="RULA_MUNECA">
+                                                            <select class="rula-campo rula-selector" id="RULA_MUNECA" name="RULA_MUNECA" required>
                                                                 <option value="">Seleccionar...</option>
                                                                 <option value="1">1 — Si está en posición neutra.</option>
                                                                 <option value="2">2 — Si está flexionada o extendida entre > 0° y < 15°</option>
@@ -8178,12 +8202,11 @@ DESCRIPCIONACTIVIDAD
                                                 <div class="rula-grid">
                                                     <div>
                                                         <div class="rula-campo-contenedor">
-                                                            <label class="rula-etiqueta" for="RULA_CUELLO">
+                                                            <label class="rula-etiqueta">
                                                                 Posición del cuello
                                                             </label>
 
-                                                            <select class="rula-campo rula-selector"
-                                                                id="RULA_CUELLO" name="RULA_CUELLO">
+                                                            <select class="rula-campo rula-selector" id="RULA_CUELLO" name="RULA_CUELLO" required>
                                                                 <option value="">Seleccionar...</option>
                                                                 <option value="1">1 — Si existe flexión entre 0° y 10°</option>
                                                                 <option value="2">2 — Si está flexionado entre > 10° y ≤ 20°</option>
@@ -8277,12 +8300,11 @@ DESCRIPCIONACTIVIDAD
                                                 <div class="rula-grid">
                                                     <div>
                                                         <div class="rula-campo-contenedor">
-                                                            <label class="rula-etiqueta" for="RULA_TRONCO">
+                                                            <label class="rula-etiqueta">
                                                                 Posición del tronco
                                                             </label>
 
-                                                            <select class="rula-campo rula-selector"
-                                                                id="RULA_TRONCO" name="RULA_TRONCO">
+                                                            <select class="rula-campo rula-selector" id="RULA_TRONCO" name="RULA_TRONCO" required>
                                                                 <option value="">Seleccionar...</option>
                                                                 <option value="1">1 — Sentado, bien apoyado y con un ángulo tronco-caderas >90°</option>
                                                                 <option value="2">2 — Flexión entre > 0° y 20°</option>
@@ -8376,12 +8398,11 @@ DESCRIPCIONACTIVIDAD
 
                                                 <div class="rula-grid">
                                                     <div class="rula-campo-contenedor">
-                                                        <label class="rula-etiqueta" for="RULA_PIERNAS">
+                                                        <label class="rula-etiqueta">
                                                             Posición de las piernas
                                                         </label>
 
-                                                        <select class="rula-campo rula-selector"
-                                                            id="RULA_PIERNAS" name="RULA_PIERNAS">
+                                                        <select class="rula-campo rula-selector" id="RULA_PIERNAS" name="RULA_PIERNAS" required>
                                                             <option value=""></option>
                                                             <option value="1">1 — Sentado, con pies y piernas bien apoyados; o de pie con peso equilibrado</option>
                                                             <option value="2">2 — Pies sin apoyo o peso no distribuido simétricamente</option>
@@ -8710,9 +8731,9 @@ DESCRIPCIONACTIVIDAD
 
                                             <div class="col-12 mt-3">
                                                 <div class="form-group">
-                                                    <label>Análisis método</label>
+                                                    <label>Análisis de los resultados del método RULA</label>
                                                     <div class="input-group">
-                                                        <textarea class="form-control" name="ANALISIS_METODO_RULA" id="ANALISIS_METODO_RULA" rows="4"></textarea>
+                                                        <textarea class="form-control" name="ANALISIS_METODO_RULA" id="ANALISIS_METODO_RULA" rows="4" required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -9094,6 +9115,949 @@ DESCRIPCIONACTIVIDAD
                                                 box-sizing: border-box !important;
                                             }
                                         </style>
+
+                                        <!-- ========================= REBA ========================= -->
+                                        <div id="contenedorMetodoREBA" class="col-12" style="display: none;">
+
+                                            <div class="card mt-3">
+                                                <div class="card-header">
+                                                    <strong>Método REBA</strong>
+                                                </div>
+
+                                                <div class="card-body">
+
+                                                    <div class="reba-titulo-principal">
+                                                        MÉTODO REBA
+                                                    </div>
+
+                                                    <!-- GRUPO A -->
+                                                    <div class="reba-seccion">
+                                                        <div class="reba-titulo-seccion">
+                                                            GRUPO A · Tronco, cuello y piernas
+                                                        </div>
+
+                                                        <div class="reba-grid">
+                                                            <div>
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_TRONCO">3.1 Posición del tronco</label>
+                                                                    <select id="REBA_TRONCO" name="REBA_TRONCO">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1">1 — Tronco erguido</option>
+                                                                        <option value="2">2 — Flexión o extensión entre 0° y 20°</option>
+                                                                        <option value="3">3 — Flexión mayor de 20° y hasta 60°, o extensión mayor de 20°</option>
+                                                                        <option value="4">4 — Flexión mayor de 60°</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_TRONCO_MOD">Modificación del tronco</label>
+                                                                    <select id="REBA_TRONCO_MOD" name="REBA_TRONCO_MOD" class="reba-select-adicional">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1">Inclinación lateral o rotación (+1)</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_CUELLO">3.2 Posición del cuello</label>
+                                                                    <select id="REBA_CUELLO" name="REBA_CUELLO">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1">1 — Flexión entre 0° y 20°</option>
+                                                                        <option value="2">2 — Flexión mayor de 20° o extensión</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_CUELLO_MOD">Modificación del cuello</label>
+                                                                    <select id="REBA_CUELLO_MOD" name="REBA_CUELLO_MOD" class="reba-select-adicional">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1">Cabeza rotada o con inclinación lateral (+1)</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_PIERNAS">3.3 Posición de las piernas</label>
+                                                                    <select id="REBA_PIERNAS" name="REBA_PIERNAS">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1">1 — Soporte bilateral simétrico</option>
+                                                                        <option value="2">2 — Soporte unilateral, ligero o postura inestable</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_RODILLAS">Flexión de las rodillas</label>
+                                                                    <select id="REBA_RODILLAS" name="REBA_RODILLAS" class="reba-select-adicional">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1">Flexión entre 30° y 60° (+1)</option>
+                                                                        <option value="2">Flexión mayor de 60° (+2), excepto sentado</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="reba-panel">
+                                                                <div class="reba-panel-titulo">Tablas de puntuación del grupo A</div>
+                                                                <div class="reba-panel-contenido">
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Puntos</th>
+                                                                                <th>Posición del tronco</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>El tronco está erguido.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2</td>
+                                                                                <td>Flexión o extensión entre 0° y 20°.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>3</td>
+                                                                                <td>Flexión mayor de 20° y hasta 60°, o extensión mayor de 20°.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>4</td>
+                                                                                <td>Flexión mayor de 60°.</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Modificación</th>
+                                                                                <th>Condición</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>+1</td>
+                                                                                <td>Tronco con inclinación lateral o rotación.</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Puntos</th>
+                                                                                <th>Posición del cuello</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>Flexión entre 0° y 20°.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2</td>
+                                                                                <td>Flexión mayor de 20° o extensión.</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Modificación</th>
+                                                                                <th>Condición</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>+1</td>
+                                                                                <td>Cabeza rotada o con inclinación lateral.</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Puntos</th>
+                                                                                <th>Posición de las piernas</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>Sentado, andando o de pie con soporte bilateral simétrico.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2</td>
+                                                                                <td>De pie con soporte unilateral, soporte ligero o postura inestable.</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Modificación</th>
+                                                                                <th>Condición</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>+1</td>
+                                                                                <td>Flexión de una o ambas rodillas entre 30° y 60°.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>+2</td>
+                                                                                <td>Flexión de una o ambas rodillas mayor de 60° (excepto sentado).</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- GRUPO B -->
+                                                    <div class="reba-seccion">
+                                                        <div class="reba-titulo-seccion">
+                                                            GRUPO B · Brazo, antebrazo y muñeca
+                                                        </div>
+
+                                                        <div class="reba-grid">
+                                                            <div>
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_BRAZO">4.1 Posición del brazo</label>
+                                                                    <select id="REBA_BRAZO" name="REBA_BRAZO">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1">1 — Extensión de 20° a flexión de 20°</option>
+                                                                        <option value="2">2 — Extensión mayor de 20° o flexión mayor de 20° y hasta 45°</option>
+                                                                        <option value="3">3 — Flexión mayor de 45° y hasta 90°</option>
+                                                                        <option value="4">4 — Flexión mayor de 90°</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_BRAZO_MOD">Modificación de la posición del brazo</label>
+                                                                    <select id="REBA_BRAZO_MOD" name="REBA_BRAZO_MOD" class="reba-select-adicional">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="abducido">Brazo abducido o rotado (+1)</option>
+                                                                        <option value="hombro">Hombro elevado (+1)</option>
+                                                                        <option value="apoyo">Existe un punto de apoyo o postura a favor de la gravedad (-1)</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_ANTEBRAZO">4.2 Posición del antebrazo</label>
+                                                                    <select id="REBA_ANTEBRAZO" name="REBA_ANTEBRAZO">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1">1 — Flexión entre 60° y 100°</option>
+                                                                        <option value="2">2 — Flexión menor de 60° o mayor de 100°</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_MUNECA">4.3 Posición de la muñeca</label>
+                                                                    <select id="REBA_MUNECA" name="REBA_MUNECA">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1_neutra">1 — Posición neutra</option>
+                                                                        <option value="1_flexion">1 — Flexión o extensión mayor de 0° y menor de 15°</option>
+                                                                        <option value="2">2 — Flexión o extensión mayor de 15°</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_MUNECA_MOD">Torsión o desviación de muñeca</label>
+                                                                    <select id="REBA_MUNECA_MOD" name="REBA_MUNECA_MOD" class="reba-select-adicional">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1">Torsión o desviación radial o cubital (+1)</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="reba-panel">
+                                                                <div class="reba-panel-titulo">Tablas de puntuación del grupo B</div>
+                                                                <div class="reba-panel-contenido">
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Puntos</th>
+                                                                                <th>Posición del brazo</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>Desde 20° de extensión a 20° de flexión.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2</td>
+                                                                                <td>Extensión mayor de 20° o flexión mayor de 20° y hasta 45°.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>3</td>
+                                                                                <td>Flexión mayor de 45° y hasta 90°.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>4</td>
+                                                                                <td>Flexión mayor de 90°.</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Ajuste</th>
+                                                                                <th>Condición</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>+1</td>
+                                                                                <td>Brazo abducido o brazo rotado.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>+1</td>
+                                                                                <td>Hombro elevado.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>-1</td>
+                                                                                <td>Existe un punto de apoyo o postura a favor de la gravedad.</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Puntos</th>
+                                                                                <th>Posición del antebrazo</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>Flexión entre 60° y 100°.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2</td>
+                                                                                <td>Flexión menor de 60° o mayor de 100°.</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Puntos</th>
+                                                                                <th>Posición de la muñeca</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>Posición neutra.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>Flexión o extensión mayor de 0° y menor de 15°.</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2</td>
+                                                                                <td>Flexión o extensión mayor de 15°.</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <table class="reba-tabla">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Modificación</th>
+                                                                                <th>Condición</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>+1</td>
+                                                                                <td>Torsión o desviación radial o cubital.</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- MATRICES -->
+                                                    <div class="reba-seccion">
+                                                        <div class="reba-titulo-seccion">5. Puntuaciones iniciales de los grupos A y B</div>
+
+                                                        <div class="reba-subtitulo">Tabla A · Tronco, cuello y piernas</div>
+                                                        <div class="reba-tabla-contenedor">
+                                                            <table class="reba-tabla reba-matriz" id="REBA_TABLA_A"></table>
+                                                        </div>
+
+                                                        <div class="reba-subtitulo">Tabla B · Brazo, antebrazo y muñeca</div>
+                                                        <div class="reba-tabla-contenedor">
+                                                            <table class="reba-tabla reba-matriz" id="REBA_TABLA_B"></table>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- AJUSTES -->
+                                                    <div class="reba-seccion">
+                                                        <div class="reba-titulo-seccion">6. Ajustes de las puntuaciones</div>
+
+                                                        <div class="reba-grid">
+                                                            <div>
+                                                                <div class="reba-subtitulo">6.1 Carga o fuerza · Grupo A</div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_CARGA">Carga o fuerza manejada</label>
+                                                                    <select id="REBA_CARGA" name="REBA_CARGA" class="reba-select-adicional">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="0">Menor de 5 kg (+0)</option>
+                                                                        <option value="1">Entre 5 y 10 kg (+1)</option>
+                                                                        <option value="2">Mayor de 10 kg (+2)</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <table class="reba-tabla">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Puntos</th>
+                                                                            <th>Carga o fuerza manejada</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>+0</td>
+                                                                            <td>Carga o fuerza menor de 5 kg.</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>+1</td>
+                                                                            <td>Carga o fuerza entre 5 y 10 kg.</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>+2</td>
+                                                                            <td>Carga o fuerza mayor de 10 kg.</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_FUERZA_BRUSCA">Fuerza o carga aplicada bruscamente</label>
+                                                                    <select id="REBA_FUERZA_BRUSCA" name="REBA_FUERZA_BRUSCA" class="reba-select-adicional">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="1">Sí (+1)</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <table class="reba-tabla">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Modificación</th>
+                                                                            <th>Condición</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>+1</td>
+                                                                            <td>Existen fuerzas o cargas aplicadas bruscamente.</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                            <div>
+                                                                <div class="reba-subtitulo">6.2 Tipo de agarre · Grupo B</div>
+
+                                                                <div class="reba-campo">
+                                                                    <label for="REBA_AGARRE">Tipo de agarre</label>
+                                                                    <select id="REBA_AGARRE" name="REBA_AGARRE" class="reba-select-adicional">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="0">Bueno (+0)</option>
+                                                                        <option value="1">Regular (+1)</option>
+                                                                        <option value="2">Malo (+2)</option>
+                                                                        <option value="3">Inaceptable (+3)</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <table class="reba-tabla">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Puntos</th>
+                                                                            <th>Tipo de agarre</th>
+                                                                            <th>Descripción</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>+0</td>
+                                                                            <td>Bueno</td>
+                                                                            <td>El agarre es bueno y la fuerza de agarre de rango medio.</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>+1</td>
+                                                                            <td>Regular</td>
+                                                                            <td>El agarre es aceptable pero no ideal o utilizando otras partes del cuerpo.</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>+2</td>
+                                                                            <td>Malo</td>
+                                                                            <td>El agarre es posible pero no aceptable.</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>+3</td>
+                                                                            <td>Inaceptable</td>
+                                                                            <td>El agarre es torpe e inseguro o no es posible el agarre manual.</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- TABLA C Y ACTIVIDAD MUSCULAR -->
+                                                    <div class="reba-seccion">
+                                                        <div class="reba-titulo-seccion">7. Puntuación C y puntuación final</div>
+
+                                                        <div class="reba-subtitulo">Tabla C · Cruce de puntuación A y puntuación B</div>
+                                                        <div class="reba-tabla-contenedor">
+                                                            <table class="reba-tabla reba-matriz" id="REBA_TABLA_C"></table>
+                                                        </div>
+
+                                                        <div class="reba-subtitulo">Incremento por actividad muscular</div>
+
+                                                        <table class="reba-tabla">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Tipo de actividad muscular</th>
+                                                                    <th>Puntuación</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Una o más partes del cuerpo permanecen estáticas durante más de 1 minuto.</td>
+                                                                    <td>+1</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Se producen movimientos repetitivos más de 4 veces por minuto, excluyendo caminar.</td>
+                                                                    <td>+1</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Se producen cambios de postura importantes o se adoptan posturas inestables.</td>
+                                                                    <td>+1</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                        <div class="reba-campo">
+                                                            <label for="REBA_ACTIVIDAD_MUSCULAR">Tipo de actividad muscular</label>
+                                                            <select id="REBA_ACTIVIDAD_MUSCULAR"
+                                                                name="REBA_ACTIVIDAD_MUSCULAR"
+                                                                class="reba-select-adicional">
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="estatica">Una o más partes del cuerpo permanecen estáticas durante más de 1 minuto (+1)</option>
+                                                                <option value="repetitiva">Movimientos repetitivos más de 4 veces por minuto, excluyendo caminar (+1)</option>
+                                                                <option value="inestable">Cambios de postura importantes o posturas inestables (+1)</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- RESULTADOS -->
+                                                    <div class="reba-seccion">
+                                                        <div class="reba-titulo-seccion">8. Resultado de la evaluación</div>
+
+                                                        <div class="reba-resultados-grid">
+                                                            <div class="reba-resultado-card">
+                                                                <div>Puntuación inicial A</div>
+                                                                <strong id="REBA_RESULTADO_A">—</strong>
+                                                            </div>
+
+                                                            <div class="reba-resultado-card">
+                                                                <div>Puntuación inicial B</div>
+                                                                <strong id="REBA_RESULTADO_B">—</strong>
+                                                            </div>
+
+                                                            <div class="reba-resultado-card">
+                                                                <div>Puntuación C</div>
+                                                                <strong id="REBA_RESULTADO_C">—</strong>
+                                                            </div>
+
+                                                            <div class="reba-resultado-card">
+                                                                <div>Puntuación A ajustada</div>
+                                                                <strong id="REBA_RESULTADO_A_FINAL">—</strong>
+                                                            </div>
+
+                                                            <div class="reba-resultado-card">
+                                                                <div>Puntuación B ajustada</div>
+                                                                <strong id="REBA_RESULTADO_B_FINAL">—</strong>
+                                                            </div>
+
+                                                            <div class="reba-resultado-card reba-resultado-principal">
+                                                                <div>Puntuación final REBA</div>
+                                                                <strong id="REBA_PUNTUACION_FINAL">—</strong>
+                                                            </div>
+                                                        </div>
+
+                                                        <div id="REBA_RESUMEN_FINAL" class="reba-resumen-final">
+                                                            Selecciona las posiciones corporales para obtener el resultado.
+                                                        </div>
+
+                                                        <div class="reba-tabla-contenedor">
+                                                            <table class="reba-tabla" id="REBA_TABLA_NIVEL">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Puntuación</th>
+                                                                        <th>Nivel</th>
+                                                                        <th>Riesgo</th>
+                                                                        <th>Actuación</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr data-reba-nivel="0">
+                                                                        <td>1</td>
+                                                                        <td class="reba-nivel-0">0</td>
+                                                                        <td>Inapreciable</td>
+                                                                        <td>No es necesaria actuación.</td>
+                                                                    </tr>
+                                                                    <tr data-reba-nivel="1">
+                                                                        <td>2 o 3</td>
+                                                                        <td class="reba-nivel-1">1</td>
+                                                                        <td>Bajo</td>
+                                                                        <td>Puede ser necesaria la actuación.</td>
+                                                                    </tr>
+                                                                    <tr data-reba-nivel="2">
+                                                                        <td>4 a 7</td>
+                                                                        <td class="reba-nivel-2">2</td>
+                                                                        <td>Medio</td>
+                                                                        <td>Es necesaria la actuación.</td>
+                                                                    </tr>
+                                                                    <tr data-reba-nivel="3">
+                                                                        <td>8 a 10</td>
+                                                                        <td class="reba-nivel-3">3</td>
+                                                                        <td>Alto</td>
+                                                                        <td>Es necesaria la actuación cuanto antes.</td>
+                                                                    </tr>
+                                                                    <tr data-reba-nivel="4">
+                                                                        <td>11 a 15</td>
+                                                                        <td class="reba-nivel-4">4</td>
+                                                                        <td>Muy alto</td>
+                                                                        <td>Es necesaria la actuación de inmediato.</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group mt-3">
+                                                        <label>Análisis de los resultados del método REBA</label>
+                                                        <textarea class="form-control" name="ANALISIS_METODO_REBA" id="ANALISIS_METODO_REBA" rows="4" required></textarea>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <style>
+                                            #contenedorMetodoREBA {
+                                                width: 100%;
+                                                max-width: 100%;
+                                                min-width: 0;
+                                                box-sizing: border-box;
+                                                overflow: hidden;
+                                                font-family: Arial, sans-serif;
+                                                color: #2c2a29;
+                                            }
+
+                                            #contenedorMetodoREBA * {
+                                                box-sizing: border-box;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-titulo-principal {
+                                                background: #0786B2;
+                                                color: #FFFFFF;
+                                                padding: 14px;
+                                                margin-bottom: 20px;
+                                                text-align: center;
+                                                font-size: 22px;
+                                                font-weight: bold;
+                                                border-radius: 5px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-seccion {
+                                                width: 100%;
+                                                max-width: 100%;
+                                                min-width: 0;
+                                                margin-bottom: 28px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-titulo-seccion {
+                                                background: #A4D65E;
+                                                color: #FFFFFF;
+                                                padding: 10px;
+                                                margin-bottom: 15px;
+                                                font-size: 17px;
+                                                font-weight: bold;
+                                                text-align: center;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-grid {
+                                                display: grid;
+                                                grid-template-columns: repeat(2, minmax(0, 1fr));
+                                                gap: 20px;
+                                                width: 100%;
+                                                min-width: 0;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-campo {
+                                                margin-bottom: 14px;
+                                                min-width: 0;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-campo label {
+                                                display: block;
+                                                font-size: 13px;
+                                                font-weight: bold;
+                                                margin-bottom: 6px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-campo select {
+                                                display: block;
+                                                width: 100%;
+                                                max-width: 100%;
+                                                min-height: 38px;
+                                                padding: 7px 10px;
+                                                border: 1px solid #a8bed4;
+                                                border-radius: 4px;
+                                                background: #FFFFFF;
+                                                color: #263238;
+                                                font-size: 13px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-campo select option {
+                                                color: #263238;
+                                                background: #FFFFFF;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-campo select.reba-select-adicional {
+                                                background-color: #FFF4D6 !important;
+                                                border: 1px solid #D6A84B !important;
+                                                color: #59451B !important;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-campo select.reba-select-adicional:focus {
+                                                border-color: #D6A84B !important;
+                                                box-shadow: 0 0 0 0.15rem rgba(214, 168, 75, 0.20);
+                                            }
+
+                                            #contenedorMetodoREBA .reba-panel {
+                                                border: 1px solid #a8bed4;
+                                                min-width: 0;
+                                                background: #FFFFFF;
+                                                margin-bottom: 15px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-panel-titulo {
+                                                background: #A4D65E;
+                                                color: #FFFFFF;
+                                                padding: 11px;
+                                                text-align: center;
+                                                font-weight: bold;
+                                                border-bottom: 1px solid #236192;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-panel-contenido {
+                                                padding: 12px;
+                                                min-width: 0;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-tabla-contenedor {
+                                                width: 100%;
+                                                max-width: 100%;
+                                                min-width: 0;
+                                                overflow-x: auto;
+                                                margin: 12px 0 20px;
+                                                -webkit-overflow-scrolling: touch;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-tabla {
+                                                width: 100%;
+                                                max-width: 100%;
+                                                border-collapse: collapse;
+                                                border: 1px solid #9bbdcc;
+                                                table-layout: auto;
+                                                text-align: center;
+                                                font-size: 13px;
+                                                background: #FFFFFF;
+                                                margin-bottom: 12px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-tabla th,
+                                            #contenedorMetodoREBA .reba-tabla td {
+                                                border: 1px solid #9bbdcc;
+                                                padding: 9px 8px;
+                                                text-align: center;
+                                                vertical-align: middle;
+                                                white-space: normal;
+                                                overflow-wrap: break-word;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-tabla thead th,
+                                            #contenedorMetodoREBA .reba-matriz .reba-encabezado-azul {
+                                                background: #0786B2 !important;
+                                                color: #FFFFFF !important;
+                                                font-weight: bold !important;
+                                                text-align: center;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-matriz .reba-encabezado-verde {
+                                                background: #A4D65E !important;
+                                                color: #FFFFFF !important;
+                                                font-weight: bold !important;
+                                                text-align: center;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-tabla tbody tr:nth-child(even) {
+                                                background: #EDF6F8;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-matriz {
+                                                min-width: 760px;
+                                                font-size: 12px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-matriz th,
+                                            #contenedorMetodoREBA .reba-matriz td {
+                                                padding: 8px 6px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-matriz .reba-fila {
+                                                background: #A4D65E;
+                                                color: #FFFFFF;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-celda-seleccionada {
+                                                background: #ffeb3b !important;
+                                                color: #222222 !important;
+                                                font-weight: bold;
+                                                outline: 2px solid #ed3045;
+                                                outline-offset: -2px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-subtitulo {
+                                                color: #236192;
+                                                font-size: 15px;
+                                                font-weight: bold;
+                                                margin: 15px 0 10px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-resultados-grid {
+                                                display: grid;
+                                                grid-template-columns: repeat(3, minmax(0, 1fr));
+                                                gap: 12px;
+                                                margin: 18px 0;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-resultado-card {
+                                                min-width: 0;
+                                                min-height: 100px;
+                                                padding: 13px;
+                                                border: 1px solid #236192;
+                                                display: flex;
+                                                flex-direction: column;
+                                                justify-content: center;
+                                                align-items: center;
+                                                text-align: center;
+                                                background: #FFFFFF;
+                                                gap: 10px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-resultado-card div {
+                                                font-size: 13px;
+                                                font-weight: bold;
+                                                color: #236192;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-resultado-card strong {
+                                                font-size: 27px;
+                                                color: #236192;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-resultado-principal {
+                                                background: #EDF6F8;
+                                                border: 2px solid #0786B2;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-resultado-principal strong {
+                                                font-size: 34px;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-resumen-final {
+                                                padding: 14px;
+                                                margin: 15px 0;
+                                                border-left: 5px solid #A4D65E;
+                                                background: #f2f8e9;
+                                                font-weight: bold;
+                                                text-align: center;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-nivel-0 {
+                                                background: #FFFFFF !important;
+                                                color: #222222;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-nivel-1 {
+                                                background: #A4D65E !important;
+                                                color: #222222;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-nivel-2 {
+                                                background: #ffeb00 !important;
+                                                color: #222222;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-nivel-3 {
+                                                background: #f6a32d !important;
+                                                color: #222222;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoREBA .reba-nivel-4 {
+                                                background: #ed3045 !important;
+                                                color: #FFFFFF;
+                                                font-weight: bold;
+                                            }
+
+                                            #contenedorMetodoREBA #ANALISIS_METODO_REBA {
+                                                width: 100%;
+                                                max-width: 100%;
+                                                min-height: 100px;
+                                                resize: vertical;
+                                            }
+
+                                            @media (max-width: 768px) {
+                                                #contenedorMetodoREBA .reba-grid {
+                                                    grid-template-columns: 1fr;
+                                                }
+
+                                                #contenedorMetodoREBA .reba-resultados-grid {
+                                                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                                                }
+                                            }
+
+                                            @media (max-width: 480px) {
+                                                #contenedorMetodoREBA .reba-resultados-grid {
+                                                    grid-template-columns: 1fr;
+                                                }
+                                            }
+                                        </style>
+
 
 
 

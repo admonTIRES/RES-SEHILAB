@@ -159,9 +159,7 @@ class evaluacionfreModel extends Model
         'ANALISIS_METODO_ROSA',
         'ROSA_DATOS_JSON',
 
-
         // RULA 
-
         'RULA_BRAZO',
         'RULA_ANTEBRAZO',
         'RULA_MUNECA',
@@ -169,7 +167,6 @@ class evaluacionfreModel extends Model
         'RULA_CUELLO',
         'RULA_TRONCO',
         'RULA_PIERNAS',
-
         'RULA_BRAZO_ABDUCIDO',
         'RULA_HOMBRO_ELEVADO',
         'RULA_BRAZO_APOYADO',
@@ -182,11 +179,30 @@ class evaluacionfreModel extends Model
         'RULA_TRONCO_LATERAL',
         'RULA_ACTIVIDAD',
         'RULA_CARGA',
-
         'ANALISIS_METODO_RULA',
-
-        
         'RULA_DATOS_JSON',
+
+        // REBA
+
+        'REBA_TRONCO',
+        'REBA_TRONCO_MOD',
+        'REBA_CUELLO',
+        'REBA_CUELLO_MOD',
+        'REBA_PIERNAS',
+        'REBA_RODILLAS',
+
+        'REBA_BRAZO',
+        'REBA_BRAZO_MOD',
+        'REBA_ANTEBRAZO',
+        'REBA_MUNECA',
+        'REBA_MUNECA_MOD',
+
+        'REBA_CARGA',
+        'REBA_FUERZA_BRUSCA',
+        'REBA_AGARRE',
+        'REBA_ACTIVIDAD_MUSCULAR',
+
+        'ANALISIS_METODO_REBA',
     ];
 
 
