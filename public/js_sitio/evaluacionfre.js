@@ -5130,12 +5130,47 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
     $('#contenedorMetodoRULA').hide();
     $('#contenedorMetodoREBA').hide();
 
-    
+
+
+    //  OWAS
+    $('#OWAS_COD_ESPALDA, #OWAS_COD_BRAZOS, #OWAS_COD_PIERNAS, #OWAS_COD_CARGA').text('—');
+    $('#OWAS_CODIGO_COMPLETO').val('');
+    $('#OWAS_CARD_RESULTADO').hide();
+    $('#OWAS_RESULTADO_CATEGORIA').text('').attr('class', 'badge ml-2');
+    $('#OWAS_TABLA_RESULTADOS tbody tr').removeClass('owas-fila-seleccionada');
+
+    //  ROSA
+    $('#contenedorMetodoROSA .rosa-celda-seleccionada').removeClass('rosa-celda-seleccionada');
+    $('#contenedorMetodoROSA .rosa-seleccionada').removeClass('rosa-seleccionada');
+    $('#ROSA_PUNTUACION_FINAL').text('Pendiente');
+    $('#ROSA_RIESGO_FINAL').text('Completa todos los campos de las secciones A, B y C para obtener la puntuación final.');
+
+    //  RULA
+    $('#contenedorMetodoRULA .rula-celda-seleccionada, #contenedorMetodoRULA .rula-fila-seleccionada, #contenedorMetodoRULA .rula-adicional-activo')
+        .removeClass('rula-celda-seleccionada rula-fila-seleccionada rula-adicional-activo');
+
+    $('#RULA_PUNTUACION_A, #RULA_PUNTUACION_B, #RULA_PUNTUACION').text('—');
+    $('#RULA_RESUMEN_FINAL').text('Puntuación final: — | Nivel de actuación: —');
+
+    //  REBA
+    $('#contenedorMetodoREBA .reba-celda-seleccionada').removeClass('reba-celda-seleccionada');
+
+    $('#REBA_RESULTADO_A, #REBA_RESULTADO_B, #REBA_RESULTADO_C, #REBA_RESULTADO_A_FINAL, #REBA_RESULTADO_B_FINAL, #REBA_PUNTUACION_FINAL').text('—');
+
+    $('#REBA_RESUMEN_FINAL').text('Completa las posiciones corporales para obtener el resultado.');
+
+    $('#REBA_TABLA_NIVEL tbody tr').css({
+        'outline': 'none',
+        'font-weight': 'normal'
+    });
+        
     $('#ROSA_DATOS_JSON').val('')
     $('#RULA_DATOS_JSON').val('')
 
 
 })
+
+
 
 $(document).on('change', '#ENFERMEDAD_MUSCULOESQUELETICA', function () {
 
@@ -9004,9 +9039,6 @@ $("#form_informe_responsablesinforme").on("submit",function(e)
 
 //// METODOS
 
-
-
-
 let selectMetodosFRE;
 
 $(document).ready(function () {
@@ -9019,12 +9051,7 @@ $(document).ready(function () {
 });
 
 
-
-
 /// METODOS 
-
-
-
 $(document).ready(function () {
 
     function mostrarMetodosSeleccionados() {
@@ -9064,9 +9091,8 @@ $(document).ready(function () {
 
 
 /// OWAS
-document.addEventListener('DOMContentLoaded', function () {
 
-    /* ========================= OWAS ========================= */
+document.addEventListener('DOMContentLoaded', function () {
 
     const owasCampos = {
         espalda: document.getElementById('OWAS_ESPALDA'),
@@ -9209,9 +9235,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    /*
-     * Textos de la tabla 7 del PDF OWAS.
-     */
+   
     const resultadosOWAS = {
         1: {
             efecto: 'Postura normal y natural sin efectos dañinos en el sistema músculo-esquelético.',
@@ -9231,10 +9255,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    /*
-     * Calcula la categoría, actualiza el código y marca la fila
-     * correspondiente en la tabla completa.
-     */
+
     function calcularOWAS() {
 
         const espalda = owasCampos.espalda.value;
@@ -9242,43 +9263,32 @@ document.addEventListener('DOMContentLoaded', function () {
         const piernas = owasCampos.piernas.value;
         const carga = owasCampos.carga.value;
 
-        // Mostrar individualmente cada dígito.
         owasCodigos.espalda.textContent = espalda || '—';
         owasCodigos.brazos.textContent = brazos || '—';
         owasCodigos.piernas.textContent = piernas || '—';
         owasCodigos.carga.textContent = carga || '—';
 
-        // Limpiar la selección anterior de la tabla.
         document.querySelectorAll(
             '#OWAS_TABLA_RESULTADOS tbody tr'
         ).forEach(function (fila) {
             fila.classList.remove('owas-fila-seleccionada');
         });
 
-        // Si falta algún dato, no mostrar resultados.
         if (!espalda || !brazos || !piernas || !carga) {
             owasCodigoCompleto.value = '';
             owasCardResultado.style.display = 'none';
-
             owasResultadoCategoria.textContent = '';
             owasResultadoCategoria.className = 'badge ml-2';
 
             return;
         }
 
-        // Construir el código completo de cuatro dígitos.
         owasCodigoCompleto.value =
             String(espalda) +
             String(brazos) +
             String(piernas) +
             String(carga);
 
-        /*
-         * Obtener la categoría usando la tabla 4:
-         * la carga 1 corresponde al índice 0,
-         * la carga 2 al índice 1,
-         * la carga 3 al índice 2.
-         */
         const categoriasPierna =
             tablaOWAS[espalda] &&
             tablaOWAS[espalda][brazos] &&
@@ -9300,12 +9310,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const resultado = resultadosOWAS[categoria];
 
-        // Mostrar categoría obtenida.
         owasResultadoCategoria.textContent = categoria;
         owasResultadoCategoria.className =
             'badge ml-2 owas-riesgo-' + categoria;
 
-        // Marcar con borde rojo la fila correspondiente.
         const filaResultado = document.getElementById(
             'OWAS_FILA_' + categoria
         );
@@ -9314,16 +9322,13 @@ document.addEventListener('DOMContentLoaded', function () {
             filaResultado.classList.add('owas-fila-seleccionada');
         }
 
-        // Mostrar el resultado.
         owasCardResultado.style.display = 'block';
     }
 
-    // Recalcular cuando cambie cualquiera de los cuatro selects.
     Object.values(owasCampos).forEach(function (campo) {
         campo.addEventListener('change', calcularOWAS);
     });
 
-    // Estado inicial.
     calcularOWAS();
 
 });
@@ -10478,8 +10483,6 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 
 /// REBA
-
-
 (function () {
 
     const contenedor = document.getElementById("contenedorMetodoREBA");
@@ -10979,7 +10982,6 @@ document.addEventListener('DOMContentLoaded', function () {
             celdaC.classList.add("reba-celda-seleccionada");
         }
 
-
         contenedor.querySelectorAll("#REBA_TABLA_NIVEL tbody tr").forEach(fila => {
 
             fila.style.outline = "none";
@@ -10994,13 +10996,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-   
-
     generarTablaA();
     generarTablaB();
     generarTablaC();
 
-   
 
     contenedor.addEventListener("change", function (evento) {
 
@@ -11013,19 +11012,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-   
-
     calcularREBA();
 
-  
 
     window.calcularREBA = calcularREBA;
 
 })();
 
+
+
 //// ANGULOS
-
-
 
 
 $('#modal_angulos').on('hidden.bs.modal', function (e) {
@@ -11329,13 +11325,7 @@ $(document).ready(function () {
 
 
 /// VERSIONES
-
-
-
-
-/////// versiones
 	
-
 
 function tablaVersionesRecoErgo()
 {
@@ -11497,7 +11487,6 @@ function cancelarRevisionRecoErgo(ID_VERSION_RECO_ERGO,checkbox)
     });
 }
 
-
 function validarEdicionRecoErgo() {
 
     $.get(
@@ -11553,60 +11542,6 @@ function validarEdicionRecoErgo() {
     );
 
 }
-
-
-// async function descargarRevisionFreErgo(RECO_ID)
-// {
-//     Swal.fire({
-//         title: 'Descargando reporte...',
-//         html: 'Por favor, espera mientras se prepara el documento.',
-//         allowOutsideClick: false,
-//         allowEscapeKey: false,
-//         showConfirmButton: false,
-//         didOpen: function () {
-//             Swal.showLoading();
-//         }
-//     });
-
-//     try {
-
-//         let form = $('<form>', {
-//             action: '/descargarRevisionFreErgo/' + RECO_ID,
-//             method: 'POST',
-//             target: '_blank'
-//         });
-
-//         form.append($('<input>', {
-//             type: 'hidden',
-//             name: '_token',
-//             value: $('meta[name="csrf-token"]').attr('content')
-//         }));
-
-//         $('body').append(form);
-
-//         form[0].submit();
-
-//         setTimeout(function () {
-//             form.remove();
-//         }, 1000);
-
-//         Swal.close();
-
-//     } catch (error) {
-
-//         console.error(
-//             'Error al descargar el reporte:',
-//             error
-//         );
-
-//         Swal.fire({
-//             icon: 'error',
-//             title: 'Error al preparar la descarga',
-//             text: 'Ocurrió un problema al preparar el documento.'
-//         });
-//     }
-// }
-
 
 async function descargarRevisionFreErgo(RECO_ID) {
 
