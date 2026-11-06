@@ -71,7 +71,7 @@
     select.custom-select {
         display: block;
         width: 100%;
-        max-width: 100%;
+        max-width: 93%;
         min-width: 0;
         box-sizing: border-box;
     }
@@ -1487,9 +1487,9 @@
                                                 </div>
                                             </div>
 
-                                            <!-- <div class="col-12" style="text-align: right;">
+                                            <div class="col-12" style="text-align: right;">
                                                 <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_portada">Guardar portadas <i class="fa fa-save"></i></button>
-                                            </div> -->
+                                            </div>
                                         </div>
                                     </form>
                                     <h4 class="card-title" id="1">1.- Introducción</h4>
@@ -9654,9 +9654,7 @@ DESCRIPCIONACTIVIDAD
 
                                                         <div class="reba-campo">
                                                             <label for="REBA_ACTIVIDAD_MUSCULAR">Tipo de actividad muscular</label>
-                                                            <select id="REBA_ACTIVIDAD_MUSCULAR"
-                                                                name="REBA_ACTIVIDAD_MUSCULAR"
-                                                                class="reba-select-adicional">
+                                                            <select id="REBA_ACTIVIDAD_MUSCULAR" name="REBA_ACTIVIDAD_MUSCULAR" class="form-control reba-select-adicional">
                                                                 <option value="">Seleccionar...</option>
                                                                 <option value="estatica">Una o más partes del cuerpo permanecen estáticas durante más de 1 minuto (+1)</option>
                                                                 <option value="repetitiva">Movimientos repetitivos más de 4 veces por minuto, excluyendo caminar (+1)</option>
@@ -9761,6 +9759,14 @@ DESCRIPCIONACTIVIDAD
                                         </div>
 
                                         <style>
+                                            #contenedorMetodoREBA select.form-control {
+                                                width: 93%;
+                                                min-height: 35px;
+                                                padding: 6px 9px;
+                                                margin-bottom: 8px;
+                                            }
+
+
                                             #contenedorMetodoREBA {
                                                 width: 100%;
                                                 max-width: 100%;

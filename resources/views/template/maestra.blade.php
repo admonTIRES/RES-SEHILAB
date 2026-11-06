@@ -245,6 +245,9 @@ use Illuminate\Support\Str;
     <!-- Popup CSS -->
     <link href="/assets/plugins/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
     @endif
+
+
+    
 </head>
 
 <body class="fix-header fix-sidebar card-no-border logo-center">
@@ -1049,7 +1052,7 @@ use Illuminate\Support\Str;
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
     {{-- pagina --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js_sitio/evaluacionfre.js?v=20"></script>
+    <script src="/js_sitio/evaluacionfre.js?v=22"></script>
     <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 

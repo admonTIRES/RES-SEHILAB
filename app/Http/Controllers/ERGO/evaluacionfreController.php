@@ -1403,23 +1403,17 @@ class evaluacionfreController extends Controller
     }
 
 
-
     public function guardarPortadaFreErgo(Request $request)
     {
         try {
 
             DB::beginTransaction();
 
-
-            $recurso = recursosPortadaFreErgoModel::where(
-                'RECO_ID',
-                $request->RECO_ID
-            )->first();
+            $recurso = recursosPortadaFreErgoModel::where('RECO_ID',$request->RECO_ID)->first();
 
             if (!$recurso) {
                 $recurso = new recursosPortadaFreErgoModel();
-                $recurso->RECO_ID = $request->RECO_ID;
-                $recurso->save();
+                $recurso->RECO_ID = $request->RECO_ID;  
             }
 
             $recurso->NIVEL1 = $request->NIVEL1;
@@ -1439,28 +1433,46 @@ class evaluacionfreController extends Controller
             $recurso->INFORME_ANIO = $request->INFORME_ANIO;
 
 
-            if ($request->file('RUTA_IMAGEN_PORTADA')) {
+            $directorio = 'evaluacionfre_ergo/' . $request->RECO_ID . '/foto_portada';
+
+            $nombreArchivo = $request->RECO_ID;
+
+
+            if ($request->hasFile('RUTA_IMAGEN_PORTADA')) {
 
                 $extension = $request->file('RUTA_IMAGEN_PORTADA')->getClientOriginalExtension();
-
-
-                $ruta = $request->file('RUTA_IMAGEN_PORTADA')->storeAs(
-                    'evaluacionfre_ergo/' . $request->RECO_ID . '/foto_portada',
-                    $request->RECO_ID . '.' . $extension
-                );
+                $ruta = $request->file('RUTA_IMAGEN_PORTADA')->storeAs($directorio,$nombreArchivo . '.' . $extension);
 
                 $recurso->RUTA_IMAGEN_PORTADA = $ruta;
             }
+
+            
+
+            elseif (!$recurso->RUTA_IMAGEN_PORTADA) {
+
+                $recursoReco = recursosPortadaRecoErgoModel::where('RECO_ID',$request->RECO_ID)->first();
+                if ($recursoReco && $recursoReco->RUTA_IMAGEN_PORTADA) {
+                    $rutaOriginal = $recursoReco->RUTA_IMAGEN_PORTADA;
+                    if (Storage::exists($rutaOriginal)) {
+                        $extension = pathinfo($rutaOriginal,PATHINFO_EXTENSION);
+                        $rutaDestino = $directorio . '/' .$nombreArchivo . '.' . $extension;
+                        Storage::makeDirectory($directorio);
+                        Storage::copy($rutaOriginal,$rutaDestino);
+                        $recurso->RUTA_IMAGEN_PORTADA = $rutaDestino;
+                    }
+                }
+            }
+
+
 
             $recurso->save();
 
             DB::commit();
 
-
             return response()->json([
                 'msj' => 'Informaci√≥n guardada correctamente'
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             DB::rollBack();
 
@@ -1469,7 +1481,6 @@ class evaluacionfreController extends Controller
             ], 500);
         }
     }
-
 
     public function mostrarportadafreergo($archivo_opcion, $reco_id,  $extension)
     {
@@ -2737,7 +2748,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
 
             $cliente = clienteModel::findOrFail($reco->cliente_id);
 
-            $recursos = recursosPortadaRecoErgoModel::where('RECO_ID', $RECO_ID)->get();
+            $recursos = recursosPortadaFreErgoModel::where('RECO_ID', $RECO_ID)->get();
             $rutaPlantilla = storage_path('app/plantillas_reportes/plantilla_ergo/Plantilla_informe_ergonomia_fre.docx');
             $plantillaword = new TemplateProcessor($rutaPlantilla);
 
@@ -3492,17 +3503,14 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 $plantillaword->setValue('UBICACION_FOTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
             }
 
-
             //// PROCESO DE LA INSTALACION
             $plantillaword->setValue('PROCESO_INSTALACION', $datosGenerales2->INFORME_PROCESOINSTALACION ?? 'No cargado');
-
 
             //// ACTIVIDAD PRINCIPAL DE LA INSTALACION 
             $plantillaword->setValue('ACTIVIDAD_INSTALACION', $datosGenerales2->INFORME_ACTIVIDADPRINCIPAL ?? 'No cargado');
 
 
             ////  CICLOS DE TRABAJO DE LAS CATEGORIAS 
-
             $evaluacionesFre = DB::table('evaluacion_fre_ergo as evaluacion')
                 ->leftJoin(
                     'recoergocategorias as categoria',
@@ -4264,27 +4272,15 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
 
             /// GRAFICAS
 
-
-
-
-
             /// 1 
-
-
             $imagen1 = $request->input('GRAFICA_1');
 
             if (!empty($imagen1)) {
-
                 if (preg_match('/^data:image\/png;base64,([A-Za-z0-9+\/=\r\n]+)$/', $imagen1, $coincidencias)) {
-
                     $contenidoImagen1 = base64_decode($coincidencias[1], true);
-
                     if ($contenidoImagen1 !== false) {
-
                         $rutaImagen1 = tempnam(sys_get_temp_dir(), 'fre_grafica1_') . '.png';
-
                         if (file_put_contents($rutaImagen1, $contenidoImagen1) !== false) {
-
                             $plantillaword->setImageValue('GRAFICA_1', [
                                 'path'   => $rutaImagen1,
                                 'width'  => 600,
@@ -4302,17 +4298,11 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
             $imagen2 = $request->input('GRAFICA_2');
 
             if (!empty($imagen2)) {
-
                 if (preg_match('/^data:image\/png;base64,([A-Za-z0-9+\/=\r\n]+)$/', $imagen2, $coincidencias)) {
-
                     $contenidoImagen2 = base64_decode($coincidencias[1], true);
-
                     if ($contenidoImagen2 !== false) {
-
                         $rutaImagen2 = tempnam(sys_get_temp_dir(), 'fre_grafica2_') . '.png';
-
                         if (file_put_contents($rutaImagen2, $contenidoImagen2) !== false) {
-
                             $plantillaword->setImageValue('GRAFICA_2', [
                                 'path'   => $rutaImagen2,
                                 'width'  => 600,
@@ -4327,23 +4317,14 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
             $plantillaword->setValue('OBSERVACION_GRAFICA2', $datosGenerales2->OBSERVACIONES_ESQUELETICAS2 ?? 'No cargado');
 
             //3
-
-
-
             $imagen3 = $request->input('GRAFICA_3');
 
             if (!empty($imagen3)) {
-
                 if (preg_match('/^data:image\/png;base64,([A-Za-z0-9+\/=\r\n]+)$/', $imagen3, $coincidencias)) {
-
                     $contenidoImagen3 = base64_decode($coincidencias[1], true);
-
                     if ($contenidoImagen3 !== false) {
-
                         $rutaImagen3 = tempnam(sys_get_temp_dir(), 'fre_grafica3_') . '.png';
-
                         if (file_put_contents($rutaImagen3, $contenidoImagen3) !== false) {
-
                             $plantillaword->setImageValue('GRAFICA_3', [
                                 'path'   => $rutaImagen3,
                                 'width'  => 600,
@@ -4355,26 +4336,16 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 }
             }
 
-
             $plantillaword->setValue('OBSERVACION_GRAFICA3', $datosGenerales2->OBSERVACIONES_ESQUELETICAS3 ?? 'No cargado');
 
             //4
-
-
             $imagen4 = $request->input('GRAFICA_4');
-
                 if (!empty($imagen4)) {
-
                     if (preg_match('/^data:image\/png;base64,([A-Za-z0-9+\/=\r\n]+)$/', $imagen4, $coincidencias)) {
-
                         $contenidoImagen4 = base64_decode($coincidencias[1], true);
-
                         if ($contenidoImagen4 !== false) {
-
                             $rutaImagen4 = tempnam(sys_get_temp_dir(), 'fre_grafica4_') . '.png';
-
                             if (file_put_contents($rutaImagen4, $contenidoImagen4) !== false) {
-
                                 $plantillaword->setImageValue('GRAFICA_4', [
                                     'path'   => $rutaImagen4,
                                     'width'  => 600,
@@ -4389,21 +4360,13 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
             $plantillaword->setValue('OBSERVACION_GRAFICA4', $datosGenerales2->OBSERVACIONES_ESQUELETICAS4 ?? 'No cargado');
 
             //5
-
             $imagen5 = $request->input('GRAFICA_5');
-
             if (!empty($imagen5)) {
-
                 if (preg_match('/^data:image\/png;base64,([A-Za-z0-9+\/=\r\n]+)$/', $imagen5, $coincidencias)) {
-
                     $contenidoImagen5 = base64_decode($coincidencias[1], true);
-
                     if ($contenidoImagen5 !== false) {
-
                         $rutaImagen5 = tempnam(sys_get_temp_dir(), 'fre_grafica5_') . '.png';
-
                         if (file_put_contents($rutaImagen5, $contenidoImagen5) !== false) {
-
                             $plantillaword->setImageValue('GRAFICA_5', [
                                 'path'   => $rutaImagen5,
                                 'width'  => 600,
@@ -4417,22 +4380,13 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
             $plantillaword->setValue('OBSERVACION_GRAFICA5', $datosGenerales2->OBSERVACIONES_ESQUELETICAS5 ?? 'No cargado');
 
             //6
-
-
             $imagen6 = $request->input('GRAFICA_6');
-
             if (!empty($imagen6)) {
-
                 if (preg_match('/^data:image\/png;base64,([A-Za-z0-9+\/=\r\n]+)$/', $imagen6, $coincidencias)) {
-
                     $contenidoImagen6 = base64_decode($coincidencias[1], true);
-
                     if ($contenidoImagen6 !== false) {
-
                         $rutaImagen6 = tempnam(sys_get_temp_dir(), 'fre_grafica6_') . '.png';
-
                         if (file_put_contents($rutaImagen6, $contenidoImagen6) !== false) {
-
                             $plantillaword->setImageValue('GRAFICA_6', [
                                 'path'   => $rutaImagen6,
                                 'width'  => 600,
@@ -4845,7 +4799,6 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
             $plantillaword->setValue('CONCLUSION', $datosGenerales->INFORME_CONCLUSION ? htmlspecialchars($datosGenerales2->INFORME_CONCLUSION) : 'No cargado');
 
             //// RECOMENDACIONES 
-
             $recomendaciones = DB::table('recomendacionesinformeFre as rif')
                 ->join(
                     'catergo_recomendaciones as cr',
@@ -4860,59 +4813,139 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 ->orderBy('cr.ID_RECOMENDACIONES', 'ASC')
                 ->get();
 
+
             $textoRecomendaciones = '';
 
-            foreach ($recomendaciones as $recomendacion) {
+            if ($recomendaciones->count() > 0) {
 
-                if (empty(trim($recomendacion->DESCRIPCION_RECOMENDACIONES ?? ''))) {
-                    continue;
+                $bloqueRecomendaciones = new \PhpOffice\PhpWord\Element\TextRun();
+
+                $contadorRecomendaciones = 0;
+
+                foreach ($recomendaciones as $recomendacion) {
+
+                    $descripcion = trim(
+                        $recomendacion->DESCRIPCION_RECOMENDACIONES ?? ''
+                    );
+
+                    if ($descripcion === '') {
+                        continue;
+                    }
+
+                    if ($contadorRecomendaciones > 0) {
+                        $bloqueRecomendaciones->addTextBreak(1);
+                    }
+
+                    $bloqueRecomendaciones->addText('‚Ä¢ ',
+                        [
+                            'name' => 'Poppins',
+                            'size' => 12
+                        ]
+                    );
+
+                    $bloqueRecomendaciones->addText(html_entity_decode($descripcion,ENT_QUOTES | ENT_HTML5,'UTF-8'),
+                        [
+                            'name' => 'Poppins',
+                            'size' => 12
+                        ]
+                    );
+
+                    $contadorRecomendaciones++;
                 }
 
-                $descripcion = htmlspecialchars(
-                    trim($recomendacion->DESCRIPCION_RECOMENDACIONES),
-                    ENT_XML1 | ENT_COMPAT,
-                    'UTF-8'
-                );
 
-                $textoRecomendaciones .=
-                    '<w:p>
-            <w:pPr>
-                <w:pStyle w:val="Normal"/>
-                <w:ind w:left="360"/>
-            </w:pPr>
-            <w:r>
-                <w:rPr>
-                    <w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/>
-                    <w:sz w:val="24"/>
-                </w:rPr>
-                <w:t xml:space="preserve">‚Ä¢ </w:t>
-            </w:r>
-            <w:r>
-                <w:rPr>
-                    <w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/>
-                    <w:sz w:val="24"/>
-                </w:rPr>
-                <w:t xml:space="preserve">' . $descripcion . '</w:t>
-            </w:r>
-        </w:p>';
+                if ($contadorRecomendaciones > 0) {
+
+                    $plantillaword->setComplexBlock('RECOMENDACIONES',$bloqueRecomendaciones);
+                } else {
+
+                    $plantillaword->setValue('RECOMENDACIONES','No cargado');
+                }
+            } else {
+
+                $plantillaword->setValue('RECOMENDACIONES','No cargado');
             }
 
-            if ($textoRecomendaciones === '') {
-                $textoRecomendaciones = 'No cargado';
-            }
 
-            $plantillaword->setValue('RECOMENDACIONES', $textoRecomendaciones);
+            // //// RESPONSABLE 1
+
+            // if ($datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO) {
+            //     if (
+            //         file_exists(
+            //             storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO)
+            //         )
+            //     ) {
+            //         $plantillaword->setImageValue(
+            //             'REPONSABLE1_DOCUMENTO',
+            //             array(
+            //                 'path' => storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO),
+            //                 'height' => 300,
+            //                 'width' => 580,
+            //                 'ratio' => true,
+            //                 'borderColor' => '000000'
+            //             )
+            //         );
+            //     } else {
+            //         $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+            //     }
+            // } else {
+            //     $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+            // }
 
 
-            //// RESPONSABLE 1
+            // $plantillaword->setValue(
+            //     'REPONSABLE1',
+            //     htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE1 ? $datosGenerales2->INFORME_RESPONSABLE1 : 'No cargado'))
+            //         .
+            //         '</w:t><w:br/><w:t>'
+            //         .
+            //         htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE1CARGO ? $datosGenerales2->INFORME_RESPONSABLE1CARGO : 'No cargado'))
+            // );
+
+
+            // //// RESPONSABLE 2
+            // if ($datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO) {
+            //     if (
+            //         file_exists(
+            //             storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO)
+            //         )
+            //     ) {
+            //         $plantillaword->setImageValue(
+            //             'REPONSABLE2_DOCUMENTO',
+            //             array(
+            //                 'path' => storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO),
+            //                 'height' => 300,
+            //                 'width' => 580,
+            //                 'ratio' => true,
+            //                 'borderColor' => '000000'
+            //             )
+            //         );
+            //     } else {
+            //         $plantillaword->setValue('REPONSABLE2_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+            //     }
+            // } else {
+            //     $plantillaword->setValue(
+            //         'REPONSABLE2_DOCUMENTO',
+            //         'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
+            //     );
+            // }
+
+            // $plantillaword->setValue(
+            //     'REPONSABLE2',
+            //     htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2 ? $datosGenerales2->INFORME_RESPONSABLE2 : 'No cargado'))
+            //         .
+            //         '</w:t><w:br/><w:t>'
+            //         .
+            //         htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2CARGO ? $datosGenerales2->INFORME_RESPONSABLE2CARGO : 'No cargado'))
+            // );
+
+
+            // RESPONSABLE 1
+
             if ($datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO) {
-                if (
-                    file_exists(
-                        storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO)
-                    )
-                ) {
-                    $plantillaword->setImageValue(
-                        'REPONSABLE1_DOCUMENTO',
+                if (file_exists(storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO))) 
+                {
+                    $plantillaword->setImageValue('REPONSABLE1_DOCUMENTO',
                         array(
                             'path' => storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO),
                             'height' => 300,
@@ -4922,32 +4955,32 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                         )
                     );
                 } else {
-                    $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                    $plantillaword->setValue('REPONSABLE1_DOCUMENTO','FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
                 }
             } else {
-                $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                $plantillaword->setValue('REPONSABLE1_DOCUMENTO','FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
             }
 
+            $nombreResponsable1 = trim((string) ($datosGenerales2->INFORME_RESPONSABLE1 ?? ''));
+            $cargoResponsable1 = trim((string) ($datosGenerales2->INFORME_RESPONSABLE1CARGO ?? ''));
 
-            $plantillaword->setValue(
-                'REPONSABLE1',
-                htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE1 ? $datosGenerales2->INFORME_RESPONSABLE1 : 'No cargado'))
-                    .
-                    '</w:t><w:br/><w:t>'
-                    .
-                    htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE1CARGO ? $datosGenerales2->INFORME_RESPONSABLE1CARGO : 'No cargado'))
-            );
+            $bloqueResponsable1 = new \PhpOffice\PhpWord\Element\TextRun();
+
+            $bloqueResponsable1->addText($nombreResponsable1 !== '' ? $nombreResponsable1 : 'No cargado');
+
+            $bloqueResponsable1->addTextBreak(1);
+
+            $bloqueResponsable1->addText($cargoResponsable1 !== '' ? $cargoResponsable1 : 'No cargado');
+
+            $plantillaword->setComplexBlock('REPONSABLE1',$bloqueResponsable1);
 
 
-            //// RESPONSABLE 2
+            // RESPONSABLE 2
+
             if ($datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO) {
-                if (
-                    file_exists(
-                        storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO)
-                    )
-                ) {
-                    $plantillaword->setImageValue(
-                        'REPONSABLE2_DOCUMENTO',
+                if (file_exists(storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO))) 
+                {
+                    $plantillaword->setImageValue('REPONSABLE2_DOCUMENTO',
                         array(
                             'path' => storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO),
                             'height' => 300,
@@ -4957,40 +4990,34 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                         )
                     );
                 } else {
-                    $plantillaword->setValue('REPONSABLE2_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                    $plantillaword->setValue('REPONSABLE2_DOCUMENTO','FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
                 }
             } else {
-                $plantillaword->setValue(
-                    'REPONSABLE2_DOCUMENTO',
-                    'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-                );
+                $plantillaword->setValue('REPONSABLE2_DOCUMENTO','FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
             }
 
-            $plantillaword->setValue(
-                'REPONSABLE2',
-                htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2 ? $datosGenerales2->INFORME_RESPONSABLE2 : 'No cargado'))
-                    .
-                    '</w:t><w:br/><w:t>'
-                    .
-                    htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2CARGO ? $datosGenerales2->INFORME_RESPONSABLE2CARGO : 'No cargado'))
-            );
+            $nombreResponsable2 = trim((string) ($datosGenerales2->INFORME_RESPONSABLE2 ?? ''));
+            $cargoResponsable2 = trim((string) ($datosGenerales2->INFORME_RESPONSABLE2CARGO ?? ''));
 
+            $bloqueResponsable2 = new \PhpOffice\PhpWord\Element\TextRun();
 
+            $bloqueResponsable2->addText($nombreResponsable2 !== '' ? $nombreResponsable2 : 'No cargado');
 
+            $bloqueResponsable2->addTextBreak(1);
 
+            $bloqueResponsable2->addText($cargoResponsable2 !== '' ? $cargoResponsable2 : 'No cargado');
+
+            $plantillaword->setComplexBlock('REPONSABLE2',$bloqueResponsable2);
 
 
             ///  RESULTADOS DE LA APLICACION 
 
 
-
-
-
             $evaluacionesFre_7_2 = DB::table('evaluacion_fre_ergo as evaluacion')
 
-                ->leftJoin('recoergocategorias as categoria','categoria.ID_CATEGORIA_ERGO','=','evaluacion.CATEGORIA_ID_FRE')
+                ->leftJoin('recoergocategorias as categoria', 'categoria.ID_CATEGORIA_ERGO', '=', 'evaluacion.CATEGORIA_ID_FRE')
                 ->where('evaluacion.RECO_ID', $RECO_ID)
-                ->select('evaluacion.*','categoria.NOMBRE_CATEGORIA_ERGO')
+                ->select('evaluacion.*', 'categoria.NOMBRE_CATEGORIA_ERGO')
                 ->orderBy('evaluacion.ID_EVALUACION_FRE', 'ASC')
                 ->get();
 
@@ -4999,13 +5026,13 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
             $turnosFre_7_2 = DB::table('catergo_turno')->pluck('NOMBRE_TURNO', 'ID_TURNO')->toArray();
             $catalogoEppFre_7_2 = DB::table('cat_claveyepp')->pluck('EPP', 'ID_CLAVE_EPP')->toArray();
 
-            $idsFichasFre_7_2 = $evaluacionesFre_7_2 ->pluck('FICHA_ID')->filter()->unique()->values()->all();
+            $idsFichasFre_7_2 = $evaluacionesFre_7_2->pluck('FICHA_ID')->filter()->unique()->values()->all();
 
             $fichasFre_7_2 = collect();
 
 
             if (!empty($idsFichasFre_7_2)) {
-                $fichasFre_7_2 = DB::table('recoergo_fichastecnicas')->whereIn('ID_FICHAS_TECNICAS',$idsFichasFre_7_2)
+                $fichasFre_7_2 = DB::table('recoergo_fichastecnicas')->whereIn('ID_FICHAS_TECNICAS', $idsFichasFre_7_2)
                     ->get()->keyBy('ID_FICHAS_TECNICAS');
             }
 
@@ -5063,19 +5090,20 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 'borderColor' => '000000',
             ];
 
-            $agregarFilaResultadoFre_7_2 = function ($tablaFre_7_2,$etiquetaFre_7_2,$valorFre_7_2)
-            use ($estiloEtiquetaFre_7_2,$estiloValorFre_7_2,$estiloCeldaEtiquetaFre_7_2,$estiloCeldaValorFre_7_2) 
-            {
+            $agregarFilaResultadoFre_7_2 = function ($tablaFre_7_2, $etiquetaFre_7_2, $valorFre_7_2)
+            use ($estiloEtiquetaFre_7_2, $estiloValorFre_7_2, $estiloCeldaEtiquetaFre_7_2, $estiloCeldaValorFre_7_2) {
 
                 $tablaFre_7_2->addRow();
-                $tablaFre_7_2->addCell(3400,$estiloCeldaEtiquetaFre_7_2)->addText(
+                $tablaFre_7_2->addCell(3400, $estiloCeldaEtiquetaFre_7_2)->addText(
                     (string) $etiquetaFre_7_2,
                     $estiloEtiquetaFre_7_2
                 );
 
                 $valorFre_7_2 = is_scalar($valorFre_7_2) ? trim((string) $valorFre_7_2) : '';
 
-                $tablaFre_7_2->addCell(7900,$estiloCeldaValorFre_7_2
+                $tablaFre_7_2->addCell(
+                    7900,
+                    $estiloCeldaValorFre_7_2
                 )->addText(
                     $valorFre_7_2 !== '' ? $valorFre_7_2 : ' ',
                     $estiloValorFre_7_2
@@ -5091,8 +5119,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
             $imagenesAngulosFre_7_2 = [];
 
 
-            foreach ($evaluacionesFre_7_2 as $indiceFre_7_2 => $evaluacionFre_7_2) 
-            {
+            foreach ($evaluacionesFre_7_2 as $indiceFre_7_2 => $evaluacionFre_7_2) {
 
 
                 $tablaDatosFre_7_2 = new \PhpOffice\PhpWord\Element\Table([
@@ -5109,59 +5136,51 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 $nombresAreasFre_7_2 = [];
 
 
-                if ($fichaFre_7_2 && !empty($fichaFre_7_2->CAT_AREAS_FICHA)) 
-                {
+                if ($fichaFre_7_2 && !empty($fichaFre_7_2->CAT_AREAS_FICHA)) {
 
-                    $idsAreasFre_7_2 = json_decode($fichaFre_7_2->CAT_AREAS_FICHA,true);
+                    $idsAreasFre_7_2 = json_decode($fichaFre_7_2->CAT_AREAS_FICHA, true);
 
                     if (is_array($idsAreasFre_7_2)) {
 
-                        foreach ($idsAreasFre_7_2 as $idAreaFre_7_2) 
-                        {
+                        foreach ($idsAreasFre_7_2 as $idAreaFre_7_2) {
 
                             $idAreaFre_7_2 = (string) $idAreaFre_7_2;
 
-                            if (isset($areasFre_7_2[$idAreaFre_7_2])) 
-                        {
+                            if (isset($areasFre_7_2[$idAreaFre_7_2])) {
                                 $nombresAreasFre_7_2[] = $areasFre_7_2[$idAreaFre_7_2];
                             }
                         }
                     }
                 }
 
-                $nombreAreaFre_7_2 = implode(', ',array_unique($nombresAreasFre_7_2));
+                $nombreAreaFre_7_2 = implode(', ', array_unique($nombresAreasFre_7_2));
 
                 $nombresTurnosFre_7_2 = [];
 
-                if ($fichaFre_7_2 && !empty($fichaFre_7_2->TURNO_EMPLEADO_FICHA)) 
-                {
+                if ($fichaFre_7_2 && !empty($fichaFre_7_2->TURNO_EMPLEADO_FICHA)) {
 
-                    $idsTurnosFre_7_2 = json_decode($fichaFre_7_2->TURNO_EMPLEADO_FICHA,true);
+                    $idsTurnosFre_7_2 = json_decode($fichaFre_7_2->TURNO_EMPLEADO_FICHA, true);
 
                     if (is_array($idsTurnosFre_7_2)) {
 
-                        foreach ($idsTurnosFre_7_2 as $idTurnoFre_7_2) 
-                        {
+                        foreach ($idsTurnosFre_7_2 as $idTurnoFre_7_2) {
 
                             $idTurnoFre_7_2 = (string) $idTurnoFre_7_2;
 
-                            if (isset($turnosFre_7_2[$idTurnoFre_7_2])) 
-                        {
+                            if (isset($turnosFre_7_2[$idTurnoFre_7_2])) {
                                 $nombresTurnosFre_7_2[] = $turnosFre_7_2[$idTurnoFre_7_2];
                             }
                         }
                     }
                 }
 
-                $nombreTurnoFre_7_2 = implode(', ',array_unique($nombresTurnosFre_7_2));
+                $nombreTurnoFre_7_2 = implode(', ', array_unique($nombresTurnosFre_7_2));
 
                 $dominanciaFre_7_2 = '';
 
-                if ((string) $evaluacionFre_7_2->TIPO_DOMINANCIA === '1') 
-                {
+                if ((string) $evaluacionFre_7_2->TIPO_DOMINANCIA === '1') {
                     $dominanciaFre_7_2 = 'Derecha';
-                } elseif ((string) $evaluacionFre_7_2->TIPO_DOMINANCIA === '2') 
-                {
+                } elseif ((string) $evaluacionFre_7_2->TIPO_DOMINANCIA === '2') {
                     $dominanciaFre_7_2 = 'Izquierda';
                 }
 
@@ -5171,23 +5190,22 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
 
                 if ($jsonEppFre_7_2 !== '') {
 
-                    $datosEppFre_7_2 = json_decode($jsonEppFre_7_2,true);
+                    $datosEppFre_7_2 = json_decode($jsonEppFre_7_2, true);
 
                     if (is_array($datosEppFre_7_2)) {
 
-                        foreach ($datosEppFre_7_2 as $elementoEppFre_7_2) 
-                        {
+                        foreach ($datosEppFre_7_2 as $elementoEppFre_7_2) {
 
-                            if (!is_array($elementoEppFre_7_2) || !isset($elementoEppFre_7_2['clave'])) 
-                            {
+                            if (!is_array($elementoEppFre_7_2) || !isset($elementoEppFre_7_2['clave'])) {
                                 continue;
                             }
 
                             $claveEppFre_7_2 = (string) $elementoEppFre_7_2['clave'];
 
-                            if (isset($catalogoEppFre_7_2[$claveEppFre_7_2]) &&
-                                trim((string) $catalogoEppFre_7_2[$claveEppFre_7_2]) !== '') 
-                            {
+                            if (
+                                isset($catalogoEppFre_7_2[$claveEppFre_7_2]) &&
+                                trim((string) $catalogoEppFre_7_2[$claveEppFre_7_2]) !== ''
+                            ) {
                                 $eppEncontradoFre_7_2[] = trim((string) $catalogoEppFre_7_2[$claveEppFre_7_2]);
                             }
                         }
@@ -5196,27 +5214,30 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
 
                 $eppEncontradoFre_7_2 = array_values(array_unique($eppEncontradoFre_7_2));
                 $hayEppFre_7_2 = !empty($eppEncontradoFre_7_2);
-                $nombreEppFre_7_2 = implode(', ',$eppEncontradoFre_7_2);
+                $nombreEppFre_7_2 = implode(', ', $eppEncontradoFre_7_2);
 
                 $recomendacionEppFre_7_2 = isset($evaluacionFre_7_2->RECOMENDACIONES_EPP)
                     ? trim((string) $evaluacionFre_7_2->RECOMENDACIONES_EPP) : '';
 
-                $recomendacionNormalizadaFre_7_2 = mb_strtoupper($recomendacionEppFre_7_2,'UTF-8');
-                $mostrarRecomendacionEppFre_7_2 =  $hayEppFre_7_2 && $recomendacionEppFre_7_2 !== '' && !in_array($recomendacionNormalizadaFre_7_2,['NA', 'N.A', 'N/A'],true);
-                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Nombre del empleado',isset($evaluacionFre_7_2->NOMBRE_EMPLEADO_FRE) ? $evaluacionFre_7_2->NOMBRE_EMPLEADO_FRE : '');
-                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Categor√≠a',$categoriaFre_7_2);
-                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'√Årea',$nombreAreaFre_7_2);
-                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Turno',$nombreTurnoFre_7_2);
+                $recomendacionNormalizadaFre_7_2 = mb_strtoupper($recomendacionEppFre_7_2, 'UTF-8');
+                $mostrarRecomendacionEppFre_7_2 =  $hayEppFre_7_2 && $recomendacionEppFre_7_2 !== '' && !in_array($recomendacionNormalizadaFre_7_2, ['NA', 'N.A', 'N/A'], true);
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2, 'Nombre del empleado', isset($evaluacionFre_7_2->NOMBRE_EMPLEADO_FRE) ? $evaluacionFre_7_2->NOMBRE_EMPLEADO_FRE : '');
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2, 'Categor√≠a', $categoriaFre_7_2);
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2, '√Årea', $nombreAreaFre_7_2);
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2, 'Turno', $nombreTurnoFre_7_2);
 
-                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Pausas de descanso que toma durante la jornada de trabajo (Mencione cu√°ntas y duraci√≥n en minutos)',
-                    isset($evaluacionFre_7_2->PAUSAS_DESCANSO) ? $evaluacionFre_7_2->PAUSAS_DESCANSO : '');
+                $agregarFilaResultadoFre_7_2(
+                    $tablaDatosFre_7_2,
+                    'Pausas de descanso que toma durante la jornada de trabajo (Mencione cu√°ntas y duraci√≥n en minutos)',
+                    isset($evaluacionFre_7_2->PAUSAS_DESCANSO) ? $evaluacionFre_7_2->PAUSAS_DESCANSO : ''
+                );
 
-                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Dominancia Manual',$dominanciaFre_7_2);
+                $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2, 'Dominancia Manual', $dominanciaFre_7_2);
 
                 if ($hayEppFre_7_2) {
-                    $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'EPP',$nombreEppFre_7_2);
+                    $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2, 'EPP', $nombreEppFre_7_2);
                     if ($mostrarRecomendacionEppFre_7_2) {
-                        $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2,'Recomendaci√≥n EPP',$recomendacionEppFre_7_2);
+                        $agregarFilaResultadoFre_7_2($tablaDatosFre_7_2, 'Recomendaci√≥n EPP', $recomendacionEppFre_7_2);
                     }
                 }
 
@@ -5244,7 +5265,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                         continue;
                     }
                     $metodoFre_7_2 = trim((string) $metodoFre_7_2);
-                    if (in_array($metodoFre_7_2, ['1', '2', '3'], true)) {
+                    if (in_array($metodoFre_7_2, ['1', '2', '3', '4'], true)) {
                         $metodosNormalizadosFre_7_2[] = $metodoFre_7_2;
                     } else {
                         $metodoMayusculaFre_7_2 = mb_strtoupper($metodoFre_7_2, 'UTF-8');
@@ -5254,6 +5275,8 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                             $metodosNormalizadosFre_7_2[] = '2';
                         } elseif (strpos($metodoMayusculaFre_7_2, 'RULA') !== false) {
                             $metodosNormalizadosFre_7_2[] = '3';
+                        } elseif (strpos($metodoMayusculaFre_7_2, 'REBA') !== false) {
+                            $metodosNormalizadosFre_7_2[] = '4';
                         }
                     }
                 }
@@ -5296,15 +5319,26 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                             $colorTextoFre_7_2 = $esEncabezadoFre_7_2 ? 'FFFFFF' : '000000';
                             $negritaFre_7_2 = $esEncabezadoFre_7_2;
                             if (!$esEncabezadoFre_7_2 && isset($filaFre_7_2['_color'])) {
-                                $columnaFondoFre_7_2 = isset($filaFre_7_2['_color_col']) ? (int) $filaFre_7_2['_color_col'] : (int) $columnaColorFre_7_2;
-                                if ($jFre_7_2 === $columnaFondoFre_7_2) {
-                                    $fondoFre_7_2 = strtoupper((string) $filaFre_7_2['_color']);
-                                    $colorTextoFre_7_2 = in_array($fondoFre_7_2, ['009944', 'FF0000', 'FF4D00'], true) ? 'FFFFFF' : '000000';
-                                }
+                                $fondoFre_7_2 = strtoupper((string) $filaFre_7_2['_color']);
+                                $colorTextoFre_7_2 = in_array($fondoFre_7_2, ['009944', 'EF3340', 'FF0000', 'FF4D00', 'E93645'], true) ? 'FFFFFF' : '000000';
                             }
-                            $celdaResultadoMarcadaFre_7_2 = (!$esEncabezadoFre_7_2 && $filaSeleccionadaFre_7_2 !== null && $indiceDatoFre_7_2 === $filaSeleccionadaFre_7_2 && $jFre_7_2 === $columnaColorFre_7_2);
-                            $bordeResultadoFre_7_2 = $celdaResultadoMarcadaFre_7_2 ? '<w:tcBorders><w:top w:val="single" w:sz="24" w:color="FF0000"/><w:left w:val="single" w:sz="24" w:color="FF0000"/><w:bottom w:val="single" w:sz="24" w:color="FF0000"/><w:right w:val="single" w:sz="24" w:color="FF0000"/></w:tcBorders>' : '';
-                            if ($celdaResultadoMarcadaFre_7_2) {
+                            $filaResultadoMarcadaFre_7_2 = (
+                                !$esEncabezadoFre_7_2 &&
+                                $filaSeleccionadaFre_7_2 !== null &&
+                                $indiceDatoFre_7_2 === $filaSeleccionadaFre_7_2
+                            );
+                            $bordeResultadoFre_7_2 = '';
+                            if ($filaResultadoMarcadaFre_7_2) {
+                                $bordePartesFre_7_2 = [];
+                                if ($jFre_7_2 === 0) {
+                                    $bordePartesFre_7_2[] = '<w:left w:val="single" w:sz="24" w:color="FF0000"/>';
+                                }
+                                if ($jFre_7_2 === count($anchosFre_7_2) - 1) {
+                                    $bordePartesFre_7_2[] = '<w:right w:val="single" w:sz="24" w:color="FF0000"/>';
+                                }
+                                $bordePartesFre_7_2[] = '<w:top w:val="single" w:sz="24" w:color="FF0000"/>';
+                                $bordePartesFre_7_2[] = '<w:bottom w:val="single" w:sz="24" w:color="FF0000"/>';
+                                $bordeResultadoFre_7_2 = '<w:tcBorders>' . implode('', $bordePartesFre_7_2) . '</w:tcBorders>';
                                 $negritaFre_7_2 = true;
                             }
                             $boldFre_7_2 = $negritaFre_7_2 ? '<w:b/><w:bCs/>' : '';
@@ -5508,6 +5542,98 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                     }
                 }
 
+                // REBA: c√°lculo equivalente a calcularREBA() del JavaScript.
+                $resultadoRebaFre_7_2 = null;
+                $camposRebaObligatoriosFre_7_2 = [
+                    'REBA_TRONCO',
+                    'REBA_CUELLO',
+                    'REBA_PIERNAS',
+                    'REBA_BRAZO',
+                    'REBA_ANTEBRAZO'
+                ];
+                $valoresRebaFre_7_2 = [];
+                foreach ($camposRebaObligatoriosFre_7_2 as $campoRebaFre_7_2) {
+                    $valoresRebaFre_7_2[$campoRebaFre_7_2] =
+                        isset($evaluacionFre_7_2->{$campoRebaFre_7_2})
+                        && $evaluacionFre_7_2->{$campoRebaFre_7_2} !== ''
+                        && is_numeric($evaluacionFre_7_2->{$campoRebaFre_7_2})
+                        ? (int) $evaluacionFre_7_2->{$campoRebaFre_7_2} : null;
+                }
+
+                $munecaSeleccionadaRebaFre_7_2 = isset($evaluacionFre_7_2->REBA_MUNECA)
+                    ? trim((string) $evaluacionFre_7_2->REBA_MUNECA) : '';
+                $munecaBaseRebaFre_7_2 = null;
+                if (in_array($munecaSeleccionadaRebaFre_7_2, ['1_neutra', '1_flexion', '1'], true)) {
+                    $munecaBaseRebaFre_7_2 = 1;
+                } elseif ($munecaSeleccionadaRebaFre_7_2 === '2') {
+                    $munecaBaseRebaFre_7_2 = 2;
+                }
+
+                if (!in_array(null, $valoresRebaFre_7_2, true) && $munecaBaseRebaFre_7_2 !== null) {
+                    $extraRebaFre_7_2 = function ($campo) use ($evaluacionFre_7_2) {
+                        return isset($evaluacionFre_7_2->{$campo})
+                            && $evaluacionFre_7_2->{$campo} !== ''
+                            && is_numeric($evaluacionFre_7_2->{$campo})
+                            ? (int) $evaluacionFre_7_2->{$campo} : 0;
+                    };
+
+                    $matrizARebaFre_7_2 = [
+                        [[1, 2, 3, 4], [1, 2, 3, 4], [3, 3, 5, 6]],
+                        [[2, 3, 4, 5], [3, 4, 5, 6], [4, 5, 6, 7]],
+                        [[2, 4, 5, 6], [4, 5, 6, 7], [5, 6, 7, 8]],
+                        [[3, 5, 6, 7], [5, 6, 7, 8], [6, 7, 8, 9]],
+                        [[4, 6, 7, 8], [6, 7, 8, 9], [7, 8, 9, 9]]
+                    ];
+                    $matrizBRebaFre_7_2 = [
+                        [[1, 2, 2], [1, 2, 3]],
+                        [[1, 2, 3], [2, 3, 4]],
+                        [[3, 4, 5], [4, 5, 5]],
+                        [[4, 5, 5], [5, 6, 7]],
+                        [[6, 7, 8], [7, 8, 8]],
+                        [[7, 8, 8], [8, 9, 9]]
+                    ];
+                    $matrizCRebaFre_7_2 = [
+                        [1, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7, 7],
+                        [1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7, 8],
+                        [2, 3, 3, 3, 4, 5, 6, 7, 7, 8, 8, 8],
+                        [3, 4, 4, 4, 5, 6, 7, 8, 8, 9, 9, 9],
+                        [4, 4, 4, 5, 6, 7, 8, 8, 9, 9, 9, 9],
+                        [6, 6, 6, 7, 8, 8, 9, 9, 10, 10, 10, 10],
+                        [7, 7, 7, 8, 9, 9, 9, 10, 10, 11, 11, 11],
+                        [8, 8, 8, 9, 10, 10, 10, 10, 10, 11, 11, 11],
+                        [9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12],
+                        [10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 12],
+                        [11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12],
+                        [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
+                    ];
+
+                    $troncoReba = min(5, max(1, $valoresRebaFre_7_2['REBA_TRONCO'] + $extraRebaFre_7_2('REBA_TRONCO_MOD')));
+                    $cuelloReba = min(3, max(1, $valoresRebaFre_7_2['REBA_CUELLO'] + $extraRebaFre_7_2('REBA_CUELLO_MOD')));
+                    $piernasReba = min(4, max(1, $valoresRebaFre_7_2['REBA_PIERNAS'] + $extraRebaFre_7_2('REBA_RODILLAS')));
+                    $puntuacionInicialARebaFre_7_2 = $matrizARebaFre_7_2[$troncoReba - 1][$cuelloReba - 1][$piernasReba - 1];
+                    $puntuacionARebaFre_7_2 = min(12, $puntuacionInicialARebaFre_7_2
+                        + $extraRebaFre_7_2('REBA_CARGA')
+                        + $extraRebaFre_7_2('REBA_FUERZA_BRUSCA'));
+
+                    $modBrazoSeleccionadoRebaFre_7_2 = isset($evaluacionFre_7_2->REBA_BRAZO_MOD)
+                        ? trim((string) $evaluacionFre_7_2->REBA_BRAZO_MOD) : '';
+                    $modBrazoRebaFre_7_2 = in_array($modBrazoSeleccionadoRebaFre_7_2, ['abducido', 'hombro'], true)
+                        ? 1 : ($modBrazoSeleccionadoRebaFre_7_2 === 'apoyo' ? -1 : 0);
+                    $brazoReba = min(6, max(1, $valoresRebaFre_7_2['REBA_BRAZO'] + $modBrazoRebaFre_7_2));
+                    $antebrazoReba = min(2, max(1, $valoresRebaFre_7_2['REBA_ANTEBRAZO']));
+                    $munecaReba = min(3, max(1, $munecaBaseRebaFre_7_2 + $extraRebaFre_7_2('REBA_MUNECA_MOD')));
+                    $puntuacionInicialBRebaFre_7_2 = $matrizBRebaFre_7_2[$brazoReba - 1][$antebrazoReba - 1][$munecaReba - 1];
+                    $puntuacionBRebaFre_7_2 = min(12, $puntuacionInicialBRebaFre_7_2 + $extraRebaFre_7_2('REBA_AGARRE'));
+
+                    $aAjustadaReba = min(12, max(1, $puntuacionARebaFre_7_2));
+                    $bAjustadaReba = min(12, max(1, $puntuacionBRebaFre_7_2));
+                    $puntuacionCRebaFre_7_2 = $matrizCRebaFre_7_2[$aAjustadaReba - 1][$bAjustadaReba - 1];
+                    $actividadRebaFre_7_2 = isset($evaluacionFre_7_2->REBA_ACTIVIDAD_MUSCULAR)
+                        && in_array(trim((string) $evaluacionFre_7_2->REBA_ACTIVIDAD_MUSCULAR), ['estatica', 'repetitiva', 'inestable'], true)
+                        ? 1 : 0;
+                    $resultadoRebaFre_7_2 = $puntuacionCRebaFre_7_2 + $actividadRebaFre_7_2;
+                }
+
                 $configuracionMetodosFre_7_2 = [
                     '1' => [
                         'nombre' => 'OWAS',
@@ -5538,6 +5664,21 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                         'resultado' => $resultadoRosaFre_7_2,
                         'analisis' => isset($evaluacionFre_7_2->ANALISIS_METODO_ROSA) ? $evaluacionFre_7_2->ANALISIS_METODO_ROSA : ''
                     ],
+                    '4' => [
+                        'nombre' => 'REBA',
+                        'encabezados' => ['Puntuaci√≥n', 'Nivel', 'Riesgo', 'Actuaci√≥n'],
+                        'filas' => [
+                            ['1', '0', 'Inapreciable', 'No es necesaria actuaci√≥n.', '_color' => 'FFFFFF'],
+                            ['2 o 3', '1', 'Bajo', 'Puede ser necesaria la actuaci√≥n.', '_color' => '9CCC7A'],
+                            ['4 a 7', '2', 'Medio', 'Es necesaria la actuaci√≥n.', '_color' => 'FFF000'],
+                            ['8 a 10', '3', 'Alto', 'Es necesaria la actuaci√≥n cuanto antes.', '_color' => 'F9A12A'],
+                            ['11 a 15', '4', 'Muy alto', 'Es necesaria la actuaci√≥n de inmediato.', '_color' => 'EF3340']
+                        ],
+                        'anchos' => [1900, 1500, 2400, 5600],
+                        'colorColumna' => 1,
+                        'resultado' => $resultadoRebaFre_7_2,
+                        'analisis' => isset($evaluacionFre_7_2->ANALISIS_METODO_REBA) ? $evaluacionFre_7_2->ANALISIS_METODO_REBA : ''
+                    ],
                     '3' => [
                         'nombre' => 'RULA',
                         'encabezados' => ['Puntuaci√≥n', 'Nivel', 'Actuaci√≥n'],
@@ -5557,12 +5698,14 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 $xmlMetodosIndividualesFre_7_2 = [
                     '1' => '',
                     '2' => '',
-                    '3' => ''
+                    '3' => '',
+                    '4' => ''
                 ];
                 $xmlAnalisisIndividualesFre_7_2 = [
                     '1' => '',
                     '2' => '',
-                    '3' => ''
+                    '3' => '',
+                    '4' => ''
                 ];
 
                 foreach ($metodosNormalizadosFre_7_2 as $metodoFre_7_2) {
@@ -5589,6 +5732,12 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                             elseif ($resultadoMetodoFre_7_2 >= 3 && $resultadoMetodoFre_7_2 <= 4) $indiceFilaResultadoFre_7_2 = 1;
                             elseif ($resultadoMetodoFre_7_2 >= 5 && $resultadoMetodoFre_7_2 <= 6) $indiceFilaResultadoFre_7_2 = 2;
                             elseif ($resultadoMetodoFre_7_2 === 7) $indiceFilaResultadoFre_7_2 = 3;
+                        } elseif ($metodoFre_7_2 === '4') {
+                            if ($resultadoMetodoFre_7_2 === 1) $indiceFilaResultadoFre_7_2 = 0;
+                            elseif ($resultadoMetodoFre_7_2 >= 2 && $resultadoMetodoFre_7_2 <= 3) $indiceFilaResultadoFre_7_2 = 1;
+                            elseif ($resultadoMetodoFre_7_2 >= 4 && $resultadoMetodoFre_7_2 <= 7) $indiceFilaResultadoFre_7_2 = 2;
+                            elseif ($resultadoMetodoFre_7_2 >= 8 && $resultadoMetodoFre_7_2 <= 10) $indiceFilaResultadoFre_7_2 = 3;
+                            elseif ($resultadoMetodoFre_7_2 >= 11 && $resultadoMetodoFre_7_2 <= 15) $indiceFilaResultadoFre_7_2 = 4;
                         }
                     }
 
@@ -5615,7 +5764,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                     if ($analisisMetodoFre_7_2 !== '') {
                         $xmlAnalisisIndividualesFre_7_2[$metodoFre_7_2] .=
                             '<w:p><w:pPr><w:spacing w:before="20" w:after="100"/></w:pPr>' .
-                            '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="24"/><w:szCs w:val="24"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">An√°lisis: </w:t></w:r>' .
+                            '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="24"/><w:szCs w:val="24"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">An√°lisis de los resultados del m√©todo ' . $escaparXmlFre_7_2($nombreMetodoFre_7_2) . ': </w:t></w:r>' .
                             '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr><w:t xml:space="preserve">' . $escaparXmlFre_7_2($analisisMetodoFre_7_2) . '</w:t></w:r></w:p>';
                     }
                 }
@@ -5755,7 +5904,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                         $propiedadFusionAmbientalFre_7_2 = $continuarFusionAmbientalFre_7_2
                             ? '<w:vMerge w:val="continue"/>'
                             : '<w:vMerge w:val="restart"/>';
-                        
+
                         $textoAspectoAmbientalFre_7_2 = $continuarFusionAmbientalFre_7_2
                             ? '<w:p/>'
                             : '<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:b/><w:color w:val="' . $colorAmbientalFre_7_2 . '"/><w:sz w:val="16"/></w:rPr><w:t>' . $escaparXmlFre_7_2($aspectoAmbientalFre_7_2) . '</w:t></w:r></w:p>';
@@ -5842,7 +5991,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                     );
 
                     // Tabla de valores de referencia por edad, sexo y mano 
-                    
+
                     $filasReferenciaFuerzaFre_7_2 = [
                         ['Edad', 'Mano derecha', '', '', '', '', 'Mano izquierda', '', '', '', ''],
                         ['', 'P10', 'P30', 'P50', 'P70', 'P90', 'P10', 'P30', 'P50', 'P70', 'P90'],
@@ -5954,7 +6103,8 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 $nombresMarcadoresFre_7_2 = [
                     '1' => ['METODO_OWAS_FRE', 'ANALISIS_OWAS_FRE'],
                     '2' => ['METODO_ROSA_FRE', 'ANALISIS_ROSA_FRE'],
-                    '3' => ['METODO_RULA_FRE', 'ANALISIS_RULA_FRE']
+                    '3' => ['METODO_RULA_FRE', 'ANALISIS_RULA_FRE'],
+                    '4' => ['METODO_REBA_FRE', 'ANALISIS_REBA_FRE']
                 ];
                 foreach ($nombresMarcadoresFre_7_2 as $idMetodoFre_7_2 => $marcadoresFre_7_2) {
                     $tokenTablaFre_7_2 = 'METODOTABLA' . $idMetodoFre_7_2 . 'FRE' . $idEvaluacionTokenFre_7_2 . 'X';
@@ -5978,14 +6128,14 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 ]);
 
 
-                $angulosFre_7_2 = DB::table('angulos_fre_ergo')->where('FRE_ID',$evaluacionFre_7_2->ID_EVALUACION_FRE)
+                $angulosFre_7_2 = DB::table('angulos_fre_ergo')->where('FRE_ID', $evaluacionFre_7_2->ID_EVALUACION_FRE)
                     ->where('ACTIVO', 1)
                     ->orderBy('ID_ANGULOS_FRE', 'ASC')
                     ->get();
 
                 $tablaAngulosFre_7_2->addRow();
 
-                $tablaAngulosFre_7_2->addCell(4200,$estiloCeldaTituloAngulosFre_7_2)->addText(
+                $tablaAngulosFre_7_2->addCell(4200, $estiloCeldaTituloAngulosFre_7_2)->addText(
                     'EVIDENCIA FOTOGR√ÅFICA',
                     $estiloTituloAngulosFre_7_2,
                     [
@@ -5993,7 +6143,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                     ]
                 );
 
-                $tablaAngulosFre_7_2->addCell(7100,$estiloCeldaTituloAngulosFre_7_2)->addText(
+                $tablaAngulosFre_7_2->addCell(7100, $estiloCeldaTituloAngulosFre_7_2)->addText(
                     'FACTORES ERGON√ìMICOS',
                     $estiloTituloAngulosFre_7_2,
                     [
@@ -6005,30 +6155,30 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 if ($angulosFre_7_2->isEmpty()) {
 
                     $tablaAngulosFre_7_2->addRow();
-                    $tablaAngulosFre_7_2->addCell(4200,$estiloCeldaAngulosFre_7_2)->addText(
+                    $tablaAngulosFre_7_2->addCell(4200, $estiloCeldaAngulosFre_7_2)->addText(
                         'Sin evidencia fotogr√°fica registrada.',
-                        $estiloTextoAngulosFre_7_2);
+                        $estiloTextoAngulosFre_7_2
+                    );
 
-                    $tablaAngulosFre_7_2->addCell(7100,$estiloCeldaAngulosFre_7_2)->addText(
+                    $tablaAngulosFre_7_2->addCell(7100, $estiloCeldaAngulosFre_7_2)->addText(
                         'No hay √°ngulos registrados para esta evaluaci√≥n.',
-                        $estiloTextoAngulosFre_7_2);
+                        $estiloTextoAngulosFre_7_2
+                    );
                 } else {
 
-                    foreach ($angulosFre_7_2 as $anguloFre_7_2) 
-                    {
+                    foreach ($angulosFre_7_2 as $anguloFre_7_2) {
 
-                        $claveImagenFre_7_2 = 'FREIMG72\_' .$evaluacionFre_7_2->ID_EVALUACION_FRE .'\_' .$anguloFre_7_2->ID_ANGULOS_FRE;
+                        $claveImagenFre_7_2 = 'FREIMG72\_' . $evaluacionFre_7_2->ID_EVALUACION_FRE . '\_' . $anguloFre_7_2->ID_ANGULOS_FRE;
                         $rutaFotoFre_7_2 = null;
 
-                        if (isset($anguloFre_7_2->FOTO_ANGULO) && trim((string) $anguloFre_7_2->FOTO_ANGULO) !== '') 
-                        {
-                            $rutaFotoFre_7_2 = storage_path('app/' . ltrim(str_replace('\\\\','/',(string) $anguloFre_7_2->FOTO_ANGULO),'/'));
+                        if (isset($anguloFre_7_2->FOTO_ANGULO) && trim((string) $anguloFre_7_2->FOTO_ANGULO) !== '') {
+                            $rutaFotoFre_7_2 = storage_path('app/' . ltrim(str_replace('\\\\', '/', (string) $anguloFre_7_2->FOTO_ANGULO), '/'));
                         }
 
                         $factoresFre_7_2 = [
                             [
                                 'titulo' => 'Postura:',
-                                'descripcion' => isset($anguloFre_7_2->DESCRIPCION_POSTURA) ? trim((string) $anguloFre_7_2->DESCRIPCION_POSTURA): '',
+                                'descripcion' => isset($anguloFre_7_2->DESCRIPCION_POSTURA) ? trim((string) $anguloFre_7_2->DESCRIPCION_POSTURA) : '',
                             ],
 
                             [
@@ -6038,36 +6188,36 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
 
                             [
                                 'titulo' => 'Fuerza:',
-                                'descripcion' => isset($anguloFre_7_2->DESCRIPCION_FUERZA) ? trim((string) $anguloFre_7_2->DESCRIPCION_FUERZA): '',
+                                'descripcion' => isset($anguloFre_7_2->DESCRIPCION_FUERZA) ? trim((string) $anguloFre_7_2->DESCRIPCION_FUERZA) : '',
                             ],
 
                         ];
 
-                        foreach ($factoresFre_7_2 as $indiceFactorFre_7_2 => $factorFre_7_2) 
-                        {
+                        foreach ($factoresFre_7_2 as $indiceFactorFre_7_2 => $factorFre_7_2) {
 
                             $tablaAngulosFre_7_2->addRow();
 
                             if ($indiceFactorFre_7_2 === 0) {
 
                                 $celdaFotoFre_7_2 = $tablaAngulosFre_7_2->addCell(
-                                        4200,
-                                        [
-                                            'valign' => 'center',
-                                            'vMerge' => 'restart',
-                                            'borderSize' => 6,
-                                            'borderColor' => '000000',
-                                            'marginTop' => 100,
-                                            'marginBottom' => 100,
-                                            'marginLeft' => 100,
-                                            'marginRight' => 100,
-                                        ]
-                                    );
+                                    4200,
+                                    [
+                                        'valign' => 'center',
+                                        'vMerge' => 'restart',
+                                        'borderSize' => 6,
+                                        'borderColor' => '000000',
+                                        'marginTop' => 100,
+                                        'marginBottom' => 100,
+                                        'marginLeft' => 100,
+                                        'marginRight' => 100,
+                                    ]
+                                );
 
-                                if ($rutaFotoFre_7_2 !== null && is_file($rutaFotoFre_7_2) && is_readable($rutaFotoFre_7_2)) 
-                            {
+                                if ($rutaFotoFre_7_2 !== null && is_file($rutaFotoFre_7_2) && is_readable($rutaFotoFre_7_2)) {
 
-                                    $celdaFotoFre_7_2->addText('${' . $claveImagenFre_7_2 . '}',$estiloTextoAngulosFre_7_2,
+                                    $celdaFotoFre_7_2->addText(
+                                        '${' . $claveImagenFre_7_2 . '}',
+                                        $estiloTextoAngulosFre_7_2,
                                         [
                                             'alignment' => 'center',
                                             'spaceAfter' => 0,
@@ -6076,8 +6226,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                                     );
 
                                     $imagenesAngulosFre_7_2[$claveImagenFre_7_2] = $rutaFotoFre_7_2;
-
-                                    } else {
+                                } else {
 
 
                                     $celdaFotoFre_7_2->addText(
@@ -6091,7 +6240,8 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                             } else {
 
 
-                                $tablaAngulosFre_7_2->addCell(4200,
+                                $tablaAngulosFre_7_2->addCell(
+                                    4200,
                                     [
                                         'vMerge' => 'continue',
                                         'borderSize' => 6,
@@ -6101,21 +6251,23 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                                 );
                             }
 
-                            $celdaFactorFre_7_2 = $tablaAngulosFre_7_2->addCell(7100,
-                                    [
-                                        'valign' => 'center',
-                                        'borderSize' => 6,
-                                        'borderColor' => '000000',
-                                        'marginTop' => 100,
-                                        'marginBottom' => 100,
-                                        'marginLeft' => 120,
-                                        'marginRight' => 120,
-                                    ]
+                            $celdaFactorFre_7_2 = $tablaAngulosFre_7_2->addCell(
+                                7100,
+                                [
+                                    'valign' => 'center',
+                                    'borderSize' => 6,
+                                    'borderColor' => '000000',
+                                    'marginTop' => 100,
+                                    'marginBottom' => 100,
+                                    'marginLeft' => 120,
+                                    'marginRight' => 120,
+                                ]
 
-                                );
+                            );
 
 
-                            $celdaFactorFre_7_2->addText($factorFre_7_2['titulo'],
+                            $celdaFactorFre_7_2->addText(
+                                $factorFre_7_2['titulo'],
                                 [
                                     'name' => 'Poppins',
                                     'size' => 9,
@@ -6133,12 +6285,13 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
 
                             $descripcionFactorFre_7_2 = $factorFre_7_2['descripcion'];
 
-                            if ($descripcionFactorFre_7_2 === '')
-                             {
+                            if ($descripcionFactorFre_7_2 === '') {
                                 $descripcionFactorFre_7_2 = 'Sin descripci√≥n';
                             }
 
-                            $celdaFactorFre_7_2->addText($descripcionFactorFre_7_2,$estiloTextoAngulosFre_7_2,
+                            $celdaFactorFre_7_2->addText(
+                                $descripcionFactorFre_7_2,
+                                $estiloTextoAngulosFre_7_2,
                                 [
                                     'alignment' => 'both',
                                     'spaceAfter' => 0,
@@ -6174,6 +6327,8 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                     '${ANALISIS_ROSA_FRE}',
                     '${METODO_RULA_FRE}',
                     '${ANALISIS_RULA_FRE}',
+                    '${METODO_REBA_FRE}',
+                    '${ANALISIS_REBA_FRE}',
                     '${RESULTADO_BORG}',
                     '${ANALISIS_BORG}',
                     '${DINAMOMETRIA_MARCADOR}',
@@ -6231,7 +6386,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
 
                 $cantidadBloquesFre_7_2 = $evaluacionesFre_7_2->count();
 
-                $propiedadXmlClonadoFre_7_2 = new \ReflectionProperty($plantillaword,'tempDocumentMainPart');
+                $propiedadXmlClonadoFre_7_2 = new \ReflectionProperty($plantillaword, 'tempDocumentMainPart');
                 $propiedadXmlClonadoFre_7_2->setAccessible(true);
                 $xmlBaseClonadoFre_7_2 = $propiedadXmlClonadoFre_7_2->getValue($plantillaword);
 
@@ -6315,7 +6470,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 $propiedadXmlFre_7_2->setAccessible(true);
                 $xmlDocumentoFre_7_2 = $propiedadXmlFre_7_2->getValue($plantillaword);
 
-              
+
                 $marcadoresXmlFre_7_2 = [
                     'METODO_OWAS_FRE'          => 'METODOTABLA1FRE',
                     'ANALISIS_OWAS_FRE'        => 'METODOANALISIS1FRE',
@@ -6323,6 +6478,8 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                     'ANALISIS_ROSA_FRE'        => 'METODOANALISIS2FRE',
                     'METODO_RULA_FRE'          => 'METODOTABLA3FRE',
                     'ANALISIS_RULA_FRE'        => 'METODOANALISIS3FRE',
+                    'METODO_REBA_FRE'          => 'METODOTABLA4FRE',
+                    'ANALISIS_REBA_FRE'        => 'METODOANALISIS4FRE',
                     'RESULTADO_BORG'           => 'RESULTADOBORGFRE',
                     'ANALISIS_BORG'            => 'ANALISISBORGFRE',
                     'DINAMOMETRIA_MARCADOR'    => 'DINAMOMETRIAMARCADOR',
@@ -6366,7 +6523,7 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                                     return $parrafoXmlFre_7_2;
                                 }
 
-                            
+
                                 $reemplazosParrafoFre_7_2++;
                                 if (trim((string) $contenidoXmlFre_7_2) === '') {
                                     return '';
@@ -6406,14 +6563,14 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                     }
                 }
 
-               
+
                 $xmlDocumentoFre_7_2 = str_replace(
                     ['${BLOQUE_FRE}', '${/BLOQUE_FRE}'],
                     '',
                     $xmlDocumentoFre_7_2
                 );
 
-              
+
                 $marcadoresFrePendientes_7_2 = [
                     'TABLA_DATOS_FRE',
                     'TABLA_ANGULOS_FRE',
@@ -6423,6 +6580,8 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                     'ANALISIS_ROSA_FRE',
                     'METODO_RULA_FRE',
                     'ANALISIS_RULA_FRE',
+                    'METODO_REBA_FRE',
+                    'ANALISIS_REBA_FRE',
                     'RESULTADO_BORG',
                     'ANALISIS_BORG',
                     'DINAMOMETRIA_MARCADOR',
@@ -6433,16 +6592,16 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                     '/BLOQUE_FRE',
                 ];
 
-               
+
                 $xmlDocumentoFre_7_2 = preg_replace(
-                    '~\$\{/?(?:BLOQUE_FRE|TABLA_DATOS_FRE|TABLA_ANGULOS_FRE|METODO_OWAS_FRE|ANALISIS_OWAS_FRE|METODO_ROSA_FRE|ANALISIS_ROSA_FRE|METODO_RULA_FRE|ANALISIS_RULA_FRE|RESULTADO_BORG|ANALISIS_BORG|DINAMOMETRIA_MARCADOR|OBSERVACION_FUERZAMANUAL|ASPECTOS_AMBIENTALES|LEY_SILLA)(?:#\d+)?\}~',
+                    '~\$\{/?(?:BLOQUE_FRE|TABLA_DATOS_FRE|TABLA_ANGULOS_FRE|METODO_OWAS_FRE|ANALISIS_OWAS_FRE|METODO_ROSA_FRE|ANALISIS_ROSA_FRE|METODO_RULA_FRE|ANALISIS_RULA_FRE|METODO_REBA_FRE|ANALISIS_REBA_FRE|RESULTADO_BORG|ANALISIS_BORG|DINAMOMETRIA_MARCADOR|OBSERVACION_FUERZAMANUAL|ASPECTOS_AMBIENTALES|LEY_SILLA)(?:#\d+)?\}~',
                     '',
                     $xmlDocumentoFre_7_2
                 );
 
                 $propiedadXmlFre_7_2->setValue($plantillaword, $xmlDocumentoFre_7_2);
 
-               
+
                 foreach ($imagenesAngulosFre_7_2 as $claveImagenFre_7_2 => $rutaImagenFre_7_2) {
                     if (is_string($rutaImagenFre_7_2) && is_file($rutaImagenFre_7_2) && is_readable($rutaImagenFre_7_2)) {
                         $plantillaword->setImageValue($claveImagenFre_7_2, [
@@ -6474,6 +6633,8 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                         'ANALISIS_ROSA_FRE',
                         'METODO_RULA_FRE',
                         'ANALISIS_RULA_FRE',
+                        'METODO_REBA_FRE',
+                        'ANALISIS_REBA_FRE',
                         'RESULTADO_BORG',
                         'ANALISIS_BORG',
                         'DINAMOMETRIA_MARCADOR',
@@ -6497,6 +6658,10 @@ Para ello, el primer paso consiste en la observaci√≥n de las tareas que desempe√
                 );
                 $propiedadXmlFre_7_2->setValue($plantillaword, $xmlDocumentoFre_7_2);
             }
+
+
+
+
 
 
             //// DESCARGAR INFORME 

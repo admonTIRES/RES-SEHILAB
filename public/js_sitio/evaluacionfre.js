@@ -6897,16 +6897,195 @@ function descargarCard(idCard,nombre)
 /////////////// PORTADA  //////////////
 
 
+// function cargarDatosInformesFreErgo()
+// {
+
+//     $.get('/obtenerDatosInformesRecoergo/' + recsensorial, function(response)
+//     {
+
+//         //-----------------------------------------
+//         // LLENAR SELECTS
+//         //-----------------------------------------
+
+
+//             $('#NIVEL1').html(response.opciones);
+//             $('#NIVEL2').html(response.opciones);
+//             $('#NIVEL3').html(response.opciones);
+//             $('#NIVEL4').html(response.opciones);
+//             $('#NIVEL5').html(response.opciones);
+
+//             $('#OPCION_PORTADA1').html(response.checks);
+//             $('#OPCION_PORTADA2').html(response.checks);
+//             $('#OPCION_PORTADA3').html(response.checks);
+//             $('#OPCION_PORTADA4').html(response.checks);
+//             $('#OPCION_PORTADA5').html(response.checks);
+//             $('#OPCION_PORTADA6').html(response.checks);
+
+
+//         $('#INFORME_MES').val("");
+//         $('#INFORME_ANIO').val("");
+        
+//         //-----------------------------------------
+//         // SI EXISTE INFORMACION
+//         //-----------------------------------------
+
+//         if(response.data != 'No se encontraron datos')
+//         {
+
+//             let data = response.data[0];
+
+
+//             //-----------------------------------------
+//             // ASIGNAR VALORES
+//             //-----------------------------------------
+
+//             $('#NIVEL1').val(data.NIVEL1).trigger('change');
+//             $('#NIVEL2').val(data.NIVEL2).trigger('change');
+//             $('#NIVEL3').val(data.NIVEL3).trigger('change');
+//             $('#NIVEL4').val(data.NIVEL4).trigger('change');
+//             $('#NIVEL5').val(data.NIVEL5).trigger('change');
+
+
+//             $('#OPCION_PORTADA1').val(data.OPCION_PORTADA1).trigger('change');
+//             $('#OPCION_PORTADA2').val(data.OPCION_PORTADA2).trigger('change');
+//             $('#OPCION_PORTADA3').val(data.OPCION_PORTADA3).trigger('change');
+//             $('#OPCION_PORTADA4').val(data.OPCION_PORTADA4).trigger('change');
+//             $('#OPCION_PORTADA5').val(data.OPCION_PORTADA5).trigger('change');
+//             $('#OPCION_PORTADA6').val(data.OPCION_PORTADA6).trigger('change');
+
+
+//             //-----------------------------------------
+//             // MES Y AÑO
+//             //-----------------------------------------
+
+//             $('#INFORME_MES').val(data.INFORME_MES);
+//             $('#INFORME_ANIO').val(data.INFORME_ANIO);
+
+
+
+//             //-----------------------------------------
+//             // IMAGEN PORTADA
+//             //-----------------------------------------
+
+//             if(data.RUTA_IMAGEN_PORTADA)
+//             {
+
+//                 var archivo = data.RUTA_IMAGEN_PORTADA;
+
+//                 var extension = archivo.substring(
+//                     archivo.lastIndexOf(".")
+//                 );
+
+
+
+//                 var imagenUrl =
+//                     '/mostrarportadarecoergo/0/' +
+//                     recsensorial +
+//                     extension;
+
+
+
+//                 //-----------------------------------------
+//                 // DROPIFY
+//                 //-----------------------------------------
+
+//                 if ($('#RUTA_IMAGEN_PORTADA').data('dropify')) {
+
+//                     $('#RUTA_IMAGEN_PORTADA')
+//                         .dropify()
+//                         .data('dropify')
+//                         .destroy();
+
+
+//                     $('#RUTA_IMAGEN_PORTADA')
+//                         .dropify()
+//                         .data('dropify')
+//                         .settings.defaultFile = imagenUrl;
+
+
+//                     $('#RUTA_IMAGEN_PORTADA')
+//                         .dropify()
+//                         .data('dropify')
+//                         .init();
+
+//                 }
+//                 else {
+
+//                     $('#RUTA_IMAGEN_PORTADA')
+//                         .attr('data-default-file', imagenUrl);
+
+
+//                     $('#RUTA_IMAGEN_PORTADA').dropify({
+
+//                         messages: {
+//                             'default': 'Arrastre la imagen aquí o haga click',
+//                             'replace': 'Arrastre la imagen o haga clic para reemplazar',
+//                             'remove': 'Quitar',
+//                             'error': 'Ooops, ha ocurrido un error.'
+//                         },
+
+//                         error: {
+//                             'fileSize': 'Demasiado grande ({{ value }} max).',
+//                             'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+//                             'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+//                             'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+//                             'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+//                             'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+//                         }
+
+//                     });
+//                 }
+
+
+
+//                 //-----------------------------------------
+//                 // NO REQUERIDO
+//                 //-----------------------------------------
+
+//                 $('#RUTA_IMAGEN_PORTADA')
+//                     .attr('required', false);
+
+//             }
+
+//         }
+
+//     }).fail(function(xhr)
+//     {
+
+//         console.log(xhr.responseText);
+
+//         Swal.fire({
+//             icon: 'error',
+//             title: 'Error',
+//             text: 'No se pudieron cargar los datos del informe'
+//         });
+
+//     });
+
+// }
+
+
+
 function cargarDatosInformesFreErgo()
 {
-
-    $.get('/obtenerDatosInformesRecoergo/' + recsensorial, function(response)
+    $.get('/obtenerDatosInformesFreErgo/' + recsensorial, function(validacion)
     {
+        let esFreErgo = validacion.data != 'No se encontraron datos';
 
-        //-----------------------------------------
-        // LLENAR SELECTS
-        //-----------------------------------------
+        let rutaConsulta = esFreErgo
+            ? '/obtenerDatosInformesFreErgo/'
+            : '/obtenerDatosInformesRecoergo/';
 
+        let rutaImagen = esFreErgo
+            ? '/mostrarportadafreergo/0/'
+            : '/mostrarportadarecoergo/0/';
+
+        $.get(rutaConsulta + recsensorial, function(response)
+        {
+
+            //-----------------------------------------
+            // LLENAR SELECTS
+            //-----------------------------------------
 
             $('#NIVEL1').html(response.opciones);
             $('#NIVEL2').html(response.opciones);
@@ -6921,148 +7100,141 @@ function cargarDatosInformesFreErgo()
             $('#OPCION_PORTADA5').html(response.checks);
             $('#OPCION_PORTADA6').html(response.checks);
 
-
-        $('#INFORME_MES').val("");
-        $('#INFORME_ANIO').val("");
-        
-        //-----------------------------------------
-        // SI EXISTE INFORMACION
-        //-----------------------------------------
-
-        if(response.data != 'No se encontraron datos')
-        {
-
-            let data = response.data[0];
-
+            $('#INFORME_MES').val("");
+            $('#INFORME_ANIO').val("");
 
             //-----------------------------------------
-            // ASIGNAR VALORES
+            // SI EXISTE INFORMACION
             //-----------------------------------------
 
-            $('#NIVEL1').val(data.NIVEL1).trigger('change');
-            $('#NIVEL2').val(data.NIVEL2).trigger('change');
-            $('#NIVEL3').val(data.NIVEL3).trigger('change');
-            $('#NIVEL4').val(data.NIVEL4).trigger('change');
-            $('#NIVEL5').val(data.NIVEL5).trigger('change');
-
-
-            $('#OPCION_PORTADA1').val(data.OPCION_PORTADA1).trigger('change');
-            $('#OPCION_PORTADA2').val(data.OPCION_PORTADA2).trigger('change');
-            $('#OPCION_PORTADA3').val(data.OPCION_PORTADA3).trigger('change');
-            $('#OPCION_PORTADA4').val(data.OPCION_PORTADA4).trigger('change');
-            $('#OPCION_PORTADA5').val(data.OPCION_PORTADA5).trigger('change');
-            $('#OPCION_PORTADA6').val(data.OPCION_PORTADA6).trigger('change');
-
-
-            //-----------------------------------------
-            // MES Y AÑO
-            //-----------------------------------------
-
-            $('#INFORME_MES').val(data.INFORME_MES);
-            $('#INFORME_ANIO').val(data.INFORME_ANIO);
-
-
-
-            //-----------------------------------------
-            // IMAGEN PORTADA
-            //-----------------------------------------
-
-            if(data.RUTA_IMAGEN_PORTADA)
+            if(response.data != 'No se encontraron datos')
             {
-
-                var archivo = data.RUTA_IMAGEN_PORTADA;
-
-                var extension = archivo.substring(
-                    archivo.lastIndexOf(".")
-                );
-
-
-
-                var imagenUrl =
-                    '/mostrarportadarecoergo/0/' +
-                    recsensorial +
-                    extension;
-
-
+                let data = response.data[0];
 
                 //-----------------------------------------
-                // DROPIFY
+                // ASIGNAR VALORES
                 //-----------------------------------------
 
-                if ($('#RUTA_IMAGEN_PORTADA').data('dropify')) {
+                $('#NIVEL1').val(data.NIVEL1).trigger('change');
+                $('#NIVEL2').val(data.NIVEL2).trigger('change');
+                $('#NIVEL3').val(data.NIVEL3).trigger('change');
+                $('#NIVEL4').val(data.NIVEL4).trigger('change');
+                $('#NIVEL5').val(data.NIVEL5).trigger('change');
+
+                $('#OPCION_PORTADA1').val(data.OPCION_PORTADA1).trigger('change');
+                $('#OPCION_PORTADA2').val(data.OPCION_PORTADA2).trigger('change');
+                $('#OPCION_PORTADA3').val(data.OPCION_PORTADA3).trigger('change');
+                $('#OPCION_PORTADA4').val(data.OPCION_PORTADA4).trigger('change');
+                $('#OPCION_PORTADA5').val(data.OPCION_PORTADA5).trigger('change');
+                $('#OPCION_PORTADA6').val(data.OPCION_PORTADA6).trigger('change');
+
+                //-----------------------------------------
+                // MES Y AÑO
+                //-----------------------------------------
+
+                $('#INFORME_MES').val(data.INFORME_MES);
+                $('#INFORME_ANIO').val(data.INFORME_ANIO);
+
+                //-----------------------------------------
+                // IMAGEN PORTADA
+                //-----------------------------------------
+
+                if(data.RUTA_IMAGEN_PORTADA)
+                {
+                    var archivo = data.RUTA_IMAGEN_PORTADA;
+
+                    var extension = archivo.substring(
+                        archivo.lastIndexOf(".")
+                    );
+
+                    var imagenUrl =
+                        rutaImagen +
+                        recsensorial +
+                        extension;
+
+                    //-----------------------------------------
+                    // DROPIFY
+                    //-----------------------------------------
+
+                    if ($('#RUTA_IMAGEN_PORTADA').data('dropify')) {
+
+                        $('#RUTA_IMAGEN_PORTADA')
+                            .dropify()
+                            .data('dropify')
+                            .destroy();
+
+                        $('#RUTA_IMAGEN_PORTADA')
+                            .dropify()
+                            .data('dropify')
+                            .settings.defaultFile = imagenUrl;
+
+                        $('#RUTA_IMAGEN_PORTADA')
+                            .dropify()
+                            .data('dropify')
+                            .init();
+
+                    }
+                    else {
+
+                        $('#RUTA_IMAGEN_PORTADA')
+                            .attr('data-default-file', imagenUrl);
+
+                        $('#RUTA_IMAGEN_PORTADA').dropify({
+
+                            messages: {
+                                'default': 'Arrastre la imagen aquí o haga click',
+                                'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                                'remove': 'Quitar',
+                                'error': 'Ooops, ha ocurrido un error.'
+                            },
+
+                            error: {
+                                'fileSize': 'Demasiado grande ({{ value }} max).',
+                                'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                                'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                                'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                                'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                                'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                            }
+
+                        });
+                    }
+
+                    //-----------------------------------------
+                    // NO REQUERIDO
+                    //-----------------------------------------
 
                     $('#RUTA_IMAGEN_PORTADA')
-                        .dropify()
-                        .data('dropify')
-                        .destroy();
-
-
-                    $('#RUTA_IMAGEN_PORTADA')
-                        .dropify()
-                        .data('dropify')
-                        .settings.defaultFile = imagenUrl;
-
-
-                    $('#RUTA_IMAGEN_PORTADA')
-                        .dropify()
-                        .data('dropify')
-                        .init();
+                        .attr('required', false);
 
                 }
-                else {
-
-                    $('#RUTA_IMAGEN_PORTADA')
-                        .attr('data-default-file', imagenUrl);
-
-
-                    $('#RUTA_IMAGEN_PORTADA').dropify({
-
-                        messages: {
-                            'default': 'Arrastre la imagen aquí o haga click',
-                            'replace': 'Arrastre la imagen o haga clic para reemplazar',
-                            'remove': 'Quitar',
-                            'error': 'Ooops, ha ocurrido un error.'
-                        },
-
-                        error: {
-                            'fileSize': 'Demasiado grande ({{ value }} max).',
-                            'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-                            'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-                            'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-                            'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-                            'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-                        }
-
-                    });
-                }
-
-
-
-                //-----------------------------------------
-                // NO REQUERIDO
-                //-----------------------------------------
-
-                $('#RUTA_IMAGEN_PORTADA')
-                    .attr('required', false);
-
             }
 
-        }
+        }).fail(function(xhr)
+        {
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudieron cargar los datos del informe'
+            });
+
+        });
 
     }).fail(function(xhr)
     {
-
         console.log(xhr.responseText);
 
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'No se pudieron cargar los datos del informe'
+            text: 'No se pudo verificar la información de FRE Ergo'
         });
 
     });
-
 }
+
 
 $("#form_informe_portada").on("submit", function(e)
 {
