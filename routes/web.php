@@ -2324,10 +2324,11 @@ Route::get('mostrarplanosergo/{archivo_opcion}/{reco_id}', ['as' => 'mostrarplan
 
 //// INFORME
 Route::get('getGraficaErgo/{reco_id}', ['as' => 'getGraficaErgo', 'uses' => 'ERGO\reconocimientoergoController@getGraficaErgo']);
-Route::get('obtenerDatosInformesRecoergo/{ID}', ['as' => 'obtenerDatosInformesRecoergo', 'uses' => 'ERGO\reconocimientoergoController@obtenerDatosInformesRecoergo']);
 Route::post('obtenerDatosPlantilla', ['as' => 'obtenerDatosPlantilla', 'uses' => 'ERGO\reconocimientoergoController@obtenerDatosPlantilla']);
 
 //// portada
+Route::get('obtenerDatosInformesRecoergo/{ID}', ['as' => 'obtenerDatosInformesRecoergo', 'uses' => 'ERGO\reconocimientoergoController@obtenerDatosInformesRecoergo']);
+Route::get('mostrarportadarecoergo/{archivo_opcion}/{reco_id}.{extension}', ['as' => 'mostrarportadarecoergo', 'uses' => 'ERGO\reconocimientoergoController@mostrarportadarecoergo']);
 Route::post('guardarPortadaRecoErgo',['as' => 'guardarPortadaRecoErgo','uses' => 'ERGO\reconocimientoergoController@guardarPortadaRecoErgo']);
 
 Route::get('/mostrarplanosergo/{opcion}/{id}', 'ERGO\planosergoController@mostrarplanosergo')->name('mostrarplanosergo');
@@ -2336,7 +2337,6 @@ Route::get('/evidenciaplanosergo/{id}', 'ERGO\planosergoController@evidenciaplan
 Route::get('/totalplanosergo/{reco_id}', 'ERGO\planosergoController@totalplanosergo');
 /// DATOS GENERALES
 Route::get('obtenerDatosGeneralesInformeReco/{RECO_ID}',['as' => 'obtenerDatosGeneralesInformeReco','uses' => 'ERGO\reconocimientoergoController@obtenerDatosGeneralesInformeReco']);
-Route::get('mostrarportadarecoergo/{archivo_opcion}/{reco_id}.{extension}', ['as' => 'mostrarportadarecoergo', 'uses' => 'ERGO\reconocimientoergoController@mostrarportadarecoergo']);
 
 
 

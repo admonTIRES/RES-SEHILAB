@@ -160,7 +160,9 @@ $('.link_menuprincipal').click(function () {
 
 
             
-        const textareasInformeFre = [
+            const textareasInformeFre = [
+            '#RUTA_IMAGEN_PORTADA',
+            '#RUTA_IMAGEN_UBICACION',
             '#INFORME_INTRODUCCION',
             '#INFORME_OBJETIVOGENERALES',
             '#INFORME_OBJETIVOSESPECIFICOS',
@@ -199,26 +201,46 @@ $('.link_menuprincipal').click(function () {
 
            
             
-            cargarDatosInformesFreErgo();
-            cargarDatosGeneralesInformeFre();
-            cargarDefinicionesFreErgo();
-            cargarDatosGeneralesInformeReco();
-            cargarMapaPeligros();
-            mostrartablaactividadesfre();
-            tablaReporteAreasErgo();
-            mostrartablaimcfre();
-            cargarMetodosFre();
-             cargarGraficaPregunta1();
-            cargarGraficaPregunta2();
-            cargarGraficaPregunta3();
-            cargarGraficaPregunta4();
-            cargarGraficaPregunta5();
-            cargarGraficaPregunta6();
-            tablaReporteTrabajadoresErgo();
-            cargarDefinicionesInformeFreErgo()
+         
+            var funcionesCargaFreErgo = [
+                cargarDatosInformesFreErgo,
+                cargarDatosGeneralesInformeFre,
+                cargarDefinicionesFreErgo,
+                cargarDatosGeneralesInformeReco,
+                cargarMapaPeligros,
+                mostrartablaactividadesfre,
+                tablaReporteAreasErgo,
+                mostrartablaimcfre,
+                cargarMetodosFre,
+                cargarGraficaPregunta1,
+                cargarGraficaPregunta2,
+                cargarGraficaPregunta3,
+                cargarGraficaPregunta4,
+                cargarGraficaPregunta5,
+                cargarGraficaPregunta6,
+                tablaReporteTrabajadoresErgo,
+                cargarDefinicionesInformeFreErgo,
+                tablaVersionesRecoErgo,
+                validarEdicionRecoErgo
+            ];
+
+            $.each(funcionesCargaFreErgo, function (indice, funcion) {
+
+                setTimeout(function () {
+
+                    try {
+                        funcion();
+                    } catch (error) {
+                        console.error(
+                            'Error al ejecutar la función ' + funcion.name,
+                            error
+                        );
+                    }
+
+                }, indice * 400);
+
+            });
             
-            tablaVersionesRecoErgo();
-            validarEdicionRecoErgo();
             
             $.ajax({
                     url: 'obtenerDatosPlantilla',
@@ -262,19 +284,6 @@ $('.link_menuprincipal').click(function () {
                             $('#INFORME_RECONOCIMIENTO').val(reco);
                         }
                        
-
-                        // UBICACIÓN
-                        let ubicacion = $('#INFORME_UBICACIONINSTALACION').val();
-
-                        if (ubicacion) {
-
-                            $.each(resp.data, function(marcador, valor) {
-                                ubicacion = ubicacion.split(marcador).join(valor || '');
-                            });
-
-                            $('#INFORME_UBICACIONINSTALACION').val(ubicacion);
-                        }
-
                         // PROCESO
                         let proceso = $('#INFORME_PROCESOINSTALACION').val();
 
@@ -305,49 +314,52 @@ $('.link_menuprincipal').click(function () {
                     }
                 });
             
-		$('#RUTA_IMAGEN_PORTADA').dropify({
-				messages: {
-					'default': 'Arrastre la imagen aquí o haga click',
-					'replace': 'Arrastre la imagen o haga clic para reemplazar',
-					'remove': 'Quitar',
-					'error': 'Ooops, ha ocurrido un error.'
-				},
-				error: {
-					'fileSize': 'Demasiado grande ({{ value }} max).',
-					'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-					'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-					'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-					'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-					'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-				}
-			});
+            
+		// $('#RUTA_IMAGEN_PORTADA').dropify({
+		// 		messages: {
+		// 			'default': 'Arrastre la imagen aquí o haga click',
+		// 			'replace': 'Arrastre la imagen o haga clic para reemplazar',
+		// 			'remove': 'Quitar',
+		// 			'error': 'Ooops, ha ocurrido un error.'
+		// 		},
+		// 		error: {
+		// 			'fileSize': 'Demasiado grande ({{ value }} max).',
+		// 			'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+		// 			'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+		// 			'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+		// 			'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+		// 			'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+		// 		}
+		// 	});
 
 
-            $('#RUTA_IMAGEN_PORTADA').val('');
-	        $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').resetPreview();
-            $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').clearElement();
+        //     $('#RUTA_IMAGEN_PORTADA').val('');
+	    //     $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').resetPreview();
+        //     $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').clearElement();
             
 
-			$('#RUTA_IMAGEN_UBICACION').dropify({
-				messages: {
-					'default': 'Arrastre la imagen aquí o haga click',
-					'replace': 'Arrastre la imagen o haga clic para reemplazar',
-					'remove': 'Quitar',
-					'error': 'Ooops, ha ocurrido un error.'
-				},
-				error: {
-					'fileSize': 'Demasiado grande ({{ value }} max).',
-					'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-					'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-					'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-					'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-					'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-				}
-			});
+		// 	$('#RUTA_IMAGEN_UBICACION').dropify({
+		// 		messages: {
+		// 			'default': 'Arrastre la imagen aquí o haga click',
+		// 			'replace': 'Arrastre la imagen o haga clic para reemplazar',
+		// 			'remove': 'Quitar',
+		// 			'error': 'Ooops, ha ocurrido un error.'
+		// 		},
+		// 		error: {
+		// 			'fileSize': 'Demasiado grande ({{ value }} max).',
+		// 			'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+		// 			'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+		// 			'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+		// 			'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+		// 			'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+		// 		}
+		// 	});
 
-            $('#RUTA_IMAGEN_UBICACION').val('');
-	        $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').resetPreview();
-            $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').clearElement();
+        //     $('#RUTA_IMAGEN_UBICACION').val('');
+	    //     $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').resetPreview();
+        //     $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').clearElement();
+
+
 
 			$('#INFORME_RESPONSABLE1DOCUMENTO').dropify({
 							messages: {
@@ -6897,7 +6909,9 @@ function descargarCard(idCard,nombre)
 /////////////// PORTADA  //////////////
 
 
-// function cargarDatosInformesFreErgo()
+
+
+// function cargarDatosInformesRecoErgo()
 // {
 
 //     $.get('/obtenerDatosInformesRecoergo/' + recsensorial, function(response)
@@ -7066,173 +7080,233 @@ function descargarCard(idCard,nombre)
 
 
 
+
 function cargarDatosInformesFreErgo()
 {
-    $.get('/obtenerDatosInformesFreErgo/' + recsensorial, function(validacion)
+    console.log('ID RECSENSORIAL:', recsensorial);
+
+    $.get('/obtenerDatosInformesFreErgo/' + recsensorial)
+
+    .done(function(validacion)
     {
-        let esFreErgo = validacion.data != 'No se encontraron datos';
+        console.log('RESPUESTA FRE:', validacion);
+        console.log('RESPUESTA COMPLETA FRE:', validacion);
+        console.log('DATA FRE:', validacion.data);
+        console.log('TIPO DATA FRE:', typeof validacion.data);
+        console.log('ES ARRAY FRE:', Array.isArray(validacion.data));
+        console.log(
+            'LONGITUD DATA FRE:',
+            Array.isArray(validacion.data) ? validacion.data.length : 'NO ES ARRAY'
+        );
 
-        let rutaConsulta = esFreErgo
-            ? '/obtenerDatosInformesFreErgo/'
-            : '/obtenerDatosInformesRecoergo/';
+        let esFreErgo =
+            validacion &&
+            Array.isArray(validacion.data) &&
+            validacion.data.length > 0;
 
-        let rutaImagen = esFreErgo
-            ? '/mostrarportadafreergo/0/'
-            : '/mostrarportadarecoergo/0/';
+        console.log('¿EXISTE FRE?:', esFreErgo);
 
-        $.get(rutaConsulta + recsensorial, function(response)
+        if(esFreErgo)
         {
+            cargarInformacion(
+                validacion,
+                '/mostrarportadafreergo/0/'
+            );
+        }
+        else
+        {
+            let urlReco =
+                '/obtenerDatosInformesRecoergo/' + recsensorial;
 
-            //-----------------------------------------
-            // LLENAR SELECTS
-            //-----------------------------------------
+            console.log('URL QUE SE CONSULTARÁ EN RECO:', urlReco);
 
-            $('#NIVEL1').html(response.opciones);
-            $('#NIVEL2').html(response.opciones);
-            $('#NIVEL3').html(response.opciones);
-            $('#NIVEL4').html(response.opciones);
-            $('#NIVEL5').html(response.opciones);
+            $.get(urlReco)
 
-            $('#OPCION_PORTADA1').html(response.checks);
-            $('#OPCION_PORTADA2').html(response.checks);
-            $('#OPCION_PORTADA3').html(response.checks);
-            $('#OPCION_PORTADA4').html(response.checks);
-            $('#OPCION_PORTADA5').html(response.checks);
-            $('#OPCION_PORTADA6').html(response.checks);
-
-            $('#INFORME_MES').val("");
-            $('#INFORME_ANIO').val("");
-
-            //-----------------------------------------
-            // SI EXISTE INFORMACION
-            //-----------------------------------------
-
-            if(response.data != 'No se encontraron datos')
+            .done(function(responseReco)
             {
-                let data = response.data[0];
+                console.log('RESPUESTA RECO:', responseReco);
 
-                //-----------------------------------------
-                // ASIGNAR VALORES
-                //-----------------------------------------
+                cargarInformacion(
+                    responseReco,
+                    '/mostrarportadarecoergo/0/'
+                );
+            })
 
-                $('#NIVEL1').val(data.NIVEL1).trigger('change');
-                $('#NIVEL2').val(data.NIVEL2).trigger('change');
-                $('#NIVEL3').val(data.NIVEL3).trigger('change');
-                $('#NIVEL4').val(data.NIVEL4).trigger('change');
-                $('#NIVEL5').val(data.NIVEL5).trigger('change');
+            .fail(function(xhr)
+            {
+                console.error('ERROR RECO:', xhr.status);
+                console.error('URL RECO:', urlReco);
+                console.error('RESPUESTA:', xhr.responseText);
 
-                $('#OPCION_PORTADA1').val(data.OPCION_PORTADA1).trigger('change');
-                $('#OPCION_PORTADA2').val(data.OPCION_PORTADA2).trigger('change');
-                $('#OPCION_PORTADA3').val(data.OPCION_PORTADA3).trigger('change');
-                $('#OPCION_PORTADA4').val(data.OPCION_PORTADA4).trigger('change');
-                $('#OPCION_PORTADA5').val(data.OPCION_PORTADA5).trigger('change');
-                $('#OPCION_PORTADA6').val(data.OPCION_PORTADA6).trigger('change');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudieron cargar los datos del informe'
+                });
+            });
+        }
+    })
 
-                //-----------------------------------------
-                // MES Y AÑO
-                //-----------------------------------------
+    .fail(function(xhr)
+    {
+        console.error('ERROR FRE:', xhr.status);
+        console.error('RESPUESTA FRE:', xhr.responseText);
 
-                $('#INFORME_MES').val(data.INFORME_MES);
-                $('#INFORME_ANIO').val(data.INFORME_ANIO);
+        console.log('Se intentará consultar RECO.');
 
-                //-----------------------------------------
-                // IMAGEN PORTADA
-                //-----------------------------------------
+        $.get('/obtenerDatosInformesRecoergo/' + recsensorial)
 
-                if(data.RUTA_IMAGEN_PORTADA)
-                {
-                    var archivo = data.RUTA_IMAGEN_PORTADA;
-
-                    var extension = archivo.substring(
-                        archivo.lastIndexOf(".")
-                    );
-
-                    var imagenUrl =
-                        rutaImagen +
-                        recsensorial +
-                        extension;
-
-                    //-----------------------------------------
-                    // DROPIFY
-                    //-----------------------------------------
-
-                    if ($('#RUTA_IMAGEN_PORTADA').data('dropify')) {
-
-                        $('#RUTA_IMAGEN_PORTADA')
-                            .dropify()
-                            .data('dropify')
-                            .destroy();
-
-                        $('#RUTA_IMAGEN_PORTADA')
-                            .dropify()
-                            .data('dropify')
-                            .settings.defaultFile = imagenUrl;
-
-                        $('#RUTA_IMAGEN_PORTADA')
-                            .dropify()
-                            .data('dropify')
-                            .init();
-
-                    }
-                    else {
-
-                        $('#RUTA_IMAGEN_PORTADA')
-                            .attr('data-default-file', imagenUrl);
-
-                        $('#RUTA_IMAGEN_PORTADA').dropify({
-
-                            messages: {
-                                'default': 'Arrastre la imagen aquí o haga click',
-                                'replace': 'Arrastre la imagen o haga clic para reemplazar',
-                                'remove': 'Quitar',
-                                'error': 'Ooops, ha ocurrido un error.'
-                            },
-
-                            error: {
-                                'fileSize': 'Demasiado grande ({{ value }} max).',
-                                'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-                                'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-                                'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-                                'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-                                'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-                            }
-
-                        });
-                    }
-
-                    //-----------------------------------------
-                    // NO REQUERIDO
-                    //-----------------------------------------
-
-                    $('#RUTA_IMAGEN_PORTADA')
-                        .attr('required', false);
-
-                }
-            }
-
-        }).fail(function(xhr)
+        .done(function(responseReco)
         {
-            console.log(xhr.responseText);
+            console.log('RESPUESTA RECO:', responseReco);
+
+            cargarInformacion(
+                responseReco,
+                '/mostrarportadarecoergo/0/'
+            );
+        })
+
+        .fail(function(xhrReco)
+        {
+            console.error('ERROR RECO:', xhrReco.status);
+            console.error('RESPUESTA RECO:', xhrReco.responseText);
 
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'No se pudieron cargar los datos del informe'
             });
-
         });
-
-    }).fail(function(xhr)
-    {
-        console.log(xhr.responseText);
-
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo verificar la información de FRE Ergo'
-        });
-
     });
+
+
+    function cargarInformacion(response, rutaImagen)
+    {
+        //-----------------------------------------
+        // LLENAR SELECTS
+        //-----------------------------------------
+
+        $('#NIVEL1').html(response.opciones);
+        $('#NIVEL2').html(response.opciones);
+        $('#NIVEL3').html(response.opciones);
+        $('#NIVEL4').html(response.opciones);
+        $('#NIVEL5').html(response.opciones);
+
+        $('#OPCION_PORTADA1').html(response.checks);
+        $('#OPCION_PORTADA2').html(response.checks);
+        $('#OPCION_PORTADA3').html(response.checks);
+        $('#OPCION_PORTADA4').html(response.checks);
+        $('#OPCION_PORTADA5').html(response.checks);
+        $('#OPCION_PORTADA6').html(response.checks);
+
+        $('#INFORME_MES').val("");
+        $('#INFORME_ANIO').val("");
+
+        //-----------------------------------------
+        // SI EXISTE INFORMACION
+        //-----------------------------------------
+
+        if(response.data != 'No se encontraron datos')
+        {
+            let data = response.data[0];
+
+            //-----------------------------------------
+            // ASIGNAR VALORES
+            //-----------------------------------------
+
+            $('#NIVEL1').val(data.NIVEL1).trigger('change');
+            $('#NIVEL2').val(data.NIVEL2).trigger('change');
+            $('#NIVEL3').val(data.NIVEL3).trigger('change');
+            $('#NIVEL4').val(data.NIVEL4).trigger('change');
+            $('#NIVEL5').val(data.NIVEL5).trigger('change');
+
+            $('#OPCION_PORTADA1').val(data.OPCION_PORTADA1).trigger('change');
+            $('#OPCION_PORTADA2').val(data.OPCION_PORTADA2).trigger('change');
+            $('#OPCION_PORTADA3').val(data.OPCION_PORTADA3).trigger('change');
+            $('#OPCION_PORTADA4').val(data.OPCION_PORTADA4).trigger('change');
+            $('#OPCION_PORTADA5').val(data.OPCION_PORTADA5).trigger('change');
+            $('#OPCION_PORTADA6').val(data.OPCION_PORTADA6).trigger('change');
+
+            //-----------------------------------------
+            // MES Y AÑO
+            //-----------------------------------------
+
+            $('#INFORME_MES').val(data.INFORME_MES);
+            $('#INFORME_ANIO').val(data.INFORME_ANIO);
+
+            //-----------------------------------------
+            // IMAGEN PORTADA
+            //-----------------------------------------
+
+            if(data.RUTA_IMAGEN_PORTADA)
+            {
+                var archivo = data.RUTA_IMAGEN_PORTADA;
+
+                var extension = archivo.substring(
+                    archivo.lastIndexOf(".")
+                );
+
+                var imagenUrl =
+                    rutaImagen +
+                    recsensorial +
+                    extension;
+
+                //-----------------------------------------
+                // DROPIFY ORIGINAL
+                //-----------------------------------------
+
+                if ($('#RUTA_IMAGEN_PORTADA').data('dropify')) {
+
+                    $('#RUTA_IMAGEN_PORTADA')
+                        .dropify()
+                        .data('dropify')
+                        .destroy();
+
+                    $('#RUTA_IMAGEN_PORTADA')
+                        .dropify()
+                        .data('dropify')
+                        .settings.defaultFile = imagenUrl;
+
+                    $('#RUTA_IMAGEN_PORTADA')
+                        .dropify()
+                        .data('dropify')
+                        .init();
+
+                }
+                else {
+
+                    $('#RUTA_IMAGEN_PORTADA')
+                        .attr('data-default-file', imagenUrl);
+
+                    $('#RUTA_IMAGEN_PORTADA').dropify({
+
+                        messages: {
+                            'default': 'Arrastre la imagen aquí o haga click',
+                            'replace': 'Arrastre la imagen o haga clic para reemplazar',
+                            'remove': 'Quitar',
+                            'error': 'Ooops, ha ocurrido un error.'
+                        },
+
+                        error: {
+                            'fileSize': 'Demasiado grande ({{ value }} max).',
+                            'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
+                            'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
+                            'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
+                            'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
+                            'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
+                        }
+
+                    });
+                }
+
+                $('#RUTA_IMAGEN_PORTADA').attr('required', false);
+
+            }
+
+        }
+
+    }
+
 }
 
 
@@ -7333,19 +7407,11 @@ function cargarDatosGeneralesInformeReco()
                 return;
             }
 
-
-            if (response.INFORME_UBICACIONINSTALACION &&
-                response.INFORME_UBICACIONINSTALACION.trim() != '') {
-                $('#INFORME_UBICACIONINSTALACION').val(response.INFORME_UBICACIONINSTALACION);
-            } else {
-                $('#INFORME_UBICACIONINSTALACION')
-                    .val(` Este estudio se realizó en las áreas de la INSTALACION, con domicilio DIRECCION.
-
-Se localiza en las coordenadas  COORDENADAS.`);
-
-            }
-        
                     
+			$('#INFORME_UBICACIONINSTALACION').val(response.INFORME_UBICACIONINSTALACION);
+        
+            
+
 			   if(response.RUTA_IMAGEN_UBICACION)
             {
 

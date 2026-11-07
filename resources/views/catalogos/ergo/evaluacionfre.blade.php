@@ -1762,9 +1762,6 @@ En la aplicación de las fichas técnicas de identificación del riesgo ergonóm
                                                     <div class="col-12">
                                                         {!! csrf_field() !!}
                                                         <textarea class="form-control" style="margin-bottom: 0px;" rows="14" id="INFORME_UBICACIONINSTALACION" name="INFORME_UBICACIONINSTALACION" required>
-Este estudio se realizó en las áreas de la INSTALACION, con domicilio DIRECCION.
-
-Se localiza en las coordenadas  COORDENADAS.
                                                         </textarea>
                                                     </div>
                                                 </div>
