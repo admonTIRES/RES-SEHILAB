@@ -37,6 +37,7 @@ class datosgeneralesinformeFreModel extends Model
         'OBSERVACIONES_ESQUELETICAS4',
         'OBSERVACIONES_ESQUELETICAS5',
         'OBSERVACIONES_ESQUELETICAS6',
+        'INFORME_ANALISISRECONOCIMIENTO'
     ];
 
 

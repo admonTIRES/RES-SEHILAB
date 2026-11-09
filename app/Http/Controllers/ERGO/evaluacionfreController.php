@@ -1695,7 +1695,7 @@ class evaluacionfreController extends Controller
 
 
             return response()->json([
-                'msj' => 'Objetivo general guardado correctamente'
+                'msj' => 'Información guardada correctamente'
             ]);
         } catch (Exception $e) {
 
@@ -1706,6 +1706,42 @@ class evaluacionfreController extends Controller
             ], 500);
         }
     }
+
+    public function guardarAnalisisRecoFreErgo(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $dato = datosgeneralesinformeFreModel::where(
+                'RECO_ID',
+                $request->RECO_ID
+            )->first();
+
+            if (!$dato) {
+                $dato = new datosgeneralesinformeFreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+            }
+
+            $dato->INFORME_ANALISISRECONOCIMIENTO = $request->INFORME_ANALISISRECONOCIMIENTO;
+            $dato->save();
+            DB::commit();
+
+
+            return response()->json([
+                'msj' => 'Información guardada correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'msj' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 
     public function guardarProcesoInstalacionFreErgo(Request $request)
     {
@@ -2992,8 +3028,6 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
             $plantillaword->setValue('INTRODUCCION', $introduccion);
 
 
-            //// DEFINICIONES
-
 
 
             //// DEFINICIONES
@@ -3023,10 +3057,6 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
             $fuentes = [];
 
 
-            // =============================================
-            // NUMERAR FUENTES SIN DUPLICARLAS
-            // =============================================
-
             foreach ($definiciones as $value) {
 
                 $fuente = trim((string) $value->FUENTE_DEFINICION);
@@ -3038,10 +3068,6 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
             }
 
 
-            // =============================================
-            // GENERAR DEFINICIONES
-            // =============================================
-
             if ($definiciones->count() > 0) {
 
                 $bloqueDefiniciones = new \PhpOffice\PhpWord\Element\TextRun();
@@ -3052,7 +3078,6 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                         $bloqueDefiniciones->addTextBreak(1);
                     }
 
-                    // CONCEPTO EN NEGRITAS
                     $bloqueDefiniciones->addText(
                         html_entity_decode(
                             (string) $value->CONCEPTO_DEFINICION,
@@ -3064,10 +3089,8 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                         ]
                     );
 
-                    // SEPARACIÓN ENTRE CONCEPTO Y DESCRIPCIÓN
                     $bloqueDefiniciones->addText("\t");
 
-                    // DESCRIPCIÓN NORMAL
                     $bloqueDefiniciones->addText(
                         html_entity_decode(
                             (string) $value->DESCRIPCION_DEFINICION,
@@ -3076,10 +3099,8 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                         )
                     );
 
-                    // OBTENER FUENTE CORRESPONDIENTE
                     $fuente = trim((string) $value->FUENTE_DEFINICION);
 
-                    // AGREGAR NÚMERO EN SUPERÍNDICE
                     if ($fuente !== '' && isset($fuentes[$fuente])) {
 
                         $bloqueDefiniciones->addText(
@@ -3105,22 +3126,16 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
             }
 
 
-            // =============================================
-            // GENERAR FUENTES BIBLIOGRÁFICAS
-            // =============================================
-
             if (count($fuentes) > 0) {
 
                 $bloqueFuentes = new \PhpOffice\PhpWord\Element\TextRun();
 
                 foreach ($fuentes as $fuente => $numero) {
 
-                    // CADA FUENTE EN UNA LÍNEA INDEPENDIENTE
                     if ($numero > 1) {
                         $bloqueFuentes->addTextBreak(1);
                     }
 
-                    // NÚMERO EN SUPERÍNDICE PEQUEÑO
                     $bloqueFuentes->addText(
                         (string) $numero,
                         [
@@ -3131,10 +3146,8 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                         ]
                     );
 
-                    // ESPACIO
                     $bloqueFuentes->addText(' ');
 
-                    // FUENTE ORIGINAL EN NEGRITAS Y CURSIVAS
                     $bloqueFuentes->addText(
                         html_entity_decode(
                             $fuente,
@@ -3230,9 +3243,10 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
             
             $plantillaword->setValue('TEXTO_RECONOCIMIENTO', $datosGenerales2->INFORME_RECONOCIMIENTO ?? 'No cargado');
 
+            $plantillaword->setValue('ANALISIS_RECONOCIMIENTO', $datosGenerales2->INFORME_ANALISISRECONOCIMIENTO ?? 'No cargado');
 
-                        
-                $criteriosMapa = [
+
+            $criteriosMapa = [
                     '1.1' => 'Levantamiento de cargas',
                     '1.2' => 'Transporte de cargas',
                     '2.1' => 'Empuje y tracción de cargas',
@@ -3317,7 +3331,7 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                             'valign' => 'center'
                         ]
                     )->addTextRun($centrado)
-                        ->addText('MAPA DE PELIGROS', $textoTitulo);
+                        ->addText('MAPA DE RECONOCIMIENTO', $textoTitulo);
 
                     $tableReconocimiento->addRow(400);
 

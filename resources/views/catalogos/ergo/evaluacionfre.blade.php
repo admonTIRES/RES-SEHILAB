@@ -83,6 +83,23 @@
         min-width: 0;
         box-sizing: border-box;
     }
+
+
+    div.informacion_estatica {
+        font-size: 14px;
+        line-height: 14px !important;
+        text-align: justify;
+    }
+
+    div.informacion_estatica .imagen_formula {
+        text-align: center;
+    }
+
+    div.informacion_estatica b {
+        font-size: 13px;
+        font-weight: bold;
+        color: #777777;
+    }
 </style>
 
 
@@ -1268,8 +1285,9 @@
                                     <a href="#5_3" class="list-group-item submenu">5.3.- Ciclos de trabajo de las categorías a evaluar <i class="fa " id="menureporte_5_3"></i></a>
                                     <a href="#6" class="list-group-item">6.- Evaluación</a>
                                     <a href="#6_1" class="list-group-item submenu">6.1.- Condiciones de operación durante la evaluación <i class="fa " id="menureporte_6_1"></i></a>
-                                    <a href="#6_2" class="list-group-item submenu">6.2.- Variables antropométricas (peso y talla) <i class="fa " id="menureporte_6_2"></i></a>
-                                    <a href="#6_3" class="list-group-item submenu">6.3.- Registro de trastornos músculo esqueléticos <i class="fa " id="menureporte_6_3"></i></a>
+                                    <a href="#6_2" class="list-group-item submenu">6.2.- Personal Ocupacionalmente Expuesto (POE) evaluado <i class="fa " id="menureporte_6_2"></i></a>
+                                    <a href="#6_3" class="list-group-item submenu">6.3.- Variables antropométricas (peso y talla) <i class="fa " id="menureporte_6_3"></i></a>
+                                    <a href="#6_4" class="list-group-item submenu">6.4.- Registro de trastornos músculo esqueléticos <i class="fa " id="menureporte_6_4"></i></a>
 
 
                                     <a href="#7" class="list-group-item">7.- Categorías evaluadas <i class="fa " id="menureporte_7"></i></a>
@@ -1511,7 +1529,7 @@
 
 <p>En México, el Instituto Mexicano del Seguro Social (IMSS, 2025)<sup>3</sup>, registró un total de 19,803 casos reportados de enfermedad de trabajo, donde aproximadamente el 57% de los casos, están relacionados con TME, encontrando determinadas dorsopatías; lesiones del hombro; síndrome del túnel carpiano; tenosinovitis de estiloides radial de Quervain; otras sinovitis, tenosinovitis o bursitis y artrosis, donde la naturaleza de la lesión puede ser un indicador importante para atribuir la causalidad al factor de riesgo ergonómico; por tal razón los TME representan en la actualidad un importante tipo de enfermedad laboral que afecta a la población trabajadora en México. Por otra parte, el Reglamento Federal de Seguridad y Salud en el Trabajo (RFSST), publicado en el Diario Oficial de la Federación (DOF) el día 13 de noviembre de 2014, establece en su artículo 42, que las empresas deben contar con un análisis de los Factores de Riesgo Ergonómico de los puestos de trabajo; adicionalmente, la Secretaría de Trabajo y Previsión Social (STPS) emitió la Norma Oficial Mexicana (NOM-036-1-STPS-2018) la cual establece los elementos para identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en los centros de trabajo derivados del manejo manual de cargas, a efecto de prevenir alteraciones a la salud de los trabajadores, y aplica en los centros de trabajo donde existan trabajadores cuya actividad implique realizar manejo manual de cargas de forma cotidiana (más de una vez al día); así mismo el 19 diciembre de 2024 se publicó una reforma a la Ley Federal del Trabajo por el Congreso de la Unión, conocida como la “Ley Silla” y el 17 de julio de 2025, la STPS emitió las “Disposiciones sobre los factores de riesgos de trabajo para garantizar el derecho al descanso de las personas trabajadoras en bipedestación”.</p>
 
-<p>En este contexto, la magnitud de los TME como problema de salud laboral y el marco normativo descrito sustentan la necesidad de identificar y evaluar los factores de riesgo ergonómico presentes en los centros de trabajo. El presente informe se realizó en el/la INSTALACION, durante <font color="#000000" style="background-color: rgb(255, 255, 0);">el mes de XX del AÑO</font>, donde se describen los resultados y evidencias obtenidas de la identificación del peligro y riesgo ergonómico mediante el uso de las fichas de la ISO-TR 12295-2014 y los criterios establecidos en la NOM-036-1-STPS-2018 (Reconocimiento), así como la valoración de los factores de riesgo ergonómico en las tareas y/o puestos de trabajo (categorías), mediante el uso de diferentes metodologías ergonómicas validadas a nivel internacional, que permiten al empleador cuantificar el riesgo ergonómico en el centro de trabajo y tomar las medidas de intervención o recomendaciones incluidas y acordes con las actividades o tareas que realiza el personal, para mantener una condición de trabajo óptima, que permita reducir la sobrecarga física, proteger la salud músculoesquelética y mejorar la productividad de los trabajadores.</p>
+<p>En este contexto, la magnitud de los TME como problema de salud laboral y el marco normativo descrito sustentan la necesidad de identificar y evaluar los factores de riesgo ergonómico presentes en los centros de trabajo. El presente informe se realizó en <font color="#000000" style="background-color: rgb(255, 255, 0);">el/la INSTALACION, durante el mes de XX del AÑO</font>, donde se describen los resultados y evidencias obtenidas de la identificación del peligro y riesgo ergonómico mediante el uso de las fichas de la ISO-TR 12295-2014 y los criterios establecidos en la NOM-036-1-STPS-2018 (Reconocimiento), así como la valoración de los factores de riesgo ergonómico en las tareas y/o puestos de trabajo (categorías), mediante el uso de diferentes metodologías ergonómicas validadas a nivel internacional, que permiten al empleador cuantificar el riesgo ergonómico en el centro de trabajo y tomar las medidas de intervención o recomendaciones incluidas y acordes con las actividades o tareas que realiza el personal, para mantener una condición de trabajo óptima, que permita reducir la sobrecarga física, proteger la salud músculoesquelética y mejorar la productividad de los trabajadores.</p>
 
 <p><sup>1</sup> World Health Organization. (2022, 14 de julio). <em>Musculoskeletal health</em>. <a href="https://www.who.int/news-room/fact-sheets/detail/musculoskeletal-conditions" target="_blank">https://www.who.int/news-room/fact-sheets/detail/musculoskeletal-conditions</a></p>
 
@@ -1604,7 +1622,7 @@
                                                         rows="8"
                                                         id="INFORME_OBJETIVOGENERALES"
                                                         name="INFORME_OBJETIVOGENERALES"
-                                                        required>Evaluar los factores de riesgo ergonómicos de las actividades laborales que impliquen postura, movimientos repetitivos, manipulación manual de cargas y fuerza manual, mediante el análisis biomecánico y aplicación de métodos de carga física para la prevención de trastornos músculo esqueléticos de origen laboral.</textarea>
+                                                        required>Evaluar los factores de riesgo ergonómico de las actividades o tareas laborales que impliquen postura, movimientos repetitivos, manipulación manual de cargas y fuerza manual, mediante el análisis biomecánico y la aplicación de métodos ergonómicos para la evaluación de la carga física, con el fin de prevenir los trastornos músculo esqueléticos de origen laboral.</textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12" style="text-align: right;">
@@ -1625,13 +1643,13 @@
                                                         rows="12"
                                                         id="INFORME_OBJETIVOSESPECIFICOS"
                                                         name="INFORME_OBJETIVOSESPECIFICOS"
-                                                        required>•	A partir de la ISO TR 12295 como insumo de identificación de los peligros y riesgos ergonómicos, el riesgo Elevado, se someterá a valoraciones ergonómicas con métodos específicos de cuantificación del riesgo. 
+                                                        required>•	Realizar las valoraciones ergonómicas con métodos específicos de cuantificación del riesgo, a partir de la identificación de peligros y valoración del riesgo ergonómico, conforme a lo establecido en la ISO TR 12295:2014 y en la NOM-036-1-STPS-2018.
 
-•	Determinar el nivel de riesgo por carga física a la cual se encuentran expuestos los trabajadores de cada planta objeto del estudio en las tareas que son analizadas
+•   Determinar el nivel de riesgo por carga física a la cual se encuentran expuestos los trabajadores mediante el analisis  y evaluación de las actividades o tareas que ejecutan en el centro de trabajo.
 
-•	Generar recomendaciones derivadas de la cuantificación del riesgo ergonómico para mitigar la probabilidad de ocurrencia de Trastornos Músculo Esqueléticos (TME) de origen laboral.
+•	Estudiar la relación entre las exigencias físicas de las tareas y el riesgo biomecánico de acuerdo con los criterios establecidos en la NOM-036-1-STPS-2018, ISO-TR-12295:2014 y la reforma a la Ley Federal del Trabajo conocida como “Ley Silla”, publicada en el DOF el 19 de diciembre de 2024, que permitan el mejoramiento de las condiciones de trabajo.
 
-•	Estudiar la relación del riesgo Biomecánicos de acuerdo a los criterios de la NOM-036-1-SPTS-2018, ISO-TR-12295 y la LEY SILLA DOF 19/12/24.</textarea>
+•	Generar recomendaciones o medidas de intervención derivadas de la cuantificación del riesgo ergonómico para mitigar la probabilidad de ocurrencia de los Trastornos Músculo Esqueléticos (TME) de origen laboral.</textarea>
 
                                                 </div>
                                             </div>
@@ -1646,75 +1664,80 @@
                                             <div class="col-12">
 
                                                 <p>
-                                                    Con el objetivo de recabar la información de forma objetiva se procedió de la siguiente manera:
+                                                    El estudio se desarrolló mediante el análisis de las actividades y tareas, la observación directa de las condiciones de trabajo y la recopilación de evidencia (fotográfica, video y datos de exposición). La evaluación se efectuó por tarea, mediante métodos seleccionados de acuerdo con los factores de riesgo identificados y su ámbito de aplicación, siguiendo las etapas descritas a continuación:
                                                 </p>
 
                                                 <p>
-                                                    <strong>a)</strong> Entrevista al trabajador donde se tiene en cuenta los siguientes aspectos:
+                                                    <strong>1. Delimitación del alcance.</strong>
+                                                    Se identifican mediante el reconocimiento, los puestos de trabajo o categorías, actividades y personas comprendidas en el estudio, así como las condiciones operativas durante la evaluación en cada una de las áreas definidas por el cliente.
                                                 </p>
 
-                                                <ul style="list-style-type: circle;">
-                                                    <li>
-                                                        Datos personales, generales y antecedentes laborales.
-                                                    </li>
-                                                    <li>
-                                                        Actividad laboral ejecutada de acuerdo con la categoría, con el fin de identificar la presencia de factores de riesgo ergonómico.
-                                                    </li>
-                                                    <li>
-                                                        Percepción de condiciones ambientales del lugar de trabajo.
-                                                    </li>
-                                                    <li>
-                                                        Reporte de molestias músculo esqueléticas por medio de “Standardised Nordic questionnaires for the analysis of musculoskeletal symptoms” de Kuorinka et col, por Jaime Ibacache Araya, Profesional Ergónomo del Instituto de Salud Pública de Chile.
-                                                    </li>
-                                                    <li>
-                                                        Medición de composición corporal (estatura y peso).
-                                                    </li>
+                                                <p>
+                                                    <strong>2. Recopilación de información.</strong>
+                                                    Mediante entrevistas, se obtiene la siguiente información proporcionada directamente por el trabajador:
+                                                </p>
+
+                                                <ul style="list-style-type: none; padding-left: 35px;">
+                                                    <li>a).Datos personales, generales y antecedentes laborales.</li>
+                                                    <li>b).Actividades y tareas ejecutadas de acuerdo con la categoría.</li>
+                                                    <li>c).Percepción de condiciones ambientales del lugar de trabajo.</li>
+                                                    <li>d).Reporte de molestias músculo esqueléticas por medio del Cuestionario Nórdico Estandarizado de Kuorinka. “Standardised Nordic questionnaires for the analysis of musculoskeletal symptoms - adaptado por Jaime Ibacache Araya, Profesional Ergónomo del Instituto de Salud Pública de Chile”.</li>
                                                 </ul>
 
                                                 <p>
-                                                    <strong>b)</strong> Inspección visual de los puestos de trabajo operativo y/o de oficina, para:
+                                                    <strong>3. Análisis de actividades y tareas.</strong>
+                                                    Se desglosan las actividades en tareas y operaciones, identificando ciclos de trabajo, secuencias, herramientas, equipos, cargas manipuladas y variaciones relevantes en su ejecución, datos de exposición, inspección visual de los puestos de trabajo, planos y alcances. Lo anterior se realiza mediante entrevistas, observación directa, toma de fotografías y video.
                                                 </p>
 
-                                                <ul style="list-style-type: circle;">
-                                                    <li>
-                                                        Tomar medidas de los planos y alcances utilizando una cinta métrica.
-                                                    </li>
-                                                    <li>
-                                                        Tomar registro fotográfico y de video de la actividad laboral a evaluar,
-                                                        con énfasis en los criterios de la carga física.
-                                                    </li>
+                                                <p>
+                                                    <strong>4. Valoración del trabajador.</strong>
+                                                    Se realizan algunas de las siguientes valoraciones en los trabajadores, de acuerdo con el alcance del servicio y lo observado por el especialista en cada actividad o tarea ejecutada:
+                                                </p>
+
+                                                <ul style="list-style-type: none; padding-left: 35px;">
+                                                    <li>a).Medición de composición corporal (estatura y peso).</li>
+                                                    <li>b).Valoración de la fuerza en los miembros superiores por medio de Dinamometría Manual (Digital).</li>
+                                                    <li>c).Valoración de la Escala de Borg de acuerdo con las tareas ergonómicas analizadas dentro de su exposición laboral.</li>
                                                 </ul>
 
                                                 <p>
-                                                    <strong>c)</strong> Valoración de Fuerza de Miembros Superiores por medio de Dinamometría Manual (Digital).
+                                                    <strong>5. Valoración de los factores de riesgo ergonómico.</strong>
+                                                    Mediante observación directa y entrevista con el personal, se identifican las exigencias físicas asociadas con la manipulación manual de cargas, aplicación de fuerza, movimientos repetitivos, posturas forzadas o sostenidas y tiempos de exposición y recuperación.
                                                 </p>
 
                                                 <p>
-                                                    <strong>d)</strong> Valoración de la Escala de Borg de acuerdo con las tareas ergonómicas analizadas dentro de su ejercicio laboral.
+                                                    <strong>6. Registro de evidencia audiovisual.</strong>
+                                                    Se obtienen fotografías y videos de ciclos y condiciones representativas de trabajo, incluyendo las fases de mayor exigencia física. Se utilizan encuadres que permitan observar los segmentos corporales, los movimientos y la interacción con cargas, herramientas y equipos, vinculando cada registro con la tarea correspondiente.
                                                 </p>
 
                                                 <p>
-                                                    <strong>e)</strong> Aplicación del método de evaluación específico en ergonomía.
+                                                    <strong>7. Selección de tareas y métodos de evaluación.</strong>
+                                                    Se determinan las tareas a evaluar y los métodos aplicables, considerando el tipo de esfuerzo, las regiones corporales involucradas y los requisitos y limitaciones de cada herramienta. Cuando una tarea presenta diferentes factores de riesgo, se puede considerar la aplicación de métodos complementarios.
                                                 </p>
 
-                                                <ul style="list-style-type: circle;">
-                                                    <li>
-                                                        En la visita a campo se utiliza la lista de verificación ergonómica según aplique a cada una de las categorías objeto de evaluación.
-                                                    </li>
-                                                </ul>
-
                                                 <p>
-                                                    <strong>f)</strong> Análisis de la situación de trabajo de cada una de las categorías y estimación del riesgo ergonómico.
+                                                    <strong>8. Registro y análisis de los datos de exposición.</strong>
+                                                    Se registran las variables y datos requeridos por cada método, tales como peso de las cargas, fuerzas aplicadas, distancias, alturas, alcances, ángulos posturales, frecuencia de movimientos, duración de las tareas y pausas. Se diferencian los datos medidos de los estimados y de los proporcionados por el personal.
                                                 </p>
 
-                                                <ul style="list-style-type: circle;">
-                                                    <li>
-                                                        Elaboración del documento de evaluación de factores de riesgo ergonómico con sus respectivas conclusiones y recomendaciones para prevenir los riesgos ergonómicos detectados durante la evaluación.
-                                                    </li>
-                                                </ul>
+                                                <p>
+                                                    <strong>9. Aplicación de los métodos ergonómicos.</strong>
+                                                    Se analizan los registros de campo, la evidencia audiovisual y los datos de exposición para completar las fichas de evaluación, conforme a los criterios de cada método. Se documenta la versión utilizada, las puntuaciones obtenidas y los supuestos o limitaciones que pudieran afectar la interpretación.
+                                                </p>
 
                                                 <p>
-                                                    <strong>g)</strong> Aplicación de criterios de la Ley Silla: DOF 19/12/24.
+                                                    <strong>10. Interpretación y priorización de resultados.</strong>
+                                                    Se determina el nivel de riesgo o de acción correspondiente a cada tarea, de acuerdo con la escala del método aplicado, y se identifican los factores que contribuyeron al resultado. Los resultados se interpretan por separado, sin equiparar directamente las puntuaciones de métodos diferentes.
+                                                </p>
+
+                                                <p>
+                                                    <strong>11. Definición de las medidas de intervención.</strong>
+                                                    Se formulan recomendaciones o medidas de intervención orientadas a eliminar o reducir los factores de riesgo identificados, priorizando modificaciones del puesto, equipos, herramientas y condiciones de ejecución, complementadas con medidas de organización del trabajo y capacitación.
+                                                </p>
+
+                                                <p>
+                                                    <strong>12. Integración del informe y seguimiento.</strong>
+                                                    Se consolidan las descripciones de las tareas, evidencias, datos de exposición, fichas de evaluación, resultados, conclusiones, recomendaciones y la matriz de grupos de exposición homogénea (GEH). El informe se elabora mediante el módulo de Factores de Riesgo Ergonómico del software SEHILAB®, desarrollado y con registro de derechos de autor de Results In Performance.
                                                 </p>
 
                                             </div>
@@ -1733,11 +1756,7 @@
                                                         rows="8"
                                                         id="INFORME_RECONOCIMIENTO"
                                                         name="INFORME_RECONOCIMIENTO"
-                                                        required>Se realiza observación de cada uno de los procesos con el objetivo de analizar la situación de trabajo, la cual enmarca las múltiples tareas, funciones, y entornos en los que se debe desempeñar un trabajador (Castillo, 2013). Se aplicó el procedimiento para la identificación y evaluación de los factores de riesgo ergonómico, el cual se detalla en el punto 4, relacionado con la metodología, así mismo mediante la aplicación de la ISO TR 12295, que permite la identificación de peligros y riesgos ergonómicos, la cual permite hacer una evaluación inicial rápida de: levantamiento de cargas, transporte de cargas, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas forzadas y posturas dinámicas forzadas, fichas técnicas que nos permiten ser el punto de partida inicial de evaluación del riesgo como modelo expositivo del riesgo por exposición a sobrecarga biomecánica.
-
-A continuación, se presenta la determinación de los factores de riesgo detectados y la aplicación del modelo conceptual de un estudio ergonómico, en la INSTALACION.
-
-En la aplicación de las fichas técnicas de identificación del riesgo ergonómico de acuerdo con la ISO-TR 12295, se evidenció que las categorías estudiadas tienen tareas que presentan riesgo Elevado; se procedió a hacer un análisis especifico con métodos ergonómicos en las categorías objeto de este estudio; así mismo cabe señalar que esto se correlaciona con los dispuesto en la NOM-036-1-STPS-2018, en cuanto al levantamiento y transporte de cargas.
+                                                        required>Mediante la aplicación de la norma  ISO-TR-12295:2014 y los criterios de la NOM-036-1-STPS-2018, se realiza la identificación de peligros y riesgos ergonómicos, a través de la aplicación de las fichas técnicas que permiten hacer una evaluación inicial rápida de los siguientes aspectos de la carga física: levantamiento, transporte, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas y dinámicas forzadas, siendo este el punto de partida para el reconocimiento del factor de riesgo ergonómico por exposición a sobrecarga biomecánica. A continuación, se presenta el reconocimiento de los peligros y riesgos ergonómicos detectados,  la aplicación del modelo conceptual de un estudio ergonómico (trabajador; tareas; herramientas/equipo y entorno), en la INSTALACION y el resumen de los seis criterios de la carga física referidos en la ISO-TR-12295:2014, relacionados con los respectivos puestos de trabajo valorados, donde el verde corresponde a un “Riesgo aceptable” y el rojo a un “Riesgo crítico”.
                                                     </textarea>
                                                 </div>
                                             </div>
@@ -1747,11 +1766,25 @@ En la aplicación de las fichas técnicas de identificación del riesgo ergonóm
                                         </div>
                                     </form>
                                     <div class="mt-4">
-                                        <label>A continuación, se presenta el resumen de los criterios referidos en la ISO TR 12295, para identificación de Peligros/Riesgos, mismos que relacionan los 6 criterios de la carga física con los respetivos puestos de trabajo valorados, donde el verde corresponde a un Riesgo Controlado y Rojo a un Riesgo Elevado</label>
                                     </div>
                                     <div class="row mb-5">
                                         <div class="col-12">
                                             <div id="TABLE_MAPEOPELIGRO"></div>
+
+                                            <form method="post" enctype="multipart/form-data" name="form_informe_analisisreconocimiento" id="form_informe_analisisreconocimiento">
+                                                <div class="row">
+                                                    <div class="col-12 mt-5">
+                                                        <div class="form-group">
+                                                            {!! csrf_field() !!}
+                                                            <label>Análisis </label>
+                                                            <textarea class="form-control" style="margin-bottom: 0px;" rows="8" id="INFORME_ANALISISRECONOCIMIENTO" name="INFORME_ANALISISRECONOCIMIENTO" required></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12" style="text-align: right;">
+                                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_analisisreconocimiento">Guardar análisis <i class="fa fa-save"></i></button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                     <h4 class="card-title" id="5_1">5.1.- Ubicación de la instalación</h4>
@@ -1810,11 +1843,9 @@ DESCRIPCIONACTIVIDAD
                                                 {!! csrf_field() !!}
                                                 <div class="form-group">
                                                     <p>
-                                                        Un ciclo de trabajo es aquel realizado por el trabajador bajo una secuencia de acciones con la característica particular de que se repiten de una misma forma y duran el tiempo necesario para terminar una tarea y comenzar la siguiente. </p>
+                                                        Un ciclo de trabajo es la secuencia de acciones técnicas que se repiten de manera ordenada y con un mismo patrón durante la ejecución de una tarea. Para su análisis ergonómico, se delimita mediante un punto de inicio identificable y la siguiente aparición de ese mismo punto en la repetición sucesiva. El tiempo transcurrido entre ambos momentos corresponde a la duración del ciclo, generalmente expresada en segundos o minutos. Esta definición ha sido adaptada del Instituto Nacional de Seguridad y Salud en el Trabajo (INSST, 2025), a partir de las definiciones basadas en la norma ISO 11228-3:2007. </p>
                                                     <p>
-                                                        El análisis de los ciclos de trabajo nos ayuda a comprender si las tareas ejecutadas tienen características relacionadas con el movimiento repetitivo; sólo se considera trabajo repetitivo cuando los ciclos de trabajo son cortos; es decir ciclo menor a 30 segundos o un minuto, o alta concentración de movimientos (mayor del 50%), que utilizan pocos músculos (Silverstein y Col, 1987). </p>
-                                                    <p>
-                                                        Para la presente evaluación de factores de riesgo ergonómico y de acuerdo con lo analizado en visita de campo, los ciclos de trabajo de las categorías evaluadas están conformadas de la siguiente manera:</p>
+                                                        Para la presente evaluación de factores de riesgo ergonómico y de acuerdo con lo analizado en la visita de campo, los ciclos de trabajo de las categorías evaluadas están conformados de la siguiente manera: </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1843,28 +1874,54 @@ DESCRIPCIONACTIVIDAD
                                             {!! csrf_field() !!}
                                             <div class="form-group">
                                                 <p>
-                                                    En el momento de la valoración de los Factores de Riesgo Ergonómicos, se encontraba en condiciones normales de Operación, donde los trabajadores estaban llevando a cabo sus tareas dentro del ciclo de trabajo normal propios de la instalación, lo cual permitió la ejecución de las valoraciones. </p>
+                                                    En el momento de la evaluación de los factores de riesgo ergonómico, las áreas del centro de trabajo se encuentran en condiciones normales de operación, donde los trabajadores estaban llevando a cabo sus tareas dentro del ciclo de trabajo normal propio de la actividad, lo cual permitió la ejecución de las valoraciones. </p>
                                             </div>
-                                            <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_area">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="130">Área</th>
-                                                        <th width="">Categoría</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
                                         </div>
                                     </div>
-
                                     <br>
-                                    <h4 class="card-title" id="6_2">6.2.- Variables antropométricas (peso y talla) </h4>
+                                    <h4 class="card-title" id="6_2">6.2.- Personal Ocupacionalmente Expuesto (POE) evaluado </h4>
+                                    <form method="post" enctype="multipart/form-data" name="form_informe_catevaluadas" id="form_informe_catevaluadas">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {!! csrf_field() !!}
+                                                <div class="form-group">
+                                                    <p>
+                                                        Se relacionan a continuación las categorías objeto evaluadas en el presente estudio de factores de riesgo ergonómico:</p>
+                                                </div>
+                                                <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_trabajadores_ergo">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="130">Área</th>
+                                                            <th>Categoría</th>
+                                                            <th>No. de trabajadores evaluados</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <h4 class="card-title mt-2" id="6_3">6.3.- Variables antropométricas (peso y talla) </h4>
                                     <div class="row">
                                         <div class="col-12">
                                             {!! csrf_field() !!}
                                             <div class="form-group">
                                                 <p>
-                                                    El propósito de medir el peso y la talla del trabajador es establecer como se encuentra su índice de masa corporal (IMC), para determinar las categorías de peso que pueden provocar problemas en la salud, y en consecuencia en la ejecución de sus labores. </p>
+                                                    El propósito de medir el peso y la talla de un trabajador nos permite obtener el Índice de Masa Corporal (IMC), que puede ser utilizado en ergonomía como un indicador indirecto para analizar las características físicas de los trabajadores expuestos, con el fin de minimizar los potenciales trastornos musculoesqueléticos. A continuación, se presenta la fórmula para obtener el IMC, así como la interpretación de su resultado: </p>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="informacion_estatica">
+                                                    <div class="imagen_formula"><img src="/assets/images/ergo/formula.png" height="60"></div>
+                                                </div>
+                                            </div>
+                                            <div class="text-center mt-3">
+                                                <img src="{{ asset('assets/images/ergo/IMC.png') }}"
+                                                    style="max-width: 50%; height: auto;">
+                                            </div>
+                                            <div class="form-group">
+                                                <p>
+                                                    Los resultados del IMC obtenidos en este estudio son: </p>
                                             </div>
                                             <div class="table-responsive">
                                                 <table class="table table-bordered table-hover stylish-table" width="100%" id="TablaImcFre">
@@ -1883,10 +1940,7 @@ DESCRIPCIONACTIVIDAD
                                                     <tbody></tbody>
                                                 </table>
                                             </div>
-                                            <div class="text-center mt-3">
-                                                <img src="{{ asset('assets/images/ergo/IMC.png') }}"
-                                                    style="max-width: 50%; height: auto;">
-                                            </div>
+
                                             <form method="post" enctype="multipart/form-data" name="form_informe_antropometricas" id="form_informe_antropometricas">
                                                 <div class="row">
                                                     <div class="col-12">
@@ -1905,26 +1959,16 @@ DESCRIPCIONACTIVIDAD
                                         </div>
                                     </div>
                                     <br>
-                                    <h4 class="card-title" id="6_3">
-                                        6.3.- Registro de trastornos músculo esqueléticos
+                                    <h4 class="card-title" id="6_4">
+                                        6.4.- Registro de síntomas músculoesqueléticos
                                     </h4>
-
-
                                     <form method="post" enctype="multipart/form-data" name="form_informe_esqueletico" id="form_informe_esqueletico">
                                         <div class="row">
                                             <div class="col-12">
                                                 {!! csrf_field() !!}
                                                 <p>
-                                                    Se aplicó el instrumento validado internacionalmente y sugerido por la NOM-036-1-STPS-2018, cuestionario Nórdiko Kuorinka para la detección temprana de síntomas músculo esqueléticos ya que se le pregunta al trabajador si durante los últimos 12 meses ha presentado alguna molestia.
+                                                    Mediante el uso del instrumento de detección de síntomas o molestias en las regiones corporales, establecido en el Cuestionario Nórdico Estandarizado de Kuorinka, se presentan los siguientes resultados, los cuales no constituyen un diagnóstico médico ni demuestran por sí solos que la causa de la molestia sea de origen laboral. A continuación, se muestra lo referido por el trabajador durante la entrevista donde se hizo la aplicación del instrumento:
                                                 </p>
-                                                <p>
-                                                    A continuación, se presentan los resultados de acuerdo con las categorías y áreas.
-                                                </p>
-                                                <p><strong>a).</strong> Parte del cuerpo</p>
-                                                <p><strong>b).</strong> Tiempo</p>
-                                                <p><strong>c).</strong> Tratamiento</p>
-                                                <p><strong>d).</strong> Factores atribuibles</p>
-
                                             </div>
                                         </div>
 
@@ -2136,8 +2180,6 @@ DESCRIPCIONACTIVIDAD
                                         </style>
 
 
-
-
                                         <div class="fila-grafica-esqueletica">
 
                                             <div class="contenedor-grafica-esqueletica">
@@ -2148,13 +2190,15 @@ DESCRIPCIONACTIVIDAD
                                                     Descargar <i class="fa fa-save"></i>
                                                 </button> -->
 
+                                                <h6 class="titulo-grafica-esqueletica font-weight-bold mt-3">
+                                                    1.- ¿En algún momento durante los últimos 12 meses,
+                                                    ha tenido problemas (dolor, molestias, disconfort)?
+                                                </h6>
+
                                                 <div class="card card-grafica-esqueletica" id="cardPregunta1">
                                                     <div class="card-body">
 
-                                                        <h6 class="titulo-grafica-esqueletica font-weight-bold">
-                                                            1.- ¿En algún momento durante los últimos 12 meses,
-                                                            ha tenido problemas (dolor, molestias, disconfort)?
-                                                        </h6>
+
 
                                                         <div class="mapa-grafica-esqueletica">
                                                             <img src="{{ asset('assets/images/ergo/imagencuerpo.png') }}" class="imagen-grafica-esqueletica imagen-recorte-esqueletica">
@@ -2176,7 +2220,7 @@ DESCRIPCIONACTIVIDAD
 
                                             </div>
 
-                                            <div class="bloque-observaciones-esqueletico">
+                                            <div class="bloque-observaciones-esqueletico mt-5">
                                                 <label class="titulo-observaciones-esqueleticas">
                                                     Observaciones de la pregunta 1
                                                 </label>
@@ -2184,19 +2228,19 @@ DESCRIPCIONACTIVIDAD
                                             </div>
                                         </div>
 
-
                                         <div class="fila-grafica-esqueletica">
                                             <div class="contenedor-grafica-esqueletica">
                                                 <!-- <button type="button" class="btn btn-danger waves-effect waves-light mb-1" onclick="descargarCard('cardPregunta2','Pregunta 2')">Descargar <i class="fa fa-save"></i>
                                                 </button> -->
 
+                                                <h6 class="titulo-grafica-esqueletica font-weight-bold mt-3">
+                                                    2.- ¿En algún momento, durante los últimos 12 meses,
+                                                    ha tenido algún impedimento para hacer su trabajo
+                                                    normal (en casa o fuera de casa) debido a sus molestias?
+                                                </h6>
                                                 <div class="card card-grafica-esqueletica" id="cardPregunta2">
                                                     <div class="card-body">
-                                                        <h6 class="titulo-grafica-esqueletica font-weight-bold">
-                                                            2.- ¿En algún momento, durante los últimos 12 meses,
-                                                            ha tenido algún impedimento para hacer su trabajo
-                                                            normal (en casa o fuera de casa) debido a sus molestias?
-                                                        </h6>
+
 
                                                         <div class="mapa-grafica-esqueletica2">
                                                             <img src="{{ asset('assets/images/ergo/imagencuerpo.png') }}" class="imagen-grafica-esqueletica imagen-recorte-esqueletica">
@@ -2216,7 +2260,7 @@ DESCRIPCIONACTIVIDAD
                                                 </div>
                                             </div>
 
-                                            <div class="bloque-observaciones-esqueletico">
+                                            <div class="bloque-observaciones-esqueletico mt-5">
                                                 <label class="titulo-observaciones-esqueleticas"> Observaciones de la pregunta 2</label>
                                                 <textarea class="form-control observaciones-grafica-esqueletica" id="OBSERVACIONES_ESQUELETICAS2" name="OBSERVACIONES_ESQUELETICAS2" rows="8"></textarea>
                                             </div>
@@ -2228,13 +2272,14 @@ DESCRIPCIONACTIVIDAD
                                                 <!-- <button type="button" class="btn btn-danger waves-effect waves-light mb-1" onclick="descargarCard('cardPregunta3','Pregunta 3')">
                                                     Descargar <i class="fa fa-save"></i></button> -->
 
+                                                <h6 class="titulo-grafica-esqueletica font-weight-bold mt-3">
+                                                    3.- ¿En algún momento, durante los últimos 7 días,
+                                                    ha tenido algún impedimento para hacer su trabajo
+                                                    normal debido a sus molestias?
+                                                </h6>
                                                 <div class="card card-grafica-esqueletica" id="cardPregunta3">
                                                     <div class="card-body">
-                                                        <h6 class="titulo-grafica-esqueletica font-weight-bold">
-                                                            3.- ¿En algún momento, durante los últimos 7 días,
-                                                            ha tenido algún impedimento para hacer su trabajo
-                                                            normal debido a sus molestias?
-                                                        </h6>
+
                                                         <div class="mapa-grafica-esqueletica3">
                                                             <img src="{{ asset('assets/images/ergo/imagencuerpo.png') }}" class="imagen-grafica-esqueletica imagen-recorte-esqueletica">
                                                             <span class="porcentaje-grafica-esqueletica cuello-grafica-p3" id="CUELLOP3"></span>
@@ -2253,7 +2298,7 @@ DESCRIPCIONACTIVIDAD
                                                 </div>
                                             </div>
 
-                                            <div class="bloque-observaciones-esqueletico">
+                                            <div class="bloque-observaciones-esqueletico mt-5">
                                                 <label class="titulo-observaciones-esqueleticas"> Observaciones de la pregunta 3 </label>
                                                 <textarea class="form-control observaciones-grafica-esqueletica" id="OBSERVACIONES_ESQUELETICAS3" name="OBSERVACIONES_ESQUELETICAS3" rows="8"></textarea>
                                             </div>
@@ -2267,11 +2312,12 @@ DESCRIPCIONACTIVIDAD
                                                     Descargar <i class="fa fa-save"></i>
                                                 </button> -->
 
+                                                <h6 class="titulo-grafica-esqueletica font-weight-bold mt-3">
+                                                    4.- COLUMNA LUMBAR (Espalda baja)
+                                                </h6>
                                                 <div class="card card-grafica-esqueletica" id="cardPregunta4">
                                                     <div class="card-body">
-                                                        <h6 class="titulo-grafica-esqueletica font-weight-bold">
-                                                            4.- COLUMNA LUMBAR (Espalda baja)
-                                                        </h6>
+
                                                         <div class="mapa-grafica-esqueletica4">
                                                             <img src="{{ asset('assets/images/ergo/COLUMNA LUMBAR.png') }}" class="imagen-grafica-esqueletica">
                                                             <span class="porcentaje-grafica-esqueletica lumbar-grafica-p4" id="LUMBARP4"></span>
@@ -2282,7 +2328,7 @@ DESCRIPCIONACTIVIDAD
                                                 </div>
                                             </div>
 
-                                            <div class="bloque-observaciones-esqueletico">
+                                            <div class="bloque-observaciones-esqueletico mt-5">
                                                 <label class="titulo-observaciones-esqueleticas"> Observaciones de la pregunta 4 </label>
                                                 <textarea class="form-control observaciones-grafica-esqueletica" id="OBSERVACIONES_ESQUELETICAS4" name="OBSERVACIONES_ESQUELETICAS4" rows="8"></textarea>
                                             </div>
@@ -2293,12 +2339,12 @@ DESCRIPCIONACTIVIDAD
                                                 <!-- <button type="button" class="btn btn-danger waves-effect waves-light mb-1" onclick="descargarCard('cardPregunta5','Pregunta 5')">
                                                     Descargar <i class="fa fa-save"></i>
                                                 </button> -->
-
+                                                <h6 class="titulo-grafica-esqueletica font-weight-bold mt-3">
+                                                    5.- CUELLO
+                                                </h6>
                                                 <div class="card card-grafica-esqueletica" id="cardPregunta5">
                                                     <div class="card-body">
-                                                        <h6 class="titulo-grafica-esqueletica font-weight-bold">
-                                                            5.- CUELLO
-                                                        </h6>
+
                                                         <div class="mapa-grafica-esqueletica5">
                                                             <img src="{{ asset('assets/images/ergo/CUELLO.png') }}" class="imagen-grafica-esqueletica">
                                                             <span class="porcentaje-grafica-esqueletica cuello-grafica-p5" id="CUELLOP5"></span>
@@ -2309,24 +2355,23 @@ DESCRIPCIONACTIVIDAD
                                                 </div>
                                             </div>
 
-                                            <div class="bloque-observaciones-esqueletico">
+                                            <div class="bloque-observaciones-esqueletico mt-5">
                                                 <label class="titulo-observaciones-esqueleticas"> Observaciones de la pregunta 5 </label>
                                                 <textarea class="form-control observaciones-grafica-esqueletica" id="OBSERVACIONES_ESQUELETICAS5" name="OBSERVACIONES_ESQUELETICAS5" rows="8"></textarea>
                                             </div>
                                         </div>
-
 
                                         <div class="fila-grafica-esqueletica">
                                             <div class="contenedor-grafica-esqueletica">
                                                 <!-- <button type="button" class="btn btn-danger waves-effect waves-light mb-1" onclick="descargarCard('cardPregunta6','Pregunta 6')">
                                                     Descargar <i class="fa fa-save"></i>
                                                 </button> -->
-
+                                                <h6 class="titulo-grafica-esqueletica font-weight-bold mt-3">
+                                                    6.- HOMBROS
+                                                </h6>
                                                 <div class="card card-grafica-esqueletica" id="cardPregunta6">
                                                     <div class="card-body">
-                                                        <h6 class="titulo-grafica-esqueletica font-weight-bold">
-                                                            6.- HOMBROS
-                                                        </h6>
+
                                                         <div class="mapa-grafica-esqueletica6">
                                                             <img src="{{ asset('assets/images/ergo/HOMBRO.png') }}" class="imagen-grafica-esqueletica">
                                                             <span class="porcentaje-grafica-esqueletica hombro-grafica-p6" id="HOMBROP6"></span>
@@ -2337,7 +2382,7 @@ DESCRIPCIONACTIVIDAD
                                                 </div>
                                             </div>
 
-                                            <div class="bloque-observaciones-esqueletico">
+                                            <div class="bloque-observaciones-esqueletico mt-5">
                                                 <label class="titulo-observaciones-esqueleticas"> Observaciones de la pregunta 6 </label>
                                                 <textarea class="form-control observaciones-grafica-esqueletica" id="OBSERVACIONES_ESQUELETICAS6" name="OBSERVACIONES_ESQUELETICAS6" rows="8"></textarea>
                                             </div>

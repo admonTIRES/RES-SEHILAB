@@ -167,6 +167,7 @@ $('.link_menuprincipal').click(function () {
             '#INFORME_OBJETIVOGENERALES',
             '#INFORME_OBJETIVOSESPECIFICOS',
             '#INFORME_RECONOCIMIENTO',
+            '#INFORME_ANALISISRECONOCIMIENTO',
             '#INFORME_UBICACIONINSTALACION',
             '#INFORME_PROCESOINSTALACION',
             '#INFORME_ACTIVIDADPRINCIPAL',
@@ -209,7 +210,7 @@ $('.link_menuprincipal').click(function () {
                 cargarDatosGeneralesInformeReco,
                 cargarMapaPeligros,
                 mostrartablaactividadesfre,
-                tablaReporteAreasErgo,
+                tablaReporteTrabajadoresErgo,
                 mostrartablaimcfre,
                 cargarMetodosFre,
                 cargarGraficaPregunta1,
@@ -218,10 +219,11 @@ $('.link_menuprincipal').click(function () {
                 cargarGraficaPregunta4,
                 cargarGraficaPregunta5,
                 cargarGraficaPregunta6,
-                tablaReporteTrabajadoresErgo,
                 cargarDefinicionesInformeFreErgo,
                 tablaVersionesRecoErgo,
-                validarEdicionRecoErgo
+                validarEdicionRecoErgo,
+                cargarDatosPlantilla
+
             ];
 
             $.each(funcionesCargaFreErgo, function (indice, funcion) {
@@ -240,125 +242,6 @@ $('.link_menuprincipal').click(function () {
                 }, indice * 400);
 
             });
-            
-            
-            $.ajax({
-                    url: 'obtenerDatosPlantilla',
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data: {
-                        id: recsensorial
-                    },
-                    success: function(resp) {
-
-                        if (!resp.success) {
-                            return;
-                        }
-
-                        // RECONOCIMIENTO
-
-
-                        let contenido = $('#INFORME_INTRODUCCION').summernote('code');
-
-                        if (contenido) {
-
-                            $.each(resp.data, function(marcador, valor) {
-                                contenido = contenido.split(marcador).join(valor || '');
-                            });
-
-                            $('#INFORME_INTRODUCCION').summernote('code', contenido);
-                        }
-
-
-
-                         let reco = $('#INFORME_RECONOCIMIENTO').val();
-
-                        if (reco) {
-
-                            $.each(resp.data, function(marcador, valor) {
-                                reco = reco.split(marcador).join(valor || '');
-                            });
-
-                            $('#INFORME_RECONOCIMIENTO').val(reco);
-                        }
-                       
-                        // PROCESO
-                        let proceso = $('#INFORME_PROCESOINSTALACION').val();
-
-                        if (proceso) {
-
-                            $.each(resp.data, function(marcador, valor) {
-                                proceso = proceso.split(marcador).join(valor || '');
-                            });
-
-                            $('#INFORME_PROCESOINSTALACION').val(proceso);
-                        }
-
-                        // ACTIVIDAD PRINCIPAL
-                        let actividad = $('#INFORME_ACTIVIDADPRINCIPAL').val();
-
-                        if (actividad) {
-
-                            $.each(resp.data, function(marcador, valor) {
-                                actividad = actividad.split(marcador).join(valor || '');
-                            });
-
-                            $('#INFORME_ACTIVIDADPRINCIPAL').val(actividad);
-                        }
-
-                    },
-                    error: function(xhr) {
-                        console.log(xhr.responseText);
-                    }
-                });
-            
-            
-		// $('#RUTA_IMAGEN_PORTADA').dropify({
-		// 		messages: {
-		// 			'default': 'Arrastre la imagen aquí o haga click',
-		// 			'replace': 'Arrastre la imagen o haga clic para reemplazar',
-		// 			'remove': 'Quitar',
-		// 			'error': 'Ooops, ha ocurrido un error.'
-		// 		},
-		// 		error: {
-		// 			'fileSize': 'Demasiado grande ({{ value }} max).',
-		// 			'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-		// 			'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-		// 			'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-		// 			'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-		// 			'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-		// 		}
-		// 	});
-
-
-        //     $('#RUTA_IMAGEN_PORTADA').val('');
-	    //     $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').resetPreview();
-        //     $('#RUTA_IMAGEN_PORTADA').dropify().data('dropify').clearElement();
-            
-
-		// 	$('#RUTA_IMAGEN_UBICACION').dropify({
-		// 		messages: {
-		// 			'default': 'Arrastre la imagen aquí o haga click',
-		// 			'replace': 'Arrastre la imagen o haga clic para reemplazar',
-		// 			'remove': 'Quitar',
-		// 			'error': 'Ooops, ha ocurrido un error.'
-		// 		},
-		// 		error: {
-		// 			'fileSize': 'Demasiado grande ({{ value }} max).',
-		// 			'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-		// 			'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-		// 			'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-		// 			'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-		// 			'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-		// 		}
-		// 	});
-
-        //     $('#RUTA_IMAGEN_UBICACION').val('');
-	    //     $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').resetPreview();
-        //     $('#RUTA_IMAGEN_UBICACION').dropify().data('dropify').clearElement();
-
 
 
 			$('#INFORME_RESPONSABLE1DOCUMENTO').dropify({
@@ -435,6 +318,80 @@ $('.multisteps-form__progress-btn').click(function () {
 		break;
 	}
 });
+
+
+
+function cargarDatosPlantilla()
+{
+    $.ajax({
+        url: 'obtenerDatosPlantilla',
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            id: recsensorial
+        },
+        success: function(resp) {
+
+            if (!resp.success) {
+                return;
+            }
+
+            // RECONOCIMIENTO
+            let contenido = $('#INFORME_INTRODUCCION').summernote('code');
+
+            if (contenido) {
+
+                $.each(resp.data, function(marcador, valor) {
+                    contenido = contenido.split(marcador).join(valor || '');
+                });
+
+                $('#INFORME_INTRODUCCION').summernote('code', contenido);
+            }
+
+            let reco = $('#INFORME_RECONOCIMIENTO').val();
+
+            if (reco) {
+
+                $.each(resp.data, function(marcador, valor) {
+                    reco = reco.split(marcador).join(valor || '');
+                });
+
+                $('#INFORME_RECONOCIMIENTO').val(reco);
+            }
+
+            // PROCESO
+            let proceso = $('#INFORME_PROCESOINSTALACION').val();
+
+            if (proceso) {
+
+                $.each(resp.data, function(marcador, valor) {
+                    proceso = proceso.split(marcador).join(valor || '');
+                });
+
+                $('#INFORME_PROCESOINSTALACION').val(proceso);
+            }
+
+            // ACTIVIDAD PRINCIPAL
+            let actividad = $('#INFORME_ACTIVIDADPRINCIPAL').val();
+
+            if (actividad) {
+
+                $.each(resp.data, function(marcador, valor) {
+                    actividad = actividad.split(marcador).join(valor || '');
+                });
+
+                $('#INFORME_ACTIVIDADPRINCIPAL').val(actividad);
+            }
+
+        },
+        error: function(xhr) {
+            console.error('ERROR AL CARGAR PLANTILLA:', xhr.responseText);
+        }
+    });
+}
+
 
 //-----------------------------------------------------INPUT-----------------------------------------------------------------//
 $('input[name="informe_del_cliente"]').change(function () {
@@ -7526,7 +7483,7 @@ function cargarDatosGeneralesInformeFre()
 
             <p>En México, el Instituto Mexicano del Seguro Social (IMSS, 2025)<sup>3</sup>, registró un total de 19,803 casos reportados de enfermedad de trabajo, donde aproximadamente el 57% de los casos, están relacionados con TME, encontrando determinadas dorsopatías; lesiones del hombro; síndrome del túnel carpiano; tenosinovitis de estiloides radial de Quervain; otras sinovitis, tenosinovitis o bursitis y artrosis, donde la naturaleza de la lesión puede ser un indicador importante para atribuir la causalidad al factor de riesgo ergonómico; por tal razón los TME representan en la actualidad un importante tipo de enfermedad laboral que afecta a la población trabajadora en México. Por otra parte, el Reglamento Federal de Seguridad y Salud en el Trabajo (RFSST), publicado en el Diario Oficial de la Federación (DOF) el día 13 de noviembre de 2014, establece en su artículo 42, que las empresas deben contar con un análisis de los Factores de Riesgo Ergonómico de los puestos de trabajo; adicionalmente, la Secretaría de Trabajo y Previsión Social (STPS) emitió la Norma Oficial Mexicana (NOM-036-1-STPS-2018) la cual establece los elementos para identificar, analizar, prevenir y controlar los factores de riesgo ergonómico en los centros de trabajo derivados del manejo manual de cargas, a efecto de prevenir alteraciones a la salud de los trabajadores, y aplica en los centros de trabajo donde existan trabajadores cuya actividad implique realizar manejo manual de cargas de forma cotidiana (más de una vez al día); así mismo el 19 diciembre de 2024 se publicó una reforma a la Ley Federal del Trabajo por el Congreso de la Unión, conocida como la “Ley Silla” y el 17 de julio de 2025, la STPS emitió las “Disposiciones sobre los factores de riesgos de trabajo para garantizar el derecho al descanso de las personas trabajadoras en bipedestación”.</p>
 
-            <p>En este contexto, la magnitud de los TME como problema de salud laboral y el marco normativo descrito sustentan la necesidad de identificar y evaluar los factores de riesgo ergonómico presentes en los centros de trabajo. El presente informe se realizó en el/la INSTALACION, durante <font color="#000000" style="background-color: rgb(255, 255, 0);">el mes de XX del AÑO</font>, donde se describen los resultados y evidencias obtenidas de la identificación del peligro y riesgo ergonómico mediante el uso de las fichas de la ISO-TR 12295-2014 y los criterios establecidos en la NOM-036-1-STPS-2018 (Reconocimiento), así como la valoración de los factores de riesgo ergonómico en las tareas y/o puestos de trabajo (categorías), mediante el uso de diferentes metodologías ergonómicas validadas a nivel internacional, que permiten al empleador cuantificar el riesgo ergonómico en el centro de trabajo y tomar las medidas de intervención o recomendaciones incluidas y acordes con las actividades o tareas que realiza el personal, para mantener una condición de trabajo óptima, que permita reducir la sobrecarga física, proteger la salud músculoesquelética y mejorar la productividad de los trabajadores.</p>
+            <p>En este contexto, la magnitud de los TME como problema de salud laboral y el marco normativo descrito sustentan la necesidad de identificar y evaluar los factores de riesgo ergonómico presentes en los centros de trabajo. El presente informe se realizó en <font color="#000000" style="background-color: rgb(255, 255, 0);">el/la INSTALACION, durante el mes de XX del AÑO</font>, donde se describen los resultados y evidencias obtenidas de la identificación del peligro y riesgo ergonómico mediante el uso de las fichas de la ISO-TR 12295-2014 y los criterios establecidos en la NOM-036-1-STPS-2018 (Reconocimiento), así como la valoración de los factores de riesgo ergonómico en las tareas y/o puestos de trabajo (categorías), mediante el uso de diferentes metodologías ergonómicas validadas a nivel internacional, que permiten al empleador cuantificar el riesgo ergonómico en el centro de trabajo y tomar las medidas de intervención o recomendaciones incluidas y acordes con las actividades o tareas que realiza el personal, para mantener una condición de trabajo óptima, que permita reducir la sobrecarga física, proteger la salud músculoesquelética y mejorar la productividad de los trabajadores.</p>
 
             <p><sup>1</sup> World Health Organization. (2022, 14 de julio). <em>Musculoskeletal health</em>. <a href="https://www.who.int/news-room/fact-sheets/detail/musculoskeletal-conditions" target="_blank">https://www.who.int/news-room/fact-sheets/detail/musculoskeletal-conditions</a></p>
 
@@ -7545,7 +7502,7 @@ function cargarDatosGeneralesInformeFre()
                 $('#INFORME_OBJETIVOGENERALES').val(response.INFORME_OBJETIVOGENERALES);
             } else {
                 $('#INFORME_OBJETIVOGENERALES')
-                    .val(`Evaluar los factores de riesgo ergonómicos de las actividades laborales que impliquen postura, movimientos repetitivos, manipulación manual de cargas y fuerza manual, mediante el análisis biomecánico y aplicación de métodos de carga física para la prevención de trastornos músculo esqueléticos de origen laboral.`);
+                    .val(`Evaluar los factores de riesgo ergonómico de las actividades o tareas laborales que impliquen postura, movimientos repetitivos, manipulación manual de cargas y fuerza manual, mediante el análisis biomecánico y la aplicación de métodos ergonómicos para la evaluación de la carga física, con el fin de prevenir los trastornos músculo esqueléticos de origen laboral.Evaluar los factores de riesgo ergonómicos de las actividades laborales que impliquen postura, movimientos repetitivos, manipulación manual de cargas y fuerza manual, mediante el análisis biomecánico y aplicación de métodos de carga física para la prevención de trastornos músculo esqueléticos de origen laboral.`);
             }
 
 
@@ -7555,13 +7512,13 @@ function cargarDatosGeneralesInformeFre()
                 $('#INFORME_OBJETIVOSESPECIFICOS').val(response.INFORME_OBJETIVOSESPECIFICOS);
             } else {
                 $('#INFORME_OBJETIVOSESPECIFICOS')
-                    .val(`•	A partir de la ISO TR 12295 como insumo de identificación de los peligros y riesgos ergonómicos, el riesgo Elevado, se someterá a valoraciones ergonómicas con métodos específicos de cuantificación del riesgo. 
+                    .val(`•	Realizar las valoraciones ergonómicas con métodos específicos de cuantificación del riesgo, a partir de la identificación de peligros y valoración del riesgo ergonómico, conforme a lo establecido en la ISO TR 12295:2014 y en la NOM-036-1-STPS-2018.
 
-• Determinar el nivel de riesgo por carga física a la cual se encuentran expuestos los trabajadores de cada planta objeto del estudio en las tareas que son analizadas
+•   Determinar el nivel de riesgo por carga física a la cual se encuentran expuestos los trabajadores mediante el analisis  y evaluación de las actividades o tareas que ejecutan en el centro de trabajo.
 
-• Generar recomendaciones derivadas de la cuantificación del riesgo ergonómico para mitigar la probabilidad de ocurrencia de Trastornos Músculo Esqueléticos (TME) de origen laboral.
+•	Estudiar la relación entre las exigencias físicas de las tareas y el riesgo biomecánico de acuerdo con los criterios establecidos en la NOM-036-1-STPS-2018, ISO-TR-12295:2014 y la reforma a la Ley Federal del Trabajo conocida como “Ley Silla”, publicada en el DOF el 19 de diciembre de 2024, que permitan el mejoramiento de las condiciones de trabajo.
 
-•	Estudiar la relación del riesgo Biomecánicos de acuerdo a los criterios de la NOM-036-1-SPTS-2018, ISO-TR-12295 y la LEY SILLA DOF 19/12/24.`);
+•	Generar recomendaciones o medidas de intervención derivadas de la cuantificación del riesgo ergonómico para mitigar la probabilidad de ocurrencia de los Trastornos Músculo Esqueléticos (TME) de origen laboral.`);
 
             }
             
@@ -7573,18 +7530,12 @@ function cargarDatosGeneralesInformeFre()
                 $('#INFORME_RECONOCIMIENTO').val(response.INFORME_RECONOCIMIENTO);
             } else {
                 $('#INFORME_RECONOCIMIENTO')
-                    .val(`Se realiza observación de cada uno de los procesos con el objetivo de analizar la situación de trabajo, la cual enmarca las múltiples tareas, funciones, y entornos en los que se debe desempeñar un trabajador (Castillo, 2013). Se aplicó el procedimiento para la identificación y evaluación de los factores de riesgo ergonómico, el cual se detalla en el punto 4, relacionado con la metodología, así mismo mediante la aplicación de la ISO TR 12295, que permite la identificación de peligros y riesgos ergonómicos, la cual permite hacer una evaluación inicial rápida de: levantamiento de cargas, transporte de cargas, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas forzadas y posturas dinámicas forzadas, fichas técnicas que nos permiten ser el punto de partida inicial de evaluación del riesgo como modelo expositivo del riesgo por exposición a sobrecarga biomecánica.
-
-A continuación, se presenta la determinación de los factores de riesgo detectados y la aplicación del modelo conceptual de un estudio ergonómico, en la INSTALACION.
-
-En la aplicación de las fichas técnicas de identificación del riesgo ergonómico de acuerdo con la ISO-TR 12295, se evidenció que las categorías estudiadas tienen tareas que presentan riesgo Elevado; se procedió a hacer un análisis especifico con métodos ergonómicos en las categorías objeto de este estudio; así mismo cabe señalar que esto se correlaciona con los dispuesto en la NOM-036-1-STPS-2018, en cuanto al levantamiento y transporte de cargas.`);
+                    .val(`
+Mediante la aplicación de la norma  ISO-TR-12295:2014 y los criterios de la NOM-036-1-STPS-2018, se realiza la identificación de peligros y riesgos ergonómicos, a través de la aplicación de las fichas técnicas que permiten hacer una evaluación inicial rápida de los siguientes aspectos de la carga física: levantamiento, transporte, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas y dinámicas forzadas, siendo este el punto de partida para el reconocimiento del factor de riesgo ergonómico por exposición a sobrecarga biomecánica. A continuación, se presenta el reconocimiento de los peligros y riesgos ergonómicos detectados,  la aplicación del modelo conceptual de un estudio ergonómico (trabajador; tareas; herramientas/equipo y entorno), en la INSTALACION y el resumen de los seis criterios de la carga física referidos en la ISO-TR-12295:2014, relacionados con los respectivos puestos de trabajo valorados, donde el verde corresponde a un “Riesgo aceptable” y el rojo a un “Riesgo crítico”.`);
 
             }
             
-
-         
-            
-
+            $('#INFORME_ANALISISRECONOCIMIENTO').val(response.INFORME_ANALISISRECONOCIMIENTO);
 
             if (response.INFORME_PROCESOINSTALACION &&
                 response.INFORME_PROCESOINSTALACION.trim() != '') {
@@ -8125,6 +8076,51 @@ $("#form_informe_reconocimiento").on("submit", function(e)
 });
 
 
+$("#form_informe_analisisreconocimiento").on("submit", function(e)
+{
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    formData.append('RECO_ID', recsensorial);
+
+    $.ajax({
+        url: '/guardarAnalisisRecoFreErgo',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+
+        beforeSend: function()
+        {
+            $("#botonguardar_reporte_analisisreconocimiento").prop('disabled', true);
+            $("#botonguardar_reporte_analisisreconocimiento").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+        },
+
+        success: function(response)
+        {
+            Swal.fire({
+                icon: 'success',
+                title: 'Correcto',
+                text: response.msj,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+
+        complete: function()
+        {
+            $("#botonguardar_reporte_analisisreconocimiento").prop('disabled', false);
+            $("#botonguardar_reporte_analisisreconocimiento").html('Guardar análisis <i class="fa fa-save"></i>');
+        }
+    });
+});
+
+
 ////// MAPA DE RIESGO
 
 
@@ -8165,7 +8161,7 @@ function generarTablaMapaPeligros(response)
                                 text-align:center;
                                 padding:12px;
                                 border:3px solid #0B2C6B;">
-                            MAPA DE PELIGROS
+                            MAPA DE RECONOCIMIENTO
                         </th>
                     </tr>
                     <tr>
@@ -8492,111 +8488,6 @@ function mostrartablaactividadesfre() {
     }
 }
 
-/// CONDICIONES DE OPERACION DURANTE LA EVALUACION
-
-function tablaReporteAreasErgo()
-{
-	try {
-
-		var ruta = "/tablaReporteAreasErgo";
-
-		if ($.fn.DataTable.isDataTable('#tabla_reporte_area')) {
-
-			tabla_reporte_area.clear().destroy();
-
-			$('#tabla_reporte_area tbody').empty();
-		}
-
-		tabla_reporte_area = $('#tabla_reporte_area').DataTable({
-
-			"ajax": {
-				"url": ruta,
-				"type": "GET",
-				"cache": false,
-				"data": {
-					ergoid: recsensorial
-				},
-				"dataSrc": "data"
-			},
-
-			"columns": [
-				{
-					"data": "AREA",
-					"defaultContent": "-"
-				},
-				{
-					"data": "CATEGORIA",
-					"defaultContent": "-"
-                },
-			],
-
-			"paging": false,
-			"searching": false,
-			"info": false,
-			"ordering": false,
-			"processing": true,
-			"responsive": true,
-			"autoWidth": false,
-
-            
-
-			"drawCallback": function () {
-				var api = this.api();
-				var rows = api.rows({
-					page: 'current'
-				}).nodes();
-				var lastArea = null;
-				var rowspan = 1;
-				var firstRow = null;
-
-				api.column(0, {
-					page: 'current'
-				}).data().each(function (area, i) {
-
-					var row = rows[i];
-					var cell = $('td:eq(0)', row);
-
-					if (lastArea === area) {
-
-						rowspan++;
-						cell.remove();
-						$('td:eq(0)', firstRow).attr('rowspan', rowspan);
-
-					} else {
-
-						lastArea = area;
-						rowspan = 1;
-						firstRow = row;
-					}
-				});
-			},
-
-			"language": {
-				"lengthMenu": "Mostrar _MENU_ registros",
-				"zeroRecords": "No se encontraron registros",
-				"info": "Página _PAGE_ de _PAGES_",
-				"infoEmpty": "No hay registros",
-				"infoFiltered": "(Filtrado de _MAX_ registros)",
-				"emptyTable": "No hay datos disponibles en la tabla",
-				"loadingRecords": "Cargando...",
-				"processing": "Procesando <i class='fa fa-spin fa-spinner fa-3x'></i>",
-				"search": "Buscar:",
-				"paginate": {
-					"first": "Primero",
-					"last": "Último",
-					"next": "Siguiente",
-					"previous": "Anterior"
-				}
-			}
-		});
-
-	}
-	catch (exception) {
-
-		console.error("Error en tablaReporteAreasErgo:", exception);
-
-	}
-}
 
 /// ANTROPOMETRICAS
 
@@ -11743,7 +11634,10 @@ function validarEdicionRecoErgo() {
                 '#botonguardar_reporte_conclusion',
                 '#botonguardar_reporte_recomendaciones',
                 '#botonguardar_reporte_responsablesinforme',
-                '#boton_reporte_nuevarevision'
+                '#boton_reporte_nuevarevision',
+                '#botonguardar_reporte_portada',
+                '#botonguardar_reporte_analisisreconocimiento'
+
             ].join(',');
 
             if (response.permite_guardar == 0) {

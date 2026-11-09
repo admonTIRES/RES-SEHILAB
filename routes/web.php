@@ -2469,6 +2469,8 @@ Route::post('guardarObjetivoGeneralFreErgo', ['as' => 'guardarObjetivoGeneralFre
 Route::post('guardarObjetivoEspecificoFreErgo', ['as' => 'guardarObjetivoEspecificoFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarObjetivoEspecificoFreErgo']);
 /// RECONOCIMIENTO
 Route::post('guardarReconocimientoFreErgo', ['as' => 'guardarReconocimientoFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarReconocimientoFreErgo']);
+Route::post('guardarAnalisisRecoFreErgo', ['as' => 'guardarAnalisisRecoFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarAnalisisRecoFreErgo']);
+
 /// DESCRIPCION DEL PROCESO DE LA INSTALACION 
 Route::post('guardarProcesoInstalacionFreErgo', ['as' => 'guardarProcesoInstalacionFreErgo', 'uses' => 'ERGO\evaluacionfreController@guardarProcesoInstalacionFreErgo']);
 /// CICLO 
