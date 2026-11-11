@@ -10,7 +10,8 @@ class recomendacionesinformefreModel extends Model
     protected $primaryKey = 'ID_RECOMENDACIONES_FRE_ERGO';
     protected $fillable = [
         'RECO_ID',
-        'CATALOGO_RECOMENDACIONES_ID'
+        'CATALOGO_RECOMENDACIONES_ID',
+        'DESCRIPCION_PERSONALIZADA'
 
     ];
 }

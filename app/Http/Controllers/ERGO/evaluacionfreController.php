@@ -101,7 +101,10 @@ class evaluacionfreController extends Controller
 
         $catintroduccion = catergo_introduccionModel::where('ACTIVO', 1)->get();
         $catconclusion = catergo_conclusionModel::where('ACTIVO', 1)->get();
-        $catrecomendaciones = catergo_recomendacionesModel::whereIn('USO_RECOMENDACIONES', ['Informe'])->get();
+
+        $catrecomendaciones = catergo_recomendacionesModel::whereIn('USO_RECOMENDACIONES', ['Informe'])
+            ->where('ACTIVO', 1)
+            ->get();
 
         //// CAT EPP
         $catregionanatomica = catregionanatomicaModel::where('ACTIVO', 1)->get();
@@ -2309,51 +2312,59 @@ class evaluacionfreController extends Controller
     }
 
 
-    public function guardarRecomendacionesInformeFreErgo(Request $request)
-     {
 
+    public function guardarRecomendacionesInformeFreErgo(Request $request)
+    {
         try {
 
             DB::beginTransaction();
 
-            recomendacionesinformefreModel::where('RECO_ID',$request->RECO_ID)->delete();
+            recomendacionesinformefreModel::where('RECO_ID', $request->RECO_ID)->delete();
 
-            if ($request->DESCRIPCION_RECOMENDACIONES) {
+            $recomendaciones = json_decode($request->RECOMENDACIONES, true);
 
-                foreach ($request->DESCRIPCION_RECOMENDACIONES as $recomendacion) 
-                {
-                    $dato = new recomendacionesinformefreModel();
-                    $dato->RECO_ID = $request->RECO_ID;
-                    $dato->CATALOGO_RECOMENDACIONES_ID = $recomendacion;
-                    $dato->save();
+            if (!is_array($recomendaciones)) {
+                throw new Exception('Las recomendaciones enviadas no son válidas.');
+            }
+
+            foreach ($recomendaciones as $recomendacion) {
+
+                $descripcion = trim($recomendacion['descripcion'] ?? '');
+
+                if ($descripcion == '') {
+                    continue;
                 }
+
+                $dato = new recomendacionesinformefreModel();
+                $dato->RECO_ID = $request->RECO_ID;
+                $dato->CATALOGO_RECOMENDACIONES_ID = $recomendacion['catalogo_id'] ?? 0;
+                $dato->DESCRIPCION_PERSONALIZADA = $descripcion;
+                $dato->save();
             }
 
             DB::commit();
 
             return response()->json([
-                'msj' =>
-                'Recomendaciones guardadas correctamente'
+                'msj' => 'Recomendaciones guardadas correctamente'
             ]);
         } catch (Exception $e) {
 
             DB::rollBack();
 
             return response()->json([
-                'msj' =>
-                'Error: ' . $e->getMessage()
+                'msj' => 'Error: ' . $e->getMessage()
             ], 500);
         }
     }
 
 
-
     public function obtenerRecomendacionesInformeFreErgo($RECO_ID)
     {
-        $datos = recomendacionesinformefreModel::where('RECO_ID',$RECO_ID)->get();
+        $datos = recomendacionesinformefreModel::where('RECO_ID', $RECO_ID)
+            ->get();
+
         return response()->json($datos);
     }
-
 
 
 
@@ -2450,6 +2461,140 @@ class evaluacionfreController extends Controller
     /// METODOS 
 
 
+    //     public function ObtenerMetodosFre(Request $request)
+    //     {
+    //         $this->validate($request, [
+    //             'ergoid' => 'required|integer|min:1',
+    //         ]);
+
+    //         try {
+
+    //             $evaluaciones = DB::table('evaluacion_fre_ergo')
+    //                 ->where('RECO_ID', $request->input('ergoid'))
+    //                 ->select('CAT_METODOS_FRE')
+    //                 ->get();
+
+    //             $catalogoMetodos = [
+
+    //                 '1' => [
+    //                     'NOMBRE' => 'Método OWAS',
+    //                     'NOMBRE_INGLES' => '(Ovako Working Posture Analysing System)',
+    //                     'NOMBRE_ESPANOL' => 'Sistema de análisis de posturas de trabajo Ovako',
+    //                     'DESCRIPCION' => 'Osmos Karhu y Björn Trappe, quienes trabajaron en la industria siderúrgica durante la década de los 70, desarrollaron un método para evaluar la postura durante el trabajo. El método se denomina OWAS (”Ovako Working Posture Analysing System”).
+
+    // El método OWAS permite valorar las posturas a nivel de espalda, brazos y piernas de un trabajador y la carga que este manipula durante la postura analizada. A cada postura se le asigna un código el cual conlleva a una valoración del riesgo postural, dando consigo una categoría del riesgo de dicha postura adoptada (en este sentido se tienen cuatro niveles de riesgo para cada postura). Luego se valora el riesgo para cada parte del cuerpo al que se refiere el método (espalda, brazos y piernas), examinando las posturas tomadas, la categoría del riesgo de cada parte del cuerpo dentro de una frecuencia de realización de las mismas. Para finalmente emitir una calificación de la postura más crítica durante un periodo observacional de 20 a 40 minutos de observación con sus respectivas frecuencias para finalmente establecer acciones correctivas del puesto de trabajo analizado.'
+    //                 ],
+
+    //                 '2' => [
+    //                     'NOMBRE' => 'Método ROSA',
+    //                     'NOMBRE_INGLES' => '(Rapid Office Strain Assessment)',
+    //                     'NOMBRE_ESPANOL' => 'Evaluación rápida del esfuerzo en oficinas',
+    //                     'DESCRIPCION' => 'El método ROSA permite valorar de forma rápida el nivel de riesgo de puestos de trabajo con un componente administrativo, donde la persona interactúa con 5 elementos propios de su labor, tales como: silla, pantalla, ratón, teclado y teléfono. La base principal del método es la observación de la postura del trabajador frente a su computadora, donde el profesional que aplica el método asigna una valoración numérica a través de un conjunto de tablas y de puntuaciones parciales con el objetivo de indicar el nivel de riesgo y de intervención, la cual indica la necesidad de realizar cambios en el puesto de trabajo priorizando la intervención puntual en algún aspecto ergonómico en aquellos donde exista una calificación de 5 o superior.'
+    //                 ],
+
+    //                 '3' => [
+    //                     'NOMBRE' => 'Método RULA',
+    //                     'NOMBRE_INGLES' => '(Rapid Upper Limb Assessment)',
+    //                     'NOMBRE_ESPANOL' => 'Evaluación rápida de las extremidades superiores',
+    //                     'DESCRIPCION' => 'El método RULA tiene como objetivo evaluar la exposición de los trabajadores a factores de riesgo que pueden causar trastornos músculo esqueléticos en las extremidades superiores, derivado de las posturas adoptadas, la repetitividad de los movimientos, la fuerza aplicada o si la actividad es de naturaleza estática.
+
+    // Para la correcta aplicación del método se debe realizar la observación directa de la actividad del trabajador durante varios ciclos de trabajo, posteriormente se seleccionan las tareas y posturas más significativas, ya sea por su duración o por presentar una mayor carga postural. El método debe ser aplicado al lado derecho y al lado izquierdo del cuerpo por separado, ya que tiene en cuenta las posturas adoptadas por las extremidades superiores, cuello, espalda y piernas. Al final, determina 4 niveles de acción relacionados con los valores que se van obteniendo de la calificación de cada aspecto evaluado.'
+    //                 ],
+
+    //                 '4' => [
+    //                     'NOMBRE' => 'Método REBA',
+    //                     'NOMBRE_INGLES' => '(Rapid Entire Body Assessment)',
+    //                     'NOMBRE_ESPANOL' => 'Evaluación Rápida del Cuerpo Completo',
+    //                     'DESCRIPCION' => 'El método REBA evalúa posturas individuales y no conjuntos o secuencias de posturas, por ello, es necesario seleccionar aquellas posturas que serán evaluadas de entre las que adopta el trabajador en el puesto. Se seleccionarán aquellas que, a priori, supongan una mayor carga postural bien por su duración, bien por su frecuencia o porque presentan mayor desviación respecto a la posición neutra.
+
+    // Para ello, el primer paso consiste en la observación de las tareas que desempeña el trabajador. Se observarán varios ciclos de trabajo y se determinarán las posturas que se evaluarán. Si el ciclo es muy largo o no existen ciclos, se pueden realizar evaluaciones a intervalos regulares. En este caso se considerará, además, el tiempo que pasa el trabajador en cada postura.'
+    //                 ],
+
+    //                 '5' => [
+    //                     'NOMBRE' => 'Método MAC',
+    //                     'NOMBRE_INGLES' => 'Manual Handling Assessment Charts',
+    //                     'NOMBRE_ESPANOL' => 'Tablas de Evaluación de la Manipulación Manual',
+
+    //                     'DESCRIPCION' => 'El método MAC es una herramienta desarrollada por el Health and Safety Executive (HSE) del Reino Unido para evaluar los factores de riesgo asociados con las actividades de manipulación manual. Permite identificar y valorar los factores de riesgo presentes durante las operaciones de levantamiento, transporte y manipulación de cargas en equipo.
+
+    // Para su aplicación, se realiza la observación directa de la actividad laboral, identificando las características de la tarea, las condiciones de manipulación, el peso de la carga, la postura adoptada por los trabajadores, la frecuencia de la operación y las condiciones del entorno de trabajo. A partir de esta información, se asignan puntuaciones y colores a los diferentes factores de riesgo contemplados en la metodología.
+
+    // El resultado permite identificar los factores que requieren mayor atención, comparar diferentes tareas, determinar el nivel de riesgo y establecer medidas de intervención orientadas a reducir los riesgos asociados con la manipulación manual.
+
+    // Nota: En este informe se utiliza la versión INDG383(rev3) del método MAC (Manual Handling Assessment Chart) desarrollado por HSE (Health Safety Executive), el cual fue revisado en noviembre de 2018 con la hoja de puntuación actualizada en marzo de 2019, como herramienta técnica complementaria. Su selección permite aplicar los criterios revisados de la versión actualizada emitida por el organismo desarrollador posterior a la publicación de la Norma Oficial Mexicana (NOM-036-1-STPS-2018) en el Diario Oficial de la Federación (DOF), donde se incluye este método en el apéndice I y en la bibliografía de esta norma. Los colores y el puntaje de las fichas se interpretan conforme a lo establecido por el HSE; la suma permite comparar tareas, determinar el nivel de riesgo y las medidas de intervención para las tareas que involucren levantamiento manual de cargas.'
+    //                 ],
+
+    //                 '6' => [
+    //                     'NOMBRE' => 'Método RAPP',
+    //                     'NOMBRE_INGLES' => 'Risk Assessment for Pushing and Pulling',
+    //                     'NOMBRE_ESPANOL' => 'Evaluación de Riesgos para Empuje y Arrastre',
+
+    //                     'DESCRIPCION' => 'El método RAPP es una herramienta desarrollada por el Health and Safety Executive (HSE) del Reino Unido para evaluar los factores de riesgo asociados con las actividades de empuje y arrastre de cargas. Permite identificar y valorar las condiciones que pueden representar un riesgo para la salud musculoesquelética de los trabajadores durante estas operaciones.
+
+    // Para su aplicación, se realiza la observación de las tareas, considerando factores como las características de la carga, el equipo utilizado, la postura y fuerza ejercida por el trabajador, las condiciones de las superficies de desplazamiento, la distancia recorrida y el entorno de trabajo. Mediante un sistema de puntuación y codificación por colores, se identifican los niveles de riesgo y los factores que requieren intervención.
+
+    // Los resultados permiten determinar las condiciones de riesgo, comparar tareas y establecer medidas preventivas para reducir los riesgos asociados con las actividades de empuje y arrastre.'
+    //                 ],
+
+
+    //             ];
+
+    //             // Recopilar los métodos de todos los registros
+    //             $metodosEncontrados = [];
+
+    //             foreach ($evaluaciones as $evaluacion) {
+
+    //                 if (empty($evaluacion->CAT_METODOS_FRE)) {
+    //                     continue;
+    //                 }
+
+    //                 $metodos = json_decode(
+    //                     $evaluacion->CAT_METODOS_FRE,
+    //                     true
+    //                 );
+
+    //                 if (!is_array($metodos)) {
+    //                     continue;
+    //                 }
+
+    //                 foreach ($metodos as $metodoId) {
+
+    //                     $metodoId = (string) $metodoId;
+
+    //                     if (
+    //                         isset($catalogoMetodos[$metodoId]) &&
+    //                         !isset($metodosEncontrados[$metodoId])
+    //                     ) {
+    //                         $metodosEncontrados[$metodoId] =
+    //                             $catalogoMetodos[$metodoId];
+
+    //                         $metodosEncontrados[$metodoId]['ID'] = $metodoId;
+    //                     }
+    //                 }
+    //             }
+
+    //             return response()->json([
+    //                 'success' => true,
+    //                 'data' => array_values($metodosEncontrados),
+    //             ]);
+    //         } catch (\Exception $e) {
+
+    //             \Log::error('Error al consultar las metodologías FRE', [
+    //                 'RECO_ID' => $request->input('ergoid'),
+    //                 'exception' => $e->getMessage(),
+    //             ]);
+
+    //             return response()->json([
+    //                 'success' => false,
+    //                 'data' => [],
+    //                 'msj' => 'No fue posible consultar las metodologías FRE.',
+    //             ], 500);
+    //         }
+    //     }
+
+
+
+
     public function ObtenerMetodosFre(Request $request)
     {
         $this->validate($request, [
@@ -2460,8 +2605,23 @@ class evaluacionfreController extends Controller
 
             $evaluaciones = DB::table('evaluacion_fre_ergo')
                 ->where('RECO_ID', $request->input('ergoid'))
-                ->select('CAT_METODOS_FRE')
+                ->select('CAT_METODOS_FRE', 'APLICA_METODOS_ERGONOMICOS')
                 ->get();
+
+            $todosNoAplican = $evaluaciones->isNotEmpty() &&
+                $evaluaciones->every(function ($evaluacion) {
+                    return (string) $evaluacion->APLICA_METODOS_ERGONOMICOS === '2';
+                });
+
+            if ($todosNoAplican) {
+
+                return response()->json([
+                    'success' => true,
+                    'aplica_metodos' => false,
+                    'nota' => 'Nota:En el presente estudio no se considera necesaria la aplicación de una metodología ergonómica específica, debido a que las actividades y condiciones de trabajo observadas no presentaron factores de riesgo que justificaran una evaluación.',
+                    'data' => []
+                ]);
+            }
 
             $catalogoMetodos = [
 
@@ -2499,9 +2659,32 @@ Para la correcta aplicación del método se debe realizar la observación direct
 Para ello, el primer paso consiste en la observación de las tareas que desempeña el trabajador. Se observarán varios ciclos de trabajo y se determinarán las posturas que se evaluarán. Si el ciclo es muy largo o no existen ciclos, se pueden realizar evaluaciones a intervalos regulares. En este caso se considerará, además, el tiempo que pasa el trabajador en cada postura.'
                 ],
 
+                '5' => [
+                    'NOMBRE' => 'Método MAC',
+                    'NOMBRE_INGLES' => 'Manual Handling Assessment Charts',
+                    'NOMBRE_ESPANOL' => 'Tablas de Evaluación de la Manipulación Manual',
+                    'DESCRIPCION' => 'El método MAC es una herramienta desarrollada por el Health and Safety Executive (HSE) del Reino Unido para evaluar los factores de riesgo asociados con las actividades de manipulación manual. Permite identificar y valorar los factores de riesgo presentes durante las operaciones de levantamiento, transporte y manipulación de cargas en equipo.
+
+Para su aplicación, se realiza la observación directa de la actividad laboral, identificando las características de la tarea, las condiciones de manipulación, el peso de la carga, la postura adoptada por los trabajadores, la frecuencia de la operación y las condiciones del entorno de trabajo. A partir de esta información, se asignan puntuaciones y colores a los diferentes factores de riesgo contemplados en la metodología.
+
+El resultado permite identificar los factores que requieren mayor atención, comparar diferentes tareas, determinar el nivel de riesgo y establecer medidas de intervención orientadas a reducir los riesgos asociados con la manipulación manual.
+
+Nota: En este informe se utiliza la versión INDG383(rev3) del método MAC (Manual Handling Assessment Chart) desarrollado por HSE (Health Safety Executive), el cual fue revisado en noviembre de 2018 con la hoja de puntuación actualizada en marzo de 2019, como herramienta técnica complementaria. Su selección permite aplicar los criterios revisados de la versión actualizada emitida por el organismo desarrollador posterior a la publicación de la Norma Oficial Mexicana (NOM-036-1-STPS-2018) en el Diario Oficial de la Federación (DOF), donde se incluye este método en el apéndice I y en la bibliografía de esta norma. Los colores y el puntaje de las fichas se interpretan conforme a lo establecido por el HSE; la suma permite comparar tareas, determinar el nivel de riesgo y las medidas de intervención para las tareas que involucren levantamiento manual de cargas.'
+                ],
+
+                '6' => [
+                    'NOMBRE' => 'Método RAPP',
+                    'NOMBRE_INGLES' => 'Risk Assessment for Pushing and Pulling',
+                    'NOMBRE_ESPANOL' => 'Evaluación de Riesgos para Empuje y Arrastre',
+                    'DESCRIPCION' => 'El método RAPP es una herramienta desarrollada por el Health and Safety Executive (HSE) del Reino Unido para evaluar los factores de riesgo asociados con las actividades de empuje y arrastre de cargas. Permite identificar y valorar las condiciones que pueden representar un riesgo para la salud musculoesquelética de los trabajadores durante estas operaciones.
+
+Para su aplicación, se realiza la observación de las tareas, considerando factores como las características de la carga, el equipo utilizado, la postura y fuerza ejercida por el trabajador, las condiciones de las superficies de desplazamiento, la distancia recorrida y el entorno de trabajo. Mediante un sistema de puntuación y codificación por colores, se identifican los niveles de riesgo y los factores que requieren intervención.
+
+Los resultados permiten determinar las condiciones de riesgo, comparar tareas y establecer medidas preventivas para reducir los riesgos asociados con las actividades de empuje y arrastre.'
+                ],
+
             ];
 
-            // Recopilar los métodos de todos los registros
             $metodosEncontrados = [];
 
             foreach ($evaluaciones as $evaluacion) {
@@ -2523,13 +2706,9 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
 
                     $metodoId = (string) $metodoId;
 
-                    if (
-                        isset($catalogoMetodos[$metodoId]) &&
-                        !isset($metodosEncontrados[$metodoId])
-                    ) {
-                        $metodosEncontrados[$metodoId] =
-                            $catalogoMetodos[$metodoId];
-
+                    if (isset($catalogoMetodos[$metodoId]) && !isset($metodosEncontrados[$metodoId])) 
+                    {
+                        $metodosEncontrados[$metodoId] = $catalogoMetodos[$metodoId];
                         $metodosEncontrados[$metodoId]['ID'] = $metodoId;
                     }
                 }
@@ -2537,7 +2716,9 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
 
             return response()->json([
                 'success' => true,
-                'data' => array_values($metodosEncontrados),
+                'aplica_metodos' => true,
+                'nota' => null,
+                'data' => array_values($metodosEncontrados)
             ]);
         } catch (\Exception $e) {
 
@@ -2553,6 +2734,8 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
             ], 500);
         }
     }
+
+
 
     /// DESCARGAR FREE
 
@@ -4694,13 +4877,21 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
 
             $plantillaword->setComplexBlock('TABLA_CATEGORIASEVALUADAS', $table);
 
-            ///METODOS 
 
+
+
+            //METODOS
 
             $evaluaciones = DB::table('evaluacion_fre_ergo')
                 ->where('RECO_ID', $RECO_ID)
-                ->select('CAT_METODOS_FRE')
+                ->select('CAT_METODOS_FRE', 'APLICA_METODOS_ERGONOMICOS')
                 ->get();
+
+            // Verificar si todos los registros indican que NO aplican metodologías
+            $todosNoAplican = $evaluaciones->isNotEmpty() &&
+                $evaluaciones->every(function ($evaluacion) {
+                    return (string) $evaluacion->APLICA_METODOS_ERGONOMICOS === '2';
+                });
 
             $catalogoMetodos = [
 
@@ -4742,10 +4933,35 @@ Para la correcta aplicación del método, se debe realizar la observación direc
 Para ello, el primer paso consiste en la observación de las tareas que desempeña el trabajador. Se observarán varios ciclos de trabajo y se determinarán las posturas que se evaluarán. Si el ciclo es muy largo o no existen ciclos, se pueden realizar evaluaciones a intervalos regulares. En este caso se considerará, además, el tiempo que pasa el trabajador en cada postura.'
                 ],
 
+                '5' => [
+                    'NOMBRE' => 'Método MAC',
+                    'NOMBRE_INGLES' => 'Manual Handling Assessment Charts',
+                    'NOMBRE_ESPANOL' => 'Tablas de Evaluación de la Manipulación Manual',
+
+                    'DESCRIPCION' => 'El método MAC es una herramienta desarrollada por el Health and Safety Executive (HSE) del Reino Unido para evaluar los factores de riesgo asociados con las actividades de manipulación manual. Permite identificar y valorar los factores de riesgo presentes durante las operaciones de levantamiento, transporte y manipulación de cargas en equipo.
+
+Para su aplicación, se realiza la observación directa de la actividad laboral, identificando las características de la tarea, las condiciones de manipulación, el peso de la carga, la postura adoptada por los trabajadores, la frecuencia de la operación y las condiciones del entorno de trabajo. A partir de esta información, se asignan puntuaciones y colores a los diferentes factores de riesgo contemplados en la metodología.
+
+El resultado permite identificar los factores que requieren mayor atención, comparar diferentes tareas, determinar el nivel de riesgo y establecer medidas de intervención orientadas a reducir los riesgos asociados con la manipulación manual.
+
+Nota: En este informe se utiliza la versión INDG383(rev3) del método MAC (Manual Handling Assessment Chart) desarrollado por HSE (Health Safety Executive), el cual fue revisado en noviembre de 2018 con la hoja de puntuación actualizada en marzo de 2019, como herramienta técnica complementaria. Su selección permite aplicar los criterios revisados de la versión actualizada emitida por el organismo desarrollador posterior a la publicación de la Norma Oficial Mexicana (NOM-036-1-STPS-2018) en el Diario Oficial de la Federación (DOF), donde se incluye este método en el apéndice I y en la bibliografía de esta norma. Los colores y el puntaje de las fichas se interpretan conforme a lo establecido por el HSE; la suma permite comparar tareas, determinar el nivel de riesgo y las medidas de intervención para las tareas que involucren levantamiento manual de cargas.'
+                ],
+
+                '6' => [
+                    'NOMBRE' => 'Método RAPP',
+                    'NOMBRE_INGLES' => 'Risk Assessment for Pushing and Pulling',
+                    'NOMBRE_ESPANOL' => 'Evaluación de Riesgos para Empuje y Arrastre',
+
+                    'DESCRIPCION' => 'El método RAPP es una herramienta desarrollada por el Health and Safety Executive (HSE) del Reino Unido para evaluar los factores de riesgo asociados con las actividades de empuje y arrastre de cargas. Permite identificar y valorar las condiciones que pueden representar un riesgo para la salud musculoesquelética de los trabajadores durante estas operaciones.
+
+Para su aplicación, se realiza la observación de las tareas, considerando factores como las características de la carga, el equipo utilizado, la postura y fuerza ejercida por el trabajador, las condiciones de las superficies de desplazamiento, la distancia recorrida y el entorno de trabajo. Mediante un sistema de puntuación y codificación por colores, se identifican los niveles de riesgo y los factores que requieren intervención.
+
+Los resultados permiten determinar las condiciones de riesgo, comparar tareas y establecer medidas preventivas para reducir los riesgos asociados con las actividades de empuje y arrastre.'
+                ],
+
             ];
 
-           
-
+            // Recopilar los métodos de todos los registros
             $metodosEncontrados = [];
 
             foreach ($evaluaciones as $evaluacion) {
@@ -4771,14 +4987,22 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                         isset($catalogoMetodos[$metodoId]) &&
                         !isset($metodosEncontrados[$metodoId])
                     ) {
+
                         $metodosEncontrados[$metodoId] =
                             $catalogoMetodos[$metodoId];
                     }
                 }
             }
 
+            // INSERTAR METODOLOGÍAS O NOTA EN WORD
 
-            if (count($metodosEncontrados) > 0) {
+            if ($todosNoAplican) {
+
+                $plantillaword->setValue(
+                    'METODOS_EVALUADOS',
+                    'Nota: En el presente estudio no se considera necesaria la aplicación de una metodología ergonómica específica, debido a que las actividades y condiciones de trabajo observadas no presentaron factores de riesgo que justificaran una evaluación.'
+                );
+            } elseif (count($metodosEncontrados) > 0) {
 
                 $contenidoMetodos = new \PhpOffice\PhpWord\Element\TextRun();
 
@@ -4830,29 +5054,27 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                     $contenidoMetodos->addTextBreak(1);
                 }
 
-                $plantillaword->setComplexBlock('METODOS_EVALUADOS',$contenidoMetodos
-                );
+                $plantillaword->setComplexBlock('METODOS_EVALUADOS',$contenidoMetodos);
             } else {
 
                 $plantillaword->setValue('METODOS_EVALUADOS','No se encontraron metodologías evaluadas.');
             }
 
+
             //// CONCLUSION
             $plantillaword->setValue('CONCLUSION', $datosGenerales->INFORME_CONCLUSION ? htmlspecialchars($datosGenerales2->INFORME_CONCLUSION) : 'No cargado');
 
             //// RECOMENDACIONES 
+
+
+
+
             $recomendaciones = DB::table('recomendacionesinformeFre as rif')
-                ->join(
-                    'catergo_recomendaciones as cr',
-                    'cr.ID_RECOMENDACIONES',
-                    '=',
-                    'rif.CATALOGO_RECOMENDACIONES_ID'
-                )
                 ->where('rif.RECO_ID', $RECO_ID)
                 ->select(
-                    'cr.DESCRIPCION_RECOMENDACIONES'
+                    'rif.DESCRIPCION_PERSONALIZADA'
                 )
-                ->orderBy('cr.ID_RECOMENDACIONES', 'ASC')
+                ->orderBy('rif.ID_RECOMENDACIONES_FRE_ERGO', 'ASC')
                 ->get();
 
 
@@ -4867,7 +5089,7 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                 foreach ($recomendaciones as $recomendacion) {
 
                     $descripcion = trim(
-                        $recomendacion->DESCRIPCION_RECOMENDACIONES ?? ''
+                        $recomendacion->DESCRIPCION_PERSONALIZADA ?? ''
                     );
 
                     if ($descripcion === '') {
@@ -4878,14 +5100,13 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                         $bloqueRecomendaciones->addTextBreak(1);
                     }
 
-                    $bloqueRecomendaciones->addText('• ',
-                        [
-                            'name' => 'Poppins',
-                            'size' => 12
-                        ]
-                    );
+                    $bloqueRecomendaciones->addText('• ', [
+                        'name' => 'Poppins',
+                        'size' => 12
+                    ]);
 
-                    $bloqueRecomendaciones->addText(html_entity_decode($descripcion,ENT_QUOTES | ENT_HTML5,'UTF-8'),
+                    $bloqueRecomendaciones->addText(
+                        html_entity_decode($descripcion, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                         [
                             'name' => 'Poppins',
                             'size' => 12
@@ -4895,91 +5116,21 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                     $contadorRecomendaciones++;
                 }
 
-
                 if ($contadorRecomendaciones > 0) {
 
-                    $plantillaword->setComplexBlock('RECOMENDACIONES',$bloqueRecomendaciones);
+                    $plantillaword->setComplexBlock(
+                        'RECOMENDACIONES',
+                        $bloqueRecomendaciones
+                    );
                 } else {
 
-                    $plantillaword->setValue('RECOMENDACIONES','No cargado');
+                    $plantillaword->setValue('RECOMENDACIONES', 'No cargado');
                 }
             } else {
 
-                $plantillaword->setValue('RECOMENDACIONES','No cargado');
+                $plantillaword->setValue('RECOMENDACIONES', 'No cargado');
             }
 
-
-            // //// RESPONSABLE 1
-
-            // if ($datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO) {
-            //     if (
-            //         file_exists(
-            //             storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO)
-            //         )
-            //     ) {
-            //         $plantillaword->setImageValue(
-            //             'REPONSABLE1_DOCUMENTO',
-            //             array(
-            //                 'path' => storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO),
-            //                 'height' => 300,
-            //                 'width' => 580,
-            //                 'ratio' => true,
-            //                 'borderColor' => '000000'
-            //             )
-            //         );
-            //     } else {
-            //         $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
-            //     }
-            // } else {
-            //     $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
-            // }
-
-
-            // $plantillaword->setValue(
-            //     'REPONSABLE1',
-            //     htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE1 ? $datosGenerales2->INFORME_RESPONSABLE1 : 'No cargado'))
-            //         .
-            //         '</w:t><w:br/><w:t>'
-            //         .
-            //         htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE1CARGO ? $datosGenerales2->INFORME_RESPONSABLE1CARGO : 'No cargado'))
-            // );
-
-
-            // //// RESPONSABLE 2
-            // if ($datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO) {
-            //     if (
-            //         file_exists(
-            //             storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO)
-            //         )
-            //     ) {
-            //         $plantillaword->setImageValue(
-            //             'REPONSABLE2_DOCUMENTO',
-            //             array(
-            //                 'path' => storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO),
-            //                 'height' => 300,
-            //                 'width' => 580,
-            //                 'ratio' => true,
-            //                 'borderColor' => '000000'
-            //             )
-            //         );
-            //     } else {
-            //         $plantillaword->setValue('REPONSABLE2_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
-            //     }
-            // } else {
-            //     $plantillaword->setValue(
-            //         'REPONSABLE2_DOCUMENTO',
-            //         'FALTA CARGAR IMAGEN DESDE EL SISTEMA.'
-            //     );
-            // }
-
-            // $plantillaword->setValue(
-            //     'REPONSABLE2',
-            //     htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2 ? $datosGenerales2->INFORME_RESPONSABLE2 : 'No cargado'))
-            //         .
-            //         '</w:t><w:br/><w:t>'
-            //         .
-            //         htmlspecialchars(($datosGenerales->INFORME_RESPONSABLE2CARGO ? $datosGenerales2->INFORME_RESPONSABLE2CARGO : 'No cargado'))
-            // );
 
 
             // RESPONSABLE 1

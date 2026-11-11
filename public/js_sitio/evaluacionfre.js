@@ -223,7 +223,7 @@ $('.link_menuprincipal').click(function () {
                 cargarGraficaPregunta4,
                 cargarGraficaPregunta5,
                 cargarGraficaPregunta6,
-                cargarDefinicionesInformeFreErgo,
+                cargarRecomendacionesInformeFreErgo,
                 tablaVersionesRecoErgo,
                 validarEdicionRecoErgo,
                 cargarDatosPlantilla
@@ -8896,35 +8896,26 @@ $("#form_informe_esqueletico").on("submit",function(e)
 /// METODOS
 
 
+
 function cargarMetodosFre() {
 
     try {
 
-        if (
-            typeof recsensorial === 'undefined' ||
-            !recsensorial ||
-            !Number.isInteger(Number(recsensorial)) ||
-            Number(recsensorial) < 1
-        ) {
-            $('#contenedorMetodosFre').html(
-                '<p class="text-muted">No se ha seleccionado un reconocimiento.</p>'
-            );
+        if (typeof recsensorial === 'undefined' || !recsensorial || !Number.isInteger(Number(recsensorial)) || Number(recsensorial) < 1)
+        {
+
+            $('#contenedorMetodosFre').html( '<p class="text-muted">No se ha seleccionado un reconocimiento.</p>');
 
             return;
         }
 
-        $('#contenedorMetodosFre').html(
-            '<p class="text-muted">Cargando metodologías...</p>'
-        );
+        $('#contenedorMetodosFre').html('<p class="text-muted">Cargando metodologías...</p>');
 
         $.ajax({
 
             url: '/ObtenerMetodosFre',
-
             type: 'GET',
-
             dataType: 'json',
-
             cache: false,
 
             data: {
@@ -8937,42 +8928,35 @@ function cargarMetodosFre() {
 
                 contenedor.empty();
 
-                if (
-                    !respuesta.success ||
-                    !Array.isArray(respuesta.data) ||
-                    respuesta.data.length === 0
-                ) {
+                if (!respuesta.success) {
 
-                    contenedor.append(
-                        $('<p>')
-                            .addClass('text-muted')
-                            .text('No hay metodologías registradas para este reconocimiento.')
-                    );
+                    contenedor.append($('<p>').addClass('text-muted').text('No fue posible obtener la información de las metodologías.'));
+
+                    return;
+                }
+                if (respuesta.aplica_metodos === false) {
+
+                    const nota = $('<p>').addClass('metodo-fre-nota').text(respuesta.nota);
+                    contenedor.append(nota);
 
                     return;
                 }
 
-                // Mostrar cada metodología una sola vez
+                if (!Array.isArray(respuesta.data) || respuesta.data.length === 0)
+                {
+
+                    contenedor.append($('<p>').addClass('text-muted').text('No hay metodologías registradas para este reconocimiento.'));
+
+                    return;
+                }
+
                 respuesta.data.forEach(function (metodo) {
 
-                    const tarjeta = $('<div>')
-                        .addClass('metodo-fre-descripcion');
-
-                    const titulo = $('<h5>')
-                        .addClass('metodo-fre-titulo')
-                        .text(metodo.NOMBRE);
-
-                    const nombreIngles = $('<p>')
-                        .addClass('metodo-fre-nombre-ingles')
-                        .text(metodo.NOMBRE_INGLES);
-
-                    const nombreEspanol = $('<p>')
-                        .addClass('metodo-fre-nombre-espanol')
-                        .text('Nombre en español: ' + metodo.NOMBRE_ESPANOL);
-
-                    const descripcion = $('<p>')
-                        .addClass('metodo-fre-texto')
-                        .text(metodo.DESCRIPCION);
+                    const tarjeta = $('<div>').addClass('metodo-fre-descripcion');
+                    const titulo = $('<h5>').addClass('metodo-fre-titulo').text(metodo.NOMBRE);
+                    const nombreIngles = $('<p>').addClass('metodo-fre-nombre-ingles').text(metodo.NOMBRE_INGLES);
+                    const nombreEspanol = $('<p>').addClass('metodo-fre-nombre-espanol').text('Nombre en español: ' + metodo.NOMBRE_ESPANOL);
+                    const descripcion = $('<p>').addClass('metodo-fre-texto').text(metodo.DESCRIPCION);
 
                     tarjeta.append(titulo);
                     tarjeta.append(nombreIngles);
@@ -8992,11 +8976,7 @@ function cargarMetodosFre() {
                     xhr.responseJSON || xhr.responseText
                 );
 
-                $('#contenedorMetodosFre').empty().append(
-                    $('<p>')
-                        .addClass('text-danger')
-                        .text('No fue posible cargar las metodologías.')
-                );
+                $('#contenedorMetodosFre').empty().append($('<p>').addClass('text-danger').text('No fue posible cargar las metodologías.'));
 
             }
 
@@ -9004,12 +8984,10 @@ function cargarMetodosFre() {
 
     } catch (exception) {
 
-        console.error(
-            'Error en cargarMetodosFre:',
-            exception
-        );
+        console.error('Error en cargarMetodosFre:',exception);
 
     }
+
 }
 
 
@@ -9232,75 +9210,261 @@ $("#form_informe_conclusiones").on(
 
     ///// RECOMENDACIONES
 
-$("#form_informe_listarecomendaciones").on(
-    "submit",
-    function(e)
-{
+
+
+// ACTIVAR O DESACTIVAR RECOMENDACION DEL CATALOGO
+
+$(document).on('change', '.recomendacion_checkbox', function () {
+
+    let fila = $(this).closest('tr');
+    let descripcion = fila.find('.descripcion-recomendacion');
+
+    if ($(this).is(':checked')) {
+
+        descripcion.prop('disabled', false);
+
+    } else {
+
+        descripcion.prop('disabled', true);
+
+    }
+
+});
+
+
+// AGREGAR NUEVA RECOMENDACION
+
+$('#agregar_recomendacion_manual').on('click', function () {
+
+    let fila = `
+        <tr class="fila-recomendacion recomendacion-manual">
+
+            <td>
+                <input type="text"
+                       class="form-control tipo-recomendacion"
+                       placeholder="Tipo de recomendación">
+            </td>
+
+            <td>
+                <textarea
+                    class="form-control descripcion-recomendacion"
+                    rows="3"
+                    placeholder="Escribe la recomendación..."></textarea>
+            </td>
+
+            <td class="text-center">
+
+                <span class="badge badge-success">
+                    Nueva
+                </span>
+
+            </td>
+
+            <td class="text-center">
+
+                <button type="button"
+                        class="btn btn-danger btn-sm eliminar-recomendacion">
+
+                    <i class="fa fa-trash"></i>
+
+                </button>
+
+            </td>
+
+        </tr>
+    `;
+
+    $('#tbody_recomendaciones').append(fila);
+
+});
+
+
+// ELIMINAR RECOMENDACION MANUAL
+
+$(document).on('click', '.eliminar-recomendacion', function () {
+
+    $(this).closest('tr').remove();
+
+});
+
+
+
+
+$("#form_informe_listarecomendaciones").on("submit", function(e) {
 
     e.preventDefault();
 
-    let formData = new FormData(this);
+    let recomendaciones = [];
 
-    formData.append('RECO_ID',recsensorial);
+    $('#tbody_recomendaciones .catalogo-recomendacion').each(function() {
+
+        let fila = $(this);
+
+        if (fila.find('.recomendacion_checkbox').is(':checked')) {
+
+            recomendaciones.push({
+                catalogo_id: fila.attr('data-catalogo'),
+                descripcion: fila.find('.descripcion-recomendacion').val(),
+                tipo: fila.find('td:first').text().trim()
+            });
+        }
+
+    });
+
+
+    $('#tbody_recomendaciones .recomendacion-manual').each(function() {
+        let fila = $(this);
+        let descripcion = fila.find('.descripcion-recomendacion').val().trim();
+        let tipo = fila.find('.tipo-recomendacion').val().trim();
+        if (descripcion !== '') {
+
+            recomendaciones.push({
+                catalogo_id: 0,
+                descripcion: descripcion,
+                tipo: tipo
+            });
+        }
+    });
+
+
+    let formData = new FormData();
+    formData.append('RECO_ID', recsensorial);
+    formData.append('RECOMENDACIONES', JSON.stringify(recomendaciones));
+
 
     $.ajax({
+
         url: '/guardarRecomendacionesInformeFreErgo',
         type: 'POST',
         data: formData,
         cache: false,
         contentType: false,
         processData: false,
-
         headers: {
-            'X-CSRF-TOKEN':
-                $('meta[name="csrf-token"]')
-                .attr('content')
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
 
-        beforeSend: function()
-        {
+        beforeSend: function() {
             $("#botonguardar_reporte_recomendaciones").prop('disabled', true);
             $("#botonguardar_reporte_recomendaciones").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+
         },
 
-        success: function(response)
-        {
+        success: function(response) {
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
                 text: response.msj,
                 timer: 2000,
                 showConfirmButton: false
+
             });
+
+            cargarRecomendacionesInformeFreErgo();
+
         },
 
-        complete: function()
-        {
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: xhr.responseJSON?.msj || 'No fue posible guardar las recomendaciones.'
+
+            });
+
+        },
+
+        complete: function() {
             $("#botonguardar_reporte_recomendaciones").prop('disabled', false);
             $("#botonguardar_reporte_recomendaciones").html('Guardar recomendaciones <i class="fa fa-save"></i>');
+
         }
+
     });
+
 });
 
 
 
 
-
-function cargarDefinicionesInformeFreErgo()
+function cargarRecomendacionesInformeFreErgo()
 {
 
     $.get(
         '/obtenerRecomendacionesInformeFreErgo/' + recsensorial,
 
         function(response)
-        {  
-            $('input[name="DESCRIPCION_RECOMENDACIONES[]"]').prop('checked', false);
+        {
+            $('#tbody_recomendaciones .catalogo-recomendacion').each(function() {
+
+                let fila = $(this);
+                fila.find('.recomendacion_checkbox').prop('checked', false);
+                fila.find('.descripcion-recomendacion').prop('disabled', true);
+
+            });
+
+            $('#tbody_recomendaciones .recomendacion-manual').remove();
+
             response.forEach(function(item)
             {
-                $('input[name="DESCRIPCION_RECOMENDACIONES[]"][value="' + item.CATALOGO_RECOMENDACIONES_ID + '"]').prop('checked', true);
+
+                let catalogoId = parseInt(item.CATALOGO_RECOMENDACIONES_ID);
+
+            let descripcion = item.DESCRIPCION_PERSONALIZADA ||
+                $('#tbody_recomendaciones .catalogo-recomendacion[data-catalogo="' + item.CATALOGO_RECOMENDACIONES_ID + '"]')
+                .find('.descripcion-recomendacion').val() || '';
+                            
+
+                if (catalogoId > 0) {
+
+                    let fila = $('#tbody_recomendaciones .catalogo-recomendacion[data-catalogo="' + catalogoId + '"]');
+
+                    if (fila.length) {
+
+                        fila.find('.recomendacion_checkbox').prop('checked', true);
+
+                        fila.find('.descripcion-recomendacion')
+                            .val(descripcion)
+                            .prop('disabled', false);
+
+                    }
+
+                }
+
+                else {
+
+                    let fila = `
+                        <tr class="fila-recomendacion recomendacion-manual">
+
+                            <td>
+                                <span class="badge badge-info">-</span>
+                            </td>
+
+                            <td>
+                                <textarea class="form-control descripcion-recomendacion" rows="3" placeholder="Escribe la recomendación...">${$('<div>').text(descripcion).html()}</textarea>
+                            </td>
+
+                            <td class="text-center">
+                                <span class="badge badge-success">Nueva</span>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-danger btn-sm eliminar-recomendacion">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+
+                    $('#tbody_recomendaciones').append(fila);
+
+                }
+
             });
+
         }
     );
+
 }
 
 /// RESPONSABLES

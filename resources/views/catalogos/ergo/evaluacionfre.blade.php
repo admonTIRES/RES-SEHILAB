@@ -1288,19 +1288,16 @@
                                     <a href="#6_2" class="list-group-item submenu">6.2.- Personal Ocupacionalmente Expuesto (POE) evaluado <i class="fa " id="menureporte_6_2"></i></a>
                                     <a href="#6_3" class="list-group-item submenu">6.3.- Variables antropométricas (peso y talla) <i class="fa " id="menureporte_6_3"></i></a>
                                     <a href="#6_4" class="list-group-item submenu">6.4.- Registro de trastornos músculo esqueléticos <i class="fa " id="menureporte_6_4"></i></a>
-
-
-                                    <a href="#7" class="list-group-item">7.- Categorías evaluadas <i class="fa " id="menureporte_7"></i></a>
-                                    <a href="#7_1" class="list-group-item submenu">7.1.- Método de ergonomía aplicado<i class="fa " id="menureporte_7_1"></i></a>
-                                    <a href="#7_2" class="list-group-item submenu">7.2.- Resultados de la aplicación del método<i class="fa " id="menureporte_7_2"></i></a>
-                                    <a href="#8" class="list-group-item">8.- Conclusiones <i class="fa" id="menureporte_8"></i></a>
-                                    <a href="#9" class="list-group-item">9.- Recomendaciones de control <i class="fa" id="menureporte_9"></i></a>
-                                    <a href="#10" class="list-group-item">10.- Responsables del informe <i class="fa" id="menureporte_10"></i></a>
+                                    <a href="#6_5" class="list-group-item submenu">6.5.- Método(s) ergonómico(s) aplicado(s) en este estudio <i class="fa " id="menureporte_6_5"></i></a>
+                                    <a href="#6_6" class="list-group-item submenu">6.6.- Resultados de la aplicación de los métodos ergonómicos por categoría o puesto de trabajo (tareas)<i class="fa " id="menureporte_6_6"></i></a>
+                                    <a href="#7" class="list-group-item">7.- Conclusiones <i class="fa" id="menureporte_7"></i></a>
+                                    <a href="#8" class="list-group-item">8.- Recomendaciones de control <i class="fa" id="menureporte_8"></i></a>
+                                    <a href="#9" class="list-group-item">9.- Responsables del informe <i class="fa" id="menureporte_9"></i></a>
                                     @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador']))
 
-                                    <a href="#11" class="list-group-item">11.- Anexos <i class="fa" id="menureporte_11"></i></a>
-                                    <a href="#11_1" class="list-group-item submenu">11.1.- Anexo 1: Métodos aplicados <i class="fa " id="menureporte_11_1"></i></a>
-                                    <a href="#12" class="list-group-item">12.- Generar informe <i class="fa" id="menureporte_12"></i></a>
+                                    <a href="#10" class="list-group-item">10.- Anexos <i class="fa" id="menureporte_10"></i></a>
+                                    <a href="#10_1" class="list-group-item submenu">10.1.- Anexo 1: Métodos aplicados <i class="fa " id="menureporte_10_1"></i></a>
+                                    <a href="#11" class="list-group-item">11.- Generar informe <i class="fa" id="menureporte_11"></i></a>
                                     @endif
 
 
@@ -2385,30 +2382,7 @@ DESCRIPCIONACTIVIDAD
                                             <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_esqueletico">Guardar músculo esqueléticos <i class="fa fa-save"></i></button>
                                         </div>
                                     </form>
-                                    <h4 class="card-title mt-5" id="7">7.- Categorías evaluadas </h4>
-                                    <form method="post" enctype="multipart/form-data" name="form_informe_catevaluadas" id="form_informe_catevaluadas">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                {!! csrf_field() !!}
-                                                <div class="form-group">
-                                                    <p>
-                                                        Se relacionan a continuación las categorías objeto evaluadas en el presente estudio de factores de riesgo ergonómico:</p>
-                                                </div>
-                                                <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_trabajadores_ergo">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="130">Área</th>
-                                                            <th>Categoría</th>
-                                                            <th>No. de trabajadores evaluados</th>
-                                                        </tr>
-                                                    </thead>
-
-                                                    <tbody></tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <h4 class="card-title mt-5" id="7_1">7.1.- Método de ergonomía aplicado</h4>
+                                    <h4 class="card-title mt-5" id="6_5">6.5.- Método(s) ergonómico(s) aplicado(s) en este estudio</h4>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-12">
@@ -2468,10 +2442,10 @@ DESCRIPCIONACTIVIDAD
                                             </div>
                                         </div>
                                     </div>
-                                    <h4 class="card-title mt-5" id="7_2">7.2.- Resultados de la aplicación del método</h4>
+                                    <h4 class="card-title mt-5" id="6_6">6.6.- Resultados de la aplicación de los métodos ergonómicos por categoría o puesto de trabajo (tareas)</h4>
 
 
-                                    <h4 class="card-title mt-5" id="8">8.- Conclusiones</h4>
+                                    <h4 class="card-title mt-5" id="7">7.- Conclusiones</h4>
                                     <form method="post" enctype="multipart/form-data" name="form_informe_conclusiones" id="form_informe_conclusiones">
                                         <div class="row">
                                             <div class="col-12">
@@ -2501,52 +2475,63 @@ DESCRIPCIONACTIVIDAD
                                             </div>
                                         </div>
                                     </form>
-                                    <h4 class="card-title" id="9">9.- Recomendaciones de control</h4>
+                                    <h4 class="card-title" id="8">8.- Recomendaciones de control</h4>
+
                                     <div class="row">
                                         <div class="col-12">
                                             <form enctype="multipart/form-data" method="post" name="form_informe_listarecomendaciones" id="form_informe_listarecomendaciones">
                                                 <div class="row mb-3">
-                                                    <table class="table-sm" style="width: 96%; table-layout: fixed;">
-                                                        <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_recomendaciones">
+                                                    <div class="col-12">
+                                                        <table class="table table-sm table-hover tabla_info_centrado" width="100%" id="tabla_reporte_recomendaciones">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Tipo</th>
-                                                                    <th>Descripción</th>
-                                                                    <th width="80">Activo</th>
+                                                                    <th width="25%">Tipo</th>
+                                                                    <th>Descripción de la recomendación</th>
+                                                                    <th width="90">Activo</th>
+                                                                    <th width="90">Eliminar</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
+                                                            <tbody id="tbody_recomendaciones">
                                                                 @foreach ($catrecomendaciones as $dato)
-                                                                <tr>
+
+                                                                <tr class="fila-recomendacion catalogo-recomendacion" data-catalogo="{{ $dato->ID_RECOMENDACIONES }}">
                                                                     <td class="justificado">{{ $dato->TIPO_RECOMENDACIONES }}</td>
-                                                                    <td class="justificado">{{ $dato->DESCRIPCION_RECOMENDACIONES }}</td>
+                                                                    <td>
+                                                                        <textarea class="form-control descripcion-recomendacion" rows="3" disabled>{{ $dato->DESCRIPCION_RECOMENDACIONES }}</textarea>
+                                                                    </td>
                                                                     <td class="text-center">
                                                                         <div class="switch">
                                                                             <label>
-                                                                                <input type="checkbox"
-                                                                                    class="recomendacion_checkbox"
-                                                                                    name="DESCRIPCION_RECOMENDACIONES[]"
-                                                                                    value="{{ $dato->ID_RECOMENDACIONES }}"
-                                                                                    onclick="activa_recomendacion(this);"
-                                                                                    {{ $dato->ACTIVO == 1 ? '' : '' }}>
-                                                                                <span class="lever switch-col-light-blue"></span>
+                                                                                <input type="checkbox" class="recomendacion_checkbox"> <span class="lever switch-col-light-blue"></span>
                                                                             </label>
                                                                         </div>
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        -
                                                                     </td>
                                                                 </tr>
                                                                 @endforeach
                                                             </tbody>
                                                         </table>
-                                                </div>
-                                                <div class="col-12" style="text-align: right;">
-                                                    <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_recomendaciones">Guardar recomendaciones <i class="fa fa-save"></i></button>
+                                                    </div>
+                                                    <div class="col-12 mb-3">
+                                                        <button type="button" class="btn btn-info waves-effect waves-light" id="agregar_recomendacion_manual">
+                                                            <i class="fa fa-plus"></i>
+                                                            Agregar recomendación
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-12" style="text-align: right;">
+                                                        <button type="submit" class="btn btn-danger waves-effect waves-light botoninforme" id="botonguardar_reporte_recomendaciones">
+                                                            Guardar recomendaciones<i class="fa fa-save"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
 
 
-                                    <h4 class="card-title" id="10">10.- Responsables del informe</h4>
+                                    <h4 class="card-title" id="9">9.- Responsables del informe</h4>
                                     <form enctype="multipart/form-data" method="post" name="form_informe_responsablesinforme" id="form_informe_responsablesinforme">
                                         <div class="row">
                                             <div class="col-6">
@@ -2604,8 +2589,8 @@ DESCRIPCIONACTIVIDAD
                                     </form>
                                     @if(auth()->user()->hasRoles(['Superusuario', 'Administrador']))
 
-                                    <h4 class="card-title mt-2" id="11">11.- Anexos </h4>
-                                    <h4 class="card-title" id="11_1">11.1.- Anexo 1: Métodos aplicados </h4>
+                                    <h4 class="card-title mt-2" id="10">10.- Anexos </h4>
+                                    <h4 class="card-title" id="10_1">10.1.- Anexo 1: Métodos aplicados </h4>
                                     <div class="row mb-5">
                                         <div class="col-12">
                                         </div>
@@ -7140,7 +7125,7 @@ DESCRIPCIONACTIVIDAD
 
                                                         <label>A-1. Altura del asiento</label>
 
-                                                        <select id="ROSA_ALTURA_ASIENTO" name="ROSA_ALTURA_ASIENTO" class="form-control rosa-campo" required>
+                                                        <select id="ROSA_ALTURA_ASIENTO" name="ROSA_ALTURA_ASIENTO" class="form-control" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Postura neutra: rodillas a 90°</option>
                                                             <option value="2">2 — Asiento bajo, rodillas menores de 90°</option>
@@ -7166,7 +7151,7 @@ DESCRIPCIONACTIVIDAD
 
                                                     <div class="rosa-campo-contenedor">
                                                         <label>A-2. Profundidad del asiento</label>
-                                                        <select id="ROSA_PROFUNDIDAD_ASIENTO" name="ROSA_PROFUNDIDAD_ASIENTO" class="form-control rosa-campo" required>
+                                                        <select id="ROSA_PROFUNDIDAD_ASIENTO" name="ROSA_PROFUNDIDAD_ASIENTO" class="form-control" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — 8 cm entre el borde y la pierna</option>
                                                             <option value="2">2 — Menos de 8 cm</option>
@@ -7183,7 +7168,7 @@ DESCRIPCIONACTIVIDAD
 
                                                     <div class="rosa-campo-contenedor">
                                                         <label>A-3. Reposabrazos</label>
-                                                        <select id="ROSA_REPOSABRAZOS" name="ROSA_REPOSABRAZOS" class="form-control rosa-campo" required>
+                                                        <select id="ROSA_REPOSABRAZOS" name="ROSA_REPOSABRAZOS" class="form-control" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Codos a 90° y hombros relajados</option>
                                                             <option value="2">2 — Codos altos o bajos sin apoyo</option>
@@ -7207,7 +7192,7 @@ DESCRIPCIONACTIVIDAD
 
                                                     <div class="rosa-campo-contenedor">
                                                         <label>A-4. Respaldo</label>
-                                                        <select id="ROSA_RESPALDO" name="ROSA_RESPALDO" class="form-control rosa-campo" required>
+                                                        <select id="ROSA_RESPALDO" name="ROSA_RESPALDO" class="form-control" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Apoyo lumbar e inclinación adecuada</option>
                                                             <option value="2">2 — Sin apoyo lumbar o apoyo inadecuado</option>
@@ -7235,7 +7220,7 @@ DESCRIPCIONACTIVIDAD
                                                     <label for="ROSA_TIEMPO_A">
                                                         Tiempo de uso diario de la silla
                                                     </label>
-                                                    <select id="ROSA_TIEMPO_A" name="ROSA_TIEMPO_A" class="form-control rosa-tiempo">
+                                                    <select id="ROSA_TIEMPO_A" name="ROSA_TIEMPO_A" class="form-control rosa-tiempo" required>
                                                         <option value="">Seleccionar</option>
                                                         <option value="1">+1 — Más de 4 horas o más de 1 hora ininterrumpida</option>
                                                         <option value="0">0 — Entre 1 y 4 horas en total o entre 30 minutos y 1 hora ininterrumpida</option>
@@ -7247,7 +7232,7 @@ DESCRIPCIONACTIVIDAD
                                                 <div class="rosa-grid">
                                                     <div class="rosa-campo-contenedor">
                                                         <label>B-1. Teléfono</label>
-                                                        <select id="ROSA_TELEFONO" name="ROSA_TELEFONO" class="form-control rosa-campo" required>
+                                                        <select id="ROSA_TELEFONO" name="ROSA_TELEFONO" class="form-control" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Cuello recto y manos libres</option>
                                                             <option value="2">2 — Teléfono alejado más de 30 cm</option>
@@ -7276,7 +7261,7 @@ DESCRIPCIONACTIVIDAD
 
                                                     <div class="rosa-campo-contenedor">
                                                         <label>B-2. Pantalla</label>
-                                                        <select id="ROSA_PANTALLA" name="ROSA_PANTALLA" class="form-control rosa-campo" required>
+                                                        <select id="ROSA_PANTALLA" name="ROSA_PANTALLA" class="form-control" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Pantalla a 40–75 cm y a la altura de los ojos</option>
                                                             <option value="2">2 — Pantalla demasiado baja</option>
@@ -7316,7 +7301,7 @@ DESCRIPCIONACTIVIDAD
                                                 <div class="rosa-grid">
                                                     <div class="rosa-campo-contenedor">
                                                         <label>C-1. Ratón</label>
-                                                        <select id="ROSA_RATON" name="ROSA_RATON" class="form-control rosa-campo" required>
+                                                        <select id="ROSA_RATON" name="ROSA_RATON" class="form-control" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Ratón alineado con el hombro</option>
                                                             <option value="2">2 — Ratón fuera del alcance o desalineado</option>
@@ -7336,7 +7321,7 @@ DESCRIPCIONACTIVIDAD
                                                             </label>
                                                         </div>
                                                         <label>Tiempo de uso diario del ratón</label>
-                                                        <select id="ROSA_TIEMPO_C1" name="ROSA_TIEMPO_C1" class="form-control rosa-tiempo">
+                                                        <select id="ROSA_TIEMPO_C1" name="ROSA_TIEMPO_C1" class="form-control rosa-tiempo" >
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">+1 — Uso prolongado</option>
                                                             <option value="-1">-1 — Uso breve</option>
@@ -7345,7 +7330,7 @@ DESCRIPCIONACTIVIDAD
 
                                                     <div class="rosa-campo-contenedor">
                                                         <label>C-2. Teclado</label>
-                                                        <select id="ROSA_TECLADO" name="ROSA_TECLADO" class="form-control rosa-campo" required>
+                                                        <select id="ROSA_TECLADO" name="ROSA_TECLADO" class="form-control" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Muñeca recta y hombros relajados</option>
                                                             <option value="2">2 — Extensión de muñeca mayor de 15°</option>
@@ -7593,7 +7578,6 @@ DESCRIPCIONACTIVIDAD
                                                 margin-bottom: 8px;
                                                 background: #ffffff;
                                                 color: #000000;
-                                                border: 1px solid #ced4da;
                                                 border-radius: 3px;
                                                 font-size: 12px;
                                             }
