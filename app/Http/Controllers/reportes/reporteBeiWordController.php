@@ -586,59 +586,48 @@ class reporteBeiWordController extends Controller
                                             -- TABLA.catactivo_id ASC,
                                             TABLA.concepto ASC'));
 
-
             $definiciones = '';
+
             foreach ($sql as $key => $value) {
+
                 foreach ($definiciones_fuentes as $key2 => $dato) {
+
                     if ($value->fuente == $dato['fuente_descripcion']) {
-                        if (($key + 0) < (count($sql) - 1)) {
 
-                            $definiciones .= '<w:p>
-                                                <w:pPr>
-                                                    <w:jc w:val="both"/>
-                                                    <w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="exactly" w:beforeAutospacing="0" w:afterAutospacing="0"/>
-                                                </w:pPr>
-                                                <w:rPr>
-                                                    <w:b w:val="true"/>
-                                                </w:rPr>
-                                                <w:t>
-                                                    ' . $value->concepto . '
-                                                </w:t>
-                                                <w:rPr>
-                                                    <w:b w:val="false"/>
-                                                </w:rPr>
-                                                <w:t>
-                                                    ' . htmlspecialchars($value->descripcion) . '' . $dato['fuente_simbolo'] . '
-                                                </w:t>
-                                            </w:p><w:br/>';
-                        } else {
+                        $concepto = htmlspecialchars($value->concepto, ENT_XML1 | ENT_COMPAT, 'UTF-8');
+                        $descripcion = htmlspecialchars($value->descripcion, ENT_XML1 | ENT_COMPAT, 'UTF-8');
+                        $simbolo = htmlspecialchars($dato['fuente_simbolo'], ENT_XML1 | ENT_COMPAT, 'UTF-8');
 
+                        $salto = (($key + 0) < (count($sql) - 1)) ? '<w:br/>' : '';
 
-                            $definiciones .= '<w:p>
-                                                <w:pPr>
-                                                    <w:jc w:val="both"/>
-                                                    <w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="exactly" w:beforeAutospacing="0" w:afterAutospacing="0"/>
-                                                </w:pPr>
-                                                <w:rPr>
-                                                    <w:b w:val="true"/>
-                                                </w:rPr>
-                                                <w:t>
-                                                    ' . $value->concepto . '
-                                                </w:t>
-                                                <w:rPr>
-                                                    <w:b w:val="false"/>
-                                                </w:rPr>
-                                                <w:t>
-                                                    ' . htmlspecialchars($value->descripcion) . '' . $dato['fuente_simbolo'] . '
-                                                </w:t>
-                                            </w:p>';
-                        }
+                        $definiciones .= '<w:p>
+                <w:pPr>
+                    <w:jc w:val="both"/>
+                    <w:spacing w:before="0" w:after="0" w:line="240" w:lineRule="exactly" w:beforeAutospacing="0" w:afterAutospacing="0"/>
+                </w:pPr>
+                <w:r>
+                    <w:rPr>
+                        <w:rFonts w:ascii="Poppins" w:hAnsi="Poppins" w:eastAsia="Poppins" w:cs="Poppins"/>
+                        <w:b w:val="true"/>
+                    </w:rPr>
+                    <w:t xml:space="preserve">' . $concepto . '</w:t>
+                </w:r>
+                <w:r>
+                    <w:rPr>
+                        <w:rFonts w:ascii="Poppins" w:hAnsi="Poppins" w:eastAsia="Poppins" w:cs="Poppins"/>
+                        <w:b w:val="false"/>
+                    </w:rPr>
+                    <w:t xml:space="preserve">' . $descripcion . $simbolo . '</w:t>
+                </w:r>
+                ' . $salto . '
+            </w:p>';
                     }
                 }
             }
 
-
             $plantillaword->setValue('DEFINICIONES', $definiciones);
+
+
 
             // OBJETIVO GENERAL
             //================================================================================
