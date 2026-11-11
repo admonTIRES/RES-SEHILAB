@@ -247,7 +247,7 @@ use Illuminate\Support\Str;
     @endif
 
 
-    
+
 </head>
 
 <body class="fix-header fix-sidebar card-no-border logo-center">
@@ -1052,7 +1052,7 @@ use Illuminate\Support\Str;
     <script src="/assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
     {{-- pagina --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js_sitio/evaluacionfre.js?v=38"></script>
+    <script src="/js_sitio/evaluacionfre.js?v=40"></script>
     <script src="/js_sitio/funcionesgeneralesergo.js?v=1"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 
@@ -1064,6 +1064,10 @@ use Illuminate\Support\Str;
         $(document).ready(function() {
 
             $('#INFORME_INTRODUCCION').summernote({
+                height: 400
+            });
+
+            $('#INFORME_RECONOCIMIENTO').summernote({
                 height: 400
             });
 

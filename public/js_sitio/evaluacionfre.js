@@ -158,7 +158,11 @@ $('.link_menuprincipal').click(function () {
                 $('#INFORME_INTRODUCCION').summernote('code', introduccion.defaultValue);
             } 
 
+            const reconocimiento = document.querySelector('#INFORME_RECONOCIMIENTO');
 
+            if (reconocimiento) {
+                $('#INFORME_RECONOCIMIENTO').summernote('code', reconocimiento.defaultValue);
+            } 
             
             const textareasInformeFre = [
             '#RUTA_IMAGEN_PORTADA',
@@ -338,7 +342,7 @@ function cargarDatosPlantilla()
                 return;
             }
 
-            // RECONOCIMIENTO
+            // INTROODUCCION
             let contenido = $('#INFORME_INTRODUCCION').summernote('code');
 
             if (contenido) {
@@ -350,7 +354,9 @@ function cargarDatosPlantilla()
                 $('#INFORME_INTRODUCCION').summernote('code', contenido);
             }
 
-            let reco = $('#INFORME_RECONOCIMIENTO').val();
+
+            // RECONOCIMIENTO
+             let reco = $('#INFORME_RECONOCIMIENTO').summernote('code');
 
             if (reco) {
 
@@ -358,8 +364,19 @@ function cargarDatosPlantilla()
                     reco = reco.split(marcador).join(valor || '');
                 });
 
-                $('#INFORME_RECONOCIMIENTO').val(reco);
+                $('#INFORME_RECONOCIMIENTO').summernote('code', reco);
             }
+
+            // let reco = $('#INFORME_RECONOCIMIENTO').val();
+
+            // if (reco) {
+
+            //     $.each(resp.data, function(marcador, valor) {
+            //         reco = reco.split(marcador).join(valor || '');
+            //     });
+
+            //     $('#INFORME_RECONOCIMIENTO').val(reco);
+            // }
 
             // PROCESO
             let proceso = $('#INFORME_PROCESOINSTALACION').val();
@@ -1295,7 +1312,6 @@ function obtenerEstructuraProyectos(FOLIO, NUEVO) {
                 
 			}
 
-			console.log(HIGIENE);
 			//MOSTRAMOS LOS DATOS DEL PROYECTO SOLO SI ES NUEVO SI YA ESTA CARGADO MOSTRAMOS LOS DATOS GUARDADOS EN LA BASE DE DATOS
 			$('#higiene').val(HIGIENE)
 
@@ -1319,7 +1335,6 @@ function obtenerEstructuraProyectos(FOLIO, NUEVO) {
 				$('#descripcion_contrato').val(response.info[0].NOMBRE_CONTRATO)
 				$('#descripcion_cliente').val(response.info[0].RAZON_SOCIAL)
 
-				//console.log(response.info[0].CLIENTE_ID,contrato,requiereContrato,response.info[0].NOMBRE_CONTRATO,response.info[0].RAZON_SOCIAL);
 
 
 				//INFORMACION CONSULTADA DE RECSENSORIAL
@@ -4039,18 +4054,12 @@ $('#Tablafichasevaluacionfre tbody').on('click', 'td>button.iniciarfre', functio
 
 	success: function (fre) {
 
-			console.log("Respuesta AJAX:", fre);
 
 			if (fre && fre.ID_EVALUACION_FRE) {
-
-				console.log("Entró al if");
 
 				cargarEvaluacionFre(fre);
 
 			} else {
-
-				console.log("Entró al else");
-				console.log(row.data());
 
 				cargarDatosFicha(row.data());
 
@@ -4617,6 +4626,9 @@ function cargarEvaluacionFre(data) {
     $("#REQUIERE_FUERZA_MANUAL").val(data.REQUIERE_FUERZA_MANUAL).trigger('change');
     $("#APLICA_LEY_SILLA").val(data.APLICA_LEY_SILLA).trigger('change');
 
+    $("#APLICA_METODOS_ERGONOMICOS").val(data.APLICA_METODOS_ERGONOMICOS).trigger('change');
+
+
     $("#FUERZA_MANO_DERECHA").val(data.FUERZA_MANO_DERECHA);
     $("#FUERZA_MANO_IZQUIERDA").val(data.FUERZA_MANO_IZQUIERDA);
     $("#TIPO_DOMINANCIA").val(data.TIPO_DOMINANCIA);
@@ -4668,7 +4680,12 @@ function cargarEvaluacionFre(data) {
 	$('input[name="HOMBRO_P4"]:checked').trigger('change');
 	$('#SUFRIDO_LESION_ACCIDENTE').trigger('change');
     $('#REQUIERE_FUERZA_MANUAL').trigger('change');
-	$('#APLICA_LEY_SILLA').trigger('change');
+    $('#APLICA_LEY_SILLA').trigger('change');
+    $('#APLICA_METODOS_ERGONOMICOS').trigger('change');
+    
+
+    
+    
 
 
 
@@ -4850,6 +4867,211 @@ function cargarEvaluacionFre(data) {
 
     }, 150);
 
+
+    /// MAC
+
+
+    $("#MAC_TAREAS_EQUIPO").val(data.MAC_TAREAS_EQUIPO);
+    $("#MAC_LEVANTAMIENTO_INDIVIDUAL").val(data.MAC_LEVANTAMIENTO_INDIVIDUAL);
+    $("#MAC_TRANSPORTE_CARGA").val(data.MAC_TRANSPORTE_CARGA);
+
+    // MAC TAREAS EN EQUIPO
+
+    $("#MAC_EQ_A").val(data.MAC_EQ_A);
+    $("#MAC_EQ_PESO_CARGA").val(data.MAC_EQ_PESO_CARGA);
+    $("#MAC_EQ_NUM_PERSONAS").val(data.MAC_EQ_NUM_PERSONAS);
+    $("#MAC_EQ_B").val(data.MAC_EQ_B);
+    $("#MAC_EQ_C").val(data.MAC_EQ_C);
+    $("#MAC_EQ_D").val(data.MAC_EQ_D);
+    $("#MAC_EQ_E").val(data.MAC_EQ_E);
+    $("#MAC_EQ_F").val(data.MAC_EQ_F);
+    $("#MAC_EQ_G").val(data.MAC_EQ_G);
+    $("#MAC_EQ_H").val(data.MAC_EQ_H);
+    $("#MAC_EQ_I").val(data.MAC_EQ_I);
+    $("#MAC_EQ_J").val(data.MAC_EQ_J);
+    $("#MAC_EQ_K").val(data.MAC_EQ_K);
+
+    $("#MAC_EQ_CONTROL_A").val(data.MAC_EQ_CONTROL_A);
+    $("#MAC_EQ_CONTROL_B").val(data.MAC_EQ_CONTROL_B);
+    $("#MAC_EQ_CONTROL_C").val(data.MAC_EQ_CONTROL_C);
+    $("#MAC_EQ_CONTROL_D").val(data.MAC_EQ_CONTROL_D);
+    $("#MAC_EQ_CONTROL_E").val(data.MAC_EQ_CONTROL_E);
+    $("#MAC_EQ_CONTROL_F").val(data.MAC_EQ_CONTROL_F);
+    $("#MAC_EQ_CONTROL_G").val(data.MAC_EQ_CONTROL_G);
+    $("#MAC_EQ_CONTROL_H").val(data.MAC_EQ_CONTROL_H);
+    $("#MAC_EQ_CONTROL_I").val(data.MAC_EQ_CONTROL_I);
+    $("#MAC_EQ_CONTROL_J").val(data.MAC_EQ_CONTROL_J);
+    $("#MAC_EQ_CONTROL_K").val(data.MAC_EQ_CONTROL_K);
+
+    $("#MAC_EQ_ANALISIS_RESULTADOS").val(data.MAC_EQ_ANALISIS_RESULTADOS);
+    $("#MAC_EQ_TOTAL").text(data.MAC_EQ_TOTAL);
+    $("#MAC_EQ_RESULTADO").text(data.MAC_EQ_RESULTADO);
+
+    // MAC LEVANTAMIENTO INDIVIDUAL
+
+    $("#MAC_IND_PESO_CARGA").val(data.MAC_IND_PESO_CARGA);
+    $("#MAC_IND_NUM_OBJETOS").val(data.MAC_IND_NUM_OBJETOS);
+    $("#MAC_IND_NUM_PERSONAS").val(data.MAC_IND_NUM_PERSONAS);
+    $("#MAC_IND_HORAS").val(data.MAC_IND_HORAS);
+    $("#MAC_IND_FRECUENCIA").val(data.MAC_IND_FRECUENCIA);
+
+    $("#MAC_IND_A").val(data.MAC_IND_A);
+    $("#MAC_IND_B").val(data.MAC_IND_B);
+    $("#MAC_IND_C").val(data.MAC_IND_C);
+    $("#MAC_IND_D").val(data.MAC_IND_D);
+    $("#MAC_IND_E").val(data.MAC_IND_E);
+    $("#MAC_IND_F").val(data.MAC_IND_F);
+    $("#MAC_IND_G").val(data.MAC_IND_G);
+    $("#MAC_IND_H").val(data.MAC_IND_H);
+
+    $("#MAC_IND_CONTROL_A").val(data.MAC_IND_CONTROL_A);
+    $("#MAC_IND_CONTROL_B").val(data.MAC_IND_CONTROL_B);
+    $("#MAC_IND_CONTROL_C").val(data.MAC_IND_CONTROL_C);
+    $("#MAC_IND_CONTROL_D").val(data.MAC_IND_CONTROL_D);
+    $("#MAC_IND_CONTROL_E").val(data.MAC_IND_CONTROL_E);
+    $("#MAC_IND_CONTROL_F").val(data.MAC_IND_CONTROL_F);
+    $("#MAC_IND_CONTROL_G").val(data.MAC_IND_CONTROL_G);
+    $("#MAC_IND_CONTROL_H").val(data.MAC_IND_CONTROL_H);
+
+    $("#MAC_IND_ANALISIS_RESULTADOS").val(data.MAC_IND_ANALISIS_RESULTADOS);
+    $("#MAC_IND_TOTAL").text(data.MAC_IND_TOTAL);
+    $("#MAC_IND_RESULTADO").text(data.MAC_IND_RESULTADO);
+
+    // MAC TRANSPORTE DE CARGA
+
+    $("#MAC_TRANS_PESO_CARGA").val(data.MAC_TRANS_PESO_CARGA);
+    $("#MAC_TRANS_NUM_OBJETOS").val(data.MAC_TRANS_NUM_OBJETOS);
+    $("#MAC_TRANS_NUM_PERSONAS").val(data.MAC_TRANS_NUM_PERSONAS);
+    $("#MAC_TRANS_HORAS").val(data.MAC_TRANS_HORAS);
+    $("#MAC_TRANS_FRECUENCIA").val(data.MAC_TRANS_FRECUENCIA);
+
+    $("#MAC_TRANS_A").val(data.MAC_TRANS_A);
+    $("#MAC_TRANS_B").val(data.MAC_TRANS_B);
+    $("#MAC_TRANS_C").val(data.MAC_TRANS_C);
+    $("#MAC_TRANS_D").val(data.MAC_TRANS_D);
+    $("#MAC_TRANS_E").val(data.MAC_TRANS_E);
+    $("#MAC_TRANS_F").val(data.MAC_TRANS_F);
+    $("#MAC_TRANS_G").val(data.MAC_TRANS_G);
+    $("#MAC_TRANS_H").val(data.MAC_TRANS_H);
+    $("#MAC_TRANS_I").val(data.MAC_TRANS_I);
+
+    $("#MAC_TRANS_CONTROL_A").val(data.MAC_TRANS_CONTROL_A);
+    $("#MAC_TRANS_CONTROL_B").val(data.MAC_TRANS_CONTROL_B);
+    $("#MAC_TRANS_CONTROL_C").val(data.MAC_TRANS_CONTROL_C);
+    $("#MAC_TRANS_CONTROL_D").val(data.MAC_TRANS_CONTROL_D);
+    $("#MAC_TRANS_CONTROL_E").val(data.MAC_TRANS_CONTROL_E);
+    $("#MAC_TRANS_CONTROL_F").val(data.MAC_TRANS_CONTROL_F);
+    $("#MAC_TRANS_CONTROL_G").val(data.MAC_TRANS_CONTROL_G);
+    $("#MAC_TRANS_CONTROL_H").val(data.MAC_TRANS_CONTROL_H);
+    $("#MAC_TRANS_CONTROL_I").val(data.MAC_TRANS_CONTROL_I);
+
+    $("#MAC_TRANS_ANALISIS_RESULTADOS").val(data.MAC_TRANS_ANALISIS_RESULTADOS);
+    $("#MAC_TRANS_TOTAL").text(data.MAC_TRANS_TOTAL);
+    $("#MAC_TRANS_RESULTADO").text(data.MAC_TRANS_RESULTADO);
+
+    setTimeout(function () {
+
+        const contenedorMAC = document.getElementById("contenedorMetodoMAC");
+
+        if (!contenedorMAC) {
+            return;
+        }
+
+        contenedorMAC.querySelectorAll("select").forEach(function (elemento) {
+
+            elemento.dispatchEvent(
+                new Event("change", {
+                    bubbles: true
+                })
+            );
+
+        });
+
+    }, 150);
+        
+
+    // RAPP CON RUEDAS
+
+    $("#RAPP_CON_RUEDAS").val(data.RAPP_CON_RUEDAS).trigger("change");
+    $("#RAPP_SIN_RUEDAS").val(data.RAPP_SIN_RUEDAS).trigger("change");
+
+
+
+    $("#RAPP_RUEDAS_A1_PEQUENO").val(data.RAPP_RUEDAS_A1_PEQUENO);
+    $("#RAPP_RUEDAS_A1_MEDIANO").val(data.RAPP_RUEDAS_A1_MEDIANO);
+    $("#RAPP_RUEDAS_A1_GRANDE").val(data.RAPP_RUEDAS_A1_GRANDE);
+
+    $("#RAPP_RUEDAS_A2_POSTURA").val(data.RAPP_RUEDAS_A2_POSTURA);
+    $("#RAPP_RUEDAS_A3_AGARRE").val(data.RAPP_RUEDAS_A3_AGARRE);
+    $("#RAPP_RUEDAS_A4_SISTEMA_TRABAJO").val(data.RAPP_RUEDAS_A4_SISTEMA_TRABAJO);
+    $("#RAPP_RUEDAS_A5_DISTANCIA").val(data.RAPP_RUEDAS_A5_DISTANCIA);
+    $("#RAPP_RUEDAS_A6_CONDICIONES_EQUIPO").val(data.RAPP_RUEDAS_A6_CONDICIONES_EQUIPO);
+    $("#RAPP_RUEDAS_A7_SUPERFICIE_PISO").val(data.RAPP_RUEDAS_A7_SUPERFICIE_PISO);
+    $("#RAPP_RUEDAS_A8_OBSTACULOS").val(data.RAPP_RUEDAS_A8_OBSTACULOS);
+    $("#RAPP_RUEDAS_A9_OTROS_FACTORES").val(data.RAPP_RUEDAS_A9_OTROS_FACTORES);
+
+    $("#RAPP_RUEDAS_ANALISIS_RESULTADOS").val(data.RAPP_RUEDAS_ANALISIS_RESULTADOS);
+
+    $("#RAPP_RUEDAS_TOTAL_PEQUENO").text(data.RAPP_RUEDAS_TOTAL_PEQUENO);
+    $("#RAPP_RUEDAS_TOTAL_MEDIANO").text(data.RAPP_RUEDAS_TOTAL_MEDIANO);
+    $("#RAPP_RUEDAS_TOTAL_GRANDE").text(data.RAPP_RUEDAS_TOTAL_GRANDE);
+
+    $("#RAPP_RUEDAS_NIVEL_PEQUENO").text(data.RAPP_RUEDAS_NIVEL_PEQUENO);
+    $("#RAPP_RUEDAS_NIVEL_MEDIANO").text(data.RAPP_RUEDAS_NIVEL_MEDIANO);
+    $("#RAPP_RUEDAS_NIVEL_GRANDE").text(data.RAPP_RUEDAS_NIVEL_GRANDE);
+
+    $("#RAPP_RUEDAS_RESULTADO_GENERAL").text(data.RAPP_RUEDAS_RESULTADO_GENERAL);
+
+
+    // RAPP SIN RUEDAS
+
+    $("#RAPP_SIN_RUEDAS_B1_RODADO").val(data.RAPP_SIN_RUEDAS_B1_RODADO);
+    $("#RAPP_SIN_RUEDAS_B1_PIVOTEO").val(data.RAPP_SIN_RUEDAS_B1_PIVOTEO);
+    $("#RAPP_SIN_RUEDAS_B1_ARRASTRAR").val(data.RAPP_SIN_RUEDAS_B1_ARRASTRAR);
+
+    $("#RAPP_SIN_RUEDAS_B2_POSTURA").val(data.RAPP_SIN_RUEDAS_B2_POSTURA);
+    $("#RAPP_SIN_RUEDAS_B3_AGARRE").val(data.RAPP_SIN_RUEDAS_B3_AGARRE);
+    $("#RAPP_SIN_RUEDAS_B4_SISTEMA_TRABAJO").val(data.RAPP_SIN_RUEDAS_B4_SISTEMA_TRABAJO);
+    $("#RAPP_SIN_RUEDAS_B5_DISTANCIA").val(data.RAPP_SIN_RUEDAS_B5_DISTANCIA);
+    $("#RAPP_SIN_RUEDAS_B6_SUPERFICIE_PISO").val(data.RAPP_SIN_RUEDAS_B6_SUPERFICIE_PISO);
+    $("#RAPP_SIN_RUEDAS_B7_OBSTACULOS").val(data.RAPP_SIN_RUEDAS_B7_OBSTACULOS);
+    $("#RAPP_SIN_RUEDAS_B8_OTROS_FACTORES").val(data.RAPP_SIN_RUEDAS_B8_OTROS_FACTORES);
+
+    $("#RAPP_SIN_RUEDAS_ANALISIS_RESULTADOS").val(data.RAPP_SIN_RUEDAS_ANALISIS_RESULTADOS);
+
+    $("#RAPP_SIN_RUEDAS_TOTAL_RODADO").text(data.RAPP_SIN_RUEDAS_TOTAL_RODADO);
+    $("#RAPP_SIN_RUEDAS_TOTAL_PIVOTEO").text(data.RAPP_SIN_RUEDAS_TOTAL_PIVOTEO);
+    $("#RAPP_SIN_RUEDAS_TOTAL_ARRASTRAR").text(data.RAPP_SIN_RUEDAS_TOTAL_ARRASTRAR);
+
+    $("#RAPP_SIN_RUEDAS_NIVEL_RODADO").text(data.RAPP_SIN_RUEDAS_NIVEL_RODADO);
+    $("#RAPP_SIN_RUEDAS_NIVEL_PIVOTEO").text(data.RAPP_SIN_RUEDAS_NIVEL_PIVOTEO);
+    $("#RAPP_SIN_RUEDAS_NIVEL_ARRASTRAR").text(data.RAPP_SIN_RUEDAS_NIVEL_ARRASTRAR);
+
+    $("#RAPP_SIN_RUEDAS_RESULTADO_GENERAL").text(data.RAPP_SIN_RUEDAS_RESULTADO_GENERAL);
+
+
+    setTimeout(function () {
+
+        const contenedorRAPP = document.getElementById("contenedorMetodoRAPP");
+
+        if (!contenedorRAPP) {
+            return;
+        }
+
+        contenedorRAPP.querySelectorAll("select").forEach(function (elemento) {
+
+            elemento.dispatchEvent(
+                new Event("change", {
+                    bubbles: true
+                })
+            );
+
+        });
+
+    }, 150);
+    
+
+    
 }
 
 function pintarEquiposTrabajo(json) {
@@ -5065,6 +5287,9 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
     $('#ESCALA_BORG').css({ 'background-color': '', 'color': '' });
 	$('#datosLeySilla').hide();
     $('#TEXTO_NO_APLICALEY').hide();
+    $('#metodosergonomicos').hide();
+    $('#TEXTO_NO_METODO').hide();
+
     
 	$('#tablaEquiposTrabajo tbody').empty();
 	$('#tablaFuentesTermicas tbody').empty();
@@ -5099,6 +5324,16 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
     $('#contenedorMetodoRULA').hide();
     $('#contenedorMetodoREBA').hide();
 
+
+    $('#contenedorMetodoMAC').hide();
+    $('#fichaMACTareasEquipo').hide();
+    $('#fichaMACLevantamiento').hide();
+    $('#fichaMACTransporte').hide();
+
+    $('#contenedorMetodoRAPP').hide();
+
+    $('#fichaRAPPConRuedas').hide();
+    $('#fichaRAPPSinRuedas').hide();
 
 
     //  OWAS
@@ -5135,6 +5370,145 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
         
     $('#ROSA_DATOS_JSON').val('')
     $('#RULA_DATOS_JSON').val('')
+
+
+
+
+    // MAC
+    $('#fichaMACTareasEquipo .mac-eq-seleccionado').removeClass('mac-eq-seleccionado');
+
+    $('#fichaMACTareasEquipo [id^="MAC_EQ_RIESGO_"]').removeClass('mac-eq-seleccionado');
+
+    $('#fichaMACTareasEquipo #tablaResumenMACEq .mac-eq-color')
+        .removeClass('mac-eq-color-verde mac-eq-color-naranja mac-eq-color-rojo mac-eq-color-morado')
+        .text('')
+        .css('background-color', '');
+
+    $('#fichaMACTareasEquipo #tablaResumenMACEq .mac-eq-valor').text('-');
+
+    $('#MAC_EQ_TOTAL').text('');
+
+    $('#MAC_EQ_RESULTADO').text('').css({
+        'background-color': '',
+        'color': '',
+        'border-color': ''
+    });
+
+
+    $('#fichaMACLevantamiento .mac-ind-seleccionado').removeClass('mac-ind-seleccionado');
+
+    $('#fichaMACLevantamiento [id^="MAC_IND_RIESGO_"]').removeClass('mac-ind-seleccionado');
+
+    $('#fichaMACLevantamiento #tablaResumenMACIndividual .mac-ind-color')
+        .removeClass('mac-ind-color-verde mac-ind-color-naranja mac-ind-color-rojo mac-ind-color-morado')
+        .text('')
+        .css('background-color', '');
+
+    $('#fichaMACLevantamiento #tablaResumenMACIndividual .mac-ind-valor').text('-');
+
+    $('#MAC_IND_TOTAL').text('');
+
+    $('#MAC_IND_RESULTADO').text('').css({
+        'background-color': '',
+        'color': '',
+        'border-color': ''
+    });
+
+    $('#fichaMACTransporte .mac-trans-seleccionado').removeClass('mac-trans-seleccionado');
+
+    $('#fichaMACTransporte [id^="MAC_TRANS_RIESGO_"]').removeClass('mac-trans-seleccionado');
+
+    $('#fichaMACTransporte #tablaResumenMACTransporte .mac-trans-color')
+        .removeClass('mac-trans-color-verde mac-trans-color-naranja mac-trans-color-rojo mac-trans-color-morado')
+        .text('')
+        .css('background-color', '');
+
+    $('#fichaMACTransporte #tablaResumenMACTransporte .mac-trans-valor').text('-');
+
+    $('#MAC_TRANS_TOTAL').text('');
+
+    $('#MAC_TRANS_RESULTADO').text('').css({
+        'background-color': '',
+        'color': '',
+        'border-color': ''
+    });
+
+
+    // RAPP
+
+    $('#fichaRAPPConRuedas .rapp-seleccionado').removeClass('rapp-seleccionado');
+
+    $('#fichaRAPPConRuedas [id^="RAPP_RUEDAS_RIESGO_"]').removeClass('rapp-seleccionado');
+
+    $('#fichaRAPPConRuedas td, #fichaRAPPConRuedas th').css({
+        'outline': 'none',
+        'border': '',
+        'box-shadow': ''
+    });
+
+    $('#fichaRAPPConRuedas [id^="RAPP_RUEDAS_TABLA_"]').each(function () {
+        $(this).text('').css({
+            'background-color': '',
+            'color': '',
+            'font-weight': ''
+        });
+    });
+
+    $('#RAPP_RUEDAS_TOTAL_PEQUENO, #RAPP_RUEDAS_TOTAL_MEDIANO, #RAPP_RUEDAS_TOTAL_GRANDE').text('');
+
+    $('#RAPP_RUEDAS_NIVEL_PEQUENO, #RAPP_RUEDAS_NIVEL_MEDIANO, #RAPP_RUEDAS_NIVEL_GRANDE').text('').css({
+        'background-color': '',
+        'color': '',
+        'font-weight': ''
+    });
+
+    $('#RAPP_RUEDAS_RESULTADO_GENERAL').text('').css({
+        'background-color': '',
+        'color': '',
+        'border-color': ''
+    });
+
+
+
+    $('#fichaRAPPSinRuedas .rapp-seleccionado').removeClass('rapp-seleccionado');
+
+    $('#fichaRAPPSinRuedas [id^="RAPP_SIN_RUEDAS_RIESGO_"]').removeClass('rapp-seleccionado');
+
+    $('#fichaRAPPSinRuedas td, #fichaRAPPSinRuedas th').css({
+        'outline': 'none',
+        'border': '',
+        'box-shadow': ''
+    });
+
+    $('#fichaRAPPSinRuedas [id^="RAPP_SIN_RUEDAS_TABLA_"]').each(function () {
+        $(this).text('').css({
+            'background-color': '',
+            'color': '',
+            'font-weight': ''
+        });
+    });
+
+    $('#RAPP_SIN_RUEDAS_TOTAL_RODADO, #RAPP_SIN_RUEDAS_TOTAL_PIVOTEO, #RAPP_SIN_RUEDAS_TOTAL_ARRASTRAR').text('');
+
+    $('#RAPP_SIN_RUEDAS_NIVEL_RODADO, #RAPP_SIN_RUEDAS_NIVEL_PIVOTEO, #RAPP_SIN_RUEDAS_NIVEL_ARRASTRAR').text('').css({
+        'background-color': '',
+        'color': '',
+        'font-weight': ''
+    });
+
+    $('#RAPP_SIN_RUEDAS_RESULTADO_GENERAL').text('').css({
+        'background-color': '',
+        'color': '',
+        'border-color': ''
+    });
+
+
+    // ==================== SELECTORES PRINCIPALES MAC Y RAPP ====================
+
+    $('#MAC_TAREAS_EQUIPO, #MAC_LEVANTAMIENTO_INDIVIDUAL, #MAC_TRANSPORTE_CARGA').val('');
+    $('#RAPP_CON_RUEDAS, #RAPP_SIN_RUEDAS').val('');
+        
+
 
 
 })
@@ -5189,6 +5563,29 @@ $(document).on('change', '#APLICA_LEY_SILLA', function () {
     }
 
 });
+
+
+$(document).on('change', '#APLICA_METODOS_ERGONOMICOS', function () {
+
+    if ($(this).val() == 1) {
+
+    $('#metodosergonomicos').show();
+    $('#TEXTO_NO_METODO').hide();
+
+    } else if ($(this).val() == 2) {
+
+        $('#TEXTO_NO_METODO').show();
+        $('#metodosergonomicos').hide();
+
+    } else {
+
+        $('#metodosergonomicos').hide();
+        $('#TEXTO_NO_METODO').hide();
+
+    }
+
+});
+
 
 
 $('#ESCALA_BORG').on('change', function () {
@@ -6866,227 +7263,30 @@ function descargarCard(idCard,nombre)
 /////////////// PORTADA  //////////////
 
 
-
-
-// function cargarDatosInformesRecoErgo()
-// {
-
-//     $.get('/obtenerDatosInformesRecoergo/' + recsensorial, function(response)
-//     {
-
-//         //-----------------------------------------
-//         // LLENAR SELECTS
-//         //-----------------------------------------
-
-
-//             $('#NIVEL1').html(response.opciones);
-//             $('#NIVEL2').html(response.opciones);
-//             $('#NIVEL3').html(response.opciones);
-//             $('#NIVEL4').html(response.opciones);
-//             $('#NIVEL5').html(response.opciones);
-
-//             $('#OPCION_PORTADA1').html(response.checks);
-//             $('#OPCION_PORTADA2').html(response.checks);
-//             $('#OPCION_PORTADA3').html(response.checks);
-//             $('#OPCION_PORTADA4').html(response.checks);
-//             $('#OPCION_PORTADA5').html(response.checks);
-//             $('#OPCION_PORTADA6').html(response.checks);
-
-
-//         $('#INFORME_MES').val("");
-//         $('#INFORME_ANIO').val("");
-        
-//         //-----------------------------------------
-//         // SI EXISTE INFORMACION
-//         //-----------------------------------------
-
-//         if(response.data != 'No se encontraron datos')
-//         {
-
-//             let data = response.data[0];
-
-
-//             //-----------------------------------------
-//             // ASIGNAR VALORES
-//             //-----------------------------------------
-
-//             $('#NIVEL1').val(data.NIVEL1).trigger('change');
-//             $('#NIVEL2').val(data.NIVEL2).trigger('change');
-//             $('#NIVEL3').val(data.NIVEL3).trigger('change');
-//             $('#NIVEL4').val(data.NIVEL4).trigger('change');
-//             $('#NIVEL5').val(data.NIVEL5).trigger('change');
-
-
-//             $('#OPCION_PORTADA1').val(data.OPCION_PORTADA1).trigger('change');
-//             $('#OPCION_PORTADA2').val(data.OPCION_PORTADA2).trigger('change');
-//             $('#OPCION_PORTADA3').val(data.OPCION_PORTADA3).trigger('change');
-//             $('#OPCION_PORTADA4').val(data.OPCION_PORTADA4).trigger('change');
-//             $('#OPCION_PORTADA5').val(data.OPCION_PORTADA5).trigger('change');
-//             $('#OPCION_PORTADA6').val(data.OPCION_PORTADA6).trigger('change');
-
-
-//             //-----------------------------------------
-//             // MES Y AÑO
-//             //-----------------------------------------
-
-//             $('#INFORME_MES').val(data.INFORME_MES);
-//             $('#INFORME_ANIO').val(data.INFORME_ANIO);
-
-
-
-//             //-----------------------------------------
-//             // IMAGEN PORTADA
-//             //-----------------------------------------
-
-//             if(data.RUTA_IMAGEN_PORTADA)
-//             {
-
-//                 var archivo = data.RUTA_IMAGEN_PORTADA;
-
-//                 var extension = archivo.substring(
-//                     archivo.lastIndexOf(".")
-//                 );
-
-
-
-//                 var imagenUrl =
-//                     '/mostrarportadarecoergo/0/' +
-//                     recsensorial +
-//                     extension;
-
-
-
-//                 //-----------------------------------------
-//                 // DROPIFY
-//                 //-----------------------------------------
-
-//                 if ($('#RUTA_IMAGEN_PORTADA').data('dropify')) {
-
-//                     $('#RUTA_IMAGEN_PORTADA')
-//                         .dropify()
-//                         .data('dropify')
-//                         .destroy();
-
-
-//                     $('#RUTA_IMAGEN_PORTADA')
-//                         .dropify()
-//                         .data('dropify')
-//                         .settings.defaultFile = imagenUrl;
-
-
-//                     $('#RUTA_IMAGEN_PORTADA')
-//                         .dropify()
-//                         .data('dropify')
-//                         .init();
-
-//                 }
-//                 else {
-
-//                     $('#RUTA_IMAGEN_PORTADA')
-//                         .attr('data-default-file', imagenUrl);
-
-
-//                     $('#RUTA_IMAGEN_PORTADA').dropify({
-
-//                         messages: {
-//                             'default': 'Arrastre la imagen aquí o haga click',
-//                             'replace': 'Arrastre la imagen o haga clic para reemplazar',
-//                             'remove': 'Quitar',
-//                             'error': 'Ooops, ha ocurrido un error.'
-//                         },
-
-//                         error: {
-//                             'fileSize': 'Demasiado grande ({{ value }} max).',
-//                             'minWidth': 'Ancho demasiado pequeño (min {{ value }}}px).',
-//                             'maxWidth': 'Ancho demasiado grande (max {{ value }}}px).',
-//                             'minHeight': 'Alto demasiado pequeño (min {{ value }}}px).',
-//                             'maxHeight': 'Alto demasiado grande (max {{ value }}px max).',
-//                             'imageFormat': 'Formato no permitido, sólo ({{ value }}).'
-//                         }
-
-//                     });
-//                 }
-
-
-
-//                 //-----------------------------------------
-//                 // NO REQUERIDO
-//                 //-----------------------------------------
-
-//                 $('#RUTA_IMAGEN_PORTADA')
-//                     .attr('required', false);
-
-//             }
-
-//         }
-
-//     }).fail(function(xhr)
-//     {
-
-//         console.log(xhr.responseText);
-
-//         Swal.fire({
-//             icon: 'error',
-//             title: 'Error',
-//             text: 'No se pudieron cargar los datos del informe'
-//         });
-
-//     });
-
-// }
-
-
-
-
 function cargarDatosInformesFreErgo()
 {
-    console.log('ID RECSENSORIAL:', recsensorial);
 
     $.get('/obtenerDatosInformesFreErgo/' + recsensorial)
 
     .done(function(validacion)
     {
-        console.log('RESPUESTA FRE:', validacion);
-        console.log('RESPUESTA COMPLETA FRE:', validacion);
-        console.log('DATA FRE:', validacion.data);
-        console.log('TIPO DATA FRE:', typeof validacion.data);
-        console.log('ES ARRAY FRE:', Array.isArray(validacion.data));
-        console.log(
-            'LONGITUD DATA FRE:',
-            Array.isArray(validacion.data) ? validacion.data.length : 'NO ES ARRAY'
-        );
-
-        let esFreErgo =
-            validacion &&
-            Array.isArray(validacion.data) &&
-            validacion.data.length > 0;
-
-        console.log('¿EXISTE FRE?:', esFreErgo);
+    
+        let esFreErgo = validacion && Array.isArray(validacion.data) && validacion.data.length > 0;
 
         if(esFreErgo)
         {
-            cargarInformacion(
-                validacion,
-                '/mostrarportadafreergo/0/'
-            );
+            cargarInformacion(validacion,'/mostrarportadafreergo/0/');
         }
         else
         {
-            let urlReco =
-                '/obtenerDatosInformesRecoergo/' + recsensorial;
+            let urlReco = '/obtenerDatosInformesRecoergo/' + recsensorial;
 
-            console.log('URL QUE SE CONSULTARÁ EN RECO:', urlReco);
 
             $.get(urlReco)
 
             .done(function(responseReco)
             {
-                console.log('RESPUESTA RECO:', responseReco);
-
-                cargarInformacion(
-                    responseReco,
-                    '/mostrarportadarecoergo/0/'
-                );
+                cargarInformacion(responseReco,'/mostrarportadarecoergo/0/');
             })
 
             .fail(function(xhr)
@@ -7109,18 +7309,11 @@ function cargarDatosInformesFreErgo()
         console.error('ERROR FRE:', xhr.status);
         console.error('RESPUESTA FRE:', xhr.responseText);
 
-        console.log('Se intentará consultar RECO.');
-
         $.get('/obtenerDatosInformesRecoergo/' + recsensorial)
 
         .done(function(responseReco)
         {
-            console.log('RESPUESTA RECO:', responseReco);
-
-            cargarInformacion(
-                responseReco,
-                '/mostrarportadarecoergo/0/'
-            );
+            cargarInformacion(responseReco,'/mostrarportadarecoergo/0/');
         })
 
         .fail(function(xhrReco)
@@ -7529,9 +7722,10 @@ function cargarDatosGeneralesInformeFre()
                 response.INFORME_RECONOCIMIENTO.trim() != '') {
                 $('#INFORME_RECONOCIMIENTO').val(response.INFORME_RECONOCIMIENTO);
             } else {
-                $('#INFORME_RECONOCIMIENTO')
-                    .val(`
-Mediante la aplicación de la norma  ISO-TR-12295:2014 y los criterios de la NOM-036-1-STPS-2018, se realiza la identificación de peligros y riesgos ergonómicos, a través de la aplicación de las fichas técnicas que permiten hacer una evaluación inicial rápida de los siguientes aspectos de la carga física: levantamiento, transporte, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas y dinámicas forzadas, siendo este el punto de partida para el reconocimiento del factor de riesgo ergonómico por exposición a sobrecarga biomecánica. A continuación, se presenta el reconocimiento de los peligros y riesgos ergonómicos detectados,  la aplicación del modelo conceptual de un estudio ergonómico (trabajador; tareas; herramientas/equipo y entorno), en la INSTALACION y el resumen de los seis criterios de la carga física referidos en la ISO-TR-12295:2014, relacionados con los respectivos puestos de trabajo valorados, donde el verde corresponde a un “Riesgo aceptable” y el rojo a un “Riesgo crítico”.`);
+               $('#INFORME_INTRODUCCION').summernote(
+                    'code',
+                    `
+Mediante la aplicación de la norma  ISO-TR-12295:2014 y los criterios de la NOM-036-1-STPS-2018, se realiza la identificación de peligros y riesgos ergonómicos, a través de la aplicación de las fichas técnicas que permiten hacer una evaluación inicial rápida de los siguientes aspectos de la carga física: levantamiento, transporte, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas y dinámicas forzadas, siendo este el punto de partida para el reconocimiento del factor de riesgo ergonómico por exposición a sobrecarga biomecánica. A continuación, se presenta el reconocimiento de los peligros y riesgos ergonómicos detectados,  la aplicación del modelo conceptual de un estudio ergonómico (trabajador; tareas; herramientas/equipo y entorno), en  <font color="#000000" style="background-color: rgb(255, 255, 0);">el/la INSTALACION</font> y el resumen de los seis criterios de la carga física referidos en la ISO-TR-12295:2014, relacionados con los respectivos puestos de trabajo valorados, donde el verde corresponde a un “Riesgo aceptable” y el rojo a un “Riesgo crítico”.`);
 
             }
             
@@ -8842,12 +9036,8 @@ function tablaReporteTrabajadoresErgo() {
                     type: "GET",
                     cache: false,
                     data: {ergoid: recsensorial},
-                    dataSrc: function (json) {
-                        console.log('Datos recibidos del controlador:',json.data);
-                        (json.data || []).forEach(function (fila) {
-                            console.log('Área:',fila.AREA,'| Categoría:',fila.CATEGORIA,'| Total:',fila.TRABAJADORES_EVALUADOS);
-                        });
-
+                dataSrc: function (json) {
+                        
                         return json.data || [];
                     },
 
@@ -9191,6 +9381,9 @@ $(document).ready(function () {
         $('#contenedorMetodoROSA').hide();
         $('#contenedorMetodoRULA').hide();
         $('#contenedorMetodoREBA').hide();
+        $('#contenedorMetodoMAC').hide();
+        $('#contenedorMetodoRAPP').hide();
+
 
 
         if (seleccionados.includes('1')) {
@@ -9205,8 +9398,16 @@ $(document).ready(function () {
             $('#contenedorMetodoRULA').show();
         }
 
-         if (seleccionados.includes('4')) {
+        if (seleccionados.includes('4')) {
             $('#contenedorMetodoREBA').show();
+        }
+          
+        if (seleccionados.includes('5')) {
+            $('#contenedorMetodoMAC').show();
+        }
+
+        if (seleccionados.includes('6')) {
+            $('#contenedorMetodoRAPP').show();
         }
     }
 
@@ -11149,7 +11350,2219 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 
 
+/// MAC
 
+
+(function () {
+
+    const selectoresMAC = [
+        {
+            select: "MAC_TAREAS_EQUIPO",
+            ficha: "fichaMACTareasEquipo"
+        },
+        {
+            select: "MAC_LEVANTAMIENTO_INDIVIDUAL",
+            ficha: "fichaMACLevantamiento"
+        },
+        {
+            select: "MAC_TRANSPORTE_CARGA",
+            ficha: "fichaMACTransporte"
+        }
+    ];
+
+    function controlarFichasMAC() {
+
+        selectoresMAC.forEach(function (item) {
+
+            const selector = document.getElementById(item.select);
+            const ficha = document.getElementById(item.ficha);
+
+            if (!selector || !ficha) return;
+
+            ficha.style.display = selector.value === "SI" ? "block" : "none";
+
+        });
+
+    }
+
+    selectoresMAC.forEach(function (item) {
+
+        const selector = document.getElementById(item.select);
+
+        if (selector) {
+            selector.addEventListener("change", controlarFichasMAC);
+        }
+
+    });
+
+    controlarFichasMAC();
+
+    window.controlarFichasMAC = controlarFichasMAC;
+
+})();
+
+
+// Tareas con operaciones de manejo manual de carga en equipo
+(function () {
+
+    const contenedor = document.getElementById("fichaMACTareasEquipo");
+
+    if (!contenedor) return;
+
+    const factores = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
+
+    const puntuaciones = {
+        A: {
+            A_2_MENOS_35: 0,
+            A_3_MENOS_55: 0,
+            A_4_MENOS_75: 0,
+            A_2_35_65: 4,
+            A_3_55_95: 4,
+            A_4_75_130: 4,
+            A_2_65_85: 6,
+            A_3_95_130: 6,
+            A_4_130_170: 6,
+            A_2_MAS_85: 10,
+            A_3_MAS_130: 10,
+            A_4_MAS_170: 10
+        },
+        B: { B_0: 0, B_3: 3, B_6: 6 },
+        C: { C_0: 0, C_1: 1, C_3: 3 },
+        D: { D_0: 0, D_1: 1, D_2: 2 },
+        E: { E_0: 0, E_1: 1, E_3: 3 },
+        F: { F_0: 0, F_2: 2, F_4: 4 },
+        G: { G_0: 0, G_1: 1, G_3: 3 },
+        H: { H_0: 0, H_1: 1, H_3: 3 },
+        I: { I_0: 0, I_2: 2, I_3: 3 },
+        J: { J_0: 0, J_1: 1, J_3: 3 },
+        K: { K_0: 0, K_1: 1, K_2: 2 }
+    };
+
+    const coloresFactor = {
+        A: { 0: "#70b85a", 4: "#f49a35", 6: "#d92332", 10: "#75449b" },
+        B: { 0: "#70b85a", 3: "#f49a35", 6: "#d92332" },
+        C: { 0: "#70b85a", 1: "#f49a35", 3: "#d92332" },
+        D: { 0: "#70b85a", 1: "#f49a35", 2: "#d92332" },
+        E: { 0: "#70b85a", 1: "#f49a35", 3: "#d92332" },
+        F: { 0: "#70b85a", 2: "#f49a35", 4: "#d92332" },
+        G: { 0: "#70b85a", 1: "#f49a35", 3: "#d92332" },
+        H: { 0: "#70b85a", 1: "#f49a35", 3: "#d92332" },
+        I: { 0: "#70b85a", 2: "#f49a35", 3: "#d92332" },
+        J: { 0: "#70b85a", 1: "#f49a35", 3: "#d92332" },
+        K: { 0: "#70b85a", 1: "#f49a35", 2: "#d92332" }
+    };
+
+    const filasRiesgo = [
+        "MAC_EQ_RIESGO_BAJO",
+        "MAC_EQ_RIESGO_MEDIO",
+        "MAC_EQ_RIESGO_ALTO",
+        "MAC_EQ_RIESGO_MUY_ALTO"
+    ];
+
+    function obtenerPuntuacion(factor, valor) {
+
+        if (!valor || !puntuaciones[factor]) return null;
+
+        const puntuacion = puntuaciones[factor][valor];
+
+        return puntuacion === undefined ? null : puntuacion;
+    }
+
+    function obtenerColor(factor, valor) {
+
+        const colores = coloresFactor[factor];
+
+        if (!colores) return "#ffffff";
+
+        return colores[valor] || "#ffffff";
+    }
+
+    function limpiarClasificacion() {
+
+        filasRiesgo.forEach(function (id) {
+
+            const fila = contenedor.querySelector("#" + id);
+
+            if (fila) {
+                fila.classList.remove("mac-eq-seleccionado");
+            }
+        });
+    }
+
+    function actualizarResumen(factor, valor) {
+
+        const fila = contenedor.querySelector(
+            '#tablaResumenMACEq tbody tr[data-factor="' + factor + '"]'
+        );
+
+        if (!fila) return;
+
+        const celdaColor = fila.querySelector(".mac-eq-color");
+        const celdaValor = fila.querySelector(".mac-eq-valor");
+
+        if (valor === null) {
+            celdaColor.style.backgroundColor = "#ffffff";
+            celdaColor.textContent = "";
+            celdaValor.textContent = "-";
+            return;
+        }
+
+        celdaColor.style.backgroundColor = obtenerColor(factor, valor);
+        celdaColor.textContent = "";
+        celdaValor.textContent = valor;
+    }
+
+    function calcularMACEq() {
+
+        let total = 0;
+        let completos = 0;
+
+        factores.forEach(function (factor) {
+
+            const selector = contenedor.querySelector("#MAC_EQ_" + factor);
+
+            if (!selector) return;
+
+            const valor = obtenerPuntuacion(factor, selector.value);
+
+            if (valor === null) {
+                actualizarResumen(factor, null);
+                return;
+            }
+
+            total += valor;
+            completos++;
+
+            actualizarResumen(factor, valor);
+        });
+
+        const elementoTotal = contenedor.querySelector("#MAC_EQ_TOTAL");
+        const resultado = contenedor.querySelector("#MAC_EQ_RESULTADO");
+
+        if (elementoTotal) {
+            elementoTotal.textContent = total;
+        }
+
+        limpiarClasificacion();
+
+        if (!resultado) return;
+
+        if (completos !== factores.length) {
+
+            resultado.style.backgroundColor = "#f8f9fa";
+            resultado.style.color = "#333333";
+            resultado.style.borderColor = "#cccccc";
+
+            resultado.innerHTML =
+                "Seleccione todos los factores de riesgo." +
+                "<br>Factores seleccionados: " + completos + " de 11" +
+                "<br>Puntaje parcial: " + total;
+
+            return;
+        }
+
+        let nivel = "";
+        let prioridad = "";
+        let color = "";
+        let filaActiva = "";
+
+        if (total >= 0 && total <= 4) {
+
+            nivel = "Bajo – Aceptable";
+            prioridad = "No se requieren acciones correctivas";
+            color = "#00ef00";
+            filaActiva = "MAC_EQ_RIESGO_BAJO";
+
+        } else if (total >= 5 && total <= 12) {
+
+            nivel = "Medio – Posible";
+            prioridad = "Se requieren acciones correctivas a corto plazo";
+            color = "#ffff00";
+            filaActiva = "MAC_EQ_RIESGO_MEDIO";
+
+        } else if (total >= 13 && total <= 20) {
+
+            nivel = "Alto – Significativo";
+            prioridad = "Se requieren acciones correctivas pronto";
+            color = "#ff0000";
+            filaActiva = "MAC_EQ_RIESGO_ALTO";
+
+        } else if (total >= 21 && total <= 32) {
+
+            nivel = "Muy Alto – Inaceptable";
+            prioridad = "Se requieren acciones correctivas inmediatamente";
+            color = "#ed00ed";
+            filaActiva = "MAC_EQ_RIESGO_MUY_ALTO";
+
+        } else {
+
+            resultado.style.backgroundColor = "#f8d7da";
+            resultado.style.color = "#721c24";
+            resultado.style.borderColor = "#dc3545";
+
+            resultado.innerHTML =
+                "PUNTAJE TOTAL: " + total +
+                "<br>El resultado supera el rango de clasificación de la tabla (0 a 32).";
+
+            return;
+        }
+
+        const filaSeleccionada = contenedor.querySelector("#" + filaActiva);
+
+        if (filaSeleccionada) {
+            filaSeleccionada.classList.add("mac-eq-seleccionado");
+        }
+
+        resultado.style.backgroundColor = color;
+        resultado.style.color =
+            color === "#00ef00" || color === "#ffff00" ? "#000000" : "#ffffff";
+        resultado.style.borderColor = "#333333";
+
+        resultado.innerHTML =
+            "NIVEL DE RIESGO: " + nivel +
+            "<br>PUNTAJE TOTAL: " + total +
+            "<br>" + prioridad;
+    }
+
+    factores.forEach(function (factor) {
+
+        const selector = contenedor.querySelector("#MAC_EQ_" + factor);
+
+        if (selector) {
+            selector.addEventListener("change", calcularMACEq);
+        }
+    });
+
+    const pesoCarga = contenedor.querySelector("#MAC_EQ_PESO_CARGA");
+    const numeroPersonas = contenedor.querySelector("#MAC_EQ_NUM_PERSONAS");
+    const selectorA = contenedor.querySelector("#MAC_EQ_A");
+
+    if (pesoCarga && numeroPersonas && selectorA) {
+
+        function seleccionarPuntajeA() {
+
+            const peso = parseFloat(pesoCarga.value);
+            const personas = numeroPersonas.value;
+
+            if (!personas || pesoCarga.value === "" || peso < 0) {
+                selectorA.value = "";
+                calcularMACEq();
+                return;
+            }
+
+            let opcion = "";
+
+            if (personas === "2") {
+                if (peso < 35) opcion = "A_2_MENOS_35";
+                else if (peso <= 65) opcion = "A_2_35_65";
+                else if (peso <= 85) opcion = "A_2_65_85";
+                else opcion = "A_2_MAS_85";
+            }
+
+            if (personas === "3") {
+                if (peso < 55) opcion = "A_3_MENOS_55";
+                else if (peso <= 95) opcion = "A_3_55_95";
+                else if (peso <= 130) opcion = "A_3_95_130";
+                else opcion = "A_3_MAS_130";
+            }
+
+            if (personas === "4") {
+                if (peso < 75) opcion = "A_4_MENOS_75";
+                else if (peso <= 130) opcion = "A_4_75_130";
+                else if (peso <= 170) opcion = "A_4_130_170";
+                else opcion = "A_4_MAS_170";
+            }
+
+            selectorA.value = opcion;
+            calcularMACEq();
+        }
+
+        pesoCarga.addEventListener("input", seleccionarPuntajeA);
+        numeroPersonas.addEventListener("change", seleccionarPuntajeA);
+    }
+
+    calcularMACEq();
+
+    window.calcularMACEq = calcularMACEq;
+
+})();
+
+// Tareas de levantamiento individual de carga
+(function () {
+
+    const contenedor = document.getElementById('fichaMACLevantamiento');
+
+    if (!contenedor || contenedor.dataset.macIndividualInicializado === '1') {
+        return;
+    }
+
+    contenedor.dataset.macIndividualInicializado = '1';
+
+    const configuracion = {
+        B: {
+            id: 'MAC_IND_B',
+            valores: {
+                B_0: 0,
+                B_3: 3,
+                B_6: 6
+            }
+        },
+        C: {
+            id: 'MAC_IND_C',
+            valores: {
+                C_0: 0,
+                C_1A: 1,
+                C_1B: 1,
+                C_3A: 3,
+                C_3B: 3
+            }
+        },
+        D: {
+            id: 'MAC_IND_D',
+            valores: {
+                D_0: 0,
+                D_1A: 1,
+                D_1B: 1,
+                D_2: 2
+            }
+        },
+        E: {
+            id: 'MAC_IND_E',
+            valores: {
+                E_0: 0,
+                E_1: 1,
+                E_3: 3
+            }
+        },
+        F: {
+            id: 'MAC_IND_F',
+            valores: {
+                F_0: 0,
+                F_1: 1,
+                F_2: 2
+            }
+        },
+        G: {
+            id: 'MAC_IND_G',
+            valores: {
+                G_0: 0,
+                G_1: 1,
+                G_2: 2
+            }
+        },
+        H: {
+            id: 'MAC_IND_H',
+            valores: {
+                H_0: 0,
+                H_1: 1,
+                H_2: 2
+            }
+        }
+    };
+
+    const camposA = [
+        'MAC_IND_PESO_CARGA',
+        'MAC_IND_NUM_OBJETOS',
+        'MAC_IND_NUM_PERSONAS',
+        'MAC_IND_HORAS'
+    ];
+
+    const frecuenciasGrafica = [0, 2, 12, 30, 60, 250, 400, 720];
+
+    const limitesGrafica = {
+        verde:  [15, 13, 11, 10, 9, 7, 6, 5],
+        naranja: [45, 40, 38, 35, 30, 20, 16, 12],
+        rojo:   [50, 50, 50, 50, 48, 33, 28, 20]
+    };
+
+    function obtenerValor(id) {
+        const elemento = contenedor.querySelector('#' + id);
+
+        if (!elemento) {
+            return '';
+        }
+
+        return elemento.value;
+    }
+
+    function obtenerNumero(id) {
+        const valor = obtenerValor(id);
+
+        if (valor === '' || valor === null) {
+            return null;
+        }
+
+        const numero = Number(valor);
+
+        return Number.isFinite(numero) ? numero : null;
+    }
+
+    function interpolarLimite(frecuencia, limites) {
+
+        if (frecuencia <= frecuenciasGrafica[0]) {
+            return limites[0];
+        }
+
+        for (let i = 1; i < frecuenciasGrafica.length; i++) {
+
+            if (frecuencia <= frecuenciasGrafica[i]) {
+
+                const frecuenciaAnterior = frecuenciasGrafica[i - 1];
+                const frecuenciaActual = frecuenciasGrafica[i];
+
+                const limiteAnterior = limites[i - 1];
+                const limiteActual = limites[i];
+
+                const proporcion =
+                    (frecuencia - frecuenciaAnterior) /
+                    (frecuenciaActual - frecuenciaAnterior);
+
+                return limiteAnterior +
+                    (limiteActual - limiteAnterior) * proporcion;
+            }
+        }
+
+        return limites[limites.length - 1];
+    }
+
+    function calcularFactorA() {
+
+        const peso = obtenerNumero('MAC_IND_PESO_CARGA');
+        const objetos = obtenerNumero('MAC_IND_NUM_OBJETOS');
+        const personas = obtenerNumero('MAC_IND_NUM_PERSONAS');
+        const horas = obtenerNumero('MAC_IND_HORAS');
+
+        const campoFrecuencia = contenedor.querySelector('#MAC_IND_FRECUENCIA');
+        const campoPuntuacion = contenedor.querySelector('#MAC_IND_A');
+
+        if (
+            peso === null ||
+            objetos === null ||
+            personas === null ||
+            horas === null ||
+            peso < 0 ||
+            objetos <= 0 ||
+            personas <= 0 ||
+            horas <= 0
+        ) {
+            campoFrecuencia.value = '';
+            campoPuntuacion.value = '';
+            return null;
+        }
+
+        const frecuencia = objetos / personas / horas;
+
+        campoFrecuencia.value = frecuencia.toFixed(2);
+
+        let puntuacion;
+
+        if (peso >= 50) {
+
+            puntuacion = 10;
+
+        } else {
+
+            const limiteVerde = interpolarLimite(
+                frecuencia,
+                limitesGrafica.verde
+            );
+
+            const limiteNaranja = interpolarLimite(
+                frecuencia,
+                limitesGrafica.naranja
+            );
+
+            const limiteRojo = interpolarLimite(
+                frecuencia,
+                limitesGrafica.rojo
+            );
+
+            if (peso <= limiteVerde) {
+                puntuacion = 0;
+            } else if (peso <= limiteNaranja) {
+                puntuacion = 4;
+            } else if (peso <= limiteRojo) {
+                puntuacion = 6;
+            } else {
+                puntuacion = 10;
+            }
+        }
+
+        campoPuntuacion.value = puntuacion;
+
+        return puntuacion;
+    }
+
+    function obtenerColor(puntuacion) {
+
+        if (puntuacion === 0) {
+            return {
+                nombre: 'Verde',
+                clase: 'mac-ind-color-verde'
+            };
+        }
+
+        if (puntuacion <= 4) {
+            return {
+                nombre: 'Naranja',
+                clase: 'mac-ind-color-naranja'
+            };
+        }
+
+        if (puntuacion <= 6) {
+            return {
+                nombre: 'Rojo',
+                clase: 'mac-ind-color-rojo'
+            };
+        }
+
+        return {
+            nombre: 'Morado',
+            clase: 'mac-ind-color-morado'
+        };
+    }
+
+    function actualizarFilaResumen(factor, puntuacion) {
+
+        const fila = contenedor.querySelector(
+            '#tablaResumenMACIndividual tr[data-factor="' + factor + '"]'
+        );
+
+        if (!fila) {
+            return;
+        }
+
+        const celdaColor = fila.querySelector('.mac-ind-color');
+        const celdaValor = fila.querySelector('.mac-ind-valor');
+
+        celdaColor.className = 'mac-ind-color';
+        celdaValor.textContent = '-';
+
+        if (puntuacion === null || puntuacion === undefined) {
+            celdaColor.textContent = '';
+            return;
+        }
+
+        const color = obtenerColor(puntuacion);
+
+        celdaColor.classList.add(color.clase);
+        celdaColor.textContent = color.nombre;
+
+        celdaValor.textContent = puntuacion;
+    }
+
+    function obtenerPuntuacionFactor(factor) {
+
+        if (factor === 'A') {
+            return calcularFactorA();
+        }
+
+        const datos = configuracion[factor];
+
+        if (!datos) {
+            return null;
+        }
+
+        const valor = obtenerValor(datos.id);
+
+        if (!valor || datos.valores[valor] === undefined) {
+            return null;
+        }
+
+        return datos.valores[valor];
+    }
+
+    function actualizarNivelRiesgo(total) {
+
+        const niveles = [
+            'MAC_IND_RIESGO_BAJO',
+            'MAC_IND_RIESGO_MEDIO',
+            'MAC_IND_RIESGO_ALTO',
+            'MAC_IND_RIESGO_MUY_ALTO'
+        ];
+
+        niveles.forEach(function (id) {
+            const fila = contenedor.querySelector('#' + id);
+
+            if (fila) {
+                fila.classList.remove('mac-ind-seleccionado');
+            }
+        });
+
+        let nivelSeleccionado = null;
+        let mensaje = '';
+
+        if (total <= 4) {
+
+            nivelSeleccionado = 'MAC_IND_RIESGO_BAJO';
+            mensaje = 'Bajo – Aceptable';
+
+        } else if (total <= 12) {
+
+            nivelSeleccionado = 'MAC_IND_RIESGO_MEDIO';
+            mensaje = 'Medio – Posible';
+
+        } else if (total <= 20) {
+
+            nivelSeleccionado = 'MAC_IND_RIESGO_ALTO';
+            mensaje = 'Alto – Significativo';
+
+        } else {
+
+            nivelSeleccionado = 'MAC_IND_RIESGO_MUY_ALTO';
+            mensaje = 'Muy Alto – Inaceptable';
+
+        }
+
+        const filaSeleccionada = contenedor.querySelector(
+            '#' + nivelSeleccionado
+        );
+
+        if (filaSeleccionada) {
+            filaSeleccionada.classList.add('mac-ind-seleccionado');
+        }
+
+        contenedor.querySelector('#MAC_IND_RESULTADO').textContent =
+            'Puntaje total: ' + total + ' puntos | Nivel de riesgo: ' + mensaje;
+    }
+
+    function actualizarMACIndividual() {
+
+        let total = 0;
+        let factoresCompletos = 0;
+
+        const factores = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
+        factores.forEach(function (factor) {
+
+            const puntuacion = obtenerPuntuacionFactor(factor);
+
+            actualizarFilaResumen(factor, puntuacion);
+
+            if (puntuacion !== null && puntuacion !== undefined) {
+                total += puntuacion;
+                factoresCompletos++;
+            }
+
+        });
+
+        contenedor.querySelector('#MAC_IND_TOTAL').textContent = total;
+
+        if (factoresCompletos === factores.length) {
+            actualizarNivelRiesgo(total);
+        } else {
+
+            const niveles = [
+                'MAC_IND_RIESGO_BAJO',
+                'MAC_IND_RIESGO_MEDIO',
+                'MAC_IND_RIESGO_ALTO',
+                'MAC_IND_RIESGO_MUY_ALTO'
+            ];
+
+            niveles.forEach(function (id) {
+                const fila = contenedor.querySelector('#' + id);
+
+                if (fila) {
+                    fila.classList.remove('mac-ind-seleccionado');
+                }
+            });
+
+            contenedor.querySelector('#MAC_IND_RESULTADO').textContent =
+                'Seleccione todos los factores y complete los datos del peso manejado para obtener el nivel de riesgo.';
+        }
+    }
+
+    camposA.forEach(function (id) {
+
+        const campo = contenedor.querySelector('#' + id);
+
+        if (campo) {
+            campo.addEventListener('input', actualizarMACIndividual);
+            campo.addEventListener('change', actualizarMACIndividual);
+        }
+
+    });
+
+    Object.keys(configuracion).forEach(function (factor) {
+
+        const campo = contenedor.querySelector(
+            '#' + configuracion[factor].id
+        );
+
+        if (campo) {
+            campo.addEventListener('change', actualizarMACIndividual);
+        }
+
+    });
+
+    actualizarMACIndividual();
+
+})();
+
+///  Tareas de transporte de carga
+(function () {
+
+    const contenedor = document.getElementById('fichaMACTransporte');
+
+    if (!contenedor || contenedor.dataset.macTransporteInicializado === '1') {
+        return;
+    }
+
+    contenedor.dataset.macTransporteInicializado = '1';
+
+    const configuracion = {
+        B: {
+            id: 'MAC_TRANS_B',
+            valores: {
+                B_0: 0,
+                B_3: 3,
+                B_6: 6
+            }
+        },
+        C: {
+            id: 'MAC_TRANS_C',
+            valores: {
+                C_0: 0,
+                C_1A: 1,
+                C_1B: 1,
+                C_2: 2
+            }
+        },
+        D: {
+            id: 'MAC_TRANS_D',
+            valores: {
+                D_0: 0,
+                D_1: 1,
+                D_3: 3
+            }
+        },
+        E: {
+            id: 'MAC_TRANS_E',
+            valores: {
+                E_0: 0,
+                E_1: 1,
+                E_2: 2
+            }
+        },
+        F: {
+            id: 'MAC_TRANS_F',
+            valores: {
+                F_0: 0,
+                F_1: 1,
+                F_3: 3
+            }
+        },
+        G: {
+            id: 'MAC_TRANS_G',
+            valores: {
+                G_0: 0,
+                G_1: 1,
+                G_2: 2
+            }
+        },
+        H: {
+            id: 'MAC_TRANS_H',
+            valores: {
+                H_0: 0,
+                H_2: 2,
+                H_3: 3
+            }
+        },
+        I: {
+            id: 'MAC_TRANS_I',
+            valores: {
+                I_0: 0,
+                I_1: 1,
+                I_2: 2
+            }
+        }
+    };
+
+    const frecuenciasGrafica = [0, 2, 12, 30, 60, 300];
+
+    /*
+       Límites aproximados de la gráfica del PDF.
+       Los valores intermedios se interpolan.
+    */
+
+    const limitesGrafica = {
+        verde: [15, 13, 11, 10, 9, 7],
+        naranja: [45, 40, 38, 35, 30, 20],
+        rojo: [50, 50, 50, 50, 48, 33]
+    };
+
+    function obtenerValor(id) {
+        const elemento = contenedor.querySelector('#' + id);
+
+        return elemento ? elemento.value : '';
+    }
+
+    function obtenerNumero(id) {
+        const valor = obtenerValor(id);
+
+        if (valor === '') {
+            return null;
+        }
+
+        const numero = Number(valor);
+
+        return Number.isFinite(numero) ? numero : null;
+    }
+
+    function interpolarLimite(frecuencia, limites) {
+
+        if (frecuencia <= frecuenciasGrafica[0]) {
+            return limites[0];
+        }
+
+        for (let i = 1; i < frecuenciasGrafica.length; i++) {
+
+            if (frecuencia <= frecuenciasGrafica[i]) {
+
+                const frecuenciaAnterior = frecuenciasGrafica[i - 1];
+                const frecuenciaActual = frecuenciasGrafica[i];
+
+                const limiteAnterior = limites[i - 1];
+                const limiteActual = limites[i];
+
+                const proporcion =
+                    (frecuencia - frecuenciaAnterior) /
+                    (frecuenciaActual - frecuenciaAnterior);
+
+                return limiteAnterior +
+                    (limiteActual - limiteAnterior) * proporcion;
+            }
+        }
+
+        return limites[limites.length - 1];
+    }
+
+    function calcularFactorA() {
+
+        const peso = obtenerNumero('MAC_TRANS_PESO_CARGA');
+        const objetos = obtenerNumero('MAC_TRANS_NUM_OBJETOS');
+        const personas = obtenerNumero('MAC_TRANS_NUM_PERSONAS');
+        const horas = obtenerNumero('MAC_TRANS_HORAS');
+
+        const campoFrecuencia = contenedor.querySelector('#MAC_TRANS_FRECUENCIA');
+        const campoPuntuacion = contenedor.querySelector('#MAC_TRANS_A');
+
+        if (
+            peso === null ||
+            objetos === null ||
+            personas === null ||
+            horas === null ||
+            peso < 0 ||
+            objetos <= 0 ||
+            personas <= 0 ||
+            horas <= 0
+        ) {
+            campoFrecuencia.value = '';
+            campoPuntuacion.value = '';
+            return null;
+        }
+
+        const frecuencia = objetos / personas / horas;
+
+        campoFrecuencia.value = frecuencia.toFixed(2);
+
+        let puntuacion;
+
+        if (peso >= 50) {
+
+            puntuacion = 10;
+
+        } else {
+
+            const limiteVerde = interpolarLimite(
+                frecuencia,
+                limitesGrafica.verde
+            );
+
+            const limiteNaranja = interpolarLimite(
+                frecuencia,
+                limitesGrafica.naranja
+            );
+
+            const limiteRojo = interpolarLimite(
+                frecuencia,
+                limitesGrafica.rojo
+            );
+
+            if (peso <= limiteVerde) {
+                puntuacion = 0;
+            } else if (peso <= limiteNaranja) {
+                puntuacion = 4;
+            } else if (peso <= limiteRojo) {
+                puntuacion = 6;
+            } else {
+                puntuacion = 10;
+            }
+        }
+
+        campoPuntuacion.value = puntuacion;
+
+        return puntuacion;
+    }
+
+    function obtenerColor(puntuacion) {
+
+        if (puntuacion === 0) {
+            return {
+                nombre: 'Verde',
+                clase: 'mac-trans-color-verde'
+            };
+        }
+
+        if (puntuacion <= 4) {
+            return {
+                nombre: 'Naranja',
+                clase: 'mac-trans-color-naranja'
+            };
+        }
+
+        if (puntuacion <= 6) {
+            return {
+                nombre: 'Rojo',
+                clase: 'mac-trans-color-rojo'
+            };
+        }
+
+        return {
+            nombre: 'Morado',
+            clase: 'mac-trans-color-morado'
+        };
+    }
+
+    function actualizarFilaResumen(factor, puntuacion) {
+
+        const fila = contenedor.querySelector(
+            '#tablaResumenMACTransporte tr[data-factor="' + factor + '"]'
+        );
+
+        if (!fila) {
+            return;
+        }
+
+        const celdaColor = fila.querySelector('.mac-trans-color');
+        const celdaValor = fila.querySelector('.mac-trans-valor');
+
+        celdaColor.className = 'mac-trans-color';
+        celdaValor.textContent = '-';
+
+        if (puntuacion === null || puntuacion === undefined) {
+            celdaColor.textContent = '';
+            return;
+        }
+
+        const color = obtenerColor(puntuacion);
+
+        celdaColor.classList.add(color.clase);
+        celdaColor.textContent = color.nombre;
+
+        celdaValor.textContent = puntuacion;
+    }
+
+    function obtenerPuntuacionFactor(factor) {
+
+        if (factor === 'A') {
+            return calcularFactorA();
+        }
+
+        const datos = configuracion[factor];
+
+        if (!datos) {
+            return null;
+        }
+
+        const valor = obtenerValor(datos.id);
+
+        if (!valor || datos.valores[valor] === undefined) {
+            return null;
+        }
+
+        return datos.valores[valor];
+    }
+
+    function actualizarNivelRiesgo(total) {
+
+        const niveles = [
+            'MAC_TRANS_RIESGO_BAJO',
+            'MAC_TRANS_RIESGO_MEDIO',
+            'MAC_TRANS_RIESGO_ALTO',
+            'MAC_TRANS_RIESGO_MUY_ALTO'
+        ];
+
+        niveles.forEach(function (id) {
+
+            const fila = contenedor.querySelector('#' + id);
+
+            if (fila) {
+                fila.classList.remove('mac-trans-seleccionado');
+            }
+
+        });
+
+        let nivelSeleccionado;
+        let mensaje;
+
+        if (total <= 4) {
+
+            nivelSeleccionado = 'MAC_TRANS_RIESGO_BAJO';
+            mensaje = 'Bajo – Aceptable';
+
+        } else if (total <= 12) {
+
+            nivelSeleccionado = 'MAC_TRANS_RIESGO_MEDIO';
+            mensaje = 'Medio – Posible';
+
+        } else if (total <= 20) {
+
+            nivelSeleccionado = 'MAC_TRANS_RIESGO_ALTO';
+            mensaje = 'Alto – Significativo';
+
+        } else {
+
+            nivelSeleccionado = 'MAC_TRANS_RIESGO_MUY_ALTO';
+            mensaje = 'Muy Alto – Inaceptable';
+
+        }
+
+        const filaSeleccionada = contenedor.querySelector(
+            '#' + nivelSeleccionado
+        );
+
+        if (filaSeleccionada) {
+            filaSeleccionada.classList.add('mac-trans-seleccionado');
+        }
+
+        contenedor.querySelector('#MAC_TRANS_RESULTADO').textContent =
+            'Puntaje total: ' + total +
+            ' puntos | Nivel de riesgo: ' + mensaje;
+    }
+
+    function actualizarMACTransporte() {
+
+        let total = 0;
+        let factoresCompletos = 0;
+
+        const factores = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+
+        factores.forEach(function (factor) {
+
+            const puntuacion = obtenerPuntuacionFactor(factor);
+
+            actualizarFilaResumen(factor, puntuacion);
+
+            if (puntuacion !== null && puntuacion !== undefined) {
+                total += puntuacion;
+                factoresCompletos++;
+            }
+
+        });
+
+        contenedor.querySelector('#MAC_TRANS_TOTAL').textContent = total;
+
+        if (factoresCompletos === factores.length) {
+
+            actualizarNivelRiesgo(total);
+
+        } else {
+
+            const niveles = [
+                'MAC_TRANS_RIESGO_BAJO',
+                'MAC_TRANS_RIESGO_MEDIO',
+                'MAC_TRANS_RIESGO_ALTO',
+                'MAC_TRANS_RIESGO_MUY_ALTO'
+            ];
+
+            niveles.forEach(function (id) {
+
+                const fila = contenedor.querySelector('#' + id);
+
+                if (fila) {
+                    fila.classList.remove('mac-trans-seleccionado');
+                }
+
+            });
+
+            contenedor.querySelector('#MAC_TRANS_RESULTADO').textContent =
+                'Seleccione todos los factores y complete los datos del peso manejado para obtener el nivel de riesgo.';
+        }
+    }
+
+    [
+        'MAC_TRANS_PESO_CARGA',
+        'MAC_TRANS_NUM_OBJETOS',
+        'MAC_TRANS_NUM_PERSONAS',
+        'MAC_TRANS_HORAS'
+    ].forEach(function (id) {
+
+        const campo = contenedor.querySelector('#' + id);
+
+        if (campo) {
+            campo.addEventListener('input', actualizarMACTransporte);
+            campo.addEventListener('change', actualizarMACTransporte);
+        }
+
+    });
+
+    Object.keys(configuracion).forEach(function (factor) {
+
+        const campo = contenedor.querySelector(
+            '#' + configuracion[factor].id
+        );
+
+        if (campo) {
+            campo.addEventListener('change', actualizarMACTransporte);
+        }
+
+    });
+
+    actualizarMACTransporte();
+
+})();
+
+
+// RAPP
+
+$("#RAPP_CON_RUEDAS").on("change", function () {
+
+    if ($(this).val() === "SI") {
+        $("#fichaRAPPConRuedas").show();
+    } else {
+        $("#fichaRAPPConRuedas").hide();
+    }
+
+});
+
+$("#RAPP_SIN_RUEDAS").on("change", function () {
+
+    if ($(this).val() === "SI") {
+        $("#fichaRAPPSinRuedas").show();
+    } else {
+        $("#fichaRAPPSinRuedas").hide();
+    }
+
+});
+
+
+/// Empujar o traccionar cargas por medio de equipo con ruedas
+
+$(document).ready(function() {
+
+    const contenedor = document.getElementById("fichaRAPPConRuedas");
+
+    if (!contenedor || contenedor.dataset.rappInicializado === "1") {
+        return;
+    }
+
+    contenedor.dataset.rappInicializado = "1";
+
+    const equipos = [{
+            nombre: "PEQUENO",
+            id: "RAPP_RUEDAS_A1_PEQUENO"
+        },
+        {
+            nombre: "MEDIANO",
+            id: "RAPP_RUEDAS_A1_MEDIANO"
+        },
+        {
+            nombre: "GRANDE",
+            id: "RAPP_RUEDAS_A1_GRANDE"
+        }
+    ];
+
+    const factores = [{
+            numero: "A2",
+            id: "RAPP_RUEDAS_A2_POSTURA"
+        },
+        {
+            numero: "A3",
+            id: "RAPP_RUEDAS_A3_AGARRE"
+        },
+        {
+            numero: "A4",
+            id: "RAPP_RUEDAS_A4_SISTEMA_TRABAJO"
+        },
+        {
+            numero: "A5",
+            id: "RAPP_RUEDAS_A5_DISTANCIA"
+        },
+        {
+            numero: "A6",
+            id: "RAPP_RUEDAS_A6_CONDICIONES_EQUIPO"
+        },
+        {
+            numero: "A7",
+            id: "RAPP_RUEDAS_A7_SUPERFICIE_PISO"
+        },
+        {
+            numero: "A8",
+            id: "RAPP_RUEDAS_A8_OBSTACULOS"
+        },
+        {
+            numero: "A9",
+            id: "RAPP_RUEDAS_A9_OTROS_FACTORES"
+        }
+    ];
+
+    function obtenerValorRAPP(id) {
+
+        const elemento = contenedor.querySelector("#" + id);
+
+        if (!elemento || !elemento.value) {
+            return null;
+        }
+
+        const partes = elemento.value.split("|");
+
+        if (partes.length !== 2) {
+            return null;
+        }
+
+        if (partes[0] === "M") {
+            return {
+                puntaje: null,
+                banda: "M",
+                inaceptable: true
+            };
+        }
+
+        const puntaje = Number(partes[0]);
+
+        if (!Number.isFinite(puntaje)) {
+            return null;
+        }
+
+        return {
+            puntaje: puntaje,
+            banda: partes[1],
+            inaceptable: false
+        };
+
+    }
+
+    function colorRAPP(banda) {
+
+        const colores = {
+            V: {
+                fondo: "#159d50",
+                texto: "#ffffff"
+            },
+            A: {
+                fondo: "#f7941d",
+                texto: "#222222"
+            },
+            R: {
+                fondo: "#ed1c24",
+                texto: "#ffffff"
+            },
+            M: {
+                fondo: "#75449b",
+                texto: "#ffffff"
+            }
+        };
+
+        return colores[banda] || {
+            fondo: "",
+            texto: ""
+        };
+
+    }
+
+    function limpiarCelda(celda) {
+
+        if (!celda) return;
+
+        celda.textContent = "";
+        celda.style.backgroundColor = "";
+        celda.style.color = "";
+        celda.style.fontWeight = "";
+
+    }
+
+    function pintarCelda(celda, resultado) {
+
+        if (!celda) return;
+
+        if (!resultado) {
+            limpiarCelda(celda);
+            return;
+        }
+
+        const color = colorRAPP(resultado.banda);
+
+        celda.style.backgroundColor = color.fondo;
+        celda.style.color = color.texto;
+        celda.style.fontWeight = "bold";
+
+        if (resultado.inaceptable) {
+            celda.textContent = "M - Inaceptable";
+        } else {
+            celda.textContent = resultado.banda + " / " + resultado.puntaje;
+        }
+
+    }
+
+    function pintarA1(equipo) {
+
+        const resultado = obtenerValorRAPP(equipo.id);
+
+        const celdaColor = contenedor.querySelector(
+            "#RAPP_RUEDAS_TABLA_A1_" + equipo.nombre + "_COLOR"
+        );
+
+        const celdaPuntaje = contenedor.querySelector(
+            "#RAPP_RUEDAS_TABLA_A1_" + equipo.nombre + "_PUNTAJE"
+        );
+
+        if (!resultado) {
+
+            limpiarCelda(celdaColor);
+            limpiarCelda(celdaPuntaje);
+
+            return null;
+
+        }
+
+        pintarCelda(celdaColor, resultado);
+
+        if (resultado.inaceptable) {
+
+            limpiarCelda(celdaPuntaje);
+
+            celdaPuntaje.textContent = "Sin puntuación";
+            celdaPuntaje.style.backgroundColor = "#75449b";
+            celdaPuntaje.style.color = "#ffffff";
+            celdaPuntaje.style.fontWeight = "bold";
+
+            return resultado;
+
+        }
+
+        celdaPuntaje.textContent = resultado.puntaje;
+        celdaPuntaje.style.backgroundColor = "";
+        celdaPuntaje.style.color = "#000000";
+        celdaPuntaje.style.fontWeight = "bold";
+
+        return resultado;
+
+    }
+
+    function obtenerNivelRAPP(total) {
+
+        if (total >= 0 && total <= 4) {
+            return {
+                id: "BAJO",
+                nombre: "Bajo – Aceptable",
+                prioridad: "No se requieren acciones correctivas"
+            };
+        }
+
+        if (total >= 5 && total <= 12) {
+            return {
+                id: "MEDIO",
+                nombre: "Medio – Posible",
+                prioridad: "Se requieren acciones correctivas a corto plazo"
+            };
+        }
+
+        if (total >= 13 && total <= 20) {
+            return {
+                id: "ALTO",
+                nombre: "Alto – Significativo",
+                prioridad: "Se requieren acciones correctivas pronto"
+            };
+        }
+
+        if (total >= 21 && total <= 32) {
+            return {
+                id: "MUY_ALTO",
+                nombre: "Muy Alto – Inaceptable",
+                prioridad: "Se requieren acciones correctivas inmediatamente"
+            };
+        }
+
+        return null;
+
+    }
+
+    function limpiarClasificacion() {
+
+        const filas = [
+            "BAJO",
+            "MEDIO",
+            "ALTO",
+            "MUY_ALTO"
+        ];
+
+        filas.forEach(function(nivel) {
+
+            const fila = contenedor.querySelector(
+                "#RAPP_RUEDAS_RIESGO_" + nivel
+            );
+
+            if (fila) {
+                fila.classList.remove("rapp-seleccionado");
+            }
+
+        });
+
+    }
+
+    function actualizarClasificacion(total) {
+
+        limpiarClasificacion();
+
+        const nivel = obtenerNivelRAPP(total);
+
+        if (!nivel) return;
+
+        const fila = contenedor.querySelector(
+            "#RAPP_RUEDAS_RIESGO_" + nivel.id
+        );
+
+        if (fila) {
+            fila.classList.add("rapp-seleccionado");
+        }
+
+    }
+
+    function limpiarTotales() {
+
+        equipos.forEach(function(equipo) {
+
+            const total = contenedor.querySelector(
+                "#RAPP_RUEDAS_TOTAL_" + equipo.nombre
+            );
+
+            const nivel = contenedor.querySelector(
+                "#RAPP_RUEDAS_NIVEL_" + equipo.nombre
+            );
+
+            if (total) total.textContent = "";
+            if (nivel) nivel.textContent = "";
+
+        });
+
+    }
+
+    function limpiarResumenFactores() {
+
+        equipos.forEach(function(equipo) {
+
+            factores.forEach(function(factor) {
+
+                const celda = contenedor.querySelector(
+                    "#RAPP_RUEDAS_TABLA_" + factor.numero + "_" + equipo.nombre
+                );
+
+                limpiarCelda(celda);
+
+            });
+
+        });
+
+    }
+
+    function actualizarTablaRAPP() {
+
+        let equipoSeleccionado = null;
+        let cantidadEquipos = 0;
+
+        equipos.forEach(function(equipo) {
+
+            const elemento = contenedor.querySelector("#" + equipo.id);
+
+            if (elemento && elemento.value) {
+                cantidadEquipos++;
+                equipoSeleccionado = equipo;
+            }
+
+        });
+
+        equipos.forEach(function(equipo) {
+            pintarA1(equipo);
+        });
+
+        limpiarTotales();
+        limpiarResumenFactores();
+        limpiarClasificacion();
+
+        const resultadoGeneral = contenedor.querySelector(
+            "#RAPP_RUEDAS_RESULTADO_GENERAL"
+        );
+
+        if (cantidadEquipos === 0) {
+
+            resultadoGeneral.textContent =
+                "Seleccione el tipo de equipo y complete los nueve criterios.";
+
+            resultadoGeneral.style.backgroundColor = "";
+            resultadoGeneral.style.color = "";
+
+            return;
+
+        }
+
+        if (cantidadEquipos > 1) {
+
+            resultadoGeneral.textContent =
+                "Seleccione solamente un tipo de equipo para realizar esta evaluación.";
+
+            resultadoGeneral.style.backgroundColor = "#fff3cd";
+            resultadoGeneral.style.color = "#856404";
+
+            return;
+
+        }
+
+        const resultadoA1 = obtenerValorRAPP(equipoSeleccionado.id);
+
+        if (!resultadoA1) {
+
+            resultadoGeneral.textContent = "Seleccione el peso de la carga.";
+
+            resultadoGeneral.style.backgroundColor = "";
+            resultadoGeneral.style.color = "";
+
+            return;
+
+        }
+
+        if (resultadoA1.inaceptable) {
+
+            const total = contenedor.querySelector(
+                "#RAPP_RUEDAS_TOTAL_" + equipoSeleccionado.nombre
+            );
+
+            const nivel = contenedor.querySelector(
+                "#RAPP_RUEDAS_NIVEL_" + equipoSeleccionado.nombre
+            );
+
+            total.textContent = "M";
+            nivel.textContent = "Inaceptable M - No continuar";
+
+            nivel.style.backgroundColor = "#75449b";
+            nivel.style.color = "#ffffff";
+            nivel.style.fontWeight = "bold";
+
+            resultadoGeneral.textContent =
+                "Inaceptable M: la carga excede la capacidad del fabricante. No continúe la evaluación hasta corregir esta condición.";
+
+            resultadoGeneral.style.backgroundColor = "#75449b";
+            resultadoGeneral.style.color = "#ffffff";
+
+            return;
+
+        }
+
+        let total = resultadoA1.puntaje;
+        let incompleto = false;
+
+        factores.forEach(function(factor) {
+
+            const resultado = obtenerValorRAPP(factor.id);
+
+            if (!resultado) {
+                incompleto = true;
+            }
+
+            equipos.forEach(function(equipo) {
+
+                const celda = contenedor.querySelector(
+                    "#RAPP_RUEDAS_TABLA_" + factor.numero + "_" + equipo.nombre
+                );
+
+                if (equipo.nombre === equipoSeleccionado.nombre) {
+                    pintarCelda(celda, resultado);
+                } else {
+                    limpiarCelda(celda);
+                }
+
+            });
+
+            if (resultado && resultado.inaceptable) {
+                incompleto = true;
+            } else if (resultado) {
+                total += resultado.puntaje;
+            }
+
+        });
+
+        if (incompleto) {
+
+            const totalCelda = contenedor.querySelector(
+                "#RAPP_RUEDAS_TOTAL_" + equipoSeleccionado.nombre
+            );
+
+            const nivelCelda = contenedor.querySelector(
+                "#RAPP_RUEDAS_NIVEL_" + equipoSeleccionado.nombre
+            );
+
+            totalCelda.textContent = "";
+            nivelCelda.textContent = "Pendiente de evaluación";
+
+            resultadoGeneral.textContent =
+                "Complete los nueve criterios para obtener la suma y el nivel de riesgo.";
+
+            resultadoGeneral.style.backgroundColor = "";
+            resultadoGeneral.style.color = "";
+
+            return;
+
+        }
+
+        const totalCelda = contenedor.querySelector(
+            "#RAPP_RUEDAS_TOTAL_" + equipoSeleccionado.nombre
+        );
+
+        const nivelCelda = contenedor.querySelector(
+            "#RAPP_RUEDAS_NIVEL_" + equipoSeleccionado.nombre
+        );
+
+        totalCelda.textContent = total;
+
+        const nivel = obtenerNivelRAPP(total);
+
+        if (!nivel) {
+            return;
+        }
+
+        nivelCelda.textContent = nivel.nombre;
+        nivelCelda.style.fontWeight = "bold";
+
+        if (nivel.id === "BAJO") {
+            nivelCelda.style.backgroundColor = "#00ed00";
+            nivelCelda.style.color = "#000000";
+        } else if (nivel.id === "MEDIO") {
+            nivelCelda.style.backgroundColor = "#ffff00";
+            nivelCelda.style.color = "#000000";
+        } else if (nivel.id === "ALTO") {
+            nivelCelda.style.backgroundColor = "#ff0000";
+            nivelCelda.style.color = "#ffffff";
+        } else {
+            nivelCelda.style.backgroundColor = "#ed00ed";
+            nivelCelda.style.color = "#ffffff";
+        }
+
+        actualizarClasificacion(total);
+
+        resultadoGeneral.textContent =
+            "Equipo " + equipoSeleccionado.nombre.toLowerCase() +
+            " | Puntaje total: " + total +
+            " | Nivel de riesgo: " + nivel.nombre +
+            " | " + nivel.prioridad;
+
+        resultadoGeneral.style.backgroundColor =
+            nivel.id === "BAJO" ? "#00ed00" :
+            nivel.id === "MEDIO" ? "#ffff00" :
+            nivel.id === "ALTO" ? "#ff0000" : "#ed00ed";
+
+        resultadoGeneral.style.color =
+            nivel.id === "ALTO" || nivel.id === "MUY_ALTO" ?
+            "#ffffff" :
+            "#000000";
+
+    }
+
+    $("#fichaRAPPConRuedas").on(
+        "change",
+        ".rapp-ruedas-calculo",
+        function() {
+
+            if (
+                this.id === "RAPP_RUEDAS_A1_PEQUENO" ||
+                this.id === "RAPP_RUEDAS_A1_MEDIANO" ||
+                this.id === "RAPP_RUEDAS_A1_GRANDE"
+            ) {
+
+                equipos.forEach(function(equipo) {
+
+                    if (equipo.id !== this.id) {
+                        $("#" + equipo.id).val("");
+                    }
+
+                }, this);
+
+            }
+
+            actualizarTablaRAPP();
+
+        }
+    );
+
+    actualizarTablaRAPP();
+
+});
+
+
+/// Empujar o traccionar cargas por medio de equipo sin ruedas
+       
+$(document).ready(function() {
+
+    const contenedor = document.getElementById("fichaRAPPSinRuedas");
+
+    if (!contenedor || contenedor.dataset.rappSinRuedasInicializado === "1") {
+        return;
+    }
+
+    contenedor.dataset.rappSinRuedasInicializado = "1";
+
+    const actividades = [{
+            nombre: "RODADO",
+            titulo: "Rodado",
+            b1: "RAPP_SIN_RUEDAS_B1_RODADO"
+        },
+        {
+            nombre: "PIVOTEO",
+            titulo: "Pivoteo y rodado",
+            b1: "RAPP_SIN_RUEDAS_B1_PIVOTEO"
+        },
+        {
+            nombre: "ARRASTRAR",
+            titulo: "Arrastrar / Arrastrar y deslizar",
+            b1: "RAPP_SIN_RUEDAS_B1_ARRASTRAR"
+        }
+    ];
+
+    const factores = [{
+            numero: "B2",
+            id: "RAPP_SIN_RUEDAS_B2_POSTURA"
+        },
+        {
+            numero: "B3",
+            id: "RAPP_SIN_RUEDAS_B3_AGARRE"
+        },
+        {
+            numero: "B4",
+            id: "RAPP_SIN_RUEDAS_B4_SISTEMA_TRABAJO"
+        },
+        {
+            numero: "B5",
+            id: "RAPP_SIN_RUEDAS_B5_DISTANCIA"
+        },
+        {
+            numero: "B6",
+            id: "RAPP_SIN_RUEDAS_B6_SUPERFICIE_PISO"
+        },
+        {
+            numero: "B7",
+            id: "RAPP_SIN_RUEDAS_B7_OBSTACULOS"
+        },
+        {
+            numero: "B8",
+            id: "RAPP_SIN_RUEDAS_B8_OTROS_FACTORES"
+        }
+    ];
+
+    function obtenerValorRAPP(id) {
+
+        const elemento = contenedor.querySelector("#" + id);
+
+        if (!elemento || !elemento.value) {
+            return null;
+        }
+
+        const partes = elemento.value.split("|");
+
+        if (partes.length !== 2) {
+            return null;
+        }
+
+        const puntaje = Number(partes[0]);
+
+        if (!Number.isFinite(puntaje)) {
+            return null;
+        }
+
+        return {
+            puntaje: puntaje,
+            banda: partes[1]
+        };
+
+    }
+
+    function colorRAPP(banda) {
+
+        const colores = {
+            V: {
+                fondo: "#159d50",
+                texto: "#ffffff"
+            },
+            A: {
+                fondo: "#f7941d",
+                texto: "#222222"
+            },
+            R: {
+                fondo: "#ed1c24",
+                texto: "#ffffff"
+            }
+        };
+
+        return colores[banda] || {
+            fondo: "",
+            texto: ""
+        };
+
+    }
+
+    function limpiarCelda(celda) {
+
+        if (!celda) return;
+
+        celda.textContent = "";
+        celda.style.backgroundColor = "";
+        celda.style.color = "";
+        celda.style.fontWeight = "";
+
+    }
+
+    function pintarCelda(celda, resultado, mostrarPuntaje) {
+
+        if (!celda) return;
+
+        if (!resultado) {
+            limpiarCelda(celda);
+            return;
+        }
+
+        const color = colorRAPP(resultado.banda);
+
+        celda.style.backgroundColor = color.fondo;
+        celda.style.color = color.texto;
+        celda.style.fontWeight = "bold";
+
+        if (mostrarPuntaje) {
+            celda.textContent = resultado.puntaje;
+        } else {
+            celda.textContent = resultado.banda;
+        }
+
+    }
+
+    function obtenerNivelRAPP(total) {
+
+        if (total >= 0 && total <= 4) {
+            return {
+                id: "BAJO",
+                nombre: "Bajo – Aceptable",
+                prioridad: "No se requieren acciones correctivas",
+                fondo: "#00ed00",
+                texto: "#000000"
+            };
+        }
+
+        if (total >= 5 && total <= 12) {
+            return {
+                id: "MEDIO",
+                nombre: "Medio – Posible",
+                prioridad: "Se requieren acciones correctivas a corto plazo",
+                fondo: "#ffff00",
+                texto: "#000000"
+            };
+        }
+
+        if (total >= 13 && total <= 20) {
+            return {
+                id: "ALTO",
+                nombre: "Alto – Significativo",
+                prioridad: "Se requieren acciones correctivas pronto",
+                fondo: "#ff0000",
+                texto: "#ffffff"
+            };
+        }
+
+        if (total >= 21 && total <= 32) {
+            return {
+                id: "MUY_ALTO",
+                nombre: "Muy Alto – Inaceptable",
+                prioridad: "Se requieren acciones correctivas inmediatamente",
+                fondo: "#ed00ed",
+                texto: "#ffffff"
+            };
+        }
+
+        return null;
+
+    }
+
+    function limpiarClasificacion() {
+
+        const niveles = [
+            "BAJO",
+            "MEDIO",
+            "ALTO",
+            "MUY_ALTO"
+        ];
+
+        niveles.forEach(function(nivel) {
+
+            const fila = contenedor.querySelector(
+                "#RAPP_SIN_RUEDAS_RIESGO_" + nivel
+            );
+
+            if (fila) {
+                fila.classList.remove("rapp-seleccionado");
+            }
+
+        });
+
+    }
+
+    function actualizarClasificacion(total) {
+
+        limpiarClasificacion();
+
+        const nivel = obtenerNivelRAPP(total);
+
+        if (!nivel) return;
+
+        const fila = contenedor.querySelector(
+            "#RAPP_SIN_RUEDAS_RIESGO_" + nivel.id
+        );
+
+        if (fila) {
+            fila.classList.add("rapp-seleccionado");
+        }
+
+    }
+
+    function limpiarResultadoActividad(actividad) {
+
+        const total = contenedor.querySelector(
+            "#RAPP_SIN_RUEDAS_TOTAL_" + actividad.nombre
+        );
+
+        const nivel = contenedor.querySelector(
+            "#RAPP_SIN_RUEDAS_NIVEL_" + actividad.nombre
+        );
+
+        if (total) {
+            total.textContent = "";
+        }
+
+        if (nivel) {
+            nivel.textContent = "";
+            nivel.style.backgroundColor = "";
+            nivel.style.color = "";
+        }
+
+        const b1Color = contenedor.querySelector(
+            "#RAPP_SIN_RUEDAS_TABLA_B1_" + actividad.nombre + "_COLOR"
+        );
+
+        const b1Puntaje = contenedor.querySelector(
+            "#RAPP_SIN_RUEDAS_TABLA_B1_" + actividad.nombre + "_PUNTAJE"
+        );
+
+        limpiarCelda(b1Color);
+        limpiarCelda(b1Puntaje);
+
+        factores.forEach(function(factor) {
+
+            const color = contenedor.querySelector(
+                "#RAPP_SIN_RUEDAS_TABLA_" + factor.numero + "_" + actividad.nombre + "_COLOR"
+            );
+
+            const puntaje = contenedor.querySelector(
+                "#RAPP_SIN_RUEDAS_TABLA_" + factor.numero + "_" + actividad.nombre + "_PUNTAJE"
+            );
+
+            limpiarCelda(color);
+            limpiarCelda(puntaje);
+
+        });
+
+    }
+
+    function actualizarActividad(actividad) {
+
+        const resultadoB1 = obtenerValorRAPP(actividad.b1);
+
+        const celdaB1Color = contenedor.querySelector(
+            "#RAPP_SIN_RUEDAS_TABLA_B1_" + actividad.nombre + "_COLOR"
+        );
+
+        const celdaB1Puntaje = contenedor.querySelector(
+            "#RAPP_SIN_RUEDAS_TABLA_B1_" + actividad.nombre + "_PUNTAJE"
+        );
+
+        const totalCelda = contenedor.querySelector(
+            "#RAPP_SIN_RUEDAS_TOTAL_" + actividad.nombre
+        );
+
+        const nivelCelda = contenedor.querySelector(
+            "#RAPP_SIN_RUEDAS_NIVEL_" + actividad.nombre
+        );
+
+        if (!resultadoB1) {
+
+            limpiarResultadoActividad(actividad);
+
+            return {
+                completo: false,
+                seleccionado: false
+            };
+
+        }
+
+        pintarCelda(celdaB1Color, resultadoB1, false);
+        pintarCelda(celdaB1Puntaje, resultadoB1, true);
+
+        let total = resultadoB1.puntaje;
+        let incompleto = false;
+
+        factores.forEach(function(factor) {
+
+            const resultado = obtenerValorRAPP(factor.id);
+
+            const celdaColor = contenedor.querySelector(
+                "#RAPP_SIN_RUEDAS_TABLA_" + factor.numero + "_" + actividad.nombre + "_COLOR"
+            );
+
+            const celdaPuntaje = contenedor.querySelector(
+                "#RAPP_SIN_RUEDAS_TABLA_" + factor.numero + "_" + actividad.nombre + "_PUNTAJE"
+            );
+
+            if (!resultado) {
+
+                incompleto = true;
+
+                limpiarCelda(celdaColor);
+                limpiarCelda(celdaPuntaje);
+
+                return;
+
+            }
+
+            pintarCelda(celdaColor, resultado, false);
+            pintarCelda(celdaPuntaje, resultado, true);
+
+            total += resultado.puntaje;
+
+        });
+
+        if (incompleto) {
+
+            totalCelda.textContent = "";
+            nivelCelda.textContent = "Pendiente de evaluación";
+            nivelCelda.style.backgroundColor = "";
+            nivelCelda.style.color = "";
+
+            return {
+                completo: false,
+                seleccionado: true
+            };
+
+        }
+
+        const nivel = obtenerNivelRAPP(total);
+
+        totalCelda.textContent = total;
+
+        nivelCelda.textContent = nivel.nombre;
+        nivelCelda.style.backgroundColor = nivel.fondo;
+        nivelCelda.style.color = nivel.texto;
+        nivelCelda.style.fontWeight = "bold";
+
+        return {
+            completo: true,
+            seleccionado: true,
+            total: total,
+            nivel: nivel,
+            actividad: actividad
+        };
+
+    }
+
+    function actualizarTablaRAPP() {
+
+        limpiarClasificacion();
+
+        const resultados = [];
+
+        actividades.forEach(function(actividad) {
+
+            const resultado = actualizarActividad(actividad);
+
+            if (resultado.seleccionado) {
+                resultados.push(resultado);
+            }
+
+        });
+
+        const resultadoGeneral = contenedor.querySelector(
+            "#RAPP_SIN_RUEDAS_RESULTADO_GENERAL"
+        );
+
+        if (resultados.length === 0) {
+
+            resultadoGeneral.textContent =
+                "Seleccione el peso de la carga para una o más actividades y complete los criterios.";
+
+            resultadoGeneral.style.backgroundColor = "";
+            resultadoGeneral.style.color = "";
+
+            return;
+
+        }
+
+        const incompletos = resultados.filter(function(resultado) {
+            return !resultado.completo;
+        });
+
+        if (incompletos.length > 0) {
+
+            resultadoGeneral.textContent =
+                "Hay evaluaciones pendientes. Complete los ocho criterios de cada actividad seleccionada para obtener sus resultados.";
+
+            resultadoGeneral.style.backgroundColor = "#fff3cd";
+            resultadoGeneral.style.color = "#856404";
+
+            return;
+
+        }
+
+        const resumen = resultados.map(function(resultado) {
+
+            actualizarClasificacion(resultado.total);
+
+            return resultado.actividad.titulo +
+                ": " + resultado.total +
+                " puntos - " + resultado.nivel.nombre;
+
+        });
+
+        resultadoGeneral.textContent = resumen.join(" | ");
+
+        if (resultados.length === 1) {
+
+            resultadoGeneral.style.backgroundColor = resultados[0].nivel.fondo;
+            resultadoGeneral.style.color = resultados[0].nivel.texto;
+
+        } else {
+
+            resultadoGeneral.style.backgroundColor = "#d1ecf1";
+            resultadoGeneral.style.color = "#0c5460";
+
+        }
+
+    }
+
+    $("#fichaRAPPSinRuedas").on(
+        "change",
+        ".rapp-sin-ruedas-calculo",
+        function() {
+            actualizarTablaRAPP();
+        }
+    );
+
+    actualizarTablaRAPP();
+
+});
+                                                
 //// ANGULOS
 
 

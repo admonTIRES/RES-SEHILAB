@@ -3240,8 +3240,36 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
             }
 
             // RECONOCIMIENTO
-            
-            $plantillaword->setValue('TEXTO_RECONOCIMIENTO', $datosGenerales2->INFORME_RECONOCIMIENTO ?? 'No cargado');
+
+            $reconocimiento = $datosGenerales2->INFORME_RECONOCIMIENTO ?? '';
+
+            if (trim($reconocimiento) !== '') {
+
+                $reconocimiento = html_entity_decode($reconocimiento,ENT_QUOTES | ENT_HTML5,'UTF-8');
+                $reconocimiento = preg_replace('/<br\s*\/?>/i', "\n", $reconocimiento);
+                $reconocimiento = preg_replace('/<\/p>/i', "\n\n", $reconocimiento);
+                $reconocimiento = preg_replace('/<\/div>/i', "\n", $reconocimiento);
+
+                $reconocimiento = strip_tags($reconocimiento);
+
+                $reconocimiento = str_replace("\xc2\xa0", ' ', $reconocimiento);
+
+                $reconocimiento = preg_replace("/\r\n|\r/", "\n", $reconocimiento);
+
+                $reconocimiento = preg_replace('/[ \t]+/', ' ', $reconocimiento);
+
+                $reconocimiento = preg_replace('/\n{3,}/', "\n\n", $reconocimiento);
+
+                $reconocimiento = trim($reconocimiento);
+
+                $reconocimiento = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', '', $reconocimiento);
+
+                $plantillaword->setValue('TEXTO_RECONOCIMIENTO',$reconocimiento);
+            } else {
+
+                $plantillaword->setValue('TEXTO_RECONOCIMIENTO','No cargado');
+            }
+
 
             $plantillaword->setValue('ANALISIS_RECONOCIMIENTO', $datosGenerales2->INFORME_ANALISISRECONOCIMIENTO ?? 'No cargado');
 
@@ -5757,7 +5785,7 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
 
                     $nombreMetodoFre_7_2 = $configuracionMetodoFre_7_2['nombre'];
                     $xmlMetodosIndividualesFre_7_2[$metodoFre_7_2] =
-                        $parrafoXmlFre_7_2('Método: ' . $nombreMetodoFre_7_2, true, 20, 100, 40) .
+                        $parrafoXmlFre_7_2('Resultado de la evaluación del método: ' . $nombreMetodoFre_7_2, true, 20, 100, 40) .
                         $tablaXmlFre_7_2(
                             $nombreMetodoFre_7_2,
                             $configuracionMetodoFre_7_2['encabezados'],
@@ -5997,7 +6025,7 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
 
                     $xmlDinamometriaFre_7_2 .= $parrafoXmlFre_7_2('Dinamometría Manual Digital:', true, 24, 80, 60);
                     $xmlDinamometriaFre_7_2 .= $parrafoXmlFre_7_2(
-                        'Evalúa la fuerza de prensión estática (agarre) de forma rápida y exacta. Es un indicador directo del estado muscular, nutricional y funcional del cuerpo y para medir la fuerza de agarre o prensión de la mano de forma precisa, rápida y objetiva. Existen diversos estudios que han propuesto valores de referencia para la FE. El más utilizado es el propuesto por Schlüssel et al., realizado en una población de 3050 adultos mayores de 20 años en Brasil. Referencia: https://www.sciencedirect.com/science/article/pii/S2095254624001741',
+                        'Evalúa la fuerza de prensión estática (agarre) de forma rápida y exacta. Es un indicador directo del estado muscular, nutricional y funcional del cuerpo y para medir la fuerza de agarre o prensión de la mano de forma precisa, rápida y objetiva.',
                         false,
                         24,
                         40,
@@ -6007,16 +6035,16 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                     // Tabla de valores de referencia por edad, sexo y mano 
 
                     $filasReferenciaFuerzaFre_7_2 = [
-                        ['Edad', 'Mano derecha', '', '', '', '', 'Mano izquierda', '', '', '', ''],
+                        ['Edad', 'Mano derecha (Percentiles)', '', '', '', '', 'Mano izquierda (Percentiles)', '', '', '', ''],
                         ['', 'P10', 'P30', 'P50', 'P70', 'P90', 'P10', 'P30', 'P50', 'P70', 'P90'],
-                        ['Hombres', '', '', '', '', '', '', '', '', '', ''],
+                        ['Hombres (valor en kg)', '', '', '', '', '', '', '', '', '', ''],
                         ['20-29', '33.9', '41.3', '45.1', '50.6', '56.3', '34.0', '39.4', '43.6', '47.8', '53.7'],
                         ['30-39', '36.6', '42.2', '45.8', '50.0', '56.9', '34.7', '40.4', '44.1', '48.3', '53.5'],
                         ['40-49', '34.3', '37.5', '42.5', '46.7', '53.6', '32.4', '37.1', '40.9', '45.3', '50.9'],
                         ['50-59', '30.2', '36.2', '41.4', '44.3', '50.1', '29.6', '35.0', '38.9', '42.8', '48.3'],
                         ['60-69', '26.5', '32.9', '37.0', '40.8', '45.5', '26.4', '30.8', '34.4', '37.5', '41.9'],
                         ['≥70', '22.8', '27.7', '32.1', '35.7', '40.6', '21.0', '26.6', '28.9', '31.3', '36.6'],
-                        ['Mujeres', '', '', '', '', '', '', '', '', '', ''],
+                        ['Mujeres (valor en kg)', '', '', '', '', '', '', '', '', '', ''],
                         ['20-29', '19.5', '23.8', '27.4', '30.0', '34.0', '18.6', '22.3', '25.8', '28.4', '31.8'],
                         ['30-39', '20.7', '25.0', '27.6', '30.7', '35.0', '20.1', '23.5', '26.4', '29.3', '32.9'],
                         ['40-49', '19.8', '24.4', '26.9', '29.4', '33.6', '18.4', '22.9', '25.7', '28.1', '31.7'],
@@ -6098,7 +6126,7 @@ Para ello, el primer paso consiste en la observación de las tareas que desempe�
                 $observacionFuerzaManualFre_7_2 = isset($evaluacionFre_7_2->OBSERVACIONES_FUERZAMANUAL)
                     && is_scalar($evaluacionFre_7_2->OBSERVACIONES_FUERZAMANUAL)
                     ? trim((string) $evaluacionFre_7_2->OBSERVACIONES_FUERZAMANUAL) : '';
-                $xmlObservacionFuerzaManualFre_7_2 = $parrafoXmlFre_7_2('Observación:', true, 24, 100, 30);
+                $xmlObservacionFuerzaManualFre_7_2 = $parrafoXmlFre_7_2('Resultado de la evaluación de fuerza manual:', true, 24, 100, 30);
                 $xmlObservacionFuerzaManualFre_7_2 .= $parrafoXmlFre_7_2(
                     $observacionFuerzaManualFre_7_2,
                     false,

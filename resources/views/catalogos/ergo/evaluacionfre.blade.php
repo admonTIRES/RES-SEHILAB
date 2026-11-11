@@ -1517,12 +1517,7 @@
                                                 <div class="form-group">
                                                     {!! csrf_field() !!}
 
-
-                                                    <textarea class="form-control"
-                                                        style="margin-bottom: 0px;"
-                                                        rows="20"
-                                                        id="INFORME_INTRODUCCION"
-                                                        name="INFORME_INTRODUCCION"
+                                                    <textarea class="form-control" style="margin-bottom: 0px;" rows="20" id="INFORME_INTRODUCCION" name="INFORME_INTRODUCCION"
                                                         required><p>Los trastornos musculoesqueléticos (TME) constituyen un problema prioritario de salud pública y de la salud en el trabajo, debido a su impacto sobre la capacidad funcional, el bienestar y la participación laboral. Según la Organización Mundial de la Salud (OMS, 2022)<sup>1</sup>, aproximadamente 1.710 millones de personas vivían con estas afecciones en el mundo, de acuerdo con los datos del estudio de carga mundial de enfermedad de 2019. Aunque esta cifra comprende los TME de origen laboral y no laboral, permite dimensionar la magnitud del problema y la importancia de prevenir la exposición que contribuya a su aparición o agravamiento en el trabajo.</p>
 
 <p>En el ámbito laboral, las estimaciones conjuntas de la Organización Mundial de la Salud y la Organización Internacional del Trabajo (OMS y OIT, 2021)<sup>2</sup> atribuyen a los factores de riesgo ergonómico 12,27 millones de años de vida ajustados debido a la discapacidad por dolor de espalda y cuello en 2016. Esta carga aumentó un 20,1 % respecto al año 2000. El informe identifica, entre las exposiciones pertinentes, la manipulación manual de cargas, las vibraciones de cuerpo entero y la permanencia prolongada en posición sentada.</p>
@@ -1756,7 +1751,7 @@
                                                         rows="8"
                                                         id="INFORME_RECONOCIMIENTO"
                                                         name="INFORME_RECONOCIMIENTO"
-                                                        required>Mediante la aplicación de la norma  ISO-TR-12295:2014 y los criterios de la NOM-036-1-STPS-2018, se realiza la identificación de peligros y riesgos ergonómicos, a través de la aplicación de las fichas técnicas que permiten hacer una evaluación inicial rápida de los siguientes aspectos de la carga física: levantamiento, transporte, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas y dinámicas forzadas, siendo este el punto de partida para el reconocimiento del factor de riesgo ergonómico por exposición a sobrecarga biomecánica. A continuación, se presenta el reconocimiento de los peligros y riesgos ergonómicos detectados,  la aplicación del modelo conceptual de un estudio ergonómico (trabajador; tareas; herramientas/equipo y entorno), en la INSTALACION y el resumen de los seis criterios de la carga física referidos en la ISO-TR-12295:2014, relacionados con los respectivos puestos de trabajo valorados, donde el verde corresponde a un “Riesgo aceptable” y el rojo a un “Riesgo crítico”.
+                                                        required>Mediante la aplicación de la norma  ISO-TR-12295:2014 y los criterios de la NOM-036-1-STPS-2018, se realiza la identificación de peligros y riesgos ergonómicos, a través de la aplicación de las fichas técnicas que permiten hacer una evaluación inicial rápida de los siguientes aspectos de la carga física: levantamiento, transporte, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas y dinámicas forzadas, siendo este el punto de partida para el reconocimiento del factor de riesgo ergonómico por exposición a sobrecarga biomecánica. A continuación, se presenta el reconocimiento de los peligros y riesgos ergonómicos detectados,  la aplicación del modelo conceptual de un estudio ergonómico (trabajador; tareas; herramientas/equipo y entorno), en  <font color="#000000" style="background-color: rgb(255, 255, 0);">el/la INSTALACION</font> y el resumen de los seis criterios de la carga física referidos en la ISO-TR-12295:2014, relacionados con los respectivos puestos de trabajo valorados, donde el verde corresponde a un “Riesgo aceptable” y el rojo a un “Riesgo crítico”.
                                                     </textarea>
                                                 </div>
                                             </div>
@@ -1874,7 +1869,7 @@ DESCRIPCIONACTIVIDAD
                                             {!! csrf_field() !!}
                                             <div class="form-group">
                                                 <p>
-                                                    En el momento de la evaluación de los factores de riesgo ergonómico, las áreas del centro de trabajo se encuentran en condiciones normales de operación, donde los trabajadores estaban llevando a cabo sus tareas dentro del ciclo de trabajo normal propio de la actividad, lo cual permitió la ejecución de las valoraciones. </p>
+                                                    En el momento de la evaluación de los factores de riesgo ergonómico, el área descrita del centro de trabajo se encuentra en condiciones normales de operación, donde los trabajadores estaban llevando a cabo sus tareas dentro del ciclo de trabajo normal propio de la actividad, lo cual permitió la ejecución de las valoraciones. </p>
                                             </div>
                                         </div>
                                     </div>
@@ -1885,8 +1880,7 @@ DESCRIPCIONACTIVIDAD
                                             <div class="col-12">
                                                 {!! csrf_field() !!}
                                                 <div class="form-group">
-                                                    <p>
-                                                        Se relacionan a continuación las categorías objeto evaluadas en el presente estudio de factores de riesgo ergonómico:</p>
+                                                    <p>En este apartado se presenta la identificación y descripción de la población trabajadora evaluada, considerando las actividades que desempeña y las condiciones del entorno laboral en las que se desarrollan, con el propósito de reconocer su posible exposición a factores de riesgo ergonómico durante la jornada de trabajo</p>
                                                 </div>
                                                 <table class="table-hover tabla_info_centrado" width="100%" id="tabla_reporte_trabajadores_ergo">
                                                     <thead>
@@ -6776,19 +6770,49 @@ DESCRIPCIONACTIVIDAD
 
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="CAT_METODOS_FRE">Seleccionar métodos</label>
-                                                <select class="form-control"
-                                                    id="CAT_METODOS_FRE"
-                                                    name="CAT_METODOS_FRE[]"
-                                                    multiple>
-                                                    <option value="1">Método OWAS</option>
-                                                    <option value="2">Método ROSA</option>
-                                                    <option value="3">Método RULA</option>
-                                                    <option value="4">Método REBA</option>
+                                                <label>¿Aplica método(s) ergonómico(s) ? </label>
+                                                <select class="form-control" name="APLICA_METODOS_ERGONOMICOS" id="APLICA_METODOS_ERGONOMICOS" required>
+                                                    <option value="">Seleccionar</option>
+                                                    <option value="1">Sí</option>
+                                                    <option value="2">No</option>
                                                 </select>
                                             </div>
                                         </div>
 
+
+                                        <div class="card mt-2" id="TEXTO_NO_METODO" style="display: none;">
+                                            <div class="card-header header-verde-res d-flex align-items-center">
+                                                <i class="fa fa-info mr-2" aria-hidden="true"></i>
+                                                <div class="text-center w-100">
+                                                    <b>No aplica método(s) ergonómico(s)</b>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                Derivado de la revisión de las actividades realizadas en el puesto de trabajo durante su ejecución, se determinó que no es necesario aplicar una metodología específica de evaluación, debido a que las tareas no presentan características que lo justifiquen.
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-12" id="metodosergonomicos" style="display:none;">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="CAT_METODOS_FRE">Seleccionar métodos</label>
+                                                    <select class="form-control"
+                                                        id="CAT_METODOS_FRE"
+                                                        name="CAT_METODOS_FRE[]"
+                                                        multiple>
+                                                        <option value="1">Método OWAS</option>
+                                                        <option value="2">Método ROSA</option>
+                                                        <option value="3">Método RULA</option>
+                                                        <option value="4">Método REBA</option>
+                                                        <option value="5">Método MAC</option>
+                                                        <option value="6">Método RAPP</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <!-- ========================= OWAS ========================= -->
                                         <div id="contenedorMetodoOWAS" class="col-12" style="display: none;">
 
@@ -10106,7 +10130,4559 @@ DESCRIPCIONACTIVIDAD
                                             }
                                         </style>
 
+                                        <!-- ========================= MAC ========================= -->
 
+                                        <div id="contenedorMetodoMAC" class="col-12" style="display: none;">
+
+                                            <div class="card mt-3">
+
+                                                <div class="card-header">
+                                                    <strong>Método MAC (Manual Handling Assessment Charts)</strong>
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-4 mb-3">
+                                                            <label>1. Tareas con operaciones de manejo manual de carga en equipo</label>
+                                                            <select id="MAC_TAREAS_EQUIPO" name="MAC_TAREAS_EQUIPO" class="form-control mac-selector" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="SI">Sí</option>
+                                                                <option value="NO">No</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-4 mb-3">
+                                                            <label>2. Tareas de levantamiento individual de carga</label>
+                                                            <select id="MAC_LEVANTAMIENTO_INDIVIDUAL" name="MAC_LEVANTAMIENTO_INDIVIDUAL" class="form-control mac-selector" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="SI">Sí</option>
+                                                                <option value="NO">No</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-4 mb-3">
+                                                            <label>3. Tareas de transporte de carga</label>
+                                                            <select id="MAC_TRANSPORTE_CARGA" name="MAC_TRANSPORTE_CARGA" class="form-control mac-selector" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="SI">Sí</option>
+                                                                <option value="NO">No</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                            <!-- ================================================= -->
+                                            <!-- FICHA 1: MANEJO MANUAL DE CARGA EN EQUIPO -->
+                                            <!-- ================================================= -->
+
+                                            <div id="fichaMACTareasEquipo" class="col-12 mt-3" style="display:none;">
+
+                                                <style>
+                                                    #fichaMACTareasEquipo .mac-eq-seccion {
+                                                        border: 1px solid #d5d5d5;
+                                                        border-radius: 4px;
+                                                        padding: 15px;
+                                                        margin-bottom: 20px;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-encabezado {
+                                                        display: flex;
+                                                        align-items: stretch;
+                                                        background: #A4D65E;
+                                                        min-height: 48px;
+                                                        margin-bottom: 12px;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-encabezado strong {
+                                                        background: #007DBA;
+                                                        color: #ffffff;
+                                                        padding: 12px;
+                                                        min-width: 240px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-encabezado span {
+                                                        padding: 10px 14px;
+                                                        color: #333333;
+                                                        font-size: 13px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-seccion>p strong,
+                                                    #fichaMACTareasEquipo .mac-eq-seccion label strong,
+                                                    #fichaMACTareasEquipo .mac-eq-titulo strong,
+                                                    #fichaMACTareasEquipo .mac-eq-subtitulo strong {
+                                                        color: #007DBA;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-opciones-peso {
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        gap: 5px;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-peso-grupo {
+                                                        display: grid;
+                                                        grid-template-columns: repeat(3, 1fr) 55px;
+                                                        align-items: center;
+                                                        text-align: center;
+                                                        border: 2px solid;
+                                                        min-height: 65px;
+                                                        font-size: 13px;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-peso-grupo strong {
+                                                        font-size: 22px;
+                                                        color: #007DBA;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-peso-10 {
+                                                        border-color: #75449b;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-peso-6 {
+                                                        border-color: #d92332;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-peso-4 {
+                                                        border-color: #f49a35;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-peso-0 {
+                                                        border-color: #70b85a;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-tres-opciones {
+                                                        display: grid;
+                                                        grid-template-columns: repeat(3, 1fr);
+                                                        border: 1px solid #777777;
+                                                        margin: 12px 0;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-tres-opciones>div {
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        justify-content: space-between;
+                                                        text-align: center;
+                                                        border-right: 1px solid #777777;
+                                                        min-height: 105px;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-tres-opciones>div:last-child {
+                                                        border-right: none;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-tres-opciones p {
+                                                        padding: 12px 8px;
+                                                        margin: 0;
+                                                        font-size: 13px;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-tres-opciones strong {
+                                                        display: block;
+                                                        padding: 10px 8px;
+                                                        color: #007DBA;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-tres-opciones b {
+                                                        display: block;
+                                                        padding: 8px;
+                                                        background: #70b85a;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-tres-opciones>div:nth-child(2) b {
+                                                        background: #f49a35;
+                                                        color: #222222;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-tres-opciones>div:nth-child(3) b {
+                                                        background: #d92332;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-equipo-select {
+                                                        width: 100%;
+                                                        min-height: 38px;
+                                                        margin-top: 8px;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-titulo {
+                                                        background: #A4D65E;
+                                                        color: #007DBA;
+                                                        text-align: center;
+                                                        padding: 10px;
+                                                        margin-bottom: 5px;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-subtitulo {
+                                                        background: #dce9bd;
+                                                        color: #007DBA;
+                                                        text-align: center;
+                                                        padding: 9px;
+                                                        margin-bottom: 5px;
+                                                    }
+
+                                                    #fichaMACTareasEquipo #tablaResumenMACEq,
+                                                    #fichaMACTareasEquipo #tablaNivelRiesgoMACEq {
+                                                        width: 100%;
+                                                        border-collapse: collapse !important;
+                                                    }
+
+                                                    #fichaMACTareasEquipo #tablaResumenMACEq th,
+                                                    #fichaMACTareasEquipo #tablaResumenMACEq td,
+                                                    #fichaMACTareasEquipo #tablaNivelRiesgoMACEq th,
+                                                    #fichaMACTareasEquipo #tablaNivelRiesgoMACEq td {
+                                                        border: 1px solid #555555 !important;
+                                                        vertical-align: middle;
+                                                    }
+
+                                                    #fichaMACTareasEquipo #tablaResumenMACEq thead {
+                                                        background: #dce9bd;
+                                                    }
+
+                                                    #fichaMACTareasEquipo #tablaResumenMACEq thead th {
+                                                        color: #007DBA;
+                                                    }
+
+                                                    #fichaMACTareasEquipo #tablaResumenMACEq textarea {
+                                                        width: 100%;
+                                                        min-width: 150px;
+                                                        resize: vertical;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-color {
+                                                        min-width: 65px;
+                                                        text-align: center;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-valor {
+                                                        text-align: center;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACTareasEquipo #tablaNivelRiesgoMACEq thead th {
+                                                        color: #007DBA;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-riesgo-bajo {
+                                                        background: #00ef00;
+                                                        color: #000000;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-riesgo-medio {
+                                                        background: #ffff00;
+                                                        color: #000000;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-riesgo-alto {
+                                                        background: #ff0000;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-riesgo-muy-alto {
+                                                        background: #ed00ed;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTareasEquipo #tablaNivelRiesgoMACEq tbody tr.mac-eq-seleccionado td {
+                                                        border-top: 4px solid #000000 !important;
+                                                        border-bottom: 4px solid #000000 !important;
+                                                    }
+
+                                                    #fichaMACTareasEquipo #tablaNivelRiesgoMACEq tbody tr.mac-eq-seleccionado td:first-child {
+                                                        border-left: 4px solid #000000 !important;
+                                                    }
+
+                                                    #fichaMACTareasEquipo #tablaNivelRiesgoMACEq tbody tr.mac-eq-seleccionado td:last-child {
+                                                        border-right: 4px solid #000000 !important;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-resultado {
+                                                        text-align: center;
+                                                        padding: 15px;
+                                                        margin-top: 15px;
+                                                        border: 2px solid #cccccc;
+                                                        font-weight: bold;
+                                                        background: #f8f9fa;
+                                                    }
+
+                                                    /* ANÁLISIS DE RESULTADOS */
+                                                    #fichaMACTareasEquipo .mac-eq-analisis {
+                                                        margin-top: 18px;
+                                                        padding: 15px;
+                                                        border: 1px solid #d5d5d5;
+                                                        border-radius: 4px;
+                                                        background: #ffffff;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-analisis label {
+                                                        display: block;
+                                                        margin-bottom: 8px;
+                                                        color: #007DBA;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACTareasEquipo .mac-eq-analisis textarea {
+                                                        width: 100%;
+                                                        min-height: 120px;
+                                                        resize: vertical;
+                                                    }
+
+                                                    @media (max-width: 767px) {
+                                                        #fichaMACTareasEquipo .mac-eq-encabezado {
+                                                            flex-direction: column;
+                                                        }
+
+                                                        #fichaMACTareasEquipo .mac-eq-encabezado strong {
+                                                            min-width: 100%;
+                                                        }
+
+                                                        #fichaMACTareasEquipo .mac-eq-tres-opciones {
+                                                            grid-template-columns: 1fr;
+                                                        }
+
+                                                        #fichaMACTareasEquipo .mac-eq-tres-opciones>div {
+                                                            border-right: none;
+                                                            border-bottom: 1px solid #777777;
+                                                        }
+
+                                                        #fichaMACTareasEquipo .mac-eq-peso-grupo {
+                                                            font-size: 11px;
+                                                        }
+                                                    }
+                                                </style>
+
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <strong>MAC - Tareas con operaciones de manejo manual de carga en equipo</strong>
+                                                    </div>
+
+                                                    <div class="card-body">
+
+                                                        <!-- A) PESO MANEJADO -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>A) Peso manejado</strong>
+                                                                <span>Considere el número de trabajadores y el peso de la carga. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="row mt-3">
+                                                                <div class="col-md-8">
+                                                                    <div class="mac-eq-opciones-peso">
+
+                                                                        <div class="mac-eq-peso-grupo mac-eq-peso-10">
+                                                                            <div>2 personas<br>más de 85 kg.</div>
+                                                                            <div>3 personas<br>más de 130 kg.</div>
+                                                                            <div>4 personas<br>más de 170 kg.</div>
+                                                                            <strong>10</strong>
+                                                                        </div>
+
+                                                                        <div class="mac-eq-peso-grupo mac-eq-peso-6">
+                                                                            <div>2 personas entre<br>65 y 85 kg.</div>
+                                                                            <div>3 personas entre<br>95 y 130 kg.</div>
+                                                                            <div>4 personas entre<br>130 y 170 kg.</div>
+                                                                            <strong>6</strong>
+                                                                        </div>
+
+                                                                        <div class="mac-eq-peso-grupo mac-eq-peso-4">
+                                                                            <div>2 personas entre<br>35 y 65 kg.</div>
+                                                                            <div>3 personas entre<br>55 y 95 kg.</div>
+                                                                            <div>4 personas entre<br>75 y 130 kg.</div>
+                                                                            <strong>4</strong>
+                                                                        </div>
+
+                                                                        <div class="mac-eq-peso-grupo mac-eq-peso-0">
+                                                                            <div>2 personas<br>menos de 35 kg.</div>
+                                                                            <div>3 personas<br>menos de 55 kg.</div>
+                                                                            <div>4 personas<br>menos de 75 kg.</div>
+                                                                            <strong>0</strong>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-4">
+                                                                    <label><strong>Puntuación Ítem A</strong></label>
+
+                                                                    <select id="MAC_EQ_A" name="MAC_EQ_A" class="form-control mac-equipo-select">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="A_2_MENOS_35">2 personas menos de 35 kg</option>
+                                                                        <option value="A_3_MENOS_55">3 personas menos de 55 kg</option>
+                                                                        <option value="A_4_MENOS_75">4 personas menos de 75 kg</option>
+                                                                        <option value="A_2_35_65">2 personas entre 35 y 65 kg</option>
+                                                                        <option value="A_3_55_95">3 personas entre 55 y 95 kg</option>
+                                                                        <option value="A_4_75_130">4 personas entre 75 y 130 kg</option>
+                                                                        <option value="A_2_65_85">2 personas entre 65 y 85 kg</option>
+                                                                        <option value="A_3_95_130">3 personas entre 95 y 130 kg</option>
+                                                                        <option value="A_4_130_170">4 personas entre 130 y 170 kg</option>
+                                                                        <option value="A_2_MAS_85">2 personas más de 85 kg</option>
+                                                                        <option value="A_3_MAS_130">3 personas más de 130 kg</option>
+                                                                        <option value="A_4_MAS_170">4 personas más de 170 kg</option>
+                                                                    </select>
+
+                                                                    <div class="row mt-3">
+                                                                        <div class="col-6">
+                                                                            <label>Peso de la carga (Kg.)</label>
+                                                                            <input type="number" min="0" step="0.01"
+                                                                                id="MAC_EQ_PESO_CARGA"
+                                                                                name="MAC_EQ_PESO_CARGA"
+                                                                                class="form-control" required>
+                                                                        </div>
+
+                                                                        <div class="col-6">
+                                                                            <label>Nº de personas que manipulan carga en forma grupal</label>
+                                                                            <select id="MAC_EQ_NUM_PERSONAS"
+                                                                                name="MAC_EQ_NUM_PERSONAS"
+                                                                                class="form-control" required>
+                                                                                <option value="">Seleccionar...</option>
+                                                                                <option value="2">2 personas</option>
+                                                                                <option value="3">3 personas</option>
+                                                                                <option value="4">4 personas</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <p class="mt-3">
+                                                                <strong>Ejemplo:</strong> Se evalúa una tarea de alzamiento realizada por 2 personas. Entre ambos levantan un elemento que pesa 70 Kg.
+                                                            </p>
+                                                        </div>
+
+                                                        <!-- B) DISTANCIA ENTRE LAS MANOS Y LA ESPALDA -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>B) Distancia entre las manos y la espalda (región lumbar)</strong>
+                                                                <span>Observe la tarea y examine la distancia horizontal entre las manos del trabajador y su región lumbar. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-eq-tres-opciones">
+                                                                <div>
+                                                                    <strong>Brazos verticales Y torso erguido</strong>
+                                                                    <p>Manos cerca de la zona lumbar</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <strong>Brazos en ángulo alejados del cuerpo O tronco inclinado</strong>
+                                                                    <p>Manos a distancia moderada de la zona lumbar</p>
+                                                                    <b>N / 3</b>
+                                                                </div>
+                                                                <div>
+                                                                    <strong>Brazos en ángulo alejados del tronco Y inclinado hacia adelante</strong>
+                                                                    <p>Manos alejadas de la zona lumbar</p>
+                                                                    <b>R / 6</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_EQ_B" name="MAC_EQ_B" class="form-control mac-equipo-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="B_0">Manos cerca de la zona lumbar</option>
+                                                                <option value="B_3">Manos a distancia moderada de la zona lumbar</option>
+                                                                <option value="B_6">Manos alejadas de la zona lumbar</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- C) REGIÓN VERTICAL DE LEVANTAMIENTO -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>C) Región vertical de levantamiento</strong>
+                                                                <span>Evalúe la postura del trabajador y la ubicación de la carga respecto al cuerpo. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-eq-tres-opciones">
+                                                                <div>
+                                                                    <p>Manos entre rodilla y altura de codo</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Manos bajo la rodilla Y/O sobre la altura del codo</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Manos a nivel de piso o más abajo O a la altura de la cabeza o sobre esta</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_EQ_C" name="MAC_EQ_C" class="form-control mac-equipo-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="C_0">Manos entre rodilla y altura de codo</option>
+                                                                <option value="C_1">Manos bajo la rodilla Y/O sobre la altura del codo</option>
+                                                                <option value="C_3">Manos a nivel de piso o más abajo O a la altura de la cabeza o sobre esta</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- D) TORSIÓN Y LATERALIZACIÓN -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>D) Torsión y lateralización de tronco</strong>
+                                                                <span>Observe la espalda del trabajador durante la tarea. Evalúe la torsión y lateralización del tronco durante el trabajo. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-eq-tres-opciones">
+                                                                <div>
+                                                                    <p>Troncos con pequeña o ninguna rotación ni lateralización</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Torsos rotados O lateralizados</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Troncos lateralizados Y rotados</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_EQ_D" name="MAC_EQ_D" class="form-control mac-equipo-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="D_0">Troncos con pequeña o ninguna rotación ni lateralización</option>
+                                                                <option value="D_1">Torsos rotados O lateralizados</option>
+                                                                <option value="D_2">Troncos lateralizados Y rotados</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- E) RESTRICCIONES POSTURALES -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>E) Restricciones Posturales</strong>
+                                                                <span>Observe el espacio donde transita el trabajador. Identifique el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-eq-tres-opciones">
+                                                                <div>
+                                                                    <p>Sin restricción postural</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Postura restringida</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Postura severamente restringida</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_EQ_E" name="MAC_EQ_E" class="form-control mac-equipo-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="E_0">Sin restricción postural</option>
+                                                                <option value="E_1">Postura restringida</option>
+                                                                <option value="E_3">Postura severamente restringida</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- F) ACOPLAMIENTO MANO - OBJETO -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>F) Acoplamiento Mano - Objeto</strong>
+                                                                <span>Evalúe las propiedades geométricas y de diseño del objeto manipulado. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-eq-tres-opciones">
+                                                                <div>
+                                                                    <p>Mangos adecuados para su uso/asideros emparejados al tamaño y peso de la carga.</p>
+                                                                    <p>Mangos o elementos cilíndricos, toda la mano la puede envolver cómodamente.</p>
+                                                                    <b>Agarre bueno - V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Los mangos o asas son demasiado pequeños o no tienen espacio para los dedos o solo los dedos sostienen la carga.</p>
+                                                                    <p>No hay manillas o agarraderas pero puede ser sostenida por la parte inferior o tiene manillas con lazos o correas.</p>
+                                                                    <b>Agarre razonable - N / 2</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>No existen asas o zonas de asidero.</p>
+                                                                    <p>Pinza con la punta de los dedos, para mantener juntas las partes (piezas/elementos).</p>
+                                                                    <p>Áspero, resbaladizo o con puntos de presión.</p>
+                                                                    <p>Irregular, voluminoso o agarre rígido.</p>
+                                                                    <b>Agarre malo - R / 4</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_EQ_F" name="MAC_EQ_F" class="form-control mac-equipo-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="F_0">Agarre bueno</option>
+                                                                <option value="F_2">Agarre razonable</option>
+                                                                <option value="F_4">Agarre malo</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- G) SUPERFICIE DEL PISO -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>G) Superficie del piso</strong>
+                                                                <span>Evalúe las propiedades del piso donde el trabajador realiza las tareas. Tenga en cuenta que para trabajos desarrollados dependerán del clima. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-eq-tres-opciones">
+                                                                <div>
+                                                                    <p>Pisos no resbalosos, secos, limpios y sin daños.</p>
+                                                                    <b>Piso en buen estado - V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Pisos generalmente secos, limpios (húmedos o con algunos escombros), O razonablemente firmes, O con daños menores.</p>
+                                                                    <b>Piso en razonable estado - N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Pisos resbaladizos (grasiento, aceitoso, húmedo, con hielo) O escombros en varias áreas O blando/fofo O inestables O, con daños severos.</p>
+                                                                    <b>Piso en mal estado - R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_EQ_G" name="MAC_EQ_G" class="form-control mac-equipo-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="G_0">Piso en buen estado</option>
+                                                                <option value="G_1">Piso en razonable estado</option>
+                                                                <option value="G_3">Piso en mal estado</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- H) DISTANCIA DE TRASLADO -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>H) Distancia de traslado</strong>
+                                                                <span>Observe y determine la distancia total de traslado de la carga. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-eq-tres-opciones">
+                                                                <div>
+                                                                    <p>Entre 2 a 4 metros</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Entre 4 a 10 metros</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Sobre 10 metros</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_EQ_H" name="MAC_EQ_H" class="form-control mac-equipo-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="H_0">Entre 2 a 4 metros</option>
+                                                                <option value="H_1">Entre 4 a 10 metros</option>
+                                                                <option value="H_3">Sobre 10 metros</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- I) OBSTÁCULOS EN LA RUTA -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>I) Obstáculos en la ruta</strong>
+                                                                <span>Cuente el número diferente tipos de obstáculos en la ruta. Si el equipo lleva carga hacia arriba/abajo por una pendiente pronunciada, por puertas cerradas o estrechas, curvas/esquinas, escaleras. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-eq-tres-opciones">
+                                                                <div>
+                                                                    <p>Sin obstáculos Y ruta plana, o con pendiente suave</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Un tipo de obstáculo O pendiente pronunciada.</p>
+                                                                    <b>N / 2</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Escaleras O al menos 2 tipos de obstáculos.</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_EQ_I" name="MAC_EQ_I" class="form-control mac-equipo-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="I_0">Sin obstáculos Y ruta plana, o con pendiente suave</option>
+                                                                <option value="I_2">Un tipo de obstáculo O pendiente pronunciada</option>
+                                                                <option value="I_3">Escaleras O al menos 2 tipos de obstáculos</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- J) COMUNICACIÓN, COORDINACIÓN Y CONTROL -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>J) Comunicación, coordinación y control</strong>
+                                                                <span>Evalúe la comunicación, coordinación y lentitud de las acciones. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-eq-tres-opciones">
+                                                                <div>
+                                                                    <p>Buena comunicación, coordinación y control</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Razonable comunicación, coordinación y control</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Mala comunicación, coordinación y control</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_EQ_J" name="MAC_EQ_J" class="form-control mac-equipo-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="J_0">Buena comunicación, coordinación y control</option>
+                                                                <option value="J_1">Razonable comunicación, coordinación y control</option>
+                                                                <option value="J_3">Mala comunicación, coordinación y control</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- K) FACTORES AMBIENTALES -->
+                                                        <div class="mac-eq-seccion">
+                                                            <div class="mac-eq-encabezado">
+                                                                <strong>K) Otros factores ambientales complementarios</strong>
+                                                                <span>Observe el ambiente de trabajo y evalúe si la tarea se realiza en condiciones de temperatura extrema, fuertes corrientes de aire y/o condiciones extremas de iluminación (oscuridad, brillos y malos contrastes). Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-eq-tres-opciones">
+                                                                <div>
+                                                                    <p>Ningún factor</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Un factor</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Dos o más factores</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_EQ_K" name="MAC_EQ_K" class="form-control mac-equipo-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="K_0">Ningún factor</option>
+                                                                <option value="K_1">Un factor</option>
+                                                                <option value="K_2">Dos o más factores</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- FICHA RESUMEN -->
+                                                        <div class="mac-eq-titulo">
+                                                            <strong>Ficha Resumen</strong>
+                                                        </div>
+
+                                                        <div class="mac-eq-subtitulo">
+                                                            <strong>Tareas con operaciones de manejo manual de carga en equipo</strong>
+                                                        </div>
+
+                                                        <p>Inserte el color y puntaje numérico correspondiente para cada factor de riesgo</p>
+
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-sm" id="tablaResumenMACEq">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Factor</th>
+                                                                        <th>Factores de Riesgo</th>
+                                                                        <th>Color</th>
+                                                                        <th>Valor</th>
+                                                                        <th>Medidas de control</th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
+                                                                    <tr data-factor="A">
+                                                                        <td>A</td>
+                                                                        <td>Peso de la carga y número de trabajadores</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_A" name="MAC_EQ_CONTROL_A" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="B">
+                                                                        <td>B</td>
+                                                                        <td>Distancia horizontal de las manos a la región lumbar</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_B" name="MAC_EQ_CONTROL_B" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="C">
+                                                                        <td>C</td>
+                                                                        <td>Región vertical de levantamiento</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_C" name="MAC_EQ_CONTROL_C" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="D">
+                                                                        <td>D</td>
+                                                                        <td>Torsión y lateralización de tronco</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_D" name="MAC_EQ_CONTROL_D" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="E">
+                                                                        <td>E</td>
+                                                                        <td>Restricciones posturales</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_E" name="MAC_EQ_CONTROL_E" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="F">
+                                                                        <td>F</td>
+                                                                        <td>Acoplamiento mano objeto</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_F" name="MAC_EQ_CONTROL_F" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="G">
+                                                                        <td>G</td>
+                                                                        <td>Superficie del piso</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_G" name="MAC_EQ_CONTROL_G" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="H">
+                                                                        <td>H</td>
+                                                                        <td>Distancia de traslado</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_H" name="MAC_EQ_CONTROL_H" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="I">
+                                                                        <td>I</td>
+                                                                        <td>Obstáculos en la ruta</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_I" name="MAC_EQ_CONTROL_I" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="J">
+                                                                        <td>J</td>
+                                                                        <td>Comunicación, coordinación y control</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_J" name="MAC_EQ_CONTROL_J" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="K">
+                                                                        <td>K</td>
+                                                                        <td>Factores ambientales (aire, temperatura, iluminación,..)</td>
+                                                                        <td class="mac-eq-color"></td>
+                                                                        <td class="mac-eq-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_EQ_CONTROL_K" name="MAC_EQ_CONTROL_K" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th colspan="3" class="text-right">Puntaje total</th>
+                                                                        <th id="MAC_EQ_TOTAL">0</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+
+                                                        <!-- NIVEL DE RIESGO -->
+                                                        <div class="mac-eq-titulo mt-4">
+                                                            <strong>NIVEL DE RIESGO</strong>
+                                                        </div>
+
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered text-center" id="tablaNivelRiesgoMACEq">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>NIVEL DE RIESGO</th>
+                                                                        <th>PRIORIDAD</th>
+                                                                        <th>PUNTAJE TOTAL</th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
+                                                                    <tr id="MAC_EQ_RIESGO_BAJO" class="mac-eq-riesgo-bajo">
+                                                                        <td><strong>Bajo – Aceptable</strong></td>
+                                                                        <td>No se requieren acciones correctivas</td>
+                                                                        <td>0 a 4</td>
+                                                                    </tr>
+
+                                                                    <tr id="MAC_EQ_RIESGO_MEDIO" class="mac-eq-riesgo-medio">
+                                                                        <td><strong>Medio – Posible</strong></td>
+                                                                        <td>Se requieren acciones correctivas a corto plazo</td>
+                                                                        <td>5 a 12</td>
+                                                                    </tr>
+
+                                                                    <tr id="MAC_EQ_RIESGO_ALTO" class="mac-eq-riesgo-alto">
+                                                                        <td><strong>Alto – Significativo</strong></td>
+                                                                        <td>Se requieren acciones correctivas pronto</td>
+                                                                        <td>13 a 20</td>
+                                                                    </tr>
+
+                                                                    <tr id="MAC_EQ_RIESGO_MUY_ALTO" class="mac-eq-riesgo-muy-alto">
+                                                                        <td><strong>Muy Alto – Inaceptable</strong></td>
+                                                                        <td>Se requieren acciones correctivas inmediatamente</td>
+                                                                        <td>21 a 32</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                        <!-- RESULTADO GENERAL -->
+                                                        <div id="MAC_EQ_RESULTADO" class="mac-eq-resultado">
+                                                            Seleccione los factores para obtener el resultado.
+                                                        </div>
+
+                                                        <!-- ANÁLISIS DE RESULTADOS -->
+                                                        <div class="mac-eq-analisis">
+                                                            <label>Análisis de los resultados del método MAC - Tareas con operaciones de manejo manual de carga en equipo </label>
+                                                            <textarea
+                                                                id="MAC_EQ_ANALISIS_RESULTADOS"
+                                                                name="MAC_EQ_ANALISIS_RESULTADOS"
+                                                                class="form-control"
+                                                                rows="5" required></textarea>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <!-- ================================================= -->
+                                            <!-- FICHA 2: LEVANTAMIENTO INDIVIDUAL -->
+                                            <!-- ================================================= -->
+
+                                            <div id="fichaMACLevantamiento" class="col-12 mt-3" style="display: none;">
+
+                                                <style>
+                                                    #fichaMACLevantamiento .mac-ind-seccion {
+                                                        border: 1px solid #d5d5d5;
+                                                        border-radius: 4px;
+                                                        padding: 15px;
+                                                        margin-bottom: 20px;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-encabezado {
+                                                        display: flex;
+                                                        align-items: stretch;
+                                                        background: #A4D65E;
+                                                        min-height: 48px;
+                                                        margin-bottom: 12px;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-encabezado strong {
+                                                        background: #007DBA;
+                                                        color: #ffffff;
+                                                        padding: 12px;
+                                                        min-width: 240px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-encabezado span {
+                                                        padding: 10px 14px;
+                                                        color: #333333;
+                                                        font-size: 13px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-seccion label strong,
+                                                    #fichaMACLevantamiento .mac-ind-titulo strong {
+                                                        color: #007DBA;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-select {
+                                                        width: 100%;
+                                                        min-height: 38px;
+                                                        margin-top: 8px;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-grafica {
+                                                        width: 100%;
+                                                        border-collapse: collapse;
+                                                        text-align: center;
+                                                        font-size: 12px;
+                                                        margin-bottom: 12px;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-grafica th,
+                                                    #fichaMACLevantamiento .mac-ind-grafica td {
+                                                        border: 1px solid #555;
+                                                        padding: 8px 5px;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-grafica thead th {
+                                                        background: #e5e5e5;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-verde {
+                                                        background: #70b85a;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-naranja {
+                                                        background: #f49a35;
+                                                        color: #222222;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-rojo {
+                                                        background: #d92332;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-morado {
+                                                        background: #75449b;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-opciones {
+                                                        display: grid;
+                                                        grid-template-columns: repeat(3, 1fr);
+                                                        border: 1px solid #777777;
+                                                        margin: 12px 0;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-opciones>div {
+                                                        text-align: center;
+                                                        border-right: 1px solid #777777;
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        justify-content: space-between;
+                                                        min-height: 90px;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-opciones>div:last-child {
+                                                        border-right: none;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-opciones p {
+                                                        padding: 12px 8px;
+                                                        margin: 0;
+                                                        font-size: 13px;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-opciones b {
+                                                        display: block;
+                                                        padding: 8px;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-opciones>div:nth-child(1) b {
+                                                        background: #70b85a;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-opciones>div:nth-child(2) b {
+                                                        background: #f49a35;
+                                                        color: #222222;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-opciones>div:nth-child(3) b {
+                                                        background: #d92332;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-titulo {
+                                                        background: #A4D65E;
+                                                        color: #007DBA;
+                                                        text-align: center;
+                                                        padding: 10px;
+                                                        margin-bottom: 5px;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-subtitulo {
+                                                        background: #dce9bd;
+                                                        color: #007DBA;
+                                                        text-align: center;
+                                                        padding: 9px;
+                                                        margin-bottom: 5px;
+                                                    }
+
+                                                    #fichaMACLevantamiento #tablaResumenMACIndividual,
+                                                    #fichaMACLevantamiento #tablaNivelRiesgoMACIndividual {
+                                                        width: 100%;
+                                                        border-collapse: collapse !important;
+                                                    }
+
+                                                    #fichaMACLevantamiento #tablaResumenMACIndividual th,
+                                                    #fichaMACLevantamiento #tablaResumenMACIndividual td,
+                                                    #fichaMACLevantamiento #tablaNivelRiesgoMACIndividual th,
+                                                    #fichaMACLevantamiento #tablaNivelRiesgoMACIndividual td {
+                                                        border: 1px solid #555555 !important;
+                                                        vertical-align: middle;
+                                                    }
+
+                                                    #fichaMACLevantamiento #tablaResumenMACIndividual thead {
+                                                        background: #dce9bd;
+                                                    }
+
+                                                    #fichaMACLevantamiento #tablaResumenMACIndividual thead th {
+                                                        color: #007DBA;
+                                                    }
+
+                                                    #fichaMACLevantamiento #tablaResumenMACIndividual textarea {
+                                                        width: 100%;
+                                                        min-width: 150px;
+                                                        resize: vertical;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-color {
+                                                        min-width: 65px;
+                                                        text-align: center;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-valor {
+                                                        text-align: center;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-color-verde {
+                                                        background: #70b85a;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-color-naranja {
+                                                        background: #f49a35;
+                                                        color: #222222;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-color-rojo {
+                                                        background: #d92332;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-color-morado {
+                                                        background: #75449b;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACLevantamiento #tablaNivelRiesgoMACIndividual thead th {
+                                                        color: #000000;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-riesgo-bajo {
+                                                        background: #00ef00;
+                                                        color: #000000;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-riesgo-medio {
+                                                        background: #ffff00;
+                                                        color: #000000;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-riesgo-alto {
+                                                        background: #ff0000;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-riesgo-muy-alto {
+                                                        background: #ed00ed;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACLevantamiento #tablaNivelRiesgoMACIndividual tbody tr.mac-ind-seleccionado td {
+                                                        border-top: 4px solid #000000 !important;
+                                                        border-bottom: 4px solid #000000 !important;
+                                                    }
+
+                                                    #fichaMACLevantamiento #tablaNivelRiesgoMACIndividual tbody tr.mac-ind-seleccionado td:first-child {
+                                                        border-left: 4px solid #000000 !important;
+                                                    }
+
+                                                    #fichaMACLevantamiento #tablaNivelRiesgoMACIndividual tbody tr.mac-ind-seleccionado td:last-child {
+                                                        border-right: 4px solid #000000 !important;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-resultado {
+                                                        text-align: center;
+                                                        padding: 15px;
+                                                        margin-top: 15px;
+                                                        border: 2px solid #cccccc;
+                                                        font-weight: bold;
+                                                        background: #f8f9fa;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-frecuencia {
+                                                        background: #f8f9fa;
+                                                        padding: 12px;
+                                                        border: 1px solid #cccccc;
+                                                        margin-top: 12px;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-frecuencia strong {
+                                                        color: #007DBA;
+                                                    }
+
+                                                    /* ANÁLISIS DE RESULTADOS */
+                                                    #fichaMACLevantamiento .mac-ind-analisis {
+                                                        margin-top: 18px;
+                                                        padding: 15px;
+                                                        border: 1px solid #d5d5d5;
+                                                        border-radius: 4px;
+                                                        background: #ffffff;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-analisis label {
+                                                        display: block;
+                                                        margin-bottom: 8px;
+                                                        color: #007DBA;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACLevantamiento .mac-ind-analisis textarea {
+                                                        width: 100%;
+                                                        min-height: 120px;
+                                                        resize: vertical;
+                                                    }
+
+                                                    @media (max-width: 767px) {
+                                                        #fichaMACLevantamiento .mac-ind-encabezado {
+                                                            flex-direction: column;
+                                                        }
+
+                                                        #fichaMACLevantamiento .mac-ind-encabezado strong {
+                                                            min-width: 100%;
+                                                        }
+
+                                                        #fichaMACLevantamiento .mac-ind-opciones {
+                                                            grid-template-columns: 1fr;
+                                                        }
+
+                                                        #fichaMACLevantamiento .mac-ind-opciones>div {
+                                                            border-right: none;
+                                                            border-bottom: 1px solid #777777;
+                                                        }
+                                                    }
+                                                </style>
+
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <strong>MAC - Tareas de levantamiento individual de carga</strong>
+                                                    </div>
+
+                                                    <div class="card-body">
+
+                                                        <!-- A) PESO MANEJADO -->
+                                                        <div class="mac-ind-seccion">
+
+                                                            <div class="mac-ind-encabezado">
+                                                                <strong>A) Peso manejado</strong>
+                                                                <span>Utilice el gráfico para determinar cada cuánto tiempo levanta/desciende un objeto, o cuántos levantamientos realiza en 1 hora.</span>
+                                                            </div>
+
+                                                            <div class="row">
+
+                                                                <div class="col-md-8">
+
+                                                                    <div class="table-responsive">
+                                                                        <table class="mac-ind-grafica">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th colspan="8">PESO DE LA CARGA (Kg.) / FRECUENCIA DE LEVANTAMIENTO</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr class="mac-ind-morado">
+                                                                                    <td>50 kg o más</td>
+                                                                                    <td colspan="7">M = 10</td>
+                                                                                </tr>
+                                                                                <tr class="mac-ind-rojo">
+                                                                                    <td>Zona de riesgo alto</td>
+                                                                                    <td colspan="7">R = 6</td>
+                                                                                </tr>
+                                                                                <tr class="mac-ind-naranja">
+                                                                                    <td>Zona de riesgo medio</td>
+                                                                                    <td colspan="7">N = 4</td>
+                                                                                </tr>
+                                                                                <tr class="mac-ind-verde">
+                                                                                    <td>Zona de riesgo bajo</td>
+                                                                                    <td colspan="7">V = 0</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+
+                                                                    <p><strong>Frecuencia de levantamiento:</strong></p>
+
+                                                                    <div class="table-responsive">
+                                                                        <table class="mac-ind-grafica">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Un levantamiento por día</th>
+                                                                                    <th>30 minutos</th>
+                                                                                    <th>5 minutos</th>
+                                                                                    <th>2 minutos</th>
+                                                                                    <th>1 minuto</th>
+                                                                                    <th>14 segundos</th>
+                                                                                    <th>9 segundos</th>
+                                                                                    <th>5 segundos</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>1</td>
+                                                                                    <td>2</td>
+                                                                                    <td>12</td>
+                                                                                    <td>30</td>
+                                                                                    <td>60</td>
+                                                                                    <td>250</td>
+                                                                                    <td>400</td>
+                                                                                    <td>720</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+
+                                                                    <div class="mac-ind-frecuencia">
+                                                                        <strong>Ejemplo:</strong>
+                                                                        Se evalúa una tarea de alzamiento y colocación de cajas en estantes al interior de una bodega. El trabajador levanta cajas de 20 Kg, la frecuencia de alzamiento es de 60 cajas por hora.
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="col-md-4">
+
+                                                                    <div class="row">
+
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="MAC_IND_PESO_CARGA"><strong>Peso de la carga (Kg.)</strong></label>
+                                                                            <input type="number" min="0" step="0.01" id="MAC_IND_PESO_CARGA" name="MAC_IND_PESO_CARGA" class="form-control" placeholder="Peso en kg" required>
+                                                                        </div>
+
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="MAC_IND_NUM_OBJETOS"><strong>Nº Objetos</strong></label>
+                                                                            <input type="number" min="0" step="1" id="MAC_IND_NUM_OBJETOS" name="MAC_IND_NUM_OBJETOS" class="form-control" placeholder="Cantidad de objetos" required>
+                                                                        </div>
+
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="MAC_IND_NUM_PERSONAS"><strong>Nº de personas que individualmente manipulan carga</strong></label>
+                                                                            <input type="number" min="1" step="1" id="MAC_IND_NUM_PERSONAS" name="MAC_IND_NUM_PERSONAS" class="form-control" value="1" required>
+                                                                        </div>
+
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="MAC_IND_HORAS"><strong>Nº de horas efectivas</strong></label>
+                                                                            <input type="number" min="0.01" step="0.01" id="MAC_IND_HORAS" name="MAC_IND_HORAS" class="form-control" placeholder="Horas efectivas" required>
+                                                                        </div>
+
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="MAC_IND_FRECUENCIA"><strong>Nº levantamientos por hora</strong></label>
+                                                                            <input type="text" id="MAC_IND_FRECUENCIA" name="MAC_IND_FRECUENCIA" class="form-control" readonly>
+                                                                        </div>
+
+                                                                        <div class="col-12">
+                                                                            <label for="MAC_IND_A"><strong>Puntuación Ítem A</strong></label>
+                                                                            <input type="text" id="MAC_IND_A" name="MAC_IND_A" class="form-control text-center font-weight-bold" readonly>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- B) DISTANCIA HORIZONTAL -->
+                                                        <div class="mac-ind-seccion">
+
+                                                            <div class="mac-ind-encabezado">
+                                                                <strong>B) Distancia entre las manos y la espalda (región lumbar)</strong>
+                                                                <span>Observe la tarea y examine la distancia horizontal entre las manos del trabajador y su región lumbar. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-ind-opciones">
+                                                                <div>
+                                                                    <p>Brazos verticales Y torso erguido</p>
+                                                                    <b>Manos cerca de la zona lumbar - V/0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Brazos en ángulo alejados del cuerpo O tronco inclinado</p>
+                                                                    <b>Manos a distancia moderada de la zona lumbar - N/3</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Brazos en ángulo alejados del tronco Y inclinado hacia adelante</p>
+                                                                    <b>Manos alejadas de la zona lumbar - R/6</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_IND_B" name="MAC_IND_B" class="form-control mac-ind-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="B_0">Manos cerca de la zona lumbar</option>
+                                                                <option value="B_3">Manos a distancia moderada de la zona lumbar</option>
+                                                                <option value="B_6">Manos alejadas de la zona lumbar</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- C) DISTANCIA VERTICAL -->
+                                                        <div class="mac-ind-seccion">
+
+                                                            <div class="mac-ind-encabezado">
+                                                                <strong>C) Distancia vertical de levantamiento</strong>
+                                                                <span>Evalúe la postura del trabajador y la ubicación de la carga respecto al cuerpo. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-ind-opciones">
+                                                                <div>
+                                                                    <p>Manos entre rodilla y altura de codo</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Manos entre rodillas y nivel del piso. Manos entre altura del codo y altura de cabeza</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Manos a nivel del piso o más abajo. Manos a la altura de la cabeza o sobre esta</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_IND_C" name="MAC_IND_C" class="form-control mac-ind-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="C_0">Manos entre rodilla y altura de codo</option>
+                                                                <option value="C_1A">Manos entre rodillas y nivel del piso</option>
+                                                                <option value="C_1B">Manos entre altura del codo y altura de cabeza</option>
+                                                                <option value="C_3A">Manos a nivel del piso o más abajo</option>
+                                                                <option value="C_3B">Manos a la altura de la cabeza o sobre esta</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- D) TORSIÓN -->
+                                                        <div class="mac-ind-seccion">
+
+                                                            <div class="mac-ind-encabezado">
+                                                                <strong>D) Torsión y lateralización de tronco</strong>
+                                                                <span>Observe la espalda del trabajador durante la tarea. Evalúe la torsión y lateralización del tronco durante el trabajo. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-ind-opciones">
+                                                                <div>
+                                                                    <p>Tronco con pequeña o ninguna rotación ni lateralización</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Tronco rotado. Tronco lateralizado</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Tronco lateralizado Y rotado</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_IND_D" name="MAC_IND_D" class="form-control mac-ind-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="D_0">Tronco con pequeña o ninguna rotación ni lateralización</option>
+                                                                <option value="D_1A">Tronco rotado</option>
+                                                                <option value="D_1B">Tronco lateralizado</option>
+                                                                <option value="D_2">Tronco lateralizado Y rotado</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- E) RESTRICCIONES POSTURALES -->
+                                                        <div class="mac-ind-seccion">
+
+                                                            <div class="mac-ind-encabezado">
+                                                                <strong>E) Restricciones posturales</strong>
+                                                                <span>Observe el espacio donde transita el trabajador. Identifique el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-ind-opciones">
+                                                                <div>
+                                                                    <p>Sin restricción postural</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Postura restringida</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Postura severamente restringida</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_IND_E" name="MAC_IND_E" class="form-control mac-ind-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="E_0">Sin restricción postural</option>
+                                                                <option value="E_1">Postura restringida</option>
+                                                                <option value="E_3">Postura severamente restringida</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- F) ACOPLAMIENTO -->
+                                                        <div class="mac-ind-seccion">
+
+                                                            <div class="mac-ind-encabezado">
+                                                                <strong>F) Acoplamiento mano - objeto</strong>
+                                                                <span>Evalúe las propiedades geométricas y de diseño del objeto manipulado. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-ind-opciones">
+                                                                <div>
+                                                                    <p>Mangos adecuados para su uso/asideros emparejados al tamaño y peso de la carga. Mangos o elementos cilíndricos, toda la mano la puede envolver cómodamente.</p>
+                                                                    <b>Agarre bueno - V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Los mangos o asas son demasiado pequeños o no tienen espacio para los dedos o solo los dedos sostienen la carga. No hay manillas o agarraderas pero puede ser sostenida por la parte inferior o tiene manillas con lazos o correas.</p>
+                                                                    <b>Agarre razonable - N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>No existen asas o zonas de asidero. Áspero, resbaladizo o con puntos de presión. Pinza con la punta de los dedos. Irregular, voluminoso o agarre rígido.</p>
+                                                                    <b>Agarre malo - R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_IND_F" name="MAC_IND_F" class="form-control mac-ind-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="F_0">Agarre bueno</option>
+                                                                <option value="F_1">Agarre razonable</option>
+                                                                <option value="F_2">Agarre malo</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- G) SUPERFICIE DEL PISO -->
+                                                        <div class="mac-ind-seccion">
+
+                                                            <div class="mac-ind-encabezado">
+                                                                <strong>G) Superficie del piso</strong>
+                                                                <span>Evalúe las propiedades del piso donde el trabajador realiza las tareas. Tenga en cuenta que los trabajos desarrollados en el exterior dependerán del clima. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-ind-opciones">
+                                                                <div>
+                                                                    <p>Pisos no resbalosos, secos, limpios y sin daños</p>
+                                                                    <b>Piso en buen estado - V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Pisos generalmente secos, limpios (húmedos o con algunos escombros), O razonablemente firmes, O con daños menores</p>
+                                                                    <b>Piso en razonable estado - N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Pisos resbaladizos, escombros en varias áreas, blando/fofo, inestables o con daños severos</p>
+                                                                    <b>Piso en mal estado - R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_IND_G" name="MAC_IND_G" class="form-control mac-ind-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="G_0">Piso en buen estado</option>
+                                                                <option value="G_1">Piso en razonable estado</option>
+                                                                <option value="G_2">Piso en mal estado</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- H) FACTORES AMBIENTALES -->
+                                                        <div class="mac-ind-seccion">
+
+                                                            <div class="mac-ind-encabezado">
+                                                                <strong>H) Otros factores ambientales</strong>
+                                                                <span>Observe el ambiente de trabajo y evalúe si la tarea se realiza en condiciones de temperaturas extremas, fuertes corrientes de aire y/o condiciones extremas de iluminación. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-ind-opciones">
+                                                                <div>
+                                                                    <p>Ningún factor</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Un factor</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Dos o más factores</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_IND_H" name="MAC_IND_H" class="form-control mac-ind-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="H_0">Ningún factor</option>
+                                                                <option value="H_1">Un factor</option>
+                                                                <option value="H_2">Dos o más factores</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- TABLA RESUMEN -->
+                                                        <div class="mac-ind-titulo">
+                                                            <strong>Ficha Resumen</strong>
+                                                        </div>
+
+                                                        <div class="mac-ind-subtitulo">
+                                                            <strong>Tarea de levantamiento MAC (monotarea) y MAC-V MAC (multitarea)</strong>
+                                                        </div>
+
+                                                        <p>Inserte el color y puntaje numérico correspondiente para cada factor de riesgo.</p>
+
+                                                        <div class="table-responsive">
+
+                                                            <table class="table table-bordered table-sm" id="tablaResumenMACIndividual">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Factor</th>
+                                                                        <th>Factores de Riesgo</th>
+                                                                        <th>Color</th>
+                                                                        <th>Valor</th>
+                                                                        <th>Medidas de control</th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
+
+                                                                    <tr data-factor="A">
+                                                                        <td>A</td>
+                                                                        <td>Peso de la carga y frecuencia</td>
+                                                                        <td class="mac-ind-color"></td>
+                                                                        <td class="mac-ind-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_IND_CONTROL_A" name="MAC_IND_CONTROL_A" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="B">
+                                                                        <td>B</td>
+                                                                        <td>Distancia horizontal de las manos a la región lumbar</td>
+                                                                        <td class="mac-ind-color"></td>
+                                                                        <td class="mac-ind-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_IND_CONTROL_B" name="MAC_IND_CONTROL_B" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="C">
+                                                                        <td>C</td>
+                                                                        <td>Región vertical de levantamiento</td>
+                                                                        <td class="mac-ind-color"></td>
+                                                                        <td class="mac-ind-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_IND_CONTROL_C" name="MAC_IND_CONTROL_C" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="D">
+                                                                        <td>D</td>
+                                                                        <td>Torsión y lateralización de tronco</td>
+                                                                        <td class="mac-ind-color"></td>
+                                                                        <td class="mac-ind-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_IND_CONTROL_D" name="MAC_IND_CONTROL_D" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="E">
+                                                                        <td>E</td>
+                                                                        <td>Restricciones posturales</td>
+                                                                        <td class="mac-ind-color"></td>
+                                                                        <td class="mac-ind-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_IND_CONTROL_E" name="MAC_IND_CONTROL_E" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="F">
+                                                                        <td>F</td>
+                                                                        <td>Acoplamiento mano-objeto</td>
+                                                                        <td class="mac-ind-color"></td>
+                                                                        <td class="mac-ind-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_IND_CONTROL_F" name="MAC_IND_CONTROL_F" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="G">
+                                                                        <td>G</td>
+                                                                        <td>Superficie de trabajo</td>
+                                                                        <td class="mac-ind-color"></td>
+                                                                        <td class="mac-ind-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_IND_CONTROL_G" name="MAC_IND_CONTROL_G" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="H">
+                                                                        <td>H</td>
+                                                                        <td>Factores ambientales (aire, temperatura, iluminación...)</td>
+                                                                        <td class="mac-ind-color"></td>
+                                                                        <td class="mac-ind-valor">-</td>
+                                                                        <td>
+                                                                            <textarea id="MAC_IND_CONTROL_H" name="MAC_IND_CONTROL_H" class="form-control" rows="2"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                </tbody>
+
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th colspan="3" class="text-right">Puntaje total</th>
+                                                                        <th id="MAC_IND_TOTAL">0</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </tfoot>
+
+                                                            </table>
+
+                                                        </div>
+
+                                                        <!-- TABLA NIVEL DE RIESGO -->
+                                                        <div class="mac-ind-titulo mt-4">
+                                                            <strong>NIVEL DE RIESGO</strong>
+                                                        </div>
+
+                                                        <div class="table-responsive">
+
+                                                            <table class="table table-bordered text-center" id="tablaNivelRiesgoMACIndividual">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>NIVEL DE RIESGO</th>
+                                                                        <th>PRIORIDAD</th>
+                                                                        <th>PUNTAJE TOTAL</th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
+
+                                                                    <tr id="MAC_IND_RIESGO_BAJO" class="mac-ind-riesgo-bajo">
+                                                                        <td><strong>Bajo – Aceptable</strong></td>
+                                                                        <td>No se requieren acciones correctivas</td>
+                                                                        <td>0 a 4</td>
+                                                                    </tr>
+
+                                                                    <tr id="MAC_IND_RIESGO_MEDIO" class="mac-ind-riesgo-medio">
+                                                                        <td><strong>Medio – Posible</strong></td>
+                                                                        <td>Se requieren acciones correctivas a corto plazo</td>
+                                                                        <td>5 a 12</td>
+                                                                    </tr>
+
+                                                                    <tr id="MAC_IND_RIESGO_ALTO" class="mac-ind-riesgo-alto">
+                                                                        <td><strong>Alto – Significativo</strong></td>
+                                                                        <td>Se requieren acciones correctivas pronto</td>
+                                                                        <td>13 a 20</td>
+                                                                    </tr>
+
+                                                                    <tr id="MAC_IND_RIESGO_MUY_ALTO" class="mac-ind-riesgo-muy-alto">
+                                                                        <td><strong>Muy Alto – Inaceptable</strong></td>
+                                                                        <td>Se requieren acciones correctivas inmediatamente</td>
+                                                                        <td>21 a 32</td>
+                                                                    </tr>
+
+                                                                </tbody>
+
+                                                            </table>
+
+                                                        </div>
+
+                                                        <!-- RESULTADO GENERAL -->
+                                                        <div id="MAC_IND_RESULTADO" class="mac-ind-resultado">
+                                                            Ingrese los datos y seleccione los factores para obtener el resultado.
+                                                        </div>
+
+                                                        <!-- ANÁLISIS DE RESULTADOS -->
+                                                        <div class="mac-ind-analisis">
+
+                                                            <label>Análisis de los resultados del método MAC - Tareas de levantamiento individual de carga
+                                                            </label>
+
+                                                            <textarea
+                                                                id="MAC_IND_ANALISIS_RESULTADOS"
+                                                                name="MAC_IND_ANALISIS_RESULTADOS"
+                                                                class="form-control"
+                                                                rows="5" required></textarea>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- ================================================= -->
+                                            <!-- FICHA 3: TRANSPORTE DE CARGA -->
+                                            <!-- ================================================= -->
+
+
+                                            <div id="fichaMACTransporte" class="col-12 mt-3" style="display: none;">
+
+                                                <style>
+                                                    #fichaMACTransporte .mac-trans-seccion {
+                                                        border: 1px solid #d5d5d5;
+                                                        border-radius: 4px;
+                                                        padding: 15px;
+                                                        margin-bottom: 20px;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-encabezado {
+                                                        display: flex;
+                                                        align-items: stretch;
+                                                        background: #A4D65E;
+                                                        min-height: 48px;
+                                                        margin-bottom: 12px;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-encabezado strong {
+                                                        background: #007DBA;
+                                                        color: #ffffff;
+                                                        padding: 12px;
+                                                        min-width: 240px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-encabezado span {
+                                                        padding: 10px 14px;
+                                                        color: #333333;
+                                                        font-size: 13px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-select {
+                                                        width: 100%;
+                                                        min-height: 38px;
+                                                        margin-top: 8px;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-opciones {
+                                                        display: grid;
+                                                        grid-template-columns: repeat(3, 1fr);
+                                                        border: 1px solid #777777;
+                                                        margin: 12px 0;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-opciones>div {
+                                                        text-align: center;
+                                                        border-right: 1px solid #777777;
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        justify-content: space-between;
+                                                        min-height: 90px;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-opciones>div:last-child {
+                                                        border-right: none;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-opciones p {
+                                                        padding: 12px 8px;
+                                                        margin: 0;
+                                                        font-size: 13px;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-opciones b {
+                                                        display: block;
+                                                        padding: 8px;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-opciones>div:nth-child(1) b {
+                                                        background: #70b85a;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-opciones>div:nth-child(2) b {
+                                                        background: #f49a35;
+                                                        color: #222222;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-opciones>div:nth-child(3) b {
+                                                        background: #d92332;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-titulo {
+                                                        background: #A4D65E;
+                                                        color: #007DBA;
+                                                        text-align: center;
+                                                        padding: 10px;
+                                                        margin-bottom: 5px;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-subtitulo {
+                                                        background: #dce9bd;
+                                                        color: #007DBA;
+                                                        text-align: center;
+                                                        padding: 9px;
+                                                        margin-bottom: 5px;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-grafica {
+                                                        width: 100%;
+                                                        border-collapse: collapse;
+                                                        text-align: center;
+                                                        font-size: 12px;
+                                                        margin-bottom: 12px;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-grafica th,
+                                                    #fichaMACTransporte .mac-trans-grafica td {
+                                                        border: 1px solid #555;
+                                                        padding: 8px 5px;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-verde {
+                                                        background: #70b85a;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-naranja {
+                                                        background: #f49a35;
+                                                        color: #222222;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-rojo {
+                                                        background: #d92332;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-morado {
+                                                        background: #75449b;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-frecuencia {
+                                                        background: #f8f9fa;
+                                                        padding: 12px;
+                                                        border: 1px solid #cccccc;
+                                                        margin-top: 12px;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-frecuencia strong {
+                                                        color: #007DBA;
+                                                    }
+
+                                                    #fichaMACTransporte #tablaResumenMACTransporte,
+                                                    #fichaMACTransporte #tablaNivelRiesgoMACTransporte {
+                                                        width: 100%;
+                                                        border-collapse: collapse !important;
+                                                    }
+
+                                                    #fichaMACTransporte #tablaResumenMACTransporte th,
+                                                    #fichaMACTransporte #tablaResumenMACTransporte td,
+                                                    #fichaMACTransporte #tablaNivelRiesgoMACTransporte th,
+                                                    #fichaMACTransporte #tablaNivelRiesgoMACTransporte td {
+                                                        border: 1px solid #555555 !important;
+                                                        vertical-align: middle;
+                                                    }
+
+                                                    #fichaMACTransporte #tablaResumenMACTransporte thead {
+                                                        background: #dce9bd;
+                                                    }
+
+                                                    #fichaMACTransporte #tablaResumenMACTransporte thead th {
+                                                        color: #007DBA;
+                                                    }
+
+                                                    #fichaMACTransporte #tablaResumenMACTransporte textarea {
+                                                        width: 100%;
+                                                        min-width: 150px;
+                                                        resize: vertical;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-color {
+                                                        min-width: 65px;
+                                                        text-align: center;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-valor {
+                                                        text-align: center;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-color-verde {
+                                                        background: #70b85a;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-color-naranja {
+                                                        background: #f49a35;
+                                                        color: #222222;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-color-rojo {
+                                                        background: #d92332;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-color-morado {
+                                                        background: #75449b;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-riesgo-bajo {
+                                                        background: #00ef00;
+                                                        color: #000000;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-riesgo-medio {
+                                                        background: #ffff00;
+                                                        color: #000000;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-riesgo-alto {
+                                                        background: #ff0000;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-riesgo-muy-alto {
+                                                        background: #ed00ed;
+                                                        color: #ffffff;
+                                                    }
+
+                                                    #fichaMACTransporte #tablaNivelRiesgoMACTransporte tbody tr.mac-trans-seleccionado td {
+                                                        border-top: 4px solid #000000 !important;
+                                                        border-bottom: 4px solid #000000 !important;
+                                                    }
+
+                                                    #fichaMACTransporte #tablaNivelRiesgoMACTransporte tbody tr.mac-trans-seleccionado td:first-child {
+                                                        border-left: 4px solid #000000 !important;
+                                                    }
+
+                                                    #fichaMACTransporte #tablaNivelRiesgoMACTransporte tbody tr.mac-trans-seleccionado td:last-child {
+                                                        border-right: 4px solid #000000 !important;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-resultado {
+                                                        text-align: center;
+                                                        padding: 15px;
+                                                        margin-top: 15px;
+                                                        border: 2px solid #cccccc;
+                                                        font-weight: bold;
+                                                        background: #f8f9fa;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-analisis {
+                                                        margin-top: 18px;
+                                                        padding: 15px;
+                                                        border: 1px solid #d5d5d5;
+                                                        border-radius: 4px;
+                                                        background: #ffffff;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-analisis label {
+                                                        display: block;
+                                                        margin-bottom: 8px;
+                                                        color: #007DBA;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaMACTransporte .mac-trans-analisis textarea {
+                                                        width: 100%;
+                                                        min-height: 120px;
+                                                        resize: vertical;
+                                                    }
+
+                                                    @media (max-width: 767px) {
+                                                        #fichaMACTransporte .mac-trans-encabezado {
+                                                            flex-direction: column;
+                                                        }
+
+                                                        #fichaMACTransporte .mac-trans-encabezado strong {
+                                                            min-width: 100%;
+                                                        }
+
+                                                        #fichaMACTransporte .mac-trans-opciones {
+                                                            grid-template-columns: 1fr;
+                                                        }
+
+                                                        #fichaMACTransporte .mac-trans-opciones>div {
+                                                            border-right: none;
+                                                            border-bottom: 1px solid #777777;
+                                                        }
+                                                    }
+                                                </style>
+
+                                                <div class="card">
+
+                                                    <div class="card-header">
+                                                        <strong>MAC - Tareas de transporte de carga</strong>
+                                                    </div>
+
+                                                    <div class="card-body">
+
+                                                        <!-- A) PESO MANEJADO -->
+                                                        <div class="mac-trans-seccion">
+
+                                                            <div class="mac-trans-encabezado">
+                                                                <strong>A) Peso manejado</strong>
+                                                                <span>Utilice el gráfico para determinar el nivel de riesgo de acuerdo a la frecuencia y a la cantidad de peso manejado. Elija el número correspondiente al nivel.</span>
+                                                            </div>
+
+                                                            <div class="row">
+
+                                                                <div class="col-md-8">
+
+                                                                    <div class="table-responsive">
+                                                                        <table class="mac-trans-grafica">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th colspan="6">PESO DE LA CARGA (Kg.) / FRECUENCIA DE TRANSPORTE</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr class="mac-trans-morado">
+                                                                                    <td>50 kg o más</td>
+                                                                                    <td colspan="5">M = 10</td>
+                                                                                </tr>
+                                                                                <tr class="mac-trans-rojo">
+                                                                                    <td>Zona de riesgo alto</td>
+                                                                                    <td colspan="5">R = 6</td>
+                                                                                </tr>
+                                                                                <tr class="mac-trans-naranja">
+                                                                                    <td>Zona de riesgo medio</td>
+                                                                                    <td colspan="5">N = 4</td>
+                                                                                </tr>
+                                                                                <tr class="mac-trans-verde">
+                                                                                    <td>Zona de riesgo bajo</td>
+                                                                                    <td colspan="5">V = 0</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+
+                                                                    <p><strong>Frecuencia de transporte:</strong></p>
+
+                                                                    <div class="table-responsive">
+                                                                        <table class="mac-trans-grafica">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Un traslado por día</th>
+                                                                                    <th>30 minutos</th>
+                                                                                    <th>5 minutos</th>
+                                                                                    <th>2 minutos</th>
+                                                                                    <th>1 minuto</th>
+                                                                                    <th>12 segundos</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>1</td>
+                                                                                    <td>2</td>
+                                                                                    <td>12</td>
+                                                                                    <td>30</td>
+                                                                                    <td>60</td>
+                                                                                    <td>300</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+
+                                                                    <div class="mac-trans-frecuencia">
+                                                                        <strong>Ejemplo:</strong>
+                                                                        Se evalúa una tarea de transporte de sacos al interior de una bodega. Un trabajador transporta sacos de 20 Kg, la frecuencia del transporte es de un saco cada 1 minuto.
+                                                                        El cálculo sería el siguiente.
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="col-md-4">
+
+                                                                    <div class="row">
+
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="MAC_TRANS_PESO_CARGA"><strong>Peso de la carga (Kg.)</strong></label>
+                                                                            <input type="number" min="0" step="0.01" id="MAC_TRANS_PESO_CARGA" name="MAC_TRANS_PESO_CARGA" class="form-control" placeholder="Peso en kg" required>
+                                                                        </div>
+
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="MAC_TRANS_NUM_OBJETOS"><strong>Nº Objetos</strong></label>
+                                                                            <input type="number" min="0" step="1" id="MAC_TRANS_NUM_OBJETOS" name="MAC_TRANS_NUM_OBJETOS" class="form-control" placeholder="Cantidad de objetos" required>
+                                                                        </div>
+
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="MAC_TRANS_NUM_PERSONAS"><strong>Nº de personas que individualmente transportan carga</strong></label>
+                                                                            <input type="number" min="1" step="1" id="MAC_TRANS_NUM_PERSONAS" name="MAC_TRANS_NUM_PERSONAS" class="form-control" required>
+                                                                        </div>
+
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="MAC_TRANS_HORAS"><strong>Nº de horas efectivas</strong></label>
+                                                                            <input type="number" min="0.01" step="0.01" id="MAC_TRANS_HORAS" name="MAC_TRANS_HORAS" class="form-control" placeholder="Horas efectivas" required>
+                                                                        </div>
+
+                                                                        <div class="col-12 mb-3">
+                                                                            <label for="MAC_TRANS_FRECUENCIA"><strong>Nº traslados por hora</strong></label>
+                                                                            <input type="text" id="MAC_TRANS_FRECUENCIA" name="MAC_TRANS_FRECUENCIA" class="form-control" readonly>
+                                                                        </div>
+
+                                                                        <div class="col-12">
+                                                                            <label for="MAC_TRANS_A"><strong>Puntuación Ítem A</strong></label>
+                                                                            <input type="text" id="MAC_TRANS_A" name="MAC_TRANS_A" class="form-control text-center font-weight-bold" readonly>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- B) DISTANCIA HORIZONTAL -->
+                                                        <div class="mac-trans-seccion">
+
+                                                            <div class="mac-trans-encabezado">
+                                                                <strong>B) Distancia entre las manos y la espalda (región lumbar)</strong>
+                                                                <span>Observe la tarea y examine la distancia horizontal entre las manos del trabajador y su región lumbar. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-trans-opciones">
+                                                                <div>
+                                                                    <p>Brazos verticales Y tronco erguido</p>
+                                                                    <b>Manos cerca de la zona lumbar - V/0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Brazos en ángulo alejados del cuerpo. Tronco inclinado</p>
+                                                                    <b>Manos a distancia moderada de la zona lumbar - N/3</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Brazos en ángulo alejados del tronco Y inclinado hacia adelante</p>
+                                                                    <b>Manos alejadas de la zona lumbar - R/6</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_TRANS_B" name="MAC_TRANS_B" class="form-control mac-trans-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="B_0">Manos cerca de la zona lumbar</option>
+                                                                <option value="B_3">Manos a distancia moderada de la zona lumbar</option>
+                                                                <option value="B_6">Manos alejadas de la zona lumbar</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- C) TRONCO O CARGA ASIMETRICA -->
+                                                        <div class="mac-trans-seccion">
+
+                                                            <div class="mac-trans-encabezado">
+                                                                <strong>C) Tronco o carga asimétrica</strong>
+                                                                <span>Evalúe la postura del trabajador y la ubicación de la carga respecto al cuerpo. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-trans-opciones">
+                                                                <div>
+                                                                    <p>Carga Y manos simétricamente frente al torso</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Tronco simétrico pero carga es transportada a un lado. Carga no simétrica</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Dos manos transportando a un lado</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_TRANS_C" name="MAC_TRANS_C" class="form-control mac-trans-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="C_0">Carga Y manos simétricamente frente al torso</option>
+                                                                <option value="C_1A">Tronco simétrico pero carga es transportada a un lado</option>
+                                                                <option value="C_1B">Carga no simétrica</option>
+                                                                <option value="C_2">Dos manos transportando a un lado</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- D) RESTRICCIONES POSTURALES -->
+                                                        <div class="mac-trans-seccion">
+
+                                                            <div class="mac-trans-encabezado">
+                                                                <strong>D) Restricciones posturales</strong>
+                                                                <span>Observe el espacio donde transita el trabajador. Identifique el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-trans-opciones">
+                                                                <div>
+                                                                    <p>Sin restricción postural</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Postura restringida</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Postura severamente restringida</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_TRANS_D" name="MAC_TRANS_D" class="form-control mac-trans-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="D_0">Sin restricción postural</option>
+                                                                <option value="D_1">Postura restringida</option>
+                                                                <option value="D_3">Postura severamente restringida</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- E) ACOPLAMIENTO -->
+                                                        <div class="mac-trans-seccion">
+
+                                                            <div class="mac-trans-encabezado">
+                                                                <strong>E) Acoplamiento mano - objeto</strong>
+                                                                <span>Evalúe las propiedades geométricas y de diseño del objeto manipulado. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-trans-opciones">
+                                                                <div>
+                                                                    <p>Mangos adecuados para su uso/asideros emparejados al tamaño y peso de la carga. Toda la mano la puede envolver cómodamente.</p>
+                                                                    <b>Agarre bueno - V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Los mangos o asas son demasiado pequeños o no tienen espacio para los dedos. No hay manillas o agarraderas, pero puede ser sostenida por la parte inferior.</p>
+                                                                    <b>Agarre razonable - N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>No existen asas o zonas de asidero. Áspero, resbaladizo o con puntos de presión. Agarre irregular, voluminoso o rígido.</p>
+                                                                    <b>Agarre malo - R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_TRANS_E" name="MAC_TRANS_E" class="form-control mac-trans-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="E_0">Agarre bueno</option>
+                                                                <option value="E_1">Agarre razonable</option>
+                                                                <option value="E_2">Agarre malo</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- F) SUPERFICIE DEL PISO -->
+                                                        <div class="mac-trans-seccion">
+
+                                                            <div class="mac-trans-encabezado">
+                                                                <strong>F) Superficie del piso</strong>
+                                                                <span>Evalúe las propiedades del piso donde el trabajador realiza las tareas. Tenga en cuenta que los trabajos desarrollados en el exterior dependerán del clima. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-trans-opciones">
+                                                                <div>
+                                                                    <p>Pisos no resbalosos, secos, limpios y sin daños</p>
+                                                                    <b>Piso en buen estado - V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Pisos generalmente secos, limpios, razonablemente firmes o con daños menores</p>
+                                                                    <b>Piso en razonable estado - N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Pisos resbaladizos, con escombros, blandos, inestables o con daños severos</p>
+                                                                    <b>Piso en mal estado - R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_TRANS_F" name="MAC_TRANS_F" class="form-control mac-trans-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="F_0">Piso en buen estado</option>
+                                                                <option value="F_1">Piso en razonable estado</option>
+                                                                <option value="F_3">Piso en mal estado</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- G) DISTANCIA DE TRASLADO -->
+                                                        <div class="mac-trans-seccion">
+
+                                                            <div class="mac-trans-encabezado">
+                                                                <strong>G) Distancia de traslado</strong>
+                                                                <span>Observe y determine la distancia total de traslado de la carga. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-trans-opciones">
+                                                                <div>
+                                                                    <p>Entre 2 a 4 metros</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Entre 4 a 10 metros</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Sobre 10 metros</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_TRANS_G" name="MAC_TRANS_G" class="form-control mac-trans-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="G_0">Entre 2 a 4 metros</option>
+                                                                <option value="G_1">Entre 4 a 10 metros</option>
+                                                                <option value="G_2">Sobre 10 metros</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- H) OBSTACULOS -->
+                                                        <div class="mac-trans-seccion">
+
+                                                            <div class="mac-trans-encabezado">
+                                                                <strong>H) Obstáculos en la ruta</strong>
+                                                                <span>Cuente el número de diferentes tipos de obstáculos en la ruta. Si el trabajador lleva carga hacia arriba/abajo por una pendiente pronunciada, por puertas cerradas o estrechas, curvas/esquinas o escaleras, elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-trans-opciones">
+                                                                <div>
+                                                                    <p>Sin obstáculos Y ruta plana, o con pendiente suave</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Un tipo de obstáculo O pendiente pronunciada</p>
+                                                                    <b>N / 2</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Escaleras O al menos 2 tipos de obstáculos</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_TRANS_H" name="MAC_TRANS_H" class="form-control mac-trans-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="H_0">Sin obstáculos Y ruta plana, o con pendiente suave</option>
+                                                                <option value="H_2">Un tipo de obstáculo O pendiente pronunciada</option>
+                                                                <option value="H_3">Escaleras O al menos 2 tipos de obstáculos</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- I) FACTORES AMBIENTALES -->
+                                                        <div class="mac-trans-seccion">
+
+                                                            <div class="mac-trans-encabezado">
+                                                                <strong>I) Otros factores ambientales complementarios</strong>
+                                                                <span>Observe el ambiente de trabajo y evalúe si la tarea se realiza en condiciones de temperatura extrema, fuertes corrientes de aire y/o condiciones extremas de iluminación. Elija el valor de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="mac-trans-opciones">
+                                                                <div>
+                                                                    <p>Ningún factor</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Un factor</p>
+                                                                    <b>N / 1</b>
+                                                                </div>
+                                                                <div>
+                                                                    <p>Dos o más factores</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="MAC_TRANS_I" name="MAC_TRANS_I" class="form-control mac-trans-select" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="I_0">Ningún factor</option>
+                                                                <option value="I_1">Un factor</option>
+                                                                <option value="I_2">Dos o más factores</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- TABLA RESUMEN -->
+                                                        <div class="mac-trans-titulo">
+                                                            <strong>Ficha Resumen</strong>
+                                                        </div>
+
+                                                        <div class="mac-trans-subtitulo">
+                                                            <strong>Tarea de transporte MAC (monotarea) y MAC-V MAC (multitarea)</strong>
+                                                        </div>
+
+                                                        <p>Inserte el color y puntaje numérico correspondiente para cada factor de riesgo.</p>
+
+                                                        <div class="table-responsive">
+
+                                                            <table class="table table-bordered table-sm" id="tablaResumenMACTransporte">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Factor</th>
+                                                                        <th>Factores de Riesgo</th>
+                                                                        <th>Color</th>
+                                                                        <th>Valor</th>
+                                                                        <th>Medidas de control</th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
+
+                                                                    <tr data-factor="A">
+                                                                        <td>A</td>
+                                                                        <td>Peso de la carga y frecuencia</td>
+                                                                        <td class="mac-trans-color"></td>
+                                                                        <td class="mac-trans-valor">-</td>
+                                                                        <td><textarea id="MAC_TRANS_CONTROL_A" name="MAC_TRANS_CONTROL_A" class="form-control" rows="2"></textarea></td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="B">
+                                                                        <td>B</td>
+                                                                        <td>Distancia horizontal de las manos a la región lumbar</td>
+                                                                        <td class="mac-trans-color"></td>
+                                                                        <td class="mac-trans-valor">-</td>
+                                                                        <td><textarea id="MAC_TRANS_CONTROL_B" name="MAC_TRANS_CONTROL_B" class="form-control" rows="2"></textarea></td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="C">
+                                                                        <td>C</td>
+                                                                        <td>Tronco o carga asimétrica</td>
+                                                                        <td class="mac-trans-color"></td>
+                                                                        <td class="mac-trans-valor">-</td>
+                                                                        <td><textarea id="MAC_TRANS_CONTROL_C" name="MAC_TRANS_CONTROL_C" class="form-control" rows="2"></textarea></td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="D">
+                                                                        <td>D</td>
+                                                                        <td>Restricciones posturales</td>
+                                                                        <td class="mac-trans-color"></td>
+                                                                        <td class="mac-trans-valor">-</td>
+                                                                        <td><textarea id="MAC_TRANS_CONTROL_D" name="MAC_TRANS_CONTROL_D" class="form-control" rows="2"></textarea></td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="E">
+                                                                        <td>E</td>
+                                                                        <td>Acoplamiento mano-objeto</td>
+                                                                        <td class="mac-trans-color"></td>
+                                                                        <td class="mac-trans-valor">-</td>
+                                                                        <td><textarea id="MAC_TRANS_CONTROL_E" name="MAC_TRANS_CONTROL_E" class="form-control" rows="2"></textarea></td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="F">
+                                                                        <td>F</td>
+                                                                        <td>Superficie del piso</td>
+                                                                        <td class="mac-trans-color"></td>
+                                                                        <td class="mac-trans-valor">-</td>
+                                                                        <td><textarea id="MAC_TRANS_CONTROL_F" name="MAC_TRANS_CONTROL_F" class="form-control" rows="2"></textarea></td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="G">
+                                                                        <td>G</td>
+                                                                        <td>Distancia de traslado</td>
+                                                                        <td class="mac-trans-color"></td>
+                                                                        <td class="mac-trans-valor">-</td>
+                                                                        <td><textarea id="MAC_TRANS_CONTROL_G" name="MAC_TRANS_CONTROL_G" class="form-control" rows="2"></textarea></td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="H">
+                                                                        <td>H</td>
+                                                                        <td>Obstáculos en la ruta</td>
+                                                                        <td class="mac-trans-color"></td>
+                                                                        <td class="mac-trans-valor">-</td>
+                                                                        <td><textarea id="MAC_TRANS_CONTROL_H" name="MAC_TRANS_CONTROL_H" class="form-control" rows="2"></textarea></td>
+                                                                    </tr>
+
+                                                                    <tr data-factor="I">
+                                                                        <td>I</td>
+                                                                        <td>Factores ambientales (aire, temperatura, iluminación...)</td>
+                                                                        <td class="mac-trans-color"></td>
+                                                                        <td class="mac-trans-valor">-</td>
+                                                                        <td><textarea id="MAC_TRANS_CONTROL_I" name="MAC_TRANS_CONTROL_I" class="form-control" rows="2"></textarea></td>
+                                                                    </tr>
+
+                                                                </tbody>
+
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th colspan="3" class="text-right">Puntaje total</th>
+                                                                        <th id="MAC_TRANS_TOTAL">0</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </tfoot>
+
+                                                            </table>
+
+                                                        </div>
+
+                                                        <!-- TABLA NIVEL DE RIESGO -->
+                                                        <div class="mac-trans-titulo mt-4">
+                                                            <strong>NIVEL DE RIESGO</strong>
+                                                        </div>
+
+                                                        <div class="table-responsive">
+
+                                                            <table class="table table-bordered text-center" id="tablaNivelRiesgoMACTransporte">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>NIVEL DE RIESGO</th>
+                                                                        <th>PRIORIDAD</th>
+                                                                        <th>PUNTAJE TOTAL</th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
+
+                                                                    <tr id="MAC_TRANS_RIESGO_BAJO" class="mac-trans-riesgo-bajo">
+                                                                        <td><strong>Bajo – Aceptable</strong></td>
+                                                                        <td>No se requieren acciones correctivas</td>
+                                                                        <td>0 a 4</td>
+                                                                    </tr>
+
+                                                                    <tr id="MAC_TRANS_RIESGO_MEDIO" class="mac-trans-riesgo-medio">
+                                                                        <td><strong>Medio – Posible</strong></td>
+                                                                        <td>Se requieren acciones correctivas a corto plazo</td>
+                                                                        <td>5 a 12</td>
+                                                                    </tr>
+
+                                                                    <tr id="MAC_TRANS_RIESGO_ALTO" class="mac-trans-riesgo-alto">
+                                                                        <td><strong>Alto – Significativo</strong></td>
+                                                                        <td>Se requieren acciones correctivas pronto</td>
+                                                                        <td>13 a 20</td>
+                                                                    </tr>
+
+                                                                    <tr id="MAC_TRANS_RIESGO_MUY_ALTO" class="mac-trans-riesgo-muy-alto">
+                                                                        <td><strong>Muy Alto – Inaceptable</strong></td>
+                                                                        <td>Se requieren acciones correctivas inmediatamente</td>
+                                                                        <td>21 o más</td>
+                                                                    </tr>
+
+                                                                </tbody>
+
+                                                            </table>
+
+                                                        </div>
+
+                                                        <div id="MAC_TRANS_RESULTADO" class="mac-trans-resultado">
+                                                            Ingrese los datos y seleccione los factores para obtener el resultado.
+                                                        </div>
+
+                                                        <!-- ANALISIS DE RESULTADOS -->
+                                                        <div class="mac-trans-analisis">
+
+                                                            <label>Análisis de los resultados del método MAC - Tareas de transporte de carga
+                                                            </label>
+
+                                                            <textarea
+                                                                id="MAC_TRANS_ANALISIS_RESULTADOS"
+                                                                name="MAC_TRANS_ANALISIS_RESULTADOS"
+                                                                class="form-control"
+                                                                rows="5" required></textarea>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+
+
+                                        <!-- ========================= RAPP ========================= -->
+
+
+                                        <div id="contenedorMetodoRAPP" class="col-12" style="display: none;">
+
+
+                                            <div class="card mt-3">
+
+                                                <div class="card-header">
+                                                    <strong>Método RAPP</strong>
+                                                </div>
+
+                                                <div class="card-body">
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-6 mb-3">
+                                                            <label>1. Empujar o traccionar cargas por medio de equipo con ruedas</label>
+                                                            <select id="RAPP_CON_RUEDAS" name="RAPP_CON_RUEDAS" class="form-control rapp-selector">
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="SI">Sí</option>
+                                                                <option value="NO">No</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-6 mb-3">
+                                                            <label>2. Empujar o traccionar cargas por medio de equipo sin ruedas</label>
+                                                            <select id="RAPP_SIN_RUEDAS" name="RAPP_SIN_RUEDAS" class="form-control rapp-selector">
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="SI">Sí</option>
+                                                                <option value="NO">No</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div id="fichaRAPPConRuedas" class="col-12" style="display:none;">
+
+                                                <style>
+                                                    #fichaRAPPConRuedas {
+                                                        font-size: 14px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-card {
+                                                        border: 1px solid #d5d5d5;
+                                                        border-radius: 5px;
+                                                        padding: 15px;
+                                                        margin-bottom: 18px;
+                                                        background: #fff;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-encabezado {
+                                                        display: flex;
+                                                        align-items: stretch;
+                                                        background: #A4D65E;
+                                                        margin-bottom: 15px;
+                                                        min-height: 48px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-encabezado strong {
+                                                        background: #007DBA;
+                                                        color: white;
+                                                        padding: 12px;
+                                                        min-width: 260px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-encabezado span {
+                                                        padding: 12px;
+                                                        color: #333;
+                                                        display: flex;
+                                                        align-items: center;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-instrucciones {
+                                                        background: #d1ecf1;
+                                                        border: 1px solid #bee5eb;
+                                                        color: #0c5460;
+                                                        border-radius: 5px;
+                                                        padding: 15px;
+                                                        margin-bottom: 18px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-titulo {
+                                                        background: #A4D65E;
+                                                        color: #007DBA;
+                                                        padding: 10px;
+                                                        text-align: center;
+                                                        font-weight: bold;
+                                                        margin-bottom: 12px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-equipo-titulo {
+                                                        color: #007DBA;
+                                                        font-size: 18px;
+                                                        font-weight: bold;
+                                                        margin-bottom: 8px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-opciones {
+                                                        display: grid;
+                                                        grid-template-columns: repeat(3, 1fr);
+                                                        border: 1px solid #777;
+                                                        margin: 12px 0;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-opcion {
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        text-align: center;
+                                                        border-right: 1px solid #777;
+                                                        min-height: 145px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-opcion:last-child {
+                                                        border-right: none;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-opcion strong {
+                                                        color: #007DBA;
+                                                        padding: 12px 8px;
+                                                        font-size: 15px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-opcion p {
+                                                        color: #9aaab5;
+                                                        padding: 10px;
+                                                        margin: 0;
+                                                        flex: 1;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-opcion b {
+                                                        padding: 10px;
+                                                        background: #159d50;
+                                                        color: white;
+                                                        font-size: 17px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-opcion:nth-child(2) b {
+                                                        background: #f7941d;
+                                                        color: #222;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-opcion:nth-child(3) b {
+                                                        background: #ed1c24;
+                                                        color: white;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-select {
+                                                        width: 100%;
+                                                        min-height: 40px;
+                                                        margin-top: 8px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-tabla-peso {
+                                                        width: 100%;
+                                                        border-collapse: collapse;
+                                                        margin: 12px 0;
+                                                        text-align: center;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-tabla-peso td {
+                                                        border: 1px solid #777;
+                                                        padding: 9px;
+                                                        vertical-align: middle;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-verde {
+                                                        background: #159d50;
+                                                        color: white;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-naranja {
+                                                        background: #f7941d;
+                                                        color: #222;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-rojo {
+                                                        background: #ed1c24;
+                                                        color: white;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-morado {
+                                                        background: #75449b;
+                                                        color: white;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-borde-verde {
+                                                        border-color: #159d50 !important;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-borde-naranja {
+                                                        border-color: #f7941d !important;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-borde-rojo {
+                                                        border-color: #ed1c24 !important;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-borde-morado {
+                                                        border-color: #75449b !important;
+                                                    }
+
+                                                    #fichaRAPPConRuedas #tablaRAPPConRuedas {
+                                                        width: 100%;
+                                                        border-collapse: collapse;
+                                                        text-align: center;
+                                                    }
+
+                                                    #fichaRAPPConRuedas #tablaRAPPConRuedas th,
+                                                    #fichaRAPPConRuedas #tablaRAPPConRuedas td {
+                                                        border: 1px solid #777;
+                                                        padding: 9px;
+                                                        vertical-align: middle;
+                                                    }
+
+                                                    #fichaRAPPConRuedas #tablaRAPPConRuedas thead {
+                                                        background: #dce9bd;
+                                                        color: #007DBA;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-total {
+                                                        background: #eeeeee;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-total u {
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-tabla-riesgo {
+                                                        width: 100%;
+                                                        border-collapse: collapse;
+                                                        margin-top: 12px;
+                                                        text-align: center;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-tabla-riesgo th,
+                                                    #fichaRAPPConRuedas .rapp-tabla-riesgo td {
+                                                        border: 1px solid #000;
+                                                        padding: 10px;
+                                                        vertical-align: middle;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-tabla-riesgo thead th {
+                                                        background: white;
+                                                        color: black;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-riesgo-bajo {
+                                                        background: #00ed00;
+                                                        color: #000;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-riesgo-medio {
+                                                        background: #ffff00;
+                                                        color: #000;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-riesgo-alto {
+                                                        background: #ff0000;
+                                                        color: #fff;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-riesgo-muy-alto {
+                                                        background: #ed00ed;
+                                                        color: #fff;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-tabla-riesgo tr.rapp-seleccionado td {
+                                                        border-top: 4px solid #000 !important;
+                                                        border-bottom: 4px solid #000 !important;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-tabla-riesgo tr.rapp-seleccionado td:first-child {
+                                                        border-left: 4px solid #000 !important;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-tabla-riesgo tr.rapp-seleccionado td:last-child {
+                                                        border-right: 4px solid #000 !important;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-analisis {
+                                                        border: 1px solid #d5d5d5;
+                                                        border-radius: 5px;
+                                                        padding: 15px;
+                                                        margin-top: 18px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-analisis label {
+                                                        color: #007DBA;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-analisis textarea {
+                                                        width: 100%;
+                                                        min-height: 120px;
+                                                    }
+
+                                                    #fichaRAPPConRuedas .rapp-resultado {
+                                                        padding: 15px;
+                                                        margin-top: 15px;
+                                                        text-align: center;
+                                                        font-weight: bold;
+                                                        border: 2px solid #ccc;
+                                                        background: #f8f9fa;
+                                                    }
+
+                                                    @media(max-width:767px) {
+                                                        #fichaRAPPConRuedas .rapp-encabezado {
+                                                            flex-direction: column;
+                                                        }
+
+                                                        #fichaRAPPConRuedas .rapp-encabezado strong {
+                                                            min-width: 100%;
+                                                        }
+
+                                                        #fichaRAPPConRuedas .rapp-opciones {
+                                                            grid-template-columns: 1fr;
+                                                        }
+
+                                                        #fichaRAPPConRuedas .rapp-opcion {
+                                                            border-right: none;
+                                                            border-bottom: 1px solid #777;
+                                                        }
+                                                    }
+                                                </style>
+
+                                                <div class="card mt-3">
+
+                                                    <div class="card-header">
+                                                        <strong>Método RAPP - Empujar o traccionar cargas por medio de equipo con ruedas</strong>
+                                                    </div>
+
+                                                    <div class="card-body">
+
+                                                        <div class="rapp-instrucciones">
+                                                            <strong>Instrucciones:</strong>
+                                                            Identifique el tipo de equipo utilizado y evalúe el peso total transportado.
+                                                            Si se utilizan diferentes tipos de equipos, realice una evaluación para cada uno.
+                                                        </div>
+
+                                                        <!-- A-1 -->
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>A-1. Tipo de equipo / peso de la carga (kg)</strong>
+                                                                <span>Seleccione el tipo de equipo utilizado y el peso correspondiente.</span>
+                                                            </div>
+
+                                                            <div class="row">
+
+                                                                <div class="col-md-4 mb-3">
+
+                                                                    <div class="rapp-equipo-titulo">Equipo pequeño</div>
+                                                                    <p>Una o dos ruedas. Ejemplo: carretillas, carros con ruedas y yeguas.</p>
+
+                                                                    <table class="rapp-tabla-peso">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-verde">Menos de 50 kg</td>
+                                                                                <td class="rapp-verde">Bajo V/0</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-naranja">50 kg a 100 kg</td>
+                                                                                <td class="rapp-naranja">Medio A/2</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-rojo">100 kg a 200 kg</td>
+                                                                                <td class="rapp-rojo">Alto R/4</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-rojo">Más de 200 kg</td>
+                                                                                <td class="rapp-rojo">Muy alto R/8</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-morado">La carga excede la capacidad indicada por el fabricante para ese equipo.</td>
+                                                                                <td class="rapp-morado">Inaceptable M</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <select id="RAPP_RUEDAS_A1_PEQUENO" name="RAPP_RUEDAS_A1_PEQUENO" class="form-control rapp-select rapp-ruedas-calculo">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="0|V">Menos de 50 kg - Bajo V/0</option>
+                                                                        <option value="2|A">50 kg a 100 kg - Medio A/2</option>
+                                                                        <option value="4|R">100 kg a 200 kg - Alto R/4</option>
+                                                                        <option value="8|R">Más de 200 kg - Muy alto R/8</option>
+                                                                        <option value="M|M">Excede capacidad del fabricante - Inaceptable M</option>
+                                                                    </select>
+
+                                                                </div>
+
+                                                                <div class="col-md-4 mb-3">
+
+                                                                    <div class="rapp-equipo-titulo">Equipo mediano</div>
+                                                                    <p>Tres o más ruedas fijas y/o móviles. Ejemplo: contenedores con ruedas.</p>
+
+                                                                    <table class="rapp-tabla-peso">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-verde">Menos de 250 kg</td>
+                                                                                <td class="rapp-verde">Bajo V/0</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-naranja">250 kg a 500 kg</td>
+                                                                                <td class="rapp-naranja">Medio A/2</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-rojo">500 kg a 750 kg</td>
+                                                                                <td class="rapp-rojo">Alto R/4</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-rojo">Más de 750 kg</td>
+                                                                                <td class="rapp-rojo">Muy alto R/8</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-morado">La carga excede la capacidad indicada por el fabricante para ese equipo.</td>
+                                                                                <td class="rapp-morado">Inaceptable M</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <select id="RAPP_RUEDAS_A1_MEDIANO" name="RAPP_RUEDAS_A1_MEDIANO" class="form-control rapp-select rapp-ruedas-calculo">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="0|V">Menos de 250 kg - Bajo V/0</option>
+                                                                        <option value="2|A">250 kg a 500 kg - Medio A/2</option>
+                                                                        <option value="4|R">500 kg a 750 kg - Alto R/4</option>
+                                                                        <option value="8|R">Más de 750 kg - Muy alto R/8</option>
+                                                                        <option value="M|M">Excede capacidad del fabricante - Inaceptable M</option>
+                                                                    </select>
+
+                                                                </div>
+
+                                                                <div class="col-md-4 mb-3">
+
+                                                                    <div class="rapp-equipo-titulo">Equipo grande</div>
+                                                                    <p>Orientables o en carriles. Ejemplo: transpaletas o sistemas de rieles superiores.</p>
+
+                                                                    <table class="rapp-tabla-peso">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-verde">Menos de 600 kg</td>
+                                                                                <td class="rapp-verde">Bajo V/0</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-naranja">600 kg a 1000 kg</td>
+                                                                                <td class="rapp-naranja">Medio A/2</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-rojo">1000 kg a 1500 kg</td>
+                                                                                <td class="rapp-rojo">Alto R/4</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-rojo">Más de 1500 kg</td>
+                                                                                <td class="rapp-rojo">Muy alto R/8</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="rapp-borde-morado">La carga excede la capacidad indicada por el fabricante para ese equipo.</td>
+                                                                                <td class="rapp-morado">Inaceptable M</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <select id="RAPP_RUEDAS_A1_GRANDE" name="RAPP_RUEDAS_A1_GRANDE" class="form-control rapp-select rapp-ruedas-calculo">
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="0|V">Menos de 600 kg - Bajo V/0</option>
+                                                                        <option value="2|A">600 kg a 1000 kg - Medio A/2</option>
+                                                                        <option value="4|R">1000 kg a 1500 kg - Alto R/4</option>
+                                                                        <option value="8|R">Más de 1500 kg - Muy alto R/8</option>
+                                                                        <option value="M|M">Excede capacidad del fabricante - Inaceptable M</option>
+                                                                    </select>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="alert alert-warning mb-0">
+                                                                <strong>Importante:</strong>
+                                                                M - Inaceptable no tiene puntuación numérica. No debe sumarse como 8 ni como ningún otro valor.
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- A-2 -->
+                                                        <div class="rapp-card">
+                                                            <div class="rapp-encabezado">
+                                                                <strong>A-2. Postura</strong>
+                                                                <span>Observe la posición general de las manos y el cuerpo durante la operación.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Bueno V/0</strong>
+                                                                    <p>Tronco principalmente erguido y no rotado. Las manos están entre la cadera y la altura del hombro.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Medio A/3</strong>
+                                                                    <p>El cuerpo está inclinado en dirección del esfuerzo, o el tronco está visiblemente inclinado o en torsión. Las manos están por debajo de la cadera.</p>
+                                                                    <b>A / 3</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Malo R/6</strong>
+                                                                    <p>El cuerpo está muy inclinado, en cuclillas o arrodillado. El tronco está severamente inclinado o en torsión.</p>
+                                                                    <b>R / 6</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="RAPP_RUEDAS_A2_POSTURA" name="RAPP_RUEDAS_A2_POSTURA" class="form-control rapp-select rapp-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Bueno V/0</option>
+                                                                <option value="3|A">Medio A/3</option>
+                                                                <option value="6|R">Malo R/6</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- A-3 -->
+                                                        <div class="rapp-card">
+                                                            <div class="rapp-encabezado">
+                                                                <strong>A-3. Agarre</strong>
+                                                                <span>Observe cómo las manos se agarran o entran en contacto con el equipo.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Bueno V/0</strong>
+                                                                    <p>Hay manillas o zonas de contacto que permiten un agarre cómodo.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Razonable A/1</strong>
+                                                                    <p>Hay zonas de agarre, pero sólo permiten un agarre parcial.</p>
+                                                                    <b>A / 1</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Malo R/2</strong>
+                                                                    <p>No hay manillas o el contacto de la mano es incómodo.</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="RAPP_RUEDAS_A3_AGARRE" name="RAPP_RUEDAS_A3_AGARRE" class="form-control rapp-select rapp-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Bueno V/0</option>
+                                                                <option value="1|A">Razonable A/1</option>
+                                                                <option value="2|R">Malo R/2</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- A-4 -->
+                                                        <div class="rapp-card">
+                                                            <div class="rapp-encabezado">
+                                                                <strong>A-4. Sistema de trabajo</strong>
+                                                                <span>Observe la repetición, el ritmo de trabajo y las pausas.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Bueno V/0</strong>
+                                                                    <p>El trabajo no es repetitivo y el ritmo está definido por el trabajador.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Razonable A/1</strong>
+                                                                    <p>El trabajo es repetitivo, pero hay posibilidad de descansar o recuperarse.</p>
+                                                                    <b>A / 1</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Malo R/3</strong>
+                                                                    <p>El trabajo es repetitivo y no hay pausas ni posibilidad de rotación.</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="RAPP_RUEDAS_A4_SISTEMA_TRABAJO" name="RAPP_RUEDAS_A4_SISTEMA_TRABAJO" class="form-control rapp-select rapp-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Bueno V/0</option>
+                                                                <option value="1|A">Razonable A/1</option>
+                                                                <option value="3|R">Malo R/3</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- A-5 -->
+                                                        <div class="rapp-card">
+                                                            <div class="rapp-encabezado">
+                                                                <strong>A-5. Distancia de traslado</strong>
+                                                                <span>Determine la distancia desde el principio hasta el final para un solo viaje.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Corto V/0</strong>
+                                                                    <p>10 m o menos.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Mediano A/1</strong>
+                                                                    <p>Entre 10 m y 30 m.</p>
+                                                                    <b>A / 1</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Largo R/3</strong>
+                                                                    <p>Más de 30 m.</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="RAPP_RUEDAS_A5_DISTANCIA" name="RAPP_RUEDAS_A5_DISTANCIA" class="form-control rapp-select rapp-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Corto V/0</option>
+                                                                <option value="1|A">Mediano A/1</option>
+                                                                <option value="3|R">Largo R/3</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- A-6 -->
+                                                        <div class="rapp-card">
+                                                            <div class="rapp-encabezado">
+                                                                <strong>A-6. Condiciones del equipo</strong>
+                                                                <span>Observe el estado del equipo, ruedas, amortiguadores y frenos.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Bueno V/0</strong>
+                                                                    <p>La mantención es programada y preventiva, y el equipo está en buen estado.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Razonable A/2</strong>
+                                                                    <p>La mantención se realiza sólo cuando hay problemas o el equipo está en estado razonable.</p>
+                                                                    <b>A / 2</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Malo R/4</strong>
+                                                                    <p>La mantención no está programada o el equipo está en mal estado.</p>
+                                                                    <b>R / 4</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="RAPP_RUEDAS_A6_CONDICIONES_EQUIPO" name="RAPP_RUEDAS_A6_CONDICIONES_EQUIPO" class="form-control rapp-select rapp-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Bueno V/0</option>
+                                                                <option value="2|A">Razonable A/2</option>
+                                                                <option value="4|R">Malo R/4</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- A-7 -->
+                                                        <div class="rapp-card">
+                                                            <div class="rapp-encabezado">
+                                                                <strong>A-7. Superficie del piso</strong>
+                                                                <span>Identifique las condiciones de la superficie a lo largo de la ruta.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Bueno V/0</strong>
+                                                                    <p>Seco y limpio, a nivel, firme y en buenas condiciones.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Razonable A/1</strong>
+                                                                    <p>Mayormente seco y limpio, con pendiente entre 3° y 5° o daños menores.</p>
+                                                                    <b>A / 1</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Malo R/4</strong>
+                                                                    <p>Contaminado, con pendiente mayor a 5°, blando o inestable.</p>
+                                                                    <b>R / 4</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="RAPP_RUEDAS_A7_SUPERFICIE_PISO" name="RAPP_RUEDAS_A7_SUPERFICIE_PISO" class="form-control rapp-select rapp-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Bueno V/0</option>
+                                                                <option value="1|A">Razonable A/1</option>
+                                                                <option value="4|R">Malo R/4</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- A-8 -->
+                                                        <div class="rapp-card">
+                                                            <div class="rapp-encabezado">
+                                                                <strong>A-8. Obstáculos en la ruta</strong>
+                                                                <span>Compruebe la presencia de obstáculos, rampas, peldaños, puertas estrechas y barreras.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Bueno V/0</strong>
+                                                                    <p>Sin obstáculos.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Razonable A/2</strong>
+                                                                    <p>Un tipo de obstáculo, pero no escalones o rampas empinadas.</p>
+                                                                    <b>A / 2</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Malo R/3</strong>
+                                                                    <p>Escalones, rampas empinadas o dos o más obstáculos.</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="RAPP_RUEDAS_A8_OBSTACULOS" name="RAPP_RUEDAS_A8_OBSTACULOS" class="form-control rapp-select rapp-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Bueno V/0</option>
+                                                                <option value="2|A">Razonable A/2</option>
+                                                                <option value="3|R">Malo R/3</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- A-9 -->
+                                                        <div class="rapp-card">
+                                                            <div class="rapp-encabezado">
+                                                                <strong>A-9. Otros factores</strong>
+                                                                <span>Identifique otros factores que puedan incrementar el riesgo durante la operación.</span>
+                                                            </div>
+
+                                                            <ul>
+                                                                <li>El equipo o la carga es inestable.</li>
+                                                                <li>La carga es voluminosa y obstruye la visión.</li>
+                                                                <li>La carga tiene esquinas punzantes, está caliente o es peligrosa al tocarla.</li>
+                                                                <li>Hay malas condiciones de iluminación.</li>
+                                                                <li>Hay temperaturas extremas o alta humedad.</li>
+                                                                <li>Hay corrientes de aire.</li>
+                                                                <li>El equipo de protección dificulta el empuje y la tracción.</li>
+                                                            </ul>
+
+                                                            <div class="rapp-opciones">
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Ninguno V/0</strong>
+                                                                    <p>No existen otros factores presentes.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Uno A/1</strong>
+                                                                    <p>Un factor presente.</p>
+                                                                    <b>A / 1</b>
+                                                                </div>
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Dos o más R/2</strong>
+                                                                    <p>Dos o más factores presentes.</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+                                                            </div>
+
+                                                            <select id="RAPP_RUEDAS_A9_OTROS_FACTORES" name="RAPP_RUEDAS_A9_OTROS_FACTORES" class="form-control rapp-select rapp-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Ninguno V/0</option>
+                                                                <option value="1|A">Uno A/1</option>
+                                                                <option value="2|R">Dos o más R/2</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- TABLA ÚNICA DE PUNTUACIÓN -->
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>Tabla de puntuación final</strong>
+                                                                <span>La tabla se actualiza automáticamente con los valores seleccionados en los nueve criterios.</span>
+                                                            </div>
+
+                                                            <div class="table-responsive">
+
+                                                                <table id="tablaRAPPConRuedas" class="table table-bordered text-center">
+
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th rowspan="2">Factores</th>
+                                                                            <th colspan="2">Equipo pequeño</th>
+                                                                            <th colspan="2">Equipo mediano</th>
+                                                                            <th colspan="2">Equipo grande</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Banda de color</th>
+                                                                            <th>Puntaje numérico</th>
+                                                                            <th>Banda de color</th>
+                                                                            <th>Puntaje numérico</th>
+                                                                            <th>Banda de color</th>
+                                                                            <th>Puntaje numérico</th>
+                                                                        </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+
+                                                                        <tr>
+                                                                            <td>A-1 Peso de la carga</td>
+                                                                            <td id="RAPP_RUEDAS_TABLA_A1_PEQUENO_COLOR"></td>
+                                                                            <td id="RAPP_RUEDAS_TABLA_A1_PEQUENO_PUNTAJE"></td>
+                                                                            <td id="RAPP_RUEDAS_TABLA_A1_MEDIANO_COLOR"></td>
+                                                                            <td id="RAPP_RUEDAS_TABLA_A1_MEDIANO_PUNTAJE"></td>
+                                                                            <td id="RAPP_RUEDAS_TABLA_A1_GRANDE_COLOR"></td>
+                                                                            <td id="RAPP_RUEDAS_TABLA_A1_GRANDE_PUNTAJE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>A-2 Postura</td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A2_PEQUENO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A2_MEDIANO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A2_GRANDE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>A-3 Agarre</td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A3_PEQUENO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A3_MEDIANO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A3_GRANDE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>A-4 Sistema de trabajo</td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A4_PEQUENO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A4_MEDIANO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A4_GRANDE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>A-5 Distancia de traslado</td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A5_PEQUENO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A5_MEDIANO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A5_GRANDE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>A-6 Condiciones del equipo</td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A6_PEQUENO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A6_MEDIANO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A6_GRANDE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>A-7 Superficie del piso</td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A7_PEQUENO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A7_MEDIANO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A7_GRANDE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>A-8 Obstáculos en la ruta</td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A8_PEQUENO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A8_MEDIANO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A8_GRANDE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>A-9 Otros factores</td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A9_PEQUENO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A9_MEDIANO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_TABLA_A9_GRANDE"></td>
+                                                                        </tr>
+
+                                                                        <tr class="rapp-total">
+                                                                            <td><u>SUMA TOTAL</u></td>
+                                                                            <td colspan="2"><u id="RAPP_RUEDAS_TOTAL_PEQUENO"></u></td>
+                                                                            <td colspan="2"><u id="RAPP_RUEDAS_TOTAL_MEDIANO"></u></td>
+                                                                            <td colspan="2"><u id="RAPP_RUEDAS_TOTAL_GRANDE"></u></td>
+                                                                        </tr>
+
+                                                                        <tr class="rapp-total">
+                                                                            <td>Nivel de riesgo</td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_NIVEL_PEQUENO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_NIVEL_MEDIANO"></td>
+                                                                            <td colspan="2" id="RAPP_RUEDAS_NIVEL_GRANDE"></td>
+                                                                        </tr>
+
+                                                                    </tbody>
+
+                                                                </table>
+
+                                                            </div>
+
+                                                            <!-- UNA SOLA TABLA DE NIVEL DE RIESGO -->
+                                                            <div class="rapp-titulo">
+                                                                NIVEL DE RIESGO Y PRIORIDAD DE ACCIÓN
+                                                            </div>
+
+                                                            <div class="table-responsive">
+
+                                                                <table class="rapp-tabla-riesgo" id="tablaNivelRiesgoRAPP">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>NIVEL DE RIESGO</th>
+                                                                            <th>PRIORIDAD</th>
+                                                                            <th>PUNTAJE TOTAL</th>
+                                                                        </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+
+                                                                        <tr id="RAPP_RUEDAS_RIESGO_BAJO" class="rapp-riesgo-bajo">
+                                                                            <td><strong>Bajo – Aceptable</strong></td>
+                                                                            <td><strong>No se requieren acciones correctivas</strong></td>
+                                                                            <td><strong>0 a 4</strong></td>
+                                                                        </tr>
+
+                                                                        <tr id="RAPP_RUEDAS_RIESGO_MEDIO" class="rapp-riesgo-medio">
+                                                                            <td><strong>Medio – Posible</strong></td>
+                                                                            <td>Se requieren acciones correctivas a corto plazo</td>
+                                                                            <td>5 a 12</td>
+                                                                        </tr>
+
+                                                                        <tr id="RAPP_RUEDAS_RIESGO_ALTO" class="rapp-riesgo-alto">
+                                                                            <td><strong>Alto – Significativo</strong></td>
+                                                                            <td>Se requieren acciones correctivas pronto</td>
+                                                                            <td>13 a 20</td>
+                                                                        </tr>
+
+                                                                        <tr id="RAPP_RUEDAS_RIESGO_MUY_ALTO" class="rapp-riesgo-muy-alto">
+                                                                            <td><strong>Muy Alto – Inaceptable</strong></td>
+                                                                            <td>Se requieren acciones correctivas inmediatamente</td>
+                                                                            <td>21 a 32</td>
+                                                                        </tr>
+
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+
+                                                            <div class="rapp-resultado" id="RAPP_RUEDAS_RESULTADO_GENERAL">
+                                                                Seleccione el tipo de equipo y complete los nueve criterios.
+                                                            </div>
+
+                                                            <div class="rapp-analisis">
+                                                                <label for="RAPP_RUEDAS_ANALISIS_RESULTADOS">
+                                                                    Análisis de resultados - Método RAPP con ruedas
+                                                                </label>
+                                                                
+                                                                <textarea id="RAPP_RUEDAS_ANALISIS_RESULTADOS"
+                                                                    name="RAPP_RUEDAS_ANALISIS_RESULTADOS"
+                                                                    class="form-control"
+                                                                    rows="5" required></textarea>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <div id="fichaRAPPSinRuedas" class="col-12" style="display:none;">
+
+                                                <style>
+                                                    #fichaRAPPSinRuedas {
+                                                        font-size: 14px;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-card {
+                                                        border: 1px solid #d5d5d5;
+                                                        border-radius: 5px;
+                                                        padding: 15px;
+                                                        margin-bottom: 18px;
+                                                        background: #fff;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-encabezado {
+                                                        display: flex;
+                                                        align-items: stretch;
+                                                        background: #A4D65E;
+                                                        margin-bottom: 15px;
+                                                        min-height: 48px;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-encabezado strong {
+                                                        background: #007DBA;
+                                                        color: white;
+                                                        padding: 12px;
+                                                        min-width: 260px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-encabezado span {
+                                                        padding: 12px;
+                                                        color: #333;
+                                                        display: flex;
+                                                        align-items: center;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-instrucciones {
+                                                        background: #d1ecf1;
+                                                        border: 1px solid #bee5eb;
+                                                        color: #0c5460;
+                                                        border-radius: 5px;
+                                                        padding: 15px;
+                                                        margin-bottom: 18px;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-titulo {
+                                                        background: #A4D65E;
+                                                        color: #007DBA;
+                                                        padding: 10px;
+                                                        text-align: center;
+                                                        font-weight: bold;
+                                                        margin-bottom: 12px;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-opciones {
+                                                        display: grid;
+                                                        grid-template-columns: repeat(3, 1fr);
+                                                        border: 1px solid #777;
+                                                        margin: 12px 0;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-opcion {
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        text-align: center;
+                                                        border-right: 1px solid #777;
+                                                        min-height: 150px;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-opcion:last-child {
+                                                        border-right: none;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-opcion strong {
+                                                        color: #007DBA;
+                                                        padding: 12px 8px;
+                                                        font-size: 15px;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-opcion p {
+                                                        color: #8fa2b0;
+                                                        padding: 10px;
+                                                        margin: 0;
+                                                        flex: 1;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-opcion b {
+                                                        padding: 10px;
+                                                        background: #159d50;
+                                                        color: white;
+                                                        font-size: 17px;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-opcion:nth-child(2) b {
+                                                        background: #f7941d;
+                                                        color: #222;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-opcion:nth-child(3) b {
+                                                        background: #ed1c24;
+                                                        color: white;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-select {
+                                                        width: 100%;
+                                                        min-height: 40px;
+                                                        margin-top: 8px;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-tabla-peso {
+                                                        width: 100%;
+                                                        border-collapse: collapse;
+                                                        margin: 12px 0;
+                                                        text-align: center;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-tabla-peso td {
+                                                        border: 1px solid #777;
+                                                        padding: 9px;
+                                                        vertical-align: middle;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-verde {
+                                                        background: #159d50;
+                                                        color: white;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-naranja {
+                                                        background: #f7941d;
+                                                        color: #222;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-rojo {
+                                                        background: #ed1c24;
+                                                        color: white;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas #tablaRAPPSinRuedas {
+                                                        width: 100%;
+                                                        border-collapse: collapse;
+                                                        text-align: center;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas #tablaRAPPSinRuedas th,
+                                                    #fichaRAPPSinRuedas #tablaRAPPSinRuedas td {
+                                                        border: 1px solid #777;
+                                                        padding: 9px;
+                                                        vertical-align: middle;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas #tablaRAPPSinRuedas thead {
+                                                        background: #dce9bd;
+                                                        color: #007DBA;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-total {
+                                                        background: #eeeeee;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-tabla-riesgo {
+                                                        width: 100%;
+                                                        border-collapse: collapse;
+                                                        margin-top: 12px;
+                                                        text-align: center;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-tabla-riesgo th,
+                                                    #fichaRAPPSinRuedas .rapp-tabla-riesgo td {
+                                                        border: 1px solid #000;
+                                                        padding: 10px;
+                                                        vertical-align: middle;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-tabla-riesgo thead th {
+                                                        background: white;
+                                                        color: black;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-riesgo-bajo {
+                                                        background: #00ed00;
+                                                        color: #000;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-riesgo-medio {
+                                                        background: #ffff00;
+                                                        color: #000;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-riesgo-alto {
+                                                        background: #ff0000;
+                                                        color: #fff;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-riesgo-muy-alto {
+                                                        background: #ed00ed;
+                                                        color: #fff;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-tabla-riesgo tr.rapp-seleccionado td {
+                                                        border-top: 4px solid #000 !important;
+                                                        border-bottom: 4px solid #000 !important;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-tabla-riesgo tr.rapp-seleccionado td:first-child {
+                                                        border-left: 4px solid #000 !important;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-tabla-riesgo tr.rapp-seleccionado td:last-child {
+                                                        border-right: 4px solid #000 !important;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-resultado {
+                                                        padding: 15px;
+                                                        margin-top: 15px;
+                                                        text-align: center;
+                                                        font-weight: bold;
+                                                        border: 2px solid #ccc;
+                                                        background: #f8f9fa;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-analisis {
+                                                        border: 1px solid #d5d5d5;
+                                                        border-radius: 5px;
+                                                        padding: 15px;
+                                                        margin-top: 18px;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-analisis label {
+                                                        color: #007DBA;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    #fichaRAPPSinRuedas .rapp-analisis textarea {
+                                                        width: 100%;
+                                                        min-height: 120px;
+                                                    }
+
+                                                    @media(max-width:767px) {
+                                                        #fichaRAPPSinRuedas .rapp-encabezado {
+                                                            flex-direction: column;
+                                                        }
+
+                                                        #fichaRAPPSinRuedas .rapp-encabezado strong {
+                                                            min-width: 100%;
+                                                        }
+
+                                                        #fichaRAPPSinRuedas .rapp-opciones {
+                                                            grid-template-columns: 1fr;
+                                                        }
+
+                                                        #fichaRAPPSinRuedas .rapp-opcion {
+                                                            border-right: none;
+                                                            border-bottom: 1px solid #777;
+                                                        }
+                                                    }
+                                                </style>
+
+                                                <div class="card mt-3">
+
+                                                    <div class="card-header">
+                                                        <strong>Método RAPP - Empujar o traccionar cargas por medio de equipo sin ruedas</strong>
+                                                    </div>
+
+                                                    <div class="card-body">
+
+                                                        <div class="rapp-instrucciones">
+                                                            <strong>Instrucciones:</strong>
+                                                            Identifique la actividad de trabajo. Si se realizan dos o más actividades, por ejemplo, rodar y pivotear, evalúe cada actividad. Averigüe el peso de la carga desplazada. Si se mueven dos o más cargas a la vez, evalúe el peso total desplazado. Si se van a mover cargas diferentes, evalúe la carga más pesada.
+                                                        </div>
+
+                                                        <!-- B-1 PESO DE LA CARGA -->
+
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>B-1. Peso de la carga</strong>
+                                                                <span>Identifique el tipo de actividad y seleccione el peso correspondiente.</span>
+                                                            </div>
+
+                                                            <div class="row">
+
+                                                                <!-- RODADO -->
+
+                                                                <div class="col-md-4 mb-3">
+
+                                                                    <h5 style="color:#007DBA;font-weight:bold;">Rodado</h5>
+
+                                                                    <table class="rapp-tabla-peso">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Menos de 400 kg</td>
+                                                                                <td class="rapp-verde">Bajo V/0</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>400 kg a 600 kg</td>
+                                                                                <td class="rapp-naranja">Mediano A/2</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>600 kg a 1000 kg</td>
+                                                                                <td class="rapp-rojo">Alto R/4</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Más de 1000 kg</td>
+                                                                                <td class="rapp-rojo">Muy Alto R/8</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <select id="RAPP_SIN_RUEDAS_B1_RODADO"
+                                                                        name="RAPP_SIN_RUEDAS_B1_RODADO"
+                                                                        class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="0|V">Menos de 400 kg - Bajo V/0</option>
+                                                                        <option value="2|A">400 kg a 600 kg - Mediano A/2</option>
+                                                                        <option value="4|R">600 kg a 1000 kg - Alto R/4</option>
+                                                                        <option value="8|R">Más de 1000 kg - Muy Alto R/8</option>
+
+                                                                    </select>
+
+                                                                </div>
+
+                                                                <!-- PIVOTEO Y RODADO -->
+
+                                                                <div class="col-md-4 mb-3">
+
+                                                                    <h5 style="color:#007DBA;font-weight:bold;">Pivoteo y rodado</h5>
+
+                                                                    <p>Las cargas se mueven girando o rodando a lo largo de los bordes de la base.</p>
+
+                                                                    <table class="rapp-tabla-peso">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Menos de 80 kg</td>
+                                                                                <td class="rapp-verde">Bajo V/0</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>80 kg a 120 kg</td>
+                                                                                <td class="rapp-naranja">Mediano A/2</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>120 kg a 150 kg</td>
+                                                                                <td class="rapp-rojo">Alto R/4</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Más de 150 kg</td>
+                                                                                <td class="rapp-rojo">Muy Alto R/8</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <select id="RAPP_SIN_RUEDAS_B1_PIVOTEO"
+                                                                        name="RAPP_SIN_RUEDAS_B1_PIVOTEO"
+                                                                        class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="0|V">Menos de 80 kg - Bajo V/0</option>
+                                                                        <option value="2|A">80 kg a 120 kg - Mediano A/2</option>
+                                                                        <option value="4|R">120 kg a 150 kg - Alto R/4</option>
+                                                                        <option value="8|R">Más de 150 kg - Muy Alto R/8</option>
+
+                                                                    </select>
+
+                                                                </div>
+
+                                                                <!-- ARRASTRAR -->
+
+                                                                <div class="col-md-4 mb-3">
+
+                                                                    <h5 style="color:#007DBA;font-weight:bold;">Arrastrar / Arrastrar y deslizar</h5>
+
+                                                                    <table class="rapp-tabla-peso">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Menos de 25 kg</td>
+                                                                                <td class="rapp-verde">Bajo V/0</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>25 kg a 50 kg</td>
+                                                                                <td class="rapp-naranja">Mediano A/2</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>50 kg a 80 kg</td>
+                                                                                <td class="rapp-rojo">Alto R/4</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Más de 80 kg</td>
+                                                                                <td class="rapp-rojo">Muy Alto R/8</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                    <select id="RAPP_SIN_RUEDAS_B1_ARRASTRAR"
+                                                                        name="RAPP_SIN_RUEDAS_B1_ARRASTRAR"
+                                                                        class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+
+                                                                        <option value="">Seleccionar...</option>
+                                                                        <option value="0|V">Menos de 25 kg - Bajo V/0</option>
+                                                                        <option value="2|A">25 kg a 50 kg - Mediano A/2</option>
+                                                                        <option value="4|R">50 kg a 80 kg - Alto R/4</option>
+                                                                        <option value="8|R">Más de 80 kg - Muy Alto R/8</option>
+
+                                                                    </select>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- B-2 POSTURA -->
+
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>B-2. Postura</strong>
+                                                                <span>Observe la posición general de las manos y el cuerpo durante la operación.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Buena V/0</strong>
+                                                                    <p>Torso está en gran medida vertical y no está rotado. Las manos están entre la cadera y la altura del hombro.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Razonable A/3</strong>
+                                                                    <p>El cuerpo está inclinado en dirección del esfuerzo, o el torso está visiblemente flexionado o rotado, o las manos están por debajo de la altura de la cadera.</p>
+                                                                    <b>A / 3</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Mala R/6</strong>
+                                                                    <p>El cuerpo está muy inclinado, en cuclillas o arrodillado, o el torso está severamente flexionado o rotado, o las manos están detrás, a un lado o por encima del hombro.</p>
+                                                                    <b>R / 6</b>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <select id="RAPP_SIN_RUEDAS_B2_POSTURA" name="RAPP_SIN_RUEDAS_B2_POSTURA" class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Buena V/0</option>
+                                                                <option value="3|A">Razonable A/3</option>
+                                                                <option value="6|R">Mala R/6</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- B-3 AGARRE -->
+
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>B-3. Agarre</strong>
+                                                                <span>Observe cómo las manos agarran o entran en contacto con la carga durante el empuje o la tracción.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Buena V/0</strong>
+                                                                    <p>Hay manillas o zonas de agarre que permiten un agarre cómodo para traccionar o un contacto manual completo para empujar.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Razonable A/1</strong>
+                                                                    <p>Hay zonas de agarre, pero sólo permiten un agarre parcial, por ejemplo, dedos en 90° o contacto manual parcial para empujar.</p>
+                                                                    <b>A / 1</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Mala R/2</strong>
+                                                                    <p>No hay asas o el contacto de la mano es incómodo.</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <select id="RAPP_SIN_RUEDAS_B3_AGARRE" name="RAPP_SIN_RUEDAS_B3_AGARRE" class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Buena V/0</option>
+                                                                <option value="1|A">Razonable A/1</option>
+                                                                <option value="2|R">Mala R/2</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- B-4 SISTEMA DE TRABAJO -->
+
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>B-4. Sistema de trabajo</strong>
+                                                                <span>Observe si la operación es repetitiva y si el trabajador establece el ritmo de trabajo.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Buena V/0</strong>
+                                                                    <p>El trabajo no es repetitivo (menos de cinco transferencias por minuto) y el ritmo de trabajo es definido por el trabajador.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Razonable A/1</strong>
+                                                                    <p>El trabajo es repetitivo, o hay oportunidad para descansar o recuperarse mediante pausas informales o rotación de puestos.</p>
+                                                                    <b>A / 1</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Pobre R/3</strong>
+                                                                    <p>El trabajo es repetitivo y no hay pausas formales o informales ni posibilidad de rotación de puestos.</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <select id="RAPP_SIN_RUEDAS_B4_SISTEMA_TRABAJO" name="RAPP_SIN_RUEDAS_B4_SISTEMA_TRABAJO" class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Buena V/0</option>
+                                                                <option value="1|A">Razonable A/1</option>
+                                                                <option value="3|R">Pobre R/3</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- B-5 DISTANCIA -->
+
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>B-5. Distancia de traslado</strong>
+                                                                <span>Determine la distancia desde el principio hasta el final para un solo viaje.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Corto V/0</strong>
+                                                                    <p>2 metros o menos.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Mediano A/1</strong>
+                                                                    <p>Entre 2 y 10 metros.</p>
+                                                                    <b>A / 1</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Largo R/3</strong>
+                                                                    <p>Más de 10 metros.</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <select id="RAPP_SIN_RUEDAS_B5_DISTANCIA" name="RAPP_SIN_RUEDAS_B5_DISTANCIA" class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Corto V/0</option>
+                                                                <option value="1|A">Mediano A/1</option>
+                                                                <option value="3|R">Largo R/3</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- B-6 CONDICIÓN DEL PISO -->
+
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>B-6. Condición del piso</strong>
+                                                                <span>Identifique la condición de la superficie a lo largo de la ruta.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Bueno V/0</strong>
+                                                                    <p>Seco y limpio, a nivel, firme y en buenas condiciones, sin daño o desnivel.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Razonable A/1</strong>
+                                                                    <p>Mayormente seco y limpio, con humedad o escombros en algunas áreas, inclinación entre 3° y 5°, razonablemente firme o con daños menores.</p>
+                                                                    <b>A / 1</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Malo R/4</strong>
+                                                                    <p>Contaminado, inclinación mayor a 5°, blando o inestable bajo los pies, o en muy mal estado.</p>
+                                                                    <b>R / 4</b>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <select id="RAPP_SIN_RUEDAS_B6_SUPERFICIE_PISO" name="RAPP_SIN_RUEDAS_B6_SUPERFICIE_PISO" class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Bueno V/0</option>
+                                                                <option value="1|A">Razonable A/1</option>
+                                                                <option value="4|R">Malo R/4</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- B-7 OBSTÁCULOS -->
+
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>B-7. Obstáculos en la ruta</strong>
+                                                                <span>Compruebe la presencia de obstáculos durante el desplazamiento de la carga.</span>
+                                                            </div>
+
+                                                            <div class="rapp-opciones">
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Buena V/0</strong>
+                                                                    <p>Sin obstáculos.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Razonable A/2</strong>
+                                                                    <p>Un tipo de obstáculo, excepto escalones o rampas empinadas.</p>
+                                                                    <b>A / 2</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Malo R/3</strong>
+                                                                    <p>Escalones, rampas empinadas o dos o más obstáculos de otro tipo.</p>
+                                                                    <b>R / 3</b>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <select id="RAPP_SIN_RUEDAS_B7_OBSTACULOS" name="RAPP_SIN_RUEDAS_B7_OBSTACULOS" class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Buena V/0</option>
+                                                                <option value="2|A">Razonable A/2</option>
+                                                                <option value="3|R">Malo R/3</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- B-8 OTROS FACTORES -->
+
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>B-8. Otros factores</strong>
+                                                                <span>Identifique cualquier otro factor que pueda incrementar el riesgo.</span>
+                                                            </div>
+
+                                                            <p>Considere los siguientes factores:</p>
+
+                                                            <ul>
+                                                                <li>El equipo o la carga es inestable.</li>
+                                                                <li>La carga es voluminosa y obstruye la visión del trabajador.</li>
+                                                                <li>La carga es puntiaguda, caliente o potencialmente perjudicial al tocarla.</li>
+                                                                <li>Hay malas condiciones de iluminación.</li>
+                                                                <li>Hay temperaturas extremadamente altas o bajas o alta humedad.</li>
+                                                                <li>Hay corrientes de aire.</li>
+                                                                <li>El equipo de protección personal o la ropa de trabajo dificultan el empuje y la tracción.</li>
+                                                            </ul>
+
+                                                            <div class="rapp-opciones">
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Ninguno V/0</strong>
+                                                                    <p>No hay otros factores presentes.</p>
+                                                                    <b>V / 0</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Pocos A/1</strong>
+                                                                    <p>Un factor presente.</p>
+                                                                    <b>A / 1</b>
+                                                                </div>
+
+                                                                <div class="rapp-opcion">
+                                                                    <strong>Dos o más R/2</strong>
+                                                                    <p>Dos o más factores presentes.</p>
+                                                                    <b>R / 2</b>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <select id="RAPP_SIN_RUEDAS_B8_OTROS_FACTORES" name="RAPP_SIN_RUEDAS_B8_OTROS_FACTORES" class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="0|V">Ninguno V/0</option>
+                                                                <option value="1|A">Pocos A/1</option>
+                                                                <option value="2|R">Dos o más R/2</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <!-- TABLA DE RESULTADOS -->
+
+                                                        <div class="rapp-card">
+
+                                                            <div class="rapp-encabezado">
+                                                                <strong>Tabla de resultados RAPP</strong>
+                                                                <span>Identifique la banda de color y la puntuación numérica para cada factor de riesgo. La suma determina el nivel de riesgo.</span>
+                                                            </div>
+
+                                                            <div class="table-responsive">
+
+                                                                <table id="tablaRAPPSinRuedas" class="table table-bordered text-center">
+
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th rowspan="2">Factores</th>
+                                                                            <th colspan="2">Rodado</th>
+                                                                            <th colspan="2">Pivoteo y rodado</th>
+                                                                            <th colspan="2">Arrastrar / Arrastrar y deslizar</th>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <th>Banda de color</th>
+                                                                            <th>Puntaje numérico</th>
+                                                                            <th>Banda de color</th>
+                                                                            <th>Puntaje numérico</th>
+                                                                            <th>Banda de color</th>
+                                                                            <th>Puntaje numérico</th>
+                                                                        </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+
+                                                                        <tr>
+                                                                            <td>B-1 Peso de la carga</td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B1_RODADO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B1_RODADO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B1_PIVOTEO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B1_PIVOTEO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B1_ARRASTRAR_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B1_ARRASTRAR_PUNTAJE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>B-2 Postura</td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B2_RODADO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B2_RODADO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B2_PIVOTEO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B2_PIVOTEO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B2_ARRASTRAR_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B2_ARRASTRAR_PUNTAJE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>B-3 Agarre</td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B3_RODADO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B3_RODADO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B3_PIVOTEO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B3_PIVOTEO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B3_ARRASTRAR_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B3_ARRASTRAR_PUNTAJE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>B-4 Sistema de trabajo</td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B4_RODADO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B4_RODADO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B4_PIVOTEO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B4_PIVOTEO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B4_ARRASTRAR_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B4_ARRASTRAR_PUNTAJE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>B-5 Distancia de traslado</td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B5_RODADO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B5_RODADO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B5_PIVOTEO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B5_PIVOTEO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B5_ARRASTRAR_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B5_ARRASTRAR_PUNTAJE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>B-6 Superficie del piso</td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B6_RODADO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B6_RODADO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B6_PIVOTEO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B6_PIVOTEO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B6_ARRASTRAR_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B6_ARRASTRAR_PUNTAJE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>B-7 Obstáculos en la ruta</td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B7_RODADO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B7_RODADO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B7_PIVOTEO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B7_PIVOTEO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B7_ARRASTRAR_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B7_ARRASTRAR_PUNTAJE"></td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>B-8 Otros factores</td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B8_RODADO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B8_RODADO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B8_PIVOTEO_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B8_PIVOTEO_PUNTAJE"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B8_ARRASTRAR_COLOR"></td>
+                                                                            <td id="RAPP_SIN_RUEDAS_TABLA_B8_ARRASTRAR_PUNTAJE"></td>
+                                                                        </tr>
+
+                                                                        <tr class="rapp-total">
+                                                                            <td><u>SUMA TOTAL</u></td>
+                                                                            <td colspan="2"><u id="RAPP_SIN_RUEDAS_TOTAL_RODADO"></u></td>
+                                                                            <td colspan="2"><u id="RAPP_SIN_RUEDAS_TOTAL_PIVOTEO"></u></td>
+                                                                            <td colspan="2"><u id="RAPP_SIN_RUEDAS_TOTAL_ARRASTRAR"></u></td>
+                                                                        </tr>
+
+                                                                        <tr class="rapp-total">
+                                                                            <td>Nivel de riesgo</td>
+                                                                            <td colspan="2" id="RAPP_SIN_RUEDAS_NIVEL_RODADO"></td>
+                                                                            <td colspan="2" id="RAPP_SIN_RUEDAS_NIVEL_PIVOTEO"></td>
+                                                                            <td colspan="2" id="RAPP_SIN_RUEDAS_NIVEL_ARRASTRAR"></td>
+                                                                        </tr>
+
+                                                                    </tbody>
+
+                                                                </table>
+
+                                                            </div>
+
+                                                            <!-- TABLA DE NIVEL DE RIESGO -->
+
+                                                            <div class="rapp-titulo">
+                                                                NIVEL DE RIESGO Y PRIORIDAD DE ACCIÓN
+                                                            </div>
+
+                                                            <div class="table-responsive">
+
+                                                                <table class="rapp-tabla-riesgo" id="tablaNivelRiesgoRAPPSinRuedas">
+
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>NIVEL DE RIESGO</th>
+                                                                            <th>PRIORIDAD</th>
+                                                                            <th>PUNTAJE TOTAL</th>
+                                                                        </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+
+                                                                        <tr id="RAPP_SIN_RUEDAS_RIESGO_BAJO" class="rapp-riesgo-bajo">
+                                                                            <td><strong>Bajo – Aceptable</strong></td>
+                                                                            <td><strong>No se requieren acciones correctivas</strong></td>
+                                                                            <td><strong>0 a 4</strong></td>
+                                                                        </tr>
+
+                                                                        <tr id="RAPP_SIN_RUEDAS_RIESGO_MEDIO" class="rapp-riesgo-medio">
+                                                                            <td><strong>Medio – Posible</strong></td>
+                                                                            <td>Se requieren acciones correctivas a corto plazo</td>
+                                                                            <td>5 a 12</td>
+                                                                        </tr>
+
+                                                                        <tr id="RAPP_SIN_RUEDAS_RIESGO_ALTO" class="rapp-riesgo-alto">
+                                                                            <td><strong>Alto – Significativo</strong></td>
+                                                                            <td>Se requieren acciones correctivas pronto</td>
+                                                                            <td>13 a 20</td>
+                                                                        </tr>
+
+                                                                        <tr id="RAPP_SIN_RUEDAS_RIESGO_MUY_ALTO" class="rapp-riesgo-muy-alto">
+                                                                            <td><strong>Muy Alto – Inaceptable</strong></td>
+                                                                            <td>Se requieren acciones correctivas inmediatamente</td>
+                                                                            <td>21 a 32</td>
+                                                                        </tr>
+
+                                                                    </tbody>
+
+                                                                </table>
+
+                                                            </div>
+
+                                                            <div class="rapp-resultado" id="RAPP_SIN_RUEDAS_RESULTADO_GENERAL">
+                                                                Seleccione los valores de los criterios para obtener los resultados.
+                                                            </div>
+
+                                                            <div class="rapp-analisis">
+
+                                                                <label for="RAPP_SIN_RUEDAS_ANALISIS_RESULTADOS">
+                                                                    Análisis de resultados - Método RAPP sin ruedas
+                                                                </label>
+
+                                                                <textarea
+                                                                    id="RAPP_SIN_RUEDAS_ANALISIS_RESULTADOS"
+                                                                    name="RAPP_SIN_RUEDAS_ANALISIS_RESULTADOS"
+                                                                    class="form-control"
+                                                                    rows="5" required></textarea>
+
+                                                            </div>
+
+                                                            <div class="alert alert-info mt-3">
+                                                                <strong>Nota:</strong>
+                                                                Observe la capacidad individual de los trabajadores. Considere, por ejemplo, trabajadores vulnerables por edad avanzada, presencia de enfermedades que afectan su capacidad física o delgadez extrema.
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+
+                                            </div>
+
+
+                                        </div>
 
 
                                         <div class="col-12" style="text-align: right;">
@@ -10288,6 +14864,9 @@ DESCRIPCIONACTIVIDAD
             height: 400
         });
 
+        $('#INFORME_RECONOCIMIENTO').summernote({
+            height: 400
+        });
     });
 </script>
 
