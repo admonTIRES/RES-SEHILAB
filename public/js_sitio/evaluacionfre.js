@@ -367,16 +367,7 @@ function cargarDatosPlantilla()
                 $('#INFORME_RECONOCIMIENTO').summernote('code', reco);
             }
 
-            // let reco = $('#INFORME_RECONOCIMIENTO').val();
-
-            // if (reco) {
-
-            //     $.each(resp.data, function(marcador, valor) {
-            //         reco = reco.split(marcador).join(valor || '');
-            //     });
-
-            //     $('#INFORME_RECONOCIMIENTO').val(reco);
-            // }
+        
 
             // PROCESO
             let proceso = $('#INFORME_PROCESOINSTALACION').val();
@@ -7690,6 +7681,9 @@ function cargarDatosGeneralesInformeFre()
             }
 
 
+
+
+            
           if (response.INFORME_OBJETIVOGENERALES &&
                 response.INFORME_OBJETIVOGENERALES.trim() != '') {
                 $('#INFORME_OBJETIVOGENERALES').val(response.INFORME_OBJETIVOGENERALES);
@@ -7718,16 +7712,30 @@ function cargarDatosGeneralesInformeFre()
             
 
 
-             if (response.INFORME_RECONOCIMIENTO &&
+
+            if (response.INFORME_RECONOCIMIENTO &&
                 response.INFORME_RECONOCIMIENTO.trim() != '') {
-                $('#INFORME_RECONOCIMIENTO').val(response.INFORME_RECONOCIMIENTO);
+
+                $('#INFORME_RECONOCIMIENTO').summernote(
+                    'code',
+                    response.INFORME_RECONOCIMIENTO
+                );
+
             } else {
-               $('#INFORME_INTRODUCCION').summernote(
+
+                $('#INFORME_RECONOCIMIENTO').summernote(
                     'code',
                     `
-Mediante la aplicación de la norma  ISO-TR-12295:2014 y los criterios de la NOM-036-1-STPS-2018, se realiza la identificación de peligros y riesgos ergonómicos, a través de la aplicación de las fichas técnicas que permiten hacer una evaluación inicial rápida de los siguientes aspectos de la carga física: levantamiento, transporte, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas y dinámicas forzadas, siendo este el punto de partida para el reconocimiento del factor de riesgo ergonómico por exposición a sobrecarga biomecánica. A continuación, se presenta el reconocimiento de los peligros y riesgos ergonómicos detectados,  la aplicación del modelo conceptual de un estudio ergonómico (trabajador; tareas; herramientas/equipo y entorno), en  <font color="#000000" style="background-color: rgb(255, 255, 0);">el/la INSTALACION</font> y el resumen de los seis criterios de la carga física referidos en la ISO-TR-12295:2014, relacionados con los respectivos puestos de trabajo valorados, donde el verde corresponde a un “Riesgo aceptable” y el rojo a un “Riesgo crítico”.`);
+                    <p>Mediante la aplicación de la norma  ISO-TR-12295:2014 y los criterios de la NOM-036-1-STPS-2018, se realiza la identificación de peligros y riesgos ergonómicos, a través de la aplicación de las fichas técnicas que permiten hacer una evaluación inicial rápida de los siguientes aspectos de la carga física: levantamiento, transporte, empuje y tracción de cargas, movimientos repetitivos de la extremidad superior, posturas estáticas y dinámicas forzadas, siendo este el punto de partida para el reconocimiento del factor de riesgo ergonómico por exposición a sobrecarga biomecánica. A continuación, se presenta el reconocimiento de los peligros y riesgos ergonómicos detectados,  la aplicación del modelo conceptual de un estudio ergonómico (trabajador; tareas; herramientas/equipo y entorno), en  <font color="#000000" style="background-color: rgb(255, 255, 0);">el/la INSTALACION</font> y el resumen de los seis criterios de la carga física referidos en la ISO-TR-12295:2014, relacionados con los respectivos puestos de trabajo valorados, donde el verde corresponde a un “Riesgo aceptable” y el rojo a un “Riesgo crítico”.</p>`
+                );
 
             }
+
+
+
+
+
+
             
             $('#INFORME_ANALISISRECONOCIMIENTO').val(response.INFORME_ANALISISRECONOCIMIENTO);
 
