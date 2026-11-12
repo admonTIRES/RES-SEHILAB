@@ -10996,16 +10996,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     <th colspan="6" class="reba-encabezado-verde">Antebrazo</th>
                 </tr>
                 <tr>
-                    <th colspan="3" class="reba-encabezado-verde">1</th>
-                    <th colspan="3" class="reba-encabezado-verde">2</th>
+                    <th colspan="3" class="reba-encabezado-verde">1 Muñeca</th>
+                    <th colspan="3" class="reba-encabezado-verde">2 Muñeca</th>
                 </tr>
                 <tr>
-                    <th class="reba-encabezado-azul">Muñeca 1</th>
-                    <th class="reba-encabezado-azul">Muñeca 2</th>
-                    <th class="reba-encabezado-azul">Muñeca 3</th>
-                    <th class="reba-encabezado-azul">Muñeca 1</th>
-                    <th class="reba-encabezado-azul">Muñeca 2</th>
-                    <th class="reba-encabezado-azul">Muñeca 3</th>
+                    <th class="reba-encabezado-azul"> 1</th>
+                    <th class="reba-encabezado-azul"> 2</th>
+                    <th class="reba-encabezado-azul"> 3</th>
+                    <th class="reba-encabezado-azul"> 1</th>
+                    <th class="reba-encabezado-azul"> 2</th>
+                    <th class="reba-encabezado-azul"> 3</th>
                 </tr>
             </thead>
             <tbody>
