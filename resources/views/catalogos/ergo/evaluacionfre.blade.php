@@ -100,6 +100,20 @@
         font-weight: bold;
         color: #777777;
     }
+
+    #tabla_reporte_trabajadores_ergo tfoot th {
+    border: 1px solid #000;
+    padding: 10px;
+    font-weight: bold;
+    background-color: #EAF2F8;
+    vertical-align: middle;
+}
+
+#total_personas_evaluadas {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
 </style>
 
 
@@ -1388,8 +1402,15 @@ DESCRIPCIONACTIVIDAD
                                                             <th>No. de trabajadores evaluados</th>
                                                         </tr>
                                                     </thead>
-
                                                     <tbody></tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th colspan="2" style="text-align:right;">
+                                                                Total evaluados:
+                                                            </th>
+                                                            <th id="total_personas_evaluadas">0</th>
+                                                        </tr>
+                                                    </tfoot>
                                                 </table>
                                             </div>
                                         </div>
@@ -6614,145 +6635,99 @@ DESCRIPCIONACTIVIDAD
                                         </style>
 
                                         <!-- ========================= ROSA ========================= -->
-
+                                      
                                         <div class="col-12 metodo-fre-contenedor" id="contenedorMetodoROSA" style="display:none;">
                                             <div class="rosa-card">
                                                 <input type="hidden" id="ROSA_DATOS_JSON" name="ROSA_DATOS_JSON" value="">
-                                                <div class="rosa-titulo-principal">MÉTODO ROSA</div>
+
+                                                <div class="rosa-titulo">MÉTODO ROSA</div>
+
                                                 <h5 class="rosa-seccion">A. Evaluación de la silla</h5>
+
                                                 <div class="rosa-grid">
-
                                                     <div class="rosa-campo-contenedor">
-
-                                                        <label>A-1. Altura del asiento</label>
-
-                                                        <select id="ROSA_ALTURA_ASIENTO" name="ROSA_ALTURA_ASIENTO" class="form-control" required>
+                                                        <label for="ROSA_ALTURA_ASIENTO">A-1. Altura del asiento</label>
+                                                        <select id="ROSA_ALTURA_ASIENTO" name="ROSA_ALTURA_ASIENTO" class="form-control rosa-campo" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Postura neutra: rodillas a 90°</option>
-                                                            <option value="2">2 — Asiento bajo, rodillas menores de 90°</option>
-                                                            <option value="2">2 — Asiento alto, rodillas mayores de 90°</option>
+                                                            <option value="2_bajo" data-puntuacion="2">2 — Asiento bajo, rodillas menores de 90°</option>
+                                                            <option value="2_alto" data-puntuacion="2">2 — Asiento alto, rodillas mayores de 90°</option>
                                                             <option value="3">3 — Pies sin tocar el suelo</option>
                                                         </select>
-
                                                         <div class="rosa-adicionales">
-
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A1" value="1" data-texto="Espacio insuficiente para las piernas">
-                                                                +1 Espacio insuficiente para las piernas
-                                                            </label>
-
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A1" value="1" data-texto="Altura no regulable">
-                                                                +1 Altura no regulable
-                                                            </label>
-
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A1" value="1" data-texto="Espacio insuficiente para las piernas"> +1 Espacio insuficiente para las piernas</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A1" value="1" data-texto="Altura no regulable"> +1 Altura no regulable</label>
                                                         </div>
-
                                                     </div>
 
                                                     <div class="rosa-campo-contenedor">
-                                                        <label>A-2. Profundidad del asiento</label>
-                                                        <select id="ROSA_PROFUNDIDAD_ASIENTO" name="ROSA_PROFUNDIDAD_ASIENTO" class="form-control" required>
+                                                        <label for="ROSA_PROFUNDIDAD_ASIENTO">A-2. Profundidad del asiento</label>
+                                                        <select id="ROSA_PROFUNDIDAD_ASIENTO" name="ROSA_PROFUNDIDAD_ASIENTO" class="form-control rosa-campo" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — 8 cm entre el borde y la pierna</option>
-                                                            <option value="2">2 — Menos de 8 cm</option>
-                                                            <option value="2">2 — Más de 8 cm</option>
+                                                            <option value="2_menor" data-puntuacion="2">2 — Menos de 8 cm</option>
+                                                            <option value="2_mayor" data-puntuacion="2">2 — Más de 8 cm</option>
                                                         </select>
-
                                                         <div class="rosa-adicionales">
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A2" value="1" data-texto="Profundidad no regulable">
-                                                                +1 Profundidad no regulable
-                                                            </label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A2" value="1" data-texto="Profundidad no regulable"> +1 Profundidad no regulable</label>
                                                         </div>
                                                     </div>
 
                                                     <div class="rosa-campo-contenedor">
-                                                        <label>A-3. Reposabrazos</label>
-                                                        <select id="ROSA_REPOSABRAZOS" name="ROSA_REPOSABRAZOS" class="form-control" required>
+                                                        <label for="ROSA_REPOSABRAZOS">A-3. Reposabrazos</label>
+                                                        <select id="ROSA_REPOSABRAZOS" name="ROSA_REPOSABRAZOS" class="form-control rosa-campo" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Codos a 90° y hombros relajados</option>
                                                             <option value="2">2 — Codos altos o bajos sin apoyo</option>
                                                         </select>
-
                                                         <div class="rosa-adicionales">
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A3" value="1" data-texto="Bordes afilados o duros">
-                                                                +1 Bordes afilados o duros
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A3" value="1" data-texto="Reposabrazos demasiado anchos">
-                                                                +1 Reposabrazos demasiado anchos
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A3" value="1" data-texto="Reposabrazos no regulables">
-                                                                +1 Reposabrazos no regulables
-                                                            </label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A3" value="1" data-texto="Bordes afilados o duros"> +1 Bordes afilados o duros</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A3" value="1" data-texto="Reposabrazos demasiado anchos"> +1 Reposabrazos demasiado anchos</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A3" value="1" data-texto="Reposabrazos no regulables"> +1 Reposabrazos no regulables</label>
                                                         </div>
                                                     </div>
 
                                                     <div class="rosa-campo-contenedor">
-                                                        <label>A-4. Respaldo</label>
-                                                        <select id="ROSA_RESPALDO" name="ROSA_RESPALDO" class="form-control" required>
+                                                        <label for="ROSA_RESPALDO">A-4. Respaldo</label>
+                                                        <select id="ROSA_RESPALDO" name="ROSA_RESPALDO" class="form-control rosa-campo" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Apoyo lumbar e inclinación adecuada</option>
-                                                            <option value="2">2 — Sin apoyo lumbar o apoyo inadecuado</option>
-                                                            <option value="2">2 — Inclinación inadecuada</option>
+                                                            <option value="2_sin_apoyo" data-puntuacion="2">2 — Sin apoyo lumbar o apoyo inadecuado</option>
+                                                            <option value="2_inclinacion" data-puntuacion="2">2 — Inclinación inadecuada</option>
                                                         </select>
-
                                                         <div class="rosa-adicionales">
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A4" value="1" data-texto="No se utiliza el respaldo">
-                                                                +1 No se utiliza el respaldo
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A4" value="1" data-texto="Superficie alta u hombros encogidos">
-                                                                +1 Superficie alta u hombros encogidos
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A4" value="1" data-texto="Respaldo no regulable">
-                                                                +1 Respaldo no regulable
-                                                            </label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A4" value="1" data-texto="No se utiliza el respaldo"> +1 No se utiliza el respaldo</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A4" value="1" data-texto="Superficie alta u hombros encogidos"> +1 Superficie alta u hombros encogidos</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="A4" value="1" data-texto="Respaldo no regulable"> +1 Respaldo no regulable</label>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="rosa-tiempo-contenedor mt-2">
-                                                    <label for="ROSA_TIEMPO_A">
-                                                        Tiempo de uso diario de la silla
-                                                    </label>
+                                                <div class="rosa-tiempo-contenedor">
+                                                    <label for="ROSA_TIEMPO_A">Tiempo de uso diario de la silla</label>
                                                     <select id="ROSA_TIEMPO_A" name="ROSA_TIEMPO_A" class="form-control rosa-tiempo" required>
                                                         <option value="">Seleccionar</option>
-                                                        <option value="1">+1 — Más de 4 horas o más de 1 hora ininterrumpida</option>
-                                                        <option value="0">0 — Entre 1 y 4 horas en total o entre 30 minutos y 1 hora ininterrumpida</option>
-                                                        <option value="-1">-1 — Menos de 1 hora en total o menos de 30 minutos ininterrumpidos</option>
+                                                        <option value="1">+1 — Uso continuo durante más de una hora o más de 4 horas diarias</option>
+                                                        <option value="0">0 — Tiempo intermedio</option>
+                                                        <option value="-1">-1 — Uso continuo menor de 30 minutos o menos de una hora diaria</option>
                                                     </select>
                                                 </div>
 
                                                 <h5 class="rosa-seccion">B. Teléfono y pantalla</h5>
+
                                                 <div class="rosa-grid">
                                                     <div class="rosa-campo-contenedor">
-                                                        <label>B-1. Teléfono</label>
-                                                        <select id="ROSA_TELEFONO" name="ROSA_TELEFONO" class="form-control" required>
+                                                        <label for="ROSA_TELEFONO">B-1. Teléfono</label>
+                                                        <select id="ROSA_TELEFONO" name="ROSA_TELEFONO" class="form-control rosa-campo" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Cuello recto y manos libres</option>
                                                             <option value="2">2 — Teléfono alejado más de 30 cm</option>
                                                         </select>
-
                                                         <div class="rosa-adicionales">
-
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B1" value="2" data-texto="Sujeción con el hombro o cuello">
-                                                                +2 Sujeción con el hombro o cuello
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B1" value="1" data-texto="No existe opción de manos libres">
-                                                                +1 No existe opción de manos libres
-                                                            </label>
-
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B1" value="2" data-texto="Sujeción con el hombro o cuello"> +2 Sujeción con el hombro o cuello</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B1" value="1" data-texto="No existe opción de manos libres"> +1 No existe opción de manos libres</label>
                                                         </div>
-
-                                                        <label>Tiempo de uso diario del teléfono</label>
+                                                        <label for="ROSA_TIEMPO_B1">Tiempo de uso diario del teléfono</label>
                                                         <select id="ROSA_TIEMPO_B1" name="ROSA_TIEMPO_B1" class="form-control rosa-tiempo">
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">+1 — Uso prolongado</option>
@@ -6761,68 +6736,39 @@ DESCRIPCIONACTIVIDAD
                                                     </div>
 
                                                     <div class="rosa-campo-contenedor">
-                                                        <label>B-2. Pantalla</label>
-                                                        <select id="ROSA_PANTALLA" name="ROSA_PANTALLA" class="form-control" required>
+                                                        <label for="ROSA_PANTALLA">B-2. Pantalla</label>
+                                                        <select id="ROSA_PANTALLA" name="ROSA_PANTALLA" class="form-control rosa-campo" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Pantalla a 40–75 cm y a la altura de los ojos</option>
                                                             <option value="2">2 — Pantalla demasiado baja</option>
                                                             <option value="3">3 — Pantalla demasiado alta</option>
                                                         </select>
-
                                                         <div class="rosa-adicionales">
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="Distancia mayor de 75 cm">
-                                                                +1 Distancia mayor de 75 cm
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="Giro de cuello">
-                                                                +1 Giro de cuello
-                                                            </label>
-
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="No hay portadocumentos y se necesita">
-                                                                +1 No hay portadocumentos y se necesita
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="Reflejos en pantalla">
-                                                                +1 Reflejos en pantalla
-                                                            </label>
-
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="Distancia mayor de 75 cm"> +1 Distancia mayor de 75 cm</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="Giro de cuello"> +1 Giro de cuello</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="No hay portadocumentos y se necesita"> +1 No hay portadocumentos y se necesita</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="Reflejos en pantalla"> +1 Reflejos en pantalla</label>
                                                         </div>
-                                                        <label class="rosa-tiempo-label">Tiempo de uso diario de la pantalla</label>
-                                                        <select id="ROSA_TIEMPO_B2" name="ROSA_TIEMPO_B2" class="form-control rosa-tiempo">
-                                                            <option value="">Seleccionar</option>
-                                                            <option value="1">+1 — Uso prolongado</option>
-                                                            <option value="-1">-1 — Uso breve</option>
-                                                        </select>
                                                     </div>
                                                 </div>
 
                                                 <h5 class="rosa-seccion">C. Ratón y teclado</h5>
+
                                                 <div class="rosa-grid">
                                                     <div class="rosa-campo-contenedor">
-                                                        <label>C-1. Ratón</label>
-                                                        <select id="ROSA_RATON" name="ROSA_RATON" class="form-control" required>
+                                                        <label for="ROSA_RATON">C-1. Ratón</label>
+                                                        <select id="ROSA_RATON" name="ROSA_RATON" class="form-control rosa-campo" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Ratón alineado con el hombro</option>
                                                             <option value="2">2 — Ratón fuera del alcance o desalineado</option>
                                                         </select>
                                                         <div class="rosa-adicionales">
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C1" value="1" data-texto="Ratón pequeño o agarre en pinza">
-                                                                +1 Ratón pequeño o agarre en pinza
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C1" value="2" data-texto="Ratón y teclado a diferentes alturas">
-                                                                +2 Ratón y teclado a diferentes alturas
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C1" value="1" data-texto="Reposamanos duro o puntos de presión">
-                                                                +1 Reposamanos duro o puntos de presión
-                                                            </label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C1" value="1" data-texto="Ratón pequeño o agarre en pinza"> +1 Ratón pequeño o agarre en pinza</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C1" value="2" data-texto="Ratón y teclado a diferentes alturas"> +2 Ratón y teclado a diferentes alturas</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C1" value="1" data-texto="Reposamanos duro o puntos de presión"> +1 Reposamanos duro o puntos de presión</label>
                                                         </div>
-                                                        <label>Tiempo de uso diario del ratón</label>
-                                                        <select id="ROSA_TIEMPO_C1" name="ROSA_TIEMPO_C1" class="form-control rosa-tiempo" >
+                                                        <label for="ROSA_TIEMPO_C1">Tiempo de uso diario del ratón</label>
+                                                        <select id="ROSA_TIEMPO_C1" name="ROSA_TIEMPO_C1" class="form-control rosa-tiempo">
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">+1 — Uso prolongado</option>
                                                             <option value="-1">-1 — Uso breve</option>
@@ -6830,33 +6776,19 @@ DESCRIPCIONACTIVIDAD
                                                     </div>
 
                                                     <div class="rosa-campo-contenedor">
-                                                        <label>C-2. Teclado</label>
-                                                        <select id="ROSA_TECLADO" name="ROSA_TECLADO" class="form-control" required>
+                                                        <label for="ROSA_TECLADO">C-2. Teclado</label>
+                                                        <select id="ROSA_TECLADO" name="ROSA_TECLADO" class="form-control rosa-campo" required>
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">1 — Muñeca recta y hombros relajados</option>
                                                             <option value="2">2 — Extensión de muñeca mayor de 15°</option>
                                                         </select>
                                                         <div class="rosa-adicionales">
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Desviación al escribir">
-                                                                +1 Desviación al escribir
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Teclado elevado u hombros encogidos">
-                                                                +1 Teclado elevado u hombros encogidos
-                                                            </label>
-
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Alcance por encima de la cabeza">
-                                                                +1 Alcance por encima de la cabeza
-                                                            </label>
-                                                            <label>
-                                                                <input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Soporte de teclado no ajustable">
-                                                                +1 Soporte de teclado no ajustable
-                                                            </label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Desviación al escribir"> +1 Desviación al escribir</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Teclado elevado u hombros encogidos"> +1 Teclado elevado u hombros encogidos</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Alcance por encima de la cabeza"> +1 Alcance por encima de la cabeza</label>
+                                                            <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="C2" value="1" data-texto="Soporte de teclado no ajustable"> +1 Soporte de teclado no ajustable</label>
                                                         </div>
-
-                                                        <label> Tiempo de uso diario del teclado</label>
+                                                        <label for="ROSA_TIEMPO_C2">Tiempo de uso diario del teclado</label>
                                                         <select id="ROSA_TIEMPO_C2" name="ROSA_TIEMPO_C2" class="form-control rosa-tiempo">
                                                             <option value="">Seleccionar</option>
                                                             <option value="1">+1 — Uso prolongado</option>
@@ -6866,45 +6798,34 @@ DESCRIPCIONACTIVIDAD
                                                 </div>
 
                                                 <h5 class="rosa-seccion">Matriz A. Puntuación de la silla</h5>
-
                                                 <div class="table-responsive">
                                                     <table class="rosa-matriz" id="ROSA_MATRIZ_A"></table>
                                                 </div>
 
                                                 <h5 class="rosa-seccion">Matriz B. Puntuación de teléfono y pantalla</h5>
-
                                                 <div class="table-responsive">
                                                     <table class="rosa-matriz" id="ROSA_MATRIZ_B"></table>
                                                 </div>
 
                                                 <h5 class="rosa-seccion">Matriz C. Puntuación de ratón y teclado</h5>
-
                                                 <div class="table-responsive">
                                                     <table class="rosa-matriz" id="ROSA_MATRIZ_C"></table>
                                                 </div>
 
-                                                <h5 class="rosa-seccion">Matriz D. Puntuación de pantalla y periféricos</h5>
-
+                                                <h5 class="rosa-seccion">Matriz D. Puntuación combinada</h5>
                                                 <div class="table-responsive">
                                                     <table class="rosa-matriz" id="ROSA_MATRIZ_D"></table>
                                                 </div>
 
                                                 <h5 class="rosa-seccion">Matriz E. Puntuación final ROSA</h5>
-
                                                 <div class="table-responsive">
                                                     <table class="rosa-matriz" id="ROSA_MATRIZ_E"></table>
                                                 </div>
 
                                                 <div class="table-responsive">
-
                                                     <table class="table table-bordered mb-0" id="ROSA_TABLA_RESULTADOS">
                                                         <thead>
-                                                            <tr>
-                                                                <th colspan="4" class="rosa-titulo-principal">
-                                                                    ROSA
-                                                                </th>
-                                                            </tr>
-
+                                                            <tr><th colspan="4" class="rosa-titulo-principal">ROSA</th></tr>
                                                             <tr>
                                                                 <th class="rosa-encabezado">Puntuación</th>
                                                                 <th class="rosa-encabezado">Riesgo</th>
@@ -6912,111 +6833,51 @@ DESCRIPCIONACTIVIDAD
                                                                 <th class="rosa-encabezado">Actuación</th>
                                                             </tr>
                                                         </thead>
-
                                                         <tbody>
-
                                                             <tr data-rosa-rango="1">
-                                                                <td class="rosa-categoria">1</td>
-                                                                <td class="rosa-categoria">Inapreciable</td>
-                                                                <td class="rosa-categoria rosa-nivel rosa-nivel-0">0</td>
-                                                                <td class="rosa-categoria">No es necesaria actuación.</td>
+                                                                <td>1</td><td>Inapreciable</td><td class="rosa-nivel rosa-nivel-0">0</td><td>No es necesaria actuación.</td>
                                                             </tr>
-
                                                             <tr data-rosa-rango="2-4">
-                                                                <td class="rosa-categoria">2–4</td>
-                                                                <td class="rosa-categoria">Mejorable</td>
-                                                                <td class="rosa-categoria rosa-nivel rosa-nivel-1">1</td>
-                                                                <td class="rosa-categoria">Pueden mejorarse algunos elementos del puesto.</td>
+                                                                <td>2–4</td><td>Mejorable</td><td class="rosa-nivel rosa-nivel-1">1</td><td>Pueden mejorarse algunos elementos del puesto.</td>
                                                             </tr>
-
                                                             <tr data-rosa-rango="5">
-                                                                <td class="rosa-categoria">5</td>
-                                                                <td class="rosa-categoria">Alto</td>
-                                                                <td class="rosa-categoria rosa-nivel rosa-nivel-2">2</td>
-                                                                <td class="rosa-categoria">Es necesaria la actuación.</td>
+                                                                <td>5</td><td>Alto</td><td class="rosa-nivel rosa-nivel-2">2</td><td>Es necesaria la actuación.</td>
                                                             </tr>
-
                                                             <tr data-rosa-rango="6-8">
-                                                                <td class="rosa-categoria">6–8</td>
-                                                                <td class="rosa-categoria">Muy alto</td>
-                                                                <td class="rosa-categoria rosa-nivel rosa-nivel-3">3</td>
-                                                                <td class="rosa-categoria">Es necesaria la actuación cuanto antes.</td>
+                                                                <td>6–8</td><td>Muy alto</td><td class="rosa-nivel rosa-nivel-3">3</td><td>Es necesaria la actuación cuanto antes.</td>
                                                             </tr>
-
                                                             <tr data-rosa-rango="9-10">
-                                                                <td class="rosa-categoria">9–10</td>
-                                                                <td class="rosa-categoria">Extremo</td>
-                                                                <td class="rosa-categoria rosa-nivel rosa-nivel-4">4</td>
-                                                                <td class="rosa-categoria">Es necesaria la actuación urgentemente.</td>
+                                                                <td>9–10</td><td>Extremo</td><td class="rosa-nivel rosa-nivel-4">4</td><td>Es necesaria la actuación urgentemente.</td>
                                                             </tr>
-
                                                         </tbody>
-
                                                     </table>
-
                                                 </div>
 
                                                 <div class="col-12 mt-3">
                                                     <div class="form-group">
                                                         <label for="ANALISIS_METODO_ROSA">Análisis de los resultados del método ROSA</label>
-                                                        <div class="input-group">
-                                                            <textarea class="form-control" name="ANALISIS_METODO_ROSA" id="ANALISIS_METODO_ROSA" rows="4" required></textarea>
-                                                        </div>
+                                                        <textarea class="form-control" name="ANALISIS_METODO_ROSA" id="ANALISIS_METODO_ROSA" rows="4" required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <style>
-                                            #ROSA_TABLA_RESULTADOS th,
-                                            #ROSA_TABLA_RESULTADOS td {
-                                                border: 2px solid #173F68 !important;
-                                                padding: 8px 12px;
-                                                vertical-align: middle;
-                                            }
-
-                                            #ROSA_TABLA_RESULTADOS {
-                                                width: 100%;
-                                                border-collapse: collapse;
-                                            }
-
-                                            #ROSA_TABLA_RESULTADOS .rosa-categoria {
-                                                text-align: center;
-                                                font-weight: bold;
-                                                font-size: 20px;
-                                            }
-
-                                            #ROSA_TABLA_RESULTADOS .rosa-encabezado {
-                                                background-color: #007DBA !important;
-                                                color: #FFFFFF !important;
-                                                text-align: center;
-                                                font-weight: bold;
-                                            }
-
-                                            #ROSA_TABLA_RESULTADOS .rosa-titulo-principal {
-                                                background-color: #A4D65E !important;
-                                                color: #000000 !important;
-                                                text-align: center;
-                                                font-size: 24px;
-                                                font-weight: bold;
-                                            }
-
                                             #contenedorMetodoROSA {
                                                 width: 100%;
                                                 font-family: Arial, sans-serif;
                                                 color: #000000;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-panel {
+                                            #contenedorMetodoROSA .rosa-card {
                                                 width: 100%;
                                                 padding: 0;
                                                 background: #ffffff;
-                                                border: none;
-                                                border-radius: 0;
+                                                border: 0;
                                                 box-shadow: none;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-titulo-principal {
+                                            #contenedorMetodoROSA .rosa-titulo {
                                                 width: 100%;
                                                 box-sizing: border-box;
                                                 background: #A4D65E !important;
@@ -7029,7 +6890,6 @@ DESCRIPCIONACTIVIDAD
                                                 font-weight: bold;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-seccion-titulo,
                                             #contenedorMetodoROSA .rosa-seccion {
                                                 background: #A4D65E !important;
                                                 color: #000000 !important;
@@ -7046,7 +6906,6 @@ DESCRIPCIONACTIVIDAD
                                                 gap: 12px;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-campo,
                                             #contenedorMetodoROSA .rosa-campo-contenedor {
                                                 min-width: 0;
                                                 padding: 10px;
@@ -7056,20 +6915,12 @@ DESCRIPCIONACTIVIDAD
                                                 color: #000000;
                                             }
 
-                                            #contenedorMetodoROSA *.rosa-campo>*label,
-                                            #contenedorMetodoROSA *.rosa-campo-contenedor>*label {
+                                            #contenedorMetodoROSA .rosa-campo-contenedor > label {
                                                 display: block;
                                                 margin-bottom: 7px;
                                                 color: #000000;
                                                 font-size: 13px;
                                                 font-weight: bold;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-select,
-                                            #contenedorMetodoROSA .rosa-campo,
-                                            #contenedorMetodoROSA .rosa-tiempo-select,
-                                            #contenedorMetodoROSA .rosa-tiempo {
-                                                max-width: 100%;
                                             }
 
                                             #contenedorMetodoROSA select.form-control {
@@ -7109,7 +6960,6 @@ DESCRIPCIONACTIVIDAD
                                             #contenedorMetodoROSA .rosa-adicionales label:has(input:checked) {
                                                 background: #e2f1cd;
                                                 border-color: #70ad35;
-                                                color: #000000;
                                                 font-weight: bold;
                                             }
 
@@ -7119,7 +6969,11 @@ DESCRIPCIONACTIVIDAD
                                                 accent-color: #007DBA;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-label-tiempo,
+                                            #contenedorMetodoROSA .rosa-tiempo-contenedor {
+                                                margin-top: 12px;
+                                            }
+
+                                            #contenedorMetodoROSA .rosa-tiempo-contenedor label,
                                             #contenedorMetodoROSA .rosa-tiempo-label {
                                                 display: block;
                                                 margin-top: 10px;
@@ -7129,44 +6983,23 @@ DESCRIPCIONACTIVIDAD
                                                 font-weight: bold;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-puntuacion {
-                                                display: flex;
-                                                flex-wrap: wrap;
-                                                gap: 8px 14px;
-                                                margin-top: 12px;
-                                                padding: 10px 12px;
-                                                background: #e7f3f8;
-                                                border-left: 4px solid #007DBA;
-                                                color: #000000;
-                                                font-size: 12px;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-puntuacion strong {
-                                                color: #000000;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-tabla-contenedor,
                                             #contenedorMetodoROSA .table-responsive {
                                                 width: 100%;
                                                 overflow-x: auto;
                                                 margin-bottom: 15px;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-tabla,
                                             #contenedorMetodoROSA .rosa-matriz {
                                                 width: 100%;
                                                 max-width: 100%;
                                                 margin: 0 auto 15px;
                                                 border-collapse: collapse !important;
                                                 border-spacing: 0;
-                                                table-layout: auto;
                                                 background: #ffffff;
                                                 color: #000000;
                                                 font-size: 12px;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-tabla th,
-                                            #contenedorMetodoROSA .rosa-tabla td,
                                             #contenedorMetodoROSA .rosa-matriz th,
                                             #contenedorMetodoROSA .rosa-matriz td {
                                                 border: 1px solid #007DBA !important;
@@ -7176,62 +7009,16 @@ DESCRIPCIONACTIVIDAD
                                                 color: #000000;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-tabla thead th,
                                             #contenedorMetodoROSA .rosa-matriz thead th {
                                                 background: #007DBA !important;
                                                 color: #ffffff !important;
                                                 font-weight: bold;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-tabla .rosa-titulo,
-                                            #contenedorMetodoROSA .rosa-matriz .rosa-titulo {
-                                                background: #A4D65E !important;
-                                                color: #000000 !important;
-                                                text-align: center;
-                                                font-weight: bold;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-matriz .rosa-eje {
+                                            #contenedorMetodoROSA .rosa-matriz tbody th {
                                                 background: #A4D65E !important;
                                                 color: #000000 !important;
                                                 font-weight: bold;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-tabla tbody td,
-                                            #contenedorMetodoROSA .rosa-matriz tbody td {
-                                                background: #ffffff;
-                                                color: #000000;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-tabla .rosa-nivel,
-                                            #contenedorMetodoROSA .rosa-tabla-riesgo .rosa-nivel {
-                                                text-align: center;
-                                                font-weight: bold;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-nivel-0 {
-                                                background: #A4D65E !important;
-                                                color: #000000 !important;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-nivel-1 {
-                                                background: #00B050 !important;
-                                                color: #ffffff !important;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-nivel-2 {
-                                                background: #FFFF00 !important;
-                                                color: #000000 !important;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-nivel-3 {
-                                                background: #F9A825 !important;
-                                                color: #000000 !important;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-nivel-4 {
-                                                background: #ED2939 !important;
-                                                color: #ffffff !important;
                                             }
 
                                             #contenedorMetodoROSA .rosa-celda-seleccionada {
@@ -7240,175 +7027,82 @@ DESCRIPCIONACTIVIDAD
                                                 font-weight: bold !important;
                                             }
 
-                                            #contenedorMetodoROSA *#ROSA_TABLA_RIESGO* tbody tr.rosa-riesgo-seleccionado td,
-                                            #contenedorMetodoROSA *#ROSA_TABLA_INTERPRETACION* tbody tr.rosa-riesgo-seleccionado td {
-                                                border-top: 2px solid #ff0000 !important;
-                                                border-bottom: 2px solid #ff0000 !important;
+                                            #ROSA_TABLA_RESULTADOS {
+                                                width: 100%;
+                                                border-collapse: collapse;
                                             }
 
-                                            #contenedorMetodoROSA *#ROSA_TABLA_RIESGO* tbody tr.rosa-riesgo-seleccionado td:first-child,
-                                            #contenedorMetodoROSA *#ROSA_TABLA_INTERPRETACION* tbody tr.rosa-riesgo-seleccionado td:first-child {
-                                                border-left: 2px solid #ff0000 !important;
+                                            #ROSA_TABLA_RESULTADOS th,
+                                            #ROSA_TABLA_RESULTADOS td {
+                                                border: 2px solid #173F68 !important;
+                                                padding: 8px 12px;
+                                                vertical-align: middle;
+                                                text-align: center;
                                             }
 
-                                            #contenedorMetodoROSA *#ROSA_TABLA_RIESGO* tbody tr.rosa-riesgo-seleccionado td:last-child,
-                                            #contenedorMetodoROSA *#ROSA_TABLA_INTERPRETACION* tbody tr.rosa-riesgo-seleccionado td:last-child {
-                                                border-right: 2px solid #ff0000 !important;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-resultado {
-                                                padding: 12px;
-                                                margin: 15px 0;
-                                                background: #ffffff;
-                                                color: #000000;
-                                            }
-
-                                            *@media (max-width: 768px) {
-                                                #contenedorMetodoROSA .rosa-grid {
-                                                    grid-template-columns: 1fr;
-                                                }
-
-                                                #contenedorMetodoROSA .rosa-tabla,
-                                                #contenedorMetodoROSA .rosa-matriz {
-                                                    min-width: 600px;
-                                                }
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-card {
-                                                border: 0 !important;
-                                                box-shadow: none !important;
-                                            }
-
-                                            #contenedorMetodoROSA .rosa-titulo,
-                                            #contenedorMetodoROSA .rosa-seccion,
-                                            #contenedorMetodoROSA .rosa-seccion-titulo {
-                                                background: #A4D65E !important;
-                                                color: #000000 !important;
-                                            }
-
-                                            #contenedorMetodoROSA table.rosa-tabla,
-                                            #contenedorMetodoROSA table.rosa-matriz,
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS {
-                                                width: 100% !important;
-                                                border-collapse: collapse !important;
-                                                border-spacing: 0 !important;
-                                                background: #ffffff !important;
-                                                color: #000000 !important;
-                                            }
-
-                                            #contenedorMetodoROSA table.rosa-tabla th,
-                                            #contenedorMetodoROSA table.rosa-tabla td,
-                                            #contenedorMetodoROSA table.rosa-matriz th,
-                                            #contenedorMetodoROSA table.rosa-matriz td,
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS th,
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS td {
-                                                border: 1px solid #007DBA !important;
-                                                padding: 7px 8px !important;
-                                                color: #000000 !important;
-                                                vertical-align: middle !important;
-                                            }
-
-                                            #contenedorMetodoROSA table.rosa-tabla thead th,
-                                            #contenedorMetodoROSA table.rosa-matriz thead th,
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS thead tr:nth-child(2) th {
+                                            #ROSA_TABLA_RESULTADOS .rosa-encabezado {
                                                 background: #007DBA !important;
                                                 color: #ffffff !important;
-                                                font-weight: bold !important;
-                                                text-align: center !important;
+                                                font-weight: bold;
                                             }
 
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS thead tr:first-child th,
-                                            #contenedorMetodoROSA table.rosa-tabla thead th.rosa-titulo,
-                                            #contenedorMetodoROSA table.rosa-matriz thead th.rosa-titulo {
+                                            #ROSA_TABLA_RESULTADOS .rosa-titulo-principal {
                                                 background: #A4D65E !important;
                                                 color: #000000 !important;
-                                                font-weight: bold !important;
-                                                text-align: center !important;
+                                                font-size: 24px;
+                                                font-weight: bold;
                                             }
 
-                                            #contenedorMetodoROSA table.rosa-matriz th.rosa-eje,
-                                            #contenedorMetodoROSA table.rosa-tabla th.rosa-encabezado-verde {
-                                                background: #A4D65E !important;
-                                                color: #000000 !important;
-                                                font-weight: bold !important;
+                                            #ROSA_TABLA_RESULTADOS .rosa-nivel {
+                                                font-weight: bold;
                                             }
 
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td {
-                                                background: #ffffff !important;
-                                                color: #000000 !important;
-                                                text-align: center !important;
-                                                font-weight: normal !important;
-                                                font-size: 13px !important;
-                                            }
-
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel {
-                                                font-weight: bold !important;
-                                            }
-
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel-0 {
+                                            #ROSA_TABLA_RESULTADOS .rosa-nivel-0 {
                                                 background: #A4D65E !important;
                                                 color: #000000 !important;
                                             }
 
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel-1 {
+                                            #ROSA_TABLA_RESULTADOS .rosa-nivel-1 {
                                                 background: #00B050 !important;
                                                 color: #ffffff !important;
                                             }
 
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel-2 {
+                                            #ROSA_TABLA_RESULTADOS .rosa-nivel-2 {
                                                 background: #FFFF00 !important;
                                                 color: #000000 !important;
                                             }
 
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel-3 {
+                                            #ROSA_TABLA_RESULTADOS .rosa-nivel-3 {
                                                 background: #F9A825 !important;
                                                 color: #000000 !important;
                                             }
 
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody td.rosa-nivel-4 {
+                                            #ROSA_TABLA_RESULTADOS .rosa-nivel-4 {
                                                 background: #ED2939 !important;
                                                 color: #ffffff !important;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-resultado-resumen {
-                                                margin: 10px 0;
-                                                padding: 12px;
-                                                border: 1px solid #007DBA;
-                                                background: #f3f9fc;
-                                                font-size: 16px;
-                                            }
-
-                                            #contenedorMetodoROSA #ROSA_PUNTUACION_FINAL {
-                                                display: inline-block;
-                                                min-width: 32px;
-                                                padding: 3px 8px;
-                                                border-radius: 4px;
-                                                background: #007DBA;
-                                                color: #ffffff;
-                                                text-align: center;
-                                            }
-
-                                            #contenedorMetodoROSA #ROSA_RIESGO_FINAL {
-                                                display: block;
-                                                margin-top: 5px;
-                                            }
-
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody tr.rosa-seleccionada td {
+                                            #ROSA_TABLA_RESULTADOS tbody tr.rosa-seleccionada td {
                                                 border-top: 3px solid #ff0000 !important;
                                                 border-bottom: 3px solid #ff0000 !important;
                                             }
 
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody tr.rosa-seleccionada td:first-child {
+                                            #ROSA_TABLA_RESULTADOS tbody tr.rosa-seleccionada td:first-child {
                                                 border-left: 2px solid #ff0000 !important;
                                             }
 
-                                            #contenedorMetodoROSA #ROSA_TABLA_RESULTADOS tbody tr.rosa-seleccionada td:last-child {
+                                            #ROSA_TABLA_RESULTADOS tbody tr.rosa-seleccionada td:last-child {
                                                 border-right: 2px solid #ff0000 !important;
                                             }
 
-                                            #contenedorMetodoROSA .rosa-tiempo-label {
-                                                display: block !important;
-                                                margin-top: 10px !important;
+                                            @media (max-width: 768px) {
+                                                #contenedorMetodoROSA .rosa-grid {
+                                                    grid-template-columns: 1fr;
+                                                }
+
+                                                #contenedorMetodoROSA .rosa-matriz {
+                                                    min-width: 600px;
+                                                }
                                             }
                                         </style>
 

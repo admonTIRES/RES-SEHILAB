@@ -2188,6 +2188,7 @@ class evaluacionfreController extends Controller
     }
 
 
+
     public function tablaReporteTrabajadoresErgo(Request $request)
     {
         $recoId = $request->ergoid;
@@ -2221,22 +2222,24 @@ class evaluacionfreController extends Controller
                 if (!isset($areasAgrupadas[$areaId])) {
                     $areasAgrupadas[$areaId] = [
                         'AREA' => trim($area->NOMBRE_AREA_ERGO),
-                        'CATEGORIAS' => [],
-                        'PUESTOS_AREA' => []
+                        'CATEGORIAS' => []
                     ];
                 }
 
                 $categoriaId = $categoria->ID_CATEGORIA_ERGO;
 
-                $areasAgrupadas[$areaId]['CATEGORIAS'][$categoriaId] = [
-                    'NOMBRE' => $categoria->NOMBRE_CATEGORIA_ERGO,
-                    'PUESTOS' => []
-                ];
+                $puestosCategoria = [];
 
                 foreach ($fichas as $ficha) {
 
-                    if ((string) $ficha->CATEGORIA_ID_FICHA !== (string) $categoriaId || !is_array($ficha->CAT_AREAS_FICHA) || !in_array((string) $areaId, array_map('strval', $ficha->CAT_AREAS_FICHA)))
-                    {
+                    if (
+                        (string) $ficha->CATEGORIA_ID_FICHA !== (string) $categoriaId ||
+                        !is_array($ficha->CAT_AREAS_FICHA) ||
+                        !in_array(
+                            (string) $areaId,
+                            array_map('strval', $ficha->CAT_AREAS_FICHA)
+                        )
+                    ) {
                         continue;
                     }
 
@@ -2258,11 +2261,21 @@ class evaluacionfreController extends Controller
                             continue;
                         }
 
-                        $areasAgrupadas[$areaId]['CATEGORIAS'][$categoriaId]['PUESTOS'][] = $puesto;
-
-                        $areasAgrupadas[$areaId]['PUESTOS_AREA'][] = $puesto;
+                        $puestosCategoria[] = $puesto;
                     }
                 }
+
+                $puestosCategoria = array_values(
+                    array_unique($puestosCategoria)
+                );
+
+                sort($puestosCategoria);
+
+                $areasAgrupadas[$areaId]['CATEGORIAS'][$categoriaId] = [
+                    'NOMBRE' => $categoria->NOMBRE_CATEGORIA_ERGO,
+                    'PUESTOS' => $puestosCategoria,
+                    'TOTAL' => count($puestosCategoria)
+                ];
             }
         }
 
@@ -2273,10 +2286,6 @@ class evaluacionfreController extends Controller
 
             ksort($area['CATEGORIAS']);
 
-            $puestosUnicosArea = array_values(array_unique($area['PUESTOS_AREA']));
-            $totalTrabajadoresArea = count($puestosUnicosArea);
-            $primeraCategoria = true;
-
             foreach ($area['CATEGORIAS'] as $categoria) {
 
                 $obj = new \stdClass();
@@ -2285,18 +2294,13 @@ class evaluacionfreController extends Controller
                 $obj->AREA = $area['AREA'];
                 $obj->CATEGORIA = $categoria['NOMBRE'];
 
-                $puestosCategoria = array_values(
-                    array_unique($categoria['PUESTOS'])
-                );
+                $obj->PUESTOS_EVALUADOS = count($categoria['PUESTOS']) > 0
+                    ? '<ul class="mb-0 ps-3"><li>' .
+                    implode('</li><li>', $categoria['PUESTOS']) .
+                    '</li></ul>'
+                    : '-';
 
-                sort($puestosCategoria);
-
-                $obj->PUESTOS_EVALUADOS = count($puestosCategoria) ? '<ul class="mb-0 ps-3"><li>' .implode('</li><li>', $puestosCategoria) .'</li></ul>': '-';
-
-
-                $obj->TRABAJADORES_EVALUADOS = $primeraCategoria ? $totalTrabajadoresArea : '';
-
-                $primeraCategoria = false;
+                $obj->TRABAJADORES_EVALUADOS = $categoria['TOTAL'];
 
                 $data[] = $obj;
             }
@@ -4669,6 +4673,8 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
             /// CATEGORIAS EVALUADAS
 
 
+
+
             $recoId = $RECO_ID;
 
             $categorias = recoergocategoriasModel::where('RECO_ID', $recoId)
@@ -4811,6 +4817,8 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                 ->addTextRun($centrado)
                 ->addText('No. de trabajadores evaluados', $encabezadoTexto);
 
+            $totalGeneralEvaluados = 0;
+
             if (count($areasAgrupadas) > 0) {
 
                 uasort($areasAgrupadas, function ($a, $b) {
@@ -4821,82 +4829,32 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
 
                     ksort($area['CATEGORIAS']);
 
-                    $puestosUnicosArea = array_values(
-                        array_unique($area['PUESTOS_AREA'])
-                    );
-
-                    $totalTrabajadoresArea = count($puestosUnicosArea);
-
                     $primeraCategoria = true;
 
                     foreach ($area['CATEGORIAS'] as $categoria) {
 
-                        $puestosCategoria = array_values(
-                            array_unique($categoria['PUESTOS'])
-                        );
+                        $puestosCategoria = array_values(array_unique($categoria['PUESTOS']));
 
                         sort($puestosCategoria);
+
+                        $totalTrabajadoresCategoria = count($puestosCategoria);
+
+                        $totalGeneralEvaluados += $totalTrabajadoresCategoria;
 
                         $table->addRow();
 
                         if ($primeraCategoria) {
 
-                            $table->addCell(
-                                $anchoArea,
-                                [
-                                    'vMerge' => 'restart',
-                                    'valign' => 'center'
-                                ]
-                            )->addTextRun($centrado)->addText(
-                                $area['AREA'],
-                                $texto
-                            );
-
-                            $table->addCell(
-                                $anchoCategoria,
-                                $celda
-                            )->addTextRun($centrado)->addText(
-                                $categoria['NOMBRE'],
-                                $texto
-                            );
-
-                            $table->addCell(
-                                $anchoTrabajadores,
-                                [
-                                    'vMerge' => 'restart',
-                                    'valign' => 'center'
-                                ]
-                            )->addTextRun($centrado)->addText(
-                                (string) $totalTrabajadoresArea,
-                                $texto
-                            );
+                            $table->addCell($anchoArea,['vMerge' => 'restart','valign' => 'center'])->addTextRun($centrado)->addText($area['AREA'],$texto);
+                            $table->addCell($anchoCategoria,$celda)->addTextRun($centrado)->addText($categoria['NOMBRE'],$texto);
+                            $table->addCell($anchoTrabajadores,['valign' => 'center'])->addTextRun($centrado)->addText((string) $totalTrabajadoresCategoria,$texto);
 
                             $primeraCategoria = false;
                         } else {
 
-                            $table->addCell(
-                                $anchoArea,
-                                [
-                                    'vMerge' => 'continue',
-                                    'valign' => 'center'
-                                ]
-                            );
-
-                            $table->addCell(
-                                $anchoCategoria,
-                                $celda
-                            )->addTextRun($centrado)->addText(
-                                $categoria['NOMBRE'],
-                                $texto
-                            );
-
-                            $table->addCell(
-                                $anchoTrabajadores,
-                                [
-                                    'vMerge' => 'continue',
-                                    'valign' => 'center'
-                                ]
-                            );
+                            $table->addCell($anchoArea,['vMerge' => 'continue','valign' => 'center']);
+                            $table->addCell($anchoCategoria,$celda)->addTextRun($centrado)->addText($categoria['NOMBRE'],$texto);
+                            $table->addCell($anchoTrabajadores,['valign' => 'center'])->addTextRun($centrado)->addText((string) $totalTrabajadoresCategoria,$texto);
                         }
                     }
                 }
@@ -4904,19 +4862,45 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
 
                 $table->addRow();
 
-                $table->addCell(
-                    null,
-                    [
-                        'gridSpan' => 3,
-                        'valign' => 'center'
-                    ]
-                )->addTextRun($centrado)->addText(
-                    'No hay trabajadores evaluados registrados',
-                    $texto
-                );
+                $table->addCell(null,['gridSpan' => 3,'valign' => 'center'])->addTextRun($centrado)->addText('No hay trabajadores evaluados registrados',$texto);
             }
 
-            $plantillaword->setComplexBlock('TABLA_CATEGORIASEVALUADAS', $table);
+        
+
+            $estiloTotal = [
+                'bgColor' => 'EAF2F8',
+                'valign' => 'center'
+            ];
+
+            $textoTotal = [
+                'name' => $fuente,
+                'size' => 9,
+                'bold' => true,
+                'color' => '000000'
+            ];
+
+            $alineacionTotal = [
+                'alignment' => 'right',
+                'valign' => 'center'
+            ];
+
+            $table->addRow(500);
+
+            
+            $table->addCell($anchoArea + $anchoCategoria,array_merge($estiloTotal, ['gridSpan' => 2]))->addTextRun($alineacionTotal)->addText('TOTAL DE TRABAJADORES EVALUADOS:',$textoTotal);
+            
+            $table->addCell($anchoTrabajadores,$estiloTotal
+            )->addTextRun($centrado)->addText(
+                (string) $totalGeneralEvaluados,
+                [
+                    'name' => $fuente,
+                    'size' => 10,
+                    'bold' => true,
+                    'color' => '0F3D63'
+                ]
+            );
+
+            $plantillaword->setComplexBlock('TABLA_CATEGORIASEVALUADAS',$table);
 
 
 

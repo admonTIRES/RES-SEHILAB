@@ -4719,73 +4719,60 @@ function cargarEvaluacionFre(data) {
 
     /// ROSA 
   
-    $("#ROSA_ALTURA_ASIENTO").val(data.ROSA_ALTURA_ASIENTO);
-    $("#ROSA_PROFUNDIDAD_ASIENTO").val(data.ROSA_PROFUNDIDAD_ASIENTO);
-    $("#ROSA_REPOSABRAZOS").val(data.ROSA_REPOSABRAZOS);
-    $("#ROSA_RESPALDO").val(data.ROSA_RESPALDO);
-    $("#ROSA_TIEMPO_A").val(data.ROSA_TIEMPO_A);
-    $("#ROSA_TELEFONO").val(data.ROSA_TELEFONO);
-    $("#ROSA_TIEMPO_B1").val(data.ROSA_TIEMPO_B1);
-    $("#ROSA_PANTALLA").val(data.ROSA_PANTALLA);
-    $("#ROSA_TIEMPO_B2").val(data.ROSA_TIEMPO_B2);
-    $("#ROSA_RATON").val(data.ROSA_RATON);
-    $("#ROSA_TIEMPO_C1").val(data.ROSA_TIEMPO_C1);
-    $("#ROSA_TECLADO").val(data.ROSA_TECLADO);
-    $("#ROSA_TIEMPO_C2").val(data.ROSA_TIEMPO_C2);
-    $("#ANALISIS_METODO_ROSA").val(data.ANALISIS_METODO_ROSA);
+        $("#ROSA_ALTURA_ASIENTO").val(data.ROSA_ALTURA_ASIENTO);
+        $("#ROSA_PROFUNDIDAD_ASIENTO").val(data.ROSA_PROFUNDIDAD_ASIENTO);
+        $("#ROSA_REPOSABRAZOS").val(data.ROSA_REPOSABRAZOS);
+        $("#ROSA_RESPALDO").val(data.ROSA_RESPALDO);
+        $("#ROSA_TIEMPO_A").val(data.ROSA_TIEMPO_A);
+        $("#ROSA_TELEFONO").val(data.ROSA_TELEFONO);
+        $("#ROSA_TIEMPO_B1").val(data.ROSA_TIEMPO_B1);
+        $("#ROSA_PANTALLA").val(data.ROSA_PANTALLA);
+        $("#ROSA_TIEMPO_B2").val(data.ROSA_TIEMPO_B2);
+        $("#ROSA_RATON").val(data.ROSA_RATON);
+        $("#ROSA_TIEMPO_C1").val(data.ROSA_TIEMPO_C1);
+        $("#ROSA_TECLADO").val(data.ROSA_TECLADO);
+        $("#ROSA_TIEMPO_C2").val(data.ROSA_TIEMPO_C2);
+        $("#ANALISIS_METODO_ROSA").val(data.ANALISIS_METODO_ROSA);
 
+        let datosROSA = data.ROSA_DATOS_JSON;
 
-    let datosROSA = data.ROSA_DATOS_JSON;
-
-    if (typeof datosROSA === "string" && datosROSA !== "") {
-        try {
-            datosROSA = JSON.parse(datosROSA);
-        } catch (e) {
-            console.error("Error al recuperar ROSA_DATOS_JSON:", e);
-            datosROSA = null;
+        if (typeof datosROSA === "string" && datosROSA.trim() !== "") {
+            try {
+                datosROSA = JSON.parse(datosROSA);
+            } catch (e) {
+                console.error("Error al recuperar ROSA_DATOS_JSON:", e);
+                datosROSA = null;
+            }
         }
-    }
-
-    if (datosROSA && Array.isArray(datosROSA.extras))
-    {
 
         $("#contenedorMetodoROSA .rosa-extra").prop("checked", false);
 
-        datosROSA.extras.forEach(extra => {
+        if (datosROSA && Array.isArray(datosROSA.extras)) {
+            datosROSA.extras.forEach(extra => {
 
-            $("#contenedorMetodoROSA .rosa-extra").each(function () {
+                const checkbox = $("#contenedorMetodoROSA .rosa-extra").filter(function () {
+                    return this.dataset.apartado === String(extra.apartado) &&
+                        this.dataset.texto === String(extra.texto);
+                }).first();
 
-                const coincideApartado = this.dataset.apartado === String(extra.apartado);
-                const coincideValor = Number(this.value) === Number(extra.valor);
-                if (coincideApartado && coincideValor) {
-                    $(this).prop("checked", true);
+                if (checkbox.length) {
+                    if (extra.apartado === "A1") {
+                        checkbox.prop("checked", true);
+                    } else {
+                        $("#contenedorMetodoROSA .rosa-extra[data-apartado='" + extra.apartado + "']")
+                            .prop("checked", false);
+
+                        checkbox.prop("checked", true);
+                    }
                 }
-
             });
-
-        });
-
-    }
-
-    setTimeout(function () {
-
-        const contenedorROSA = document.getElementById("contenedorMetodoROSA");
-
-        if (!contenedorROSA) {
-            return;
         }
 
-        contenedorROSA.querySelectorAll(".rosa-campo, .rosa-extra, .rosa-tiempo").forEach(function (elemento) {
-            elemento.dispatchEvent(
-                new Event("change", {
-                    bubbles: true
-                })
-            );
-
-        });
-
-    }, 150);
-
+        setTimeout(function () {
+            if (typeof window.calcularROSA === "function") {
+                window.calcularROSA();
+            }
+        }, 150);
     
     /// RULA
 
@@ -9061,6 +9048,7 @@ function tablaReporteTrabajadoresErgo() {
                     }
                 ],
 
+               
                 drawCallback: function () {
 
                     var api = this.api();
@@ -9084,12 +9072,13 @@ function tablaReporteTrabajadoresErgo() {
 
                         var nombreArea = String(fila.AREA ?? '').trim();
 
-                        if (grupoActual === null || grupoActual.area !== nombreArea)
-                        {
+                        if (
+                            grupoActual === null ||
+                            grupoActual.area !== nombreArea
+                        ) {
                             grupoActual = {
                                 area: nombreArea,
-                                filas: [],
-                                total: ''
+                                filas: []
                             };
 
                             grupos.push(grupoActual);
@@ -9099,13 +9088,6 @@ function tablaReporteTrabajadoresErgo() {
                             datos: fila,
                             nodo: filas[i]
                         });
-
-                        var valorTotal = fila.TRABAJADORES_EVALUADOS;
-
-                        if (grupoActual.total === '' && valorTotal !== null && valorTotal !== undefined && String(valorTotal).trim() !== '')
-                        {
-                            grupoActual.total = valorTotal;
-                        }
                     });
 
                     grupos.forEach(function (grupo) {
@@ -9117,21 +9099,39 @@ function tablaReporteTrabajadoresErgo() {
                         var primeraFila = grupo.filas[0].nodo;
 
                         var celdaArea = $(primeraFila).children('td').eq(0);
-                        var celdaTotal = $(primeraFila).children('td').eq(2);
 
-                        celdaArea.text(grupo.area || '-').attr('rowspan', grupo.filas.length).css('vertical-align', 'middle');
-                        celdaTotal.text(grupo.total !== ''? grupo.total : '0').attr('rowspan', grupo.filas.length).css('vertical-align', 'middle');
+                        celdaArea
+                            .text(grupo.area || '-')
+                            .attr('rowspan', grupo.filas.length)
+                            .css('vertical-align', 'middle');
 
-                        for (var i = 1; i < grupo.filas.length; i++)
-                        {
+                        for (var i = 1; i < grupo.filas.length; i++) {
 
                             var filaHTML = $(grupo.filas[i].nodo);
-                            filaHTML.children('td').eq(2).remove();
+
                             filaHTML.children('td').eq(0).remove();
                         }
                     });
 
                 },
+
+                footerCallback: function (row, data, start, end, display) {
+
+                    var api = this.api();
+
+                    var total = api
+                        .column(2, { search: 'applied' })
+                        .data()
+                        .reduce(function (acumulado, valor) {
+
+                            return acumulado + (parseInt(valor, 10) || 0);
+
+                        }, 0);
+
+                    $('#total_personas_evaluadas').text(total);
+
+                },
+
 
                 language: {
                     lengthMenu: "Mostrar _MENU_ registros",
@@ -9836,8 +9836,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /// ROSA
-(function () {
 
+
+
+
+(function () {
     const contenedor = document.getElementById('contenedorMetodoROSA');
 
     if (!contenedor || contenedor.dataset.rosaInicializado === '1') {
@@ -9847,7 +9850,6 @@ document.addEventListener('DOMContentLoaded', function () {
     contenedor.dataset.rosaInicializado = '1';
 
     const matrices = {
-
         A: [
             [2, 2, 3, 4, 5, 6, 7, 8],
             [2, 2, 3, 4, 5, 6, 7, 8],
@@ -9857,7 +9859,6 @@ document.addEventListener('DOMContentLoaded', function () {
             [6, 6, 6, 6, 7, 8, 8, 9],
             [7, 7, 7, 7, 8, 9, 9, 9]
         ],
-
         B: [
             [1, 1, 1, 2, 3, 4, 5, 6, 6],
             [1, 1, 2, 2, 3, 4, 5, 6, 6],
@@ -9867,7 +9868,6 @@ document.addEventListener('DOMContentLoaded', function () {
             [4, 4, 5, 5, 6, 7, 8, 9, 9],
             [5, 5, 6, 7, 8, 8, 9, 9, 9]
         ],
-
         C: [
             [1, 1, 1, 2, 3, 4, 5],
             [1, 1, 2, 3, 4, 5, 6],
@@ -9878,7 +9878,6 @@ document.addEventListener('DOMContentLoaded', function () {
             [6, 7, 7, 8, 8, 9, 9],
             [7, 8, 8, 9, 9, 9, 9]
         ],
-
         D: [
             [1, 2, 3, 4, 5, 6, 7, 8, 9],
             [2, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -9890,12 +9889,11 @@ document.addEventListener('DOMContentLoaded', function () {
             [8, 8, 8, 8, 8, 8, 8, 8, 9],
             [9, 9, 9, 9, 9, 9, 9, 9, 9]
         ],
-
         E: [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             [2, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             [3, 3, 3, 4, 5, 6, 7, 8, 9, 10],
-            [4, 4, 4, 4, 4, 6, 7, 8, 9, 10],
+            [4, 4, 4, 4, 5, 6, 7, 8, 9, 10],
             [5, 5, 5, 5, 5, 6, 7, 8, 9, 10],
             [6, 6, 6, 6, 6, 6, 7, 8, 9, 10],
             [7, 7, 7, 7, 7, 7, 7, 8, 9, 10],
@@ -9903,7 +9901,6 @@ document.addEventListener('DOMContentLoaded', function () {
             [9, 9, 9, 9, 9, 9, 9, 9, 9, 10],
             [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
         ]
-
     };
 
     const campos = {
@@ -9917,94 +9914,59 @@ document.addEventListener('DOMContentLoaded', function () {
         C2: 'ROSA_TECLADO'
     };
 
-    const nombres = {
-        A1: 'Silla: altura (A-1)',
-        A2: 'Silla: profundidad (A-2)',
-        A3: 'Silla: reposabrazos (A-3)',
-        A4: 'Silla: respaldo (A-4)',
-        B1: 'Teléfono (B-1)',
-        B2: 'Pantalla (B-2)',
-        C1: 'Ratón (C-1)',
-        C2: 'Teclado (C-2)'
-    };
-
     function valorCampo(id) {
-
         const elemento = document.getElementById(id);
 
-        return elemento && elemento.value !== ''
-            ? Number(elemento.value)
-            : null;
+        if (!elemento || elemento.value === '') {
+            return null;
+        }
 
-    }
+        const opcion = elemento.options[elemento.selectedIndex];
 
-    function adicionales(apartado) {
+        if (opcion && opcion.dataset.puntuacion !== undefined) {
+            return Number(opcion.dataset.puntuacion);
+        }
 
-        return Array.from(
-            contenedor.querySelectorAll('.rosa-extra:checked')
-        ).filter(c => c.dataset.apartado === apartado);
+        const valor = Number(elemento.value);
 
-    }
-
-    function sumaAdicionales(apartado) {
-
-        return adicionales(apartado).reduce((total, checkbox) => {
-            return total + Number(checkbox.value || 0);
-        }, 0);
-
+        return Number.isFinite(valor) ? valor : null;
     }
 
     function tiempo(id) {
-
         const elemento = document.getElementById(id);
 
         return elemento && elemento.value !== ''
             ? Number(elemento.value)
             : 0;
-
     }
 
-    function puntuacionApartado(apartado) {
-
-        const base = valorCampo(campos[apartado]);
-
-        if (base === null) {
-            return null;
-        }
-
-        return Math.max(
-            1,
-            base + sumaAdicionales(apartado)
-        );
-
-    }
-
-    function limitar(valor, minimo, maximo) {
-
-        return Math.max(minimo, Math.min(maximo, valor));
-
+    function sumaAdicionales(apartado) {
+        return Array.from(
+            contenedor.querySelectorAll('.rosa-extra:checked')
+        )
+            .filter(checkbox => checkbox.dataset.apartado === apartado)
+            .reduce((total, checkbox) => {
+                return total + Number(checkbox.value || 0);
+            }, 0);
     }
 
     function buscarMatriz(matriz, fila, columna, inicioFila, inicioColumna) {
-
         const f = fila - inicioFila;
         const c = columna - inicioColumna;
 
         if (
             f < 0 ||
             c < 0 ||
-            f >= matriz.length ||
-            c >= matriz[f].length
+            !matriz[f] ||
+            matriz[f][c] === undefined
         ) {
             return null;
         }
 
         return matriz[f][c];
-
     }
 
     function crearMatriz(id, matriz, tituloFila, columnas, inicioFila, inicioColumna) {
-
         const tabla = document.getElementById(id);
 
         if (!tabla) {
@@ -10020,29 +9982,22 @@ document.addEventListener('DOMContentLoaded', function () {
         html += '</tr></thead><tbody>';
 
         matriz.forEach((fila, indice) => {
-
             html += '<tr><th>' + (inicioFila + indice) + '</th>';
 
             fila.forEach((valor, indiceColumna) => {
-
                 html += '<td data-fila="' + (inicioFila + indice) +
                     '" data-columna="' + (inicioColumna + indiceColumna) +
                     '">' + valor + '</td>';
-
             });
 
             html += '</tr>';
-
         });
 
         html += '</tbody>';
-
         tabla.innerHTML = html;
-
     }
 
     function generarMatrices() {
-
         crearMatriz(
             'ROSA_MATRIZ_A',
             matrices.A,
@@ -10087,11 +10042,9 @@ document.addEventListener('DOMContentLoaded', function () {
             1,
             1
         );
-
     }
 
     function marcarCelda(id, fila, columna) {
-
         const tabla = document.getElementById(id);
 
         if (!tabla) {
@@ -10109,11 +10062,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (celda) {
             celda.classList.add('rosa-celda-seleccionada');
         }
-
     }
 
     function marcarRiesgo(puntuacion) {
-
         contenedor.querySelectorAll('[data-rosa-rango]').forEach(fila => {
             fila.classList.remove('rosa-seleccionada');
         });
@@ -10139,46 +10090,24 @@ document.addEventListener('DOMContentLoaded', function () {
         if (fila) {
             fila.classList.add('rosa-seleccionada');
         }
+    }
 
-        const puntuacionElemento =
-            document.getElementById('ROSA_PUNTUACION_FINAL');
+    function limpiarMatrices() {
+        contenedor.querySelectorAll('.rosa-celda-seleccionada').forEach(celda => {
+            celda.classList.remove('rosa-celda-seleccionada');
+        });
 
-        const riesgoElemento =
-            document.getElementById('ROSA_RIESGO_FINAL');
-
-        if (puntuacionElemento) {
-            puntuacionElemento.textContent = puntuacion;
-        }
-
-        if (riesgoElemento) {
-
-            const interpretaciones = {
-                '1': 'Riesgo inapreciable — Nivel 0. No es necesaria actuación.',
-                '2-4': 'Riesgo mejorable — Nivel 1. Pueden mejorarse algunos elementos del puesto.',
-                '5': 'Riesgo alto — Nivel 2. Es necesaria la actuación.',
-                '6-8': 'Riesgo muy alto — Nivel 3. Es necesaria la actuación cuanto antes.',
-                '9-10': 'Riesgo extremo — Nivel 4. Es necesaria la actuación urgentemente.'
-            };
-
-            riesgoElemento.textContent = interpretaciones[rango] || '';
-
-        }
-
+        contenedor.querySelectorAll('[data-rosa-rango]').forEach(fila => {
+            fila.classList.remove('rosa-seleccionada');
+        });
     }
 
     function calcularROSA() {
-
         const valores = {};
 
         Object.keys(campos).forEach(apartado => {
-            valores[apartado] = puntuacionApartado(apartado);
+            valores[apartado] = valorCampo(campos[apartado]);
         });
-
-        const tiempoA = tiempo('ROSA_TIEMPO_A');
-        const tiempoB1 = tiempo('ROSA_TIEMPO_B1');
-        const tiempoB2 = tiempo('ROSA_TIEMPO_B2');
-        const tiempoC1 = tiempo('ROSA_TIEMPO_C1');
-        const tiempoC2 = tiempo('ROSA_TIEMPO_C2');
 
         const completosA =
             valores.A1 !== null &&
@@ -10194,227 +10123,169 @@ document.addEventListener('DOMContentLoaded', function () {
             valores.C1 !== null &&
             valores.C2 !== null;
 
-        let resultadoA = null;
-        let resultadoB = null;
-        let resultadoC = null;
-        let resultadoD = null;
-        let resultadoE = null;
+        if (!completosA || !completosB || !completosC) {
+            limpiarMatrices();
 
-        if (completosA) {
+            document.getElementById('ROSA_DATOS_JSON').value = '';
 
-            const asiento = limitar(
-                valores.A1 + valores.A2,
-                2,
-                8
-            );
-
-            const reposabrazosRespaldo = limitar(
-                valores.A3 + valores.A4,
-                2,
-                9
-            );
-
-            resultadoA = buscarMatriz(
-                matrices.A,
-                asiento,
-                reposabrazosRespaldo,
-                2,
-                2
-            );
-
-            if (resultadoA !== null) {
-                resultadoA = limitar(resultadoA + tiempoA, 1, 10);
-            }
-
-            marcarCelda(
-                'ROSA_MATRIZ_A',
-                asiento,
-                reposabrazosRespaldo
-            );
-
+            return;
         }
 
-        if (completosB) {
+        /*
+         * A. SILLA
+         * Se suman los valores requeridos de los selectores
+         * y únicamente los adicionales seleccionados.
+         */
+        const asiento = Math.max(
+            2,
+            Math.min(
+                8,
+                valores.A1 +
+                valores.A2 +
+                sumaAdicionales('A1') +
+                sumaAdicionales('A2')
+            )
+        );
 
-            // B-1: el tiempo de uso solo modifica la puntuación del teléfono.
-            const telefono = limitar(
-                valores.B1 + sumaAdicionales('B1') + tiempoB1,
-                0,
-                matrices.B.length - 1
-            );
+        const respaldo = Math.max(
+            2,
+            Math.min(
+                9,
+                valores.A3 +
+                valores.A4 +
+                sumaAdicionales('A3') +
+                sumaAdicionales('A4')
+            )
+        );
 
-            // B-2: el tiempo de uso solo modifica la puntuación de la pantalla.
-            const pantalla = limitar(
-                valores.B2 + sumaAdicionales('B2') + tiempoB2,
-                0,
-                matrices.B[0].length - 1
-            );
+        let resultadoA = buscarMatriz(
+            matrices.A,
+            asiento,
+            respaldo,
+            2,
+            2
+        );
 
-            resultadoB = buscarMatriz(
-                matrices.B,
-                telefono,
-                pantalla,
-                0,
-                0
-            );
-
-            marcarCelda(
-                'ROSA_MATRIZ_B',
-                telefono,
-                pantalla
-            );
-
-        } else {
-
-            const tablaB = document.getElementById('ROSA_MATRIZ_B');
-
-            if (tablaB) {
-                tablaB.querySelectorAll('.rosa-celda-seleccionada').forEach(celda => {
-                    celda.classList.remove('rosa-celda-seleccionada');
-                });
-            }
-
+        if (resultadoA === null) {
+            return;
         }
 
-        if (completosC) {
+        resultadoA = Math.max(
+            1,
+            Math.min(10, resultadoA + tiempo('ROSA_TIEMPO_A'))
+        );
 
-            const raton = limitar(
-                valores.C1 + sumaAdicionales('C1') + tiempoC1,
-                0,
-                7
-            );
+        marcarCelda('ROSA_MATRIZ_A', asiento, respaldo);
 
-            const teclado = limitar(
-                valores.C2 + sumaAdicionales('C2') + tiempoC2,
-                0,
-                6
-            );
+        /*
+         * B. TELÉFONO Y PANTALLA
+         */
+        const telefono = Math.max(
+            0,
+            Math.min(
+                8,
+                valores.B1 +
+                sumaAdicionales('B1') +
+                tiempo('ROSA_TIEMPO_B1')
+            )
+        );
 
-            resultadoC = buscarMatriz(
-                matrices.C,
-                raton,
-                teclado,
-                0,
-                0
-            );
+        const pantalla = Math.max(
+            0,
+            Math.min(
+                8,
+                valores.B2 +
+                sumaAdicionales('B2')
+            )
+        );
 
-            marcarCelda(
-                'ROSA_MATRIZ_C',
-                raton,
-                teclado
-            );
+        const resultadoB = buscarMatriz(
+            matrices.B,
+            telefono,
+            pantalla,
+            0,
+            0
+        );
 
+        if (resultadoB === null) {
+            return;
         }
 
-        if (resultadoB !== null && resultadoC !== null) {
+        marcarCelda('ROSA_MATRIZ_B', telefono, pantalla);
 
-            resultadoD = buscarMatriz(
-                matrices.D,
-                resultadoB,
-                resultadoC,
-                1,
-                1
-            );
+        /*
+         * C. RATÓN Y TECLADO
+         */
+        const raton = Math.max(
+            0,
+            Math.min(
+                7,
+                valores.C1 +
+                sumaAdicionales('C1') +
+                tiempo('ROSA_TIEMPO_C1')
+            )
+        );
 
-            marcarCelda(
-                'ROSA_MATRIZ_D',
-                resultadoB,
-                resultadoC
-            );
+        const teclado = Math.max(
+            0,
+            Math.min(
+                6,
+                valores.C2 +
+                sumaAdicionales('C2') +
+                tiempo('ROSA_TIEMPO_C2')
+            )
+        );
 
+        const resultadoC = buscarMatriz(
+            matrices.C,
+            raton,
+            teclado,
+            0,
+            0
+        );
+
+        if (resultadoC === null) {
+            return;
         }
 
-        if (resultadoA !== null && resultadoD !== null) {
+        marcarCelda('ROSA_MATRIZ_C', raton, teclado);
 
-            resultadoE = buscarMatriz(
-                matrices.E,
-                resultadoA,
-                resultadoD,
-                1,
-                1
-            );
+        /*
+         * D. COMBINACIÓN DE B Y C
+         */
+        const resultadoD = buscarMatriz(
+            matrices.D,
+            resultadoB,
+            resultadoC,
+            1,
+            1
+        );
 
-            marcarCelda(
-                'ROSA_MATRIZ_E',
-                resultadoA,
-                resultadoD
-            );
-
+        if (resultadoD === null) {
+            return;
         }
 
-        if (resultadoE !== null) {
+        marcarCelda('ROSA_MATRIZ_D', resultadoB, resultadoC);
 
-            marcarRiesgo(resultadoE);
+        /*
+         * E. RESULTADO FINAL
+         */
+        const resultadoFinal = buscarMatriz(
+            matrices.E,
+            resultadoA,
+            resultadoD,
+            1,
+            1
+        );
 
-        } else {
-
-            contenedor.querySelectorAll('[data-rosa-rango]').forEach(fila => {
-                fila.classList.remove('rosa-seleccionada');
-            });
-
-            const puntuacionElemento =
-                document.getElementById('ROSA_PUNTUACION_FINAL');
-
-            const riesgoElemento =
-                document.getElementById('ROSA_RIESGO_FINAL');
-
-            if (puntuacionElemento) {
-                puntuacionElemento.textContent = 'Pendiente';
-            }
-
-            if (riesgoElemento) {
-                riesgoElemento.textContent =
-                    'Completa todos los campos de las secciones A, B y C para obtener la puntuación final.';
-            }
-
+        if (resultadoFinal === null) {
+            return;
         }
 
-        // =====================================================
-        // NUEVO: GUARDAR EXTRAS Y RESULTADOS EN ROSA_DATOS_JSON
-        // =====================================================
-
-        let rangoRiesgo = null;
-        let riesgo = null;
-        let nivel = null;
-        let actuacion = null;
-
-        if (resultadoE !== null) {
-
-            if (resultadoE === 1) {
-                rangoRiesgo = '1';
-                riesgo = 'Inapreciable';
-                nivel = 0;
-                actuacion = 'No es necesaria actuación.';
-
-            } else if (resultadoE >= 2 && resultadoE <= 4) {
-                rangoRiesgo = '2-4';
-                riesgo = 'Mejorable';
-                nivel = 1;
-                actuacion = 'Pueden mejorarse algunos elementos del puesto.';
-
-            } else if (resultadoE === 5) {
-                rangoRiesgo = '5';
-                riesgo = 'Alto';
-                nivel = 2;
-                actuacion = 'Es necesaria la actuación.';
-
-            } else if (resultadoE >= 6 && resultadoE <= 8) {
-                rangoRiesgo = '6-8';
-                riesgo = 'Muy alto';
-                nivel = 3;
-                actuacion = 'Es necesaria la actuación cuanto antes.';
-
-            } else {
-                rangoRiesgo = '9-10';
-                riesgo = 'Extremo';
-                nivel = 4;
-                actuacion = 'Es necesaria la actuación urgentemente.';
-            }
-
-        }
+        marcarCelda('ROSA_MATRIZ_E', resultadoA, resultadoD);
+        marcarRiesgo(resultadoFinal);
 
         const datosROSA = {
-
             extras: Array.from(
                 contenedor.querySelectorAll('.rosa-extra:checked')
             ).map(checkbox => ({
@@ -10422,51 +10293,52 @@ document.addEventListener('DOMContentLoaded', function () {
                 valor: Number(checkbox.value),
                 texto: checkbox.dataset.texto
             })),
-
             matrices: {
                 matriz_A: resultadoA,
                 matriz_B: resultadoB,
                 matriz_C: resultadoC,
                 matriz_D: resultadoD,
-                matriz_E: resultadoE
+                matriz_E: resultadoFinal
             },
-
             resultados: {
-                puntuacion_final: resultadoE,
-                riesgo: riesgo,
-                nivel: nivel,
-                actuacion: actuacion
+                puntuacion_final: resultadoFinal
             }
-
         };
 
-        const campoJSON = document.getElementById('ROSA_DATOS_JSON');
-
-        if (campoJSON) {
-            campoJSON.value = JSON.stringify(datosROSA);
-        }
-
+        document.getElementById('ROSA_DATOS_JSON').value =
+            JSON.stringify(datosROSA);
     }
 
     function inicializarEventos() {
-
-        contenedor.querySelectorAll(
-            '.rosa-campo, .rosa-extra, .rosa-tiempo'
-        ).forEach(elemento => {
-
+        contenedor.querySelectorAll('.rosa-campo, .rosa-tiempo').forEach(elemento => {
             elemento.addEventListener('change', calcularROSA);
-
         });
 
+        contenedor.querySelectorAll('.rosa-extra').forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+
+                if (this.checked && this.dataset.apartado !== 'A1') {
+                    contenedor.querySelectorAll(
+                        '.rosa-extra[data-apartado="' + this.dataset.apartado + '"]'
+                    ).forEach(otro => {
+                        if (otro !== this) {
+                            otro.checked = false;
+                        }
+                    });
+                }
+
+                calcularROSA();
+            });
+        });
     }
 
+    window.calcularROSA = calcularROSA;
+
     generarMatrices();
-
     inicializarEventos();
-
     calcularROSA();
-
 })();
+
 
 /// RULA
 (function() {
