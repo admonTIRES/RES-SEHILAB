@@ -1205,6 +1205,47 @@ class evaluacionfreController extends Controller
     }
 
 
+    public function obtenerActividadesFreAngulos($fre_id)
+    {
+        try {
+
+            $evaluacion = DB::table('evaluacion_fre_ergo')
+                ->where('ID_EVALUACION_FRE', $fre_id)
+                ->select('JSON_ACTIVIDADES_FRE')
+                ->first();
+
+            if (!$evaluacion) {
+
+                return response()->json([
+                    'success' => false,
+                    'msj' => 'No se encontró la evaluación FRE.',
+                    'actividades' => []
+                ], 404);
+            }
+
+            $actividades = json_decode(
+                $evaluacion->JSON_ACTIVIDADES_FRE ?? '[]',
+                true
+            );
+
+            if (!is_array($actividades)) {
+                $actividades = [];
+            }
+
+            return response()->json([
+                'success' => true,
+                'actividades' => $actividades
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'msj' => 'Error al consultar las actividades: ' . $e->getMessage(),
+                'actividades' => []
+            ], 500);
+        }
+    }
+
     ///// INFORME
 
 
@@ -2368,7 +2409,7 @@ class evaluacionfreController extends Controller
 
 
 
-    public function guardarResponsablesInformeRecoErgo(Request $request)
+    public function guardarResponsablesInformeFreErgo(Request $request)
     {
         try {
 

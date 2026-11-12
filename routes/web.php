@@ -2500,6 +2500,10 @@ Route::get('ObtenerMetodosFre', ['as' => 'ObtenerMetodosFre', 'uses' => 'ERGO\ev
 
 Route::get('tablangulosfre/{fre_id}', ['as' => 'tablangulosfre', 'uses' => 'ERGO\evaluacionfreController@tablangulosfre']);
 Route::get('verfotoangulofre/{id}', ['as' => 'verfotoangulofre', 'uses' => 'ERGO\evaluacionfreController@verfotoangulofre']);
+Route::get('obtenerActividadesFreAngulos/{fre_id}', ['as' => 'obtenerActividadesFreAngulos', 'uses' => 'ERGO\evaluacionfreController@obtenerActividadesFreAngulos']);
+
+
+
 Route::get('/calcularangulos', function () {return view('catalogos.ergo.calcular_angulos');});
 
 /// VERSIONES FRE 

@@ -17,7 +17,10 @@ class angulosfreModel extends Model
         'DESCRIPCION_POSTURA',
         'DESCRIPCION_MOVIMIENTO',
         'DESCRIPCION_FUERZA',
-        'ACTIVO'
+        'ACTIVO',
+        'ACTIVIDAD_ANGULO',
+        'TAREA_ANGULO',
+        'DESCRIPCION_TAREA'
 
     ];
 }

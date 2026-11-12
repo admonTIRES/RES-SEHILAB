@@ -13744,25 +13744,143 @@ $('#modal_angulos').on('hidden.bs.modal', function (e) {
 
     $('#form_angulo')[0].reset();
 
+    $('#ACTIVIDAD_ANGULO').html('<option value="" selected disabled>Seleccione una opción</option>');
+    $('#TAREA_ANGULO').html('<option value="" selected disabled>Seleccione una actividad primero</option>');
+    $('#DESCRIPCION_TAREA').val('');
+
+
 })
 
 
 
+
+
+var actividadesFreAngulos = [];
+
+function cargarActividadesFreAngulos(callback = null) {
+
+    $('#ACTIVIDAD_ANGULO').html('<option value="" selected disabled>Cargando actividades...</option>');
+    $('#TAREA_ANGULO').html('<option value="" selected disabled>Seleccione una actividad primero</option>');
+
+    $.ajax({
+
+        url: '/obtenerActividadesFreAngulos/' + fre_id,
+        type: 'GET',
+        success: function(response) {
+
+            actividadesFreAngulos = response.actividades || [];
+
+            $('#ACTIVIDAD_ANGULO').html('<option value="" selected disabled>Seleccione una opción</option>');
+            $('#TAREA_ANGULO').html('<option value="" selected disabled>Seleccione una actividad primero</option>');
+
+            actividadesFreAngulos.forEach(function(actividad, index) {
+
+                $('#ACTIVIDAD_ANGULO').append($('<option>', {value: index,text: actividad.nombre}));
+
+            });
+
+            if (typeof callback === 'function') {
+                callback();
+            }
+
+        },
+
+        error: function(xhr) {
+
+            actividadesFreAngulos = [];
+
+            console.error(xhr.responseJSON);
+
+            Swal.fire(
+                'Error',
+                'No se pudieron consultar las actividades.',
+                'error'
+            );
+
+        }
+
+    });
+
+}
+
+$('#ACTIVIDAD_ANGULO').on('change', function() {
+
+    let indiceActividad = $(this).val();
+
+    $('#TAREA_ANGULO').html('<option value="" selected disabled>Seleccione una opción</option>');
+    $('#DESCRIPCION_TAREA').val('');
+    if (indiceActividad === null || indiceActividad === '') {
+        return;
+    }
+
+    let actividad = actividadesFreAngulos[indiceActividad];
+    if (!actividad || !Array.isArray(actividad.tareas)) {
+        return;
+    }
+
+    if (actividad.tareas.length === 0) {
+        $('#TAREA_ANGULO').html('<option value="" selected disabled>Esta actividad no tiene tareas</option>');
+        return;
+    }
+
+    actividad.tareas.forEach(function(tarea, index) {
+
+        $('#TAREA_ANGULO').append($('<option>', {value: index,text: tarea.nombre}));
+
+    });
+
+});
+
+
+$('#TAREA_ANGULO').on('change', function() {
+
+    let indiceActividad = $('#ACTIVIDAD_ANGULO').val();
+    let indiceTarea = $(this).val();
+
+    if (indiceActividad === null || indiceActividad === '' || indiceTarea === null || indiceTarea === '')
+    {
+        return;
+    }
+
+    let actividad = actividadesFreAngulos[indiceActividad];
+
+    if (!actividad || !actividad.tareas[indiceTarea]) {
+        return;
+    }
+
+    let tarea = actividad.tareas[indiceTarea];
+
+    $('#DESCRIPCION_TAREA').val(tarea.nombre);
+
+});
+
+
+
 $("#boton_nuevo_angulos").click(function (e) {
+
     e.preventDefault();
 
-    $('#form_angulo').each(function(){
+    $('#form_angulo').each(function() {
         this.reset();
     });
 
+    $('#ACTIVIDAD_ANGULO').html('<option value="" selected disabled>Seleccione una opción</option>');
+    $('#TAREA_ANGULO').html('<option value="" selected disabled>Seleccione una actividad primero</option>');
+    $('#DESCRIPCION_TAREA').val('');
+
+    cargarActividadesFreAngulos();
 
     var drEvent = $('#FOTO_ANGULO').dropify({
+
         messages: {
+
             'default': 'Arrastre la imagen aquí o haga clic',
             'replace': 'Arrastre la imagen aquí o haga clic para reemplazar',
             'remove': 'Quitar',
             'error': 'Ooops, ha ocurrido un error.'
+
         },
+
         error: {
             'fileSize': 'El archivo es demasiado grande (máx. {{ value }}).',
             'minWidth': 'El ancho de la imagen es demasiado pequeño (mín. {{ value }}px).',
@@ -13770,21 +13888,18 @@ $("#boton_nuevo_angulos").click(function (e) {
             'minHeight': 'La altura de la imagen es demasiado pequeña (mín. {{ value }}px).',
             'maxHeight': 'La altura de la imagen es demasiado grande (máx. {{ value }}px).',
             'imageFormat': 'Formato no permitido, sólo se aceptan: ({{ value }}).'
+
         }
+
     });
 
-        
-
     drEvent = drEvent.data('dropify');
-    drEvent.resetPreview();  
-    drEvent.clearElement();  
-    
+    drEvent.resetPreview();
+    drEvent.clearElement();
 
     $("#modal_angulos").modal("show");
-   
 
 });
-
 
 
 
@@ -13950,6 +14065,40 @@ function tabla_angulos_fre()
 
 
 
+
+function seleccionarActividadTareaGuardada(actividadGuardada, tareaGuardada) {
+
+    
+    let indiceActividad = parseInt(actividadGuardada);
+    let indiceTarea = parseInt(tareaGuardada)
+
+    if (isNaN(indiceActividad) || !actividadesFreAngulos[indiceActividad])
+    {
+        return;
+    }
+
+
+    $('#ACTIVIDAD_ANGULO').val(String(indiceActividad));
+    let actividad = actividadesFreAngulos[indiceActividad];
+
+    $('#TAREA_ANGULO').html('<option value="" selected disabled>Seleccione una opción</option>');
+
+
+    actividad.tareas.forEach(function(tarea, index) {
+        $('#TAREA_ANGULO').append($('<option>', {value: index,text: tarea.nombre}));
+
+    });
+
+
+    $('#TAREA_ANGULO').val(String(indiceTarea));
+
+}
+
+
+
+
+
+
 $('#tabla_angulos_fre tbody').on('click', 'td.Editar', function () {
     var tr = $(this).closest('tr');
     var row = TablangulosFre.row(tr);
@@ -13960,6 +14109,13 @@ $('#tabla_angulos_fre tbody').on('click', 'td.Editar', function () {
     editarDatoTabla(row.data(), 'form_angulo', 'modal_angulos',1);
 
 
+
+    let actividadGuardada = row.data().ACTIVIDAD_ANGULO;
+    let tareaGuardada = row.data().TAREA_ANGULO;
+
+    cargarActividadesFreAngulos(function() {
+        seleccionarActividadTareaGuardada(actividadGuardada,tareaGuardada);
+    });
 
 
 	 if (row.data().FOTO_ANGULO) {
