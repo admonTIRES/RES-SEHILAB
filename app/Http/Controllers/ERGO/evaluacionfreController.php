@@ -6016,7 +6016,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         ) .
                         '<w:p><w:pPr><w:jc w:val="left"/><w:spacing w:before="40" w:after="100"/></w:pPr>' .
                         '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">Nota: </w:t></w:r>' .
-                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para mayor información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
+                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para más información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
 
                     $resultadoVisibleFre_7_2 = ($resultadoMetodoFre_7_2 !== null && is_numeric($resultadoMetodoFre_7_2))
                         ? (string) $resultadoMetodoFre_7_2
@@ -6204,7 +6204,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         ) .
                         '<w:p><w:pPr><w:jc w:val="left"/><w:spacing w:before="40" w:after="100"/></w:pPr>' .
                         '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">Nota: </w:t></w:r>' .
-                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para mayor información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
+                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para más información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
 
                     $analisisMacFre_7_2 = isset($evaluacionFre_7_2->{$configFichaMacFre_7_2['analisis']})
                         && is_scalar($evaluacionFre_7_2->{$configFichaMacFre_7_2['analisis']})
@@ -6457,7 +6457,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         ) .
                         '<w:p><w:pPr><w:jc w:val="left"/><w:spacing w:before="40" w:after="100"/></w:pPr>' .
                         '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">Nota: </w:t></w:r>' .
-                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para mayor información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
+                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para más información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
 
                     $analisisRappFre_7_2 = isset($evaluacionFre_7_2->{$configFichaRappFre_7_2['analisis']})
                         && is_scalar($evaluacionFre_7_2->{$configFichaRappFre_7_2['analisis']})
