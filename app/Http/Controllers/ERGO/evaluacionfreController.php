@@ -2526,140 +2526,6 @@ class evaluacionfreController extends Controller
     /// METODOS 
 
 
-    //     public function ObtenerMetodosFre(Request $request)
-    //     {
-    //         $this->validate($request, [
-    //             'ergoid' => 'required|integer|min:1',
-    //         ]);
-
-    //         try {
-
-    //             $evaluaciones = DB::table('evaluacion_fre_ergo')
-    //                 ->where('RECO_ID', $request->input('ergoid'))
-    //                 ->select('CAT_METODOS_FRE')
-    //                 ->get();
-
-    //             $catalogoMetodos = [
-
-    //                 '1' => [
-    //                     'NOMBRE' => 'Método OWAS',
-    //                     'NOMBRE_INGLES' => '(Ovako Working Posture Analysing System)',
-    //                     'NOMBRE_ESPANOL' => 'Sistema de análisis de posturas de trabajo Ovako',
-    //                     'DESCRIPCION' => 'Osmos Karhu y Björn Trappe, quienes trabajaron en la industria siderúrgica durante la década de los 70, desarrollaron un método para evaluar la postura durante el trabajo. El método se denomina OWAS (”Ovako Working Posture Analysing System”).
-
-    // El método OWAS permite valorar las posturas a nivel de espalda, brazos y piernas de un trabajador y la carga que este manipula durante la postura analizada. A cada postura se le asigna un código el cual conlleva a una valoración del riesgo postural, dando consigo una categoría del riesgo de dicha postura adoptada (en este sentido se tienen cuatro niveles de riesgo para cada postura). Luego se valora el riesgo para cada parte del cuerpo al que se refiere el método (espalda, brazos y piernas), examinando las posturas tomadas, la categoría del riesgo de cada parte del cuerpo dentro de una frecuencia de realización de las mismas. Para finalmente emitir una calificación de la postura más crítica durante un periodo observacional de 20 a 40 minutos de observación con sus respectivas frecuencias para finalmente establecer acciones correctivas del puesto de trabajo analizado.'
-    //                 ],
-
-    //                 '2' => [
-    //                     'NOMBRE' => 'Método ROSA',
-    //                     'NOMBRE_INGLES' => '(Rapid Office Strain Assessment)',
-    //                     'NOMBRE_ESPANOL' => 'Evaluación rápida del esfuerzo en oficinas',
-    //                     'DESCRIPCION' => 'El método ROSA permite valorar de forma rápida el nivel de riesgo de puestos de trabajo con un componente administrativo, donde la persona interactúa con 5 elementos propios de su labor, tales como: silla, pantalla, ratón, teclado y teléfono. La base principal del método es la observación de la postura del trabajador frente a su computadora, donde el profesional que aplica el método asigna una valoración numérica a través de un conjunto de tablas y de puntuaciones parciales con el objetivo de indicar el nivel de riesgo y de intervención, la cual indica la necesidad de realizar cambios en el puesto de trabajo priorizando la intervención puntual en algún aspecto ergonómico en aquellos donde exista una calificación de 5 o superior.'
-    //                 ],
-
-    //                 '3' => [
-    //                     'NOMBRE' => 'Método RULA',
-    //                     'NOMBRE_INGLES' => '(Rapid Upper Limb Assessment)',
-    //                     'NOMBRE_ESPANOL' => 'Evaluación rápida de las extremidades superiores',
-    //                     'DESCRIPCION' => 'El método RULA tiene como objetivo evaluar la exposición de los trabajadores a factores de riesgo que pueden causar trastornos músculo esqueléticos en las extremidades superiores, derivado de las posturas adoptadas, la repetitividad de los movimientos, la fuerza aplicada o si la actividad es de naturaleza estática.
-
-    // Para la correcta aplicación del método se debe realizar la observación directa de la actividad del trabajador durante varios ciclos de trabajo, posteriormente se seleccionan las tareas y posturas más significativas, ya sea por su duración o por presentar una mayor carga postural. El método debe ser aplicado al lado derecho y al lado izquierdo del cuerpo por separado, ya que tiene en cuenta las posturas adoptadas por las extremidades superiores, cuello, espalda y piernas. Al final, determina 4 niveles de acción relacionados con los valores que se van obteniendo de la calificación de cada aspecto evaluado.'
-    //                 ],
-
-    //                 '4' => [
-    //                     'NOMBRE' => 'Método REBA',
-    //                     'NOMBRE_INGLES' => '(Rapid Entire Body Assessment)',
-    //                     'NOMBRE_ESPANOL' => 'Evaluación Rápida del Cuerpo Completo',
-    //                     'DESCRIPCION' => 'El método REBA evalúa posturas individuales y no conjuntos o secuencias de posturas, por ello, es necesario seleccionar aquellas posturas que serán evaluadas de entre las que adopta el trabajador en el puesto. Se seleccionarán aquellas que, a priori, supongan una mayor carga postural bien por su duración, bien por su frecuencia o porque presentan mayor desviación respecto a la posición neutra.
-
-    // Para ello, el primer paso consiste en la observación de las tareas que desempeña el trabajador. Se observarán varios ciclos de trabajo y se determinarán las posturas que se evaluarán. Si el ciclo es muy largo o no existen ciclos, se pueden realizar evaluaciones a intervalos regulares. En este caso se considerará, además, el tiempo que pasa el trabajador en cada postura.'
-    //                 ],
-
-    //                 '5' => [
-    //                     'NOMBRE' => 'Método MAC',
-    //                     'NOMBRE_INGLES' => 'Manual Handling Assessment Charts',
-    //                     'NOMBRE_ESPANOL' => 'Tablas de Evaluación de la Manipulación Manual',
-
-    //                     'DESCRIPCION' => 'El método MAC es una herramienta desarrollada por el Health and Safety Executive (HSE) del Reino Unido para evaluar los factores de riesgo asociados con las actividades de manipulación manual. Permite identificar y valorar los factores de riesgo presentes durante las operaciones de levantamiento, transporte y manipulación de cargas en equipo.
-
-    // Para su aplicación, se realiza la observación directa de la actividad laboral, identificando las características de la tarea, las condiciones de manipulación, el peso de la carga, la postura adoptada por los trabajadores, la frecuencia de la operación y las condiciones del entorno de trabajo. A partir de esta información, se asignan puntuaciones y colores a los diferentes factores de riesgo contemplados en la metodología.
-
-    // El resultado permite identificar los factores que requieren mayor atención, comparar diferentes tareas, determinar el nivel de riesgo y establecer medidas de intervención orientadas a reducir los riesgos asociados con la manipulación manual.
-
-    // Nota: En este informe se utiliza la versión INDG383(rev3) del método MAC (Manual Handling Assessment Chart) desarrollado por HSE (Health Safety Executive), el cual fue revisado en noviembre de 2018 con la hoja de puntuación actualizada en marzo de 2019, como herramienta técnica complementaria. Su selección permite aplicar los criterios revisados de la versión actualizada emitida por el organismo desarrollador posterior a la publicación de la Norma Oficial Mexicana (NOM-036-1-STPS-2018) en el Diario Oficial de la Federación (DOF), donde se incluye este método en el apéndice I y en la bibliografía de esta norma. Los colores y el puntaje de las fichas se interpretan conforme a lo establecido por el HSE; la suma permite comparar tareas, determinar el nivel de riesgo y las medidas de intervención para las tareas que involucren levantamiento manual de cargas.'
-    //                 ],
-
-    //                 '6' => [
-    //                     'NOMBRE' => 'Método RAPP',
-    //                     'NOMBRE_INGLES' => 'Risk Assessment for Pushing and Pulling',
-    //                     'NOMBRE_ESPANOL' => 'Evaluación de Riesgos para Empuje y Arrastre',
-
-    //                     'DESCRIPCION' => 'El método RAPP es una herramienta desarrollada por el Health and Safety Executive (HSE) del Reino Unido para evaluar los factores de riesgo asociados con las actividades de empuje y arrastre de cargas. Permite identificar y valorar las condiciones que pueden representar un riesgo para la salud musculoesquelética de los trabajadores durante estas operaciones.
-
-    // Para su aplicación, se realiza la observación de las tareas, considerando factores como las características de la carga, el equipo utilizado, la postura y fuerza ejercida por el trabajador, las condiciones de las superficies de desplazamiento, la distancia recorrida y el entorno de trabajo. Mediante un sistema de puntuación y codificación por colores, se identifican los niveles de riesgo y los factores que requieren intervención.
-
-    // Los resultados permiten determinar las condiciones de riesgo, comparar tareas y establecer medidas preventivas para reducir los riesgos asociados con las actividades de empuje y arrastre.'
-    //                 ],
-
-
-    //             ];
-
-    //             // Recopilar los métodos de todos los registros
-    //             $metodosEncontrados = [];
-
-    //             foreach ($evaluaciones as $evaluacion) {
-
-    //                 if (empty($evaluacion->CAT_METODOS_FRE)) {
-    //                     continue;
-    //                 }
-
-    //                 $metodos = json_decode(
-    //                     $evaluacion->CAT_METODOS_FRE,
-    //                     true
-    //                 );
-
-    //                 if (!is_array($metodos)) {
-    //                     continue;
-    //                 }
-
-    //                 foreach ($metodos as $metodoId) {
-
-    //                     $metodoId = (string) $metodoId;
-
-    //                     if (
-    //                         isset($catalogoMetodos[$metodoId]) &&
-    //                         !isset($metodosEncontrados[$metodoId])
-    //                     ) {
-    //                         $metodosEncontrados[$metodoId] =
-    //                             $catalogoMetodos[$metodoId];
-
-    //                         $metodosEncontrados[$metodoId]['ID'] = $metodoId;
-    //                     }
-    //                 }
-    //             }
-
-    //             return response()->json([
-    //                 'success' => true,
-    //                 'data' => array_values($metodosEncontrados),
-    //             ]);
-    //         } catch (\Exception $e) {
-
-    //             \Log::error('Error al consultar las metodologías FRE', [
-    //                 'RECO_ID' => $request->input('ergoid'),
-    //                 'exception' => $e->getMessage(),
-    //             ]);
-
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'data' => [],
-    //                 'msj' => 'No fue posible consultar las metodologías FRE.',
-    //             ], 500);
-    //         }
-    //     }
-
-
-
-
     public function ObtenerMetodosFre(Request $request)
     {
         $this->validate($request, [
@@ -5245,9 +5111,6 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
 
 
 
-
-
-
             $evaluacionesFre_7_2 = DB::table('evaluacion_fre_ergo as evaluacion')
 
                 ->leftJoin('recoergocategorias as categoria', 'categoria.ID_CATEGORIA_ERGO', '=', 'evaluacion.CATEGORIA_ID_FRE')
@@ -5516,7 +5379,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         continue;
                     }
                     $metodoFre_7_2 = trim((string) $metodoFre_7_2);
-                    if (in_array($metodoFre_7_2, ['1', '2', '3', '4'], true)) {
+                    if (in_array($metodoFre_7_2, ['1', '2', '3', '4', '5', '6'], true)) {
                         $metodosNormalizadosFre_7_2[] = $metodoFre_7_2;
                     } else {
                         $metodoMayusculaFre_7_2 = mb_strtoupper($metodoFre_7_2, 'UTF-8');
@@ -5528,6 +5391,10 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                             $metodosNormalizadosFre_7_2[] = '3';
                         } elseif (strpos($metodoMayusculaFre_7_2, 'REBA') !== false) {
                             $metodosNormalizadosFre_7_2[] = '4';
+                        } elseif (strpos($metodoMayusculaFre_7_2, 'MAC') !== false) {
+                            $metodosNormalizadosFre_7_2[] = '5';
+                        } elseif (strpos($metodoMayusculaFre_7_2, 'RAPP') !== false) {
+                            $metodosNormalizadosFre_7_2[] = '6';
                         }
                     }
                 }
@@ -5598,14 +5465,14 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                             $bordeResultadoFre_7_2 = '';
                             if ($filaResultadoMarcadaFre_7_2) {
                                 $bordePartesFre_7_2 = [];
+                                $bordePartesFre_7_2[] = '<w:top w:val="single" w:sz="24" w:color="' . $colorBordeResultadoFre_7_2 . '"/>';
+                                $bordePartesFre_7_2[] = '<w:bottom w:val="single" w:sz="24" w:color="' . $colorBordeResultadoFre_7_2 . '"/>';
                                 if ($jFre_7_2 === 0) {
                                     $bordePartesFre_7_2[] = '<w:left w:val="single" w:sz="24" w:color="' . $colorBordeResultadoFre_7_2 . '"/>';
                                 }
                                 if ($jFre_7_2 === count($anchosFre_7_2) - 1) {
                                     $bordePartesFre_7_2[] = '<w:right w:val="single" w:sz="24" w:color="' . $colorBordeResultadoFre_7_2 . '"/>';
                                 }
-                                $bordePartesFre_7_2[] = '<w:top w:val="single" w:sz="24" w:color="' . $colorBordeResultadoFre_7_2 . '"/>';
-                                $bordePartesFre_7_2[] = '<w:bottom w:val="single" w:sz="24" w:color="' . $colorBordeResultadoFre_7_2 . '"/>';
                                 $bordeResultadoFre_7_2 = '<w:tcBorders>' . implode('', $bordePartesFre_7_2) . '</w:tcBorders>';
                                 $negritaFre_7_2 = true;
                             }
@@ -6149,7 +6016,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         ) .
                         '<w:p><w:pPr><w:jc w:val="left"/><w:spacing w:before="40" w:after="100"/></w:pPr>' .
                         '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">Nota: </w:t></w:r>' .
-                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para más información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
+                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para mayor información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
 
                     $resultadoVisibleFre_7_2 = ($resultadoMetodoFre_7_2 !== null && is_numeric($resultadoMetodoFre_7_2))
                         ? (string) $resultadoMetodoFre_7_2
@@ -6167,6 +6034,442 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     }
                 }
 
+
+                // MÉTODO MAC: tres fichas independientes según los selectores guardados.
+                $configuracionFichasMacFre_7_2 = [
+                    'equipo' => [
+                        'selector' => 'MAC_TAREAS_EQUIPO',
+                        'total' => 'MAC_EQ_TOTAL',
+                        'analisis' => 'MAC_EQ_ANALISIS_RESULTADOS',
+                        'titulo' => 'MAC - Tareas con operaciones de manejo manual de carga en equipo',
+                        'marcadorTabla' => 'METODO_MAC_TAREAS_EQUIPO_FRE',
+                        'marcadorAnalisis' => 'ANALISIS_MAC_TAREAS_EQUIPO_FRE'
+                    ],
+                    'levantamiento' => [
+                        'selector' => 'MAC_LEVANTAMIENTO_INDIVIDUAL',
+                        'total' => 'MAC_IND_TOTAL',
+                        'analisis' => 'MAC_IND_ANALISIS_RESULTADOS',
+                        'titulo' => 'MAC - Tareas de levantamiento individual de carga',
+                        'marcadorTabla' => 'METODO_MAC_TAREAS_LEVANTAMIENTO_FRE',
+                        'marcadorAnalisis' => 'ANALISIS_MAC_TAREAS_LEVANTAMIENTO_FRE'
+                    ],
+                    'transporte' => [
+                        'selector' => 'MAC_TRANSPORTE_CARGA',
+                        'total' => 'MAC_TRANS_TOTAL',
+                        'analisis' => 'MAC_TRANS_ANALISIS_RESULTADOS',
+                        'titulo' => 'MAC - Tareas de transporte de carga',
+                        'marcadorTabla' => 'METODO_MAC_TAREAS_TRASPORTE_FRE',
+                        'marcadorAnalisis' => 'ANALISIS_MAC_TAREAS_TRASPORTE_FRE'
+                    ]
+                ];
+
+                $filasClasificacionMacFre_7_2 = [
+                    ['Bajo – Aceptable', 'No se requieren acciones correctivas', '0 a 4', '_color' => '00EF00'],
+                    ['Medio – Posible', 'Se requieren acciones correctivas a corto plazo', '5 a 12', '_color' => 'FFFF00'],
+                    ['Alto – Significativo', 'Se requieren acciones correctivas pronto', '13 a 20', '_color' => 'FF0000'],
+                    ['Muy Alto - Inaceptable', 'Se requieren acciones correctivas inmediatamente', '21 a 32', '_color' => 'ED00ED']
+                ];
+
+                $xmlFichasMacFre_7_2 = [];
+                foreach ($configuracionFichasMacFre_7_2 as $claveFichaMacFre_7_2 => $configFichaMacFre_7_2) {
+                    $xmlFichasMacFre_7_2[$claveFichaMacFre_7_2] = [
+                        'tabla' => '',
+                        'analisis' => ''
+                    ];
+
+                    $valorSelectorMacFre_7_2 = isset($evaluacionFre_7_2->{$configFichaMacFre_7_2['selector']})
+                        ? mb_strtoupper(trim((string) $evaluacionFre_7_2->{$configFichaMacFre_7_2['selector']}), 'UTF-8')
+                        : '';
+
+                    if (!in_array('5', $metodosNormalizadosFre_7_2, true) || $valorSelectorMacFre_7_2 !== 'SI') {
+                        continue;
+                    }
+
+                    // Recalcular el puntaje con los mismos valores de los selectores que utiliza JavaScript.
+                    // No depender de MAC_*_TOTAL, porque en el formulario ese total se actualiza con textContent.
+                    $prefijoCamposMacFre_7_2 = [
+                        'equipo' => 'MAC_EQ_',
+                        'levantamiento' => 'MAC_IND_',
+                        'transporte' => 'MAC_TRANS_'
+                    ][$claveFichaMacFre_7_2];
+
+                    $factoresMacFre_7_2 = [
+                        'equipo' => range('A', 'K'),
+                        'levantamiento' => range('A', 'H'),
+                        'transporte' => range('A', 'I')
+                    ][$claveFichaMacFre_7_2];
+
+                    $puntuacionesFactorMacFre_7_2 = [
+                        'A' => [
+                            'A_2_MENOS_35' => 0,
+                            'A_3_MENOS_55' => 0,
+                            'A_4_MENOS_75' => 0,
+                            'A_2_35_65' => 4,
+                            'A_3_55_95' => 4,
+                            'A_4_75_130' => 4,
+                            'A_2_65_85' => 6,
+                            'A_3_95_130' => 6,
+                            'A_4_130_170' => 6,
+                            'A_2_MAS_85' => 10,
+                            'A_3_MAS_130' => 10,
+                            'A_4_MAS_170' => 10
+                        ],
+                        'B' => ['B_0' => 0, 'B_3' => 3, 'B_6' => 6],
+                        'C' => ['C_0' => 0, 'C_1' => 1, 'C_1A' => 1, 'C_1B' => 1, 'C_2' => 2, 'C_3' => 3, 'C_3A' => 3, 'C_3B' => 3],
+                        'D' => ['D_0' => 0, 'D_1' => 1, 'D_1A' => 1, 'D_1B' => 1, 'D_2' => 2, 'D_3' => 3],
+                        'E' => ['E_0' => 0, 'E_1' => 1, 'E_2' => 2, 'E_3' => 3],
+                        'F' => ['F_0' => 0, 'F_1' => 1, 'F_2' => 2, 'F_3' => 3, 'F_4' => 4],
+                        'G' => ['G_0' => 0, 'G_1' => 1, 'G_2' => 2, 'G_3' => 3],
+                        'H' => ['H_0' => 0, 'H_1' => 1, 'H_2' => 2, 'H_3' => 3],
+                        'I' => ['I_0' => 0, 'I_1' => 1, 'I_2' => 2, 'I_3' => 3],
+                        'J' => ['J_0' => 0, 'J_1' => 1, 'J_2' => 2, 'J_3' => 3],
+                        'K' => ['K_0' => 0, 'K_1' => 1, 'K_2' => 2]
+                    ];
+
+                    $totalMacFre_7_2 = 0;
+                    $factoresMacCompletosFre_7_2 = 0;
+
+                    foreach ($factoresMacFre_7_2 as $factorMacFre_7_2) {
+                        $campoFactorMacFre_7_2 = $prefijoCamposMacFre_7_2 . $factorMacFre_7_2;
+                        $valorFactorMacFre_7_2 = isset($evaluacionFre_7_2->{$campoFactorMacFre_7_2})
+                            ? trim((string) $evaluacionFre_7_2->{$campoFactorMacFre_7_2})
+                            : '';
+
+                        if ($valorFactorMacFre_7_2 === '') {
+                            continue;
+                        }
+
+                        if ($factorMacFre_7_2 === 'A' && $claveFichaMacFre_7_2 !== 'equipo') {
+                            // A en levantamiento/transporte es calculado por JS a partir de peso, objetos,
+                            // personas y horas; el valor calculado se guarda en MAC_IND_A/MAC_TRANS_A.
+                            if (!is_numeric($valorFactorMacFre_7_2)) {
+                                continue;
+                            }
+                            $puntuacionFactorMacFre_7_2 = (int) round((float) $valorFactorMacFre_7_2);
+                        } else {
+                            $puntuacionFactorMacFre_7_2 = $puntuacionesFactorMacFre_7_2[$factorMacFre_7_2][$valorFactorMacFre_7_2] ?? null;
+                            if ($puntuacionFactorMacFre_7_2 === null && preg_match('/^[A-K]_(\d+)/', $valorFactorMacFre_7_2, $coincidenciaMacFre_7_2)) {
+                                $puntuacionFactorMacFre_7_2 = (int) $coincidenciaMacFre_7_2[1];
+                            }
+                        }
+
+                        if ($puntuacionFactorMacFre_7_2 === null) {
+                            continue;
+                        }
+
+                        $totalMacFre_7_2 += (int) $puntuacionFactorMacFre_7_2;
+                        $factoresMacCompletosFre_7_2++;
+                    }
+
+                    // Si la versión del formulario guarda el total numérico, se utiliza como respaldo
+                    // solamente cuando los selectores no están disponibles en el registro.
+                    if ($factoresMacCompletosFre_7_2 !== count($factoresMacFre_7_2)) {
+                        $totalGuardadoMacFre_7_2 = isset($evaluacionFre_7_2->{$configFichaMacFre_7_2['total']})
+                            && is_numeric($evaluacionFre_7_2->{$configFichaMacFre_7_2['total']})
+                            ? (int) $evaluacionFre_7_2->{$configFichaMacFre_7_2['total']}
+                            : null;
+
+                        if ($totalGuardadoMacFre_7_2 !== null && $factoresMacCompletosFre_7_2 === 0) {
+                            $totalMacFre_7_2 = $totalGuardadoMacFre_7_2;
+                            $factoresMacCompletosFre_7_2 = count($factoresMacFre_7_2);
+                        } else {
+                            $totalMacFre_7_2 = null;
+                        }
+                    }
+
+                    $indiceResultadoMacFre_7_2 = null;
+                    if ($totalMacFre_7_2 !== null) {
+                        if ($totalMacFre_7_2 >= 0 && $totalMacFre_7_2 <= 4) {
+                            $indiceResultadoMacFre_7_2 = 0;
+                        } elseif ($totalMacFre_7_2 >= 5 && $totalMacFre_7_2 <= 12) {
+                            $indiceResultadoMacFre_7_2 = 1;
+                        } elseif ($totalMacFre_7_2 >= 13 && $totalMacFre_7_2 <= 20) {
+                            $indiceResultadoMacFre_7_2 = 2;
+                        } elseif ($totalMacFre_7_2 >= 21 && $totalMacFre_7_2 <= 32) {
+                            $indiceResultadoMacFre_7_2 = 3;
+                        }
+                    }
+
+                    $xmlFichasMacFre_7_2[$claveFichaMacFre_7_2]['tabla'] =
+                        $parrafoXmlFre_7_2('Resultado de la evaluación del método: ' . $configFichaMacFre_7_2['titulo'], true, 24, 100, 40) .
+                        $tablaXmlFre_7_2(
+                            $configFichaMacFre_7_2['titulo'],
+                            ['NIVEL DE RIESGO', 'PRIORIDAD', 'PUNTAJE TOTAL'],
+                            $filasClasificacionMacFre_7_2,
+                            [3600, 5600, 1800],
+                            0,
+                            $indiceResultadoMacFre_7_2,
+                            '000000',
+                            false
+                        ) .
+                        '<w:p><w:pPr><w:jc w:val="left"/><w:spacing w:before="40" w:after="100"/></w:pPr>' .
+                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">Nota: </w:t></w:r>' .
+                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para mayor información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
+
+                    $analisisMacFre_7_2 = isset($evaluacionFre_7_2->{$configFichaMacFre_7_2['analisis']})
+                        && is_scalar($evaluacionFre_7_2->{$configFichaMacFre_7_2['analisis']})
+                        ? trim((string) $evaluacionFre_7_2->{$configFichaMacFre_7_2['analisis']})
+                        : '';
+
+                    if ($analisisMacFre_7_2 !== '') {
+                        $xmlFichasMacFre_7_2[$claveFichaMacFre_7_2]['analisis'] =
+                            '<w:p><w:pPr><w:jc w:val="both"/><w:spacing w:before="20" w:after="100"/></w:pPr>' .
+                            '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="24"/><w:szCs w:val="24"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">Análisis de los resultados del método MAC: </w:t></w:r>' .
+                            '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr><w:t xml:space="preserve">' . $escaparXmlFre_7_2($analisisMacFre_7_2) . '</w:t></w:r></w:p>';
+                    }
+                }
+
+
+
+                // MÉTODO RAPP: dos fichas independientes según los selectores guardados.
+                $configuracionFichasRappFre_7_2 = [
+                    'ruedas' => [
+                        'selector' => 'RAPP_CON_RUEDAS',
+                        'titulo' => 'RAPP - Empujar o traccionar cargas por medio de equipo con ruedas',
+                        'analisis' => 'RAPP_RUEDAS_ANALISIS_RESULTADOS',
+                        'marcadorTabla' => 'METODO_RAPP_EQUIPO_CONRUEDAS_FRE',
+                        'marcadorAnalisis' => 'ANALISIS_RAPP_EQUIPO_CONRUEDAS_FRE'
+                    ],
+                    'sinruedas' => [
+                        'selector' => 'RAPP_SIN_RUEDAS',
+                        'titulo' => 'RAPP - Empujar o traccionar cargas por medio de equipo sin ruedas',
+                        'analisis' => 'RAPP_SIN_RUEDAS_ANALISIS_RESULTADOS',
+                        'marcadorTabla' => 'METODO_RAPP_EQUIPO_SINRUEDAS_FRE',
+                        'marcadorAnalisis' => 'ANALISIS_RAPP_EQUIPO_SINRUEDAS_FRE'
+                    ]
+                ];
+
+                $filasClasificacionRappFre_7_2 = [
+                    ['Bajo – Aceptable', 'No se requieren acciones correctivas', '0 a 4', '_color' => '00EF00'],
+                    ['Medio – Posible', 'Se requieren acciones correctivas a corto plazo', '5 a 12', '_color' => 'FFFF00'],
+                    ['Alto – Significativo', 'Se requieren acciones correctivas pronto', '13 a 20', '_color' => 'FF0000'],
+                    ['Muy Alto – Inaceptable', 'Se requieren acciones correctivas inmediatamente', '21 a 32', '_color' => 'ED00ED']
+                ];
+
+                $obtenerPuntajeRappFre_7_2 = function ($valor) {
+                    if (!is_scalar($valor)) {
+                        return null;
+                    }
+                    $valor = trim((string) $valor);
+                    if ($valor === '') {
+                        return null;
+                    }
+                    $partes = explode('|', $valor);
+                    if (count($partes) >= 2 && strtoupper(trim($partes[0])) === 'M') {
+                        return ['puntaje' => null, 'banda' => 'M', 'inaceptable' => true];
+                    }
+                    if (count($partes) >= 2 && is_numeric(trim($partes[0]))) {
+                        return ['puntaje' => (int) round((float) trim($partes[0])), 'banda' => strtoupper(trim($partes[1])), 'inaceptable' => false];
+                    }
+                    if (is_numeric($valor)) {
+                        return ['puntaje' => (int) round((float) $valor), 'banda' => '', 'inaceptable' => false];
+                    }
+                    return null;
+                };
+
+                $obtenerIndiceRiesgoRappFre_7_2 = function ($total) {
+                    if ($total >= 0 && $total <= 4) return 0;
+                    if ($total >= 5 && $total <= 12) return 1;
+                    if ($total >= 13 && $total <= 20) return 2;
+                    if ($total >= 21) return 3;
+                    return null;
+                };
+
+                $xmlFichasRappFre_7_2 = [];
+                foreach ($configuracionFichasRappFre_7_2 as $claveFichaRappFre_7_2 => $configFichaRappFre_7_2) {
+                    $xmlFichasRappFre_7_2[$claveFichaRappFre_7_2] = ['tabla' => '', 'analisis' => ''];
+
+                    $valorSelectorRappFre_7_2 = isset($evaluacionFre_7_2->{$configFichaRappFre_7_2['selector']})
+                        ? mb_strtoupper(trim((string) $evaluacionFre_7_2->{$configFichaRappFre_7_2['selector']}), 'UTF-8')
+                        : '';
+
+                    if (!in_array('6', $metodosNormalizadosFre_7_2, true) || $valorSelectorRappFre_7_2 !== 'SI') {
+                        continue;
+                    }
+
+                    $resultadosRappFre_7_2 = [];
+                    $incompletoRappFre_7_2 = false;
+                    $inaceptableRappFre_7_2 = false;
+
+                    if ($claveFichaRappFre_7_2 === 'ruedas') {
+                        $equiposRappFre_7_2 = [
+                            'PEQUENO' => 'RAPP_RUEDAS_A1_PEQUENO',
+                            'MEDIANO' => 'RAPP_RUEDAS_A1_MEDIANO',
+                            'GRANDE' => 'RAPP_RUEDAS_A1_GRANDE'
+                        ];
+                        $factoresComunesRappFre_7_2 = [
+                            'RAPP_RUEDAS_A2_POSTURA',
+                            'RAPP_RUEDAS_A3_AGARRE',
+                            'RAPP_RUEDAS_A4_SISTEMA_TRABAJO',
+                            'RAPP_RUEDAS_A5_DISTANCIA',
+                            'RAPP_RUEDAS_A6_CONDICIONES_EQUIPO',
+                            'RAPP_RUEDAS_A7_SUPERFICIE_PISO',
+                            'RAPP_RUEDAS_A8_OBSTACULOS',
+                            'RAPP_RUEDAS_A9_OTROS_FACTORES'
+                        ];
+
+                        $equiposActivosRappFre_7_2 = 0;
+                        foreach ($equiposRappFre_7_2 as $nombreEquipoRappFre_7_2 => $campoA1RappFre_7_2) {
+                            $valorA1RappFre_7_2 = isset($evaluacionFre_7_2->{$campoA1RappFre_7_2})
+                                ? trim((string) $evaluacionFre_7_2->{$campoA1RappFre_7_2})
+                                : '';
+                            if ($valorA1RappFre_7_2 === '') {
+                                continue;
+                            }
+                            $equiposActivosRappFre_7_2++;
+                            $camposRappFre_7_2 = array_merge([$campoA1RappFre_7_2], $factoresComunesRappFre_7_2);
+                            $totalEquipoRappFre_7_2 = 0;
+                            $completoEquipoRappFre_7_2 = true;
+                            $inaceptableEquipoRappFre_7_2 = false;
+
+                            foreach ($camposRappFre_7_2 as $campoRappFre_7_2) {
+                                $valorCampoRappFre_7_2 = isset($evaluacionFre_7_2->{$campoRappFre_7_2})
+                                    ? $evaluacionFre_7_2->{$campoRappFre_7_2}
+                                    : '';
+                                $puntajeRappFre_7_2 = $obtenerPuntajeRappFre_7_2($valorCampoRappFre_7_2);
+                                if ($puntajeRappFre_7_2 === null) {
+                                    $completoEquipoRappFre_7_2 = false;
+                                    continue;
+                                }
+                                if ($puntajeRappFre_7_2['inaceptable']) {
+                                    $inaceptableEquipoRappFre_7_2 = true;
+                                    continue;
+                                }
+                                $totalEquipoRappFre_7_2 += $puntajeRappFre_7_2['puntaje'];
+                            }
+
+                            if ($inaceptableEquipoRappFre_7_2) {
+                                $inaceptableRappFre_7_2 = true;
+                                $resultadosRappFre_7_2[$nombreEquipoRappFre_7_2] = ['estado' => 'M', 'total' => null];
+                            } elseif (!$completoEquipoRappFre_7_2) {
+                                $incompletoRappFre_7_2 = true;
+                                $resultadosRappFre_7_2[$nombreEquipoRappFre_7_2] = ['estado' => 'PENDIENTE', 'total' => null];
+                            } else {
+                                $resultadosRappFre_7_2[$nombreEquipoRappFre_7_2] = [
+                                    'estado' => 'OK',
+                                    'total' => $totalEquipoRappFre_7_2,
+                                    'indice' => $obtenerIndiceRiesgoRappFre_7_2($totalEquipoRappFre_7_2)
+                                ];
+                            }
+                        }
+                        if ($equiposActivosRappFre_7_2 === 0) {
+                            $incompletoRappFre_7_2 = true;
+                            $resultadosRappFre_7_2['Equipo'] = ['estado' => 'PENDIENTE', 'total' => null];
+                        }
+                        $nombreFichaRappFre_7_2 = 'equipo con ruedas';
+                    } else {
+                        $actividadesRappFre_7_2 = [
+                            'RODADO' => 'RAPP_SIN_RUEDAS_B1_RODADO',
+                            'PIVOTEO' => 'RAPP_SIN_RUEDAS_B1_PIVOTEO',
+                            'ARRASTRAR' => 'RAPP_SIN_RUEDAS_B1_ARRASTRAR'
+                        ];
+                        $factoresComunesRappFre_7_2 = [
+                            'RAPP_SIN_RUEDAS_B2_POSTURA',
+                            'RAPP_SIN_RUEDAS_B3_AGARRE',
+                            'RAPP_SIN_RUEDAS_B4_SISTEMA_TRABAJO',
+                            'RAPP_SIN_RUEDAS_B5_DISTANCIA',
+                            'RAPP_SIN_RUEDAS_B6_SUPERFICIE_PISO',
+                            'RAPP_SIN_RUEDAS_B7_OBSTACULOS',
+                            'RAPP_SIN_RUEDAS_B8_OTROS_FACTORES'
+                        ];
+
+                        $actividadesActivasRappFre_7_2 = 0;
+                        foreach ($actividadesRappFre_7_2 as $nombreActividadRappFre_7_2 => $campoB1RappFre_7_2) {
+                            $valorB1RappFre_7_2 = isset($evaluacionFre_7_2->{$campoB1RappFre_7_2})
+                                ? trim((string) $evaluacionFre_7_2->{$campoB1RappFre_7_2})
+                                : '';
+                            if ($valorB1RappFre_7_2 === '') {
+                                continue;
+                            }
+                            $actividadesActivasRappFre_7_2++;
+                            $camposRappFre_7_2 = array_merge([$campoB1RappFre_7_2], $factoresComunesRappFre_7_2);
+                            $totalActividadRappFre_7_2 = 0;
+                            $completoActividadRappFre_7_2 = true;
+                            foreach ($camposRappFre_7_2 as $campoRappFre_7_2) {
+                                $valorCampoRappFre_7_2 = isset($evaluacionFre_7_2->{$campoRappFre_7_2})
+                                    ? $evaluacionFre_7_2->{$campoRappFre_7_2}
+                                    : '';
+                                $puntajeRappFre_7_2 = $obtenerPuntajeRappFre_7_2($valorCampoRappFre_7_2);
+                                if ($puntajeRappFre_7_2 === null) {
+                                    $completoActividadRappFre_7_2 = false;
+                                    continue;
+                                }
+                                if ($puntajeRappFre_7_2['inaceptable']) {
+                                    $inaceptableRappFre_7_2 = true;
+                                    continue;
+                                }
+                                $totalActividadRappFre_7_2 += $puntajeRappFre_7_2['puntaje'];
+                            }
+                            if ($inaceptableRappFre_7_2) {
+                                $resultadosRappFre_7_2[$nombreActividadRappFre_7_2] = ['estado' => 'M', 'total' => null];
+                            } elseif (!$completoActividadRappFre_7_2) {
+                                $incompletoRappFre_7_2 = true;
+                                $resultadosRappFre_7_2[$nombreActividadRappFre_7_2] = ['estado' => 'PENDIENTE', 'total' => null];
+                            } else {
+                                $resultadosRappFre_7_2[$nombreActividadRappFre_7_2] = [
+                                    'estado' => 'OK',
+                                    'total' => $totalActividadRappFre_7_2,
+                                    'indice' => $obtenerIndiceRiesgoRappFre_7_2($totalActividadRappFre_7_2)
+                                ];
+                            }
+                        }
+                        if ($actividadesActivasRappFre_7_2 === 0) {
+                            $incompletoRappFre_7_2 = true;
+                            $resultadosRappFre_7_2['Actividad'] = ['estado' => 'PENDIENTE', 'total' => null];
+                        }
+                        $nombreFichaRappFre_7_2 = 'equipo sin ruedas';
+                    }
+
+                    $indiceResultadoRappFre_7_2 = null;
+                    $totalMayorRappFre_7_2 = null;
+                    $detalleResultadosRappFre_7_2 = [];
+                    foreach ($resultadosRappFre_7_2 as $nombreResultadoRappFre_7_2 => $resultadoRappFre_7_2) {
+                        if ($resultadoRappFre_7_2['estado'] === 'M') {
+                            $detalleResultadosRappFre_7_2[] = $nombreResultadoRappFre_7_2 . ': M - Inaceptable';
+                        } elseif ($resultadoRappFre_7_2['estado'] === 'PENDIENTE') {
+                            $detalleResultadosRappFre_7_2[] = $nombreResultadoRappFre_7_2 . ': pendiente';
+                        } else {
+                            $detalleResultadosRappFre_7_2[] = $nombreResultadoRappFre_7_2 . ': ' . $resultadoRappFre_7_2['total'] . ' puntos';
+                            if ($totalMayorRappFre_7_2 === null || $resultadoRappFre_7_2['total'] > $totalMayorRappFre_7_2) {
+                                $totalMayorRappFre_7_2 = $resultadoRappFre_7_2['total'];
+                                $indiceResultadoRappFre_7_2 = $resultadoRappFre_7_2['indice'];
+                            }
+                        }
+                    }
+
+                    if ($inaceptableRappFre_7_2) {
+                        $indiceResultadoRappFre_7_2 = 3;
+                    } elseif ($incompletoRappFre_7_2) {
+                        $indiceResultadoRappFre_7_2 = null;
+                    }
+
+                    $xmlFichasRappFre_7_2[$claveFichaRappFre_7_2]['tabla'] =
+                        $parrafoXmlFre_7_2('Resultado de la evaluación del método: ' . $configFichaRappFre_7_2['titulo'], true, 24, 100, 40) .
+                        $tablaXmlFre_7_2(
+                            $configFichaRappFre_7_2['titulo'],
+                            ['NIVEL DE RIESGO', 'PRIORIDAD', 'PUNTAJE TOTAL'],
+                            $filasClasificacionRappFre_7_2,
+                            [3600, 5600, 1800],
+                            0,
+                            $indiceResultadoRappFre_7_2,
+                            '000000',
+                            false
+                        ) .
+                        '<w:p><w:pPr><w:jc w:val="left"/><w:spacing w:before="40" w:after="100"/></w:pPr>' .
+                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">Nota: </w:t></w:r>' .
+                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para mayor información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
+
+                    $analisisRappFre_7_2 = isset($evaluacionFre_7_2->{$configFichaRappFre_7_2['analisis']})
+                        && is_scalar($evaluacionFre_7_2->{$configFichaRappFre_7_2['analisis']})
+                        ? trim((string) $evaluacionFre_7_2->{$configFichaRappFre_7_2['analisis']})
+                        : '';
+                    if ($analisisRappFre_7_2 !== '') {
+                        $xmlFichasRappFre_7_2[$claveFichaRappFre_7_2]['analisis'] =
+                            '<w:p><w:pPr><w:jc w:val="both"/><w:spacing w:before="20" w:after="100"/></w:pPr>' .
+                            '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="24"/><w:szCs w:val="24"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">Análisis de los resultados del método RAPP: </w:t></w:r>' .
+                            '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr><w:t xml:space="preserve">' . $escaparXmlFre_7_2($analisisRappFre_7_2) . '</w:t></w:r></w:p>';
+                    }
+                }
 
                 // TABLA ESCALA DE BORG
                 $borgValorFre_7_2 = null;
@@ -6560,6 +6863,29 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     $bloquesMetodosXmlFre_7_2[$tokenAnalisisFre_7_2] = $xmlAnalisisIndividualesFre_7_2[$idMetodoFre_7_2];
                 }
 
+                foreach ($configuracionFichasMacFre_7_2 as $claveFichaMacFre_7_2 => $configFichaMacFre_7_2) {
+                    $nombreMarcadorTablaMacFre_7_2 = $configFichaMacFre_7_2['marcadorTabla'];
+                    $nombreMarcadorAnalisisMacFre_7_2 = $configFichaMacFre_7_2['marcadorAnalisis'];
+                    $tokenTablaMacFre_7_2 = 'MAC' . strtoupper($claveFichaMacFre_7_2) . 'TABLA' . $idEvaluacionTokenFre_7_2 . 'X';
+                    $tokenAnalisisMacFre_7_2 = 'MAC' . strtoupper($claveFichaMacFre_7_2) . 'ANALISIS' . $idEvaluacionTokenFre_7_2 . 'X';
+                    $tablasMetodosFre_7_2[$indiceFre_7_2][$nombreMarcadorTablaMacFre_7_2] = $tokenTablaMacFre_7_2;
+                    $tablasMetodosFre_7_2[$indiceFre_7_2][$nombreMarcadorAnalisisMacFre_7_2] = $tokenAnalisisMacFre_7_2;
+                    $bloquesMetodosXmlFre_7_2[$tokenTablaMacFre_7_2] = $xmlFichasMacFre_7_2[$claveFichaMacFre_7_2]['tabla'];
+                    $bloquesMetodosXmlFre_7_2[$tokenAnalisisMacFre_7_2] = $xmlFichasMacFre_7_2[$claveFichaMacFre_7_2]['analisis'];
+                }
+
+
+                foreach ($configuracionFichasRappFre_7_2 as $claveFichaRappFre_7_2 => $configFichaRappFre_7_2) {
+                    $nombreMarcadorTablaRappFre_7_2 = $configFichaRappFre_7_2['marcadorTabla'];
+                    $nombreMarcadorAnalisisRappFre_7_2 = $configFichaRappFre_7_2['marcadorAnalisis'];
+                    $tokenTablaRappFre_7_2 = 'RAPP' . strtoupper($claveFichaRappFre_7_2) . 'TABLA' . $idEvaluacionTokenFre_7_2 . 'X';
+                    $tokenAnalisisRappFre_7_2 = 'RAPP' . strtoupper($claveFichaRappFre_7_2) . 'ANALISIS' . $idEvaluacionTokenFre_7_2 . 'X';
+                    $tablasMetodosFre_7_2[$indiceFre_7_2][$nombreMarcadorTablaRappFre_7_2] = $tokenTablaRappFre_7_2;
+                    $tablasMetodosFre_7_2[$indiceFre_7_2][$nombreMarcadorAnalisisRappFre_7_2] = $tokenAnalisisRappFre_7_2;
+                    $bloquesMetodosXmlFre_7_2[$tokenTablaRappFre_7_2] = $xmlFichasRappFre_7_2[$claveFichaRappFre_7_2]['tabla'];
+                    $bloquesMetodosXmlFre_7_2[$tokenAnalisisRappFre_7_2] = $xmlFichasRappFre_7_2[$claveFichaRappFre_7_2]['analisis'];
+                }
+
 
 
                 $tablaAngulosFre_7_2 = new \PhpOffice\PhpWord\Element\Table([
@@ -6819,6 +7145,16 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     '${ANALISIS_RULA_FRE}',
                     '${METODO_REBA_FRE}',
                     '${ANALISIS_REBA_FRE}',
+                    '${METODO_MAC_TAREAS_EQUIPO_FRE}',
+                    '${ANALISIS_MAC_TAREAS_EQUIPO_FRE}',
+                    '${METODO_MAC_TAREAS_LEVANTAMIENTO_FRE}',
+                    '${ANALISIS_MAC_TAREAS_LEVANTAMIENTO_FRE}',
+                    '${METODO_MAC_TAREAS_TRASPORTE_FRE}',
+                    '${ANALISIS_MAC_TAREAS_TRASPORTE_FRE}',
+                    '${METODO_RAPP_EQUIPO_CONRUEDAS_FRE}',
+                    '${ANALISIS_RAPP_EQUIPO_CONRUEDAS_FRE}',
+                    '${METODO_RAPP_EQUIPO_SINRUEDAS_FRE}',
+                    '${ANALISIS_RAPP_EQUIPO_SINRUEDAS_FRE}',
                     '${RESULTADO_BORG}',
                     '${ANALISIS_BORG}',
                     '${DINAMOMETRIA_MARCADOR}',
@@ -6970,6 +7306,16 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     'ANALISIS_RULA_FRE'        => 'METODOANALISIS3FRE',
                     'METODO_REBA_FRE'          => 'METODOTABLA4FRE',
                     'ANALISIS_REBA_FRE'        => 'METODOANALISIS4FRE',
+                    'METODO_MAC_TAREAS_EQUIPO_FRE' => 'MACEQUIPOTABLA',
+                    'ANALISIS_MAC_TAREAS_EQUIPO_FRE' => 'MACEQUIPOANALISIS',
+                    'METODO_MAC_TAREAS_LEVANTAMIENTO_FRE' => 'MACLEVANTAMIENTOTABLA',
+                    'ANALISIS_MAC_TAREAS_LEVANTAMIENTO_FRE' => 'MACLEVANTAMIENTOANALISIS',
+                    'METODO_MAC_TAREAS_TRASPORTE_FRE' => 'MACTRANSPORTETABLA',
+                    'ANALISIS_MAC_TAREAS_TRASPORTE_FRE' => 'MACTRANSPORTEANALISIS',
+                    'METODO_RAPP_EQUIPO_CONRUEDAS_FRE' => 'RAPPRUEDASTABLA',
+                    'ANALISIS_RAPP_EQUIPO_CONRUEDAS_FRE' => 'RAPPRUEDASANALISIS',
+                    'METODO_RAPP_EQUIPO_SINRUEDAS_FRE' => 'RAPPSINRUEDASTABLA',
+                    'ANALISIS_RAPP_EQUIPO_SINRUEDAS_FRE' => 'RAPPSINRUEDASANALISIS',
                     'RESULTADO_BORG'           => 'RESULTADOBORGFRE',
                     'ANALISIS_BORG'            => 'ANALISISBORGFRE',
                     'CATEGORIA_METODO'        => 'CATEGORIAMETODO',
@@ -7003,7 +7349,17 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                             'METODO_RULA_FRE',
                             'ANALISIS_RULA_FRE',
                             'METODO_REBA_FRE',
-                            'ANALISIS_REBA_FRE'
+                            'ANALISIS_REBA_FRE',
+                            'METODO_MAC_TAREAS_EQUIPO_FRE',
+                            'ANALISIS_MAC_TAREAS_EQUIPO_FRE',
+                            'METODO_MAC_TAREAS_LEVANTAMIENTO_FRE',
+                            'ANALISIS_MAC_TAREAS_LEVANTAMIENTO_FRE',
+                            'METODO_MAC_TAREAS_TRASPORTE_FRE',
+                            'ANALISIS_MAC_TAREAS_TRASPORTE_FRE',
+                            'METODO_RAPP_EQUIPO_CONRUEDAS_FRE',
+                            'ANALISIS_RAPP_EQUIPO_CONRUEDAS_FRE',
+                            'METODO_RAPP_EQUIPO_SINRUEDAS_FRE',
+                            'ANALISIS_RAPP_EQUIPO_SINRUEDAS_FRE'
                         ];
 
                         if ($aplicaMetodosEnSustitucionFre_7_2 === '2' && in_array($nombreMarcadorFre_7_2, $marcadoresDeMetodosFre_7_2, true)) {
@@ -7096,6 +7452,16 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     'ANALISIS_RULA_FRE',
                     'METODO_REBA_FRE',
                     'ANALISIS_REBA_FRE',
+                    'METODO_MAC_TAREAS_EQUIPO_FRE',
+                    'ANALISIS_MAC_TAREAS_EQUIPO_FRE',
+                    'METODO_MAC_TAREAS_LEVANTAMIENTO_FRE',
+                    'ANALISIS_MAC_TAREAS_LEVANTAMIENTO_FRE',
+                    'METODO_MAC_TAREAS_TRASPORTE_FRE',
+                    'ANALISIS_MAC_TAREAS_TRASPORTE_FRE',
+                    'METODO_RAPP_EQUIPO_CONRUEDAS_FRE',
+                    'ANALISIS_RAPP_EQUIPO_CONRUEDAS_FRE',
+                    'METODO_RAPP_EQUIPO_SINRUEDAS_FRE',
+                    'ANALISIS_RAPP_EQUIPO_SINRUEDAS_FRE',
                     'RESULTADO_BORG',
                     'ANALISIS_BORG',
                     'DINAMOMETRIA_MARCADOR',
@@ -7109,7 +7475,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
 
 
                 $xmlDocumentoFre_7_2 = preg_replace(
-                    '~\$\{/?(?:BLOQUE_FRE|TABLA_DATOS_FRE|CATEGORIA_METODO|TABLA_ANGULOS_FRE|METODO_OWAS_FRE|ANALISIS_OWAS_FRE|METODO_ROSA_FRE|ANALISIS_ROSA_FRE|METODO_RULA_FRE|ANALISIS_RULA_FRE|METODO_REBA_FRE|ANALISIS_REBA_FRE|RESULTADO_BORG|ANALISIS_BORG|DINAMOMETRIA_MARCADOR|OBSERVACION_FUERZAMANUAL|ASPECTOS_AMBIENTALES|LEY_SILLA|NO_APLICA_METODO)(?:#\d+)?\}~',
+                    '~\$\{/?(?:BLOQUE_FRE|TABLA_DATOS_FRE|CATEGORIA_METODO|TABLA_ANGULOS_FRE|METODO_OWAS_FRE|ANALISIS_OWAS_FRE|METODO_ROSA_FRE|ANALISIS_ROSA_FRE|METODO_RULA_FRE|ANALISIS_RULA_FRE|METODO_REBA_FRE|ANALISIS_REBA_FRE|METODO_MAC_TAREAS_EQUIPO_FRE|ANALISIS_MAC_TAREAS_EQUIPO_FRE|METODO_MAC_TAREAS_LEVANTAMIENTO_FRE|ANALISIS_MAC_TAREAS_LEVANTAMIENTO_FRE|METODO_MAC_TAREAS_TRASPORTE_FRE|ANALISIS_MAC_TAREAS_TRASPORTE_FRE|METODO_RAPP_EQUIPO_CONRUEDAS_FRE|ANALISIS_RAPP_EQUIPO_CONRUEDAS_FRE|METODO_RAPP_EQUIPO_SINRUEDAS_FRE|ANALISIS_RAPP_EQUIPO_SINRUEDAS_FRE|RESULTADO_BORG|ANALISIS_BORG|DINAMOMETRIA_MARCADOR|OBSERVACION_FUERZAMANUAL|ASPECTOS_AMBIENTALES|LEY_SILLA|NO_APLICA_METODO)(?:#\d+)?\}~',
                     '',
                     $xmlDocumentoFre_7_2
                 );
@@ -7151,6 +7517,12 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         'ANALISIS_RULA_FRE',
                         'METODO_REBA_FRE',
                         'ANALISIS_REBA_FRE',
+                        'METODO_MAC_TAREAS_EQUIPO_FRE',
+                        'ANALISIS_MAC_TAREAS_EQUIPO_FRE',
+                        'METODO_MAC_TAREAS_LEVANTAMIENTO_FRE',
+                        'ANALISIS_MAC_TAREAS_LEVANTAMIENTO_FRE',
+                        'METODO_MAC_TAREAS_TRASPORTE_FRE',
+                        'ANALISIS_MAC_TAREAS_TRASPORTE_FRE',
                         'RESULTADO_BORG',
                         'ANALISIS_BORG',
                         'DINAMOMETRIA_MARCADOR',
@@ -7175,8 +7547,6 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                 );
                 $propiedadXmlFre_7_2->setValue($plantillaword, $xmlDocumentoFre_7_2);
             }
-
-
 
 
 

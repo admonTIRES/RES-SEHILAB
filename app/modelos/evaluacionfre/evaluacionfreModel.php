@@ -214,6 +214,9 @@ class evaluacionfreModel extends Model
         'MAC_LEVANTAMIENTO_INDIVIDUAL',
         'MAC_TRANSPORTE_CARGA',
 
+
+
+        // Método  Tareas con operaciones de manejo manual de carga en equipo
         'MAC_EQ_A',
         'MAC_EQ_PESO_CARGA',
         'MAC_EQ_NUM_PERSONAS',
@@ -242,6 +245,8 @@ class evaluacionfreModel extends Model
         'MAC_EQ_TOTAL',
         'MAC_EQ_RESULTADO',
 
+        // Método  MAC - Tareas de levantamiento individual de carga
+
         'MAC_IND_PESO_CARGA',
         'MAC_IND_NUM_OBJETOS',
         'MAC_IND_NUM_PERSONAS',
@@ -266,6 +271,8 @@ class evaluacionfreModel extends Model
         'MAC_IND_ANALISIS_RESULTADOS',
         'MAC_IND_TOTAL',
         'MAC_IND_RESULTADO',
+
+        // Método  MAC - Tareas de transporte de carga
 
         'MAC_TRANS_PESO_CARGA',
         'MAC_TRANS_NUM_OBJETOS',
@@ -299,7 +306,8 @@ class evaluacionfreModel extends Model
 
         'RAPP_CON_RUEDAS',
         'RAPP_SIN_RUEDAS',
-        // RAPP CON RUEDAS
+
+        // Método RAPP - Empujar o traccionar cargas por medio de equipo con ruedas
 
         'RAPP_RUEDAS_A1_PEQUENO',
         'RAPP_RUEDAS_A1_MEDIANO',
@@ -314,7 +322,8 @@ class evaluacionfreModel extends Model
         'RAPP_RUEDAS_A9_OTROS_FACTORES',
         'RAPP_RUEDAS_ANALISIS_RESULTADOS',
 
-        // RAPP SIN RUEDAS
+        // Método RAPP - Empujar o traccionar cargas por medio de equipo sin ruedas
+
 
         'RAPP_SIN_RUEDAS_B1_RODADO',
         'RAPP_SIN_RUEDAS_B1_PIVOTEO',

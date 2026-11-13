@@ -9347,7 +9347,6 @@ DESCRIPCIONACTIVIDAD
                                                                 <option value="NO">No</option>
                                                             </select>
                                                         </div>
-
                                                     </div>
 
                                                 </div>
@@ -9642,7 +9641,7 @@ DESCRIPCIONACTIVIDAD
 
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <strong>MAC - Tareas con operaciones de manejo manual de carga en equipo</strong>
+                                                        <strong>Método  MAC - Tareas con operaciones de manejo manual de carga en equipo</strong>
                                                     </div>
 
                                                     <div class="card-body">
@@ -10563,7 +10562,7 @@ DESCRIPCIONACTIVIDAD
 
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <strong>MAC - Tareas de levantamiento individual de carga</strong>
+                                                        <strong> Método MAC - Tareas de levantamiento individual de carga</strong>
                                                     </div>
 
                                                     <div class="card-body">
@@ -11406,7 +11405,7 @@ DESCRIPCIONACTIVIDAD
                                                 <div class="card">
 
                                                     <div class="card-header">
-                                                        <strong>MAC - Tareas de transporte de carga</strong>
+                                                        <strong>Método  MAC - Tareas de transporte de carga</strong>
                                                     </div>
 
                                                     <div class="card-body">
@@ -13297,7 +13296,7 @@ DESCRIPCIONACTIVIDAD
 
                                                                     <select id="RAPP_SIN_RUEDAS_B1_PIVOTEO"
                                                                         name="RAPP_SIN_RUEDAS_B1_PIVOTEO"
-                                                                        class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                        class="form-control rapp-select rapp-sin-ruedas-calculo" >
                                                                         <option value="">Seleccionar...</option>
                                                                         <option value="0|V">Menos de 80 kg - Bajo V/0</option>
                                                                         <option value="2|A">80 kg a 120 kg - Mediano A/2</option>
@@ -13337,7 +13336,7 @@ DESCRIPCIONACTIVIDAD
 
                                                                     <select id="RAPP_SIN_RUEDAS_B1_ARRASTRAR"
                                                                         name="RAPP_SIN_RUEDAS_B1_ARRASTRAR"
-                                                                        class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                        class="form-control rapp-select rapp-sin-ruedas-calculo" >
 
                                                                         <option value="">Seleccionar...</option>
                                                                         <option value="0|V">Menos de 25 kg - Bajo V/0</option>
