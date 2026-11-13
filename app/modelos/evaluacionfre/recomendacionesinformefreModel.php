@@ -11,7 +11,8 @@ class recomendacionesinformefreModel extends Model
     protected $fillable = [
         'RECO_ID',
         'CATALOGO_RECOMENDACIONES_ID',
-        'DESCRIPCION_PERSONALIZADA'
+        'DESCRIPCION_PERSONALIZADA',
+        'TIPO_RECOMENDACION'
 
     ];
 }

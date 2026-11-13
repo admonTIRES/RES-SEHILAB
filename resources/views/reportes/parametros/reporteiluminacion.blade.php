@@ -2205,13 +2205,13 @@
 						<div class="col-4">
 							<div class="form-group">
 								<label>Nombre</label>
-								<input type="text" class="form-control" id="reporteiluminacionpuntos_nombre" name="reporteiluminacionpuntos_nombre" required>
+								<input type="text" class="form-control" id="reporteiluminacionpuntos_nombre" name="reporteiluminacionpuntos_nombre" >
 							</div>
 						</div>
 						<div class="col-2">
 							<div class="form-group">
 								<label>Ficha</label>
-								<input type="text" class="form-control" id="reporteiluminacionpuntos_ficha" name="reporteiluminacionpuntos_ficha" required>
+								<input type="text" class="form-control" id="reporteiluminacionpuntos_ficha" name="reporteiluminacionpuntos_ficha" >
 							</div>
 						</div>
 						<div class="col-4">

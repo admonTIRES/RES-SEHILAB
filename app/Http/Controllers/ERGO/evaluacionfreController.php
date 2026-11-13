@@ -2358,13 +2358,17 @@ class evaluacionfreController extends Controller
 
 
 
+
     public function guardarRecomendacionesInformeFreErgo(Request $request)
     {
         try {
 
             DB::beginTransaction();
 
-            recomendacionesinformefreModel::where('RECO_ID', $request->RECO_ID)->delete();
+            $request->validate([
+                'RECO_ID' => 'required|integer',
+                'RECOMENDACIONES' => 'required|json'
+            ]);
 
             $recomendaciones = json_decode($request->RECOMENDACIONES, true);
 
@@ -2372,18 +2376,34 @@ class evaluacionfreController extends Controller
                 throw new Exception('Las recomendaciones enviadas no son válidas.');
             }
 
+            recomendacionesinformefreModel::where('RECO_ID', $request->RECO_ID)->delete();
+
             foreach ($recomendaciones as $recomendacion) {
 
                 $descripcion = trim($recomendacion['descripcion'] ?? '');
 
-                if ($descripcion == '') {
+                $tipo = trim($recomendacion['tipo'] ?? '');
+
+                $catalogoId = (int) ($recomendacion['catalogo_id'] ?? 0);
+
+                if ($descripcion === '') {
                     continue;
                 }
 
+                if (!in_array($tipo, ['Preventiva', 'Correctiva'], true)) {
+                    throw new Exception('El tipo de recomendación debe ser Preventiva o Correctiva.');
+                }
+
                 $dato = new recomendacionesinformefreModel();
+
                 $dato->RECO_ID = $request->RECO_ID;
-                $dato->CATALOGO_RECOMENDACIONES_ID = $recomendacion['catalogo_id'] ?? 0;
+
+                $dato->CATALOGO_RECOMENDACIONES_ID = $catalogoId;
+
                 $dato->DESCRIPCION_PERSONALIZADA = $descripcion;
+
+                $dato->TIPO_RECOMENDACION = $tipo;
+
                 $dato->save();
             }
 
@@ -5158,12 +5178,13 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
 
 
 
+
             // RESPONSABLE 1
 
             if ($datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO) {
-                if (file_exists(storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO))) 
-                {
-                    $plantillaword->setImageValue('REPONSABLE1_DOCUMENTO',
+                if (file_exists(storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO))) {
+                    $plantillaword->setImageValue(
+                        'REPONSABLE1_DOCUMENTO',
                         array(
                             'path' => storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE1DOCUMENTO),
                             'height' => 300,
@@ -5173,32 +5194,27 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         )
                     );
                 } else {
-                    $plantillaword->setValue('REPONSABLE1_DOCUMENTO','FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                    $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
                 }
             } else {
-                $plantillaword->setValue('REPONSABLE1_DOCUMENTO','FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                $plantillaword->setValue('REPONSABLE1_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
             }
 
             $nombreResponsable1 = trim((string) ($datosGenerales2->INFORME_RESPONSABLE1 ?? ''));
             $cargoResponsable1 = trim((string) ($datosGenerales2->INFORME_RESPONSABLE1CARGO ?? ''));
-
-            $bloqueResponsable1 = new \PhpOffice\PhpWord\Element\TextRun();
-
-            $bloqueResponsable1->addText($nombreResponsable1 !== '' ? $nombreResponsable1 : 'No cargado');
-
+            $bloqueResponsable1 = new \PhpOffice\PhpWord\Element\TextRun(['alignment' => 'center']);
+            $bloqueResponsable1->addText($nombreResponsable1 !== '' ? $nombreResponsable1 : 'No cargado',['bold' => true]);
             $bloqueResponsable1->addTextBreak(1);
-
-            $bloqueResponsable1->addText($cargoResponsable1 !== '' ? $cargoResponsable1 : 'No cargado');
-
-            $plantillaword->setComplexBlock('REPONSABLE1',$bloqueResponsable1);
+            $bloqueResponsable1->addText($cargoResponsable1 !== '' ? $cargoResponsable1 : 'No cargado',['bold' => true]);
+            $plantillaword->setComplexBlock('REPONSABLE1', $bloqueResponsable1);
 
 
             // RESPONSABLE 2
 
             if ($datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO) {
-                if (file_exists(storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO))) 
-                {
-                    $plantillaword->setImageValue('REPONSABLE2_DOCUMENTO',
+                if (file_exists(storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO))) {
+                    $plantillaword->setImageValue(
+                        'REPONSABLE2_DOCUMENTO',
                         array(
                             'path' => storage_path('app/' . $datosGenerales2->INFORME_RESPONSABLE2DOCUMENTO),
                             'height' => 300,
@@ -5208,27 +5224,26 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         )
                     );
                 } else {
-                    $plantillaword->setValue('REPONSABLE2_DOCUMENTO','FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                    $plantillaword->setValue('REPONSABLE2_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
                 }
             } else {
-                $plantillaword->setValue('REPONSABLE2_DOCUMENTO','FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
+                $plantillaword->setValue('REPONSABLE2_DOCUMENTO', 'FALTA CARGAR IMAGEN DESDE EL SISTEMA.');
             }
 
             $nombreResponsable2 = trim((string) ($datosGenerales2->INFORME_RESPONSABLE2 ?? ''));
             $cargoResponsable2 = trim((string) ($datosGenerales2->INFORME_RESPONSABLE2CARGO ?? ''));
-
-            $bloqueResponsable2 = new \PhpOffice\PhpWord\Element\TextRun();
-
-            $bloqueResponsable2->addText($nombreResponsable2 !== '' ? $nombreResponsable2 : 'No cargado');
-
+            $bloqueResponsable2 = new \PhpOffice\PhpWord\Element\TextRun(['alignment' => 'center']);
+            $bloqueResponsable2->addText($nombreResponsable2 !== '' ? $nombreResponsable2 : 'No cargado',['bold' => true]);
             $bloqueResponsable2->addTextBreak(1);
+            $bloqueResponsable2->addText($cargoResponsable2 !== '' ? $cargoResponsable2 : 'No cargado',['bold' => true]);
 
-            $bloqueResponsable2->addText($cargoResponsable2 !== '' ? $cargoResponsable2 : 'No cargado');
-
-            $plantillaword->setComplexBlock('REPONSABLE2',$bloqueResponsable2);
+            $plantillaword->setComplexBlock('REPONSABLE2', $bloqueResponsable2);
 
 
             ///  RESULTADOS DE LA APLICACION 
+
+
+
 
 
 
@@ -5518,13 +5533,28 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                 }
                 $metodosNormalizadosFre_7_2 = array_values(array_unique($metodosNormalizadosFre_7_2));
 
+                $aplicaMetodosErgonomicosFre_7_2 = isset($evaluacionFre_7_2->APLICA_METODOS_ERGONOMICOS)
+                    ? trim((string) $evaluacionFre_7_2->APLICA_METODOS_ERGONOMICOS)
+                    : '1';
+
+                if ($aplicaMetodosErgonomicosFre_7_2 === '2') {
+                    $metodosNormalizadosFre_7_2 = [];
+                }
+
 
                 $tokenCategoriaMetodoFre_7_2 = 'CATEGORIAMETODO' . $idEvaluacionTokenFre_7_2 . 'X';
                 $textoCategoriaMetodoFre_7_2 = '6.6.' . ($indiceFre_7_2 + 1) . ' ' . $categoriaFre_7_2;
                 $xmlCategoriaMetodoFre_7_2 = $parrafoXmlFre_7_2($textoCategoriaMetodoFre_7_2, true, 22, 100, 80);
-                $tablasMetodosFre_7_2[$indiceFre_7_2]['CATEOGIRAS_METODO'] = $tokenCategoriaMetodoFre_7_2;
+                $tablasMetodosFre_7_2[$indiceFre_7_2]['CATEGORIA_METODO'] = $tokenCategoriaMetodoFre_7_2;
                 $bloquesMetodosXmlFre_7_2[$tokenCategoriaMetodoFre_7_2] = $xmlCategoriaMetodoFre_7_2;
 
+                $tokenNoAplicaMetodoFre_7_2 = 'NOAPLICAMETODO' . $idEvaluacionTokenFre_7_2 . 'X';
+                $notaNoAplicaMetodoFre_7_2 = 'Derivado de la revisión de las actividades realizadas en el puesto de trabajo durante su ejecución, se determinó que no es necesario aplicar una metodología específica de evaluación, debido a que las tareas no presentan características que lo justifiquen.';
+                $xmlNoAplicaMetodoFre_7_2 = $aplicaMetodosErgonomicosFre_7_2 === '2'
+                    ? $parrafoXmlFre_7_2($notaNoAplicaMetodoFre_7_2, false, 24, 100, 100)
+                    : '';
+                $tablasMetodosFre_7_2[$indiceFre_7_2]['NO_APLICA_METODO'] = $tokenNoAplicaMetodoFre_7_2;
+                $bloquesMetodosXmlFre_7_2[$tokenNoAplicaMetodoFre_7_2] = $xmlNoAplicaMetodoFre_7_2;
 
                 $tablaXmlFre_7_2 = function ($tituloFre_7_2, $encabezadosFre_7_2, $filasFre_7_2, $anchosFre_7_2, $columnaColorFre_7_2, $filaSeleccionadaFre_7_2, $colorBordeResultadoFre_7_2 = 'FF0000', $tablaCompactaFre_7_2 = false) use ($escaparXmlFre_7_2) {
                     $anchoOriginalFre_7_2 = array_sum($anchosFre_7_2);
@@ -5630,7 +5660,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                 };
                 $resultadoRosaFre_7_2 = $buscarPuntuacionRosaFre_7_2($datosRosaFre_7_2);
 
-                // ROSA 
+                // ROSA: cálculo equivalente a calcularROSA() del JavaScript.
                 if ($resultadoRosaFre_7_2 === null) {
                     $matricesRosaFre_7_2 = [
                         'A' => [
@@ -5676,7 +5706,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                             [2, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                             [3, 3, 3, 4, 5, 6, 7, 8, 9, 10],
-                            [4, 4, 4, 4, 4, 6, 7, 8, 9, 10],
+                            [4, 4, 4, 4, 5, 6, 7, 8, 9, 10],
                             [5, 5, 5, 5, 5, 6, 7, 8, 9, 10],
                             [6, 6, 6, 6, 6, 6, 7, 8, 9, 10],
                             [7, 7, 7, 7, 7, 7, 7, 8, 9, 10],
@@ -5685,33 +5715,69 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                             [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
                         ]
                     ];
+
+                    // Los selectores con valores como 2_bajo o 2_menor
+                    // usan la puntuación numérica indicada al inicio del valor.
                     $valorRosaFre_7_2 = function ($campo) use ($evaluacionFre_7_2) {
-                        if (!isset($evaluacionFre_7_2->{$campo}) || $evaluacionFre_7_2->{$campo} === '' || !is_numeric($evaluacionFre_7_2->{$campo})) return null;
-                        return (int)$evaluacionFre_7_2->{$campo};
+                        if (!isset($evaluacionFre_7_2->{$campo})) {
+                            return null;
+                        }
+
+                        $valor = trim((string) $evaluacionFre_7_2->{$campo});
+                        if ($valor === '') {
+                            return null;
+                        }
+
+                        if (is_numeric($valor)) {
+                            return (int) $valor;
+                        }
+
+                        if (preg_match('/^-?\d+/', $valor, $coincidencia)) {
+                            return (int) $coincidencia[0];
+                        }
+
+                        return null;
                     };
+
+                    // Acumular todos los extras por apartado, igual que sumaAdicionales() en JS.
                     $extraRosaFre_7_2 = [];
                     if (isset($datosRosaFre_7_2['extras']) && is_array($datosRosaFre_7_2['extras'])) {
                         foreach ($datosRosaFre_7_2['extras'] as $extra) {
-                            if (!is_array($extra)) continue;
-                            $apartado = isset($extra['apartado']) ? (string)$extra['apartado'] : '';
-                            $valorExtra = isset($extra['valor']) && is_numeric($extra['valor']) ? (int)$extra['valor'] : 0;
-                            if ($apartado !== '') $extraRosaFre_7_2[$apartado] = ($extraRosaFre_7_2[$apartado] ?? 0) + $valorExtra;
+                            if (!is_array($extra)) {
+                                continue;
+                            }
+
+                            $apartado = isset($extra['apartado']) ? trim((string) $extra['apartado']) : '';
+                            $valorExtra = isset($extra['valor']) && is_numeric($extra['valor'])
+                                ? (int) $extra['valor']
+                                : 0;
+
+                            if ($apartado !== '') {
+                                $extraRosaFre_7_2[$apartado] = ($extraRosaFre_7_2[$apartado] ?? 0) + $valorExtra;
+                            }
                         }
                     }
+
                     $sumarExtraRosaFre_7_2 = function ($apartado) use (&$extraRosaFre_7_2) {
-                        return (int)($extraRosaFre_7_2[$apartado] ?? 0);
+                        return (int) ($extraRosaFre_7_2[$apartado] ?? 0);
                     };
+
                     $tiempoRosaFre_7_2 = function ($campo) use ($valorRosaFre_7_2) {
-                        $v = $valorRosaFre_7_2($campo);
-                        return $v === null ? 0 : $v;
+                        $valor = $valorRosaFre_7_2($campo);
+                        return $valor === null ? 0 : $valor;
                     };
-                    $limitarRosaFre_7_2 = function ($v, $min, $max) {
-                        return max($min, min($max, $v));
+
+                    $limitarRosaFre_7_2 = function ($valor, $minimo, $maximo) {
+                        return max($minimo, min($maximo, $valor));
                     };
+
                     $buscarMatrizRosaFre_7_2 = function ($matriz, $fila, $columna, $inicioFila, $inicioColumna) {
-                        $f = $fila - $inicioFila;
-                        $c = $columna - $inicioColumna;
-                        return isset($matriz[$f][$c]) ? $matriz[$f][$c] : null;
+                        $indiceFila = $fila - $inicioFila;
+                        $indiceColumna = $columna - $inicioColumna;
+
+                        return isset($matriz[$indiceFila][$indiceColumna])
+                            ? $matriz[$indiceFila][$indiceColumna]
+                            : null;
                     };
 
                     $a1 = $valorRosaFre_7_2('ROSA_ALTURA_ASIENTO');
@@ -5727,27 +5793,115 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         $a1 !== null && $a2 !== null && $a3 !== null && $a4 !== null &&
                         $b1 !== null && $b2 !== null && $c1 !== null && $c2 !== null
                     ) {
-                        $asiento = $limitarRosaFre_7_2($a1 + $a2, 2, 8);
-                        $reposabrazosRespaldo = $limitarRosaFre_7_2($a3 + $a4, 2, 9);
-                        $resultadoA = $buscarMatrizRosaFre_7_2($matricesRosaFre_7_2['A'], $asiento, $reposabrazosRespaldo, 2, 2);
-                        if ($resultadoA !== null) $resultadoA = $limitarRosaFre_7_2($resultadoA + $tiempoRosaFre_7_2('ROSA_TIEMPO_A'), 1, 10);
+                        // A. Silla: extras A1/A2 se suman al asiento y A3/A4 al respaldo.
+                        $asiento = $limitarRosaFre_7_2(
+                            $a1 + $a2 +
+                                $sumarExtraRosaFre_7_2('A1') +
+                                $sumarExtraRosaFre_7_2('A2'),
+                            2,
+                            8
+                        );
 
-                        $telefono = $limitarRosaFre_7_2($b1 + $sumarExtraRosaFre_7_2('B1') + $tiempoRosaFre_7_2('ROSA_TIEMPO_B1'), 0, 8);
-                        $pantalla = $limitarRosaFre_7_2($b2 + $sumarExtraRosaFre_7_2('B2') + $tiempoRosaFre_7_2('ROSA_TIEMPO_B2'), 0, 8);
-                        $resultadoB = $buscarMatrizRosaFre_7_2($matricesRosaFre_7_2['B'], $telefono, $pantalla, 0, 0);
+                        $respaldo = $limitarRosaFre_7_2(
+                            $a3 + $a4 +
+                                $sumarExtraRosaFre_7_2('A3') +
+                                $sumarExtraRosaFre_7_2('A4'),
+                            2,
+                            9
+                        );
 
-                        $raton = $limitarRosaFre_7_2($c1 + $sumarExtraRosaFre_7_2('C1') + $tiempoRosaFre_7_2('ROSA_TIEMPO_C1'), 0, 6);
-                        $teclado = $limitarRosaFre_7_2($c2 + $sumarExtraRosaFre_7_2('C2') + $tiempoRosaFre_7_2('ROSA_TIEMPO_C2'), 0, 6);
-                        $resultadoC = $buscarMatrizRosaFre_7_2($matricesRosaFre_7_2['C'], $raton, $teclado, 0, 0);
+                        $resultadoA = $buscarMatrizRosaFre_7_2(
+                            $matricesRosaFre_7_2['A'],
+                            $asiento,
+                            $respaldo,
+                            2,
+                            2
+                        );
 
+                        if ($resultadoA !== null) {
+                            $resultadoA = $limitarRosaFre_7_2(
+                                $resultadoA + $tiempoRosaFre_7_2('ROSA_TIEMPO_A'),
+                                1,
+                                10
+                            );
+                        }
+
+                        // B. Teléfono y pantalla: el tiempo B1 se suma al teléfono.
+                        $telefono = $limitarRosaFre_7_2(
+                            $b1 +
+                                $sumarExtraRosaFre_7_2('B1') +
+                                $tiempoRosaFre_7_2('ROSA_TIEMPO_B1'),
+                            0,
+                            8
+                        );
+
+                        // La lógica JS actual no suma ROSA_TIEMPO_B2 a la pantalla.
+                        $pantalla = $limitarRosaFre_7_2(
+                            $b2 + $sumarExtraRosaFre_7_2('B2'),
+                            0,
+                            8
+                        );
+
+                        $resultadoB = $buscarMatrizRosaFre_7_2(
+                            $matricesRosaFre_7_2['B'],
+                            $telefono,
+                            $pantalla,
+                            0,
+                            0
+                        );
+
+                        // C. Ratón y teclado: ratón permite puntuación máxima de 7.
+                        $raton = $limitarRosaFre_7_2(
+                            $c1 +
+                                $sumarExtraRosaFre_7_2('C1') +
+                                $tiempoRosaFre_7_2('ROSA_TIEMPO_C1'),
+                            0,
+                            7
+                        );
+
+                        $teclado = $limitarRosaFre_7_2(
+                            $c2 +
+                                $sumarExtraRosaFre_7_2('C2') +
+                                $tiempoRosaFre_7_2('ROSA_TIEMPO_C2'),
+                            0,
+                            6
+                        );
+
+                        $resultadoC = $buscarMatrizRosaFre_7_2(
+                            $matricesRosaFre_7_2['C'],
+                            $raton,
+                            $teclado,
+                            0,
+                            0
+                        );
+
+                        // D. Combinación de B y C.
                         $resultadoD = ($resultadoB !== null && $resultadoC !== null)
-                            ? $buscarMatrizRosaFre_7_2($matricesRosaFre_7_2['D'], $resultadoB, $resultadoC, 1, 1) : null;
+                            ? $buscarMatrizRosaFre_7_2(
+                                $matricesRosaFre_7_2['D'],
+                                $resultadoB,
+                                $resultadoC,
+                                1,
+                                1
+                            )
+                            : null;
+
+                        // E. Resultado final: combinación de A y D.
                         $resultadoE = ($resultadoA !== null && $resultadoD !== null)
-                            ? $buscarMatrizRosaFre_7_2($matricesRosaFre_7_2['E'], $resultadoA, $resultadoD, 1, 1) : null;
-                        if ($resultadoE !== null) $resultadoRosaFre_7_2 = (int)$resultadoE;
+                            ? $buscarMatrizRosaFre_7_2(
+                                $matricesRosaFre_7_2['E'],
+                                $resultadoA,
+                                $resultadoD,
+                                1,
+                                1
+                            )
+                            : null;
+
+                        if ($resultadoE !== null) {
+                            $resultadoRosaFre_7_2 = (int) $resultadoE;
+                        }
                     }
                 }
-
 
                 // RULA
                 $resultadoRulaFre_7_2 = null;
@@ -5992,7 +6146,10 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                             $configuracionMetodoFre_7_2['anchos'],
                             $configuracionMetodoFre_7_2['colorColumna'],
                             $indiceFilaResultadoFre_7_2
-                        );
+                        ) .
+                        '<w:p><w:pPr><w:jc w:val="left"/><w:spacing w:before="40" w:after="100"/></w:pPr>' .
+                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">Nota: </w:t></w:r>' .
+                        '<w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t xml:space="preserve">Para más información consultar la ficha del método en los anexos</w:t></w:r></w:p>';
 
                     $resultadoVisibleFre_7_2 = ($resultadoMetodoFre_7_2 !== null && is_numeric($resultadoMetodoFre_7_2))
                         ? (string) $resultadoMetodoFre_7_2
@@ -6107,8 +6264,23 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     ['Vibración', 'Segmentos corporales', ['Mano brazo', 'Cuerpo entero', 'Columna y miembros inferiores'], $valorAmbientalFre_7_2('SEGMENTO_VIBRACION'), ['1' => 'Mano brazo', '2' => 'Cuerpo entero', '3' => 'Columna y miembros inferiores', '4' => 'N/A']],
                     ['Vibración', 'Observaciones', [], $valorAmbientalFre_7_2('OBSERVACIONES_VIBRACION'), []],
                 ];
-                $anchoColumnasAmbientalesFre_7_2 = [1750, 1800, 1500, 260, 1500, 260, 2100, 260];
+                $anchoColumnasAmbientalesBaseFre_7_2 = [1750, 1800, 1500, 260, 1500, 260, 2100, 260];
+                $anchoObjetivoAmbientalFre_7_2 = 9000;
+                $anchoBaseAmbientalFre_7_2 = array_sum($anchoColumnasAmbientalesBaseFre_7_2);
+                $factorAmbientalFre_7_2 = $anchoBaseAmbientalFre_7_2 > 0
+                    ? $anchoObjetivoAmbientalFre_7_2 / $anchoBaseAmbientalFre_7_2
+                    : 1;
+                $anchoColumnasAmbientalesFre_7_2 = array_map(
+                    function ($anchoFre_7_2) use ($factorAmbientalFre_7_2) {
+                        return (int) round($anchoFre_7_2 * $factorAmbientalFre_7_2);
+                    },
+                    $anchoColumnasAmbientalesBaseFre_7_2
+                );
+                $diferenciaAnchoAmbientalFre_7_2 = $anchoObjetivoAmbientalFre_7_2 - array_sum($anchoColumnasAmbientalesFre_7_2);
+                $anchoColumnasAmbientalesFre_7_2[7] += $diferenciaAnchoAmbientalFre_7_2;
                 $anchoTotalAmbientalesFre_7_2 = array_sum($anchoColumnasAmbientalesFre_7_2);
+                $anchoAspectoAmbientalFre_7_2 = $anchoColumnasAmbientalesFre_7_2[0] + $anchoColumnasAmbientalesFre_7_2[1];
+                $anchoDescripcionAmbientalFre_7_2 = $anchoTotalAmbientalesFre_7_2 - $anchoAspectoAmbientalFre_7_2;
                 $xmlAspectosAmbientalesFre_7_2 = $parrafoXmlFre_7_2('Aspectos ambientales del lugar de trabajo', true, 24, 100, 60);
                 $xmlAspectosAmbientalesFre_7_2 .= $parrafoXmlFre_7_2(
                     'En este apartado se valoran de forma subjetiva los aspectos de ergonomía ambiental, subrayando que en el ambiente térmico las condiciones están influenciadas por la temperatura reinante en la zona donde se ubica el centro de trabajo, que según la temporada del año puede estar en un promedio de 32° a 34° la mayor parte del año y en verano la temperatura alcanza registro superiores a 37 y 40°. Cabe resaltar que al respecto de las condiciones valoradas, se registra la percepción de los trabajadores y el punto de vista observacional del evaluador.',
@@ -6117,7 +6289,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     0,
                     100
                 );
-                $xmlAspectosAmbientalesFre_7_2 .= '<w:tbl><w:tblPr><w:tblW w:w="' . $anchoTotalAmbientalesFre_7_2 . '" w:type="dxa"/><w:jc w:val="center"/><w:tblBorders><w:top w:val="single" w:sz="6" w:color="000000"/><w:left w:val="single" w:sz="6" w:color="000000"/><w:bottom w:val="single" w:sz="6" w:color="000000"/><w:right w:val="single" w:sz="6" w:color="000000"/><w:insideH w:val="single" w:sz="5" w:color="000000"/><w:insideV w:val="single" w:sz="5" w:color="000000"/></w:tblBorders><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="35" w:type="dxa"/><w:left w:w="45" w:type="dxa"/><w:bottom w:w="35" w:type="dxa"/><w:right w:w="45" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>';
+                $xmlAspectosAmbientalesFre_7_2 .= '<w:tbl><w:tblPr><w:tblW w:w="' . $anchoTotalAmbientalesFre_7_2 . '" w:type="dxa"/><w:jc w:val="center"/><w:tblInd w:w="0" w:type="dxa"/><w:tblBorders><w:top w:val="single" w:sz="6" w:color="000000"/><w:left w:val="single" w:sz="6" w:color="000000"/><w:bottom w:val="single" w:sz="6" w:color="000000"/><w:right w:val="single" w:sz="6" w:color="000000"/><w:insideH w:val="single" w:sz="5" w:color="000000"/><w:insideV w:val="single" w:sz="5" w:color="000000"/></w:tblBorders><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="35" w:type="dxa"/><w:left w:w="45" w:type="dxa"/><w:bottom w:w="35" w:type="dxa"/><w:right w:w="45" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>';
                 foreach ($anchoColumnasAmbientalesFre_7_2 as $anchoAmbientalFre_7_2) {
                     $xmlAspectosAmbientalesFre_7_2 .= '<w:gridCol w:w="' . $anchoAmbientalFre_7_2 . '"/>';
                 }
@@ -6126,8 +6298,8 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                 foreach ($filasConEncabezadoAmbientalFre_7_2 as $indiceFilaAmbientalFre_7_2 => $filaAmbientalFre_7_2) {
                     $xmlAspectosAmbientalesFre_7_2 .= '<w:tr><w:trPr><w:cantSplit/></w:trPr>';
                     if ($indiceFilaAmbientalFre_7_2 === 0) {
-                        $xmlAspectosAmbientalesFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="3550" w:type="dxa"/><w:gridSpan w:val="2"/><w:shd w:fill="123F60"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr><w:t>Aspecto</w:t></w:r></w:p></w:tc>';
-                        $xmlAspectosAmbientalesFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="' . ($anchoTotalAmbientalesFre_7_2 - 3550) . '" w:type="dxa"/><w:gridSpan w:val="6"/><w:shd w:fill="123F60"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr><w:t>Descripción</w:t></w:r></w:p></w:tc>';
+                        $xmlAspectosAmbientalesFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="' . $anchoAspectoAmbientalFre_7_2 . '" w:type="dxa"/><w:gridSpan w:val="2"/><w:shd w:fill="123F60"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr><w:t>Aspecto</w:t></w:r></w:p></w:tc>';
+                        $xmlAspectosAmbientalesFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="' . $anchoDescripcionAmbientalFre_7_2 . '" w:type="dxa"/><w:gridSpan w:val="6"/><w:shd w:fill="123F60"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/></w:rPr><w:t>Descripción</w:t></w:r></w:p></w:tc>';
                     } else {
                         $aspectoAmbientalFre_7_2 = $filaAmbientalFre_7_2[0];
                         $subaspectoAmbientalFre_7_2 = $filaAmbientalFre_7_2[1];
@@ -6148,12 +6320,12 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         $textoAspectoAmbientalFre_7_2 = $continuarFusionAmbientalFre_7_2
                             ? '<w:p/>'
                             : '<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:b/><w:color w:val="' . $colorAmbientalFre_7_2 . '"/><w:sz w:val="16"/></w:rPr><w:t>' . $escaparXmlFre_7_2($aspectoAmbientalFre_7_2) . '</w:t></w:r></w:p>';
-                        $xmlAspectosAmbientalesFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="1750" w:type="dxa"/><w:shd w:fill="' . $fondoAmbientalFre_7_2 . '"/><w:vAlign w:val="center"/>' . $propiedadFusionAmbientalFre_7_2 . '</w:tcPr>' . $textoAspectoAmbientalFre_7_2 . '</w:tc>';
-                        $xmlAspectosAmbientalesFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="1800" w:type="dxa"/><w:shd w:fill="123F60"/><w:vAlign w:val="center"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="16"/></w:rPr><w:t>' . $escaparXmlFre_7_2($subaspectoAmbientalFre_7_2) . '</w:t></w:r></w:p></w:tc>';
+                        $xmlAspectosAmbientalesFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="' . $anchoColumnasAmbientalesFre_7_2[0] . '" w:type="dxa"/><w:shd w:fill="' . $fondoAmbientalFre_7_2 . '"/><w:vAlign w:val="center"/>' . $propiedadFusionAmbientalFre_7_2 . '</w:tcPr>' . $textoAspectoAmbientalFre_7_2 . '</w:tc>';
+                        $xmlAspectosAmbientalesFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="' . $anchoColumnasAmbientalesFre_7_2[1] . '" w:type="dxa"/><w:shd w:fill="123F60"/><w:vAlign w:val="center"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="16"/></w:rPr><w:t>' . $escaparXmlFre_7_2($subaspectoAmbientalFre_7_2) . '</w:t></w:r></w:p></w:tc>';
                         if ($esObservacionAmbientalFre_7_2) {
                             $textoObservacionAmbientalFre_7_2 = trim((string) $seleccionAmbientalFre_7_2);
                             if ($textoObservacionAmbientalFre_7_2 === '') $textoObservacionAmbientalFre_7_2 = 'N/A';
-                            $xmlAspectosAmbientalesFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="' . ($anchoTotalAmbientalesFre_7_2 - 3550) . '" w:type="dxa"/><w:gridSpan w:val="6"/><w:vAlign w:val="center"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="16"/></w:rPr><w:t xml:space="preserve">' . $escaparXmlFre_7_2($textoObservacionAmbientalFre_7_2) . '</w:t></w:r></w:p></w:tc>';
+                            $xmlAspectosAmbientalesFre_7_2 .= '<w:tc><w:tcPr><w:tcW w:w="' . $anchoDescripcionAmbientalFre_7_2 . '" w:type="dxa"/><w:gridSpan w:val="6"/><w:vAlign w:val="center"/></w:tcPr><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Poppins" w:hAnsi="Poppins"/><w:sz w:val="16"/></w:rPr><w:t xml:space="preserve">' . $escaparXmlFre_7_2($textoObservacionAmbientalFre_7_2) . '</w:t></w:r></w:p></w:tc>';
                         } else {
                             if ($seleccionAmbientalFre_7_2 === '4') {
                                 $opcionesAmbientalesFre_7_2[2] = 'N/A';
@@ -6438,6 +6610,53 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
 
                     foreach ($angulosFre_7_2 as $anguloFre_7_2) {
 
+                        $descripcionTareaAnguloFre_7_2 = isset($anguloFre_7_2->DESCRIPCION_TAREA)
+                            ? trim((string) $anguloFre_7_2->DESCRIPCION_TAREA)
+                            : '';
+
+                        $tablaAngulosFre_7_2->addRow();
+
+                        $celdaTareaAnguloFre_7_2 = $tablaAngulosFre_7_2->addCell(
+                            11300,
+                            [
+                                'gridSpan' => 2,
+                                'valign' => 'center',
+                                'borderSize' => 6,
+                                'borderColor' => '000000',
+                                'marginTop' => 100,
+                                'marginBottom' => 100,
+                                'marginLeft' => 120,
+                                'marginRight' => 120,
+                            ]
+                        );
+
+                        $textoTareaAnguloFre_7_2 = $celdaTareaAnguloFre_7_2->addTextRun([
+                            'alignment' => 'left',
+                            'spaceAfter' => 0,
+                            'spaceBefore' => 0,
+                        ]);
+
+                        $textoTareaAnguloFre_7_2->addText(
+                            'Tarea: ',
+                            [
+                                'name' => 'Poppins',
+                                'size' => 9,
+                                'bold' => true,
+                                'color' => '000000',
+                            ]
+                        );
+
+                        $textoTareaAnguloFre_7_2->addText(
+                            $descripcionTareaAnguloFre_7_2 !== ''
+                                ? $descripcionTareaAnguloFre_7_2
+                                : 'Sin descripción',
+                            [
+                                'name' => 'Poppins',
+                                'size' => 9,
+                                'color' => '000000',
+                            ]
+                        );
+
                         $claveImagenFre_7_2 = 'FREIMG72\_' . $evaluacionFre_7_2->ID_EVALUACION_FRE . '\_' . $anguloFre_7_2->ID_ANGULOS_FRE;
                         $rutaFotoFre_7_2 = null;
 
@@ -6590,7 +6809,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     '${BLOQUE_FRE}',
                     '${/BLOQUE_FRE}',
                     '${TABLA_DATOS_FRE}',
-                    '${CATEOGIRAS_METODO}',
+                    '${CATEGORIA_METODO}',
                     '${TABLA_ANGULOS_FRE}',
                     '${METODO_OWAS_FRE}',
                     '${ANALISIS_OWAS_FRE}',
@@ -6753,11 +6972,12 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     'ANALISIS_REBA_FRE'        => 'METODOANALISIS4FRE',
                     'RESULTADO_BORG'           => 'RESULTADOBORGFRE',
                     'ANALISIS_BORG'            => 'ANALISISBORGFRE',
-                    'CATEOGIRAS_METODO'        => 'CATEGORIAMETODO',
+                    'CATEGORIA_METODO'        => 'CATEGORIAMETODO',
                     'DINAMOMETRIA_MARCADOR'    => 'DINAMOMETRIAMARCADOR',
                     'OBSERVACION_FUERZAMANUAL' => 'OBSERVACIONFUERZAMANUAL',
                     'ASPECTOS_AMBIENTALES'     => 'ASPECTOSAMBIENTALESFRE',
                     'LEY_SILLA'                => 'LEYSILLAFRE',
+                    'NO_APLICA_METODO'         => 'NOAPLICAMETODO',
                 ];
 
                 foreach ($evaluacionesFre_7_2 as $indiceFre_7_2 => $evaluacionFre_7_2) {
@@ -6771,6 +6991,27 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         $contenidoXmlFre_7_2 = ($tokenFre_7_2 !== '' && isset($bloquesMetodosXmlFre_7_2[$tokenFre_7_2]))
                             ? $bloquesMetodosXmlFre_7_2[$tokenFre_7_2]
                             : '';
+
+                        $aplicaMetodosEnSustitucionFre_7_2 = isset($evaluacionFre_7_2->APLICA_METODOS_ERGONOMICOS)
+                            ? trim((string) $evaluacionFre_7_2->APLICA_METODOS_ERGONOMICOS)
+                            : '1';
+                        $marcadoresDeMetodosFre_7_2 = [
+                            'METODO_OWAS_FRE',
+                            'ANALISIS_OWAS_FRE',
+                            'METODO_ROSA_FRE',
+                            'ANALISIS_ROSA_FRE',
+                            'METODO_RULA_FRE',
+                            'ANALISIS_RULA_FRE',
+                            'METODO_REBA_FRE',
+                            'ANALISIS_REBA_FRE'
+                        ];
+
+                        if ($aplicaMetodosEnSustitucionFre_7_2 === '2' && in_array($nombreMarcadorFre_7_2, $marcadoresDeMetodosFre_7_2, true)) {
+                            $contenidoXmlFre_7_2 = '';
+                        }
+                        if ($nombreMarcadorFre_7_2 === 'NO_APLICA_METODO' && $aplicaMetodosEnSustitucionFre_7_2 !== '2') {
+                            $contenidoXmlFre_7_2 = '';
+                        }
 
                         $marcadorClonadoFre_7_2 = '${' . $nombreMarcadorFre_7_2 . '#' . $numeroBloqueFre_7_2 . '}';
 
@@ -6845,7 +7086,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
 
                 $marcadoresFrePendientes_7_2 = [
                     'TABLA_DATOS_FRE',
-                    'CATEOGIRAS_METODO',
+                    'CATEGORIA_METODO',
                     'TABLA_ANGULOS_FRE',
                     'METODO_OWAS_FRE',
                     'ANALISIS_OWAS_FRE',
@@ -6861,13 +7102,14 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     'OBSERVACION_FUERZAMANUAL',
                     'ASPECTOS_AMBIENTALES',
                     'LEY_SILLA',
+                    'NO_APLICA_METODO',
                     'BLOQUE_FRE',
                     '/BLOQUE_FRE',
                 ];
 
 
                 $xmlDocumentoFre_7_2 = preg_replace(
-                    '~\$\{/?(?:BLOQUE_FRE|TABLA_DATOS_FRE|CATEOGIRAS_METODO|TABLA_ANGULOS_FRE|METODO_OWAS_FRE|ANALISIS_OWAS_FRE|METODO_ROSA_FRE|ANALISIS_ROSA_FRE|METODO_RULA_FRE|ANALISIS_RULA_FRE|METODO_REBA_FRE|ANALISIS_REBA_FRE|RESULTADO_BORG|ANALISIS_BORG|DINAMOMETRIA_MARCADOR|OBSERVACION_FUERZAMANUAL|ASPECTOS_AMBIENTALES|LEY_SILLA)(?:#\d+)?\}~',
+                    '~\$\{/?(?:BLOQUE_FRE|TABLA_DATOS_FRE|CATEGORIA_METODO|TABLA_ANGULOS_FRE|METODO_OWAS_FRE|ANALISIS_OWAS_FRE|METODO_ROSA_FRE|ANALISIS_ROSA_FRE|METODO_RULA_FRE|ANALISIS_RULA_FRE|METODO_REBA_FRE|ANALISIS_REBA_FRE|RESULTADO_BORG|ANALISIS_BORG|DINAMOMETRIA_MARCADOR|OBSERVACION_FUERZAMANUAL|ASPECTOS_AMBIENTALES|LEY_SILLA|NO_APLICA_METODO)(?:#\d+)?\}~',
                     '',
                     $xmlDocumentoFre_7_2
                 );
@@ -6900,7 +7142,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
 
                 foreach (
                     [
-                        'CATEOGIRAS_METODO',
+                        'CATEGORIA_METODO',
                         'METODO_OWAS_FRE',
                         'ANALISIS_OWAS_FRE',
                         'METODO_ROSA_FRE',
@@ -6914,6 +7156,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                         'DINAMOMETRIA_MARCADOR',
                         'OBSERVACION_FUERZAMANUAL',
                         'ASPECTOS_AMBIENTALES',
+                        'NO_APLICA_METODO',
                     ] as $marcadorMetodoFre_7_2
                 ) {
                     $plantillaword->setValue($marcadorMetodoFre_7_2 . '#1', '');
@@ -6932,6 +7175,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                 );
                 $propiedadXmlFre_7_2->setValue($plantillaword, $xmlDocumentoFre_7_2);
             }
+
 
 
 

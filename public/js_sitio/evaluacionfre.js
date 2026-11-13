@@ -9220,6 +9220,9 @@ $("#form_informe_conclusiones").on(
 
 
 
+
+///// RECOMENDACIONES /////
+
 // ACTIVAR O DESACTIVAR RECOMENDACION DEL CATALOGO
 
 $(document).on('change', '.recomendacion_checkbox', function () {
@@ -9228,13 +9231,9 @@ $(document).on('change', '.recomendacion_checkbox', function () {
     let descripcion = fila.find('.descripcion-recomendacion');
 
     if ($(this).is(':checked')) {
-
         descripcion.prop('disabled', false);
-
     } else {
-
         descripcion.prop('disabled', true);
-
     }
 
 });
@@ -9242,41 +9241,36 @@ $(document).on('change', '.recomendacion_checkbox', function () {
 
 // AGREGAR NUEVA RECOMENDACION
 
-$('#agregar_recomendacion_manual').on('click', function () {
+$('#agregar_recomendacion_manual').off('click').on('click', function () {
 
     let fila = `
         <tr class="fila-recomendacion recomendacion-manual">
 
             <td>
-                <input type="text"
-                       class="form-control tipo-recomendacion"
-                       placeholder="Tipo de recomendación">
+                <select class="form-control tipo-recomendacion" required>
+                    <option value="" selected disabled>Seleccione el tipo</option>
+                    <option value="Preventiva">Preventiva</option>
+                    <option value="Correctiva">Correctiva</option>
+                </select>
             </td>
 
             <td>
                 <textarea
                     class="form-control descripcion-recomendacion"
                     rows="3"
-                    placeholder="Escribe la recomendación..."></textarea>
+                    placeholder="Escribe la recomendación..."
+                    required></textarea>
             </td>
 
             <td class="text-center">
-
-                <span class="badge badge-success">
-                    Nueva
-                </span>
-
+                <span class="badge badge-success">Nueva</span>
             </td>
 
             <td class="text-center">
-
                 <button type="button"
                         class="btn btn-danger btn-sm eliminar-recomendacion">
-
                     <i class="fa fa-trash"></i>
-
                 </button>
-
             </td>
 
         </tr>
@@ -9296,13 +9290,16 @@ $(document).on('click', '.eliminar-recomendacion', function () {
 });
 
 
+// GUARDAR RECOMENDACIONES
 
-
-$("#form_informe_listarecomendaciones").on("submit", function(e) {
+$("#form_informe_listarecomendaciones").off("submit").on("submit", function(e) {
 
     e.preventDefault();
 
     let recomendaciones = [];
+    let validacion = true;
+
+    // RECOMENDACIONES DEL CATALOGO
 
     $('#tbody_recomendaciones .catalogo-recomendacion').each(function() {
 
@@ -9310,35 +9307,76 @@ $("#form_informe_listarecomendaciones").on("submit", function(e) {
 
         if (fila.find('.recomendacion_checkbox').is(':checked')) {
 
+            let descripcion = (fila.find('.descripcion-recomendacion').val() || '').trim();
+
+            let tipo = fila.find('td:first').text().trim();
+
+            if (descripcion === '') {
+                validacion = false;
+                fila.find('.descripcion-recomendacion').focus();
+                return false;
+            }
+
             recomendaciones.push({
                 catalogo_id: fila.attr('data-catalogo'),
-                descripcion: fila.find('.descripcion-recomendacion').val(),
-                tipo: fila.find('td:first').text().trim()
+                descripcion: descripcion,
+                tipo: tipo
             });
+
         }
 
     });
 
+    // RECOMENDACIONES MANUALES
 
-    $('#tbody_recomendaciones .recomendacion-manual').each(function() {
-        let fila = $(this);
-        let descripcion = fila.find('.descripcion-recomendacion').val().trim();
-        let tipo = fila.find('.tipo-recomendacion').val().trim();
-        if (descripcion !== '') {
+    if (validacion) {
+
+        $('#tbody_recomendaciones .recomendacion-manual').each(function() {
+
+            let fila = $(this);
+
+            let descripcion = (fila.find('.descripcion-recomendacion').val() || '').trim();
+
+            let tipo = fila.find('.tipo-recomendacion').val() || '';
+
+            if (descripcion === '' || tipo === '') {
+
+                validacion = false;
+
+                if (tipo === '') {
+                    fila.find('.tipo-recomendacion').focus();
+                } else {
+                    fila.find('.descripcion-recomendacion').focus();
+                }
+
+                return false;
+            }
 
             recomendaciones.push({
                 catalogo_id: 0,
                 descripcion: descripcion,
                 tipo: tipo
             });
-        }
-    });
 
+        });
+
+    }
+
+    if (!validacion) {
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Datos incompletos',
+            text: 'Debes seleccionar el tipo y escribir la descripción de todas las recomendaciones.'
+        });
+
+        return;
+    }
 
     let formData = new FormData();
+
     formData.append('RECO_ID', recsensorial);
     formData.append('RECOMENDACIONES', JSON.stringify(recomendaciones));
-
 
     $.ajax({
 
@@ -9348,13 +9386,18 @@ $("#form_informe_listarecomendaciones").on("submit", function(e) {
         cache: false,
         contentType: false,
         processData: false,
+
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
 
         beforeSend: function() {
+
             $("#botonguardar_reporte_recomendaciones").prop('disabled', true);
-            $("#botonguardar_reporte_recomendaciones").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
+
+            $("#botonguardar_reporte_recomendaciones").html(
+                'Guardando... <i class="fa fa-spinner fa-spin"></i>'
+            );
 
         },
 
@@ -9366,7 +9409,6 @@ $("#form_informe_listarecomendaciones").on("submit", function(e) {
                 text: response.msj,
                 timer: 2000,
                 showConfirmButton: false
-
             });
 
             cargarRecomendacionesInformeFreErgo();
@@ -9374,18 +9416,22 @@ $("#form_informe_listarecomendaciones").on("submit", function(e) {
         },
 
         error: function(xhr) {
+
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: xhr.responseJSON?.msj || 'No fue posible guardar las recomendaciones.'
-
             });
 
         },
 
         complete: function() {
+
             $("#botonguardar_reporte_recomendaciones").prop('disabled', false);
-            $("#botonguardar_reporte_recomendaciones").html('Guardar recomendaciones <i class="fa fa-save"></i>');
+
+            $("#botonguardar_reporte_recomendaciones").html(
+                'Guardar recomendaciones <i class="fa fa-save"></i>'
+            );
 
         }
 
@@ -9394,35 +9440,43 @@ $("#form_informe_listarecomendaciones").on("submit", function(e) {
 });
 
 
+// CONSULTAR RECOMENDACIONES GUARDADAS
 
-
-function cargarRecomendacionesInformeFreErgo()
-{
+function cargarRecomendacionesInformeFreErgo() {
 
     $.get(
         '/obtenerRecomendacionesInformeFreErgo/' + recsensorial,
 
-        function(response)
-        {
+        function(response) {
+
+            // REINICIAR RECOMENDACIONES DEL CATALOGO
+
             $('#tbody_recomendaciones .catalogo-recomendacion').each(function() {
 
                 let fila = $(this);
+
                 fila.find('.recomendacion_checkbox').prop('checked', false);
-                fila.find('.descripcion-recomendacion').prop('disabled', true);
+
+                fila.find('.descripcion-recomendacion')
+                    .prop('disabled', true);
 
             });
 
+            // ELIMINAR FILAS MANUALES ANTERIORES
+
             $('#tbody_recomendaciones .recomendacion-manual').remove();
 
-            response.forEach(function(item)
-            {
+            // RECUPERAR RECOMENDACIONES
 
-                let catalogoId = parseInt(item.CATALOGO_RECOMENDACIONES_ID);
+            response.forEach(function(item) {
 
-            let descripcion = item.DESCRIPCION_PERSONALIZADA ||
-                $('#tbody_recomendaciones .catalogo-recomendacion[data-catalogo="' + item.CATALOGO_RECOMENDACIONES_ID + '"]')
-                .find('.descripcion-recomendacion').val() || '';
-                            
+                let catalogoId = parseInt(item.CATALOGO_RECOMENDACIONES_ID) || 0;
+
+                let descripcion = item.DESCRIPCION_PERSONALIZADA || '';
+
+                let tipo = item.TIPO_RECOMENDACION || '';
+
+                // RECOMENDACIONES DEL CATALOGO
 
                 if (catalogoId > 0) {
 
@@ -9440,40 +9494,75 @@ function cargarRecomendacionesInformeFreErgo()
 
                 }
 
+                // RECOMENDACIONES MANUALES
+
                 else {
+
+                    let descripcionSegura = $('<div>').text(descripcion).html();
+
+                    let tipoSegura = $('<div>').text(tipo).html();
 
                     let fila = `
                         <tr class="fila-recomendacion recomendacion-manual">
 
                             <td>
-                                <span class="badge badge-info">-</span>
+                                <select class="form-control tipo-recomendacion" required>
+                                    <option value="" disabled>Seleccione el tipo</option>
+                                    <option value="Preventiva">Preventiva</option>
+                                    <option value="Correctiva">Correctiva</option>
+                                </select>
                             </td>
 
                             <td>
-                                <textarea class="form-control descripcion-recomendacion" rows="3" placeholder="Escribe la recomendación...">${$('<div>').text(descripcion).html()}</textarea>
+                                <textarea
+                                    class="form-control descripcion-recomendacion"
+                                    rows="3"
+                                    placeholder="Escribe la recomendación..."
+                                    required>${descripcionSegura}</textarea>
                             </td>
 
                             <td class="text-center">
                                 <span class="badge badge-success">Nueva</span>
                             </td>
+
                             <td class="text-center">
-                                <button type="button" class="btn btn-danger btn-sm eliminar-recomendacion">
+                                <button type="button"
+                                        class="btn btn-danger btn-sm eliminar-recomendacion">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </td>
+
                         </tr>
                     `;
 
-                    $('#tbody_recomendaciones').append(fila);
+                    let nuevaFila = $(fila);
+
+                    nuevaFila.find('.tipo-recomendacion').val(tipo);
+
+                    $('#tbody_recomendaciones').append(nuevaFila);
 
                 }
 
             });
 
         }
-    );
+
+    ).fail(function(xhr) {
+
+        console.error('Error al consultar recomendaciones:', xhr.responseText);
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudieron consultar las recomendaciones guardadas.'
+        });
+
+    });
 
 }
+
+
+
 
 /// RESPONSABLES
 
