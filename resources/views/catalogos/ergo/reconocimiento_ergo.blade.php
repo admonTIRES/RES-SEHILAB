@@ -1002,7 +1002,7 @@ CONTENIDO RECONOCIMIENTO PSICOSOCIAL -->
 
                     <div class="row" class="reporte_iluminacion">
                         <div class="col-xlg-2 col-lg-3 col-md-5">
-                            <div class="stickyside">
+                            <div class="stickyside" style="position: fixed; top: 230px; width: 280.484px;">
                                 <div class="list-group" id="top-menu">
                                     <a href="#0" class="list-group-item active">Portada <i class="fa" id="menureporte_0"></i></a>
                                     <a href="#1" class="list-group-item">1.- Introducción <i class="fa" id="menureporte_1"></i></a>

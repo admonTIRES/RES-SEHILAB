@@ -226,7 +226,8 @@ $('.link_menuprincipal').click(function () {
                 cargarRecomendacionesInformeFreErgo,
                 tablaVersionesRecoErgo,
                 validarEdicionRecoErgo,
-                cargarDatosPlantilla
+                cargarDatosPlantilla,
+                consultarEstadosMenusReporteFre
 
             ];
 
@@ -7472,6 +7473,8 @@ $("#form_informe_portada").on("submit", function(e)
         success: function(response)
         {
 
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -8021,6 +8024,10 @@ $("#form_informe_introduccion").on("submit", function(e)
 
         success: function(response)
         {
+
+            consultarEstadosMenusReporteFre();
+
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -8079,6 +8086,8 @@ $("#form_informe_listadefiniciones").on("submit", function(e)
         },
         success: function(response)
         {
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -8157,6 +8166,8 @@ $("#form_informe_objetivogeneral").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -8201,6 +8212,8 @@ $("#form_informe_objetivoespecifico").on("submit", function(e)
         },
         success: function(response)
         {
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -8247,6 +8260,8 @@ $("#form_informe_reconocimiento").on("submit", function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -8292,6 +8307,9 @@ $("#form_informe_analisisreconocimiento").on("submit", function(e)
 
         success: function(response)
         {
+
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -8503,6 +8521,8 @@ $("#form_reporte_procesoinstalacion").on(
 
         success: function(response)
         {
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -8553,6 +8573,9 @@ $("#form_informe_ciclos").on(
 
         success: function(response)
         {
+
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -8822,6 +8845,8 @@ $("#form_informe_antropometricas").on("submit",function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -8871,6 +8896,8 @@ $("#form_informe_esqueletico").on("submit",function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -9198,6 +9225,8 @@ $("#form_informe_conclusiones").on(
 
         success: function(response)
         {
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -9403,6 +9432,9 @@ $("#form_informe_listarecomendaciones").off("submit").on("submit", function(e) {
 
         success: function(response) {
 
+            consultarEstadosMenusReporteFre();
+
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -9598,6 +9630,8 @@ $("#form_informe_responsablesinforme").on("submit",function(e)
 
         success: function(response)
         {
+            consultarEstadosMenusReporteFre();
+
             Swal.fire({
                 icon: 'success',
                 title: 'Correcto',
@@ -14158,6 +14192,107 @@ $(document).ready(function () {
 /// VERSIONES
 	
 
+
+/// ESTADO MENU
+
+function consultarEstadosMenusReporteFre()
+{
+    if (
+        typeof recsensorial === 'undefined' ||
+        !recsensorial ||
+        !recsensorial
+    ) {
+
+        console.log(
+            'No se encontró el ID del proyecto'
+        );
+
+        return;
+    }
+
+    $.get(
+        '/consultarEstadosMenusReporteFre/' + recsensorial,
+
+        function(response)
+        {
+            var estados =
+                response.estados || {};
+
+            actualizarEstadosMenusReporteFre(
+                estados
+            );
+        }
+    )
+    .fail(function(xhr)
+    {
+        console.log(
+            'Error al consultar estados del menú:',
+            xhr.responseText
+        );
+    });
+}
+
+
+function actualizarEstadosMenusReporteFre(
+    estados
+)
+{
+    $.each(
+        estados,
+
+        function(menuId, completado)
+        {
+            if (completado) {
+
+                marcarMenuCompleto(
+                    menuId
+                );
+
+            } else {
+
+                marcarMenuPendiente(
+                    menuId
+                );
+            }
+        }
+    );
+}
+
+
+function marcarMenuCompleto(menuId)
+{
+    var icono =
+        $('#' + menuId);
+
+    if (!icono.length) {
+        return;
+    }
+
+    icono
+        .removeClass('fa-times')
+        .addClass('fa-check')
+        .css('color', '#64bd44');
+}
+
+
+function marcarMenuPendiente(menuId)
+{
+    var icono =
+        $('#' + menuId);
+
+    if (!icono.length) {
+        return;
+    }
+
+    icono
+        .removeClass('fa-check')
+        .addClass('fa-times')
+        .css('color', '#FF0000');
+}
+
+
+
+
 function tablaVersionesRecoErgo()
 {
 
@@ -14223,33 +14358,162 @@ function tablaVersionesRecoErgo()
 
 }
 
-$("#boton_reporte_nuevarevision").on("click", function()
-{
 
-    $.ajax({
 
-        url: '/crearRevisionFreErgo',
-        type: 'POST',
-        data: {
-            RECO_ID: recsensorial,
-            _token:
-                $('meta[name="csrf-token"]')
-                .attr('content')
-        },
 
-        success: function(response)
-        {
-            Swal.fire({
-                icon: 'success',
-                title: 'Correcto',
-                text: response.msj
-            });
+$("#boton_reporte_nuevarevision").on("click",
+    function()
+    {
+        var boton = $(this);
+        var contenidoOriginal = boton.html();
 
+        $.ajax({
+
+            url: '/crearRevisionFreErgo',
+            type: 'POST',
+            data: {
+                RECO_ID:recsensorial,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+
+            beforeSend: function()
+            {
+                boton.prop('disabled', true).html('Validando información... ' +'<i class="fa fa-spinner fa-spin"></i>');
+            },
+
+            success: function(response)
+            {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Correcto',
+                    text: response.msj
+                });
+
+                
             tablaVersionesRecoErgo();
 			validarEdicionRecoErgo()
-        }
-    });
-});
+            consultarEstadosMenusReporteFre();
+            },
+
+            error: function(xhr)
+            {
+                console.log(xhr.responseText);
+                var response = xhr.responseJSON || {};
+                var mensaje = response.msj || 'No fue posible crear la revisión.';
+                var seccionesFaltantes = response.secciones_faltantes || [];
+
+                if (
+                    Array.isArray(
+                        seccionesFaltantes
+                    ) &&
+                    seccionesFaltantes.length > 0
+                ) {
+
+                    var lista =
+                        $('<ul>', {
+                            css: {
+                                'padding-left': '22px',
+                                'margin-bottom': '0',
+                                'text-align': 'left'
+                            }
+                        });
+
+                    seccionesFaltantes.forEach(
+                        function(seccion)
+                        {
+                            lista.append(
+                                $('<li>', {
+                                    text: seccion,
+                                    css: {
+                                        'margin-bottom':
+                                            '6px'
+                                    }
+                                })
+                            );
+                        }
+                    );
+
+                    var contenido =
+                        $('<div>', {
+                            css: {
+                                'text-align': 'left'
+                            }
+                        });
+
+                    contenido.append(
+                        $('<p>', {
+                            text: mensaje
+                        })
+                    );
+
+                    contenido.append(
+                        $('<p>', {
+                            text:
+                                'Falta completar las siguientes secciones:'
+                        })
+                    );
+
+                    contenido.append(lista);
+
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Reporte incompleto',
+                        html: contenido[0],
+                        confirmButtonText: 'Entendido'
+                    });
+
+                    consultarEstadosMenusReporteFre();
+
+                    return;
+                }
+
+        
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: mensaje
+                });
+            },
+
+            complete: function()
+            {
+                boton
+                    .prop('disabled', false)
+                    .html(contenidoOriginal);
+            }
+        });
+    }
+);
+
+
+
+// $("#boton_reporte_nuevarevision").on("click", function()
+// {
+
+//     $.ajax({
+
+//         url: '/crearRevisionFreErgo',
+//         type: 'POST',
+//         data: {
+//             RECO_ID: recsensorial,
+//             _token:
+//                 $('meta[name="csrf-token"]')
+//                 .attr('content')
+//         },
+
+//         success: function(response)
+//         {
+//             Swal.fire({
+//                 icon: 'success',
+//                 title: 'Correcto',
+//                 text: response.msj
+//             });
+
+//             tablaVersionesRecoErgo();
+// 			validarEdicionRecoErgo()
+//         }
+//     });
+// });
 
 function cancelarRevisionRecoErgo(ID_VERSION_RECO_ERGO,checkbox)
 {

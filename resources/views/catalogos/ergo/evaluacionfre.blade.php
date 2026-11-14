@@ -785,34 +785,34 @@
 
                     <div class="row" class="reporte_iluminacion">
                         <div class="col-xlg-2 col-lg-3 col-md-5">
-                            <div class="stickyside">
+                            <div class="stickyside" style="position: fixed; top: 230px; width: 280.484px;" >
                                 <div class="list-group" id="top-menu">
-                                    <a href="#0" class="list-group-item active">Portada <i class="fa" id="menureporte_0"></i></a>
-                                    <a href="#1" class="list-group-item">1.- Introducción <i class="fa" id="menureporte_1"></i></a>
-                                    <a href="#2" class="list-group-item">2.- Definiciones <i class="fa" id="menureporte_2"></i></a>
+                                    <a href="#0" class="list-group-item active">Portada <i class="fa fa-times" id="menureporte_0"></i></a>
+                                    <a href="#1" class="list-group-item">1.- Introducción <i class="fa fa-times" id="menureporte_1"></i></a>
+                                    <a href="#2" class="list-group-item">2.- Definiciones <i class="fa fa-times" id="menureporte_2"></i></a>
                                     <a href="#3" class="list-group-item">3.- Objetivos</a>
-                                    <a href="#3_1" class="list-group-item submenu">3.1.- Objetivo general <i class="fa" id="menureporte_3_1"></i></a>
-                                    <a href="#3_2" class="list-group-item submenu">3.2.- Objetivos específicos <i class="fa" id="menureporte_3_2"></i></a>
+                                    <a href="#3_1" class="list-group-item submenu">3.1.- Objetivo general <i class="fa fa-times" id="menureporte_3_1"></i></a>
+                                    <a href="#3_2" class="list-group-item submenu">3.2.- Objetivos específicos <i class="fa fa-times" id="menureporte_3_2"></i></a>
                                     <a href="#4" class="list-group-item">4.- Metodología</a>
-                                    <a href="#5" class="list-group-item">5.- Reconocimiento</a>
-                                    <a href="#5_1" class="list-group-item submenu">5.1.- Ubicación de la instalación<i class="fa" id="menureporte_5_1"></i></a>
-                                    <a href="#5_2" class="list-group-item submenu">5.2.- Descripción del proceso en la instalación <i class="fa " id="menureporte_5_2"></i></a>
+                                    <a href="#5" class="list-group-item">5.- Reconocimiento <i class="fa fa-times" id="menureporte_5"></i></a>
+                                    <a href="#5_1" class="list-group-item submenu">5.1.- Ubicación de la instalación <i class="fa " id="menureporte_5_1"></i></a>
+                                    <a href="#5_2" class="list-group-item submenu">5.2.- Descripción del proceso en la instalación <i class="fa fa-times" id="menureporte_5_2"></i></a>
                                     <a href="#5_3" class="list-group-item submenu">5.3.- Ciclos de trabajo de las categorías a evaluar <i class="fa " id="menureporte_5_3"></i></a>
                                     <a href="#6" class="list-group-item">6.- Evaluación</a>
                                     <a href="#6_1" class="list-group-item submenu">6.1.- Condiciones de operación durante la evaluación <i class="fa " id="menureporte_6_1"></i></a>
                                     <a href="#6_2" class="list-group-item submenu">6.2.- Personal Ocupacionalmente Expuesto (POE) evaluado <i class="fa " id="menureporte_6_2"></i></a>
-                                    <a href="#6_3" class="list-group-item submenu">6.3.- Variables antropométricas (peso y talla) <i class="fa " id="menureporte_6_3"></i></a>
-                                    <a href="#6_4" class="list-group-item submenu">6.4.- Registro de trastornos músculo esqueléticos <i class="fa " id="menureporte_6_4"></i></a>
-                                    <a href="#6_5" class="list-group-item submenu">6.5.- Método(s) ergonómico(s) aplicado(s) en este estudio <i class="fa " id="menureporte_6_5"></i></a>
-                                    <a href="#6_6" class="list-group-item submenu">6.6.- Resultados de la aplicación de los métodos ergonómicos por categoría o puesto de trabajo (tareas)<i class="fa " id="menureporte_6_6"></i></a>
-                                    <a href="#7" class="list-group-item">7.- Conclusiones <i class="fa" id="menureporte_7"></i></a>
-                                    <a href="#8" class="list-group-item">8.- Recomendaciones de control <i class="fa" id="menureporte_8"></i></a>
-                                    <a href="#9" class="list-group-item">9.- Responsables del informe <i class="fa" id="menureporte_9"></i></a>
+                                    <a href="#6_3" class="list-group-item submenu">6.3.- Variables antropométricas (peso y talla) <i class="fa fa-times" id="menureporte_6_3"></i></a>
+                                    <a href="#6_4" class="list-group-item submenu">6.4.- Registro de síntomas músculoesqueléticos <i class="fa fa-times" id="menureporte_6_4"></i></a>
+                                    <a href="#6_5" class="list-group-item submenu">6.5.- Método(s) ergonómico(s) aplicado(s) en este estudio <i class="fa" id="menureporte_6_5"></i></a>
+                                    <a href="#6_6" class="list-group-item submenu">6.6.- Resultados de la aplicación de los métodos ergonómicos por categoría o puesto de trabajo (tareas)<i class="fa" id="menureporte_6_6"></i></a>
+                                    <a href="#7" class="list-group-item">7.- Conclusiones <i class="fa fa-times" id="menureporte_7"></i></a>
+                                    <a href="#8" class="list-group-item">8.- Recomendaciones de control <i class="fa fa-times" id="menureporte_8"></i></a>
+                                    <a href="#9" class="list-group-item">9.- Responsables del informe <i class="fa fa-times" id="menureporte_9"></i></a>
                                     @if(auth()->user()->hasRoles(['Superusuario', 'Administrador','Coordinador']))
 
-                                    <a href="#10" class="list-group-item">10.- Anexos <i class="fa" id="menureporte_10"></i></a>
+                                    <a href="#10" class="list-group-item">10.- Anexos <i class="fa " id="menureporte_10"></i></a>
                                     <a href="#10_1" class="list-group-item submenu">10.1.- Anexo 1: Métodos aplicados <i class="fa " id="menureporte_10_1"></i></a>
-                                    <a href="#11" class="list-group-item">11.- Generar informe <i class="fa" id="menureporte_11"></i></a>
+                                    <a href="#11" class="list-group-item">11.- Generar informe <i class="fa " id="menureporte_11"></i></a>
                                     @endif
 
 
@@ -6707,9 +6707,9 @@ DESCRIPCIONACTIVIDAD
                                                     <label for="ROSA_TIEMPO_A">Tiempo de uso diario de la silla</label>
                                                     <select id="ROSA_TIEMPO_A" name="ROSA_TIEMPO_A" class="form-control rosa-tiempo" required>
                                                         <option value="">Seleccionar</option>
-                                                        <option value="1">+1 — Uso continuo durante más de una hora o más de 4 horas diarias</option>
-                                                        <option value="0">0 — Tiempo intermedio</option>
-                                                        <option value="-1">-1 — Uso continuo menor de 30 minutos o menos de una hora diaria</option>
+                                                        <option value="1">+1 — Más de 4 horas o más de 1 hora ininterrumpida +1</option>
+                                                        <option value="0">0 — Entre 1 y 4 horas en total o entre 30 minutos y 1 hora ininterrumpida</option>
+                                                        <option value="-1">-1 — Menos de 1 hora en total o menos de 30 minutos ininterrumpidos</option>
                                                     </select>
                                                 </div>
 

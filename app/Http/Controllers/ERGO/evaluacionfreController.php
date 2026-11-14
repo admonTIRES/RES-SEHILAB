@@ -2721,20 +2721,325 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
         ]);
     }
 
-    public function crearRevisionFreErgo(Request $request)
-    {
 
+
+    public function consultarEstadosMenusReporteFre($RECO_ID)
+    {
         try {
 
-            DB::beginTransaction();
+            $recsensorial = reconocimientoergoModel::find(
+                $RECO_ID
+            );
 
+            if (!$recsensorial) {
+
+                return response()->json([
+                    'msj' => 'Proyecto no encontrado',
+                    'estados' => []
+                ], 404);
+            }
+
+            $datosGenerales = DB::table(
+                'datosgeneralesinformeFre'
+            )
+                ->where(
+                'RECO_ID',
+                $RECO_ID
+                )
+                ->first();
+
+            $tieneValor = function ($valor) {
+
+                if ($valor === null) {
+                    return false;
+                }
+
+                if (is_string($valor)) {
+
+                    return trim($valor) !== '';
+                }
+
+                if (is_array($valor)) {
+
+                    return count($valor) > 0;
+                }
+
+                return true;
+            };
+
+
+            $campoCompleto = function (
+                $campo
+            ) use (
+                $datosGenerales,
+                $tieneValor
+            ) {
+
+                if (!$datosGenerales) {
+                    return false;
+                }
+
+                if (!property_exists(
+                    $datosGenerales,
+                    $campo
+                )) {
+                    return false;
+                }
+
+                return $tieneValor(
+                    $datosGenerales->{$campo}
+                );
+            };
+
+            $todosLosCamposCompletos = function (
+                $campos
+            ) use (
+                $campoCompleto
+            ) {
+
+                foreach ($campos as $campo) {
+
+                    if (!$campoCompleto($campo)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+
+            $estados = [];
+
+            $estados['menureporte_0'] =
+                DB::table(
+                'recursosPortadasFreErgo'
+                )
+                ->where(
+                'RECO_ID',
+                $RECO_ID
+                )
+                ->exists();
+
+            $estados['menureporte_1'] =
+                $campoCompleto(
+                    'INFORME_INTRODUCCION'
+                );
+
+            $estados['menureporte_2'] =
+                DB::table(
+                'definicionesinformefre'
+                )
+                ->where(
+                'RECO_ID',
+                $RECO_ID
+                )
+                ->exists();
+
+            $estados['menureporte_3_1'] =
+                $campoCompleto(
+                    'INFORME_OBJETIVOGENERALES'
+                );
+
+            $estados['menureporte_3_2'] =
+                $campoCompleto(
+                    'INFORME_OBJETIVOSESPECIFICOS'
+                );
+
+
+            $estados['menureporte_5'] =
+                $todosLosCamposCompletos([
+                'INFORME_RECONOCIMIENTO',
+                'INFORME_ANALISISRECONOCIMIENTO'
+                ]);
+
+
+            $estados['menureporte_5_2'] =
+                $todosLosCamposCompletos([
+                'INFORME_PROCESOINSTALACION',
+                'INFORME_PROCESOINSTALACION'
+                ]);
+
+
+            $estados['menureporte_6_3'] =
+                $campoCompleto(
+                'INFORME_ANTROPOMETRICAS'
+                );
+
+
+            $estados['menureporte_6_4'] =
+                $todosLosCamposCompletos([
+                'OBSERVACIONES_ESQUELETICAS1',
+                'OBSERVACIONES_ESQUELETICAS2',
+                'OBSERVACIONES_ESQUELETICAS3',
+                'OBSERVACIONES_ESQUELETICAS4',
+                'OBSERVACIONES_ESQUELETICAS5',
+                'OBSERVACIONES_ESQUELETICAS6'
+
+            ]);
+
+
+            $estados['menureporte_7'] =
+                $campoCompleto(
+                'INFORME_CONCLUSION'
+                );
+
+            $estados['menureporte_8'] =
+                DB::table(
+                'recomendacionesinformeFre'
+                )
+                ->where(
+                    'RECO_ID',
+                    $RECO_ID
+                )
+                ->exists();
+
+
+            $estados['menureporte_9'] =
+                $todosLosCamposCompletos([
+                    'INFORME_RESPONSABLE1',
+                    'INFORME_RESPONSABLE1CARGO',
+                    'INFORME_RESPONSABLE1DOCUMENTO',
+                    'INFORME_RESPONSABLE2',
+                    'INFORME_RESPONSABLE2CARGO',
+                    'INFORME_RESPONSABLE2DOCUMENTO'
+                ]);
+
+            return response()->json([
+                'msj' =>
+                'Estados consultados correctamente',
+
+                'estados' =>
+                $estados
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'msj' =>
+                'Error: ' . $e->getMessage(),
+
+                'estados' =>
+                []
+            ], 500);
+        }
+    }
+
+
+    public function crearRevisionFreErgo(Request $request)
+    {
+        try {
+
+            $RECO_ID =
+                $request->RECO_ID;
+
+            if (
+                $RECO_ID === null ||
+                $RECO_ID === ''
+            ) {
+
+                return response()->json([
+                    'msj' =>
+                    'No se recibió el ID del proyecto.'
+                ], 422);
+            }
+
+
+            $respuestaEstados =
+                $this->consultarEstadosMenusReporteFre(
+                $RECO_ID
+                );
+
+            $resultadoEstados =
+                $respuestaEstados->getData(true);
+
+            $estados =
+                isset($resultadoEstados['estados']) &&
+                is_array($resultadoEstados['estados'])
+                ? $resultadoEstados['estados']
+                : [];
+
+
+            if (count($estados) === 0) {
+
+                return response()->json([
+                    'msj' =>
+                    'No fue posible validar la información del reporte.',
+
+                    'secciones_faltantes' =>
+                    []
+                ], 422);
+            }
+
+            $nombresSecciones = [
+                'menureporte_0' =>
+                'Portada',
+
+                'menureporte_1' =>
+                '1.- Introducción',
+
+                'menureporte_2' =>
+                '2.- Definiciones',
+
+                'menureporte_3_1' =>
+                '3.1.- Objetivo general',
+
+                'menureporte_3_2' =>
+                '3.2.- Objetivos específicos',
+
+                'menureporte_5' =>
+                '5.- Reconocimiento',
+
+                'menureporte_5_2' =>
+                '5.2.- Descripción del proceso en la instalación',
+
+
+                'menureporte_6_3' =>
+                '6.3.- Variables antropométricas (peso y talla)',
+
+                'menureporte_6_4' =>
+                '6.4.- Registro de síntomas músculoesqueléticos',
+
+                'menureporte_7' =>
+                '7.- Conclusiones',
+
+                'menureporte_8' =>
+                '8.- Recomendaciones de control',
+
+                'menureporte_9' =>
+                '9.- Responsables del informe'
+            ];
+
+            $seccionesFaltantes = [];
+
+            foreach ($estados as $menuId => $completado) {
+
+                if (!$completado) {
+
+                    $seccionesFaltantes[] =
+                        isset($nombresSecciones[$menuId])
+                        ? $nombresSecciones[$menuId]
+                        : $menuId;
+                }
+            }
+
+
+            if (count($seccionesFaltantes) > 0) {
+
+                return response()->json([
+                    'msj' =>
+                    'No se puede generar la revisión porque el reporte está incompleto.',
+
+                    'secciones_faltantes' =>
+                    $seccionesFaltantes
+                ], 422);
+            }
 
             $ultima =
                 versionesfrergoModel::where(
-                    'RECO_ID',
-                    $request->RECO_ID
+                'RECO_ID',
+                $RECO_ID
                 )
-                ->orderByDesc('NUMERO_REVISION')
+                ->orderByDesc(
+                    'NUMERO_REVISION'
+                )
                 ->first();
 
             if (
@@ -2744,43 +3049,104 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
             ) {
 
                 return response()->json([
-
                     'msj' =>
-                    'La revisión ya fue finalizada'
-
-                ], 500);
+                    'La revisión ya fue finalizada.'
+                ], 422);
             }
+
+
+            DB::beginTransaction();
 
             $numero = $ultima ? $ultima->NUMERO_REVISION + 1 : 0;
             $rutaDocumento = 'pendiente.docx';
             $revision = new versionesfrergoModel();
-            $revision->RECO_ID = $request->RECO_ID;
+            $revision->RECO_ID = $RECO_ID;
             $revision->NUMERO_REVISION = $numero;
             $revision->FINALIZADO = 1;
             $revision->FINALIZADO_POR = Auth::user()->id;
             $revision->FECHA_FINALIZADO = now();
             $revision->RUTA_DOCUMENTO = $rutaDocumento;
             $revision->save();
+
             DB::commit();
 
             return response()->json([
-
                 'msj' =>
                 'Revisión generada correctamente'
-
             ]);
         } catch (Exception $e) {
-
-            DB::rollBack();
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
 
             return response()->json([
-
                 'msj' =>
                 'Error: ' . $e->getMessage()
-
             ], 500);
         }
     }
+
+
+    // public function crearRevisionFreErgo(Request $request)
+    // {
+
+    //     try {
+
+    //         DB::beginTransaction();
+
+
+    //         $ultima =
+    //             versionesfrergoModel::where(
+    //                 'RECO_ID',
+    //                 $request->RECO_ID
+    //             )
+    //             ->orderByDesc('NUMERO_REVISION')
+    //             ->first();
+
+    //         if (
+    //             $ultima &&
+    //             $ultima->FINALIZADO == 1 &&
+    //             $ultima->CANCELADO == 0
+    //         ) {
+
+    //             return response()->json([
+
+    //                 'msj' =>
+    //                 'La revisión ya fue finalizada'
+
+    //             ], 500);
+    //         }
+
+    //         $numero = $ultima ? $ultima->NUMERO_REVISION + 1 : 0;
+    //         $rutaDocumento = 'pendiente.docx';
+    //         $revision = new versionesfrergoModel();
+    //         $revision->RECO_ID = $request->RECO_ID;
+    //         $revision->NUMERO_REVISION = $numero;
+    //         $revision->FINALIZADO = 1;
+    //         $revision->FINALIZADO_POR = Auth::user()->id;
+    //         $revision->FECHA_FINALIZADO = now();
+    //         $revision->RUTA_DOCUMENTO = $rutaDocumento;
+    //         $revision->save();
+    //         DB::commit();
+
+    //         return response()->json([
+
+    //             'msj' =>
+    //             'Revisión generada correctamente'
+
+    //         ]);
+    //     } catch (Exception $e) {
+
+    //         DB::rollBack();
+
+    //         return response()->json([
+
+    //             'msj' =>
+    //             'Error: ' . $e->getMessage()
+
+    //         ], 500);
+    //     }
+    // }
 
     public function cancelarRevisionFreErgo(Request $request)
     {

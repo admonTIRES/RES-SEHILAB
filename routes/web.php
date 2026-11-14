@@ -2508,6 +2508,11 @@ Route::get('/calcularangulos', function () {return view('catalogos.ergo.calcular
 
 /// VERSIONES FRE 
 
+
+
+Route::get('consultarEstadosMenusReporteFre/{RECO_ID}', ['as' => 'consultarEstadosMenusReporteFre', 'uses' => 'ERGO\evaluacionfreController@consultarEstadosMenusReporteFre']);
+
+
 Route::get('tablaVersionesFreErgo/{reco_id}', ['as' => 'tablaVersionesFreErgo', 'uses' => 'ERGO\evaluacionfreController@tablaVersionesFreErgo']);
 Route::post('crearRevisionFreErgo', ['as' => 'crearRevisionFreErgo', 'uses' => 'ERGO\evaluacionfreController@crearRevisionFreErgo']);
 Route::post('cancelarRevisionFreErgo', ['as' => 'cancelarRevisionFreErgo', 'uses' => 'ERGO\evaluacionfreController@cancelarRevisionFreErgo']);
