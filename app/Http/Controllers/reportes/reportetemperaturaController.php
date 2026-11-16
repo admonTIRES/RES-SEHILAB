@@ -2489,147 +2489,280 @@ class reportetemperaturaController extends Controller
      * @param  $agente_nombre
      * @return \Illuminate\Http\Response
      */
+
     public function reportetemperaturarecomendacionestabla($proyecto_id, $agente_nombre)
     {
         try {
+
             $proyecto = proyectoModel::with(['catregion', 'catsubdireccion', 'catgerencia', 'catactivo'])->findOrFail($proyecto_id);
+
             $recsensorial = recsensorialModel::findOrFail($proyecto->recsensorial_id);
 
+            $tabla = DB::select('
+            SELECT DISTINCT
+                TABLA.id,
+                TABLA.agente_id,
+                TABLA.agente_nombre,
+                TABLA.recomendaciones_tipo,
+                TABLA.recomendaciones_descripcion,
+                TABLA.catalogo_id,
+                TABLA.checked
+            FROM
+            (
+                (
+                    SELECT
+                        CATALOGO.id,
+                        CATALOGO.agente_id,
+                        CATALOGO.agente_nombre,
+                        CATALOGO.recomendaciones_tipo,
 
-            $tabla = DB::select('SELECT DISTINCT
-                                        TABLA.id,
-                                        TABLA.agente_id,
-                                        TABLA.agente_nombre,
-                                        TABLA.recomendaciones_tipo,
-                                        TABLA.recomendaciones_descripcion,
-                                        TABLA.catalogo_id,
-                                        TABLA.checked
-                                    FROM
-                                        (
-                                            (
-                                                SELECT
-                                                    CATALOGO.id,
-                                                    CATALOGO.agente_id,
-                                                    CATALOGO.agente_nombre,
-                                                    CATALOGO.recomendaciones_tipo,
-                                                    IF(CATALOGO.recomendaciones_descripcion != "", CATALOGO.recomendaciones_descripcion, CATALOGO.recomendacionescatalogo_descripcion) AS recomendaciones_descripcion,
-                                                    0 AS catalogo_id,
-                                                    IF(CATALOGO.recomendaciones_descripcion != "", "checked", "") AS checked
-                                                FROM
-                                                    (
-                                                        SELECT
-                                                            reporterecomendacionescatalogo.id,
-                                                            reporterecomendacionescatalogo.agente_id,
-                                                            reporterecomendacionescatalogo.agente_nombre,
-                                                            reporterecomendacionescatalogo.reporterecomendacionescatalogo_tipo AS recomendaciones_tipo,
-                                                            reporterecomendacionescatalogo.reporterecomendacionescatalogo_descripcion AS recomendacionescatalogo_descripcion,
-                                                            IFNULL((
-                                                                    SELECT
-                                                                        reporterecomendaciones.reporterecomendaciones_descripcion
-                                                                    FROM
-                                                                        reporterecomendaciones 
-                                                                    WHERE
-                                                                        -- reporterecomendaciones.proyecto_id = ' . $proyecto_id . '
-                                                                        reporterecomendaciones.reporterecomendacionescatalogo_id = reporterecomendacionescatalogo.id
-                                                                    LIMIT 1 
-                                                            ), NULL) AS recomendaciones_descripcion
-                                                        FROM
-                                                            reporterecomendacionescatalogo
-                                                        WHERE
-                                                            reporterecomendacionescatalogo.agente_nombre = "' . $agente_nombre . '"
-                                                            AND reporterecomendacionescatalogo.reporterecomendacionescatalogo_activo = 1
-                                                        ORDER BY
-                                                            reporterecomendacionescatalogo.reporterecomendacionescatalogo_tipo DESC
-                                                    ) AS CATALOGO
-                                            )
-                                            UNION ALL
-                                            (
-                                                SELECT
-                                                    0 AS id,
-                                                    reporterecomendaciones.agente_id,
-                                                    reporterecomendaciones.agente_nombre,
-                                                    reporterecomendaciones.reporterecomendaciones_tipo AS recomendaciones_tipo,
-                                                    reporterecomendaciones.reporterecomendaciones_descripcion AS recomendaciones_descripcion,
-                                                    reporterecomendaciones.catalogo_id,
-                                                    "checked" AS checked
-                                                FROM
-                                                    reporterecomendaciones
-                                                WHERE
-                                                    reporterecomendaciones.agente_nombre = "' . $agente_nombre . '"
-                                                    AND reporterecomendaciones.reporterecomendacionescatalogo_id = 0
-                                                ORDER BY
-                                                    reporterecomendaciones.id ASC
-                                            )
-                                        ) AS TABLA');
+                        IF(
+                            CATALOGO.recomendaciones_descripcion IS NOT NULL
+                            AND CATALOGO.recomendaciones_descripcion != "",
+                            CATALOGO.recomendaciones_descripcion,
+                            CATALOGO.recomendacionescatalogo_descripcion
+                        ) AS recomendaciones_descripcion,
 
+                        0 AS catalogo_id,
+
+                        IF(
+                            CATALOGO.recomendacion_guardada IS NOT NULL,
+                            "checked",
+                            ""
+                        ) AS checked
+
+                    FROM
+                    (
+                        SELECT
+                            C.id,
+                            C.agente_id,
+                            C.agente_nombre,
+
+                            C.reporterecomendacionescatalogo_tipo AS recomendaciones_tipo,
+
+                            C.reporterecomendacionescatalogo_descripcion AS recomendacionescatalogo_descripcion,
+
+                            (
+                                SELECT
+                                    R.reporterecomendaciones_descripcion
+                                FROM
+                                    reporterecomendaciones R
+                                WHERE
+                                    R.proyecto_id = ?
+                                    AND R.agente_nombre = ?
+                                    AND R.reporterecomendacionescatalogo_id = C.id
+                                ORDER BY
+                                    R.id DESC
+                                LIMIT 1
+                            ) AS recomendaciones_descripcion,
+
+                            (
+                                SELECT
+                                    R.id
+                                FROM
+                                    reporterecomendaciones R
+                                WHERE
+                                    R.proyecto_id = ?
+                                    AND R.agente_nombre = ?
+                                    AND R.reporterecomendacionescatalogo_id = C.id
+                                ORDER BY
+                                    R.id DESC
+                                LIMIT 1
+                            ) AS recomendacion_guardada
+
+                        FROM
+                            reporterecomendacionescatalogo C
+
+                        WHERE
+                            C.agente_nombre = ?
+                            AND C.reporterecomendacionescatalogo_activo = 1
+
+                    ) AS CATALOGO
+                )
+
+                UNION ALL
+
+                (
+                    SELECT
+                        0 AS id,
+                        R.agente_id,
+                        R.agente_nombre,
+                        R.reporterecomendaciones_tipo AS recomendaciones_tipo,
+                        R.reporterecomendaciones_descripcion AS recomendaciones_descripcion,
+                        R.catalogo_id,
+                        "checked" AS checked
+
+                    FROM
+                        reporterecomendaciones R
+
+                    WHERE
+                        R.proyecto_id = ?
+                        AND R.agente_nombre = ?
+                        AND R.reporterecomendacionescatalogo_id = 0
+
+                    ORDER BY
+                        R.id ASC
+                )
+
+            ) AS TABLA
+        ', [
+                $proyecto_id,
+                $agente_nombre,
+                $proyecto_id,
+                $agente_nombre,
+                $agente_nombre,
+                $proyecto_id,
+                $agente_nombre
+            ]);
 
             $numero_registro = 0;
             $total = 0;
+
             foreach ($tabla as $key => $value) {
-                $numero_registro += 1;
+
+                $numero_registro++;
+
                 $value->numero_registro = $numero_registro;
 
                 if (($value->id + 0) > 0) {
+
                     $required_readonly = 'readonly';
+
                     if ($value->checked) {
                         $required_readonly = 'required';
                     }
 
-                    $value->checkbox = '<div class="switch">
-                                            <label>
-                                                <input type="checkbox" class="recomendacion_checkbox" name="recomendacion_checkbox[]" value="' . $value->id . '" ' . $value->checked . ' onclick="activa_recomendacion(this);">
-                                                <span class="lever switch-col-light-blue"></span>
-                                            </label>
-                                        </div>';
+                    $value->checkbox = '
+                    <div class="switch">
+                        <label>
+                            <input
+                                type="checkbox"
+                                class="recomendacion_checkbox"
+                                name="recomendacion_checkbox[]"
+                                value="' . $value->id . '"
+                                ' . $value->checked . '
+                                onclick="activa_recomendacion(this);">
 
-                    $value->descripcion = '<input type="hidden" class="form-control" name="recomendacion_tipo_' . $value->id . '" value="' . $value->recomendaciones_tipo . '" required>
-                                            <label>' . $value->recomendaciones_tipo . '</label>
-                                            <textarea  class="form-control" rows="5" id="recomendacion_descripcion_' . $value->id . '" name="recomendacion_descripcion_' . $value->id . '" ' . $required_readonly . '>' . $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $value->recomendaciones_descripcion) . '</textarea>';
+                            <span class="lever switch-col-light-blue"></span>
+                        </label>
+                    </div>';
+
+                    $value->descripcion = '
+                    <input
+                        type="hidden"
+                        class="form-control"
+                        name="recomendacion_tipo_' . $value->id . '"
+                        value="' . $value->recomendaciones_tipo . '"
+                        required>
+
+                    <label>' . $value->recomendaciones_tipo . '</label>
+
+                    <textarea
+                        class="form-control"
+                        rows="5"
+                        id="recomendacion_descripcion_' . $value->id . '"
+                        name="recomendacion_descripcion_' . $value->id . '"
+                        ' . $required_readonly . '>'
+                        . $this->datosproyectoreemplazartexto(
+                            $proyecto,
+                            $recsensorial,
+                            $value->recomendaciones_descripcion
+                        ) .
+                        '</textarea>';
                 } else {
-                    $value->checkbox = '<input type="checkbox" class="recomendacionadicional_checkbox" name="recomendacionadicional_checkbox[]" value="0" checked/>
-                                        <button type="button" class="btn btn-danger waves-effect btn-circle eliminar" data-toggle="tooltip" title="Eliminar recomendación"><i class="fa fa-trash fa-2x"></i></button>';
+
+                    $value->checkbox = '
+                    <input
+                        type="checkbox"
+                        class="recomendacionadicional_checkbox"
+                        name="recomendacionadicional_checkbox[]"
+                        value="0"
+                        checked/>
+
+                    <button
+                        type="button"
+                        class="btn btn-danger waves-effect btn-circle eliminar"
+                        data-toggle="tooltip"
+                        title="Eliminar recomendación">
+                        <i class="fa fa-trash fa-2x"></i>
+                    </button>';
 
                     $preventiva = "";
                     $correctiva = "";
+
                     if ($value->recomendaciones_tipo == "Preventiva") {
+
                         $preventiva = "selected";
                     } else {
+
                         $correctiva = "selected";
                     }
 
+                    $value->descripcion = '
+                    <div class="row">
 
-                    $value->descripcion = '<div class="row">
-                                                <div class="col-12">
-                                                    <label>Tipo recomendación</label>
-                                                    <select class="custom-select form-control" name="recomendacionadicional_tipo[]" required>
-                                                        <option value=""></option>
-                                                        <option value="Preventiva" ' . $preventiva . '>Preventiva</option>
-                                                        <option value="Correctiva" ' . $correctiva . '>Correctiva</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-12">
-                                                    <br>
-                                                    <label>Descripción</label>
-                                                    <textarea  class="form-control" rows="5" name="recomendacionadicional_descripcion[]" required>' . $this->datosproyectoreemplazartexto($proyecto, $recsensorial, $value->recomendaciones_descripcion) . '</textarea>
-                                                </div>
-                                            </div>';
+                        <div class="col-12">
+
+                            <label>Tipo recomendación</label>
+
+                            <select
+                                class="custom-select form-control"
+                                name="recomendacionadicional_tipo[]"
+                                required>
+
+                                <option value=""></option>
+
+                                <option value="Preventiva" ' . $preventiva . '>
+                                    Preventiva
+                                </option>
+
+                                <option value="Correctiva" ' . $correctiva . '>
+                                    Correctiva
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <br>
+
+                            <label>Descripción</label>
+
+                            <textarea
+                                class="form-control"
+                                rows="5"
+                                name="recomendacionadicional_descripcion[]"
+                                required>'
+                        . $this->datosproyectoreemplazartexto(
+                            $proyecto,
+                            $recsensorial,
+                            $value->recomendaciones_descripcion
+                        ) .
+                        '</textarea>
+
+                        </div>
+
+                    </div>';
                 }
 
                 if ($value->checked) {
-                    $total += 1;
+                    $total++;
                 }
             }
 
-
-            // respuesta
             $dato['data'] = $tabla;
             $dato['total'] = $total;
             $dato["msj"] = 'Datos consultados correctamente';
+
             return response()->json($dato);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+
             $dato['data'] = 0;
             $dato['total'] = 0;
             $dato["msj"] = 'Error ' . $e->getMessage();
+
             return response()->json($dato);
         }
     }
