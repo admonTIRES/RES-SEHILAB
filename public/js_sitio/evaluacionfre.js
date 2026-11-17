@@ -10318,7 +10318,8 @@ document.addEventListener('DOMContentLoaded', function () {
             Math.min(
                 8,
                 valores.B2 +
-                sumaAdicionales('B2')
+                sumaAdicionales('B2') +
+                tiempo('ROSA_TIEMPO_B2')
             )
         );
 
@@ -14788,4 +14789,451 @@ async function descargarRevisionFreErgo(RECO_ID) {
             }, 5000);
         }
     }
+}
+
+/// Descargar metodos
+
+async function descargarMetodoOWAS() {
+
+    Swal.fire({
+        title: 'Generando ficha OWAS...',
+        html: 'Preparando el documento PDF.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
+        }
+    });
+
+    let form = null;
+
+    try {
+
+        if (!window.fre_id) {
+            throw new Error(
+                'No se encontró el identificador de la evaluación FRE.'
+            );
+        }
+
+        const metaToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
+
+        if (!metaToken) {
+            throw new Error(
+                'No se encontró el token CSRF de Laravel.'
+            );
+        }
+
+        form = document.createElement('form');
+
+        form.method = 'POST';
+        form.action = '/descargarMetodoOWAS';
+        form.target = '_blank';
+
+        const inputToken = document.createElement('input');
+
+        inputToken.type = 'hidden';
+        inputToken.name = '_token';
+        inputToken.value = metaToken.content;
+
+        form.appendChild(inputToken);
+
+        const inputFreId = document.createElement('input');
+
+        inputFreId.type = 'hidden';
+        inputFreId.name = 'fre_id';
+        inputFreId.value = window.fre_id;
+
+        form.appendChild(inputFreId);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+        Swal.close();
+
+    } catch (error) {
+
+        console.error(
+            'Error al descargar el PDF OWAS:',
+            error
+        );
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al generar el PDF',
+            text: error.message || 'Ocurrió un problema al preparar el documento.'
+        });
+
+    } finally {
+
+        if (form) {
+            setTimeout(function () {
+                form.remove();
+            }, 5000);
+        }
+    }
+}
+
+
+
+
+
+async function descargarMetodoROSA() {
+
+    Swal.fire({
+        title: 'Generando ficha ROSA...',
+        html: 'Preparando el documento PDF.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
+        }
+    });
+
+    let form = null;
+
+    try {
+
+        if (!window.fre_id) {
+            throw new Error(
+                'No se encontró el identificador de la evaluación FRE.'
+            );
+        }
+
+        const metaToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
+
+        if (!metaToken) {
+            throw new Error(
+                'No se encontró el token CSRF de Laravel.'
+            );
+        }
+
+        form = document.createElement('form');
+
+        form.method = 'POST';
+        form.action = '/descargarMetodoROSA';
+        form.target = '_blank';
+
+        const inputToken = document.createElement('input');
+
+        inputToken.type = 'hidden';
+        inputToken.name = '_token';
+        inputToken.value = metaToken.content;
+
+        form.appendChild(inputToken);
+
+        const inputFreId = document.createElement('input');
+
+        inputFreId.type = 'hidden';
+        inputFreId.name = 'fre_id';
+        inputFreId.value = window.fre_id;
+
+        form.appendChild(inputFreId);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+        Swal.close();
+
+    } catch (error) {
+
+        console.error(
+            'Error al descargar el PDF OWAS:',
+            error
+        );
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al generar el PDF',
+            text: error.message || 'Ocurrió un problema al preparar el documento.'
+        });
+
+    } finally {
+
+        if (form) {
+            setTimeout(function () {
+                form.remove();
+            }, 5000);
+        }
+    }
+
+
+
+}
+
+
+
+
+async function descargarMetodoRULA() {
+
+    Swal.fire({
+        title: 'Generando ficha RULA...',
+        html: 'Preparando el documento PDF.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
+        }
+    });
+
+    let form = null;
+
+    try {
+
+        if (!window.fre_id) {
+            throw new Error(
+                'No se encontró el identificador de la evaluación FRE.'
+            );
+        }
+
+        const metaToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
+
+        if (!metaToken) {
+            throw new Error(
+                'No se encontró el token CSRF de Laravel.'
+            );
+        }
+
+        form = document.createElement('form');
+
+        form.method = 'POST';
+        form.action = '/descargarMetodoRULA';
+        form.target = '_blank';
+
+        const inputToken = document.createElement('input');
+
+        inputToken.type = 'hidden';
+        inputToken.name = '_token';
+        inputToken.value = metaToken.content;
+
+        form.appendChild(inputToken);
+
+        const inputFreId = document.createElement('input');
+
+        inputFreId.type = 'hidden';
+        inputFreId.name = 'fre_id';
+        inputFreId.value = window.fre_id;
+
+        form.appendChild(inputFreId);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+        Swal.close();
+
+    } catch (error) {
+
+        console.error(
+            'Error al descargar el PDF OWAS:',
+            error
+        );
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al generar el PDF',
+            text: error.message || 'Ocurrió un problema al preparar el documento.'
+        });
+
+    } finally {
+
+        if (form) {
+            setTimeout(function () {
+                form.remove();
+            }, 5000);
+        }
+    }
+
+
+    
+}
+
+
+
+
+async function descargarMetodoREBA() {
+
+    Swal.fire({
+        title: 'Generando ficha REBA...',
+        html: 'Preparando el documento PDF.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
+        }
+    });
+
+    let form = null;
+
+    try {
+
+        if (!window.fre_id) {
+            throw new Error(
+                'No se encontró el identificador de la evaluación FRE.'
+            );
+        }
+
+        const metaToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
+
+        if (!metaToken) {
+            throw new Error(
+                'No se encontró el token CSRF de Laravel.'
+            );
+        }
+
+        form = document.createElement('form');
+
+        form.method = 'POST';
+        form.action = '/descargarMetodoREBA';
+        form.target = '_blank';
+
+        const inputToken = document.createElement('input');
+
+        inputToken.type = 'hidden';
+        inputToken.name = '_token';
+        inputToken.value = metaToken.content;
+
+        form.appendChild(inputToken);
+
+        const inputFreId = document.createElement('input');
+
+        inputFreId.type = 'hidden';
+        inputFreId.name = 'fre_id';
+        inputFreId.value = window.fre_id;
+
+        form.appendChild(inputFreId);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+        Swal.close();
+
+    } catch (error) {
+
+        console.error(
+            'Error al descargar el PDF OWAS:',
+            error
+        );
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al generar el PDF',
+            text: error.message || 'Ocurrió un problema al preparar el documento.'
+        });
+
+    } finally {
+
+        if (form) {
+            setTimeout(function () {
+                form.remove();
+            }, 5000);
+        }
+    }
+
+
+    
+}
+
+
+
+
+async function descargarMetodoMACEQUIPOS() {
+
+    Swal.fire({
+        title: 'Generando ficha REBA...',
+        html: 'Preparando el documento PDF.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
+        }
+    });
+
+    let form = null;
+
+    try {
+
+        if (!window.fre_id) {
+            throw new Error(
+                'No se encontró el identificador de la evaluación FRE.'
+            );
+        }
+
+        const metaToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
+
+        if (!metaToken) {
+            throw new Error(
+                'No se encontró el token CSRF de Laravel.'
+            );
+        }
+
+        form = document.createElement('form');
+
+        form.method = 'POST';
+        form.action = '/descargarMetodoMACEQUIPOS';
+        form.target = '_blank';
+
+        const inputToken = document.createElement('input');
+
+        inputToken.type = 'hidden';
+        inputToken.name = '_token';
+        inputToken.value = metaToken.content;
+
+        form.appendChild(inputToken);
+
+        const inputFreId = document.createElement('input');
+
+        inputFreId.type = 'hidden';
+        inputFreId.name = 'fre_id';
+        inputFreId.value = window.fre_id;
+
+        form.appendChild(inputFreId);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+        Swal.close();
+
+    } catch (error) {
+
+        console.error(
+            'Error al descargar el PDF OWAS:',
+            error
+        );
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al generar el PDF',
+            text: error.message || 'Ocurrió un problema al preparar el documento.'
+        });
+
+    } finally {
+
+        if (form) {
+            setTimeout(function () {
+                form.remove();
+            }, 5000);
+        }
+    }
+
+
+    
 }

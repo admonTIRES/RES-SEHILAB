@@ -2792,6 +2792,7 @@ DESCRIPCIONACTIVIDAD
             <div class="modal-body">
                 <div class="card">
 
+
                     <ul class="nav nav-tabs profile-tab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tab1_fre" id="tab1_fre_info" role="tab">Información FRE</a>
@@ -2805,6 +2806,54 @@ DESCRIPCIONACTIVIDAD
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1_fre" role="tabpanel">
                             <div class="card-body">
+
+
+                            <button type="button"
+                                class="btn btn-danger mt-3"
+                                id="btnDescargarMetodoOWAS"
+                                onclick="descargarMetodoOWAS()">
+                                <i class="fas fa-file-pdf"></i>
+                                Descargar ficha OWAS
+                            </button>
+                            <br>
+
+
+                            <button
+                                type="button"
+                                class="btn btn-danger mt-3"
+                                id="btnDescargarMetodoROSA"
+                                onclick="descargarMetodoROSA()">
+                                Descargar PDF método ROSA
+                            </button>
+                            <br>
+
+                             <button
+                                type="button"
+                                class="btn btn-danger mt-3"
+                                id="btnDescargarMetodoRULA"
+                                onclick="descargarMetodoRULA()">
+                                Descargar PDF método RULA
+                            </button>
+
+                            <br>
+
+                             <button
+                                type="button"
+                                class="btn btn-danger mt-3"
+                                id="btnDescargarMetodoREBA"
+                                onclick="descargarMetodoREBA()">
+                                Descargar PDF método REBA
+                            </button>
+
+                            <br>
+
+                             <button
+                                type="button"
+                                class="btn btn-danger mt-3"
+                                id="btnDescargarMetodoMACEQUIPO"
+                                onclick="descargarMetodoMACEQUIPOS()">
+                                Descargar PDF método MAC EQUIPO
+                            </button>
 
                                 <form enctype="multipart/form-data" method="post" name="form_evalfre" id="form_evalfre">
                                     {!! csrf_field() !!}
@@ -2832,7 +2881,7 @@ DESCRIPCIONACTIVIDAD
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label>Instalación *</label>
-                                                <input type="text" class="form-control" name="INSTALACION_FRE" id="INSTALACION_FRE">
+                                                <input type="text" class="form-control" name="INSTALACION_FRE" id="INSTALACION_FRE" readonly>
                                             </div>
                                         </div>
 
@@ -6749,6 +6798,12 @@ DESCRIPCIONACTIVIDAD
                                                             <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="No hay portadocumentos y se necesita"> +1 No hay portadocumentos y se necesita</label>
                                                             <label><input type="checkbox" class="rosa-extra" name="ROSA_EXTRAS[]" data-apartado="B2" value="1" data-texto="Reflejos en pantalla"> +1 Reflejos en pantalla</label>
                                                         </div>
+                                                         <label for="ROSA_TIEMPO_B2">Tiempo de uso diario de la pantalla</label>
+                                                        <select id="ROSA_TIEMPO_B2" name="ROSA_TIEMPO_B2" class="form-control rosa-tiempo">
+                                                            <option value="">Seleccionar</option>
+                                                            <option value="1">+1 — Uso prolongado</option>
+                                                            <option value="-1">-1 — Uso breve</option>
+                                                        </select>
                                                     </div>
                                                 </div>
 
