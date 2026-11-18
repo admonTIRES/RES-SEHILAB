@@ -162,6 +162,8 @@ class evaluacionfreModel extends Model
         'ROSA_DATOS_JSON',
 
         // RULA 
+
+
         'RULA_BRAZO',
         'RULA_ANTEBRAZO',
         'RULA_MUNECA',
@@ -182,6 +184,7 @@ class evaluacionfreModel extends Model
         'RULA_ACTIVIDAD',
         'RULA_CARGA',
         'ANALISIS_METODO_RULA',
+
         'RULA_DATOS_JSON',
 
         // REBA
@@ -216,7 +219,7 @@ class evaluacionfreModel extends Model
 
 
 
-        // Método  Tareas con operaciones de manejo manual de carga en equipo
+        // Método MAC - Tareas con operaciones de manejo manual de carga en equipo
         'MAC_EQ_A',
         'MAC_EQ_PESO_CARGA',
         'MAC_EQ_NUM_PERSONAS',
@@ -245,7 +248,7 @@ class evaluacionfreModel extends Model
         'MAC_EQ_TOTAL',
         'MAC_EQ_RESULTADO',
 
-        // Método  MAC - Tareas de levantamiento individual de carga
+        // Método MAC - Tareas de levantamiento individual de carga
 
         'MAC_IND_PESO_CARGA',
         'MAC_IND_NUM_OBJETOS',
@@ -272,7 +275,7 @@ class evaluacionfreModel extends Model
         'MAC_IND_TOTAL',
         'MAC_IND_RESULTADO',
 
-        // Método  MAC - Tareas de transporte de carga
+        // Método MAC - Tareas de transporte de carga
 
         'MAC_TRANS_PESO_CARGA',
         'MAC_TRANS_NUM_OBJETOS',

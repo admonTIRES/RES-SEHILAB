@@ -2115,6 +2115,9 @@ DESCRIPCIONACTIVIDAD
                                     <h4 class="card-title" id="10_1">10.1.- Anexo 1: Métodos aplicados </h4>
                                     <div class="row mb-5">
                                         <div class="col-12">
+                                            <button type="button" class="btn btn-info waves-effect" data-toggle="tooltip" title="Generar zip de métodos aplicados" id="boton_reporte_metodos">
+                                                <span class="btn-label"><i class="fa fa-file-excel-o"></i></span> Descargar métodos
+                                            </button>
                                         </div>
                                     </div>
 
@@ -2807,53 +2810,6 @@ DESCRIPCIONACTIVIDAD
                         <div class="tab-pane active" id="tab1_fre" role="tabpanel">
                             <div class="card-body">
 
-
-                            <button type="button"
-                                class="btn btn-danger mt-3"
-                                id="btnDescargarMetodoOWAS"
-                                onclick="descargarMetodoOWAS()">
-                                <i class="fas fa-file-pdf"></i>
-                                Descargar ficha OWAS
-                            </button>
-                            <br>
-
-
-                            <button
-                                type="button"
-                                class="btn btn-danger mt-3"
-                                id="btnDescargarMetodoROSA"
-                                onclick="descargarMetodoROSA()">
-                                Descargar PDF método ROSA
-                            </button>
-                            <br>
-
-                             <button
-                                type="button"
-                                class="btn btn-danger mt-3"
-                                id="btnDescargarMetodoRULA"
-                                onclick="descargarMetodoRULA()">
-                                Descargar PDF método RULA
-                            </button>
-
-                            <br>
-
-                             <button
-                                type="button"
-                                class="btn btn-danger mt-3"
-                                id="btnDescargarMetodoREBA"
-                                onclick="descargarMetodoREBA()">
-                                Descargar PDF método REBA
-                            </button>
-
-                            <br>
-
-                             <button
-                                type="button"
-                                class="btn btn-danger mt-3"
-                                id="btnDescargarMetodoMACEQUIPO"
-                                onclick="descargarMetodoMACEQUIPOS()">
-                                Descargar PDF método MAC EQUIPO
-                            </button>
 
                                 <form enctype="multipart/form-data" method="post" name="form_evalfre" id="form_evalfre">
                                     {!! csrf_field() !!}
@@ -5920,7 +5876,7 @@ DESCRIPCIONACTIVIDAD
                                             <div class="form-group">
                                                 <label>Interpretación Escala de BORG</label>
                                                 <div class="input-group">
-                                                    <textarea class="form-control" name="INTERPRETACION_ESCALA_BORG" id="INTERPRETACION_ESCALA_BORG" rows="4"></textarea>
+                                                    <textarea class="form-control" name="INTERPRETACION_ESCALA_BORG" id="INTERPRETACION_ESCALA_BORG" rows="4" required></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -6230,7 +6186,7 @@ DESCRIPCIONACTIVIDAD
                                             <div class="form-group">
                                                 <label>Observaciones fuerza manual</label>
                                                 <div class="input-group">
-                                                    <textarea class="form-control" name="OBSERVACIONES_FUERZAMANUAL" id="OBSERVACIONES_FUERZAMANUAL" rows="4"></textarea>
+                                                    <textarea class="form-control" name="OBSERVACIONES_FUERZAMANUAL" id="OBSERVACIONES_FUERZAMANUAL" rows="4" required></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -7827,7 +7783,7 @@ DESCRIPCIONACTIVIDAD
                                                             Actividad muscular
                                                         </label>
                                                         <select class="rula-campo rula-selector"
-                                                            id="RULA_ACTIVIDAD" name="RULA_ACTIVIDAD">
+                                                            id="RULA_ACTIVIDAD" name="RULA_ACTIVIDAD" required>
                                                             <option value=""></option>
                                                             <option value="0">0 — Ocasional, poco frecuente y de corta duración</option>
                                                             <option value="1">+1 — Estática (se mantiene la postura más de un minuto
@@ -7841,7 +7797,7 @@ DESCRIPCIONACTIVIDAD
                                                             Fuerza o carga manejada
                                                         </label>
                                                         <select class="rula-campo rula-selector"
-                                                            id="RULA_CARGA" name="RULA_CARGA">
+                                                            id="RULA_CARGA" name="RULA_CARGA" required>
                                                             <option value=""></option>
                                                             <option value="0">0 — Menos de 2 kg, intermitente</option>
                                                             <option value="1">+1 — De 2 a 10 kg, intermitente</option>
@@ -8110,7 +8066,6 @@ DESCRIPCIONACTIVIDAD
                                                 width: 100%;
                                                 min-height: 38px;
                                                 padding: 7px 10px;
-                                                border: 1px solid #a8bed4;
                                                 border-radius: 3px;
                                                 background: #fff;
                                                 color: #2c2a29;
@@ -12045,7 +12000,7 @@ DESCRIPCIONACTIVIDAD
 
                                                         <div class="col-md-6 mb-3">
                                                             <label>1. Empujar o traccionar cargas por medio de equipo con ruedas</label>
-                                                            <select id="RAPP_CON_RUEDAS" name="RAPP_CON_RUEDAS" class="form-control rapp-selector">
+                                                            <select id="RAPP_CON_RUEDAS" name="RAPP_CON_RUEDAS" class="form-control rapp-selector" required>
                                                                 <option value="">Seleccionar...</option>
                                                                 <option value="SI">Sí</option>
                                                                 <option value="NO">No</option>
@@ -12054,7 +12009,7 @@ DESCRIPCIONACTIVIDAD
 
                                                         <div class="col-md-6 mb-3">
                                                             <label>2. Empujar o traccionar cargas por medio de equipo sin ruedas</label>
-                                                            <select id="RAPP_SIN_RUEDAS" name="RAPP_SIN_RUEDAS" class="form-control rapp-selector">
+                                                            <select id="RAPP_SIN_RUEDAS" name="RAPP_SIN_RUEDAS" class="form-control rapp-selector" required>
                                                                 <option value="">Seleccionar...</option>
                                                                 <option value="SI">Sí</option>
                                                                 <option value="NO">No</option>
@@ -12425,7 +12380,7 @@ DESCRIPCIONACTIVIDAD
 
                                                                     <select id="RAPP_RUEDAS_A1_PEQUENO" name="RAPP_RUEDAS_A1_PEQUENO" class="form-control rapp-select rapp-ruedas-calculo">
                                                                         <option value="">Seleccionar...</option>
-                                                                        <option value="0|V">Menos de 50 kg - Bajo V/0</option>
+                                                                        <option value="0|V">M enos de 50 kg - Bajo V/0</option>
                                                                         <option value="2|A">50 kg a 100 kg - Medio A/2</option>
                                                                         <option value="4|R">100 kg a 200 kg - Alto R/4</option>
                                                                         <option value="8|R">Más de 200 kg - Muy alto R/8</option>

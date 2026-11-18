@@ -2518,8 +2518,24 @@ Route::post('crearRevisionFreErgo', ['as' => 'crearRevisionFreErgo', 'uses' => '
 Route::post('cancelarRevisionFreErgo', ['as' => 'cancelarRevisionFreErgo', 'uses' => 'ERGO\evaluacionfreController@cancelarRevisionFreErgo']);
 Route::get('validarEdicionFreErgo/{reco_id}', ['as' => 'validarEdicionFreErgo', 'uses' => 'ERGO\evaluacionfreController@validarEdicionFreErgo']);
 
-//// descargar 
+//// DESCARGAR INFORME 
 Route::post('descargarRevisionFreErgo/{RECO_ID}', 'ERGO\evaluacionfreController@descargarRevisionFreErgo');
+
+/// DESCARGAR METODOS
+
+
+Route::post('descargarMetodoOWAS', 'ERGO\evaluacionfreController@descargarMetodoOWAS');
+Route::post('descargarMetodoROSA', 'ERGO\evaluacionfreController@descargarMetodoROSA');
+Route::post('descargarMetodoRULA', 'ERGO\evaluacionfreController@descargarMetodoRULA');
+Route::post('descargarMetodoREBA', 'ERGO\evaluacionfreController@descargarMetodoREBA');
+Route::post('descargarMetodoMACEQUIPOS', 'ERGO\evaluacionfreController@descargarMetodoMACEQUIPOS');
+Route::post('descargarMetodoMACIndividual', 'ERGO\evaluacionfreController@descargarMetodoMACIndividual');
+Route::post('descargarMetodoMACTransporte', 'ERGO\evaluacionfreController@descargarMetodoMACTransporte');
+
+
+
+Route::get('reporteMetodosFreZip/{RECO_ID}', ['as' => 'reporteMetodosFreZip', 'uses' => 'ERGO\evaluacionfreController@reporteMetodosFreZip']);
+
 
 Route::get('/clear-cache', function () {
     Artisan::call('config:cache');

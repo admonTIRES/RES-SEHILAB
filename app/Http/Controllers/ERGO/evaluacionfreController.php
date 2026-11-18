@@ -33,6 +33,8 @@ use ZipArchive;
 use PDFMerger;
 
 
+use setasign\Fpdi\Fpdi;
+
 
 //MODELOS
 use App\modelos\proyecto\proyectoModel;
@@ -7954,4 +7956,9293 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
 
 
 
+    // DESCARGAR METODO OWAS 
+
+    public function descargarMetodoOWAS(Request $request)
+    {
+        try {
+            $request->validate([
+                'fre_id' => 'required|integer|min:1'
+            ]);
+
+            $freId = $request->fre_id;
+
+            $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                ->leftJoin(
+                    'recoergocategorias as categoria',
+                    'categoria.ID_CATEGORIA_ERGO',
+                    '=',
+                    'evaluacion.CATEGORIA_ID_FRE'
+                )
+                ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                ->select(
+                    'evaluacion.*',
+                    'categoria.NOMBRE_CATEGORIA_ERGO'
+                )
+                ->first();
+
+            if (!$evaluacion) {
+                return response()->json([
+                    'message' => 'No se encontró la evaluación FRE.'
+                ], 404);
+            }
+
+            $metodos = $evaluacion->CAT_METODOS_FRE;
+
+            if (is_string($metodos)) {
+                $metodos = json_decode($metodos, true);
+            }
+
+            $metodos = array_map('strval', (array) $metodos);
+
+            if (!in_array('1', $metodos, true)) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene seleccionado el método OWAS.'
+                ], 422);
+            }
+
+            $espalda = (int) $evaluacion->OWAS_ESPALDA;
+            $brazos = (int) $evaluacion->OWAS_BRAZOS;
+            $piernas = (int) $evaluacion->OWAS_PIERNAS;
+            $carga = (int) $evaluacion->OWAS_CARGA;
+
+            if (
+                $espalda < 1 || $espalda > 4 ||
+                $brazos < 1 || $brazos > 3 ||
+                $piernas < 1 || $piernas > 7 ||
+                $carga < 1 || $carga > 3
+            ) {
+                return response()->json([
+                    'message' => 'Los datos de la postura OWAS están incompletos o no son válidos.'
+                ], 422);
+            }
+
+            $tablaOWAS = [
+                1 => [
+                    1 => [
+                        1 => [1, 1, 1],
+                        2 => [1, 1, 1],
+                        3 => [1, 1, 1],
+                        4 => [2, 2, 2],
+                        5 => [2, 2, 2],
+                        6 => [1, 1, 1],
+                        7 => [1, 1, 1]
+                    ],
+                    2 => [
+                        1 => [1, 1, 1],
+                        2 => [1, 1, 1],
+                        3 => [1, 1, 1],
+                        4 => [2, 2, 2],
+                        5 => [2, 2, 2],
+                        6 => [1, 1, 1],
+                        7 => [1, 1, 1]
+                    ],
+                    3 => [
+                        1 => [1, 1, 1],
+                        2 => [1, 1, 1],
+                        3 => [1, 1, 1],
+                        4 => [2, 2, 3],
+                        5 => [2, 2, 3],
+                        6 => [1, 1, 1],
+                        7 => [1, 1, 2]
+                    ]
+                ],
+                2 => [
+                    1 => [
+                        1 => [2, 2, 3],
+                        2 => [2, 2, 3],
+                        3 => [2, 2, 3],
+                        4 => [3, 3, 3],
+                        5 => [3, 3, 3],
+                        6 => [2, 2, 2],
+                        7 => [3, 3, 3]
+                    ],
+                    2 => [
+                        1 => [2, 2, 3],
+                        2 => [2, 2, 3],
+                        3 => [2, 3, 3],
+                        4 => [3, 4, 4],
+                        5 => [3, 4, 3],
+                        6 => [3, 3, 4],
+                        7 => [2, 3, 4]
+                    ],
+                    3 => [
+                        1 => [3, 3, 4],
+                        2 => [2, 2, 3],
+                        3 => [3, 3, 3],
+                        4 => [3, 4, 4],
+                        5 => [4, 4, 4],
+                        6 => [4, 4, 4],
+                        7 => [2, 3, 4]
+                    ]
+                ],
+                3 => [
+                    1 => [
+                        1 => [1, 1, 1],
+                        2 => [1, 1, 1],
+                        3 => [1, 1, 2],
+                        4 => [3, 3, 3],
+                        5 => [4, 4, 4],
+                        6 => [1, 1, 1],
+                        7 => [1, 1, 1]
+                    ],
+                    2 => [
+                        1 => [2, 2, 3],
+                        2 => [1, 1, 1],
+                        3 => [1, 1, 2],
+                        4 => [4, 4, 4],
+                        5 => [4, 4, 4],
+                        6 => [3, 3, 3],
+                        7 => [1, 1, 1]
+                    ],
+                    3 => [
+                        1 => [2, 2, 3],
+                        2 => [1, 1, 1],
+                        3 => [2, 3, 3],
+                        4 => [4, 4, 4],
+                        5 => [4, 4, 4],
+                        6 => [4, 4, 4],
+                        7 => [1, 1, 1]
+                    ]
+                ],
+                4 => [
+                    1 => [
+                        1 => [2, 3, 3],
+                        2 => [2, 2, 3],
+                        3 => [2, 2, 3],
+                        4 => [4, 4, 4],
+                        5 => [4, 4, 4],
+                        6 => [4, 4, 4],
+                        7 => [2, 3, 4]
+                    ],
+                    2 => [
+                        1 => [3, 3, 4],
+                        2 => [2, 3, 4],
+                        3 => [3, 3, 4],
+                        4 => [4, 4, 4],
+                        5 => [4, 4, 4],
+                        6 => [4, 4, 4],
+                        7 => [2, 3, 4]
+                    ],
+                    3 => [
+                        1 => [4, 4, 4],
+                        2 => [2, 3, 4],
+                        3 => [3, 3, 4],
+                        4 => [4, 4, 4],
+                        5 => [4, 4, 4],
+                        6 => [4, 4, 4],
+                        7 => [2, 3, 4]
+                    ]
+                ]
+            ];
+
+            $categoriasPierna = $tablaOWAS[$espalda][$brazos][$piernas] ?? null;
+
+            if (!$categoriasPierna || !isset($categoriasPierna[$carga - 1])) {
+                return response()->json([
+                    'message' => 'No se encontró la combinación en la tabla OWAS.'
+                ], 422);
+            }
+
+            $categoria = (int) $categoriasPierna[$carga - 1];
+
+            $codigoCompleto = trim((string) ($evaluacion->OWAS_CODIGO_COMPLETO ?? ''));
+
+            if (!preg_match('/^[1-4][1-3][1-7][1-3]$/', $codigoCompleto)) {
+                $codigoCompleto = $espalda . $brazos . $piernas . $carga;
+            }
+
+            $digitosCodigo = str_split($codigoCompleto);
+
+            $espalda = (int) $digitosCodigo[0];
+            $brazos = (int) $digitosCodigo[1];
+            $piernas = (int) $digitosCodigo[2];
+            $carga = (int) $digitosCodigo[3];
+
+            $nombreEmpleado = trim((string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? ''));
+
+            if ($nombreEmpleado === '') {
+                $nombreEmpleado = 'SIN NOMBRE REGISTRADO';
+            }
+
+            $nombreCategoria = trim((string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? ''));
+
+            if ($nombreCategoria === '') {
+                $nombreCategoria = 'SIN CATEGORÍA';
+            }
+
+            $rutaPlantilla = storage_path(
+                'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_OWAS.pdf'
+            );
+
+            if (!file_exists($rutaPlantilla)) {
+                return response()->json([
+                    'message' => 'No se encontró la plantilla PDF del método OWAS.'
+                ], 404);
+            }
+
+            $pdf = new \setasign\Fpdi\Fpdi();
+
+            $pdf->SetAutoPageBreak(false);
+            $pdf->SetDrawColor(255, 0, 0);
+            $pdf->SetLineWidth(0.9);
+
+            $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+            for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+                $plantilla = $pdf->importPage($pagina);
+                $tamano = $pdf->getTemplateSize($plantilla);
+
+                $pdf->AddPage(
+                    $tamano['orientation'],
+                    [$tamano['width'], $tamano['height']]
+                );
+
+                $pdf->useTemplate($plantilla);
+
+                $escalaX = $tamano['width'] / 768;
+                $escalaY = $tamano['height'] / 1024;
+
+                $dibujarRectangulo = function ($x, $y, $ancho, $alto) use (
+                    $pdf,
+                    $escalaX,
+                    $escalaY
+                ) {
+                    $pdf->Rect(
+                        $x * $escalaX,
+                        $y * $escalaY,
+                        $ancho * $escalaX,
+                        $alto * $escalaY
+                    );
+                };
+
+                if ($pagina === 1) {
+                    $pdf->SetFont('Arial', 'B', 8);
+                    $pdf->SetTextColor(0, 0, 0);
+
+                    $pdf->SetXY(185 * $escalaX, 109 * $escalaY);
+                    $pdf->Cell(
+                        195 * $escalaX,
+                        14 * $escalaY,
+                        utf8_decode($nombreEmpleado),
+                        0,
+                        0,
+                        'L'
+                    );
+
+                    $pdf->SetXY(140 * $escalaX, 138 * $escalaY);
+                    $pdf->Cell(
+                        180 * $escalaX,
+                        14 * $escalaY,
+                        utf8_decode($nombreCategoria),
+                        0,
+                        0,
+                        'L'
+                    );
+
+                    $filasEspalda = [
+                        1 => [423, 558],
+                        2 => [559, 681],
+                        3 => [682, 810],
+                        4 => [811, 934]
+                    ];
+
+                    [$y1, $y2] = $filasEspalda[$espalda];
+
+                    $dibujarRectangulo(
+                        524,
+                        $y1,
+                        172,
+                        $y2 - $y1
+                    );
+                }
+
+                if ($pagina === 2) {
+                    $filasBrazos = [
+                        1 => [96, 278],
+                        2 => [279, 459],
+                        3 => [460, 642]
+                    ];
+
+                    [$y1, $y2] = $filasBrazos[$brazos];
+
+                    $dibujarRectangulo(
+                        530,
+                        $y1,
+                        178,
+                        $y2 - $y1
+                    );
+                }
+
+                if ($pagina === 3 && $piernas >= 1 && $piernas <= 5) {
+                    $filasPiernas = [
+                        1 => [80, 211],
+                        2 => [212, 423],
+                        3 => [424, 605],
+                        4 => [606, 786],
+                        5 => [787, 914]
+                    ];
+
+                    [$y1, $y2] = $filasPiernas[$piernas];
+
+                    $dibujarRectangulo(
+                        539,
+                        $y1,
+                        178,
+                        $y2 - $y1
+                    );
+                }
+                    if ($pagina === 4) {
+                        if ($piernas === 6 || $piernas === 7) {
+                            $filasPiernas = [
+                                6 => [80, 230],
+                                7 => [231, 400]
+                            ];
+
+                            [$y1, $y2] = $filasPiernas[$piernas];
+
+                            $dibujarRectangulo(
+                                533,
+                                $y1,
+                                183,
+                                $y2 - $y1
+                            );
+                        }
+
+                        $filaMatriz = (($espalda - 1) * 3) + ($brazos - 1);
+                        $columnaMatriz = (($piernas - 1) * 3) + ($carga - 1);
+
+                        $xInicioMatriz = 181;
+                        $yInicioMatriz = 625;
+                        $anchoCelda = 25.5;
+                        $altoCelda = 22.5;
+
+                        $xCelda = $xInicioMatriz + ($columnaMatriz * $anchoCelda);
+                        $yCelda = $yInicioMatriz + ($filaMatriz * $altoCelda);
+
+                        if ($piernas >= 1 && $piernas <= 7) {
+                            $pdf->SetDrawColor(255, 255, 255);
+                            $pdf->SetLineWidth(0.9);
+
+                            $pdf->Rect(
+                                $xCelda * $escalaX,
+                                $yCelda * $escalaY,
+                                $anchoCelda * $escalaX,
+                                $altoCelda * $escalaY
+                            );
+
+                            $pdf->SetDrawColor(255, 0, 0);
+                        }
+                    }
+                if ($pagina === 5) {
+                    $filasEspalda = [
+                        1 => [80, 103],
+                        2 => [104, 126],
+                        3 => [127, 149],
+                        4 => [150, 172]
+                    ];
+
+                    [$y1, $y2] = $filasEspalda[$espalda];
+
+                    $dibujarRectangulo(
+                        68,
+                        $y1,
+                        632,
+                        $y2 - $y1
+                    );
+
+                    $filasBrazos = [
+                        1 => [196, 218],
+                        2 => [219, 241],
+                        3 => [242, 264]
+                    ];
+
+                    [$y1, $y2] = $filasBrazos[$brazos];
+
+                    $dibujarRectangulo(
+                        68,
+                        $y1,
+                        632,
+                        $y2 - $y1
+                    );
+
+                    $filasPiernas = [
+                        1 => [285, 306],
+                        2 => [307, 328],
+                        3 => [329, 350],
+                        4 => [351, 372],
+                        5 => [373, 394],
+                        6 => [395, 416],
+                        7 => [417, 438]
+                    ];
+
+                    [$y1, $y2] = $filasPiernas[$piernas];
+
+                    $dibujarRectangulo(
+                        68,
+                        $y1,
+                        632,
+                        $y2 - $y1
+                    );
+
+                    $filasCarga = [
+                        1 => [576, 595],
+                        2 => [596, 615],
+                        3 => [616, 635]
+                    ];
+
+                    [$y1, $y2] = $filasCarga[$carga];
+
+                    $dibujarRectangulo(
+                        449,
+                        $y1,
+                        250,
+                        $y2 - $y1
+                    );
+
+                    $filasCategoria = [
+                        1 => [727, 751],
+                        2 => [752, 775],
+                        3 => [776, 800],
+                        4 => [801, 825]
+                    ];
+
+                    [$y1, $y2] = $filasCategoria[$categoria];
+
+                    $dibujarRectangulo(
+                        101,
+                        $y1,
+                        600,
+                        $y2 - $y1
+                    );
+                }
+            }
+
+            return response($pdf->Output('S'), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="Metodo_OWAS_' . $freId . '.pdf"'
+            ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error(
+                'Error al generar PDF OWAS: ' . $e->getMessage(),
+                [
+                    'fre_id' => $request->fre_id ?? null,
+                    'linea' => $e->getLine(),
+                    'archivo' => $e->getFile()
+                ]
+            );
+
+            return response()->json([
+                'message' => 'Ocurrió un error al generar el PDF del método OWAS.'
+            ], 500);
+        }
+    }
+
+    /// DESCARGAR METODO ROSA 
+
+    public function descargarMetodoROSA(Request $request)
+    {
+        try {
+            $request->validate([
+                'fre_id' => 'required|integer'
+            ]);
+
+            $freId = (int) $request->fre_id;
+
+            $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                ->leftJoin(
+                    'recoergo_fichastecnicas as ficha',
+                    'ficha.ID_FICHAS_TECNICAS',
+                    '=',
+                    'evaluacion.FICHA_ID'
+                )
+                ->leftJoin(
+                    'recoergocategorias as categoria',
+                    'categoria.ID_CATEGORIA_ERGO',
+                    '=',
+                    'ficha.CATEGORIA_ID_FICHA'
+                )
+                ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                ->select(
+                    'evaluacion.*',
+                    'categoria.NOMBRE_CATEGORIA_ERGO'
+                )
+                ->first();
+
+            if (!$evaluacion) {
+                return response()->json([
+                    'message' => 'No se encontró la evaluación FRE.'
+                ], 404);
+            }
+
+            $metodos = $evaluacion->CAT_METODOS_FRE;
+
+            if (is_string($metodos)) {
+                $metodos = json_decode($metodos, true);
+            }
+
+            $metodos = array_map('strval', (array) $metodos);
+
+            if (!in_array('2', $metodos, true)) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene seleccionado el método ROSA.'
+                ], 422);
+            }
+
+            $camposROSA = [
+                'ROSA_ALTURA_ASIENTO',
+                'ROSA_PROFUNDIDAD_ASIENTO',
+                'ROSA_REPOSABRAZOS',
+                'ROSA_RESPALDO',
+                'ROSA_TIEMPO_A',
+                'ROSA_TELEFONO',
+                'ROSA_PANTALLA',
+                'ROSA_RATON',
+                'ROSA_TECLADO',
+                'ANALISIS_METODO_ROSA'
+            ];
+
+            foreach ($camposROSA as $campo) {
+                if (
+                    !isset($evaluacion->$campo) ||
+                    trim((string) $evaluacion->$campo) === ''
+                ) {
+                    return response()->json([
+                        'message' => 'Falta completar el campo ' . $campo . ' del método ROSA.'
+                    ], 422);
+                }
+            }
+
+            $seleccionesROSA = [
+                'A1' => trim((string) $evaluacion->ROSA_ALTURA_ASIENTO),
+                'A2' => trim((string) $evaluacion->ROSA_PROFUNDIDAD_ASIENTO),
+                'A3' => trim((string) $evaluacion->ROSA_REPOSABRAZOS),
+                'A4' => trim((string) $evaluacion->ROSA_RESPALDO),
+                'B1' => trim((string) $evaluacion->ROSA_TELEFONO),
+                'B2' => trim((string) $evaluacion->ROSA_PANTALLA),
+                'C1' => trim((string) $evaluacion->ROSA_RATON),
+                'C2' => trim((string) $evaluacion->ROSA_TECLADO)
+            ];
+
+            $valor = function ($campo) use ($evaluacion) {
+                $dato = trim((string) ($evaluacion->$campo ?? ''));
+
+                if ($dato === '') {
+                    return 0;
+                }
+
+                if (is_numeric($dato)) {
+                    return (int) $dato;
+                }
+
+                if (preg_match('/^(\d+)/', $dato, $coincidencia)) {
+                    return (int) $coincidencia[1];
+                }
+
+                return 0;
+            };
+
+            $jsonROSA = json_decode($evaluacion->ROSA_DATOS_JSON ?: '{}', true);
+
+            if (!is_array($jsonROSA)) {
+                $jsonROSA = [];
+            }
+
+            $extras = isset($jsonROSA['extras']) && is_array($jsonROSA['extras'])
+                ? $jsonROSA['extras']
+                : [];
+
+            $sumaExtras = function ($apartado) use ($extras) {
+                $total = 0;
+
+                foreach ($extras as $extra) {
+                    if (
+                        isset($extra['apartado']) &&
+                        $extra['apartado'] === $apartado
+                    ) {
+                        $total += (int) ($extra['valor'] ?? 0);
+                    }
+                }
+
+                return $total;
+            };
+
+            $tiempo = function ($campo) use ($valor) {
+                return $valor($campo);
+            };
+
+            $matrices = [
+                'A' => [
+                    [2, 2, 3, 4, 5, 6, 7, 8],
+                    [2, 2, 3, 4, 5, 6, 7, 8],
+                    [3, 3, 3, 4, 5, 6, 7, 8],
+                    [4, 4, 4, 4, 5, 6, 7, 8],
+                    [5, 5, 5, 5, 6, 7, 8, 9],
+                    [6, 6, 6, 6, 7, 8, 8, 9],
+                    [7, 7, 7, 7, 8, 9, 9, 9]
+                ],
+                'B' => [
+                    [1, 1, 1, 2, 3, 4, 5, 6, 6],
+                    [1, 1, 2, 2, 3, 4, 5, 6, 6],
+                    [1, 2, 2, 3, 3, 4, 6, 7, 7],
+                    [2, 2, 3, 3, 4, 5, 6, 8, 8],
+                    [3, 3, 4, 4, 5, 6, 7, 8, 8],
+                    [4, 4, 5, 5, 6, 7, 8, 9, 9],
+                    [5, 5, 6, 7, 8, 8, 9, 9, 9]
+                ],
+                'C' => [
+                    [1, 1, 1, 2, 3, 4, 5],
+                    [1, 1, 2, 3, 4, 5, 6],
+                    [2, 3, 3, 3, 5, 6, 7],
+                    [3, 4, 4, 5, 5, 6, 7],
+                    [4, 5, 5, 6, 6, 7, 8],
+                    [5, 6, 6, 7, 7, 8, 8],
+                    [6, 7, 7, 8, 8, 9, 9],
+                    [7, 8, 8, 9, 9, 9, 9]
+                ],
+                'D' => [
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                    [2, 2, 3, 4, 5, 6, 7, 8, 9],
+                    [3, 3, 3, 4, 5, 6, 7, 8, 9],
+                    [4, 4, 4, 4, 5, 6, 7, 8, 9],
+                    [5, 5, 5, 5, 5, 6, 7, 8, 9],
+                    [6, 6, 6, 6, 6, 6, 7, 8, 9],
+                    [7, 7, 7, 7, 7, 7, 7, 8, 9],
+                    [8, 8, 8, 8, 8, 8, 8, 8, 9],
+                    [9, 9, 9, 9, 9, 9, 9, 9, 9]
+                ],
+                'E' => [
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    [2, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    [3, 3, 3, 3, 4, 5, 6, 7, 8, 9],
+                    [4, 4, 4, 4, 4, 6, 7, 8, 9, 10],
+                    [5, 5, 5, 5, 5, 6, 7, 8, 9, 10],
+                    [6, 6, 6, 6, 6, 6, 7, 8, 9, 10],
+                    [7, 7, 7, 7, 7, 7, 7, 8, 9, 10],
+                    [8, 8, 8, 8, 8, 8, 8, 8, 9, 10],
+                    [9, 9, 9, 9, 9, 9, 9, 9, 9, 10],
+                    [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+                ]
+            ];
+
+            $limitar = function ($numero, $minimo, $maximo) {
+                return max($minimo, min($maximo, $numero));
+            };
+
+            $buscarMatriz = function ($matriz, $fila, $columna, $inicioFila, $inicioColumna) {
+                $f = $fila - $inicioFila;
+                $c = $columna - $inicioColumna;
+
+                if (
+                    $f < 0 ||
+                    $c < 0 ||
+                    $f >= count($matriz) ||
+                    !isset($matriz[$f][$c])
+                ) {
+                    return null;
+                }
+
+                return $matriz[$f][$c];
+            };
+
+            $valores = [
+                'A1' => $valor('ROSA_ALTURA_ASIENTO'),
+                'A2' => $valor('ROSA_PROFUNDIDAD_ASIENTO'),
+                'A3' => $valor('ROSA_REPOSABRAZOS'),
+                'A4' => $valor('ROSA_RESPALDO'),
+                'B1' => $valor('ROSA_TELEFONO'),
+                'B2' => $valor('ROSA_PANTALLA'),
+                'C1' => $valor('ROSA_RATON'),
+                'C2' => $valor('ROSA_TECLADO')
+            ];
+
+            $tiempoA = $tiempo('ROSA_TIEMPO_A');
+            $tiempoB1 = $tiempo('ROSA_TIEMPO_B1');
+            $tiempoB2 = $tiempo('ROSA_TIEMPO_B2');
+            $tiempoC1 = $tiempo('ROSA_TIEMPO_C1');
+            $tiempoC2 = $tiempo('ROSA_TIEMPO_C2');
+
+            $asiento = $limitar(
+                $valores['A1'] + $sumaExtras('A1') +
+                    $valores['A2'] + $sumaExtras('A2'),
+                2,
+                8
+            );
+
+            $reposabrazosRespaldo = $limitar(
+                $valores['A3'] + $sumaExtras('A3') +
+                    $valores['A4'] + $sumaExtras('A4'),
+                2,
+                9
+            );
+
+            $resultadoA = $buscarMatriz(
+                $matrices['A'],
+                $asiento,
+                $reposabrazosRespaldo,
+                2,
+                2
+            );
+
+            if ($resultadoA === null) {
+                return response()->json([
+                    'message' => 'No se pudo calcular la tabla A del método ROSA.'
+                ], 422);
+            }
+
+            $resultadoA = $limitar($resultadoA + $tiempoA, 1, 10);
+
+            $telefono = $limitar(
+                $valores['B1'] + $sumaExtras('B1') + $tiempoB1,
+                0,
+                8
+            );
+
+            $pantalla = $limitar(
+                $valores['B2'] + $sumaExtras('B2') + $tiempoB2,
+                0,
+                8
+            );
+
+            $resultadoB = $buscarMatriz(
+                $matrices['B'],
+                $telefono,
+                $pantalla,
+                0,
+                0
+            );
+
+            if ($resultadoB === null) {
+                return response()->json([
+                    'message' => 'No se pudo calcular la tabla B del método ROSA.'
+                ], 422);
+            }
+
+            $raton = $limitar(
+                $valores['C1'] + $sumaExtras('C1') + $tiempoC1,
+                0,
+                7
+            );
+
+            $teclado = $limitar(
+                $valores['C2'] + $sumaExtras('C2') + $tiempoC2,
+                0,
+                6
+            );
+
+            $resultadoC = $buscarMatriz(
+                $matrices['C'],
+                $raton,
+                $teclado,
+                0,
+                0
+            );
+
+            if ($resultadoC === null) {
+                return response()->json([
+                    'message' => 'No se pudo calcular la tabla C del método ROSA.'
+                ], 422);
+            }
+
+            $resultadoD = $buscarMatriz(
+                $matrices['D'],
+                $resultadoB,
+                $resultadoC,
+                1,
+                1
+            );
+
+            if ($resultadoD === null) {
+                return response()->json([
+                    'message' => 'No se pudo calcular la tabla D del método ROSA.'
+                ], 422);
+            }
+
+            $resultadoFinal = $buscarMatriz(
+                $matrices['E'],
+                $resultadoA,
+                $resultadoD,
+                1,
+                1
+            );
+
+            if ($resultadoFinal === null) {
+                return response()->json([
+                    'message' => 'No se pudo calcular la puntuación final del método ROSA.'
+                ], 422);
+            }
+
+            $rangoRiesgo = '';
+            $riesgo = '';
+            $nivel = 0;
+            $actuacion = '';
+
+            if ($resultadoFinal === 1) {
+                $rangoRiesgo = '1';
+                $riesgo = 'Inapreciable';
+                $nivel = 0;
+                $actuacion = 'No es necesaria actuación.';
+            } elseif ($resultadoFinal >= 2 && $resultadoFinal <= 4) {
+                $rangoRiesgo = '2-4';
+                $riesgo = 'Mejorable';
+                $nivel = 1;
+                $actuacion = 'Pueden mejorarse algunos elementos del puesto.';
+            } elseif ($resultadoFinal === 5) {
+                $rangoRiesgo = '5';
+                $riesgo = 'Alto';
+                $nivel = 2;
+                $actuacion = 'Es necesaria la actuación.';
+            } elseif ($resultadoFinal >= 6 && $resultadoFinal <= 8) {
+                $rangoRiesgo = '6-8';
+                $riesgo = 'Muy alto';
+                $nivel = 3;
+                $actuacion = 'Es necesaria la actuación cuanto antes.';
+            } else {
+                $rangoRiesgo = '9-10';
+                $riesgo = 'Extremo';
+                $nivel = 4;
+                $actuacion = 'Es necesaria la actuación urgentemente.';
+            }
+
+            $rutaPlantilla = storage_path(
+                'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_ROSA.pdf'
+            );
+
+            if (!file_exists($rutaPlantilla)) {
+                return response()->json([
+                    'message' => 'No se encontró la plantilla PDF del método ROSA.'
+                ], 404);
+            }
+
+            $nombreEmpleado = $evaluacion->NOMBRE_EMPLEADO_FRE ?: 'SIN NOMBRE';
+            $nombreCategoria = $evaluacion->NOMBRE_CATEGORIA_ERGO ?: 'SIN CATEGORÍA';
+
+            $convertirTexto = function ($texto) {
+                $texto = (string) $texto;
+
+                if (function_exists('iconv')) {
+                    $convertido = @iconv('UTF-8', 'windows-1252//TRANSLIT', $texto);
+
+                    if ($convertido !== false) {
+                        return $convertido;
+                    }
+                }
+
+                return utf8_decode($texto);
+            };
+
+            $pdf = new \setasign\Fpdi\Fpdi();
+            $pdf->SetAutoPageBreak(false);
+            $pdf->SetDrawColor(220, 0, 0);
+            $pdf->SetLineWidth(0.8);
+
+            $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+            $escalaX = 1;
+            $escalaY = 1;
+
+            $rectangulo = function ($x, $y, $ancho, $alto) use ($pdf, &$escalaX, &$escalaY) {
+                $pdf->Rect(
+                    $x * $escalaX,
+                    $y * $escalaY,
+                    $ancho * $escalaX,
+                    $alto * $escalaY
+                );
+            };
+
+            $texto = function (
+                $x,
+                $y,
+                $ancho,
+                $alto,
+                $contenido,
+                $tamano = 9,
+                $estilo = 'B',
+                $alineacion = 'C'
+            ) use ($pdf, $convertirTexto, &$escalaX, &$escalaY) {
+                $pdf->SetFont('Arial', $estilo, $tamano);
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->SetXY($x * $escalaX, $y * $escalaY);
+                $pdf->Cell(
+                    $ancho * $escalaX,
+                    $alto * $escalaY,
+                    $convertirTexto($contenido),
+                    0,
+                    0,
+                    $alineacion
+                );
+            };
+
+            $marcarSeleccion = function ($apartado, $valorGuardado) use ($rectangulo) {
+                $coordenadas = [
+                'A1' => [
+                '1' => [212, 256, 67, 103],
+                '2_bajo' => [279, 256, 67, 103],
+                '2_alto' => [346, 256, 67, 103],
+                '3' => [413, 256, 67, 103]
+                ],
+                'A2' => [
+                '1' => [212, 386, 101, 108],
+                '2_menor' => [313, 386, 101, 108],
+                '2_mayor' => [414, 386, 101, 108]
+                ],
+                'A3' => [
+                '1' => [220, 517, 80, 143],
+                '2' => [305, 517, 80, 143]
+                ],
+                'A4' => [
+                '1' => [212, 687, 67, 134],
+                '2_sin_apoyo' => [279, 687, 67, 134],
+                '2_inclinacion' => [346, 687, 67, 134]
+                ],
+                'B1' => [
+                '1' => [208, 34, 106, 117],
+                '2' => [314, 34, 106, 117]
+                ],
+                'B2' => [
+                '1' => [200, 171, 50, 138],
+                '2' => [265, 171, 50, 138],
+                '3' => [325, 171, 50, 138]
+                ],
+                'C1' => [
+                '1' => [197, 519, 72, 127],
+                '2' => [268, 519, 72, 127]
+                ],
+                'C2' => [
+                '1' => [198, 697, 63, 114],
+                '2' => [269, 697, 63, 114]
+                ]
+                ];
+
+
+                $clave = (string) $valorGuardado;
+
+                if (isset($coordenadas[$apartado][$clave])) {
+                    call_user_func_array($rectangulo, $coordenadas[$apartado][$clave]);
+                }
+            };
+
+            $marcarExtras = function ($paginaActual) use ($extras, $rectangulo) {
+                $mapaExtras = [
+                1 => [
+                'Espacio insuficiente para las piernas' => [480, 256, 67, 103],
+                'Altura no regulable' => [547, 256, 67, 103],
+                'Profundidad no regulable' => [515, 386, 101, 108],
+                'Bordes afilados o duros' => [395, 517, 80, 143],
+
+                'Reposabrazos demasiado anchos' => [460, 517, 80, 143],
+                'Reposabrazos no regulables' => [542, 517, 75, 143],
+                'No se utiliza el respaldo' => [413, 687, 67, 134],
+
+                'Superficie alta u hombros encogidos' => [480, 687, 67, 134],
+                'Respaldo no regulable' => [547, 687, 67, 134]
+                ],
+                2 => [
+                'Sujeción con el hombro o cuello' => [420, 34, 73, 117],
+                'Sujeción con hombro/cuello' => [420, 34, 73, 117],
+                'No existe opción de manos libres' => [500, 34, 73, 117],
+                'Distancia mayor de 75 cm' => [390, 171, 50, 138],
+                'Distancia mayor 75 cm' => [390, 171, 50, 138],
+                'Giro de cuello' => [435, 171, 50, 138],
+                'No hay portadocumentos y se necesita' => [492, 171, 50, 138],
+                'Reflejos en pantalla' => [540, 171, 50, 138],
+                'Ratón pequeño o agarre en pinza' => [348, 519, 65, 127],
+                'Ratón pequeño/agarre en pinza' => [348, 519, 65, 127],
+                'Ratón y teclado a diferentes alturas' => [415, 519, 70, 127],
+                'Reposamanos duro o puntos de presión' => [489, 519, 70, 127],
+                'Desviación al escribir' => [343, 697, 56, 114],
+                'Teclado elevado u hombros encogidos' => [411, 697, 50, 114],
+                'Teclado elevado, hombros encogidos' => [411, 697, 50, 114],
+                'Alcance por encima de la cabeza' => [470, 697, 50, 114],
+                'Soporte de teclado no ajustable' => [528, 697, 50, 114]
+                ]
+                ];
+
+                foreach ($extras as $extra) {
+                    $apartado = strtoupper(trim((string) ($extra['apartado'] ?? '')));
+                    $descripcion = trim((string) ($extra['texto'] ?? ''));
+                    $valorExtra = (int) ($extra['valor'] ?? 0);
+
+                    if ($valorExtra <= 0) {
+                        continue;
+                    }
+
+                    $paginaExtra = in_array($apartado, ['A1', 'A2', 'A3', 'A4'], true) ? 1 : 2;
+
+                    if ($paginaExtra !== $paginaActual || !isset($mapaExtras[$paginaActual][$descripcion])) {
+                        continue;
+                    }
+
+                    call_user_func_array($rectangulo, $mapaExtras[$paginaActual][$descripcion]);
+                }
+            };
+
+            $resultadoMatrices = [
+                'A' => [$asiento, $reposabrazosRespaldo],
+                'B' => [$telefono, $pantalla],
+                'C' => [$raton, $teclado],
+                'D' => [$resultadoB, $resultadoC],
+                'E' => [$resultadoA, $resultadoD]
+            ];
+
+            for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+                $plantilla = $pdf->importPage($pagina);
+                $tamano = $pdf->getTemplateSize($plantilla);
+
+                $pdf->AddPage(
+                    $tamano['orientation'],
+                    [$tamano['width'], $tamano['height']]
+                );
+
+                $pdf->useTemplate($plantilla);
+
+                $escalaX = $tamano['width'] / 768;
+                $escalaY = $tamano['height'] / 1024;
+
+                $pdf->SetDrawColor(220, 0, 0);
+                $pdf->SetLineWidth(0.8);
+
+                if ($pagina === 1) {
+                    $pdf->SetFont('Arial', 'B', 8);
+                    $pdf->SetTextColor(0, 0, 0);
+
+                    $pdf->SetXY(190 * $escalaX, 88 * $escalaY);
+                    $pdf->Cell(200 * $escalaX, 14 * $escalaY, utf8_decode($nombreEmpleado), 0, 0, 'L');
+
+                    $pdf->SetXY(140 * $escalaX, 118 * $escalaY);
+                    $pdf->Cell(190 * $escalaX, 14 * $escalaY, utf8_decode($nombreCategoria), 0, 0, 'L');
+
+                    $marcarSeleccion('A1', $seleccionesROSA['A1']);
+                    $marcarSeleccion('A2', $seleccionesROSA['A2']);
+                    $marcarSeleccion('A3', $seleccionesROSA['A3']);
+                    $marcarSeleccion('A4', $seleccionesROSA['A4']);
+                    $marcarExtras(1);
+
+                    // ROSA_TIEMPO_A: marcar únicamente la fila seleccionada en la BD.
+                    $coordenadasTiempoA = [
+
+                        '-1' => [354, 895, 229, 20],
+                        '0' => [354, 917, 229, 20],
+                        '1' => [354, 943, 229, 20]
+                    ];
+
+
+                    $valorTiempoA = trim((string) ($evaluacion->ROSA_TIEMPO_A ?? ''));
+
+                    if (isset($coordenadasTiempoA[$valorTiempoA])) {
+                        call_user_func_array($rectangulo, $coordenadasTiempoA[$valorTiempoA]);
+                    }
+
+                    $texto(640, 925, 55, 30, $resultadoA, 14);
+                }
+
+                if ($pagina === 2) {
+                    $marcarSeleccion('B1', $seleccionesROSA['B1']);
+                    $marcarSeleccion('B2', $seleccionesROSA['B2']);
+                    $marcarSeleccion('C1', $seleccionesROSA['C1']);
+                    $marcarSeleccion('C2', $seleccionesROSA['C2']);
+                    $marcarExtras(2);
+
+                    // Tiempos adicionales opcionales: marcar el reloj correspondiente.
+                    // +1 = reloj izquierdo; -1 = reloj derecho.
+                    // Si el campo está vacío, no se dibuja ningún rectángulo.
+
+
+                    $coordenadasTiemposAdicionales = [
+                    'ROSA_TIEMPO_B1' => [
+                    '1' => [575, 34, 57, 117],
+                    '-1' => [630, 34, 57, 117]
+                    ],
+                    'ROSA_TIEMPO_B2' => [
+                    '1' => [595, 171, 34, 138],
+                    '-1' => [634, 171, 34, 138]
+                    ],
+                    'ROSA_TIEMPO_C1' => [
+                    '1' => [570, 519, 55, 127],
+                    '-1' => [635, 519, 55, 127]
+                    ],
+                    'ROSA_TIEMPO_C2' => [
+                    '1' => [579, 697, 50, 114],
+                    '-1' => [630, 697, 45, 114]
+                    ]
+                    ];
+
+                    foreach ($coordenadasTiemposAdicionales as $campoTiempo => $coordenadasTiempo) {
+                        $valorTiempo = trim((string) ($evaluacion->$campoTiempo ?? ''));
+
+                        if (isset($coordenadasTiempo[$valorTiempo])) {
+                            call_user_func_array($rectangulo, $coordenadasTiempo[$valorTiempo]);
+                        }
+                    }
+
+                    $texto(525, 410, 55, 30, $resultadoB, 14);
+                    $texto(525, 910, 55, 35, $resultadoC, 14);
+                }
+
+                if ($pagina === 3) {
+                    $texto(342, 60, 65, 28, $resultadoC, 14);
+                    $texto(77, 230, 65, 28, $resultadoB, 14);
+                    $texto(554, 230, 65, 28, $resultadoD, 14);
+                    $texto(340, 375, 65, 28, $resultadoD, 14);
+                    $texto(79, 570, 65, 28, $resultadoA, 14);
+                    $texto(555, 570, 65, 28, $resultadoFinal, 14);
+                    
+                    $filaRiesgo = [
+                        '1' => 744,
+                        '2-4' => 765,
+                        '5' => 784,
+                        '6-8' => 805,
+                        '9-10' => 824
+                    ];
+
+                    $pdf->SetDrawColor(220, 0, 0);
+                    $pdf->SetLineWidth(1.2);
+
+                    if (isset($filaRiesgo[$rangoRiesgo])) {
+                        $rectangulo(150, $filaRiesgo[$rangoRiesgo], 464, 20);
+                    }
+                }
+            }
+
+            $datosROSA = [
+                'selecciones' => $seleccionesROSA,
+                'tiempos' => [
+                    'ROSA_TIEMPO_A' => $tiempoA,
+                    'ROSA_TIEMPO_B1' => $tiempoB1,
+                    'ROSA_TIEMPO_B2' => $tiempoB2,
+                    'ROSA_TIEMPO_C1' => $tiempoC1,
+                    'ROSA_TIEMPO_C2' => $tiempoC2
+                ],
+                'extras' => $extras,
+                'matrices' => [
+                    'matriz_A' => $resultadoA,
+                    'matriz_B' => $resultadoB,
+                    'matriz_C' => $resultadoC,
+                    'matriz_D' => $resultadoD,
+                    'matriz_E' => $resultadoFinal
+                ],
+                'resultados' => [
+                    'puntuacion_final' => $resultadoFinal,
+                    'riesgo' => $riesgo,
+                    'nivel' => $nivel,
+                    'actuacion' => $actuacion
+                ]
+            ];
+
+            $pdf->SetTitle($convertirTexto('Método ROSA'));
+            $pdf->SetAuthor($convertirTexto('Evaluación ergonómica'));
+
+            return response($pdf->Output('S'), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="Metodo_ROSA_' . $freId . '.pdf"'
+            ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error(
+                'Error al generar PDF ROSA: ' . $e->getMessage(),
+                [
+                    'fre_id' => $request->fre_id ?? null,
+                    'linea' => $e->getLine(),
+                    'archivo' => $e->getFile()
+                ]
+            );
+
+            return response()->json([
+                'message' => 'Ocurrió un error al generar el PDF del método ROSA.'
+            ], 500);
+        }
+    }
+
+
+    /// DESCARGAR METODO RULA 
+
+    public function descargarMetodoRULA(Request $request)
+    {
+
+        try {
+
+            $request->validate([
+
+                'fre_id' => 'required|integer|min:1'
+
+            ]);
+
+
+
+            $freId = (int) $request->fre_id;
+
+
+
+            $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+
+                ->leftJoin(
+                    'recoergo_fichastecnicas as ficha',
+                    'ficha.ID_FICHAS_TECNICAS',
+                    '=',
+                    'evaluacion.FICHA_ID'
+
+                )
+
+                ->leftJoin(
+                    'recoergocategorias as categoria',
+                    'categoria.ID_CATEGORIA_ERGO',
+                    '=',
+                    'ficha.CATEGORIA_ID_FICHA'
+
+                )
+
+                ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                ->select(
+                    'evaluacion.*',
+                    'categoria.NOMBRE_CATEGORIA_ERGO'
+                )
+
+                ->first();
+
+
+
+            if (!$evaluacion) {
+
+                return response()->json([
+
+                    'message' => 'No se encontró la evaluación FRE.'
+
+                ], 404);
+            }
+
+            $metodos = $evaluacion->CAT_METODOS_FRE;
+
+            if (is_string($metodos)) {
+
+                $metodos = json_decode($metodos, true);
+            }
+
+            $metodos = array_map('strval', (array) $metodos);
+
+            if (!in_array('3', $metodos, true)) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene seleccionado el método RULA.'
+                ], 422);
+            }
+
+
+            $camposObligatorios = [
+                'RULA_BRAZO',
+                'RULA_ANTEBRAZO',
+                'RULA_MUNECA',
+                'RULA_GIRO_MUNECA',
+                'RULA_CUELLO',
+                'RULA_TRONCO',
+                'RULA_PIERNAS',
+                'RULA_ACTIVIDAD',
+                'RULA_CARGA',
+                'ANALISIS_METODO_RULA'
+            ];
+
+
+
+            foreach ($camposObligatorios as $campo) {
+
+                if (
+                    !isset($evaluacion->$campo) ||
+                    trim((string) $evaluacion->$campo) === ''
+                ) {
+
+                    return response()->json([
+                        'message' => 'Falta completar el campo ' . $campo . ' del método RULA.'
+                    ], 422);
+                }
+            }
+
+
+
+            $valor = function ($campo, $predeterminado = 0) use ($evaluacion) {
+
+                if (
+                    !isset($evaluacion->$campo) ||
+                    trim((string) $evaluacion->$campo) === '' ||
+                    !is_numeric($evaluacion->$campo)
+                ) {
+                    return $predeterminado;
+                }
+
+
+
+                return (int) $evaluacion->$campo;
+            };
+
+
+            $limitar = function ($numero, $minimo, $maximo) {
+                return max($minimo, min($maximo, $numero));
+            };
+
+
+
+            $camposRULA = [
+                'RULA_BRAZO',
+                'RULA_ANTEBRAZO',
+                'RULA_MUNECA',
+                'RULA_GIRO_MUNECA',
+                'RULA_CUELLO',
+                'RULA_TRONCO',
+                'RULA_PIERNAS',
+                'RULA_BRAZO_ABDUCIDO',
+                'RULA_HOMBRO_ELEVADO',
+                'RULA_BRAZO_APOYADO',
+                'RULA_ANTEBRAZO_PROYECCION',
+                'RULA_ANTEBRAZO_CRUZA',
+                'RULA_MUNECA_DESVIACION',
+                'RULA_CUELLO_ROTADO',
+                'RULA_CUELLO_LATERAL',
+                'RULA_TRONCO_TORSION',
+                'RULA_TRONCO_LATERAL',
+                'RULA_ACTIVIDAD',
+                'RULA_CARGA'
+            ];
+
+            $datosRULA = [];
+
+            foreach ($camposRULA as $campo) {
+
+                $datosRULA[$campo] = $valor($campo);
+            }
+
+
+
+            $brazo = $limitar(
+                $datosRULA['RULA_BRAZO']
+                    + $datosRULA['RULA_BRAZO_ABDUCIDO']
+                    + $datosRULA['RULA_HOMBRO_ELEVADO']
+                    + $datosRULA['RULA_BRAZO_APOYADO'],
+                1,
+                6
+            );
+
+            $antebrazo = $limitar(
+                $datosRULA['RULA_ANTEBRAZO']
+                    + $datosRULA['RULA_ANTEBRAZO_PROYECCION']
+                    + $datosRULA['RULA_ANTEBRAZO_CRUZA'],
+                1,
+                3
+            );
+
+            $muneca = $limitar(
+                $datosRULA['RULA_MUNECA']
+                    + $datosRULA['RULA_MUNECA_DESVIACION'],
+                1,
+                4
+            );
+
+
+            $giroMuneca = $datosRULA['RULA_GIRO_MUNECA'];
+
+            $tablaA = [
+                '1-1' => [1, 2, 2, 2, 2, 3, 3, 3],
+                '1-2' => [2, 2, 2, 2, 3, 3, 3, 3],
+                '1-3' => [2, 3, 3, 3, 3, 3, 4, 4],
+                '2-1' => [2, 3, 3, 3, 3, 4, 4, 4],
+                '2-2' => [3, 3, 3, 3, 3, 4, 4, 4],
+                '2-3' => [3, 4, 4, 4, 4, 4, 5, 5],
+                '3-1' => [3, 3, 4, 4, 4, 4, 5, 5],
+                '3-2' => [3, 4, 4, 4, 4, 4, 5, 5],
+                '3-3' => [4, 4, 4, 4, 4, 5, 5, 5],
+                '4-1' => [4, 4, 4, 4, 4, 5, 5, 5],
+                '4-2' => [4, 4, 4, 4, 4, 5, 5, 5],
+                '4-3' => [4, 4, 4, 5, 5, 5, 6, 6],
+                '5-1' => [5, 5, 5, 5, 5, 6, 6, 7],
+                '5-2' => [5, 6, 6, 6, 6, 7, 7, 7],
+                '5-3' => [6, 6, 6, 7, 7, 7, 7, 8],
+                '6-1' => [7, 7, 7, 7, 7, 8, 8, 9],
+                '6-2' => [8, 8, 8, 8, 8, 9, 9, 9],
+                '6-3' => [9, 9, 9, 9, 9, 9, 9, 9]
+            ];
+
+            $indiceA = (($muneca - 1) * 2) + ($giroMuneca - 1);
+            $claveA = $brazo . '-' . $antebrazo;
+
+            if (
+                !isset($tablaA[$claveA][$indiceA]) ||
+                $giroMuneca < 1 ||
+                $giroMuneca > 2
+            ) {
+
+                return response()->json([
+                    'message' => 'Los valores del grupo A de RULA no son válidos.'
+                ], 422);
+            }
+
+            $resultadoAInicial = $tablaA[$claveA][$indiceA];
+
+            $cuello = $limitar(
+                $datosRULA['RULA_CUELLO']
+                    + $datosRULA['RULA_CUELLO_ROTADO']
+                    + $datosRULA['RULA_CUELLO_LATERAL'],
+                1,
+                6
+            );
+
+            $tronco = $limitar(
+                $datosRULA['RULA_TRONCO']
+                    + $datosRULA['RULA_TRONCO_TORSION']
+                    + $datosRULA['RULA_TRONCO_LATERAL'],
+                1,
+                6
+            );
+
+
+            $piernas = $datosRULA['RULA_PIERNAS'];
+
+            $tablaB = [
+                1 => [
+                    1 => [1, 3],
+                    2 => [2, 3],
+                    3 => [3, 4],
+                    4 => [5, 5],
+                    5 => [6, 6],
+                    6 => [7, 7]
+                ],
+
+                2 => [
+                    1 => [2, 3],
+                    2 => [2, 3],
+                    3 => [4, 5],
+                    4 => [5, 5],
+                    5 => [6, 7],
+                    6 => [7, 7]
+                ],
+
+                3 => [
+                    1 => [3, 3],
+                    2 => [3, 4],
+                    3 => [4, 5],
+                    4 => [5, 6],
+                    5 => [6, 7],
+                    6 => [7, 7]
+                ],
+
+                4 => [
+                    1 => [5, 5],
+                    2 => [5, 6],
+                    3 => [6, 7],
+                    4 => [7, 7],
+                    5 => [7, 7],
+                    6 => [8, 8]
+                ],
+
+                5 => [
+                    1 => [7, 7],
+                    2 => [7, 7],
+                    3 => [7, 8],
+                    4 => [8, 8],
+                    5 => [8, 8],
+                    6 => [8, 8]
+                ],
+
+                6 => [
+                    1 => [8, 8],
+                    2 => [8, 8],
+                    3 => [8, 8],
+                    4 => [8, 9],
+                    5 => [9, 9],
+                    6 => [9, 9]
+                ]
+
+            ];
+
+
+
+            if (
+                !isset($tablaB[$cuello][$tronco][$piernas - 1]) ||
+                $piernas < 1 ||
+                $piernas > 2
+            ) {
+
+                return response()->json([
+                    'message' => 'Los valores del grupo B de RULA no son válidos.'
+                ], 422);
+            }
+
+            $resultadoBInicial = $tablaB[$cuello][$tronco][$piernas - 1];
+
+            $actividad = $datosRULA['RULA_ACTIVIDAD'];
+            $carga = $datosRULA['RULA_CARGA'];
+
+            $puntuacionA = $limitar(
+                $resultadoAInicial + $actividad + $carga,
+                1,
+                8
+            );
+
+            $puntuacionB = $limitar(
+                $resultadoBInicial + $actividad + $carga,
+                1,
+                8
+            );
+
+            $tablaFinal = [
+                [1, 2, 3, 3, 4, 5, 5],
+                [2, 2, 3, 4, 4, 5, 5],
+                [2, 3, 3, 4, 4, 5, 6],
+                [3, 3, 3, 4, 5, 6, 6],
+                [4, 4, 4, 5, 6, 7, 7],
+                [4, 4, 5, 6, 6, 7, 7],
+                [5, 5, 5, 6, 7, 7, 7],
+                [5, 6, 6, 7, 7, 7, 7]
+            ];
+
+            $resultadoFinal = $tablaFinal[$puntuacionB - 1][$limitar($puntuacionA, 1, 7) - 1];
+
+            if ($resultadoFinal >= 1 && $resultadoFinal <= 2) {
+                $nivel = 1;
+                $rangoRiesgo = '1-2';
+                $actuacion = 'Riesgo Aceptable.';
+            } elseif ($resultadoFinal >= 3 && $resultadoFinal <= 4) {
+                $nivel = 2;
+                $rangoRiesgo = '3-4';
+                $actuacion = 'Pueden requerirse cambios en la tarea, es conveniente profundizar en el estudio.';
+            } elseif ($resultadoFinal >= 5 && $resultadoFinal <= 6) {
+                $nivel = 3;
+                $rangoRiesgo = '5-6';
+                $actuacion = 'Se requiere el rediseño de la tarea.';
+            } else {
+                $nivel = 4;
+                $rangoRiesgo = '7';
+                $actuacion = 'Se requieren cambios urgentes en la tarea.';
+            }
+
+
+
+            $rutaPlantilla = storage_path(
+                'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_RULA.pdf'
+            );
+
+
+
+            if (!file_exists($rutaPlantilla)) {
+
+                return response()->json([
+
+                    'message' => 'No se encontró la plantilla PDF del método RULA.'
+
+                ], 404);
+            }
+
+
+            $nombreEmpleado = $evaluacion->NOMBRE_EMPLEADO_FRE ?? 'SIN NOMBRE';
+            $nombreCategoria = $evaluacion->NOMBRE_CATEGORIA_ERGO ?? 'SIN CATEGORÍA';
+
+            $convertirTexto = function ($texto) {
+                $convertido = @iconv('UTF-8', 'windows-1252//TRANSLIT', (string) $texto);
+                return $convertido !== false ? $convertido : utf8_decode((string) $texto);
+            };
+
+            $pdf = new \setasign\Fpdi\Fpdi();
+            $pdf->SetAutoPageBreak(false);
+            $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+            $escalaX = 1;
+
+            $escalaY = 1;
+
+
+
+            $rectangulo = function ($x, $y, $ancho, $alto) use ($pdf, &$escalaX, &$escalaY) {
+
+                $pdf->Rect(
+                    $x * $escalaX,
+                    $y * $escalaY,
+                    $ancho * $escalaX,
+                    $alto * $escalaY
+                );
+            };
+
+
+
+            $marcarCelda = function ($pagina, $x, $y, $ancho, $alto) use ($pdf, $rectangulo) {
+
+                $pdf->SetDrawColor(220, 0, 0);
+
+                $pdf->SetLineWidth(0.8);
+
+                $rectangulo($x, $y, $ancho, $alto);
+            };
+
+
+
+            $nombreEmpleado = trim((string) $nombreEmpleado);
+
+            $nombreCategoria = trim((string) $nombreCategoria);
+
+
+
+            for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+
+                $plantilla = $pdf->importPage($pagina);
+
+                $tamano = $pdf->getTemplateSize($plantilla);
+
+
+
+                $pdf->AddPage(
+
+                    $tamano['orientation'],
+
+                    [$tamano['width'], $tamano['height']]
+
+                );
+
+
+
+                $pdf->useTemplate($plantilla);
+                $escalaX = $tamano['width'] / 768;
+                $escalaY = $tamano['height'] / 1024;
+
+                $marcar = function ($x, $y, $w, $h) use ($pdf, $escalaX, $escalaY) {
+                    $pdf->SetDrawColor(220, 0, 0);
+                    $pdf->SetLineWidth(0.9);
+                    $pdf->Rect($x * $escalaX, $y * $escalaY, $w * $escalaX, $h * $escalaY);
+                };
+                $fila = function ($x, $y, $w, $alto, $indice) use ($marcar) {
+                    if ($indice >= 0) $marcar($x, $y + ($indice * $alto), $w, $alto);
+                };
+
+                $marcarPx = function ($x, $y, $w, $h) use ($pdf, $tamano) {
+                    $pdf->SetDrawColor(220, 0, 0);
+                    $pdf->SetLineWidth(0.9);
+                    $pdf->Rect(
+                        $x * $tamano['width'] / 918,
+                        $y * $tamano['height'] / 1188,
+                        $w * $tamano['width'] / 918,
+                        $h * $tamano['height'] / 1188
+                    );
+                };
+
+                $marcarFilaPx = function ($x, $y, $w, $h, $indice) use ($marcarPx) {
+                    if ($indice >= 0) {
+                        $marcarPx($x, $y + ($indice * $h), $w, $h);
+                    }
+                };
+
+                if ($pagina === 1) {
+                    $opcionesBrazo = [
+                        1 => [231, 806, 307, 13],
+                        2 => [231, 823, 307, 13],
+                        3 => [231, 840, 307, 13],
+                        4 => [231, 859, 307, 13],
+                        5 => [231, 935, 307, 13],
+                        6 => [231, 952, 307, 13]
+                    ];
+
+                    if (isset($opcionesBrazo[$datosRULA['RULA_BRAZO']])) {
+                        $opcion = $opcionesBrazo[$datosRULA['RULA_BRAZO']];
+                        $marcar($opcion[0], $opcion[1], $opcion[2], $opcion[3]);
+                    }
+
+                    if ($datosRULA['RULA_BRAZO_ABDUCIDO'] != 0) {
+                        $marcar(231, 935, 307, 13);
+                    }
+
+                    if ($datosRULA['RULA_HOMBRO_ELEVADO'] != 0) {
+                        $marcar(231, 952, 307, 13);
+                    }
+
+                    if ($datosRULA['RULA_BRAZO_APOYADO'] != 0) {
+                        $marcar(231, 970, 307, 13);
+                    }
+                }
+
+                if ($pagina === 2) {
+                    $marcarFilaPx(276, 498, 366, 27, $datosRULA['RULA_ANTEBRAZO'] - 1);
+
+                    if ($datosRULA['RULA_ANTEBRAZO_PROYECCION'] != 0) {
+                        $marcarFilaPx(266, 634, 385, 32, 0);
+                    }
+
+                    if ($datosRULA['RULA_ANTEBRAZO_CRUZA'] != 0) {
+                        $marcarFilaPx(266, 666, 385, 24, 0);
+                    }
+                }
+
+                if ($pagina === 3) {
+                    $marcarFilaPx(276, 60, 366, 23.5, $datosRULA['RULA_MUNECA'] - 1);
+
+                    if ($datosRULA['RULA_MUNECA_DESVIACION'] != 0) {
+                        $marcarFilaPx(266, 194, 385, 23, 0);
+                    }
+
+                    if ($datosRULA['RULA_GIRO_MUNECA'] == 1) {
+                        $marcarFilaPx(270, 291, 377, 24, 0);
+                    } elseif ($datosRULA['RULA_GIRO_MUNECA'] == 2) {
+                        $marcarFilaPx(270, 315, 377, 23, 0);
+                    }
+
+                    $marcarFilaPx(280, 919, 365, 23.25, $datosRULA['RULA_CUELLO'] - 1);
+
+                    if ($datosRULA['RULA_CUELLO_ROTADO'] != 0) {
+                        $marcarFilaPx(270, 1088, 385, 24, 0);
+                    }
+
+                    if ($datosRULA['RULA_CUELLO_LATERAL'] != 0) {
+                        $marcarFilaPx(270, 1112, 385, 24, 0);
+                    }
+                }
+
+                if ($pagina === 4) {
+                    $marcarFilaPx(243, 535, 432, 23.25, $datosRULA['RULA_TRONCO'] - 1);
+
+                    if ($datosRULA['RULA_TRONCO_TORSION'] != 0) {
+                        $marcarFilaPx(266, 695, 385, 23, 0);
+                    }
+
+                    if ($datosRULA['RULA_TRONCO_LATERAL'] != 0) {
+                        $marcarFilaPx(266, 718, 385, 24, 0);
+                    }
+
+                    $filaPiernas = $datosRULA['RULA_PIERNAS'] == 1 ? 0 : 2;
+                    $marcarFilaPx(447, 963, 431, 35.5, $filaPiernas);
+                }
+
+                if ($pagina === 5) {
+                    $filaA = (($brazo - 1) * 3) + ($antebrazo - 1);
+                    $marcarPx(
+                        247 + ($indiceA * 63.6),
+                        150 + ($filaA * 23.45),
+                        63.6,
+                        23.45
+                    );
+
+                    $filaB = $cuello - 1;
+                    $columnaB = (($tronco - 1) * 2) + ($piernas - 1);
+                    $marcarPx(
+                        260 + ($columnaB * 38.8),
+                        734 + ($filaB * 23.5),
+                        38.8,
+                        23.5
+                    );
+                }
+
+                if ($pagina === 6) {
+                    if ($datosRULA['RULA_ACTIVIDAD'] == 0) {
+                        $marcarPx(244, 66, 431, 44);
+                    } else {
+                        $marcarPx(244, 110, 431, 36);
+                    }
+
+                    $cargaFilas = [
+                        0 => 0,
+                        1 => 1,
+                        2 => 2,
+                        3 => 4
+                    ];
+
+                    $indiceCarga = isset($cargaFilas[$datosRULA['RULA_CARGA']])
+                        ? $cargaFilas[$datosRULA['RULA_CARGA']]
+                        : 0;
+
+                    $marcarFilaPx(206, 290, 506, 23, $indiceCarga);
+
+                    $filaFinal = $puntuacionB - 1;
+                    $columnaFinal = $puntuacionA >= 7 ? 6 : $puntuacionA - 1;
+
+                    $marcarPx(
+                        389 + ($columnaFinal * 38.8),
+                        587 + ($filaFinal * 26.4),
+                        38.8,
+                        26.4
+                    );
+
+                    $marcarFilaPx(166, 1005, 553, 23.5, $nivel - 1);
+                }
+
+
+                $pdf->SetDrawColor(220, 0, 0);
+
+                $pdf->SetLineWidth(0.8);
+
+
+
+                if ($pagina === 1) {
+
+                    $pdf->SetFont('Arial', 'B', 8);
+
+                    $pdf->SetTextColor(0, 0, 0);
+
+
+
+                    $pdf->SetXY(190 * $escalaX, 85 * $escalaY);
+
+                    $pdf->Cell(
+                        200 * $escalaX,
+                        14 * $escalaY,
+                        $convertirTexto($nombreEmpleado),
+                        0,
+                        0,
+                        'L'
+                    );
+
+
+
+                    $pdf->SetXY(140 * $escalaX, 112 * $escalaY);
+                    $pdf->Cell(
+                        190 * $escalaX,
+                        14 * $escalaY,
+                        $convertirTexto($nombreCategoria),
+                        0,
+                        0,
+                        'L'
+                    );
+                }
+            }
+
+
+
+            $pdf->SetTitle($convertirTexto('Método RULA'));
+
+            $pdf->SetAuthor($convertirTexto('Evaluación ergonómica'));
+
+
+
+            return response($pdf->Output('S'), 200, [
+
+                'Content-Type' => 'application/pdf',
+
+                'Content-Disposition' => 'attachment; filename="Metodo_RULA\_' . $freId . '.pdf"'
+
+            ]);
+        } catch (\Throwable $e) {
+
+            \Illuminate\Support\Facades\Log::error(
+
+                'Error al generar PDF RULA: ' . $e->getMessage(),
+
+                [
+
+                    'fre_id' => $request->fre_id ?? null,
+
+                    'linea' => $e->getLine(),
+
+                    'archivo' => $e->getFile()
+
+                ]
+
+            );
+
+
+
+            return response()->json([
+                'message' => 'Ocurrió un error al generar el PDF del método RULA.'
+            ], 500);
+        }
+    }
+
+    public function descargarMetodoREBA(Request $request)
+    {
+
+        try {
+
+            $request->validate([
+
+                'fre_id' => 'required|integer|min:1'
+
+            ]);
+
+            $freId = (int) $request->fre_id;
+
+            $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+
+                ->leftJoin(
+
+                    'recoergo_fichastecnicas as ficha',
+
+                    'ficha.ID_FICHAS_TECNICAS',
+
+                    '=',
+
+                    'evaluacion.FICHA_ID'
+
+                )
+
+                ->leftJoin(
+
+                    'recoergocategorias as categoria',
+
+                    'categoria.ID_CATEGORIA_ERGO',
+
+                    '=',
+
+                    'ficha.CATEGORIA_ID_FICHA'
+
+                )
+
+                ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+
+                ->select(
+
+                    'evaluacion.*',
+
+                    'categoria.NOMBRE_CATEGORIA_ERGO'
+
+                )
+
+                ->first();
+
+            if (!$evaluacion) {
+
+                return response()->json([
+
+                    'message' => 'No se encontró la evaluación FRE.'
+
+                ], 404);
+            }
+
+            $metodos = $evaluacion->CAT_METODOS_FRE;
+
+            if (is_string($metodos)) {
+
+                $metodos = json_decode($metodos, true);
+            }
+
+            $metodos = array_map('strval', (array) $metodos);
+
+            if (!in_array('4', $metodos, true)) {
+
+                return response()->json([
+
+                    'message' => 'La evaluación no tiene seleccionado el método REBA.'
+
+                ], 422);
+            }
+
+            $camposObligatorios = [
+
+                'REBA_TRONCO',
+
+                'REBA_CUELLO',
+
+                'REBA_PIERNAS',
+
+                'REBA_BRAZO',
+
+                'REBA_ANTEBRAZO',
+
+                'REBA_MUNECA',
+
+                'ANALISIS_METODO_REBA'
+
+            ];
+
+            foreach ($camposObligatorios as $campo) {
+
+                if (
+
+                    !isset($evaluacion->$campo) ||
+
+                    trim((string) $evaluacion->$campo) === ''
+
+                ) {
+
+                    return response()->json([
+
+                        'message' => 'Falta completar el campo ' . $campo . ' del método REBA.'
+
+                    ], 422);
+                }
+            }
+
+            $camposREBA = [
+
+                'REBA_TRONCO',
+
+                'REBA_TRONCO_MOD',
+
+                'REBA_CUELLO',
+
+                'REBA_CUELLO_MOD',
+
+                'REBA_PIERNAS',
+
+                'REBA_RODILLAS',
+
+                'REBA_BRAZO',
+
+                'REBA_BRAZO_MOD',
+
+                'REBA_ANTEBRAZO',
+
+                'REBA_MUNECA',
+
+                'REBA_MUNECA_MOD',
+
+                'REBA_CARGA',
+
+                'REBA_FUERZA_BRUSCA',
+
+                'REBA_AGARRE',
+
+                'REBA_ACTIVIDAD_MUSCULAR'
+
+            ];
+
+            $datosREBA = [];
+
+            foreach ($camposREBA as $campo) {
+
+                $datosREBA[$campo] = $evaluacion->$campo ?? '';
+            }
+
+            $numero = function ($campo, $predeterminado = 0) use ($datosREBA) {
+
+                $valor = $datosREBA[$campo] ?? '';
+
+                return is_numeric($valor) ? (int) $valor : $predeterminado;
+            };
+
+            $limitar = function ($valor, $minimo, $maximo) {
+
+                return max($minimo, min($maximo, $valor));
+            };
+
+            $matrizA = [
+
+                [
+
+                    [1, 2, 3, 4],
+
+                    [1, 2, 3, 4],
+
+                    [3, 3, 5, 6]
+
+                ],
+
+                [
+
+                    [2, 3, 4, 5],
+
+                    [3, 4, 5, 6],
+
+                    [4, 5, 6, 7]
+
+                ],
+
+                [
+
+                    [2, 4, 5, 6],
+
+                    [4, 5, 6, 7],
+
+                    [5, 6, 7, 8]
+
+                ],
+
+                [
+
+                    [3, 5, 6, 7],
+
+                    [5, 6, 7, 8],
+
+                    [6, 7, 8, 9]
+
+                ],
+
+                [
+
+                    [4, 6, 7, 8],
+
+                    [6, 7, 8, 9],
+
+                    [7, 8, 9, 9]
+
+                ]
+
+            ];
+
+            $matrizB = [
+
+                [[1, 2, 2], [1, 2, 3]],
+
+                [[1, 2, 3], [2, 3, 4]],
+
+                [[3, 4, 5], [4, 5, 5]],
+
+                [[4, 5, 5], [5, 6, 7]],
+
+                [[6, 7, 8], [7, 8, 8]],
+
+                [[7, 8, 8], [8, 9, 9]]
+
+            ];
+
+            $matrizC = [
+
+                [1, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7, 7],
+
+                [1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7, 8],
+
+                [2, 3, 3, 3, 4, 5, 6, 7, 7, 8, 8, 8],
+
+                [3, 4, 4, 4, 5, 6, 7, 8, 8, 9, 9, 9],
+
+                [4, 4, 4, 5, 6, 7, 8, 8, 9, 9, 9, 9],
+
+                [6, 6, 6, 7, 8, 8, 9, 9, 10, 10, 10, 10],
+
+                [7, 7, 7, 8, 9, 9, 9, 10, 10, 11, 11, 11],
+
+                [8, 8, 8, 9, 10, 10, 10, 10, 10, 11, 11, 11],
+
+                [9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12],
+
+                [10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 12],
+
+                [11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12],
+
+                [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
+
+            ];
+
+            $tronco = $numero('REBA_TRONCO');
+
+            $troncoMod = $numero('REBA_TRONCO_MOD');
+
+            $cuello = $numero('REBA_CUELLO');
+
+            $cuelloMod = $numero('REBA_CUELLO_MOD');
+
+            $piernas = $numero('REBA_PIERNAS');
+
+            $rodillas = $numero('REBA_RODILLAS');
+
+            $puntuacionTronco = $limitar($tronco + $troncoMod, 1, 5);
+
+            $puntuacionCuello = $limitar($cuello + $cuelloMod, 1, 3);
+
+            $puntuacionPiernas = $limitar($piernas + $rodillas, 1, 4);
+
+            $puntuacionInicialA = $matrizA[$puntuacionTronco - 1][$puntuacionCuello - 1][$puntuacionPiernas - 1];
+
+            $carga = $numero('REBA_CARGA');
+
+            $fuerzaBrusca = $numero('REBA_FUERZA_BRUSCA');
+
+            $puntuacionA = $puntuacionInicialA + $carga + $fuerzaBrusca;
+
+            $brazoBase = $numero('REBA_BRAZO');
+
+            $modificacionBrazo = 0;
+
+            if ($datosREBA['REBA_BRAZO_MOD'] === 'abducido') {
+
+                $modificacionBrazo = 1;
+            } elseif ($datosREBA['REBA_BRAZO_MOD'] === 'hombro') {
+
+                $modificacionBrazo = 1;
+            } elseif ($datosREBA['REBA_BRAZO_MOD'] === 'apoyo') {
+
+                $modificacionBrazo = -1;
+            }
+
+            $puntuacionBrazo = $limitar(
+
+                $brazoBase + $modificacionBrazo,
+
+                1,
+
+                6
+
+            );
+
+            $antebrazo = $numero('REBA_ANTEBRAZO');
+
+            $munecaSeleccion = (string) $datosREBA['REBA_MUNECA'];
+
+            if (
+
+                $munecaSeleccion === '1_neutra' ||
+
+                $munecaSeleccion === '1_flexion'
+
+            ) {
+
+                $munecaBase = 1;
+            } elseif ($munecaSeleccion === '2') {
+
+                $munecaBase = 2;
+            } else {
+
+                $munecaBase = 0;
+            }
+
+            $munecaMod = $numero('REBA_MUNECA_MOD');
+
+            $puntuacionMuneca = $limitar(
+
+                $munecaBase + $munecaMod,
+
+                1,
+
+                3
+
+            );
+
+            $puntuacionInicialB = $matrizB[$puntuacionBrazo - 1][$antebrazo - 1][$puntuacionMuneca - 1];
+
+            $agarre = $numero('REBA_AGARRE');
+
+            $puntuacionB = $puntuacionInicialB + $agarre;
+
+            $puntuacionAjustada = $limitar($puntuacionA, 1, 12);
+
+            $puntuacionBAjustada = $limitar($puntuacionB, 1, 12);
+
+            $puntuacionC = $matrizC[$puntuacionAjustada - 1][$puntuacionBAjustada - 1];
+
+            $actividadMuscular = in_array(
+
+                $datosREBA['REBA_ACTIVIDAD_MUSCULAR'],
+
+                ['estatica', 'repetitiva', 'inestable'],
+
+                true
+
+            ) ? 1 : 0;
+
+            $puntuacionFinal = $puntuacionC + $actividadMuscular;
+
+            if ($puntuacionFinal === 1) {
+
+                $nivel = 0;
+
+                $riesgo = 'Inapreciable';
+
+                $actuacion = 'No es necesaria actuación.';
+            } elseif ($puntuacionFinal <= 3) {
+
+                $nivel = 1;
+
+                $riesgo = 'Bajo';
+
+                $actuacion = 'Puede ser necesaria la actuación.';
+            } elseif ($puntuacionFinal <= 7) {
+
+                $nivel = 2;
+
+                $riesgo = 'Medio';
+
+                $actuacion = 'Es necesaria la actuación.';
+            } elseif ($puntuacionFinal <= 10) {
+
+                $nivel = 3;
+
+                $riesgo = 'Alto';
+
+                $actuacion = 'Es necesaria la actuación cuanto antes.';
+            } else {
+
+                $nivel = 4;
+
+                $riesgo = 'Muy alto';
+
+                $actuacion = 'Es necesaria la actuación de inmediato.';
+            }
+
+            $rutaPlantilla = storage_path(
+
+                'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_REBA.pdf'
+
+            );
+
+            if (!file_exists($rutaPlantilla)) {
+
+                return response()->json([
+
+                    'message' => 'No se encontró la plantilla PDF del método REBA.'
+
+                ], 404);
+            }
+
+            $nombreEmpleado = trim(
+
+                (string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? 'SIN NOMBRE')
+
+            );
+
+            $nombreCategoria = trim(
+
+                (string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? 'SIN CATEGORÍA')
+
+            );
+
+            $convertirTexto = function ($texto) {
+
+                $convertido = @iconv(
+
+                    'UTF-8',
+
+                    'windows-1252//TRANSLIT',
+
+                    (string) $texto
+
+                );
+
+                return $convertido !== false
+
+                    ? $convertido
+
+                    : utf8_decode((string) $texto);
+            };
+
+            $pdf = new \setasign\Fpdi\Fpdi();
+
+            $pdf->SetAutoPageBreak(false);
+
+            $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+            $escalaX = 1;
+
+            $escalaY = 1;
+
+            $marcar = function ($x, $y, $ancho, $alto) use (
+
+                $pdf,
+
+                &$escalaX,
+
+                &$escalaY
+
+            ) {
+
+                $pdf->SetDrawColor(220, 0, 0);
+
+                $pdf->SetLineWidth(0.9);
+
+                $pdf->Rect(
+
+                    $x * $escalaX,
+
+                    $y * $escalaY,
+
+                    $ancho * $escalaX,
+
+                    $alto * $escalaY
+
+                );
+            };
+
+            $marcarFila = function ($valor, $filas) use ($marcar) {
+                $clave = trim((string) $valor);
+
+                if ($clave !== '' && isset($filas[$clave])) {
+                    $coordenada = $filas[$clave];
+                    $marcar(
+                        $coordenada[0],
+                        $coordenada[1],
+                        $coordenada[2],
+                        $coordenada[3]
+                    );
+                }
+            };
+
+            $marcarSeleccion = function ($valor, $opciones) use ($marcar) {
+                $clave = trim((string) $valor);
+
+                if ($clave !== '' && isset($opciones[$clave])) {
+                    $coordenada = $opciones[$clave];
+                    $marcar(
+                        $coordenada[0],
+                        $coordenada[1],
+                        $coordenada[2],
+                        $coordenada[3]
+                    );
+                }
+            };
+
+            $escribirTexto = function (
+
+                $x,
+
+                $y,
+
+                $ancho,
+
+                $alto,
+
+                $contenido,
+
+                $tamano = 9,
+
+                $estilo = 'B',
+
+                $alineacion = 'L'
+
+            ) use ($pdf, $convertirTexto, &$escalaX, &$escalaY) {
+
+                $pdf->SetFont('Arial', $estilo, $tamano);
+
+                $pdf->SetTextColor(0, 0, 0);
+
+                $pdf->SetXY($x * $escalaX, $y * $escalaY);
+
+                $pdf->Cell(
+
+                    $ancho * $escalaX,
+
+                    $alto * $escalaY,
+
+                    $convertirTexto($contenido),
+
+                    0,
+
+                    0,
+
+                    $alineacion
+
+                );
+            };
+
+            for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+
+                $plantilla = $pdf->importPage($pagina);
+
+                $tamano = $pdf->getTemplateSize($plantilla);
+
+                $pdf->AddPage(
+
+                    $tamano['orientation'],
+
+                    [$tamano['width'], $tamano['height']]
+
+                );
+
+                $pdf->useTemplate($plantilla);
+
+                $escalaX = $tamano['width'] / 768;
+
+                $escalaY = $tamano['height'] / 1024;
+
+                if ($pagina === 1) {
+
+                    $pdf->SetFont('Arial', 'B', 8);
+
+                    $pdf->SetTextColor(0, 0, 0);
+
+                    $pdf->SetXY(185 * $escalaX, 109 * $escalaY);
+
+                    $pdf->Cell(
+                        200 * $escalaX,
+                        14 * $escalaY,
+                        $convertirTexto($nombreEmpleado),
+                        0,
+                        0,
+                        'L'
+                    );
+
+
+
+                    $pdf->SetXY(140 * $escalaX, 137 * $escalaY);
+                    $pdf->Cell(
+                        190 * $escalaX,
+                        14 * $escalaY,
+                        $convertirTexto($nombreCategoria),
+                        0,
+                        0,
+                        'L'
+                    );
+                }
+
+                if ($pagina === 3) {
+
+                    $marcarFila($datosREBA['REBA_TRONCO'], [
+
+                        '1' => [43, 367, 683, 26],
+
+                        '2' => [43, 393, 683, 26],
+
+                        '3' => [43, 419, 683, 26],
+
+                        '4' => [43, 445, 683, 26]
+
+                    ]);
+
+                    if ($troncoMod !== 0) {
+                        $marcar(43, 510, 683, 28);
+                    }
+
+                    $marcarFila($datosREBA['REBA_CUELLO'], [
+
+                        '1' => [43, 768, 683, 26],
+
+                        '2' => [43, 794, 683, 26]
+
+                    ]);
+
+                    if ($cuelloMod !== 0) {
+                        $marcar(43, 861, 683, 26);
+                    }
+                }
+
+                if ($pagina === 4) {
+
+                    $marcarFila($datosREBA['REBA_PIERNAS'], [
+
+                        '1' => [43, 336, 683, 24],
+
+                        '2' => [43, 360, 683, 24]
+
+                    ]);
+
+                    $marcarFila($datosREBA['REBA_RODILLAS'], [
+
+                        '1' => [43, 423, 683, 23],
+
+                        '2' => [43, 446, 683, 23]
+
+                    ]);
+
+                    $marcarFila($datosREBA['REBA_BRAZO'], [
+
+                        '1' => [43, 733, 683, 21],
+
+                        '2' => [43, 756, 683, 20],
+
+                        '3' => [43, 778, 683, 20],
+
+                        '4' => [43, 800, 683, 21]
+
+                    ]);
+
+                    $marcarFila($datosREBA['REBA_BRAZO_MOD'], [
+
+                        'abducido' => [43, 864, 683, 23],
+
+                        'hombro' => [43, 887, 683, 24],
+
+                        'apoyo' => [43, 911, 683, 24]
+
+                    ]);
+                }
+
+                if ($pagina === 5) {
+
+                    $marcarFila($datosREBA['REBA_ANTEBRAZO'], [
+
+                        '1' => [43, 360, 683, 23],
+
+                        '2' => [43, 383, 683, 23]
+
+                    ]);
+
+                    $marcarSeleccion($munecaSeleccion, [
+
+                        '1_neutra' => [43, 721, 683, 26],
+
+                        '1_flexion' => [43, 747, 683, 23],
+
+                        '2' => [43, 770, 683, 25]
+
+                    ]);
+
+                    if ($munecaMod !== 0) {
+                        $marcar(43, 840, 683, 26);
+                    }
+                }
+
+                if ($pagina === 6) {
+
+                    $anchoCeldaA = 50;
+
+                    $altoCeldaA = 32;
+
+                    $inicioXA = 121;
+
+                    $inicioYA = 327;
+
+                    $filaA = $puntuacionTronco - 1;
+                    $columnaA = (($puntuacionCuello - 1) * 4) + ($puntuacionPiernas - 1);
+
+                    $marcar(
+                        $inicioXA + ($columnaA * $anchoCeldaA),
+                        $inicioYA + ($filaA * $altoCeldaA),
+                        $anchoCeldaA,
+                        $altoCeldaA
+                    );
+
+                    $anchoCeldaB = 100;
+
+                    $altoCeldaB = 32;
+
+                    $inicioXB = 121;
+
+                    $inicioYB = 652;
+
+                    $filaB = $puntuacionBrazo - 1;
+                    $columnaB = (($antebrazo - 1) * 3) + ($puntuacionMuneca - 1);
+
+                    $marcar(
+                        $inicioXB + ($columnaB * $anchoCeldaB),
+                        $inicioYB + ($filaB * $altoCeldaB),
+                        $anchoCeldaB,
+                        $altoCeldaB
+                    );
+                }
+
+                if ($pagina === 7) {
+
+                    $marcarSeleccion($datosREBA['REBA_CARGA'], [
+
+                        '0' => [43, 214, 683, 30],
+
+                        '1' => [43, 244, 683, 30],
+
+                        '2' => [43, 274, 683, 30]
+
+                    ]);
+
+                    if ($fuerzaBrusca !== 0) {
+                        $marcar(43, 363, 683, 27);
+                    }
+
+                    $marcarSeleccion($datosREBA['REBA_AGARRE'], [
+
+                        '0' => [43, 547, 683, 31],
+
+                        '1' => [43, 584, 683, 34],
+
+                        '2' => [43, 612, 683, 44],
+
+                        '3' => [43, 656, 683, 41]
+
+                    ]);
+                }
+
+                if ($pagina === 8) {
+
+                    $inicioXC = 133;
+
+                    $inicioYC = 237.5;
+
+                    $anchoCeldaC = 50;
+
+                    $altoCeldaC = 23.5;
+
+                    $filaC = $puntuacionAjustada - 1;
+                    $columnaC = $puntuacionBAjustada - 1;
+
+                    $marcar(
+                        $inicioXC + ($columnaC * $anchoCeldaC),
+                        $inicioYC + ($filaC * $altoCeldaC),
+                        $anchoCeldaC,
+                        $altoCeldaC
+                    );
+
+                    $marcarSeleccion($datosREBA['REBA_ACTIVIDAD_MUSCULAR'], [
+
+                        'estatica' => [43, 654, 683, 43],
+
+                        'repetitiva' => [43, 697, 683, 35],
+
+                        'inestable' => [43, 732, 683, 32]
+
+                    ]);
+                }
+
+                if ($pagina === 9) {
+
+                    $filaNivel = [
+
+                        0 => [43, 221, 683, 50],
+
+                        1 => [43, 271, 683, 51],
+
+                        2 => [43, 322, 683, 50],
+
+                        3 => [43, 372, 683, 51],
+
+                        4 => [43, 423, 683, 50]
+
+                    ];
+
+                    if (isset($filaNivel[$nivel])) {
+                        $coordenada = $filaNivel[$nivel];
+                        $marcar(
+                            $coordenada[0],
+                            $coordenada[1],
+                            $coordenada[2],
+                            $coordenada[3]
+                        );
+                    }
+                }
+            }
+
+            $pdf->SetTitle($convertirTexto('Método REBA'));
+
+            $pdf->SetAuthor($convertirTexto('Evaluación ergonómica'));
+
+            return response($pdf->Output('S'), 200, [
+
+                'Content-Type' => 'application/pdf',
+
+                'Content-Disposition' => 'attachment; filename="Metodo_REBA\_' . $freId . '.pdf"'
+
+            ]);
+        } catch (\Throwable $e) {
+
+            \Illuminate\Support\Facades\Log::error(
+
+                'Error al generar PDF REBA: ' . $e->getMessage(),
+
+                [
+
+                    'fre_id' => $request->fre_id ?? null,
+
+                    'linea' => $e->getLine(),
+
+                    'archivo' => $e->getFile()
+
+                ]
+
+            );
+
+            return response()->json([
+
+                'message' => 'Ocurrió un error al generar el PDF del método REBA.'
+
+            ], 500);
+        }
+    }
+
+    public function descargarMetodoMACEQUIPOS(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'fre_id' => 'required|integer|min:1'
+            ]);
+
+            $freId = (int) $request->fre_id;
+
+            $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                ->leftJoin(
+                    'recoergo_fichastecnicas as ficha',
+                    'ficha.ID_FICHAS_TECNICAS',
+                    '=',
+                    'evaluacion.FICHA_ID'
+                )
+                ->leftJoin(
+                    'recoergocategorias as categoria',
+                    'categoria.ID_CATEGORIA_ERGO',
+                    '=',
+                    'ficha.CATEGORIA_ID_FICHA'
+                )
+                ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                ->select(
+                    'evaluacion.*',
+                    'categoria.NOMBRE_CATEGORIA_ERGO'
+                )
+                ->first();
+
+            if (!$evaluacion) {
+                return response()->json([
+                    'message' => 'No se encontró la evaluación FRE.'
+                ], 404);
+            }
+
+            $metodos = $evaluacion->CAT_METODOS_FRE;
+
+            if (is_string($metodos)) {
+                $metodos = json_decode($metodos, true);
+            }
+
+            $metodos = array_map('strval', (array) $metodos);
+
+            if (!in_array('5', $metodos, true)) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene seleccionado el método MAC.'
+                ], 422);
+            }
+
+            if (
+                strtoupper(trim((string) ($evaluacion->MAC_TAREAS_EQUIPO ?? '')))
+                !== 'SI'
+            ) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene seleccionada la ficha MAC de manejo en equipo.'
+                ], 422);
+            }
+
+            $camposMAC = [
+                'MAC_EQ_A',
+                'MAC_EQ_PESO_CARGA',
+                'MAC_EQ_NUM_PERSONAS',
+                'MAC_EQ_B',
+                'MAC_EQ_C',
+                'MAC_EQ_D',
+                'MAC_EQ_E',
+                'MAC_EQ_F',
+                'MAC_EQ_G',
+                'MAC_EQ_H',
+                'MAC_EQ_I',
+                'MAC_EQ_J',
+                'MAC_EQ_K'
+            ];
+
+            $datosMAC = [];
+
+            foreach ($camposMAC as $campo) {
+                $datosMAC[$campo] = trim(
+                    (string) ($evaluacion->$campo ?? '')
+                );
+            }
+
+            $puntuaciones = [
+                'MAC_EQ_A' => [
+                    'A_2_MENOS_35' => 0,
+                    'A_3_MENOS_55' => 0,
+                    'A_4_MENOS_75' => 0,
+                    'A_2_35_65' => 4,
+                    'A_3_55_95' => 4,
+                    'A_4_75_130' => 4,
+                    'A_2_65_85' => 6,
+                    'A_3_95_130' => 6,
+                    'A_4_130_170' => 6,
+                    'A_2_MAS_85' => 10,
+                    'A_3_MAS_130' => 10,
+                    'A_4_MAS_170' => 10
+                ],
+                'MAC_EQ_B' => [
+                    'B_0' => 0,
+                    'B_3' => 3,
+                    'B_6' => 6
+                ],
+                'MAC_EQ_C' => [
+                    'C_0' => 0,
+                    'C_1' => 1,
+                    'C_3' => 3
+                ],
+                'MAC_EQ_D' => [
+                    'D_0' => 0,
+                    'D_1' => 1,
+                    'D_2' => 2
+                ],
+                'MAC_EQ_E' => [
+                    'E_0' => 0,
+                    'E_1' => 1,
+                    'E_3' => 3
+                ],
+                'MAC_EQ_F' => [
+                    'F_0' => 0,
+                    'F_2' => 2,
+                    'F_4' => 4
+                ],
+                'MAC_EQ_G' => [
+                    'G_0' => 0,
+                    'G_1' => 1,
+                    'G_3' => 3
+                ],
+                'MAC_EQ_H' => [
+                    'H_0' => 0,
+                    'H_1' => 1,
+                    'H_3' => 3
+                ],
+                'MAC_EQ_I' => [
+                    'I_0' => 0,
+                    'I_2' => 2,
+                    'I_3' => 3
+                ],
+                'MAC_EQ_J' => [
+                    'J_0' => 0,
+                    'J_1' => 1,
+                    'J_3' => 3
+                ],
+                'MAC_EQ_K' => [
+                    'K_0' => 0,
+                    'K_1' => 1,
+                    'K_2' => 2
+                ]
+            ];
+
+            $totalCalculado = 0;
+            $indicesSeleccionados = [];
+            $puntuacionesFactores = [];
+
+            foreach ($puntuaciones as $campo => $opciones) {
+
+                $valorSeleccionado = $datosMAC[$campo] ?? '';
+
+                if (
+                    $valorSeleccionado === '' ||
+                    !array_key_exists($valorSeleccionado, $opciones)
+                ) {
+                    return response()->json([
+                        'message' => 'La selección del campo ' . $campo . ' no es válida o está incompleta.',
+                        'valor_recibido' => $valorSeleccionado
+                    ], 422);
+                }
+
+                $claves = array_keys($opciones);
+                $indice = array_search($valorSeleccionado, $claves, true);
+
+                $indicesSeleccionados[$campo] = $indice;
+                $puntuacionesFactores[$campo] = $opciones[$valorSeleccionado];
+                $totalCalculado += $opciones[$valorSeleccionado];
+            }
+
+            if ($totalCalculado <= 4) {
+                $filaRiesgo = 0;
+            } elseif ($totalCalculado <= 12) {
+                $filaRiesgo = 1;
+            } elseif ($totalCalculado <= 20) {
+                $filaRiesgo = 2;
+            } else {
+                $filaRiesgo = 3;
+            }
+
+            $rutaPlantilla = storage_path(
+                'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Equipo.pdf'
+            );
+
+            if (!file_exists($rutaPlantilla)) {
+                return response()->json([
+                    'message' => 'No se encontró la plantilla PDF del método MAC de manejo en equipo.'
+                ], 404);
+            }
+
+            $nombreEmpleado = trim(
+                (string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? '')
+            );
+
+            $nombreCategoria = trim(
+                (string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? '')
+            );
+
+            if ($nombreEmpleado === '') {
+                $nombreEmpleado = 'SIN NOMBRE';
+            }
+
+            if ($nombreCategoria === '') {
+                $nombreCategoria = 'SIN CATEGORÍA';
+            }
+
+            $convertirTexto = function ($texto) {
+                $convertido = @iconv(
+                    'UTF-8',
+                    'windows-1252//TRANSLIT',
+                    (string) $texto
+                );
+
+                return $convertido !== false
+                    ? $convertido
+                    : utf8_decode((string) $texto);
+            };
+
+            /*
+         * Coordenadas existentes de la plantilla MAC.
+         * Formato: [X, Y, ANCHO, ALTO].
+         * Se usan únicamente para colocar el valor recuperado de BD.
+         * No se dibujan rectángulos ni bordes.
+         */
+            $coordenadasMAC = [
+                1 => [
+                    'A' => [
+                        [49, 399, 91, 76],
+                        [141, 399, 90, 76],
+                        [232, 399, 90, 76],
+                        [49, 480, 91, 74],
+                        [141, 480, 90, 74],
+                        [232, 480, 90, 74],
+                        [49, 558, 91, 73],
+                        [141, 558, 90, 73],
+                        [232, 558, 90, 73],
+                        [49, 635, 91, 76],
+                        [141, 635, 90, 76],
+                        [232, 635, 90, 76]
+                    ],
+                    'A_PUNTUACION' => [
+                        [506, 470, 70, 51]
+                    ],
+                    'A_PESO' => [
+                        [431, 623, 70, 48]
+                    ],
+                    'A_PERSONAS' => [
+                        [578, 623, 70, 48]
+                    ]
+                ],
+                2 => [
+                    'B' => [
+                        [48, 241, 192, 52],
+                        [241, 241, 270, 52],
+                        [512, 241, 205, 52]
+                    ],
+                    'C' => [
+                        [48, 432, 202, 34],
+                        [251, 432, 234, 34],
+                        [486, 432, 231, 34]
+                    ],
+                    'D' => [
+                        [48, 610, 202, 38],
+                        [251, 610, 234, 38],
+                        [486, 610, 231, 38]
+                    ],
+                    'E' => [
+                        [48, 701, 202, 34],
+                        [251, 701, 174, 34],
+                        [426, 701, 291, 34]
+                    ],
+                    'F' => [
+                        [48, 835, 192, 52],
+                        [241, 835, 185, 52],
+                        [427, 835, 153, 52],
+                        [581, 835, 136, 52],
+                        [48, 947, 192, 61],
+                        [241, 947, 185, 61],
+                        [427, 947, 153, 61],
+                        [581, 947, 136, 61]
+                    ]
+                ],
+                3 => [
+                    'G' => [
+                        [48, 161, 153, 60],
+                        [202, 161, 218, 60],
+                        [421, 161, 296, 60]
+                    ],
+                    'H' => [
+                        [48, 320, 202, 32],
+                        [251, 320, 234, 32],
+                        [486, 320, 231, 32]
+                    ],
+                    'I' => [
+                        [48, 466, 202, 33],
+                        [251, 466, 234, 33],
+                        [486, 466, 231, 33]
+                    ],
+                    'J' => [
+                        [48, 694, 202, 35],
+                        [251, 694, 234, 35],
+                        [486, 694, 231, 35]
+                    ],
+                    'K' => [
+                        [48, 837, 202, 34],
+                        [251, 837, 234, 34],
+                        [486, 837, 231, 34]
+                    ]
+                ],
+                4 => [
+                    'RIESGO' => [
+                        [62, 228, 634, 45],
+                        [62, 273, 634, 45],
+                        [62, 318, 634, 45],
+                        [62, 363, 634, 45]
+                    ]
+                ]
+            ];
+
+            $pdf = new \setasign\Fpdi\Fpdi();
+            $pdf->SetAutoPageBreak(false);
+            $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+            $escalaX = 1;
+            $escalaY = 1;
+
+            $escribirTexto = function (
+                $x,
+                $y,
+                $ancho,
+                $alto,
+                $contenido,
+                $tamano = 10,
+                $estilo = 'B',
+                $alineacion = 'C'
+            ) use (
+                $pdf,
+                $convertirTexto,
+                &$escalaX,
+                &$escalaY
+            ) {
+                $pdf->SetFont('Arial', $estilo, $tamano);
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->SetXY(
+                    $x * $escalaX,
+                    $y * $escalaY
+                );
+                $pdf->Cell(
+                    $ancho * $escalaX,
+                    $alto * $escalaY,
+                    $convertirTexto($contenido),
+                    0,
+                    0,
+                    $alineacion
+                );
+            };
+
+
+            $dibujarRectanguloRojo = function (
+                $x,
+                $y,
+                $ancho,
+                $alto
+            ) use (
+                $pdf,
+                &$escalaX,
+                &$escalaY
+            ) {
+                $pdf->SetDrawColor(0, 0, 0);
+                $pdf->SetLineWidth(1.2);
+
+                $pdf->Rect(
+                    $x * $escalaX,
+                    $y * $escalaY,
+                    $ancho * $escalaX,
+                    $alto * $escalaY
+                );
+            };
+
+            for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+
+                $plantilla = $pdf->importPage($pagina);
+                $tamano = $pdf->getTemplateSize($plantilla);
+
+                $pdf->AddPage(
+                    $tamano['orientation'],
+                    [
+                        $tamano['width'],
+                        $tamano['height']
+                    ]
+                );
+
+                $pdf->useTemplate($plantilla);
+
+                $escalaX = $tamano['width'] / 768;
+                $escalaY = $tamano['height'] / 1024;
+
+                if ($pagina === 1) {
+
+                    $escribirTexto(
+                        185,
+                        115,
+                        150,
+                        90,
+                        $nombreEmpleado,
+                        8,
+                        'B',
+                        'L'
+                    );
+
+                    $escribirTexto(
+                        140,
+                        127,
+                        150,
+                        180,
+                        $nombreCategoria,
+                        8,
+                        'B',
+                        'L'
+                    );
+
+                    $escribirTexto(
+                        506,
+                        470,
+                        70,
+                        51,
+                        (string) $puntuacionesFactores['MAC_EQ_A'],
+                        12,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        431,
+                        623,
+                        70,
+                        48,
+                        $datosMAC['MAC_EQ_PESO_CARGA'],
+                        10,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        578,
+                        623,
+                        70,
+                        48,
+                        $datosMAC['MAC_EQ_NUM_PERSONAS'],
+                        10,
+                        'B',
+                        'C'
+                    );
+                }
+
+                if ($pagina === 2) {
+
+                    foreach (['B', 'C', 'D', 'E', 'F'] as $factor) {
+
+                        $campo = 'MAC_EQ_' . $factor;
+                        $indice = $indicesSeleccionados[$campo];
+
+                        if ($factor === 'F') {
+                            $valorF = $datosMAC['MAC_EQ_F'];
+
+                            $coordenadasF = [
+                                'F_0' => 4,
+                                'F_2' => 5,
+                                'F_4' => 7
+                            ];
+
+                            $indice = $coordenadasF[$valorF];
+                        }
+
+                        $coordenada = $coordenadasMAC[2][$factor][$indice];
+
+                        $dibujarRectanguloRojo(
+                            $coordenada[0],
+                            $coordenada[1],
+                            $coordenada[2],
+                            $coordenada[3]
+                        );
+                    }
+                }
+
+                if ($pagina === 3) {
+
+                    foreach (['G', 'H', 'I', 'J', 'K'] as $factor) {
+
+                        $campo = 'MAC_EQ_' . $factor;
+                        $indice = $indicesSeleccionados[$campo];
+                        $coordenada = $coordenadasMAC[3][$factor][$indice];
+
+                        $dibujarRectanguloRojo(
+                            $coordenada[0],
+                            $coordenada[1],
+                            $coordenada[2],
+                            $coordenada[3]
+                        );
+                    }
+                }
+
+                if ($pagina === 4) {
+
+                    $coordenadaRiesgo =
+                        $coordenadasMAC[4]['RIESGO'][$filaRiesgo];
+
+                    $dibujarRectanguloRojo(
+                        $coordenadaRiesgo[0],
+                        $coordenadaRiesgo[1],
+                        $coordenadaRiesgo[2],
+                        $coordenadaRiesgo[3]
+                    );
+
+                    $escribirTexto(
+                        62,
+                        180,
+                        634,
+                        25,
+                        'TOTAL: ' . $totalCalculado,
+                        12,
+                        'B',
+                        'C'
+                    );
+                }
+            }
+
+            $pdf->SetTitle(
+                $convertirTexto('Método MAC - Manejo de carga en equipo')
+            );
+
+            $pdf->SetAuthor(
+                $convertirTexto('Evaluación ergonómica')
+            );
+
+            return response($pdf->Output('S'), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' =>
+                'attachment; filename="Metodo_MAC_Equipo_' . $freId . '.pdf"'
+            ]);
+        } catch (\Throwable $e) {
+
+            \Illuminate\Support\Facades\Log::error(
+                'Error al generar PDF MAC Equipo: ' . $e->getMessage(),
+                [
+                    'fre_id' => $request->fre_id ?? null,
+                    'linea' => $e->getLine(),
+                    'archivo' => $e->getFile()
+                ]
+            );
+
+            return response()->json([
+                'message' => 'Ocurrió un error al generar el PDF del método MAC de manejo en equipo.'
+            ], 500);
+        }
+    }
+
+    public function descargarMetodoMACIndividual(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'fre_id' => 'required|integer|min:1'
+            ]);
+
+            $freId = (int) $request->fre_id;
+
+            $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                ->leftJoin(
+                    'recoergocategorias as categoria',
+                    'categoria.ID_CATEGORIA_ERGO',
+                    '=',
+                    'evaluacion.CATEGORIA_ID_FRE'
+                )
+                ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                ->select(
+                    'evaluacion.*',
+                    'categoria.NOMBRE_CATEGORIA_ERGO'
+                )
+                ->first();
+
+            if (!$evaluacion) {
+                return response()->json([
+                    'message' => 'No se encontró la evaluación FRE.'
+                ], 404);
+            }
+
+            $metodos = $evaluacion->CAT_METODOS_FRE;
+
+            if (is_string($metodos)) {
+                $metodos = json_decode($metodos, true);
+            }
+
+            $metodos = array_map('strval', (array) $metodos);
+
+            if (!in_array('5', $metodos, true)) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene seleccionado el método MAC.'
+                ], 422);
+            }
+
+            if (
+                strtoupper(trim((string) ($evaluacion->MAC_LEVANTAMIENTO_INDIVIDUAL ?? '')))
+                !== 'SI'
+            ) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene activada la ficha MAC de levantamiento individual de carga.'
+                ], 422);
+            }
+
+            $camposMAC = [
+                'MAC_IND_PESO_CARGA',
+                'MAC_IND_NUM_OBJETOS',
+                'MAC_IND_NUM_PERSONAS',
+                'MAC_IND_HORAS',
+                'MAC_IND_FRECUENCIA',
+                'MAC_IND_A',
+                'MAC_IND_B',
+                'MAC_IND_C',
+                'MAC_IND_D',
+                'MAC_IND_E',
+                'MAC_IND_F',
+                'MAC_IND_G',
+                'MAC_IND_H',
+                'MAC_IND_CONTROL_A',
+                'MAC_IND_CONTROL_B',
+                'MAC_IND_CONTROL_C',
+                'MAC_IND_CONTROL_D',
+                'MAC_IND_CONTROL_E',
+                'MAC_IND_CONTROL_F',
+                'MAC_IND_CONTROL_G',
+                'MAC_IND_CONTROL_H',
+                'MAC_IND_ANALISIS_RESULTADOS'
+            ];
+
+            $datosMAC = [];
+
+            foreach ($camposMAC as $campo) {
+                $datosMAC[$campo] = $evaluacion->$campo ?? null;
+            }
+
+            $camposObligatorios = [
+                'MAC_IND_PESO_CARGA',
+                'MAC_IND_NUM_OBJETOS',
+                'MAC_IND_NUM_PERSONAS',
+                'MAC_IND_HORAS',
+                'MAC_IND_B',
+                'MAC_IND_C',
+                'MAC_IND_D',
+                'MAC_IND_E',
+                'MAC_IND_F',
+                'MAC_IND_G',
+                'MAC_IND_H'
+            ];
+
+            foreach ($camposObligatorios as $campo) {
+                if (
+                    !isset($datosMAC[$campo]) ||
+                    trim((string) $datosMAC[$campo]) === ''
+                ) {
+                    return response()->json([
+                        'message' => 'Falta completar el campo ' . $campo . ' del método MAC de levantamiento individual.'
+                    ], 422);
+                }
+            }
+
+            $peso = (float) $datosMAC['MAC_IND_PESO_CARGA'];
+            $objetos = (float) $datosMAC['MAC_IND_NUM_OBJETOS'];
+            $personas = (float) $datosMAC['MAC_IND_NUM_PERSONAS'];
+            $horas = (float) $datosMAC['MAC_IND_HORAS'];
+
+            if ($peso < 0 || $objetos <= 0 || $personas <= 0 || $horas <= 0) {
+                return response()->json([
+                    'message' => 'Los datos de peso, objetos, personas u horas no son válidos.'
+                ], 422);
+            }
+
+            $frecuenciaCalculada = $objetos / $personas / $horas;
+
+            $frecuencia = is_numeric($datosMAC['MAC_IND_FRECUENCIA'])
+                ? (float) $datosMAC['MAC_IND_FRECUENCIA']
+                : $frecuenciaCalculada;
+
+            $frecuenciasGrafica = [0, 2, 12, 30, 60, 250, 400, 720];
+
+            $limitesGrafica = [
+                'verde' => [15, 13, 11, 10, 9, 7, 6, 5],
+                'naranja' => [45, 40, 38, 35, 30, 20, 16, 12],
+                'rojo' => [50, 50, 50, 50, 48, 33, 28, 20]
+            ];
+
+            $interpolarLimite = function ($frecuencia, $limites) use ($frecuenciasGrafica) {
+
+                if ($frecuencia <= $frecuenciasGrafica[0]) {
+                    return $limites[0];
+                }
+
+                for ($i = 1; $i < count($frecuenciasGrafica); $i++) {
+
+                    if ($frecuencia <= $frecuenciasGrafica[$i]) {
+
+                        $frecuenciaAnterior = $frecuenciasGrafica[$i - 1];
+                        $frecuenciaActual = $frecuenciasGrafica[$i];
+
+                        $limiteAnterior = $limites[$i - 1];
+                        $limiteActual = $limites[$i];
+
+                        $proporcion =
+                            ($frecuencia - $frecuenciaAnterior) /
+                            ($frecuenciaActual - $frecuenciaAnterior);
+
+                        return $limiteAnterior +
+                            (($limiteActual - $limiteAnterior) * $proporcion);
+                    }
+                }
+
+                return $limites[count($limites) - 1];
+            };
+
+            if ($peso >= 50) {
+                $puntuacionACalculada = 10;
+            } else {
+
+                $limiteVerde = $interpolarLimite(
+                    $frecuencia,
+                    $limitesGrafica['verde']
+                );
+
+                $limiteNaranja = $interpolarLimite(
+                    $frecuencia,
+                    $limitesGrafica['naranja']
+                );
+
+                $limiteRojo = $interpolarLimite(
+                    $frecuencia,
+                    $limitesGrafica['rojo']
+                );
+
+                if ($peso <= $limiteVerde) {
+                    $puntuacionACalculada = 0;
+                } elseif ($peso <= $limiteNaranja) {
+                    $puntuacionACalculada = 4;
+                } elseif ($peso <= $limiteRojo) {
+                    $puntuacionACalculada = 6;
+                } else {
+                    $puntuacionACalculada = 10;
+                }
+            }
+
+            $puntuacionA = is_numeric($datosMAC['MAC_IND_A'])
+                ? (int) $datosMAC['MAC_IND_A']
+                : $puntuacionACalculada;
+
+            if (!in_array($puntuacionA, [0, 4, 6, 10], true)) {
+                return response()->json([
+                    'message' => 'El valor guardado en MAC_IND_A no es válido.',
+                    'valor_recibido' => $datosMAC['MAC_IND_A']
+                ], 422);
+            }
+
+            $opciones = [
+                'MAC_IND_B' => [
+                    'B_0' => 0,
+                    'B_3' => 3,
+                    'B_6' => 6
+                ],
+                'MAC_IND_C' => [
+                    'C_0' => 0,
+                    'C_1A' => 1,
+                    'C_1B' => 1,
+                    'C_3A' => 3,
+                    'C_3B' => 3
+                ],
+                'MAC_IND_D' => [
+                    'D_0' => 0,
+                    'D_1A' => 1,
+                    'D_1B' => 1,
+                    'D_2' => 2
+                ],
+                'MAC_IND_E' => [
+                    'E_0' => 0,
+                    'E_1' => 1,
+                    'E_3' => 3
+                ],
+                'MAC_IND_F' => [
+                    'F_0' => 0,
+                    'F_1' => 1,
+                    'F_2' => 2
+                ],
+                'MAC_IND_G' => [
+                    'G_0' => 0,
+                    'G_1' => 1,
+                    'G_2' => 2
+                ],
+                'MAC_IND_H' => [
+                    'H_0' => 0,
+                    'H_1' => 1,
+                    'H_2' => 2
+                ]
+            ];
+
+            $totalCalculado = $puntuacionA;
+            $indicesSeleccionados = [];
+            $puntuacionesFactores = [
+                'MAC_IND_A' => $puntuacionA
+            ];
+
+            foreach ($opciones as $campo => $valores) {
+
+                $valorSeleccionado = trim((string) $datosMAC[$campo]);
+
+                if (!array_key_exists($valorSeleccionado, $valores)) {
+                    return response()->json([
+                        'message' => 'El valor seleccionado para ' . $campo . ' no es válido.',
+                        'valor_recibido' => $valorSeleccionado,
+                        'opciones_validas' => array_keys($valores)
+                    ], 422);
+                }
+
+                $claves = array_keys($valores);
+                $indicesSeleccionados[$campo] = array_search(
+                    $valorSeleccionado,
+                    $claves,
+                    true
+                );
+
+                $puntuacionesFactores[$campo] = $valores[$valorSeleccionado];
+                $totalCalculado += $valores[$valorSeleccionado];
+            }
+
+            if ($totalCalculado <= 4) {
+                $filaRiesgo = 0;
+                $nivelRiesgo = 'Bajo - Aceptable';
+            } elseif ($totalCalculado <= 12) {
+                $filaRiesgo = 1;
+                $nivelRiesgo = 'Medio - Posible';
+            } elseif ($totalCalculado <= 20) {
+                $filaRiesgo = 2;
+                $nivelRiesgo = 'Alto - Significativo';
+            } else {
+                $filaRiesgo = 3;
+                $nivelRiesgo = 'Muy Alto - Inaceptable';
+            }
+
+            $nombreEmpleado = trim(
+                (string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? '')
+            );
+
+            if ($nombreEmpleado === '') {
+                $nombreEmpleado = 'SIN NOMBRE REGISTRADO';
+            }
+
+            $nombreCategoria = trim(
+                (string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? '')
+            );
+
+            if ($nombreCategoria === '') {
+                $nombreCategoria = 'SIN CATEGORÍA';
+            }
+
+            $rutasPlantilla = [
+                storage_path('app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Individual.pdf'),
+                storage_path('app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Levantamiento_Individual.pdf'),
+                storage_path('app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Tareas de levantamiento individual de carga.pdf')
+            ];
+
+            $rutaPlantilla = null;
+
+            foreach ($rutasPlantilla as $ruta) {
+                if (file_exists($ruta)) {
+                    $rutaPlantilla = $ruta;
+                    break;
+                }
+            }
+
+            if (!$rutaPlantilla) {
+                return response()->json([
+                    'message' => 'No se encontró la plantilla PDF de MAC levantamiento individual. Verifica el nombre del archivo en metodos_ergonomia.'
+                ], 404);
+            }
+
+            $convertirTexto = function ($texto) {
+
+                $convertido = @iconv(
+                    'UTF-8',
+                    'windows-1252//TRANSLIT',
+                    (string) $texto
+                );
+
+                return $convertido !== false
+                    ? $convertido
+                    : utf8_decode((string) $texto);
+            };
+
+            /*
+         * Coordenadas ajustadas a las franjas de selección de la plantilla individual.
+         * Formato: [X, Y, ANCHO, ALTO].
+         * Los recuadros siguen el tamaño de selección utilizado en MAC equipo.
+         */
+            $coordenadasMAC = [
+                2 => [
+                    'MAC_IND_B' => [
+                        [49, 148, 135, 199],
+                        [183, 148, 207, 199],
+                        [390, 148, 326, 199]
+                    ],
+                    'MAC_IND_C' => [
+                        [49, 406, 135, 198],
+                        [183, 406, 112, 198],
+                        [296, 406, 113, 198],
+                        [450, 406, 113, 198],
+                        [563, 406, 113, 198]
+                    ],
+                    'MAC_IND_D' => [
+                        [49, 659, 151, 198],
+                        [200, 659, 151, 198],
+                        [351, 659, 151, 198],
+                        [502, 659, 214, 198]
+                    ]
+                ],
+                3 => [
+                    'MAC_IND_E' => [
+                        [49, 160, 202, 184],
+                        [251, 160, 234, 184],
+                        [485, 160, 233, 184]
+                    ],
+                    'MAC_IND_F' => [
+                        [49, 550, 161, 143],
+                        [210, 550, 254, 143],
+                        [464, 550, 253, 143],
+                        [49, 550, 161, 143],
+                        [49, 550, 161, 143],
+                        [210, 550, 254, 143],
+                        [464, 550, 100, 143],
+                        [564, 550, 154, 143]
+                    ],
+                    'MAC_IND_G' => [
+                        [49, 750, 202, 58],
+                        [251, 750, 234, 58],
+                        [485, 750, 233, 58]
+                    ],
+                    'MAC_IND_H' => [
+                        [49, 887, 202, 35],
+                        [251, 887, 234, 35],
+                        [485, 887, 233, 35]
+                    ]
+                ],
+                4 => [
+                    'RIESGO' => [
+                        [62, 228, 634, 44],
+                        [62, 272, 634, 45],
+                        [62, 317, 634, 45],
+                        [62, 362, 634, 52]
+                    ]
+                ]
+            ];
+
+            $pdf = new \setasign\Fpdi\Fpdi();
+            $pdf->SetAutoPageBreak(false);
+
+            $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+            $escalaX = 1;
+            $escalaY = 1;
+
+            $dibujarRectanguloNegro = function (
+                $x,
+                $y,
+                $ancho,
+                $alto
+            ) use (
+                $pdf,
+                &$escalaX,
+                &$escalaY
+            ) {
+                $pdf->SetDrawColor(0, 0, 0);
+                $pdf->SetLineWidth(1.0);
+
+                $pdf->Rect(
+                    $x * $escalaX,
+                    $y * $escalaY,
+                    $ancho * $escalaX,
+                    $alto * $escalaY
+                );
+            };
+
+            $escribirTexto = function (
+                $x,
+                $y,
+                $ancho,
+                $alto,
+                $contenido,
+                $tamano = 9,
+                $estilo = 'B',
+                $alineacion = 'C'
+            ) use (
+                $pdf,
+                $convertirTexto,
+                &$escalaX,
+                &$escalaY
+            ) {
+                $pdf->SetFont('Arial', $estilo, $tamano);
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->SetXY(
+                    $x * $escalaX,
+                    $y * $escalaY
+                );
+                $pdf->Cell(
+                    $ancho * $escalaX,
+                    $alto * $escalaY,
+                    $convertirTexto($contenido),
+                    0,
+                    0,
+                    $alineacion
+                );
+            };
+
+            for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+
+                $plantilla = $pdf->importPage($pagina);
+                $tamano = $pdf->getTemplateSize($plantilla);
+
+                $pdf->AddPage(
+                    $tamano['orientation'],
+                    [
+                        $tamano['width'],
+                        $tamano['height']
+                    ]
+                );
+
+                $pdf->useTemplate($plantilla);
+
+                $escalaX = $tamano['width'] / 768;
+                $escalaY = $tamano['height'] / 1024;
+
+                if ($pagina === 1) {
+
+                    $escribirTexto(
+                        185,
+                        148,
+                        210,
+                        24,
+                        $nombreEmpleado,
+                        9,
+                        'B',
+                        'L'
+                    );
+
+                    $escribirTexto(
+                        140,
+                        207,
+                        210,
+                        24,
+                        $nombreCategoria,
+                        9,
+                        'B',
+                        'L'
+                    );
+
+                    $escribirTexto(
+                        578,
+                        449,
+                        51,
+                        38,
+                        2,
+                        9,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        426,
+                        485,
+                        53,
+                        38,
+                        (string) $puntuacionA,
+                        12,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        474,
+                        550,
+                        55,
+                        40,
+                        $objetos,
+                        9,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        530,
+                        550,
+                        55,
+                        40,
+                        $personas, 
+                        9,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        600,
+                        550,
+                        53,
+                        40,
+                        $horas,
+                        9,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        674,
+                        550,
+                        45,
+                        40,
+                        $frecuencia,
+                        9,
+                        'B',
+                        'C'
+                    );
+
+                   
+                }
+
+                if (isset($coordenadasMAC[$pagina])) {
+
+                    foreach (
+                        $coordenadasMAC[$pagina]
+                        as $campo => $rectangulos
+                    ) {
+
+                        if ($campo === 'RIESGO') {
+                            continue;
+                        }
+
+                        $indice = $indicesSeleccionados[$campo] ?? null;
+
+                        if ($campo === 'MAC_IND_F') {
+                            $mapaF = [
+                                'F_0' => 4,
+                                'F_1' => 5,
+                                'F_2' => 7
+                            ];
+
+                            $valorF = trim((string) ($datosMAC['MAC_IND_F'] ?? ''));
+                            $indice = $mapaF[$valorF] ?? null;
+                        }
+
+                        if (
+                            $indice !== null &&
+                            isset($rectangulos[$indice])
+                        ) {
+                            $coordenada = $rectangulos[$indice];
+
+                            $dibujarRectanguloNegro(
+                                $coordenada[0],
+                                $coordenada[1],
+                                $coordenada[2],
+                                $coordenada[3]
+                            );
+                        }
+                    }
+                }
+
+                if ($pagina === 4) {
+
+                    $coordenadaRiesgo =
+                        $coordenadasMAC[4]['RIESGO'][$filaRiesgo];
+
+                    $dibujarRectanguloNegro(
+                        $coordenadaRiesgo[0],
+                        $coordenadaRiesgo[1],
+                        $coordenadaRiesgo[2],
+                        $coordenadaRiesgo[3]
+                    );
+
+                   
+                }
+            }
+
+            $pdf->SetTitle(
+                $convertirTexto('Método MAC - Tareas de levantamiento individual de carga')
+            );
+
+            $pdf->SetAuthor(
+                $convertirTexto('Evaluación ergonómica')
+            );
+
+            return response($pdf->Output('S'), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' =>
+                'attachment; filename="Metodo_MAC_Levantamiento_Individual_' . $freId . '.pdf"'
+            ]);
+        } catch (\Throwable $e) {
+
+            \Illuminate\Support\Facades\Log::error(
+                'Error al generar PDF MAC Levantamiento Individual: ' . $e->getMessage(),
+                [
+                    'fre_id' => $request->fre_id ?? null,
+                    'linea' => $e->getLine(),
+                    'archivo' => $e->getFile()
+                ]
+            );
+
+            return response()->json([
+                'message' => 'Ocurrió un error al generar el PDF del método MAC de levantamiento individual.'
+            ], 500);
+        }
+    }
+    public function descargarMetodoMACTransporte(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'fre_id' => 'required|integer|min:1'
+            ]);
+
+            $freId = (int) $request->fre_id;
+
+            $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                ->leftJoin(
+                    'recoergocategorias as categoria',
+                    'categoria.ID_CATEGORIA_ERGO',
+                    '=',
+                    'evaluacion.CATEGORIA_ID_FRE'
+                )
+                ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                ->select(
+                    'evaluacion.*',
+                    'categoria.NOMBRE_CATEGORIA_ERGO'
+                )
+                ->first();
+
+            if (!$evaluacion) {
+                return response()->json([
+                    'message' => 'No se encontró la evaluación FRE.'
+                ], 404);
+            }
+
+            $metodos = $evaluacion->CAT_METODOS_FRE;
+
+            if (is_string($metodos)) {
+                $metodos = json_decode($metodos, true);
+            }
+
+            $metodos = array_map('strval', (array) $metodos);
+
+            if (!in_array('5', $metodos, true)) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene seleccionado el método MAC.'
+                ], 422);
+            }
+
+            if (
+                strtoupper(trim((string) ($evaluacion->MAC_TRANSPORTE_CARGA ?? '')))
+                !== 'SI'
+            ) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene activada la ficha MAC de tareas de transporte de carga.'
+                ], 422);
+            }
+
+            $camposMAC = [
+                'MAC_TRANS_PESO_CARGA',
+                'MAC_TRANS_NUM_OBJETOS',
+                'MAC_TRANS_NUM_PERSONAS',
+                'MAC_TRANS_HORAS',
+                'MAC_TRANS_FRECUENCIA',
+                'MAC_TRANS_A',
+                'MAC_TRANS_B',
+                'MAC_TRANS_C',
+                'MAC_TRANS_D',
+                'MAC_TRANS_E',
+                'MAC_TRANS_F',
+                'MAC_TRANS_G',
+                'MAC_TRANS_H',
+                'MAC_TRANS_I',
+                'MAC_TRANS_CONTROL_A',
+                'MAC_TRANS_CONTROL_B',
+                'MAC_TRANS_CONTROL_C',
+                'MAC_TRANS_CONTROL_D',
+                'MAC_TRANS_CONTROL_E',
+                'MAC_TRANS_CONTROL_F',
+                'MAC_TRANS_CONTROL_G',
+                'MAC_TRANS_CONTROL_H',
+                'MAC_TRANS_CONTROL_I',
+                'MAC_TRANS_ANALISIS_RESULTADOS'
+            ];
+
+            $datosMAC = [];
+
+            foreach ($camposMAC as $campo) {
+                $datosMAC[$campo] = $evaluacion->$campo ?? null;
+            }
+
+            $camposObligatorios = [
+                'MAC_TRANS_PESO_CARGA',
+                'MAC_TRANS_NUM_OBJETOS',
+                'MAC_TRANS_NUM_PERSONAS',
+                'MAC_TRANS_HORAS',
+                'MAC_TRANS_B',
+                'MAC_TRANS_C',
+                'MAC_TRANS_D',
+                'MAC_TRANS_E',
+                'MAC_TRANS_F',
+                'MAC_TRANS_G',
+                'MAC_TRANS_H',
+                'MAC_TRANS_I'
+            ];
+
+            foreach ($camposObligatorios as $campo) {
+                if (
+                    !isset($datosMAC[$campo]) ||
+                    trim((string) $datosMAC[$campo]) === ''
+                ) {
+                    return response()->json([
+                        'message' => 'Falta completar el campo ' . $campo . ' del método MAC de transporte de carga.'
+                    ], 422);
+                }
+            }
+
+            $peso = (float) $datosMAC['MAC_TRANS_PESO_CARGA'];
+            $objetos = (float) $datosMAC['MAC_TRANS_NUM_OBJETOS'];
+            $personas = (float) $datosMAC['MAC_TRANS_NUM_PERSONAS'];
+            $horas = (float) $datosMAC['MAC_TRANS_HORAS'];
+
+            if ($peso < 0 || $objetos <= 0 || $personas <= 0 || $horas <= 0) {
+                return response()->json([
+                    'message' => 'Los datos de peso, objetos, personas u horas no son válidos.'
+                ], 422);
+            }
+
+            $frecuenciaCalculada = $objetos / $personas / $horas;
+
+            $frecuencia = is_numeric($datosMAC['MAC_TRANS_FRECUENCIA'])
+                ? (float) $datosMAC['MAC_TRANS_FRECUENCIA']
+                : $frecuenciaCalculada;
+
+            $frecuenciasGrafica = [0, 2, 12, 30, 60, 300];
+
+            $limitesGrafica = [
+                'verde' => [15, 13, 11, 10, 9, 7],
+                'naranja' => [45, 40, 38, 35, 30, 20],
+                'rojo' => [50, 50, 50, 50, 48, 33]
+            ];
+
+            $interpolarLimite = function ($frecuencia, $limites) use ($frecuenciasGrafica) {
+
+                if ($frecuencia <= $frecuenciasGrafica[0]) {
+                    return $limites[0];
+                }
+
+                for ($i = 1; $i < count($frecuenciasGrafica); $i++) {
+
+                    if ($frecuencia <= $frecuenciasGrafica[$i]) {
+
+                        $frecuenciaAnterior = $frecuenciasGrafica[$i - 1];
+                        $frecuenciaActual = $frecuenciasGrafica[$i];
+
+                        $limiteAnterior = $limites[$i - 1];
+                        $limiteActual = $limites[$i];
+
+                        $proporcion =
+                            ($frecuencia - $frecuenciaAnterior) /
+                            ($frecuenciaActual - $frecuenciaAnterior);
+
+                        return $limiteAnterior +
+                            (($limiteActual - $limiteAnterior) * $proporcion);
+                    }
+                }
+
+                return $limites[count($limites) - 1];
+            };
+
+            if ($peso >= 50) {
+                $puntuacionACalculada = 10;
+            } else {
+
+                $limiteVerde = $interpolarLimite(
+                    $frecuencia,
+                    $limitesGrafica['verde']
+                );
+
+                $limiteNaranja = $interpolarLimite(
+                    $frecuencia,
+                    $limitesGrafica['naranja']
+                );
+
+                $limiteRojo = $interpolarLimite(
+                    $frecuencia,
+                    $limitesGrafica['rojo']
+                );
+
+                if ($peso <= $limiteVerde) {
+                    $puntuacionACalculada = 0;
+                } elseif ($peso <= $limiteNaranja) {
+                    $puntuacionACalculada = 4;
+                } elseif ($peso <= $limiteRojo) {
+                    $puntuacionACalculada = 6;
+                } else {
+                    $puntuacionACalculada = 10;
+                }
+            }
+
+            $puntuacionA = is_numeric($datosMAC['MAC_TRANS_A'])
+                ? (int) $datosMAC['MAC_TRANS_A']
+                : $puntuacionACalculada;
+
+            if (!in_array($puntuacionA, [0, 4, 6, 10], true)) {
+                return response()->json([
+                    'message' => 'El valor guardado en MAC_TRANS_A no es válido.',
+                    'valor_recibido' => $datosMAC['MAC_TRANS_A']
+                ], 422);
+            }
+
+            $opciones = [
+                'MAC_TRANS_B' => [
+                    'B_0' => 0,
+                    'B_3' => 3,
+                    'B_6' => 6
+                ],
+                'MAC_TRANS_C' => [
+                    'C_0' => 0,
+                    'C_1A' => 1,
+                    'C_1B' => 1,
+                    'C_2' => 2
+                ],
+                'MAC_TRANS_D' => [
+                    'D_0' => 0,
+                    'D_1' => 1,
+                    'D_3' => 3
+                ],
+                'MAC_TRANS_E' => [
+                    'E_0' => 0,
+                    'E_1' => 1,
+                    'E_2' => 2
+                ],
+                'MAC_TRANS_F' => [
+                    'F_0' => 0,
+                    'F_1' => 1,
+                    'F_3' => 3
+                ],
+                'MAC_TRANS_G' => [
+                    'G_0' => 0,
+                    'G_1' => 1,
+                    'G_2' => 2
+                ],
+                'MAC_TRANS_H' => [
+                    'H_0' => 0,
+                    'H_2' => 2,
+                    'H_3' => 3
+                ],
+                'MAC_TRANS_I' => [
+                    'I_0' => 0,
+                    'I_1' => 1,
+                    'I_2' => 2
+                ]
+            ];
+
+            $totalCalculado = $puntuacionA;
+            $indicesSeleccionados = [];
+            $puntuacionesFactores = [
+                'MAC_TRANS_A' => $puntuacionA
+            ];
+
+            foreach ($opciones as $campo => $valores) {
+
+                $valorSeleccionado = trim((string) $datosMAC[$campo]);
+
+                if (!array_key_exists($valorSeleccionado, $valores)) {
+                    return response()->json([
+                        'message' => 'El valor seleccionado para ' . $campo . ' no es válido.',
+                        'valor_recibido' => $valorSeleccionado,
+                        'opciones_validas' => array_keys($valores)
+                    ], 422);
+                }
+
+                $claves = array_keys($valores);
+
+                $indicesSeleccionados[$campo] = array_search(
+                    $valorSeleccionado,
+                    $claves,
+                    true
+                );
+
+                $puntuacionesFactores[$campo] = $valores[$valorSeleccionado];
+                $totalCalculado += $valores[$valorSeleccionado];
+            }
+
+            if ($totalCalculado <= 4) {
+                $filaRiesgo = 0;
+                $nivelRiesgo = 'Bajo - Aceptable';
+            } elseif ($totalCalculado <= 12) {
+                $filaRiesgo = 1;
+                $nivelRiesgo = 'Medio - Posible';
+            } elseif ($totalCalculado <= 20) {
+                $filaRiesgo = 2;
+                $nivelRiesgo = 'Alto - Significativo';
+            } else {
+                $filaRiesgo = 3;
+                $nivelRiesgo = 'Muy Alto - Inaceptable';
+            }
+
+            $nombreEmpleado = trim(
+                (string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? '')
+            );
+
+            if ($nombreEmpleado === '') {
+                $nombreEmpleado = 'SIN NOMBRE REGISTRADO';
+            }
+
+            $nombreCategoria = trim(
+                (string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? '')
+            );
+
+            if ($nombreCategoria === '') {
+                $nombreCategoria = 'SIN CATEGORÍA';
+            }
+
+            $rutaPlantilla = storage_path(
+                'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Transporte.pdf'
+            );
+
+            if (!file_exists($rutaPlantilla)) {
+                $rutaPlantilla = storage_path(
+                    'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Transporte.pdf'
+                );
+            }
+
+            if (!file_exists($rutaPlantilla)) {
+                $rutaPlantilla = storage_path(
+                    'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Transporte.pdf'
+                );
+            }
+
+            if (!file_exists($rutaPlantilla)) {
+                return response()->json([
+                    'message' => 'No se encontró la plantilla PDF de MAC tareas de transporte de carga.'
+                ], 404);
+            }
+
+            $convertirTexto = function ($texto) {
+
+                $convertido = @iconv(
+                    'UTF-8',
+                    'windows-1252//TRANSLIT',
+                    (string) $texto
+                );
+
+                return $convertido !== false
+                    ? $convertido
+                    : utf8_decode((string) $texto);
+            };
+
+            /*
+         * Coordenadas de la plantilla MAC transporte.
+         * Formato: [X, Y, ANCHO, ALTO].
+         * Las selecciones se marcan con rectángulos negros compactos.
+         */
+            $coordenadasMAC = [
+                2 => [
+                    'MAC_TRANS_B' => [
+                        [49, 282, 135, 60],
+                        [184, 282, 245, 60],
+                        [429, 282, 249, 60]
+                    ],
+                    'MAC_TRANS_C' => [
+                        [48, 393, 184, 186],
+                        [232, 393, 135, 186],
+                        [366, 393, 122, 186],
+                        [532, 393, 184, 186]
+                    ],
+                    'MAC_TRANS_D' => [
+                        [48, 632, 202, 33],
+                        [250, 632, 234, 33],
+                        [485, 632, 232, 33]
+                    ],
+                    'MAC_TRANS_E' => [
+                        [48, 717, 162, 291],
+                        [210, 717, 253, 291],
+                        [463, 717, 253, 291]
+                    ]
+                ],
+                3 => [
+                    'MAC_TRANS_F' => [
+                        [48, 150, 202, 67],
+                        [250, 150, 234, 67],
+                        [485, 150, 232, 67]
+                    ],
+                    'MAC_TRANS_G' => [
+                        [48, 279, 202, 176],
+                        [250, 279, 234, 176],
+                        [485, 279, 232, 176]
+                    ],
+                    'MAC_TRANS_H' => [
+                        [48, 539, 202, 197],
+                        [250, 539, 234, 197],
+                        [485, 539, 232, 197]
+                    ],
+                    'MAC_TRANS_I' => [
+                        [48, 816, 202, 32],
+                        [250, 816, 234, 32],
+                        [485, 816, 232, 32]
+                    ]
+                ],
+                4 => [
+                    'RIESGO' => [
+                        [63, 228, 632, 45],
+                        [63, 272, 632, 45],
+                        [63, 317, 632, 45],
+                        [63, 362, 632, 50]
+                    ]
+                ]
+            ];
+
+            $pdf = new \setasign\Fpdi\Fpdi();
+            $pdf->SetAutoPageBreak(false);
+
+            $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+            $escalaX = 1;
+            $escalaY = 1;
+
+            $dibujarRectanguloNegro = function (
+                $x,
+                $y,
+                $ancho,
+                $alto
+            ) use (
+                $pdf,
+                &$escalaX,
+                &$escalaY
+            ) {
+                $pdf->SetDrawColor(0, 0, 0);
+                $pdf->SetLineWidth(1.0);
+
+                $pdf->Rect(
+                    $x * $escalaX,
+                    $y * $escalaY,
+                    $ancho * $escalaX,
+                    $alto * $escalaY
+                );
+            };
+
+            $escribirTexto = function (
+                $x,
+                $y,
+                $ancho,
+                $alto,
+                $contenido,
+                $tamano = 9,
+                $estilo = 'B',
+                $alineacion = 'C'
+            ) use (
+                $pdf,
+                $convertirTexto,
+                &$escalaX,
+                &$escalaY
+            ) {
+                $pdf->SetFont('Arial', $estilo, $tamano);
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->SetXY(
+                    $x * $escalaX,
+                    $y * $escalaY
+                );
+                $pdf->Cell(
+                    $ancho * $escalaX,
+                    $alto * $escalaY,
+                    $convertirTexto($contenido),
+                    0,
+                    0,
+                    $alineacion
+                );
+            };
+
+            for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+
+                $plantilla = $pdf->importPage($pagina);
+                $tamano = $pdf->getTemplateSize($plantilla);
+
+                $pdf->AddPage(
+                    $tamano['orientation'],
+                    [
+                        $tamano['width'],
+                        $tamano['height']
+                    ]
+                );
+
+                $pdf->useTemplate($plantilla);
+
+                $escalaX = $tamano['width'] / 768;
+                $escalaY = $tamano['height'] / 1024;
+
+                if ($pagina === 1) {
+
+                    $escribirTexto(
+                        185,
+                        148,
+                        210,
+                        24,
+                        $nombreEmpleado,
+                        9,
+                        'B',
+                        'L'
+                    );
+
+                    $escribirTexto(
+                        140,
+                        207,
+                        210,
+                        24,
+                        $nombreCategoria,
+                        9,
+                        'B',
+                        'L'
+                    );
+
+                    $escribirTexto(
+                        578,
+                        449,
+                        51,
+                        38,
+                        2,
+                        9,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        426,
+                        485,
+                        53,
+                        38,
+                        (string) $puntuacionA,
+                        12,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        474,
+                        550,
+                        55,
+                        40,
+                        $objetos,
+                        9,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        530,
+                        550,
+                        55,
+                        40,
+                        $personas,
+                        9,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        600,
+                        550,
+                        53,
+                        40,
+                        $horas,
+                        9,
+                        'B',
+                        'C'
+                    );
+
+                    $escribirTexto(
+                        674,
+                        550,
+                        45,
+                        40,
+                        $frecuencia,
+                        9,
+                        'B',
+                        'C'
+                    );
+                }
+
+
+                if (isset($coordenadasMAC[$pagina])) {
+
+                    foreach ($coordenadasMAC[$pagina] as $campo => $rectangulos) {
+
+                        $indice = $indicesSeleccionados[$campo] ?? null;
+
+                        if (
+                            $indice !== null &&
+                            isset($rectangulos[$indice])
+                        ) {
+                            $coordenada = $rectangulos[$indice];
+
+                            $dibujarRectanguloNegro(
+                                $coordenada[0],
+                                $coordenada[1],
+                                $coordenada[2],
+                                $coordenada[3]
+                            );
+                        }
+                    }
+                }
+
+                if ($pagina === 4) {
+
+                    $coordenadaRiesgo =
+                        $coordenadasMAC[4]['RIESGO'][$filaRiesgo];
+
+                    $dibujarRectanguloNegro(
+                        $coordenadaRiesgo[0],
+                        $coordenadaRiesgo[1],
+                        $coordenadaRiesgo[2],
+                        $coordenadaRiesgo[3]
+                    );
+                }
+            }
+
+            $pdf->SetTitle(
+                $convertirTexto('Método MAC - Tareas de transporte de carga')
+            );
+
+            $pdf->SetAuthor(
+                $convertirTexto('Evaluación ergonómica')
+            );
+
+            return response($pdf->Output('S'), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' =>
+                'attachment; filename="Metodo_MAC_Transporte_' . $freId . '.pdf"'
+            ]);
+        } catch (\Throwable $e) {
+
+            \Illuminate\Support\Facades\Log::error(
+                'Error al generar PDF MAC Transporte: ' . $e->getMessage(),
+                [
+                    'fre_id' => $request->fre_id ?? null,
+                    'linea' => $e->getLine(),
+                    'archivo' => $e->getFile()
+                ]
+            );
+
+            return response()->json([
+                'message' => 'Ocurrió un error al generar el PDF del método MAC de tareas de transporte de carga.'
+            ], 500);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    public function reporteMetodosFreZip($RECO_ID)
+    {
+        $carpetaTemp = storage_path('app/temp/metodos_fre_' . uniqid());
+        $errores = [];
+        $cantidadPDF = 0;
+
+        try {
+            $evaluaciones = DB::table('evaluacion_fre_ergo')
+                ->where('RECO_ID', $RECO_ID)
+                ->orderBy('ID_EVALUACION_FRE', 'asc')
+                ->get();
+
+            if ($evaluaciones->isEmpty()) {
+                return response()->json(['message' => 'No hay evaluaciones FRE registradas para este reconocimiento.'], 404);
+            }
+
+            if (!class_exists(\ZipArchive::class)) {
+                return response()->json(['message' => 'La extensión ZIP de PHP no está habilitada en el servidor.'], 500);
+            }
+
+            if (!\Illuminate\Support\Facades\File::exists($carpetaTemp)) {
+                \Illuminate\Support\Facades\File::makeDirectory($carpetaTemp, 0755, true);
+            }
+
+            $nombreZip = 'Metodos_FRE_' . $RECO_ID . '.zip';
+            $rutaZip = $carpetaTemp . DIRECTORY_SEPARATOR . $nombreZip;
+            $zip = new \ZipArchive();
+
+            if ($zip->open($rutaZip, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+                throw new \Exception('No se pudo crear el archivo ZIP.');
+            }
+
+            $generadores = [];
+
+            $generadores['1'] = function (Request $request) {
+                try {
+                    $request->validate([
+                        'fre_id' => 'required|integer|min:1'
+                    ]);
+
+                    $freId = $request->fre_id;
+
+                    $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                        ->leftJoin(
+                            'recoergocategorias as categoria',
+                            'categoria.ID_CATEGORIA_ERGO',
+                            '=',
+                            'evaluacion.CATEGORIA_ID_FRE'
+                        )
+                        ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                        ->select(
+                            'evaluacion.*',
+                            'categoria.NOMBRE_CATEGORIA_ERGO'
+                        )
+                        ->first();
+
+                    if (!$evaluacion) {
+                        return response()->json([
+                            'message' => 'No se encontró la evaluación FRE.'
+                        ], 404);
+                    }
+
+                    $espalda = (int) $evaluacion->OWAS_ESPALDA;
+                    $brazos = (int) $evaluacion->OWAS_BRAZOS;
+                    $piernas = (int) $evaluacion->OWAS_PIERNAS;
+                    $carga = (int) $evaluacion->OWAS_CARGA;
+
+                    if (
+                        $espalda < 1 || $espalda > 4 ||
+                        $brazos < 1 || $brazos > 3 ||
+                        $piernas < 1 || $piernas > 7 ||
+                        $carga < 1 || $carga > 3
+                    ) {
+                        return response()->json([
+                            'message' => 'Los datos de la postura OWAS están incompletos o no son válidos.'
+                        ], 422);
+                    }
+
+                    $tablaOWAS = [
+                        1 => [
+                            1 => [
+                                1 => [1, 1, 1],
+                                2 => [1, 1, 1],
+                                3 => [1, 1, 1],
+                                4 => [2, 2, 2],
+                                5 => [2, 2, 2],
+                                6 => [1, 1, 1],
+                                7 => [1, 1, 1]
+                            ],
+                            2 => [
+                                1 => [1, 1, 1],
+                                2 => [1, 1, 1],
+                                3 => [1, 1, 1],
+                                4 => [2, 2, 2],
+                                5 => [2, 2, 2],
+                                6 => [1, 1, 1],
+                                7 => [1, 1, 1]
+                            ],
+                            3 => [
+                                1 => [1, 1, 1],
+                                2 => [1, 1, 1],
+                                3 => [1, 1, 1],
+                                4 => [2, 2, 3],
+                                5 => [2, 2, 3],
+                                6 => [1, 1, 1],
+                                7 => [1, 1, 2]
+                            ]
+                        ],
+                        2 => [
+                            1 => [
+                                1 => [2, 2, 3],
+                                2 => [2, 2, 3],
+                                3 => [2, 2, 3],
+                                4 => [3, 3, 3],
+                                5 => [3, 3, 3],
+                                6 => [2, 2, 2],
+                                7 => [3, 3, 3]
+                            ],
+                            2 => [
+                                1 => [2, 2, 3],
+                                2 => [2, 2, 3],
+                                3 => [2, 3, 3],
+                                4 => [3, 4, 4],
+                                5 => [3, 4, 3],
+                                6 => [3, 3, 4],
+                                7 => [2, 3, 4]
+                            ],
+                            3 => [
+                                1 => [3, 3, 4],
+                                2 => [2, 2, 3],
+                                3 => [3, 3, 3],
+                                4 => [3, 4, 4],
+                                5 => [4, 4, 4],
+                                6 => [4, 4, 4],
+                                7 => [2, 3, 4]
+                            ]
+                        ],
+                        3 => [
+                            1 => [
+                                1 => [1, 1, 1],
+                                2 => [1, 1, 1],
+                                3 => [1, 1, 2],
+                                4 => [3, 3, 3],
+                                5 => [4, 4, 4],
+                                6 => [1, 1, 1],
+                                7 => [1, 1, 1]
+                            ],
+                            2 => [
+                                1 => [2, 2, 3],
+                                2 => [1, 1, 1],
+                                3 => [1, 1, 2],
+                                4 => [4, 4, 4],
+                                5 => [4, 4, 4],
+                                6 => [3, 3, 3],
+                                7 => [1, 1, 1]
+                            ],
+                            3 => [
+                                1 => [2, 2, 3],
+                                2 => [1, 1, 1],
+                                3 => [2, 3, 3],
+                                4 => [4, 4, 4],
+                                5 => [4, 4, 4],
+                                6 => [4, 4, 4],
+                                7 => [1, 1, 1]
+                            ]
+                        ],
+                        4 => [
+                            1 => [
+                                1 => [2, 3, 3],
+                                2 => [2, 2, 3],
+                                3 => [2, 2, 3],
+                                4 => [4, 4, 4],
+                                5 => [4, 4, 4],
+                                6 => [4, 4, 4],
+                                7 => [2, 3, 4]
+                            ],
+                            2 => [
+                                1 => [3, 3, 4],
+                                2 => [2, 3, 4],
+                                3 => [3, 3, 4],
+                                4 => [4, 4, 4],
+                                5 => [4, 4, 4],
+                                6 => [4, 4, 4],
+                                7 => [2, 3, 4]
+                            ],
+                            3 => [
+                                1 => [4, 4, 4],
+                                2 => [2, 3, 4],
+                                3 => [3, 3, 4],
+                                4 => [4, 4, 4],
+                                5 => [4, 4, 4],
+                                6 => [4, 4, 4],
+                                7 => [2, 3, 4]
+                            ]
+                        ]
+                    ];
+
+                    $categoriasPierna = $tablaOWAS[$espalda][$brazos][$piernas] ?? null;
+
+                    if (!$categoriasPierna || !isset($categoriasPierna[$carga - 1])) {
+                        return response()->json([
+                            'message' => 'No se encontró la combinación en la tabla OWAS.'
+                        ], 422);
+                    }
+
+                    $categoria = (int) $categoriasPierna[$carga - 1];
+
+                    $codigoCompleto = trim((string) ($evaluacion->OWAS_CODIGO_COMPLETO ?? ''));
+
+                    if (!preg_match('/^[1-4][1-3][1-7][1-3]$/', $codigoCompleto)) {
+                        $codigoCompleto = $espalda . $brazos . $piernas . $carga;
+                    }
+
+                    $digitosCodigo = str_split($codigoCompleto);
+
+                    $espalda = (int) $digitosCodigo[0];
+                    $brazos = (int) $digitosCodigo[1];
+                    $piernas = (int) $digitosCodigo[2];
+                    $carga = (int) $digitosCodigo[3];
+
+                    $nombreEmpleado = trim((string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? ''));
+
+                    if ($nombreEmpleado === '') {
+                        $nombreEmpleado = 'SIN NOMBRE REGISTRADO';
+                    }
+
+                    $nombreCategoria = trim((string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? ''));
+
+                    if ($nombreCategoria === '') {
+                        $nombreCategoria = 'SIN CATEGORÍA';
+                    }
+
+                    $rutaPlantilla = storage_path(
+                        'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_OWAS.pdf'
+                    );
+
+                    if (!file_exists($rutaPlantilla)) {
+                        return response()->json([
+                            'message' => 'No se encontró la plantilla PDF del método OWAS.'
+                        ], 404);
+                    }
+
+                    $pdf = new \setasign\Fpdi\Fpdi();
+
+                    $pdf->SetAutoPageBreak(false);
+                    $pdf->SetDrawColor(255, 0, 0);
+                    $pdf->SetLineWidth(0.9);
+
+                    $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+                    for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+                        $plantilla = $pdf->importPage($pagina);
+                        $tamano = $pdf->getTemplateSize($plantilla);
+
+                        $pdf->AddPage(
+                            $tamano['orientation'],
+                            [$tamano['width'], $tamano['height']]
+                        );
+
+                        $pdf->useTemplate($plantilla);
+
+                        $escalaX = $tamano['width'] / 768;
+                        $escalaY = $tamano['height'] / 1024;
+
+                        $dibujarRectangulo = function ($x, $y, $ancho, $alto) use (
+                            $pdf,
+                            $escalaX,
+                            $escalaY
+                        ) {
+                            $pdf->Rect(
+                                $x * $escalaX,
+                                $y * $escalaY,
+                                $ancho * $escalaX,
+                                $alto * $escalaY
+                            );
+                        };
+
+                        if ($pagina === 1) {
+                            $pdf->SetFont('Arial', 'B', 8);
+                            $pdf->SetTextColor(0, 0, 0);
+
+                            $pdf->SetXY(185 * $escalaX, 109 * $escalaY);
+                            $pdf->Cell(
+                                195 * $escalaX,
+                                14 * $escalaY,
+                                utf8_decode($nombreEmpleado),
+                                0,
+                                0,
+                                'L'
+                            );
+
+                            $pdf->SetXY(140 * $escalaX, 138 * $escalaY);
+                            $pdf->Cell(
+                                180 * $escalaX,
+                                14 * $escalaY,
+                                utf8_decode($nombreCategoria),
+                                0,
+                                0,
+                                'L'
+                            );
+
+                            $filasEspalda = [
+                                1 => [423, 558],
+                                2 => [559, 681],
+                                3 => [682, 810],
+                                4 => [811, 934]
+                            ];
+
+                            [$y1, $y2] = $filasEspalda[$espalda];
+
+                            $dibujarRectangulo(
+                                524,
+                                $y1,
+                                172,
+                                $y2 - $y1
+                            );
+                        }
+
+                        if ($pagina === 2) {
+                            $filasBrazos = [
+                                1 => [96, 278],
+                                2 => [279, 459],
+                                3 => [460, 642]
+                            ];
+
+                            [$y1, $y2] = $filasBrazos[$brazos];
+
+                            $dibujarRectangulo(
+                                530,
+                                $y1,
+                                178,
+                                $y2 - $y1
+                            );
+                        }
+
+                        if ($pagina === 3 && $piernas >= 1 && $piernas <= 5) {
+                            $filasPiernas = [
+                                1 => [80, 211],
+                                2 => [212, 423],
+                                3 => [424, 605],
+                                4 => [606, 786],
+                                5 => [787, 914]
+                            ];
+
+                            [$y1, $y2] = $filasPiernas[$piernas];
+
+                            $dibujarRectangulo(
+                                539,
+                                $y1,
+                                178,
+                                $y2 - $y1
+                            );
+                        }
+                        if ($pagina === 4) {
+                            if ($piernas === 6 || $piernas === 7) {
+                                $filasPiernas = [
+                                    6 => [80, 230],
+                                    7 => [231, 400]
+                                ];
+
+                                [$y1, $y2] = $filasPiernas[$piernas];
+
+                                $dibujarRectangulo(
+                                    533,
+                                    $y1,
+                                    183,
+                                    $y2 - $y1
+                                );
+                            }
+
+                            $filaMatriz = (($espalda - 1) * 3) + ($brazos - 1);
+                            $columnaMatriz = (($piernas - 1) * 3) + ($carga - 1);
+
+                            $xInicioMatriz = 181;
+                            $yInicioMatriz = 625;
+                            $anchoCelda = 25.5;
+                            $altoCelda = 22.5;
+
+                            $xCelda = $xInicioMatriz + ($columnaMatriz * $anchoCelda);
+                            $yCelda = $yInicioMatriz + ($filaMatriz * $altoCelda);
+
+                            if ($piernas >= 1 && $piernas <= 7) {
+                                $pdf->SetDrawColor(255, 255, 255);
+                                $pdf->SetLineWidth(0.9);
+
+                                $pdf->Rect(
+                                    $xCelda * $escalaX,
+                                    $yCelda * $escalaY,
+                                    $anchoCelda * $escalaX,
+                                    $altoCelda * $escalaY
+                                );
+
+                                $pdf->SetDrawColor(255, 0, 0);
+                            }
+                        }
+                        if ($pagina === 5) {
+                            $filasEspalda = [
+                                1 => [80, 103],
+                                2 => [104, 126],
+                                3 => [127, 149],
+                                4 => [150, 172]
+                            ];
+
+                            [$y1, $y2] = $filasEspalda[$espalda];
+
+                            $dibujarRectangulo(
+                                68,
+                                $y1,
+                                632,
+                                $y2 - $y1
+                            );
+
+                            $filasBrazos = [
+                                1 => [196, 218],
+                                2 => [219, 241],
+                                3 => [242, 264]
+                            ];
+
+                            [$y1, $y2] = $filasBrazos[$brazos];
+
+                            $dibujarRectangulo(
+                                68,
+                                $y1,
+                                632,
+                                $y2 - $y1
+                            );
+
+                            $filasPiernas = [
+                                1 => [285, 306],
+                                2 => [307, 328],
+                                3 => [329, 350],
+                                4 => [351, 372],
+                                5 => [373, 394],
+                                6 => [395, 416],
+                                7 => [417, 438]
+                            ];
+
+                            [$y1, $y2] = $filasPiernas[$piernas];
+
+                            $dibujarRectangulo(
+                                68,
+                                $y1,
+                                632,
+                                $y2 - $y1
+                            );
+
+                            $filasCarga = [
+                                1 => [576, 595],
+                                2 => [596, 615],
+                                3 => [616, 635]
+                            ];
+
+                            [$y1, $y2] = $filasCarga[$carga];
+
+                            $dibujarRectangulo(
+                                449,
+                                $y1,
+                                250,
+                                $y2 - $y1
+                            );
+
+                            $filasCategoria = [
+                                1 => [727, 751],
+                                2 => [752, 775],
+                                3 => [776, 800],
+                                4 => [801, 825]
+                            ];
+
+                            [$y1, $y2] = $filasCategoria[$categoria];
+
+                            $dibujarRectangulo(
+                                101,
+                                $y1,
+                                600,
+                                $y2 - $y1
+                            );
+                        }
+                    }
+
+                    return response($pdf->Output('S'), 200, [
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' => 'attachment; filename="Metodo_OWAS_' . $freId . '.pdf"'
+                    ]);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::error(
+                        'Error al generar PDF OWAS: ' . $e->getMessage(),
+                        [
+                            'fre_id' => $request->fre_id ?? null,
+                            'linea' => $e->getLine(),
+                            'archivo' => $e->getFile()
+                        ]
+                    );
+
+                    return response()->json([
+                        'message' => 'Ocurrió un error al generar el PDF del método OWAS.'
+                    ], 500);
+                }
+            };
+
+            $generadores['2'] = function (Request $request) {
+                try {
+                    $request->validate([
+                        'fre_id' => 'required|integer'
+                    ]);
+
+                    $freId = (int) $request->fre_id;
+
+                    $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                        ->leftJoin(
+                            'recoergo_fichastecnicas as ficha',
+                            'ficha.ID_FICHAS_TECNICAS',
+                            '=',
+                            'evaluacion.FICHA_ID'
+                        )
+                        ->leftJoin(
+                            'recoergocategorias as categoria',
+                            'categoria.ID_CATEGORIA_ERGO',
+                            '=',
+                            'ficha.CATEGORIA_ID_FICHA'
+                        )
+                        ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                        ->select(
+                            'evaluacion.*',
+                            'categoria.NOMBRE_CATEGORIA_ERGO'
+                        )
+                        ->first();
+
+                    if (!$evaluacion) {
+                        return response()->json([
+                            'message' => 'No se encontró la evaluación FRE.'
+                        ], 404);
+                    }
+
+                    $camposROSA = [
+                        'ROSA_ALTURA_ASIENTO',
+                        'ROSA_PROFUNDIDAD_ASIENTO',
+                        'ROSA_REPOSABRAZOS',
+                        'ROSA_RESPALDO',
+                        'ROSA_TIEMPO_A',
+                        'ROSA_TELEFONO',
+                        'ROSA_PANTALLA',
+                        'ROSA_RATON',
+                        'ROSA_TECLADO',
+                        'ANALISIS_METODO_ROSA'
+                    ];
+
+                    foreach ($camposROSA as $campo) {
+                        if (
+                            !isset($evaluacion->$campo) ||
+                            trim((string) $evaluacion->$campo) === ''
+                        ) {
+                            return response()->json([
+                                'message' => 'Falta completar el campo ' . $campo . ' del método ROSA.'
+                            ], 422);
+                        }
+                    }
+
+                    $seleccionesROSA = [
+                        'A1' => trim((string) $evaluacion->ROSA_ALTURA_ASIENTO),
+                        'A2' => trim((string) $evaluacion->ROSA_PROFUNDIDAD_ASIENTO),
+                        'A3' => trim((string) $evaluacion->ROSA_REPOSABRAZOS),
+                        'A4' => trim((string) $evaluacion->ROSA_RESPALDO),
+                        'B1' => trim((string) $evaluacion->ROSA_TELEFONO),
+                        'B2' => trim((string) $evaluacion->ROSA_PANTALLA),
+                        'C1' => trim((string) $evaluacion->ROSA_RATON),
+                        'C2' => trim((string) $evaluacion->ROSA_TECLADO)
+                    ];
+
+                    $valor = function ($campo) use ($evaluacion) {
+                        $dato = trim((string) ($evaluacion->$campo ?? ''));
+
+                        if ($dato === '') {
+                            return 0;
+                        }
+
+                        if (is_numeric($dato)) {
+                            return (int) $dato;
+                        }
+
+                        if (preg_match('/^(\d+)/', $dato, $coincidencia)) {
+                            return (int) $coincidencia[1];
+                        }
+
+                        return 0;
+                    };
+
+                    $jsonROSA = json_decode($evaluacion->ROSA_DATOS_JSON ?: '{}', true);
+
+                    if (!is_array($jsonROSA)) {
+                        $jsonROSA = [];
+                    }
+
+                    $extras = isset($jsonROSA['extras']) && is_array($jsonROSA['extras'])
+                        ? $jsonROSA['extras']
+                        : [];
+
+                    $sumaExtras = function ($apartado) use ($extras) {
+                        $total = 0;
+
+                        foreach ($extras as $extra) {
+                            if (
+                                isset($extra['apartado']) &&
+                                $extra['apartado'] === $apartado
+                            ) {
+                                $total += (int) ($extra['valor'] ?? 0);
+                            }
+                        }
+
+                        return $total;
+                    };
+
+                    $tiempo = function ($campo) use ($valor) {
+                        return $valor($campo);
+                    };
+
+                    $matrices = [
+                        'A' => [
+                            [2, 2, 3, 4, 5, 6, 7, 8],
+                            [2, 2, 3, 4, 5, 6, 7, 8],
+                            [3, 3, 3, 4, 5, 6, 7, 8],
+                            [4, 4, 4, 4, 5, 6, 7, 8],
+                            [5, 5, 5, 5, 6, 7, 8, 9],
+                            [6, 6, 6, 6, 7, 8, 8, 9],
+                            [7, 7, 7, 7, 8, 9, 9, 9]
+                        ],
+                        'B' => [
+                            [1, 1, 1, 2, 3, 4, 5, 6, 6],
+                            [1, 1, 2, 2, 3, 4, 5, 6, 6],
+                            [1, 2, 2, 3, 3, 4, 6, 7, 7],
+                            [2, 2, 3, 3, 4, 5, 6, 8, 8],
+                            [3, 3, 4, 4, 5, 6, 7, 8, 8],
+                            [4, 4, 5, 5, 6, 7, 8, 9, 9],
+                            [5, 5, 6, 7, 8, 8, 9, 9, 9]
+                        ],
+                        'C' => [
+                            [1, 1, 1, 2, 3, 4, 5],
+                            [1, 1, 2, 3, 4, 5, 6],
+                            [2, 3, 3, 3, 5, 6, 7],
+                            [3, 4, 4, 5, 5, 6, 7],
+                            [4, 5, 5, 6, 6, 7, 8],
+                            [5, 6, 6, 7, 7, 8, 8],
+                            [6, 7, 7, 8, 8, 9, 9],
+                            [7, 8, 8, 9, 9, 9, 9]
+                        ],
+                        'D' => [
+                            [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                            [2, 2, 3, 4, 5, 6, 7, 8, 9],
+                            [3, 3, 3, 4, 5, 6, 7, 8, 9],
+                            [4, 4, 4, 4, 5, 6, 7, 8, 9],
+                            [5, 5, 5, 5, 5, 6, 7, 8, 9],
+                            [6, 6, 6, 6, 6, 6, 7, 8, 9],
+                            [7, 7, 7, 7, 7, 7, 7, 8, 9],
+                            [8, 8, 8, 8, 8, 8, 8, 8, 9],
+                            [9, 9, 9, 9, 9, 9, 9, 9, 9]
+                        ],
+                        'E' => [
+                            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                            [2, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                            [3, 3, 3, 3, 4, 5, 6, 7, 8, 9],
+                            [4, 4, 4, 4, 4, 6, 7, 8, 9, 10],
+                            [5, 5, 5, 5, 5, 6, 7, 8, 9, 10],
+                            [6, 6, 6, 6, 6, 6, 7, 8, 9, 10],
+                            [7, 7, 7, 7, 7, 7, 7, 8, 9, 10],
+                            [8, 8, 8, 8, 8, 8, 8, 8, 9, 10],
+                            [9, 9, 9, 9, 9, 9, 9, 9, 9, 10],
+                            [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+                        ]
+                    ];
+
+                    $limitar = function ($numero, $minimo, $maximo) {
+                        return max($minimo, min($maximo, $numero));
+                    };
+
+                    $buscarMatriz = function ($matriz, $fila, $columna, $inicioFila, $inicioColumna) {
+                        $f = $fila - $inicioFila;
+                        $c = $columna - $inicioColumna;
+
+                        if (
+                            $f < 0 ||
+                            $c < 0 ||
+                            $f >= count($matriz) ||
+                            !isset($matriz[$f][$c])
+                        ) {
+                            return null;
+                        }
+
+                        return $matriz[$f][$c];
+                    };
+
+                    $valores = [
+                        'A1' => $valor('ROSA_ALTURA_ASIENTO'),
+                        'A2' => $valor('ROSA_PROFUNDIDAD_ASIENTO'),
+                        'A3' => $valor('ROSA_REPOSABRAZOS'),
+                        'A4' => $valor('ROSA_RESPALDO'),
+                        'B1' => $valor('ROSA_TELEFONO'),
+                        'B2' => $valor('ROSA_PANTALLA'),
+                        'C1' => $valor('ROSA_RATON'),
+                        'C2' => $valor('ROSA_TECLADO')
+                    ];
+
+                    $tiempoA = $tiempo('ROSA_TIEMPO_A');
+                    $tiempoB1 = $tiempo('ROSA_TIEMPO_B1');
+                    $tiempoB2 = $tiempo('ROSA_TIEMPO_B2');
+                    $tiempoC1 = $tiempo('ROSA_TIEMPO_C1');
+                    $tiempoC2 = $tiempo('ROSA_TIEMPO_C2');
+
+                    $asiento = $limitar(
+                        $valores['A1'] + $sumaExtras('A1') +
+                            $valores['A2'] + $sumaExtras('A2'),
+                        2,
+                        8
+                    );
+
+                    $reposabrazosRespaldo = $limitar(
+                        $valores['A3'] + $sumaExtras('A3') +
+                            $valores['A4'] + $sumaExtras('A4'),
+                        2,
+                        9
+                    );
+
+                    $resultadoA = $buscarMatriz(
+                        $matrices['A'],
+                        $asiento,
+                        $reposabrazosRespaldo,
+                        2,
+                        2
+                    );
+
+                    if ($resultadoA === null) {
+                        return response()->json([
+                            'message' => 'No se pudo calcular la tabla A del método ROSA.'
+                        ], 422);
+                    }
+
+                    $resultadoA = $limitar($resultadoA + $tiempoA, 1, 10);
+
+                    $telefono = $limitar(
+                        $valores['B1'] + $sumaExtras('B1') + $tiempoB1,
+                        0,
+                        8
+                    );
+
+                    $pantalla = $limitar(
+                        $valores['B2'] + $sumaExtras('B2') + $tiempoB2,
+                        0,
+                        8
+                    );
+
+                    $resultadoB = $buscarMatriz(
+                        $matrices['B'],
+                        $telefono,
+                        $pantalla,
+                        0,
+                        0
+                    );
+
+                    if ($resultadoB === null) {
+                        return response()->json([
+                            'message' => 'No se pudo calcular la tabla B del método ROSA.'
+                        ], 422);
+                    }
+
+                    $raton = $limitar(
+                        $valores['C1'] + $sumaExtras('C1') + $tiempoC1,
+                        0,
+                        7
+                    );
+
+                    $teclado = $limitar(
+                        $valores['C2'] + $sumaExtras('C2') + $tiempoC2,
+                        0,
+                        6
+                    );
+
+                    $resultadoC = $buscarMatriz(
+                        $matrices['C'],
+                        $raton,
+                        $teclado,
+                        0,
+                        0
+                    );
+
+                    if ($resultadoC === null) {
+                        return response()->json([
+                            'message' => 'No se pudo calcular la tabla C del método ROSA.'
+                        ], 422);
+                    }
+
+                    $resultadoD = $buscarMatriz(
+                        $matrices['D'],
+                        $resultadoB,
+                        $resultadoC,
+                        1,
+                        1
+                    );
+
+                    if ($resultadoD === null) {
+                        return response()->json([
+                            'message' => 'No se pudo calcular la tabla D del método ROSA.'
+                        ], 422);
+                    }
+
+                    $resultadoFinal = $buscarMatriz(
+                        $matrices['E'],
+                        $resultadoA,
+                        $resultadoD,
+                        1,
+                        1
+                    );
+
+                    if ($resultadoFinal === null) {
+                        return response()->json([
+                            'message' => 'No se pudo calcular la puntuación final del método ROSA.'
+                        ], 422);
+                    }
+
+                    $rangoRiesgo = '';
+                    $riesgo = '';
+                    $nivel = 0;
+                    $actuacion = '';
+
+                    if ($resultadoFinal === 1) {
+                        $rangoRiesgo = '1';
+                        $riesgo = 'Inapreciable';
+                        $nivel = 0;
+                        $actuacion = 'No es necesaria actuación.';
+                    } elseif ($resultadoFinal >= 2 && $resultadoFinal <= 4) {
+                        $rangoRiesgo = '2-4';
+                        $riesgo = 'Mejorable';
+                        $nivel = 1;
+                        $actuacion = 'Pueden mejorarse algunos elementos del puesto.';
+                    } elseif ($resultadoFinal === 5) {
+                        $rangoRiesgo = '5';
+                        $riesgo = 'Alto';
+                        $nivel = 2;
+                        $actuacion = 'Es necesaria la actuación.';
+                    } elseif ($resultadoFinal >= 6 && $resultadoFinal <= 8) {
+                        $rangoRiesgo = '6-8';
+                        $riesgo = 'Muy alto';
+                        $nivel = 3;
+                        $actuacion = 'Es necesaria la actuación cuanto antes.';
+                    } else {
+                        $rangoRiesgo = '9-10';
+                        $riesgo = 'Extremo';
+                        $nivel = 4;
+                        $actuacion = 'Es necesaria la actuación urgentemente.';
+                    }
+
+                    $rutaPlantilla = storage_path(
+                        'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_ROSA.pdf'
+                    );
+
+                    if (!file_exists($rutaPlantilla)) {
+                        return response()->json([
+                            'message' => 'No se encontró la plantilla PDF del método ROSA.'
+                        ], 404);
+                    }
+
+                    $nombreEmpleado = $evaluacion->NOMBRE_EMPLEADO_FRE ?: 'SIN NOMBRE';
+                    $nombreCategoria = $evaluacion->NOMBRE_CATEGORIA_ERGO ?: 'SIN CATEGORÍA';
+
+                    $convertirTexto = function ($texto) {
+                        $texto = (string) $texto;
+
+                        if (function_exists('iconv')) {
+                            $convertido = @iconv('UTF-8', 'windows-1252//TRANSLIT', $texto);
+
+                            if ($convertido !== false) {
+                                return $convertido;
+                            }
+                        }
+
+                        return utf8_decode($texto);
+                    };
+
+                    $pdf = new \setasign\Fpdi\Fpdi();
+                    $pdf->SetAutoPageBreak(false);
+                    $pdf->SetDrawColor(220, 0, 0);
+                    $pdf->SetLineWidth(0.8);
+
+                    $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+                    $escalaX = 1;
+                    $escalaY = 1;
+
+                    $rectangulo = function ($x, $y, $ancho, $alto) use ($pdf, &$escalaX, &$escalaY) {
+                        $pdf->Rect(
+                            $x * $escalaX,
+                            $y * $escalaY,
+                            $ancho * $escalaX,
+                            $alto * $escalaY
+                        );
+                    };
+
+                    $texto = function (
+                        $x,
+                        $y,
+                        $ancho,
+                        $alto,
+                        $contenido,
+                        $tamano = 9,
+                        $estilo = 'B',
+                        $alineacion = 'C'
+                    ) use ($pdf, $convertirTexto, &$escalaX, &$escalaY) {
+                        $pdf->SetFont('Arial', $estilo, $tamano);
+                        $pdf->SetTextColor(0, 0, 0);
+                        $pdf->SetXY($x * $escalaX, $y * $escalaY);
+                        $pdf->Cell(
+                            $ancho * $escalaX,
+                            $alto * $escalaY,
+                            $convertirTexto($contenido),
+                            0,
+                            0,
+                            $alineacion
+                        );
+                    };
+
+                    $marcarSeleccion = function ($apartado, $valorGuardado) use ($rectangulo) {
+                        $coordenadas = [
+                            'A1' => [
+                                '1' => [212, 256, 67, 103],
+                                '2_bajo' => [279, 256, 67, 103],
+                                '2_alto' => [346, 256, 67, 103],
+                                '3' => [413, 256, 67, 103]
+                            ],
+                            'A2' => [
+                                '1' => [212, 386, 101, 108],
+                                '2_menor' => [313, 386, 101, 108],
+                                '2_mayor' => [414, 386, 101, 108]
+                            ],
+                            'A3' => [
+                                '1' => [220, 517, 80, 143],
+                                '2' => [305, 517, 80, 143]
+                            ],
+                            'A4' => [
+                                '1' => [212, 687, 67, 134],
+                                '2_sin_apoyo' => [279, 687, 67, 134],
+                                '2_inclinacion' => [346, 687, 67, 134]
+                            ],
+                            'B1' => [
+                                '1' => [208, 34, 106, 117],
+                                '2' => [314, 34, 106, 117]
+                            ],
+                            'B2' => [
+                                '1' => [200, 171, 50, 138],
+                                '2' => [265, 171, 50, 138],
+                                '3' => [325, 171, 50, 138]
+                            ],
+                            'C1' => [
+                                '1' => [197, 519, 72, 127],
+                                '2' => [268, 519, 72, 127]
+                            ],
+                            'C2' => [
+                                '1' => [198, 697, 63, 114],
+                                '2' => [269, 697, 63, 114]
+                            ]
+                        ];
+
+
+                        $clave = (string) $valorGuardado;
+
+                        if (isset($coordenadas[$apartado][$clave])) {
+                            call_user_func_array($rectangulo, $coordenadas[$apartado][$clave]);
+                        }
+                    };
+
+                    $marcarExtras = function ($paginaActual) use ($extras, $rectangulo) {
+                        $mapaExtras = [
+                            1 => [
+                                'Espacio insuficiente para las piernas' => [480, 256, 67, 103],
+                                'Altura no regulable' => [547, 256, 67, 103],
+                                'Profundidad no regulable' => [515, 386, 101, 108],
+                                'Bordes afilados o duros' => [395, 517, 80, 143],
+
+                                'Reposabrazos demasiado anchos' => [460, 517, 80, 143],
+                                'Reposabrazos no regulables' => [542, 517, 75, 143],
+                                'No se utiliza el respaldo' => [413, 687, 67, 134],
+
+                                'Superficie alta u hombros encogidos' => [480, 687, 67, 134],
+                                'Respaldo no regulable' => [547, 687, 67, 134]
+                            ],
+                            2 => [
+                                'Sujeción con el hombro o cuello' => [420, 34, 73, 117],
+                                'Sujeción con hombro/cuello' => [420, 34, 73, 117],
+                                'No existe opción de manos libres' => [500, 34, 73, 117],
+                                'Distancia mayor de 75 cm' => [390, 171, 50, 138],
+                                'Distancia mayor 75 cm' => [390, 171, 50, 138],
+                                'Giro de cuello' => [435, 171, 50, 138],
+                                'No hay portadocumentos y se necesita' => [492, 171, 50, 138],
+                                'Reflejos en pantalla' => [540, 171, 50, 138],
+                                'Ratón pequeño o agarre en pinza' => [348, 519, 65, 127],
+                                'Ratón pequeño/agarre en pinza' => [348, 519, 65, 127],
+                                'Ratón y teclado a diferentes alturas' => [415, 519, 70, 127],
+                                'Reposamanos duro o puntos de presión' => [489, 519, 70, 127],
+                                'Desviación al escribir' => [343, 697, 56, 114],
+                                'Teclado elevado u hombros encogidos' => [411, 697, 50, 114],
+                                'Teclado elevado, hombros encogidos' => [411, 697, 50, 114],
+                                'Alcance por encima de la cabeza' => [470, 697, 50, 114],
+                                'Soporte de teclado no ajustable' => [528, 697, 50, 114]
+                            ]
+                        ];
+
+                        foreach ($extras as $extra) {
+                            $apartado = strtoupper(trim((string) ($extra['apartado'] ?? '')));
+                            $descripcion = trim((string) ($extra['texto'] ?? ''));
+                            $valorExtra = (int) ($extra['valor'] ?? 0);
+
+                            if ($valorExtra <= 0) {
+                                continue;
+                            }
+
+                            $paginaExtra = in_array($apartado, ['A1', 'A2', 'A3', 'A4'], true) ? 1 : 2;
+
+                            if ($paginaExtra !== $paginaActual || !isset($mapaExtras[$paginaActual][$descripcion])) {
+                                continue;
+                            }
+
+                            call_user_func_array($rectangulo, $mapaExtras[$paginaActual][$descripcion]);
+                        }
+                    };
+
+                    $resultadoMatrices = [
+                        'A' => [$asiento, $reposabrazosRespaldo],
+                        'B' => [$telefono, $pantalla],
+                        'C' => [$raton, $teclado],
+                        'D' => [$resultadoB, $resultadoC],
+                        'E' => [$resultadoA, $resultadoD]
+                    ];
+
+                    for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+                        $plantilla = $pdf->importPage($pagina);
+                        $tamano = $pdf->getTemplateSize($plantilla);
+
+                        $pdf->AddPage(
+                            $tamano['orientation'],
+                            [$tamano['width'], $tamano['height']]
+                        );
+
+                        $pdf->useTemplate($plantilla);
+
+                        $escalaX = $tamano['width'] / 768;
+                        $escalaY = $tamano['height'] / 1024;
+
+                        $pdf->SetDrawColor(220, 0, 0);
+                        $pdf->SetLineWidth(0.8);
+
+                        if ($pagina === 1) {
+                            $pdf->SetFont('Arial', 'B', 8);
+                            $pdf->SetTextColor(0, 0, 0);
+
+                            $pdf->SetXY(190 * $escalaX, 88 * $escalaY);
+                            $pdf->Cell(200 * $escalaX, 14 * $escalaY, utf8_decode($nombreEmpleado), 0, 0, 'L');
+
+                            $pdf->SetXY(140 * $escalaX, 118 * $escalaY);
+                            $pdf->Cell(190 * $escalaX, 14 * $escalaY, utf8_decode($nombreCategoria), 0, 0, 'L');
+
+                            $marcarSeleccion('A1', $seleccionesROSA['A1']);
+                            $marcarSeleccion('A2', $seleccionesROSA['A2']);
+                            $marcarSeleccion('A3', $seleccionesROSA['A3']);
+                            $marcarSeleccion('A4', $seleccionesROSA['A4']);
+                            $marcarExtras(1);
+
+                            // ROSA_TIEMPO_A: marcar únicamente la fila seleccionada en la BD.
+                            $coordenadasTiempoA = [
+
+                                '-1' => [354, 895, 229, 20],
+                                '0' => [354, 917, 229, 20],
+                                '1' => [354, 943, 229, 20]
+                            ];
+
+
+                            $valorTiempoA = trim((string) ($evaluacion->ROSA_TIEMPO_A ?? ''));
+
+                            if (isset($coordenadasTiempoA[$valorTiempoA])) {
+                                call_user_func_array($rectangulo, $coordenadasTiempoA[$valorTiempoA]);
+                            }
+
+                            $texto(640, 925, 55, 30, $resultadoA, 14);
+                        }
+
+                        if ($pagina === 2) {
+                            $marcarSeleccion('B1', $seleccionesROSA['B1']);
+                            $marcarSeleccion('B2', $seleccionesROSA['B2']);
+                            $marcarSeleccion('C1', $seleccionesROSA['C1']);
+                            $marcarSeleccion('C2', $seleccionesROSA['C2']);
+                            $marcarExtras(2);
+
+                            // Tiempos adicionales opcionales: marcar el reloj correspondiente.
+                            // +1 = reloj izquierdo; -1 = reloj derecho.
+                            // Si el campo está vacío, no se dibuja ningún rectángulo.
+
+
+                            $coordenadasTiemposAdicionales = [
+                                'ROSA_TIEMPO_B1' => [
+                                    '1' => [575, 34, 57, 117],
+                                    '-1' => [630, 34, 57, 117]
+                                ],
+                                'ROSA_TIEMPO_B2' => [
+                                    '1' => [595, 171, 34, 138],
+                                    '-1' => [634, 171, 34, 138]
+                                ],
+                                'ROSA_TIEMPO_C1' => [
+                                    '1' => [570, 519, 55, 127],
+                                    '-1' => [635, 519, 55, 127]
+                                ],
+                                'ROSA_TIEMPO_C2' => [
+                                    '1' => [579, 697, 50, 114],
+                                    '-1' => [630, 697, 45, 114]
+                                ]
+                            ];
+
+                            foreach ($coordenadasTiemposAdicionales as $campoTiempo => $coordenadasTiempo) {
+                                $valorTiempo = trim((string) ($evaluacion->$campoTiempo ?? ''));
+
+                                if (isset($coordenadasTiempo[$valorTiempo])) {
+                                    call_user_func_array($rectangulo, $coordenadasTiempo[$valorTiempo]);
+                                }
+                            }
+
+                            $texto(525, 410, 55, 30, $resultadoB, 14);
+                            $texto(525, 910, 55, 35, $resultadoC, 14);
+                        }
+
+                        if ($pagina === 3) {
+                            $texto(342, 60, 65, 28, $resultadoC, 14);
+                            $texto(77, 230, 65, 28, $resultadoB, 14);
+                            $texto(554, 230, 65, 28, $resultadoD, 14);
+                            $texto(340, 375, 65, 28, $resultadoD, 14);
+                            $texto(79, 570, 65, 28, $resultadoA, 14);
+                            $texto(555, 570, 65, 28, $resultadoFinal, 14);
+
+                            $filaRiesgo = [
+                                '1' => 744,
+                                '2-4' => 765,
+                                '5' => 784,
+                                '6-8' => 805,
+                                '9-10' => 824
+                            ];
+
+                            $pdf->SetDrawColor(220, 0, 0);
+                            $pdf->SetLineWidth(1.2);
+
+                            if (isset($filaRiesgo[$rangoRiesgo])) {
+                                $rectangulo(150, $filaRiesgo[$rangoRiesgo], 464, 20);
+                            }
+                        }
+                    }
+
+                    $datosROSA = [
+                        'selecciones' => $seleccionesROSA,
+                        'tiempos' => [
+                            'ROSA_TIEMPO_A' => $tiempoA,
+                            'ROSA_TIEMPO_B1' => $tiempoB1,
+                            'ROSA_TIEMPO_B2' => $tiempoB2,
+                            'ROSA_TIEMPO_C1' => $tiempoC1,
+                            'ROSA_TIEMPO_C2' => $tiempoC2
+                        ],
+                        'extras' => $extras,
+                        'matrices' => [
+                            'matriz_A' => $resultadoA,
+                            'matriz_B' => $resultadoB,
+                            'matriz_C' => $resultadoC,
+                            'matriz_D' => $resultadoD,
+                            'matriz_E' => $resultadoFinal
+                        ],
+                        'resultados' => [
+                            'puntuacion_final' => $resultadoFinal,
+                            'riesgo' => $riesgo,
+                            'nivel' => $nivel,
+                            'actuacion' => $actuacion
+                        ]
+                    ];
+
+                    $pdf->SetTitle($convertirTexto('Método ROSA'));
+                    $pdf->SetAuthor($convertirTexto('Evaluación ergonómica'));
+
+                    return response($pdf->Output('S'), 200, [
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' => 'attachment; filename="Metodo_ROSA_' . $freId . '.pdf"'
+                    ]);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::error(
+                        'Error al generar PDF ROSA: ' . $e->getMessage(),
+                        [
+                            'fre_id' => $request->fre_id ?? null,
+                            'linea' => $e->getLine(),
+                            'archivo' => $e->getFile()
+                        ]
+                    );
+
+                    return response()->json([
+                        'message' => 'Ocurrió un error al generar el PDF del método ROSA.'
+                    ], 500);
+                }
+            };
+
+            $generadores['3'] = function (Request $request) {
+
+                try {
+
+                    $request->validate([
+
+                        'fre_id' => 'required|integer|min:1'
+
+                    ]);
+
+
+
+                    $freId = (int) $request->fre_id;
+
+
+
+                    $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+
+                        ->leftJoin(
+                            'recoergo_fichastecnicas as ficha',
+                            'ficha.ID_FICHAS_TECNICAS',
+                            '=',
+                            'evaluacion.FICHA_ID'
+
+                        )
+
+                        ->leftJoin(
+                            'recoergocategorias as categoria',
+                            'categoria.ID_CATEGORIA_ERGO',
+                            '=',
+                            'ficha.CATEGORIA_ID_FICHA'
+
+                        )
+
+                        ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                        ->select(
+                            'evaluacion.*',
+                            'categoria.NOMBRE_CATEGORIA_ERGO'
+                        )
+
+                        ->first();
+
+
+
+                    if (!$evaluacion) {
+
+                        return response()->json([
+
+                            'message' => 'No se encontró la evaluación FRE.'
+
+                        ], 404);
+                    }
+
+
+                    $camposObligatorios = [
+                        'RULA_BRAZO',
+                        'RULA_ANTEBRAZO',
+                        'RULA_MUNECA',
+                        'RULA_GIRO_MUNECA',
+                        'RULA_CUELLO',
+                        'RULA_TRONCO',
+                        'RULA_PIERNAS',
+                        'RULA_ACTIVIDAD',
+                        'RULA_CARGA',
+                        'ANALISIS_METODO_RULA'
+                    ];
+
+
+
+                    foreach ($camposObligatorios as $campo) {
+
+                        if (
+                            !isset($evaluacion->$campo) ||
+                            trim((string) $evaluacion->$campo) === ''
+                        ) {
+
+                            return response()->json([
+                                'message' => 'Falta completar el campo ' . $campo . ' del método RULA.'
+                            ], 422);
+                        }
+                    }
+
+
+
+                    $valor = function ($campo, $predeterminado = 0) use ($evaluacion) {
+
+                        if (
+                            !isset($evaluacion->$campo) ||
+                            trim((string) $evaluacion->$campo) === '' ||
+                            !is_numeric($evaluacion->$campo)
+                        ) {
+                            return $predeterminado;
+                        }
+
+
+
+                        return (int) $evaluacion->$campo;
+                    };
+
+
+                    $limitar = function ($numero, $minimo, $maximo) {
+                        return max($minimo, min($maximo, $numero));
+                    };
+
+
+
+                    $camposRULA = [
+                        'RULA_BRAZO',
+                        'RULA_ANTEBRAZO',
+                        'RULA_MUNECA',
+                        'RULA_GIRO_MUNECA',
+                        'RULA_CUELLO',
+                        'RULA_TRONCO',
+                        'RULA_PIERNAS',
+                        'RULA_BRAZO_ABDUCIDO',
+                        'RULA_HOMBRO_ELEVADO',
+                        'RULA_BRAZO_APOYADO',
+                        'RULA_ANTEBRAZO_PROYECCION',
+                        'RULA_ANTEBRAZO_CRUZA',
+                        'RULA_MUNECA_DESVIACION',
+                        'RULA_CUELLO_ROTADO',
+                        'RULA_CUELLO_LATERAL',
+                        'RULA_TRONCO_TORSION',
+                        'RULA_TRONCO_LATERAL',
+                        'RULA_ACTIVIDAD',
+                        'RULA_CARGA'
+                    ];
+
+                    $datosRULA = [];
+
+                    foreach ($camposRULA as $campo) {
+
+                        $datosRULA[$campo] = $valor($campo);
+                    }
+
+
+
+                    $brazo = $limitar(
+                        $datosRULA['RULA_BRAZO']
+                            + $datosRULA['RULA_BRAZO_ABDUCIDO']
+                            + $datosRULA['RULA_HOMBRO_ELEVADO']
+                            + $datosRULA['RULA_BRAZO_APOYADO'],
+                        1,
+                        6
+                    );
+
+                    $antebrazo = $limitar(
+                        $datosRULA['RULA_ANTEBRAZO']
+                            + $datosRULA['RULA_ANTEBRAZO_PROYECCION']
+                            + $datosRULA['RULA_ANTEBRAZO_CRUZA'],
+                        1,
+                        3
+                    );
+
+                    $muneca = $limitar(
+                        $datosRULA['RULA_MUNECA']
+                            + $datosRULA['RULA_MUNECA_DESVIACION'],
+                        1,
+                        4
+                    );
+
+
+                    $giroMuneca = $datosRULA['RULA_GIRO_MUNECA'];
+
+                    $tablaA = [
+                        '1-1' => [1, 2, 2, 2, 2, 3, 3, 3],
+                        '1-2' => [2, 2, 2, 2, 3, 3, 3, 3],
+                        '1-3' => [2, 3, 3, 3, 3, 3, 4, 4],
+                        '2-1' => [2, 3, 3, 3, 3, 4, 4, 4],
+                        '2-2' => [3, 3, 3, 3, 3, 4, 4, 4],
+                        '2-3' => [3, 4, 4, 4, 4, 4, 5, 5],
+                        '3-1' => [3, 3, 4, 4, 4, 4, 5, 5],
+                        '3-2' => [3, 4, 4, 4, 4, 4, 5, 5],
+                        '3-3' => [4, 4, 4, 4, 4, 5, 5, 5],
+                        '4-1' => [4, 4, 4, 4, 4, 5, 5, 5],
+                        '4-2' => [4, 4, 4, 4, 4, 5, 5, 5],
+                        '4-3' => [4, 4, 4, 5, 5, 5, 6, 6],
+                        '5-1' => [5, 5, 5, 5, 5, 6, 6, 7],
+                        '5-2' => [5, 6, 6, 6, 6, 7, 7, 7],
+                        '5-3' => [6, 6, 6, 7, 7, 7, 7, 8],
+                        '6-1' => [7, 7, 7, 7, 7, 8, 8, 9],
+                        '6-2' => [8, 8, 8, 8, 8, 9, 9, 9],
+                        '6-3' => [9, 9, 9, 9, 9, 9, 9, 9]
+                    ];
+
+                    $indiceA = (($muneca - 1) * 2) + ($giroMuneca - 1);
+                    $claveA = $brazo . '-' . $antebrazo;
+
+                    if (
+                        !isset($tablaA[$claveA][$indiceA]) ||
+                        $giroMuneca < 1 ||
+                        $giroMuneca > 2
+                    ) {
+
+                        return response()->json([
+                            'message' => 'Los valores del grupo A de RULA no son válidos.'
+                        ], 422);
+                    }
+
+                    $resultadoAInicial = $tablaA[$claveA][$indiceA];
+
+                    $cuello = $limitar(
+                        $datosRULA['RULA_CUELLO']
+                            + $datosRULA['RULA_CUELLO_ROTADO']
+                            + $datosRULA['RULA_CUELLO_LATERAL'],
+                        1,
+                        6
+                    );
+
+                    $tronco = $limitar(
+                        $datosRULA['RULA_TRONCO']
+                            + $datosRULA['RULA_TRONCO_TORSION']
+                            + $datosRULA['RULA_TRONCO_LATERAL'],
+                        1,
+                        6
+                    );
+
+
+                    $piernas = $datosRULA['RULA_PIERNAS'];
+
+                    $tablaB = [
+                        1 => [
+                            1 => [1, 3],
+                            2 => [2, 3],
+                            3 => [3, 4],
+                            4 => [5, 5],
+                            5 => [6, 6],
+                            6 => [7, 7]
+                        ],
+
+                        2 => [
+                            1 => [2, 3],
+                            2 => [2, 3],
+                            3 => [4, 5],
+                            4 => [5, 5],
+                            5 => [6, 7],
+                            6 => [7, 7]
+                        ],
+
+                        3 => [
+                            1 => [3, 3],
+                            2 => [3, 4],
+                            3 => [4, 5],
+                            4 => [5, 6],
+                            5 => [6, 7],
+                            6 => [7, 7]
+                        ],
+
+                        4 => [
+                            1 => [5, 5],
+                            2 => [5, 6],
+                            3 => [6, 7],
+                            4 => [7, 7],
+                            5 => [7, 7],
+                            6 => [8, 8]
+                        ],
+
+                        5 => [
+                            1 => [7, 7],
+                            2 => [7, 7],
+                            3 => [7, 8],
+                            4 => [8, 8],
+                            5 => [8, 8],
+                            6 => [8, 8]
+                        ],
+
+                        6 => [
+                            1 => [8, 8],
+                            2 => [8, 8],
+                            3 => [8, 8],
+                            4 => [8, 9],
+                            5 => [9, 9],
+                            6 => [9, 9]
+                        ]
+
+                    ];
+
+
+
+                    if (
+                        !isset($tablaB[$cuello][$tronco][$piernas - 1]) ||
+                        $piernas < 1 ||
+                        $piernas > 2
+                    ) {
+
+                        return response()->json([
+                            'message' => 'Los valores del grupo B de RULA no son válidos.'
+                        ], 422);
+                    }
+
+                    $resultadoBInicial = $tablaB[$cuello][$tronco][$piernas - 1];
+
+                    $actividad = $datosRULA['RULA_ACTIVIDAD'];
+                    $carga = $datosRULA['RULA_CARGA'];
+
+                    $puntuacionA = $limitar(
+                        $resultadoAInicial + $actividad + $carga,
+                        1,
+                        8
+                    );
+
+                    $puntuacionB = $limitar(
+                        $resultadoBInicial + $actividad + $carga,
+                        1,
+                        8
+                    );
+
+                    $tablaFinal = [
+                        [1, 2, 3, 3, 4, 5, 5],
+                        [2, 2, 3, 4, 4, 5, 5],
+                        [2, 3, 3, 4, 4, 5, 6],
+                        [3, 3, 3, 4, 5, 6, 6],
+                        [4, 4, 4, 5, 6, 7, 7],
+                        [4, 4, 5, 6, 6, 7, 7],
+                        [5, 5, 5, 6, 7, 7, 7],
+                        [5, 6, 6, 7, 7, 7, 7]
+                    ];
+
+                    $resultadoFinal = $tablaFinal[$puntuacionB - 1][$limitar($puntuacionA, 1, 7) - 1];
+
+                    if ($resultadoFinal >= 1 && $resultadoFinal <= 2) {
+                        $nivel = 1;
+                        $rangoRiesgo = '1-2';
+                        $actuacion = 'Riesgo Aceptable.';
+                    } elseif ($resultadoFinal >= 3 && $resultadoFinal <= 4) {
+                        $nivel = 2;
+                        $rangoRiesgo = '3-4';
+                        $actuacion = 'Pueden requerirse cambios en la tarea, es conveniente profundizar en el estudio.';
+                    } elseif ($resultadoFinal >= 5 && $resultadoFinal <= 6) {
+                        $nivel = 3;
+                        $rangoRiesgo = '5-6';
+                        $actuacion = 'Se requiere el rediseño de la tarea.';
+                    } else {
+                        $nivel = 4;
+                        $rangoRiesgo = '7';
+                        $actuacion = 'Se requieren cambios urgentes en la tarea.';
+                    }
+
+
+
+                    $rutaPlantilla = storage_path(
+                        'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_RULA.pdf'
+                    );
+
+
+
+                    if (!file_exists($rutaPlantilla)) {
+
+                        return response()->json([
+
+                            'message' => 'No se encontró la plantilla PDF del método RULA.'
+
+                        ], 404);
+                    }
+
+
+                    $nombreEmpleado = $evaluacion->NOMBRE_EMPLEADO_FRE ?? 'SIN NOMBRE';
+                    $nombreCategoria = $evaluacion->NOMBRE_CATEGORIA_ERGO ?? 'SIN CATEGORÍA';
+
+                    $convertirTexto = function ($texto) {
+                        $convertido = @iconv('UTF-8', 'windows-1252//TRANSLIT', (string) $texto);
+                        return $convertido !== false ? $convertido : utf8_decode((string) $texto);
+                    };
+
+                    $pdf = new \setasign\Fpdi\Fpdi();
+                    $pdf->SetAutoPageBreak(false);
+                    $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+                    $escalaX = 1;
+
+                    $escalaY = 1;
+
+
+
+                    $rectangulo = function ($x, $y, $ancho, $alto) use ($pdf, &$escalaX, &$escalaY) {
+
+                        $pdf->Rect(
+                            $x * $escalaX,
+                            $y * $escalaY,
+                            $ancho * $escalaX,
+                            $alto * $escalaY
+                        );
+                    };
+
+
+
+                    $marcarCelda = function ($pagina, $x, $y, $ancho, $alto) use ($pdf, $rectangulo) {
+
+                        $pdf->SetDrawColor(220, 0, 0);
+
+                        $pdf->SetLineWidth(0.8);
+
+                        $rectangulo($x, $y, $ancho, $alto);
+                    };
+
+
+
+                    $nombreEmpleado = trim((string) $nombreEmpleado);
+
+                    $nombreCategoria = trim((string) $nombreCategoria);
+
+
+
+                    for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+
+                        $plantilla = $pdf->importPage($pagina);
+
+                        $tamano = $pdf->getTemplateSize($plantilla);
+
+
+
+                        $pdf->AddPage(
+
+                            $tamano['orientation'],
+
+                            [$tamano['width'], $tamano['height']]
+
+                        );
+
+
+
+                        $pdf->useTemplate($plantilla);
+                        $escalaX = $tamano['width'] / 768;
+                        $escalaY = $tamano['height'] / 1024;
+
+                        $marcar = function ($x, $y, $w, $h) use ($pdf, $escalaX, $escalaY) {
+                            $pdf->SetDrawColor(220, 0, 0);
+                            $pdf->SetLineWidth(0.9);
+                            $pdf->Rect($x * $escalaX, $y * $escalaY, $w * $escalaX, $h * $escalaY);
+                        };
+                        $fila = function ($x, $y, $w, $alto, $indice) use ($marcar) {
+                            if ($indice >= 0) $marcar($x, $y + ($indice * $alto), $w, $alto);
+                        };
+
+                        $marcarPx = function ($x, $y, $w, $h) use ($pdf, $tamano) {
+                            $pdf->SetDrawColor(220, 0, 0);
+                            $pdf->SetLineWidth(0.9);
+                            $pdf->Rect(
+                                $x * $tamano['width'] / 918,
+                                $y * $tamano['height'] / 1188,
+                                $w * $tamano['width'] / 918,
+                                $h * $tamano['height'] / 1188
+                            );
+                        };
+
+                        $marcarFilaPx = function ($x, $y, $w, $h, $indice) use ($marcarPx) {
+                            if ($indice >= 0) {
+                                $marcarPx($x, $y + ($indice * $h), $w, $h);
+                            }
+                        };
+
+                        if ($pagina === 1) {
+                            $opcionesBrazo = [
+                                1 => [231, 806, 307, 13],
+                                2 => [231, 823, 307, 13],
+                                3 => [231, 840, 307, 13],
+                                4 => [231, 859, 307, 13],
+                                5 => [231, 935, 307, 13],
+                                6 => [231, 952, 307, 13]
+                            ];
+
+                            if (isset($opcionesBrazo[$datosRULA['RULA_BRAZO']])) {
+                                $opcion = $opcionesBrazo[$datosRULA['RULA_BRAZO']];
+                                $marcar($opcion[0], $opcion[1], $opcion[2], $opcion[3]);
+                            }
+
+                            if ($datosRULA['RULA_BRAZO_ABDUCIDO'] != 0) {
+                                $marcar(231, 935, 307, 13);
+                            }
+
+                            if ($datosRULA['RULA_HOMBRO_ELEVADO'] != 0) {
+                                $marcar(231, 952, 307, 13);
+                            }
+
+                            if ($datosRULA['RULA_BRAZO_APOYADO'] != 0) {
+                                $marcar(231, 970, 307, 13);
+                            }
+                        }
+
+                        if ($pagina === 2) {
+                            $marcarFilaPx(276, 498, 366, 27, $datosRULA['RULA_ANTEBRAZO'] - 1);
+
+                            if ($datosRULA['RULA_ANTEBRAZO_PROYECCION'] != 0) {
+                                $marcarFilaPx(266, 634, 385, 32, 0);
+                            }
+
+                            if ($datosRULA['RULA_ANTEBRAZO_CRUZA'] != 0) {
+                                $marcarFilaPx(266, 666, 385, 24, 0);
+                            }
+                        }
+
+                        if ($pagina === 3) {
+                            $marcarFilaPx(276, 60, 366, 23.5, $datosRULA['RULA_MUNECA'] - 1);
+
+                            if ($datosRULA['RULA_MUNECA_DESVIACION'] != 0) {
+                                $marcarFilaPx(266, 194, 385, 23, 0);
+                            }
+
+                            if ($datosRULA['RULA_GIRO_MUNECA'] == 1) {
+                                $marcarFilaPx(270, 291, 377, 24, 0);
+                            } elseif ($datosRULA['RULA_GIRO_MUNECA'] == 2) {
+                                $marcarFilaPx(270, 315, 377, 23, 0);
+                            }
+
+                            $marcarFilaPx(280, 919, 365, 23.25, $datosRULA['RULA_CUELLO'] - 1);
+
+                            if ($datosRULA['RULA_CUELLO_ROTADO'] != 0) {
+                                $marcarFilaPx(270, 1088, 385, 24, 0);
+                            }
+
+                            if ($datosRULA['RULA_CUELLO_LATERAL'] != 0) {
+                                $marcarFilaPx(270, 1112, 385, 24, 0);
+                            }
+                        }
+
+                        if ($pagina === 4) {
+                            $marcarFilaPx(243, 535, 432, 23.25, $datosRULA['RULA_TRONCO'] - 1);
+
+                            if ($datosRULA['RULA_TRONCO_TORSION'] != 0) {
+                                $marcarFilaPx(266, 695, 385, 23, 0);
+                            }
+
+                            if ($datosRULA['RULA_TRONCO_LATERAL'] != 0) {
+                                $marcarFilaPx(266, 718, 385, 24, 0);
+                            }
+
+                            $filaPiernas = $datosRULA['RULA_PIERNAS'] == 1 ? 0 : 2;
+                            $marcarFilaPx(447, 963, 431, 35.5, $filaPiernas);
+                        }
+
+                        if ($pagina === 5) {
+                            $filaA = (($brazo - 1) * 3) + ($antebrazo - 1);
+                            $marcarPx(
+                                247 + ($indiceA * 63.6),
+                                150 + ($filaA * 23.45),
+                                63.6,
+                                23.45
+                            );
+
+                            $filaB = $cuello - 1;
+                            $columnaB = (($tronco - 1) * 2) + ($piernas - 1);
+                            $marcarPx(
+                                260 + ($columnaB * 38.8),
+                                734 + ($filaB * 23.5),
+                                38.8,
+                                23.5
+                            );
+                        }
+
+                        if ($pagina === 6) {
+                            if ($datosRULA['RULA_ACTIVIDAD'] == 0) {
+                                $marcarPx(244, 66, 431, 44);
+                            } else {
+                                $marcarPx(244, 110, 431, 36);
+                            }
+
+                            $cargaFilas = [
+                                0 => 0,
+                                1 => 1,
+                                2 => 2,
+                                3 => 4
+                            ];
+
+                            $indiceCarga = isset($cargaFilas[$datosRULA['RULA_CARGA']])
+                                ? $cargaFilas[$datosRULA['RULA_CARGA']]
+                                : 0;
+
+                            $marcarFilaPx(206, 290, 506, 23, $indiceCarga);
+
+                            $filaFinal = $puntuacionB - 1;
+                            $columnaFinal = $puntuacionA >= 7 ? 6 : $puntuacionA - 1;
+
+                            $marcarPx(
+                                389 + ($columnaFinal * 38.8),
+                                587 + ($filaFinal * 26.4),
+                                38.8,
+                                26.4
+                            );
+
+                            $marcarFilaPx(166, 1005, 553, 23.5, $nivel - 1);
+                        }
+
+
+                        $pdf->SetDrawColor(220, 0, 0);
+
+                        $pdf->SetLineWidth(0.8);
+
+
+
+                        if ($pagina === 1) {
+
+                            $pdf->SetFont('Arial', 'B', 8);
+
+                            $pdf->SetTextColor(0, 0, 0);
+
+
+
+                            $pdf->SetXY(190 * $escalaX, 85 * $escalaY);
+
+                            $pdf->Cell(
+                                200 * $escalaX,
+                                14 * $escalaY,
+                                $convertirTexto($nombreEmpleado),
+                                0,
+                                0,
+                                'L'
+                            );
+
+
+
+                            $pdf->SetXY(140 * $escalaX, 112 * $escalaY);
+                            $pdf->Cell(
+                                190 * $escalaX,
+                                14 * $escalaY,
+                                $convertirTexto($nombreCategoria),
+                                0,
+                                0,
+                                'L'
+                            );
+                        }
+                    }
+
+
+
+                    $pdf->SetTitle($convertirTexto('Método RULA'));
+
+                    $pdf->SetAuthor($convertirTexto('Evaluación ergonómica'));
+
+
+
+                    return response($pdf->Output('S'), 200, [
+
+                        'Content-Type' => 'application/pdf',
+
+                        'Content-Disposition' => 'attachment; filename="Metodo_RULA\_' . $freId . '.pdf"'
+
+                    ]);
+                } catch (\Throwable $e) {
+
+                    \Illuminate\Support\Facades\Log::error(
+
+                        'Error al generar PDF RULA: ' . $e->getMessage(),
+
+                        [
+
+                            'fre_id' => $request->fre_id ?? null,
+
+                            'linea' => $e->getLine(),
+
+                            'archivo' => $e->getFile()
+
+                        ]
+
+                    );
+
+
+
+                    return response()->json([
+                        'message' => 'Ocurrió un error al generar el PDF del método RULA.'
+                    ], 500);
+                }
+            };
+
+            $generadores['4'] = function (Request $request) {
+
+                try {
+
+                    $request->validate([
+
+                        'fre_id' => 'required|integer|min:1'
+
+                    ]);
+
+                    $freId = (int) $request->fre_id;
+
+                    $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+
+                        ->leftJoin(
+
+                            'recoergo_fichastecnicas as ficha',
+
+                            'ficha.ID_FICHAS_TECNICAS',
+
+                            '=',
+
+                            'evaluacion.FICHA_ID'
+
+                        )
+
+                        ->leftJoin(
+
+                            'recoergocategorias as categoria',
+
+                            'categoria.ID_CATEGORIA_ERGO',
+
+                            '=',
+
+                            'ficha.CATEGORIA_ID_FICHA'
+
+                        )
+
+                        ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+
+                        ->select(
+
+                            'evaluacion.*',
+
+                            'categoria.NOMBRE_CATEGORIA_ERGO'
+
+                        )
+
+                        ->first();
+
+                    if (!$evaluacion) {
+
+                        return response()->json([
+
+                            'message' => 'No se encontró la evaluación FRE.'
+
+                        ], 404);
+                    }
+
+                    $camposObligatorios = [
+
+                        'REBA_TRONCO',
+
+                        'REBA_CUELLO',
+
+                        'REBA_PIERNAS',
+
+                        'REBA_BRAZO',
+
+                        'REBA_ANTEBRAZO',
+
+                        'REBA_MUNECA',
+
+                        'ANALISIS_METODO_REBA'
+
+                    ];
+
+                    foreach ($camposObligatorios as $campo) {
+
+                        if (
+
+                            !isset($evaluacion->$campo) ||
+
+                            trim((string) $evaluacion->$campo) === ''
+
+                        ) {
+
+                            return response()->json([
+
+                                'message' => 'Falta completar el campo ' . $campo . ' del método REBA.'
+
+                            ], 422);
+                        }
+                    }
+
+                    $camposREBA = [
+
+                        'REBA_TRONCO',
+
+                        'REBA_TRONCO_MOD',
+
+                        'REBA_CUELLO',
+
+                        'REBA_CUELLO_MOD',
+
+                        'REBA_PIERNAS',
+
+                        'REBA_RODILLAS',
+
+                        'REBA_BRAZO',
+
+                        'REBA_BRAZO_MOD',
+
+                        'REBA_ANTEBRAZO',
+
+                        'REBA_MUNECA',
+
+                        'REBA_MUNECA_MOD',
+
+                        'REBA_CARGA',
+
+                        'REBA_FUERZA_BRUSCA',
+
+                        'REBA_AGARRE',
+
+                        'REBA_ACTIVIDAD_MUSCULAR'
+
+                    ];
+
+                    $datosREBA = [];
+
+                    foreach ($camposREBA as $campo) {
+
+                        $datosREBA[$campo] = $evaluacion->$campo ?? '';
+                    }
+
+                    $numero = function ($campo, $predeterminado = 0) use ($datosREBA) {
+
+                        $valor = $datosREBA[$campo] ?? '';
+
+                        return is_numeric($valor) ? (int) $valor : $predeterminado;
+                    };
+
+                    $limitar = function ($valor, $minimo, $maximo) {
+
+                        return max($minimo, min($maximo, $valor));
+                    };
+
+                    $matrizA = [
+
+                        [
+
+                            [1, 2, 3, 4],
+
+                            [1, 2, 3, 4],
+
+                            [3, 3, 5, 6]
+
+                        ],
+
+                        [
+
+                            [2, 3, 4, 5],
+
+                            [3, 4, 5, 6],
+
+                            [4, 5, 6, 7]
+
+                        ],
+
+                        [
+
+                            [2, 4, 5, 6],
+
+                            [4, 5, 6, 7],
+
+                            [5, 6, 7, 8]
+
+                        ],
+
+                        [
+
+                            [3, 5, 6, 7],
+
+                            [5, 6, 7, 8],
+
+                            [6, 7, 8, 9]
+
+                        ],
+
+                        [
+
+                            [4, 6, 7, 8],
+
+                            [6, 7, 8, 9],
+
+                            [7, 8, 9, 9]
+
+                        ]
+
+                    ];
+
+                    $matrizB = [
+
+                        [[1, 2, 2], [1, 2, 3]],
+
+                        [[1, 2, 3], [2, 3, 4]],
+
+                        [[3, 4, 5], [4, 5, 5]],
+
+                        [[4, 5, 5], [5, 6, 7]],
+
+                        [[6, 7, 8], [7, 8, 8]],
+
+                        [[7, 8, 8], [8, 9, 9]]
+
+                    ];
+
+                    $matrizC = [
+
+                        [1, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7, 7],
+
+                        [1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 7, 8],
+
+                        [2, 3, 3, 3, 4, 5, 6, 7, 7, 8, 8, 8],
+
+                        [3, 4, 4, 4, 5, 6, 7, 8, 8, 9, 9, 9],
+
+                        [4, 4, 4, 5, 6, 7, 8, 8, 9, 9, 9, 9],
+
+                        [6, 6, 6, 7, 8, 8, 9, 9, 10, 10, 10, 10],
+
+                        [7, 7, 7, 8, 9, 9, 9, 10, 10, 11, 11, 11],
+
+                        [8, 8, 8, 9, 10, 10, 10, 10, 10, 11, 11, 11],
+
+                        [9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12],
+
+                        [10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 12],
+
+                        [11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12],
+
+                        [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
+
+                    ];
+
+                    $tronco = $numero('REBA_TRONCO');
+
+                    $troncoMod = $numero('REBA_TRONCO_MOD');
+
+                    $cuello = $numero('REBA_CUELLO');
+
+                    $cuelloMod = $numero('REBA_CUELLO_MOD');
+
+                    $piernas = $numero('REBA_PIERNAS');
+
+                    $rodillas = $numero('REBA_RODILLAS');
+
+                    $puntuacionTronco = $limitar($tronco + $troncoMod, 1, 5);
+
+                    $puntuacionCuello = $limitar($cuello + $cuelloMod, 1, 3);
+
+                    $puntuacionPiernas = $limitar($piernas + $rodillas, 1, 4);
+
+                    $puntuacionInicialA = $matrizA[$puntuacionTronco - 1][$puntuacionCuello - 1][$puntuacionPiernas - 1];
+
+                    $carga = $numero('REBA_CARGA');
+
+                    $fuerzaBrusca = $numero('REBA_FUERZA_BRUSCA');
+
+                    $puntuacionA = $puntuacionInicialA + $carga + $fuerzaBrusca;
+
+                    $brazoBase = $numero('REBA_BRAZO');
+
+                    $modificacionBrazo = 0;
+
+                    if ($datosREBA['REBA_BRAZO_MOD'] === 'abducido') {
+
+                        $modificacionBrazo = 1;
+                    } elseif ($datosREBA['REBA_BRAZO_MOD'] === 'hombro') {
+
+                        $modificacionBrazo = 1;
+                    } elseif ($datosREBA['REBA_BRAZO_MOD'] === 'apoyo') {
+
+                        $modificacionBrazo = -1;
+                    }
+
+                    $puntuacionBrazo = $limitar(
+
+                        $brazoBase + $modificacionBrazo,
+
+                        1,
+
+                        6
+
+                    );
+
+                    $antebrazo = $numero('REBA_ANTEBRAZO');
+
+                    $munecaSeleccion = (string) $datosREBA['REBA_MUNECA'];
+
+                    if (
+
+                        $munecaSeleccion === '1_neutra' ||
+
+                        $munecaSeleccion === '1_flexion'
+
+                    ) {
+
+                        $munecaBase = 1;
+                    } elseif ($munecaSeleccion === '2') {
+
+                        $munecaBase = 2;
+                    } else {
+
+                        $munecaBase = 0;
+                    }
+
+                    $munecaMod = $numero('REBA_MUNECA_MOD');
+
+                    $puntuacionMuneca = $limitar(
+
+                        $munecaBase + $munecaMod,
+
+                        1,
+
+                        3
+
+                    );
+
+                    $puntuacionInicialB = $matrizB[$puntuacionBrazo - 1][$antebrazo - 1][$puntuacionMuneca - 1];
+
+                    $agarre = $numero('REBA_AGARRE');
+
+                    $puntuacionB = $puntuacionInicialB + $agarre;
+
+                    $puntuacionAjustada = $limitar($puntuacionA, 1, 12);
+
+                    $puntuacionBAjustada = $limitar($puntuacionB, 1, 12);
+
+                    $puntuacionC = $matrizC[$puntuacionAjustada - 1][$puntuacionBAjustada - 1];
+
+                    $actividadMuscular = in_array(
+
+                        $datosREBA['REBA_ACTIVIDAD_MUSCULAR'],
+
+                        ['estatica', 'repetitiva', 'inestable'],
+
+                        true
+
+                    ) ? 1 : 0;
+
+                    $puntuacionFinal = $puntuacionC + $actividadMuscular;
+
+                    if ($puntuacionFinal === 1) {
+
+                        $nivel = 0;
+
+                        $riesgo = 'Inapreciable';
+
+                        $actuacion = 'No es necesaria actuación.';
+                    } elseif ($puntuacionFinal <= 3) {
+
+                        $nivel = 1;
+
+                        $riesgo = 'Bajo';
+
+                        $actuacion = 'Puede ser necesaria la actuación.';
+                    } elseif ($puntuacionFinal <= 7) {
+
+                        $nivel = 2;
+
+                        $riesgo = 'Medio';
+
+                        $actuacion = 'Es necesaria la actuación.';
+                    } elseif ($puntuacionFinal <= 10) {
+
+                        $nivel = 3;
+
+                        $riesgo = 'Alto';
+
+                        $actuacion = 'Es necesaria la actuación cuanto antes.';
+                    } else {
+
+                        $nivel = 4;
+
+                        $riesgo = 'Muy alto';
+
+                        $actuacion = 'Es necesaria la actuación de inmediato.';
+                    }
+
+                    $rutaPlantilla = storage_path(
+
+                        'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_REBA.pdf'
+
+                    );
+
+                    if (!file_exists($rutaPlantilla)) {
+
+                        return response()->json([
+
+                            'message' => 'No se encontró la plantilla PDF del método REBA.'
+
+                        ], 404);
+                    }
+
+                    $nombreEmpleado = trim(
+
+                        (string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? 'SIN NOMBRE')
+
+                    );
+
+                    $nombreCategoria = trim(
+
+                        (string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? 'SIN CATEGORÍA')
+
+                    );
+
+                    $convertirTexto = function ($texto) {
+
+                        $convertido = @iconv(
+
+                            'UTF-8',
+
+                            'windows-1252//TRANSLIT',
+
+                            (string) $texto
+
+                        );
+
+                        return $convertido !== false
+
+                            ? $convertido
+
+                            : utf8_decode((string) $texto);
+                    };
+
+                    $pdf = new \setasign\Fpdi\Fpdi();
+
+                    $pdf->SetAutoPageBreak(false);
+
+                    $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+                    $escalaX = 1;
+
+                    $escalaY = 1;
+
+                    $marcar = function ($x, $y, $ancho, $alto) use (
+
+                        $pdf,
+
+                        &$escalaX,
+
+                        &$escalaY
+
+                    ) {
+
+                        $pdf->SetDrawColor(220, 0, 0);
+
+                        $pdf->SetLineWidth(0.9);
+
+                        $pdf->Rect(
+
+                            $x * $escalaX,
+
+                            $y * $escalaY,
+
+                            $ancho * $escalaX,
+
+                            $alto * $escalaY
+
+                        );
+                    };
+
+                    $marcarFila = function ($valor, $filas) use ($marcar) {
+                        $clave = trim((string) $valor);
+
+                        if ($clave !== '' && isset($filas[$clave])) {
+                            $coordenada = $filas[$clave];
+                            $marcar(
+                                $coordenada[0],
+                                $coordenada[1],
+                                $coordenada[2],
+                                $coordenada[3]
+                            );
+                        }
+                    };
+
+                    $marcarSeleccion = function ($valor, $opciones) use ($marcar) {
+                        $clave = trim((string) $valor);
+
+                        if ($clave !== '' && isset($opciones[$clave])) {
+                            $coordenada = $opciones[$clave];
+                            $marcar(
+                                $coordenada[0],
+                                $coordenada[1],
+                                $coordenada[2],
+                                $coordenada[3]
+                            );
+                        }
+                    };
+
+                    $escribirTexto = function (
+
+                        $x,
+
+                        $y,
+
+                        $ancho,
+
+                        $alto,
+
+                        $contenido,
+
+                        $tamano = 9,
+
+                        $estilo = 'B',
+
+                        $alineacion = 'L'
+
+                    ) use ($pdf, $convertirTexto, &$escalaX, &$escalaY) {
+
+                        $pdf->SetFont('Arial', $estilo, $tamano);
+
+                        $pdf->SetTextColor(0, 0, 0);
+
+                        $pdf->SetXY($x * $escalaX, $y * $escalaY);
+
+                        $pdf->Cell(
+
+                            $ancho * $escalaX,
+
+                            $alto * $escalaY,
+
+                            $convertirTexto($contenido),
+
+                            0,
+
+                            0,
+
+                            $alineacion
+
+                        );
+                    };
+
+                    for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+
+                        $plantilla = $pdf->importPage($pagina);
+
+                        $tamano = $pdf->getTemplateSize($plantilla);
+
+                        $pdf->AddPage(
+
+                            $tamano['orientation'],
+
+                            [$tamano['width'], $tamano['height']]
+
+                        );
+
+                        $pdf->useTemplate($plantilla);
+
+                        $escalaX = $tamano['width'] / 768;
+
+                        $escalaY = $tamano['height'] / 1024;
+
+                        if ($pagina === 1) {
+
+                            $pdf->SetFont('Arial', 'B', 8);
+
+                            $pdf->SetTextColor(0, 0, 0);
+
+                            $pdf->SetXY(185 * $escalaX, 109 * $escalaY);
+
+                            $pdf->Cell(
+                                200 * $escalaX,
+                                14 * $escalaY,
+                                $convertirTexto($nombreEmpleado),
+                                0,
+                                0,
+                                'L'
+                            );
+
+
+
+                            $pdf->SetXY(140 * $escalaX, 137 * $escalaY);
+                            $pdf->Cell(
+                                190 * $escalaX,
+                                14 * $escalaY,
+                                $convertirTexto($nombreCategoria),
+                                0,
+                                0,
+                                'L'
+                            );
+                        }
+
+                        if ($pagina === 3) {
+
+                            $marcarFila($datosREBA['REBA_TRONCO'], [
+
+                                '1' => [43, 367, 683, 26],
+
+                                '2' => [43, 393, 683, 26],
+
+                                '3' => [43, 419, 683, 26],
+
+                                '4' => [43, 445, 683, 26]
+
+                            ]);
+
+                            if ($troncoMod !== 0) {
+                                $marcar(43, 510, 683, 28);
+                            }
+
+                            $marcarFila($datosREBA['REBA_CUELLO'], [
+
+                                '1' => [43, 768, 683, 26],
+
+                                '2' => [43, 794, 683, 26]
+
+                            ]);
+
+                            if ($cuelloMod !== 0) {
+                                $marcar(43, 861, 683, 26);
+                            }
+                        }
+
+                        if ($pagina === 4) {
+
+                            $marcarFila($datosREBA['REBA_PIERNAS'], [
+
+                                '1' => [43, 336, 683, 24],
+
+                                '2' => [43, 360, 683, 24]
+
+                            ]);
+
+                            $marcarFila($datosREBA['REBA_RODILLAS'], [
+
+                                '1' => [43, 423, 683, 23],
+
+                                '2' => [43, 446, 683, 23]
+
+                            ]);
+
+                            $marcarFila($datosREBA['REBA_BRAZO'], [
+
+                                '1' => [43, 733, 683, 21],
+
+                                '2' => [43, 756, 683, 20],
+
+                                '3' => [43, 778, 683, 20],
+
+                                '4' => [43, 800, 683, 21]
+
+                            ]);
+
+                            $marcarFila($datosREBA['REBA_BRAZO_MOD'], [
+
+                                'abducido' => [43, 864, 683, 23],
+
+                                'hombro' => [43, 887, 683, 24],
+
+                                'apoyo' => [43, 911, 683, 24]
+
+                            ]);
+                        }
+
+                        if ($pagina === 5) {
+
+                            $marcarFila($datosREBA['REBA_ANTEBRAZO'], [
+
+                                '1' => [43, 360, 683, 23],
+
+                                '2' => [43, 383, 683, 23]
+
+                            ]);
+
+                            $marcarSeleccion($munecaSeleccion, [
+
+                                '1_neutra' => [43, 721, 683, 26],
+
+                                '1_flexion' => [43, 747, 683, 23],
+
+                                '2' => [43, 770, 683, 25]
+
+                            ]);
+
+                            if ($munecaMod !== 0) {
+                                $marcar(43, 840, 683, 26);
+                            }
+                        }
+
+                        if ($pagina === 6) {
+
+                            $anchoCeldaA = 50;
+
+                            $altoCeldaA = 32;
+
+                            $inicioXA = 121;
+
+                            $inicioYA = 327;
+
+                            $filaA = $puntuacionTronco - 1;
+                            $columnaA = (($puntuacionCuello - 1) * 4) + ($puntuacionPiernas - 1);
+
+                            $marcar(
+                                $inicioXA + ($columnaA * $anchoCeldaA),
+                                $inicioYA + ($filaA * $altoCeldaA),
+                                $anchoCeldaA,
+                                $altoCeldaA
+                            );
+
+                            $anchoCeldaB = 100;
+
+                            $altoCeldaB = 32;
+
+                            $inicioXB = 121;
+
+                            $inicioYB = 652;
+
+                            $filaB = $puntuacionBrazo - 1;
+                            $columnaB = (($antebrazo - 1) * 3) + ($puntuacionMuneca - 1);
+
+                            $marcar(
+                                $inicioXB + ($columnaB * $anchoCeldaB),
+                                $inicioYB + ($filaB * $altoCeldaB),
+                                $anchoCeldaB,
+                                $altoCeldaB
+                            );
+                        }
+
+                        if ($pagina === 7) {
+
+                            $marcarSeleccion($datosREBA['REBA_CARGA'], [
+
+                                '0' => [43, 214, 683, 30],
+
+                                '1' => [43, 244, 683, 30],
+
+                                '2' => [43, 274, 683, 30]
+
+                            ]);
+
+                            if ($fuerzaBrusca !== 0) {
+                                $marcar(43, 363, 683, 27);
+                            }
+
+                            $marcarSeleccion($datosREBA['REBA_AGARRE'], [
+
+                                '0' => [43, 547, 683, 31],
+
+                                '1' => [43, 584, 683, 34],
+
+                                '2' => [43, 612, 683, 44],
+
+                                '3' => [43, 656, 683, 41]
+
+                            ]);
+                        }
+
+                        if ($pagina === 8) {
+
+                            $inicioXC = 133;
+
+                            $inicioYC = 237.5;
+
+                            $anchoCeldaC = 50;
+
+                            $altoCeldaC = 23.5;
+
+                            $filaC = $puntuacionAjustada - 1;
+                            $columnaC = $puntuacionBAjustada - 1;
+
+                            $marcar(
+                                $inicioXC + ($columnaC * $anchoCeldaC),
+                                $inicioYC + ($filaC * $altoCeldaC),
+                                $anchoCeldaC,
+                                $altoCeldaC
+                            );
+
+                            $marcarSeleccion($datosREBA['REBA_ACTIVIDAD_MUSCULAR'], [
+
+                                'estatica' => [43, 654, 683, 43],
+
+                                'repetitiva' => [43, 697, 683, 35],
+
+                                'inestable' => [43, 732, 683, 32]
+
+                            ]);
+                        }
+
+                        if ($pagina === 9) {
+
+                            $filaNivel = [
+
+                                0 => [43, 221, 683, 50],
+
+                                1 => [43, 271, 683, 51],
+
+                                2 => [43, 322, 683, 50],
+
+                                3 => [43, 372, 683, 51],
+
+                                4 => [43, 423, 683, 50]
+
+                            ];
+
+                            if (isset($filaNivel[$nivel])) {
+                                $coordenada = $filaNivel[$nivel];
+                                $marcar(
+                                    $coordenada[0],
+                                    $coordenada[1],
+                                    $coordenada[2],
+                                    $coordenada[3]
+                                );
+                            }
+                        }
+                    }
+
+                    $pdf->SetTitle($convertirTexto('Método REBA'));
+
+                    $pdf->SetAuthor($convertirTexto('Evaluación ergonómica'));
+
+                    return response($pdf->Output('S'), 200, [
+
+                        'Content-Type' => 'application/pdf',
+
+                        'Content-Disposition' => 'attachment; filename="Metodo_REBA\_' . $freId . '.pdf"'
+
+                    ]);
+                } catch (\Throwable $e) {
+
+                    \Illuminate\Support\Facades\Log::error(
+
+                        'Error al generar PDF REBA: ' . $e->getMessage(),
+
+                        [
+
+                            'fre_id' => $request->fre_id ?? null,
+
+                            'linea' => $e->getLine(),
+
+                            'archivo' => $e->getFile()
+
+                        ]
+
+                    );
+
+                    return response()->json([
+
+                        'message' => 'Ocurrió un error al generar el PDF del método REBA.'
+
+                    ], 500);
+                }
+            };
+
+            $generadores['5'] = function (Request $request) {
+                try {
+
+                    $request->validate([
+                        'fre_id' => 'required|integer|min:1'
+                    ]);
+
+                    $freId = (int) $request->fre_id;
+
+                    $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                        ->leftJoin(
+                            'recoergo_fichastecnicas as ficha',
+                            'ficha.ID_FICHAS_TECNICAS',
+                            '=',
+                            'evaluacion.FICHA_ID'
+                        )
+                        ->leftJoin(
+                            'recoergocategorias as categoria',
+                            'categoria.ID_CATEGORIA_ERGO',
+                            '=',
+                            'ficha.CATEGORIA_ID_FICHA'
+                        )
+                        ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                        ->select(
+                            'evaluacion.*',
+                            'categoria.NOMBRE_CATEGORIA_ERGO'
+                        )
+                        ->first();
+
+                    if (!$evaluacion) {
+                        return response()->json([
+                            'message' => 'No se encontró la evaluación FRE.'
+                        ], 404);
+                    }
+
+                    if (
+                        strtoupper(trim((string) ($evaluacion->MAC_TAREAS_EQUIPO ?? '')))
+                        !== 'SI'
+                    ) {
+                        return response()->json([
+                            'message' => 'La evaluación no tiene seleccionada la ficha MAC de manejo en equipo.'
+                        ], 422);
+                    }
+
+                    $camposMAC = [
+                        'MAC_EQ_A',
+                        'MAC_EQ_PESO_CARGA',
+                        'MAC_EQ_NUM_PERSONAS',
+                        'MAC_EQ_B',
+                        'MAC_EQ_C',
+                        'MAC_EQ_D',
+                        'MAC_EQ_E',
+                        'MAC_EQ_F',
+                        'MAC_EQ_G',
+                        'MAC_EQ_H',
+                        'MAC_EQ_I',
+                        'MAC_EQ_J',
+                        'MAC_EQ_K'
+                    ];
+
+                    $datosMAC = [];
+
+                    foreach ($camposMAC as $campo) {
+                        $datosMAC[$campo] = trim(
+                            (string) ($evaluacion->$campo ?? '')
+                        );
+                    }
+
+                    $puntuaciones = [
+                        'MAC_EQ_A' => [
+                            'A_2_MENOS_35' => 0,
+                            'A_3_MENOS_55' => 0,
+                            'A_4_MENOS_75' => 0,
+                            'A_2_35_65' => 4,
+                            'A_3_55_95' => 4,
+                            'A_4_75_130' => 4,
+                            'A_2_65_85' => 6,
+                            'A_3_95_130' => 6,
+                            'A_4_130_170' => 6,
+                            'A_2_MAS_85' => 10,
+                            'A_3_MAS_130' => 10,
+                            'A_4_MAS_170' => 10
+                        ],
+                        'MAC_EQ_B' => [
+                            'B_0' => 0,
+                            'B_3' => 3,
+                            'B_6' => 6
+                        ],
+                        'MAC_EQ_C' => [
+                            'C_0' => 0,
+                            'C_1' => 1,
+                            'C_3' => 3
+                        ],
+                        'MAC_EQ_D' => [
+                            'D_0' => 0,
+                            'D_1' => 1,
+                            'D_2' => 2
+                        ],
+                        'MAC_EQ_E' => [
+                            'E_0' => 0,
+                            'E_1' => 1,
+                            'E_3' => 3
+                        ],
+                        'MAC_EQ_F' => [
+                            'F_0' => 0,
+                            'F_2' => 2,
+                            'F_4' => 4
+                        ],
+                        'MAC_EQ_G' => [
+                            'G_0' => 0,
+                            'G_1' => 1,
+                            'G_3' => 3
+                        ],
+                        'MAC_EQ_H' => [
+                            'H_0' => 0,
+                            'H_1' => 1,
+                            'H_3' => 3
+                        ],
+                        'MAC_EQ_I' => [
+                            'I_0' => 0,
+                            'I_2' => 2,
+                            'I_3' => 3
+                        ],
+                        'MAC_EQ_J' => [
+                            'J_0' => 0,
+                            'J_1' => 1,
+                            'J_3' => 3
+                        ],
+                        'MAC_EQ_K' => [
+                            'K_0' => 0,
+                            'K_1' => 1,
+                            'K_2' => 2
+                        ]
+                    ];
+
+                    $totalCalculado = 0;
+                    $indicesSeleccionados = [];
+                    $puntuacionesFactores = [];
+
+                    foreach ($puntuaciones as $campo => $opciones) {
+
+                        $valorSeleccionado = $datosMAC[$campo] ?? '';
+
+                        if (
+                            $valorSeleccionado === '' ||
+                            !array_key_exists($valorSeleccionado, $opciones)
+                        ) {
+                            return response()->json([
+                                'message' => 'La selección del campo ' . $campo . ' no es válida o está incompleta.',
+                                'valor_recibido' => $valorSeleccionado
+                            ], 422);
+                        }
+
+                        $claves = array_keys($opciones);
+                        $indice = array_search($valorSeleccionado, $claves, true);
+
+                        $indicesSeleccionados[$campo] = $indice;
+                        $puntuacionesFactores[$campo] = $opciones[$valorSeleccionado];
+                        $totalCalculado += $opciones[$valorSeleccionado];
+                    }
+
+                    if ($totalCalculado <= 4) {
+                        $filaRiesgo = 0;
+                    } elseif ($totalCalculado <= 12) {
+                        $filaRiesgo = 1;
+                    } elseif ($totalCalculado <= 20) {
+                        $filaRiesgo = 2;
+                    } else {
+                        $filaRiesgo = 3;
+                    }
+
+                    $rutaPlantilla = storage_path(
+                        'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Equipo.pdf'
+                    );
+
+                    if (!file_exists($rutaPlantilla)) {
+                        return response()->json([
+                            'message' => 'No se encontró la plantilla PDF del método MAC de manejo en equipo.'
+                        ], 404);
+                    }
+
+                    $nombreEmpleado = trim(
+                        (string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? '')
+                    );
+
+                    $nombreCategoria = trim(
+                        (string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? '')
+                    );
+
+                    if ($nombreEmpleado === '') {
+                        $nombreEmpleado = 'SIN NOMBRE';
+                    }
+
+                    if ($nombreCategoria === '') {
+                        $nombreCategoria = 'SIN CATEGORÍA';
+                    }
+
+                    $convertirTexto = function ($texto) {
+                        $convertido = @iconv(
+                            'UTF-8',
+                            'windows-1252//TRANSLIT',
+                            (string) $texto
+                        );
+
+                        return $convertido !== false
+                            ? $convertido
+                            : utf8_decode((string) $texto);
+                    };
+
+                    /*
+         * Coordenadas existentes de la plantilla MAC.
+         * Formato: [X, Y, ANCHO, ALTO].
+         * Se usan únicamente para colocar el valor recuperado de BD.
+         * No se dibujan rectángulos ni bordes.
+         */
+                    $coordenadasMAC = [
+                        1 => [
+                            'A' => [
+                                [49, 399, 91, 76],
+                                [141, 399, 90, 76],
+                                [232, 399, 90, 76],
+                                [49, 480, 91, 74],
+                                [141, 480, 90, 74],
+                                [232, 480, 90, 74],
+                                [49, 558, 91, 73],
+                                [141, 558, 90, 73],
+                                [232, 558, 90, 73],
+                                [49, 635, 91, 76],
+                                [141, 635, 90, 76],
+                                [232, 635, 90, 76]
+                            ],
+                            'A_PUNTUACION' => [
+                                [506, 470, 70, 51]
+                            ],
+                            'A_PESO' => [
+                                [431, 623, 70, 48]
+                            ],
+                            'A_PERSONAS' => [
+                                [578, 623, 70, 48]
+                            ]
+                        ],
+                        2 => [
+                            'B' => [
+                                [48, 241, 192, 52],
+                                [241, 241, 270, 52],
+                                [512, 241, 205, 52]
+                            ],
+                            'C' => [
+                                [48, 432, 202, 34],
+                                [251, 432, 234, 34],
+                                [486, 432, 231, 34]
+                            ],
+                            'D' => [
+                                [48, 610, 202, 38],
+                                [251, 610, 234, 38],
+                                [486, 610, 231, 38]
+                            ],
+                            'E' => [
+                                [48, 701, 202, 34],
+                                [251, 701, 174, 34],
+                                [426, 701, 291, 34]
+                            ],
+                            'F' => [
+                                [48, 835, 192, 52],
+                                [241, 835, 185, 52],
+                                [427, 835, 153, 52],
+                                [581, 835, 136, 52],
+                                [48, 947, 192, 61],
+                                [241, 947, 185, 61],
+                                [427, 947, 153, 61],
+                                [581, 947, 136, 61]
+                            ]
+                        ],
+                        3 => [
+                            'G' => [
+                                [48, 161, 153, 60],
+                                [202, 161, 218, 60],
+                                [421, 161, 296, 60]
+                            ],
+                            'H' => [
+                                [48, 320, 202, 32],
+                                [251, 320, 234, 32],
+                                [486, 320, 231, 32]
+                            ],
+                            'I' => [
+                                [48, 466, 202, 33],
+                                [251, 466, 234, 33],
+                                [486, 466, 231, 33]
+                            ],
+                            'J' => [
+                                [48, 694, 202, 35],
+                                [251, 694, 234, 35],
+                                [486, 694, 231, 35]
+                            ],
+                            'K' => [
+                                [48, 837, 202, 34],
+                                [251, 837, 234, 34],
+                                [486, 837, 231, 34]
+                            ]
+                        ],
+                        4 => [
+                            'RIESGO' => [
+                                [62, 228, 634, 45],
+                                [62, 273, 634, 45],
+                                [62, 318, 634, 45],
+                                [62, 363, 634, 45]
+                            ]
+                        ]
+                    ];
+
+                    $pdf = new \setasign\Fpdi\Fpdi();
+                    $pdf->SetAutoPageBreak(false);
+                    $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+                    $escalaX = 1;
+                    $escalaY = 1;
+
+                    $escribirTexto = function (
+                        $x,
+                        $y,
+                        $ancho,
+                        $alto,
+                        $contenido,
+                        $tamano = 10,
+                        $estilo = 'B',
+                        $alineacion = 'C'
+                    ) use (
+                        $pdf,
+                        $convertirTexto,
+                        &$escalaX,
+                        &$escalaY
+                    ) {
+                        $pdf->SetFont('Arial', $estilo, $tamano);
+                        $pdf->SetTextColor(0, 0, 0);
+                        $pdf->SetXY(
+                            $x * $escalaX,
+                            $y * $escalaY
+                        );
+                        $pdf->Cell(
+                            $ancho * $escalaX,
+                            $alto * $escalaY,
+                            $convertirTexto($contenido),
+                            0,
+                            0,
+                            $alineacion
+                        );
+                    };
+
+
+                    $dibujarRectanguloRojo = function (
+                        $x,
+                        $y,
+                        $ancho,
+                        $alto
+                    ) use (
+                        $pdf,
+                        &$escalaX,
+                        &$escalaY
+                    ) {
+                        $pdf->SetDrawColor(0, 0, 0);
+                        $pdf->SetLineWidth(1.2);
+
+                        $pdf->Rect(
+                            $x * $escalaX,
+                            $y * $escalaY,
+                            $ancho * $escalaX,
+                            $alto * $escalaY
+                        );
+                    };
+
+                    for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+
+                        $plantilla = $pdf->importPage($pagina);
+                        $tamano = $pdf->getTemplateSize($plantilla);
+
+                        $pdf->AddPage(
+                            $tamano['orientation'],
+                            [
+                                $tamano['width'],
+                                $tamano['height']
+                            ]
+                        );
+
+                        $pdf->useTemplate($plantilla);
+
+                        $escalaX = $tamano['width'] / 768;
+                        $escalaY = $tamano['height'] / 1024;
+
+                        if ($pagina === 1) {
+
+                            $escribirTexto(
+                                185,
+                                115,
+                                150,
+                                90,
+                                $nombreEmpleado,
+                                8,
+                                'B',
+                                'L'
+                            );
+
+                            $escribirTexto(
+                                140,
+                                127,
+                                150,
+                                180,
+                                $nombreCategoria,
+                                8,
+                                'B',
+                                'L'
+                            );
+
+                            $escribirTexto(
+                                506,
+                                470,
+                                70,
+                                51,
+                                (string) $puntuacionesFactores['MAC_EQ_A'],
+                                12,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                431,
+                                623,
+                                70,
+                                48,
+                                $datosMAC['MAC_EQ_PESO_CARGA'],
+                                10,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                578,
+                                623,
+                                70,
+                                48,
+                                $datosMAC['MAC_EQ_NUM_PERSONAS'],
+                                10,
+                                'B',
+                                'C'
+                            );
+                        }
+
+                        if ($pagina === 2) {
+
+                            foreach (['B', 'C', 'D', 'E', 'F'] as $factor) {
+
+                                $campo = 'MAC_EQ_' . $factor;
+                                $indice = $indicesSeleccionados[$campo];
+
+                                if ($factor === 'F') {
+                                    $valorF = $datosMAC['MAC_EQ_F'];
+
+                                    $coordenadasF = [
+                                        'F_0' => 4,
+                                        'F_2' => 5,
+                                        'F_4' => 7
+                                    ];
+
+                                    $indice = $coordenadasF[$valorF];
+                                }
+
+                                $coordenada = $coordenadasMAC[2][$factor][$indice];
+
+                                $dibujarRectanguloRojo(
+                                    $coordenada[0],
+                                    $coordenada[1],
+                                    $coordenada[2],
+                                    $coordenada[3]
+                                );
+                            }
+                        }
+
+                        if ($pagina === 3) {
+
+                            foreach (['G', 'H', 'I', 'J', 'K'] as $factor) {
+
+                                $campo = 'MAC_EQ_' . $factor;
+                                $indice = $indicesSeleccionados[$campo];
+                                $coordenada = $coordenadasMAC[3][$factor][$indice];
+
+                                $dibujarRectanguloRojo(
+                                    $coordenada[0],
+                                    $coordenada[1],
+                                    $coordenada[2],
+                                    $coordenada[3]
+                                );
+                            }
+                        }
+
+                        if ($pagina === 4) {
+
+                            $coordenadaRiesgo =
+                                $coordenadasMAC[4]['RIESGO'][$filaRiesgo];
+
+                            $dibujarRectanguloRojo(
+                                $coordenadaRiesgo[0],
+                                $coordenadaRiesgo[1],
+                                $coordenadaRiesgo[2],
+                                $coordenadaRiesgo[3]
+                            );
+
+                            $escribirTexto(
+                                62,
+                                180,
+                                634,
+                                25,
+                                'TOTAL: ' . $totalCalculado,
+                                12,
+                                'B',
+                                'C'
+                            );
+                        }
+                    }
+
+                    $pdf->SetTitle(
+                        $convertirTexto('Método MAC - Manejo de carga en equipo')
+                    );
+
+                    $pdf->SetAuthor(
+                        $convertirTexto('Evaluación ergonómica')
+                    );
+
+                    return response($pdf->Output('S'), 200, [
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' =>
+                        'attachment; filename="Metodo_MAC_Equipo_' . $freId . '.pdf"'
+                    ]);
+                } catch (\Throwable $e) {
+
+                    \Illuminate\Support\Facades\Log::error(
+                        'Error al generar PDF MAC Equipo: ' . $e->getMessage(),
+                        [
+                            'fre_id' => $request->fre_id ?? null,
+                            'linea' => $e->getLine(),
+                            'archivo' => $e->getFile()
+                        ]
+                    );
+
+                    return response()->json([
+                        'message' => 'Ocurrió un error al generar el PDF del método MAC de manejo en equipo.'
+                    ], 500);
+                }
+            };
+
+            $generadores['6'] = function (Request $request) {
+                try {
+
+                    $request->validate([
+                        'fre_id' => 'required|integer|min:1'
+                    ]);
+
+                    $freId = (int) $request->fre_id;
+
+                    $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                        ->leftJoin(
+                            'recoergocategorias as categoria',
+                            'categoria.ID_CATEGORIA_ERGO',
+                            '=',
+                            'evaluacion.CATEGORIA_ID_FRE'
+                        )
+                        ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                        ->select(
+                            'evaluacion.*',
+                            'categoria.NOMBRE_CATEGORIA_ERGO'
+                        )
+                        ->first();
+
+                    if (!$evaluacion) {
+                        return response()->json([
+                            'message' => 'No se encontró la evaluación FRE.'
+                        ], 404);
+                    }
+
+                    if (
+                        strtoupper(trim((string) ($evaluacion->MAC_LEVANTAMIENTO_INDIVIDUAL ?? '')))
+                        !== 'SI'
+                    ) {
+                        return response()->json([
+                            'message' => 'La evaluación no tiene activada la ficha MAC de levantamiento individual de carga.'
+                        ], 422);
+                    }
+
+                    $camposMAC = [
+                        'MAC_IND_PESO_CARGA',
+                        'MAC_IND_NUM_OBJETOS',
+                        'MAC_IND_NUM_PERSONAS',
+                        'MAC_IND_HORAS',
+                        'MAC_IND_FRECUENCIA',
+                        'MAC_IND_A',
+                        'MAC_IND_B',
+                        'MAC_IND_C',
+                        'MAC_IND_D',
+                        'MAC_IND_E',
+                        'MAC_IND_F',
+                        'MAC_IND_G',
+                        'MAC_IND_H',
+                        'MAC_IND_CONTROL_A',
+                        'MAC_IND_CONTROL_B',
+                        'MAC_IND_CONTROL_C',
+                        'MAC_IND_CONTROL_D',
+                        'MAC_IND_CONTROL_E',
+                        'MAC_IND_CONTROL_F',
+                        'MAC_IND_CONTROL_G',
+                        'MAC_IND_CONTROL_H',
+                        'MAC_IND_ANALISIS_RESULTADOS'
+                    ];
+
+                    $datosMAC = [];
+
+                    foreach ($camposMAC as $campo) {
+                        $datosMAC[$campo] = $evaluacion->$campo ?? null;
+                    }
+
+                    $camposObligatorios = [
+                        'MAC_IND_PESO_CARGA',
+                        'MAC_IND_NUM_OBJETOS',
+                        'MAC_IND_NUM_PERSONAS',
+                        'MAC_IND_HORAS',
+                        'MAC_IND_B',
+                        'MAC_IND_C',
+                        'MAC_IND_D',
+                        'MAC_IND_E',
+                        'MAC_IND_F',
+                        'MAC_IND_G',
+                        'MAC_IND_H'
+                    ];
+
+                    foreach ($camposObligatorios as $campo) {
+                        if (
+                            !isset($datosMAC[$campo]) ||
+                            trim((string) $datosMAC[$campo]) === ''
+                        ) {
+                            return response()->json([
+                                'message' => 'Falta completar el campo ' . $campo . ' del método MAC de levantamiento individual.'
+                            ], 422);
+                        }
+                    }
+
+                    $peso = (float) $datosMAC['MAC_IND_PESO_CARGA'];
+                    $objetos = (float) $datosMAC['MAC_IND_NUM_OBJETOS'];
+                    $personas = (float) $datosMAC['MAC_IND_NUM_PERSONAS'];
+                    $horas = (float) $datosMAC['MAC_IND_HORAS'];
+
+                    if ($peso < 0 || $objetos <= 0 || $personas <= 0 || $horas <= 0) {
+                        return response()->json([
+                            'message' => 'Los datos de peso, objetos, personas u horas no son válidos.'
+                        ], 422);
+                    }
+
+                    $frecuenciaCalculada = $objetos / $personas / $horas;
+
+                    $frecuencia = is_numeric($datosMAC['MAC_IND_FRECUENCIA'])
+                        ? (float) $datosMAC['MAC_IND_FRECUENCIA']
+                        : $frecuenciaCalculada;
+
+                    $frecuenciasGrafica = [0, 2, 12, 30, 60, 250, 400, 720];
+
+                    $limitesGrafica = [
+                        'verde' => [15, 13, 11, 10, 9, 7, 6, 5],
+                        'naranja' => [45, 40, 38, 35, 30, 20, 16, 12],
+                        'rojo' => [50, 50, 50, 50, 48, 33, 28, 20]
+                    ];
+
+                    $interpolarLimite = function ($frecuencia, $limites) use ($frecuenciasGrafica) {
+
+                        if ($frecuencia <= $frecuenciasGrafica[0]) {
+                            return $limites[0];
+                        }
+
+                        for ($i = 1; $i < count($frecuenciasGrafica); $i++) {
+
+                            if ($frecuencia <= $frecuenciasGrafica[$i]) {
+
+                                $frecuenciaAnterior = $frecuenciasGrafica[$i - 1];
+                                $frecuenciaActual = $frecuenciasGrafica[$i];
+
+                                $limiteAnterior = $limites[$i - 1];
+                                $limiteActual = $limites[$i];
+
+                                $proporcion =
+                                    ($frecuencia - $frecuenciaAnterior) /
+                                    ($frecuenciaActual - $frecuenciaAnterior);
+
+                                return $limiteAnterior +
+                                    (($limiteActual - $limiteAnterior) * $proporcion);
+                            }
+                        }
+
+                        return $limites[count($limites) - 1];
+                    };
+
+                    if ($peso >= 50) {
+                        $puntuacionACalculada = 10;
+                    } else {
+
+                        $limiteVerde = $interpolarLimite(
+                            $frecuencia,
+                            $limitesGrafica['verde']
+                        );
+
+                        $limiteNaranja = $interpolarLimite(
+                            $frecuencia,
+                            $limitesGrafica['naranja']
+                        );
+
+                        $limiteRojo = $interpolarLimite(
+                            $frecuencia,
+                            $limitesGrafica['rojo']
+                        );
+
+                        if ($peso <= $limiteVerde) {
+                            $puntuacionACalculada = 0;
+                        } elseif ($peso <= $limiteNaranja) {
+                            $puntuacionACalculada = 4;
+                        } elseif ($peso <= $limiteRojo) {
+                            $puntuacionACalculada = 6;
+                        } else {
+                            $puntuacionACalculada = 10;
+                        }
+                    }
+
+                    $puntuacionA = is_numeric($datosMAC['MAC_IND_A'])
+                        ? (int) $datosMAC['MAC_IND_A']
+                        : $puntuacionACalculada;
+
+                    if (!in_array($puntuacionA, [0, 4, 6, 10], true)) {
+                        return response()->json([
+                            'message' => 'El valor guardado en MAC_IND_A no es válido.',
+                            'valor_recibido' => $datosMAC['MAC_IND_A']
+                        ], 422);
+                    }
+
+                    $opciones = [
+                        'MAC_IND_B' => [
+                            'B_0' => 0,
+                            'B_3' => 3,
+                            'B_6' => 6
+                        ],
+                        'MAC_IND_C' => [
+                            'C_0' => 0,
+                            'C_1A' => 1,
+                            'C_1B' => 1,
+                            'C_3A' => 3,
+                            'C_3B' => 3
+                        ],
+                        'MAC_IND_D' => [
+                            'D_0' => 0,
+                            'D_1A' => 1,
+                            'D_1B' => 1,
+                            'D_2' => 2
+                        ],
+                        'MAC_IND_E' => [
+                            'E_0' => 0,
+                            'E_1' => 1,
+                            'E_3' => 3
+                        ],
+                        'MAC_IND_F' => [
+                            'F_0' => 0,
+                            'F_1' => 1,
+                            'F_2' => 2
+                        ],
+                        'MAC_IND_G' => [
+                            'G_0' => 0,
+                            'G_1' => 1,
+                            'G_2' => 2
+                        ],
+                        'MAC_IND_H' => [
+                            'H_0' => 0,
+                            'H_1' => 1,
+                            'H_2' => 2
+                        ]
+                    ];
+
+                    $totalCalculado = $puntuacionA;
+                    $indicesSeleccionados = [];
+                    $puntuacionesFactores = [
+                        'MAC_IND_A' => $puntuacionA
+                    ];
+
+                    foreach ($opciones as $campo => $valores) {
+
+                        $valorSeleccionado = trim((string) $datosMAC[$campo]);
+
+                        if (!array_key_exists($valorSeleccionado, $valores)) {
+                            return response()->json([
+                                'message' => 'El valor seleccionado para ' . $campo . ' no es válido.',
+                                'valor_recibido' => $valorSeleccionado,
+                                'opciones_validas' => array_keys($valores)
+                            ], 422);
+                        }
+
+                        $claves = array_keys($valores);
+                        $indicesSeleccionados[$campo] = array_search(
+                            $valorSeleccionado,
+                            $claves,
+                            true
+                        );
+
+                        $puntuacionesFactores[$campo] = $valores[$valorSeleccionado];
+                        $totalCalculado += $valores[$valorSeleccionado];
+                    }
+
+                    if ($totalCalculado <= 4) {
+                        $filaRiesgo = 0;
+                        $nivelRiesgo = 'Bajo - Aceptable';
+                    } elseif ($totalCalculado <= 12) {
+                        $filaRiesgo = 1;
+                        $nivelRiesgo = 'Medio - Posible';
+                    } elseif ($totalCalculado <= 20) {
+                        $filaRiesgo = 2;
+                        $nivelRiesgo = 'Alto - Significativo';
+                    } else {
+                        $filaRiesgo = 3;
+                        $nivelRiesgo = 'Muy Alto - Inaceptable';
+                    }
+
+                    $nombreEmpleado = trim(
+                        (string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? '')
+                    );
+
+                    if ($nombreEmpleado === '') {
+                        $nombreEmpleado = 'SIN NOMBRE REGISTRADO';
+                    }
+
+                    $nombreCategoria = trim(
+                        (string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? '')
+                    );
+
+                    if ($nombreCategoria === '') {
+                        $nombreCategoria = 'SIN CATEGORÍA';
+                    }
+
+                    $rutasPlantilla = [
+                        storage_path('app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Individual.pdf'),
+                        storage_path('app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Levantamiento_Individual.pdf'),
+                        storage_path('app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Tareas de levantamiento individual de carga.pdf')
+                    ];
+
+                    $rutaPlantilla = null;
+
+                    foreach ($rutasPlantilla as $ruta) {
+                        if (file_exists($ruta)) {
+                            $rutaPlantilla = $ruta;
+                            break;
+                        }
+                    }
+
+                    if (!$rutaPlantilla) {
+                        return response()->json([
+                            'message' => 'No se encontró la plantilla PDF de MAC levantamiento individual. Verifica el nombre del archivo en metodos_ergonomia.'
+                        ], 404);
+                    }
+
+                    $convertirTexto = function ($texto) {
+
+                        $convertido = @iconv(
+                            'UTF-8',
+                            'windows-1252//TRANSLIT',
+                            (string) $texto
+                        );
+
+                        return $convertido !== false
+                            ? $convertido
+                            : utf8_decode((string) $texto);
+                    };
+
+                    /*
+         * Coordenadas ajustadas a las franjas de selección de la plantilla individual.
+         * Formato: [X, Y, ANCHO, ALTO].
+         * Los recuadros siguen el tamaño de selección utilizado en MAC equipo.
+         */
+                    $coordenadasMAC = [
+                        2 => [
+                            'MAC_IND_B' => [
+                                [49, 148, 135, 199],
+                                [183, 148, 207, 199],
+                                [390, 148, 326, 199]
+                            ],
+                            'MAC_IND_C' => [
+                                [49, 406, 135, 198],
+                                [183, 406, 112, 198],
+                                [296, 406, 113, 198],
+                                [450, 406, 113, 198],
+                                [563, 406, 113, 198]
+                            ],
+                            'MAC_IND_D' => [
+                                [49, 659, 151, 198],
+                                [200, 659, 151, 198],
+                                [351, 659, 151, 198],
+                                [502, 659, 214, 198]
+                            ]
+                        ],
+                        3 => [
+                            'MAC_IND_E' => [
+                                [49, 160, 202, 184],
+                                [251, 160, 234, 184],
+                                [485, 160, 233, 184]
+                            ],
+                            'MAC_IND_F' => [
+                                [49, 550, 161, 143],
+                                [210, 550, 254, 143],
+                                [464, 550, 253, 143],
+                                [49, 550, 161, 143],
+                                [49, 550, 161, 143],
+                                [210, 550, 254, 143],
+                                [464, 550, 100, 143],
+                                [564, 550, 154, 143]
+                            ],
+                            'MAC_IND_G' => [
+                                [49, 750, 202, 58],
+                                [251, 750, 234, 58],
+                                [485, 750, 233, 58]
+                            ],
+                            'MAC_IND_H' => [
+                                [49, 887, 202, 35],
+                                [251, 887, 234, 35],
+                                [485, 887, 233, 35]
+                            ]
+                        ],
+                        4 => [
+                            'RIESGO' => [
+                                [62, 228, 634, 44],
+                                [62, 272, 634, 45],
+                                [62, 317, 634, 45],
+                                [62, 362, 634, 52]
+                            ]
+                        ]
+                    ];
+
+                    $pdf = new \setasign\Fpdi\Fpdi();
+                    $pdf->SetAutoPageBreak(false);
+
+                    $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+                    $escalaX = 1;
+                    $escalaY = 1;
+
+                    $dibujarRectanguloNegro = function (
+                        $x,
+                        $y,
+                        $ancho,
+                        $alto
+                    ) use (
+                        $pdf,
+                        &$escalaX,
+                        &$escalaY
+                    ) {
+                        $pdf->SetDrawColor(0, 0, 0);
+                        $pdf->SetLineWidth(1.0);
+
+                        $pdf->Rect(
+                            $x * $escalaX,
+                            $y * $escalaY,
+                            $ancho * $escalaX,
+                            $alto * $escalaY
+                        );
+                    };
+
+                    $escribirTexto = function (
+                        $x,
+                        $y,
+                        $ancho,
+                        $alto,
+                        $contenido,
+                        $tamano = 9,
+                        $estilo = 'B',
+                        $alineacion = 'C'
+                    ) use (
+                        $pdf,
+                        $convertirTexto,
+                        &$escalaX,
+                        &$escalaY
+                    ) {
+                        $pdf->SetFont('Arial', $estilo, $tamano);
+                        $pdf->SetTextColor(0, 0, 0);
+                        $pdf->SetXY(
+                            $x * $escalaX,
+                            $y * $escalaY
+                        );
+                        $pdf->Cell(
+                            $ancho * $escalaX,
+                            $alto * $escalaY,
+                            $convertirTexto($contenido),
+                            0,
+                            0,
+                            $alineacion
+                        );
+                    };
+
+                    for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+
+                        $plantilla = $pdf->importPage($pagina);
+                        $tamano = $pdf->getTemplateSize($plantilla);
+
+                        $pdf->AddPage(
+                            $tamano['orientation'],
+                            [
+                                $tamano['width'],
+                                $tamano['height']
+                            ]
+                        );
+
+                        $pdf->useTemplate($plantilla);
+
+                        $escalaX = $tamano['width'] / 768;
+                        $escalaY = $tamano['height'] / 1024;
+
+                        if ($pagina === 1) {
+
+                            $escribirTexto(
+                                185,
+                                148,
+                                210,
+                                24,
+                                $nombreEmpleado,
+                                9,
+                                'B',
+                                'L'
+                            );
+
+                            $escribirTexto(
+                                140,
+                                207,
+                                210,
+                                24,
+                                $nombreCategoria,
+                                9,
+                                'B',
+                                'L'
+                            );
+
+                            $escribirTexto(
+                                578,
+                                449,
+                                51,
+                                38,
+                                2,
+                                9,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                426,
+                                485,
+                                53,
+                                38,
+                                (string) $puntuacionA,
+                                12,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                474,
+                                550,
+                                55,
+                                40,
+                                $objetos,
+                                9,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                530,
+                                550,
+                                55,
+                                40,
+                                $personas,
+                                9,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                600,
+                                550,
+                                53,
+                                40,
+                                $horas,
+                                9,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                674,
+                                550,
+                                45,
+                                40,
+                                $frecuencia,
+                                9,
+                                'B',
+                                'C'
+                            );
+                        }
+
+                        if (isset($coordenadasMAC[$pagina])) {
+
+                            foreach (
+                                $coordenadasMAC[$pagina]
+                                as $campo => $rectangulos
+                            ) {
+
+                                if ($campo === 'RIESGO') {
+                                    continue;
+                                }
+
+                                $indice = $indicesSeleccionados[$campo] ?? null;
+
+                                if ($campo === 'MAC_IND_F') {
+                                    $mapaF = [
+                                        'F_0' => 4,
+                                        'F_1' => 5,
+                                        'F_2' => 7
+                                    ];
+
+                                    $valorF = trim((string) ($datosMAC['MAC_IND_F'] ?? ''));
+                                    $indice = $mapaF[$valorF] ?? null;
+                                }
+
+                                if (
+                                    $indice !== null &&
+                                    isset($rectangulos[$indice])
+                                ) {
+                                    $coordenada = $rectangulos[$indice];
+
+                                    $dibujarRectanguloNegro(
+                                        $coordenada[0],
+                                        $coordenada[1],
+                                        $coordenada[2],
+                                        $coordenada[3]
+                                    );
+                                }
+                            }
+                        }
+
+                        if ($pagina === 4) {
+
+                            $coordenadaRiesgo =
+                                $coordenadasMAC[4]['RIESGO'][$filaRiesgo];
+
+                            $dibujarRectanguloNegro(
+                                $coordenadaRiesgo[0],
+                                $coordenadaRiesgo[1],
+                                $coordenadaRiesgo[2],
+                                $coordenadaRiesgo[3]
+                            );
+                        }
+                    }
+
+                    $pdf->SetTitle(
+                        $convertirTexto('Método MAC - Tareas de levantamiento individual de carga')
+                    );
+
+                    $pdf->SetAuthor(
+                        $convertirTexto('Evaluación ergonómica')
+                    );
+
+                    return response($pdf->Output('S'), 200, [
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' =>
+                        'attachment; filename="Metodo_MAC_Levantamiento_Individual_' . $freId . '.pdf"'
+                    ]);
+                } catch (\Throwable $e) {
+
+                    \Illuminate\Support\Facades\Log::error(
+                        'Error al generar PDF MAC Levantamiento Individual: ' . $e->getMessage(),
+                        [
+                            'fre_id' => $request->fre_id ?? null,
+                            'linea' => $e->getLine(),
+                            'archivo' => $e->getFile()
+                        ]
+                    );
+
+                    return response()->json([
+                        'message' => 'Ocurrió un error al generar el PDF del método MAC de levantamiento individual.'
+                    ], 500);
+                }
+            };
+
+            $generadores['7'] = function (Request $request) {
+                try {
+
+                    $request->validate([
+                        'fre_id' => 'required|integer|min:1'
+                    ]);
+
+                    $freId = (int) $request->fre_id;
+
+                    $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                        ->leftJoin(
+                            'recoergocategorias as categoria',
+                            'categoria.ID_CATEGORIA_ERGO',
+                            '=',
+                            'evaluacion.CATEGORIA_ID_FRE'
+                        )
+                        ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                        ->select(
+                            'evaluacion.*',
+                            'categoria.NOMBRE_CATEGORIA_ERGO'
+                        )
+                        ->first();
+
+                    if (!$evaluacion) {
+                        return response()->json([
+                            'message' => 'No se encontró la evaluación FRE.'
+                        ], 404);
+                    }
+
+                    if (
+                        strtoupper(trim((string) ($evaluacion->MAC_TRANSPORTE_CARGA ?? '')))
+                        !== 'SI'
+                    ) {
+                        return response()->json([
+                            'message' => 'La evaluación no tiene activada la ficha MAC de tareas de transporte de carga.'
+                        ], 422);
+                    }
+
+                    $camposMAC = [
+                        'MAC_TRANS_PESO_CARGA',
+                        'MAC_TRANS_NUM_OBJETOS',
+                        'MAC_TRANS_NUM_PERSONAS',
+                        'MAC_TRANS_HORAS',
+                        'MAC_TRANS_FRECUENCIA',
+                        'MAC_TRANS_A',
+                        'MAC_TRANS_B',
+                        'MAC_TRANS_C',
+                        'MAC_TRANS_D',
+                        'MAC_TRANS_E',
+                        'MAC_TRANS_F',
+                        'MAC_TRANS_G',
+                        'MAC_TRANS_H',
+                        'MAC_TRANS_I',
+                        'MAC_TRANS_CONTROL_A',
+                        'MAC_TRANS_CONTROL_B',
+                        'MAC_TRANS_CONTROL_C',
+                        'MAC_TRANS_CONTROL_D',
+                        'MAC_TRANS_CONTROL_E',
+                        'MAC_TRANS_CONTROL_F',
+                        'MAC_TRANS_CONTROL_G',
+                        'MAC_TRANS_CONTROL_H',
+                        'MAC_TRANS_CONTROL_I',
+                        'MAC_TRANS_ANALISIS_RESULTADOS'
+                    ];
+
+                    $datosMAC = [];
+
+                    foreach ($camposMAC as $campo) {
+                        $datosMAC[$campo] = $evaluacion->$campo ?? null;
+                    }
+
+                    $camposObligatorios = [
+                        'MAC_TRANS_PESO_CARGA',
+                        'MAC_TRANS_NUM_OBJETOS',
+                        'MAC_TRANS_NUM_PERSONAS',
+                        'MAC_TRANS_HORAS',
+                        'MAC_TRANS_B',
+                        'MAC_TRANS_C',
+                        'MAC_TRANS_D',
+                        'MAC_TRANS_E',
+                        'MAC_TRANS_F',
+                        'MAC_TRANS_G',
+                        'MAC_TRANS_H',
+                        'MAC_TRANS_I'
+                    ];
+
+                    foreach ($camposObligatorios as $campo) {
+                        if (
+                            !isset($datosMAC[$campo]) ||
+                            trim((string) $datosMAC[$campo]) === ''
+                        ) {
+                            return response()->json([
+                                'message' => 'Falta completar el campo ' . $campo . ' del método MAC de transporte de carga.'
+                            ], 422);
+                        }
+                    }
+
+                    $peso = (float) $datosMAC['MAC_TRANS_PESO_CARGA'];
+                    $objetos = (float) $datosMAC['MAC_TRANS_NUM_OBJETOS'];
+                    $personas = (float) $datosMAC['MAC_TRANS_NUM_PERSONAS'];
+                    $horas = (float) $datosMAC['MAC_TRANS_HORAS'];
+
+                    if ($peso < 0 || $objetos <= 0 || $personas <= 0 || $horas <= 0) {
+                        return response()->json([
+                            'message' => 'Los datos de peso, objetos, personas u horas no son válidos.'
+                        ], 422);
+                    }
+
+                    $frecuenciaCalculada = $objetos / $personas / $horas;
+
+                    $frecuencia = is_numeric($datosMAC['MAC_TRANS_FRECUENCIA'])
+                        ? (float) $datosMAC['MAC_TRANS_FRECUENCIA']
+                        : $frecuenciaCalculada;
+
+                    $frecuenciasGrafica = [0, 2, 12, 30, 60, 300];
+
+                    $limitesGrafica = [
+                        'verde' => [15, 13, 11, 10, 9, 7],
+                        'naranja' => [45, 40, 38, 35, 30, 20],
+                        'rojo' => [50, 50, 50, 50, 48, 33]
+                    ];
+
+                    $interpolarLimite = function ($frecuencia, $limites) use ($frecuenciasGrafica) {
+
+                        if ($frecuencia <= $frecuenciasGrafica[0]) {
+                            return $limites[0];
+                        }
+
+                        for ($i = 1; $i < count($frecuenciasGrafica); $i++) {
+
+                            if ($frecuencia <= $frecuenciasGrafica[$i]) {
+
+                                $frecuenciaAnterior = $frecuenciasGrafica[$i - 1];
+                                $frecuenciaActual = $frecuenciasGrafica[$i];
+
+                                $limiteAnterior = $limites[$i - 1];
+                                $limiteActual = $limites[$i];
+
+                                $proporcion =
+                                    ($frecuencia - $frecuenciaAnterior) /
+                                    ($frecuenciaActual - $frecuenciaAnterior);
+
+                                return $limiteAnterior +
+                                    (($limiteActual - $limiteAnterior) * $proporcion);
+                            }
+                        }
+
+                        return $limites[count($limites) - 1];
+                    };
+
+                    if ($peso >= 50) {
+                        $puntuacionACalculada = 10;
+                    } else {
+
+                        $limiteVerde = $interpolarLimite(
+                            $frecuencia,
+                            $limitesGrafica['verde']
+                        );
+
+                        $limiteNaranja = $interpolarLimite(
+                            $frecuencia,
+                            $limitesGrafica['naranja']
+                        );
+
+                        $limiteRojo = $interpolarLimite(
+                            $frecuencia,
+                            $limitesGrafica['rojo']
+                        );
+
+                        if ($peso <= $limiteVerde) {
+                            $puntuacionACalculada = 0;
+                        } elseif ($peso <= $limiteNaranja) {
+                            $puntuacionACalculada = 4;
+                        } elseif ($peso <= $limiteRojo) {
+                            $puntuacionACalculada = 6;
+                        } else {
+                            $puntuacionACalculada = 10;
+                        }
+                    }
+
+                    $puntuacionA = is_numeric($datosMAC['MAC_TRANS_A'])
+                        ? (int) $datosMAC['MAC_TRANS_A']
+                        : $puntuacionACalculada;
+
+                    if (!in_array($puntuacionA, [0, 4, 6, 10], true)) {
+                        return response()->json([
+                            'message' => 'El valor guardado en MAC_TRANS_A no es válido.',
+                            'valor_recibido' => $datosMAC['MAC_TRANS_A']
+                        ], 422);
+                    }
+
+                    $opciones = [
+                        'MAC_TRANS_B' => [
+                            'B_0' => 0,
+                            'B_3' => 3,
+                            'B_6' => 6
+                        ],
+                        'MAC_TRANS_C' => [
+                            'C_0' => 0,
+                            'C_1A' => 1,
+                            'C_1B' => 1,
+                            'C_2' => 2
+                        ],
+                        'MAC_TRANS_D' => [
+                            'D_0' => 0,
+                            'D_1' => 1,
+                            'D_3' => 3
+                        ],
+                        'MAC_TRANS_E' => [
+                            'E_0' => 0,
+                            'E_1' => 1,
+                            'E_2' => 2
+                        ],
+                        'MAC_TRANS_F' => [
+                            'F_0' => 0,
+                            'F_1' => 1,
+                            'F_3' => 3
+                        ],
+                        'MAC_TRANS_G' => [
+                            'G_0' => 0,
+                            'G_1' => 1,
+                            'G_2' => 2
+                        ],
+                        'MAC_TRANS_H' => [
+                            'H_0' => 0,
+                            'H_2' => 2,
+                            'H_3' => 3
+                        ],
+                        'MAC_TRANS_I' => [
+                            'I_0' => 0,
+                            'I_1' => 1,
+                            'I_2' => 2
+                        ]
+                    ];
+
+                    $totalCalculado = $puntuacionA;
+                    $indicesSeleccionados = [];
+                    $puntuacionesFactores = [
+                        'MAC_TRANS_A' => $puntuacionA
+                    ];
+
+                    foreach ($opciones as $campo => $valores) {
+
+                        $valorSeleccionado = trim((string) $datosMAC[$campo]);
+
+                        if (!array_key_exists($valorSeleccionado, $valores)) {
+                            return response()->json([
+                                'message' => 'El valor seleccionado para ' . $campo . ' no es válido.',
+                                'valor_recibido' => $valorSeleccionado,
+                                'opciones_validas' => array_keys($valores)
+                            ], 422);
+                        }
+
+                        $claves = array_keys($valores);
+
+                        $indicesSeleccionados[$campo] = array_search(
+                            $valorSeleccionado,
+                            $claves,
+                            true
+                        );
+
+                        $puntuacionesFactores[$campo] = $valores[$valorSeleccionado];
+                        $totalCalculado += $valores[$valorSeleccionado];
+                    }
+
+                    if ($totalCalculado <= 4) {
+                        $filaRiesgo = 0;
+                        $nivelRiesgo = 'Bajo - Aceptable';
+                    } elseif ($totalCalculado <= 12) {
+                        $filaRiesgo = 1;
+                        $nivelRiesgo = 'Medio - Posible';
+                    } elseif ($totalCalculado <= 20) {
+                        $filaRiesgo = 2;
+                        $nivelRiesgo = 'Alto - Significativo';
+                    } else {
+                        $filaRiesgo = 3;
+                        $nivelRiesgo = 'Muy Alto - Inaceptable';
+                    }
+
+                    $nombreEmpleado = trim(
+                        (string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? '')
+                    );
+
+                    if ($nombreEmpleado === '') {
+                        $nombreEmpleado = 'SIN NOMBRE REGISTRADO';
+                    }
+
+                    $nombreCategoria = trim(
+                        (string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? '')
+                    );
+
+                    if ($nombreCategoria === '') {
+                        $nombreCategoria = 'SIN CATEGORÍA';
+                    }
+
+                    $rutaPlantilla = storage_path(
+                        'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Transporte.pdf'
+                    );
+
+                    if (!file_exists($rutaPlantilla)) {
+                        $rutaPlantilla = storage_path(
+                            'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Transporte.pdf'
+                        );
+                    }
+
+                    if (!file_exists($rutaPlantilla)) {
+                        $rutaPlantilla = storage_path(
+                            'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_MAC_Transporte.pdf'
+                        );
+                    }
+
+                    if (!file_exists($rutaPlantilla)) {
+                        return response()->json([
+                            'message' => 'No se encontró la plantilla PDF de MAC tareas de transporte de carga.'
+                        ], 404);
+                    }
+
+                    $convertirTexto = function ($texto) {
+
+                        $convertido = @iconv(
+                            'UTF-8',
+                            'windows-1252//TRANSLIT',
+                            (string) $texto
+                        );
+
+                        return $convertido !== false
+                            ? $convertido
+                            : utf8_decode((string) $texto);
+                    };
+
+                    /*
+         * Coordenadas de la plantilla MAC transporte.
+         * Formato: [X, Y, ANCHO, ALTO].
+         * Las selecciones se marcan con rectángulos negros compactos.
+         */
+                    $coordenadasMAC = [
+                        2 => [
+                            'MAC_TRANS_B' => [
+                                [49, 282, 135, 60],
+                                [184, 282, 245, 60],
+                                [429, 282, 249, 60]
+                            ],
+                            'MAC_TRANS_C' => [
+                                [48, 393, 184, 186],
+                                [232, 393, 135, 186],
+                                [366, 393, 122, 186],
+                                [532, 393, 184, 186]
+                            ],
+                            'MAC_TRANS_D' => [
+                                [48, 632, 202, 33],
+                                [250, 632, 234, 33],
+                                [485, 632, 232, 33]
+                            ],
+                            'MAC_TRANS_E' => [
+                                [48, 717, 162, 291],
+                                [210, 717, 253, 291],
+                                [463, 717, 253, 291]
+                            ]
+                        ],
+                        3 => [
+                            'MAC_TRANS_F' => [
+                                [48, 150, 202, 67],
+                                [250, 150, 234, 67],
+                                [485, 150, 232, 67]
+                            ],
+                            'MAC_TRANS_G' => [
+                                [48, 279, 202, 176],
+                                [250, 279, 234, 176],
+                                [485, 279, 232, 176]
+                            ],
+                            'MAC_TRANS_H' => [
+                                [48, 539, 202, 197],
+                                [250, 539, 234, 197],
+                                [485, 539, 232, 197]
+                            ],
+                            'MAC_TRANS_I' => [
+                                [48, 816, 202, 32],
+                                [250, 816, 234, 32],
+                                [485, 816, 232, 32]
+                            ]
+                        ],
+                        4 => [
+                            'RIESGO' => [
+                                [63, 228, 632, 45],
+                                [63, 272, 632, 45],
+                                [63, 317, 632, 45],
+                                [63, 362, 632, 50]
+                            ]
+                        ]
+                    ];
+
+                    $pdf = new \setasign\Fpdi\Fpdi();
+                    $pdf->SetAutoPageBreak(false);
+
+                    $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+
+                    $escalaX = 1;
+                    $escalaY = 1;
+
+                    $dibujarRectanguloNegro = function (
+                        $x,
+                        $y,
+                        $ancho,
+                        $alto
+                    ) use (
+                        $pdf,
+                        &$escalaX,
+                        &$escalaY
+                    ) {
+                        $pdf->SetDrawColor(0, 0, 0);
+                        $pdf->SetLineWidth(1.0);
+
+                        $pdf->Rect(
+                            $x * $escalaX,
+                            $y * $escalaY,
+                            $ancho * $escalaX,
+                            $alto * $escalaY
+                        );
+                    };
+
+                    $escribirTexto = function (
+                        $x,
+                        $y,
+                        $ancho,
+                        $alto,
+                        $contenido,
+                        $tamano = 9,
+                        $estilo = 'B',
+                        $alineacion = 'C'
+                    ) use (
+                        $pdf,
+                        $convertirTexto,
+                        &$escalaX,
+                        &$escalaY
+                    ) {
+                        $pdf->SetFont('Arial', $estilo, $tamano);
+                        $pdf->SetTextColor(0, 0, 0);
+                        $pdf->SetXY(
+                            $x * $escalaX,
+                            $y * $escalaY
+                        );
+                        $pdf->Cell(
+                            $ancho * $escalaX,
+                            $alto * $escalaY,
+                            $convertirTexto($contenido),
+                            0,
+                            0,
+                            $alineacion
+                        );
+                    };
+
+                    for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+
+                        $plantilla = $pdf->importPage($pagina);
+                        $tamano = $pdf->getTemplateSize($plantilla);
+
+                        $pdf->AddPage(
+                            $tamano['orientation'],
+                            [
+                                $tamano['width'],
+                                $tamano['height']
+                            ]
+                        );
+
+                        $pdf->useTemplate($plantilla);
+
+                        $escalaX = $tamano['width'] / 768;
+                        $escalaY = $tamano['height'] / 1024;
+
+                        if ($pagina === 1) {
+
+                            $escribirTexto(
+                                185,
+                                148,
+                                210,
+                                24,
+                                $nombreEmpleado,
+                                9,
+                                'B',
+                                'L'
+                            );
+
+                            $escribirTexto(
+                                140,
+                                207,
+                                210,
+                                24,
+                                $nombreCategoria,
+                                9,
+                                'B',
+                                'L'
+                            );
+
+                            $escribirTexto(
+                                578,
+                                449,
+                                51,
+                                38,
+                                2,
+                                9,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                426,
+                                485,
+                                53,
+                                38,
+                                (string) $puntuacionA,
+                                12,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                474,
+                                550,
+                                55,
+                                40,
+                                $objetos,
+                                9,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                530,
+                                550,
+                                55,
+                                40,
+                                $personas,
+                                9,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                600,
+                                550,
+                                53,
+                                40,
+                                $horas,
+                                9,
+                                'B',
+                                'C'
+                            );
+
+                            $escribirTexto(
+                                674,
+                                550,
+                                45,
+                                40,
+                                $frecuencia,
+                                9,
+                                'B',
+                                'C'
+                            );
+                        }
+
+
+                        if (isset($coordenadasMAC[$pagina])) {
+
+                            foreach ($coordenadasMAC[$pagina] as $campo => $rectangulos) {
+
+                                $indice = $indicesSeleccionados[$campo] ?? null;
+
+                                if (
+                                    $indice !== null &&
+                                    isset($rectangulos[$indice])
+                                ) {
+                                    $coordenada = $rectangulos[$indice];
+
+                                    $dibujarRectanguloNegro(
+                                        $coordenada[0],
+                                        $coordenada[1],
+                                        $coordenada[2],
+                                        $coordenada[3]
+                                    );
+                                }
+                            }
+                        }
+
+                        if ($pagina === 4) {
+
+                            $coordenadaRiesgo =
+                                $coordenadasMAC[4]['RIESGO'][$filaRiesgo];
+
+                            $dibujarRectanguloNegro(
+                                $coordenadaRiesgo[0],
+                                $coordenadaRiesgo[1],
+                                $coordenadaRiesgo[2],
+                                $coordenadaRiesgo[3]
+                            );
+                        }
+                    }
+
+                    $pdf->SetTitle(
+                        $convertirTexto('Método MAC - Tareas de transporte de carga')
+                    );
+
+                    $pdf->SetAuthor(
+                        $convertirTexto('Evaluación ergonómica')
+                    );
+
+                    return response($pdf->Output('S'), 200, [
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' =>
+                        'attachment; filename="Metodo_MAC_Transporte_' . $freId . '.pdf"'
+                    ]);
+                } catch (\Throwable $e) {
+
+                    \Illuminate\Support\Facades\Log::error(
+                        'Error al generar PDF MAC Transporte: ' . $e->getMessage(),
+                        [
+                            'fre_id' => $request->fre_id ?? null,
+                            'linea' => $e->getLine(),
+                            'archivo' => $e->getFile()
+                        ]
+                    );
+
+                    return response()->json([
+                        'message' => 'Ocurrió un error al generar el PDF del método MAC de tareas de transporte de carga.'
+                    ], 500);
+                }
+            };
+
+            foreach ($evaluaciones as $evaluacion) {
+                $metodosOriginal = $evaluacion->CAT_METODOS_FRE ?? [];
+
+                // CAT_METODOS_FRE puede llegar como arreglo o como JSON almacenado en MySQL.
+                if (is_string($metodosOriginal)) {
+                    $textoMetodos = trim($metodosOriginal);
+                    $metodosDecodificados = json_decode($textoMetodos, true);
+
+                    if (json_last_error() === JSON_ERROR_NONE && is_array($metodosDecodificados)) {
+                        $metodosOriginal = $metodosDecodificados;
+                    } else {
+                        // Compatibilidad con valores guardados como: ["5","1","2","3","4"]
+                        // o como: 5,1,2,3,4.
+                        $textoMetodos = trim($textoMetodos, "[]\"' \t\n\r");
+                        $metodosOriginal = preg_split('/\s*[,;]\s*/', $textoMetodos, -1, PREG_SPLIT_NO_EMPTY);
+                    }
+                }
+
+                if (!is_array($metodosOriginal)) {
+                    $metodosOriginal = (array) $metodosOriginal;
+                }
+
+                // Normalizar a enteros evita que diferencias entre "1", 1 o espacios
+                // impidan reconocer OWAS, ROSA, RULA y REBA.
+                $metodos = array_values(array_unique(array_filter(array_map(function ($valor) {
+                    return (int) trim((string) $valor);
+                }, $metodosOriginal), function ($valor) {
+                    return in_array($valor, [1, 2, 3, 4, 5], true);
+                })));
+                $freId = (int) $evaluacion->ID_EVALUACION_FRE;
+                $nombreEmpleado = trim((string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? 'SIN NOMBRE REGISTRADO'));
+                $nombreEmpleado = preg_replace('/[\\\\\/\:*?"<>|]+/', '', $nombreEmpleado);
+                $nombreEmpleado = preg_replace('/\s+/', ' ', $nombreEmpleado);
+
+                $pendientes = [];
+                foreach (['1' => 'OWAS', '2' => 'ROSA', '3' => 'RULA', '4' => 'REBA'] as $id => $nombre) {
+                    if (in_array((int) $id, $metodos, true)) {
+                        $pendientes[] = [$id, $nombre];
+                    }
+                }
+
+                if (in_array(5, $metodos, true)) {
+                    if (strtoupper(trim((string) ($evaluacion->MAC_TAREAS_EQUIPO ?? ''))) === 'SI') {
+                        $pendientes[] = ['5', 'MAC - Manejo de carga en equipo'];
+                    }
+                    if (strtoupper(trim((string) ($evaluacion->MAC_LEVANTAMIENTO_INDIVIDUAL ?? ''))) === 'SI') {
+                        $pendientes[] = ['6', 'MAC - Levantamiento individual'];
+                    }
+                    if (strtoupper(trim((string) ($evaluacion->MAC_TRANSPORTE_CARGA ?? ''))) === 'SI') {
+                        $pendientes[] = ['7', 'MAC - Transporte de carga'];
+                    }
+                }
+
+                foreach ($pendientes as $pendiente) {
+                    $idMetodo = $pendiente[0];
+                    $nombreMetodo = $pendiente[1];
+
+                    try {
+                        $requestMetodo = new \Illuminate\Http\Request();
+                        $requestMetodo->merge(['fre_id' => $freId]);
+                        $respuesta = $generadores[$idMetodo]($requestMetodo);
+
+                        if (!$respuesta instanceof \Symfony\Component\HttpFoundation\Response || $respuesta->getStatusCode() !== 200) {
+                            $mensaje = 'No se pudo generar el PDF.';
+                            if ($respuesta instanceof \Symfony\Component\HttpFoundation\Response) {
+                                $json = json_decode((string) $respuesta->getContent(), true);
+                                if (is_array($json) && !empty($json['message'])) {
+                                    $mensaje = $json['message'];
+                                } else {
+                                    $mensaje = 'Error HTTP ' . $respuesta->getStatusCode();
+                                }
+                            }
+                            throw new \Exception($mensaje);
+                        }
+
+                        $contenidoPDF = $respuesta->getContent();
+                        if (!is_string($contenidoPDF) || strpos($contenidoPDF, '%PDF') !== 0) {
+                            throw new \Exception('La respuesta no contiene un PDF válido.');
+                        }
+
+                        $nombreSeguroMetodo = preg_replace('/[\\\\\/\:*?"<>|]+/', '', $nombreMetodo);
+                        $nombreSeguroMetodo = preg_replace('/\s+/', ' ', $nombreSeguroMetodo);
+                        $nombreEntrada = $nombreEmpleado . ' - ' . $nombreSeguroMetodo . '.pdf';
+                        $contador = 2;
+                        while ($zip->locateName($nombreEntrada) !== false) {
+                            $nombreEntrada = $nombreEmpleado . ' - ' . $nombreSeguroMetodo . ' (' . $contador . ').pdf';
+                            $contador++;
+                        }
+
+                        if (!$zip->addFromString($nombreEntrada, $contenidoPDF)) {
+                            throw new \Exception('No se pudo agregar el PDF al ZIP.');
+                        }
+                        $cantidadPDF++;
+                    } catch (\Throwable $eMetodo) {
+                        $errores[] = $nombreEmpleado . ' - ' . $nombreMetodo . ': ' . $eMetodo->getMessage();
+                        \Illuminate\Support\Facades\Log::error('Error al generar método dentro del ZIP FRE.', [
+                            'RECO_ID' => $RECO_ID,
+                            'fre_id' => $freId,
+                            'CAT_METODOS_FRE' => $metodos,
+                            'metodo' => $nombreMetodo,
+                            'error' => $eMetodo->getMessage(),
+                            'archivo' => $eMetodo->getFile(),
+                            'linea' => $eMetodo->getLine()
+                        ]);
+                    }
+                }
+            }
+
+            $zip->close();
+
+            if ($cantidadPDF === 0) {
+                \Illuminate\Support\Facades\File::deleteDirectory($carpetaTemp);
+                return response()->json([
+                    'message' => 'No se generó ningún PDF. Verifica CAT_METODOS_FRE y los selectores MAC.',
+                    'errores' => $errores
+                ], 422);
+            }
+
+            if (!empty($errores)) {
+                \Illuminate\Support\Facades\Log::warning('ZIP de métodos FRE generado con errores parciales.', [
+                    'RECO_ID' => $RECO_ID,
+                    'PDF_generados' => $cantidadPDF,
+                    'errores' => $errores
+                ]);
+            }
+
+            return response()->download($rutaZip, $nombreZip, ['Content-Type' => 'application/zip'])
+                ->deleteFileAfterSend(true);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\File::deleteDirectory($carpetaTemp);
+            \Illuminate\Support\Facades\Log::error('Error al generar ZIP de métodos FRE: ' . $e->getMessage(), [
+                'RECO_ID' => $RECO_ID,
+                'archivo' => $e->getFile(),
+                'linea' => $e->getLine()
+            ]);
+            return response()->json(['message' => 'Ocurrió un error al generar el ZIP.', 'error' => $e->getMessage()], 500);
+        }
+    }
 }

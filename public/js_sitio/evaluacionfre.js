@@ -4969,16 +4969,21 @@ function cargarEvaluacionFre(data) {
     }, 150);
         
 
-    // RAPP CON RUEDAS
-
     $("#RAPP_CON_RUEDAS").val(data.RAPP_CON_RUEDAS).trigger("change");
     $("#RAPP_SIN_RUEDAS").val(data.RAPP_SIN_RUEDAS).trigger("change");
+    
+    
+    
+    // RAPP CON RUEDAS
 
+    const valorPequeno = data.RAPP_RUEDAS_A1_PEQUENO || "";
+    const valorMediano = data.RAPP_RUEDAS_A1_MEDIANO || "";
+    const valorGrande = data.RAPP_RUEDAS_A1_GRANDE || "";
 
-
-    $("#RAPP_RUEDAS_A1_PEQUENO").val(data.RAPP_RUEDAS_A1_PEQUENO);
-    $("#RAPP_RUEDAS_A1_MEDIANO").val(data.RAPP_RUEDAS_A1_MEDIANO);
-    $("#RAPP_RUEDAS_A1_GRANDE").val(data.RAPP_RUEDAS_A1_GRANDE);
+    // Restaurar los tres valores sin disparar eventos change
+    $("#RAPP_RUEDAS_A1_PEQUENO").val(valorPequeno);
+    $("#RAPP_RUEDAS_A1_MEDIANO").val(valorMediano);
+    $("#RAPP_RUEDAS_A1_GRANDE").val(valorGrande);
 
     $("#RAPP_RUEDAS_A2_POSTURA").val(data.RAPP_RUEDAS_A2_POSTURA);
     $("#RAPP_RUEDAS_A3_AGARRE").val(data.RAPP_RUEDAS_A3_AGARRE);
@@ -4998,7 +5003,6 @@ function cargarEvaluacionFre(data) {
     $("#RAPP_RUEDAS_NIVEL_PEQUENO").text(data.RAPP_RUEDAS_NIVEL_PEQUENO);
     $("#RAPP_RUEDAS_NIVEL_MEDIANO").text(data.RAPP_RUEDAS_NIVEL_MEDIANO);
     $("#RAPP_RUEDAS_NIVEL_GRANDE").text(data.RAPP_RUEDAS_NIVEL_GRANDE);
-
     $("#RAPP_RUEDAS_RESULTADO_GENERAL").text(data.RAPP_RUEDAS_RESULTADO_GENERAL);
 
 
@@ -5029,26 +5033,50 @@ function cargarEvaluacionFre(data) {
     $("#RAPP_SIN_RUEDAS_RESULTADO_GENERAL").text(data.RAPP_SIN_RUEDAS_RESULTADO_GENERAL);
 
 
-    setTimeout(function () {
+    // setTimeout(function () {
 
+    //     const contenedorRAPP = document.getElementById("contenedorMetodoRAPP");
+
+    //     if (!contenedorRAPP) {
+    //         return;
+    //     }
+
+    //     contenedorRAPP.querySelectorAll("select").forEach(function (elemento) {
+
+    //         elemento.dispatchEvent(
+    //             new Event("change", {
+    //                 bubbles: true
+    //             })
+    //         );
+
+    //     });
+
+    // }, 150);
+    
+
+
+    setTimeout(function () {
         const contenedorRAPP = document.getElementById("contenedorMetodoRAPP");
 
         if (!contenedorRAPP) {
             return;
         }
 
-        contenedorRAPP.querySelectorAll("select").forEach(function (elemento) {
-
-            elemento.dispatchEvent(
-                new Event("change", {
-                    bubbles: true
-                })
-            );
-
+        contenedorRAPP.querySelectorAll("select").forEach(function(elemento) {
+            if (
+                elemento.id !== "RAPP_RUEDAS_A1_PEQUENO" &&
+                elemento.id !== "RAPP_RUEDAS_A1_MEDIANO" &&
+                elemento.id !== "RAPP_RUEDAS_A1_GRANDE"
+            ) {
+                elemento.dispatchEvent(
+                    new Event("change", {
+                        bubbles: true
+                    })
+                );
+            }
         });
 
     }, 150);
-    
 
     
 }
@@ -15154,7 +15182,7 @@ async function descargarMetodoREBA() {
 async function descargarMetodoMACEQUIPOS() {
 
     Swal.fire({
-        title: 'Generando ficha REBA...',
+        title: 'Generando ficha...',
         html: 'Preparando el documento PDF.',
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -15237,3 +15265,254 @@ async function descargarMetodoMACEQUIPOS() {
 
     
 }
+
+async function descargarMetodoMACIndividual() {
+
+    Swal.fire({
+        title: 'Generando ficha REBA...',
+        html: 'Preparando el documento PDF.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
+        }
+    });
+
+    let form = null;
+
+    try {
+
+        if (!window.fre_id) {
+            throw new Error(
+                'No se encontró el identificador de la evaluación FRE.'
+            );
+        }
+
+        const metaToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
+
+        if (!metaToken) {
+            throw new Error(
+                'No se encontró el token CSRF de Laravel.'
+            );
+        }
+
+        form = document.createElement('form');
+
+        form.method = 'POST';
+        form.action = '/descargarMetodoMACIndividual';
+        form.target = '_blank';
+
+        const inputToken = document.createElement('input');
+
+        inputToken.type = 'hidden';
+        inputToken.name = '_token';
+        inputToken.value = metaToken.content;
+
+        form.appendChild(inputToken);
+
+        const inputFreId = document.createElement('input');
+
+        inputFreId.type = 'hidden';
+        inputFreId.name = 'fre_id';
+        inputFreId.value = window.fre_id;
+
+        form.appendChild(inputFreId);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+        Swal.close();
+
+    } catch (error) {
+
+        console.error(
+            'Error al descargar el PDF OWAS:',
+            error
+        );
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al generar el PDF',
+            text: error.message || 'Ocurrió un problema al preparar el documento.'
+        });
+
+    } finally {
+
+        if (form) {
+            setTimeout(function () {
+                form.remove();
+            }, 5000);
+        }
+    }
+
+
+    
+}
+
+
+
+
+async function descargarMetodoMACTransporte() {
+
+    Swal.fire({
+        title: 'Generando ficha REBA...',
+        html: 'Preparando el documento PDF.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
+        }
+    });
+
+    let form = null;
+
+    try {
+
+        if (!window.fre_id) {
+            throw new Error(
+                'No se encontró el identificador de la evaluación FRE.'
+            );
+        }
+
+        const metaToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
+
+        if (!metaToken) {
+            throw new Error(
+                'No se encontró el token CSRF de Laravel.'
+            );
+        }
+
+        form = document.createElement('form');
+
+        form.method = 'POST';
+        form.action = '/descargarMetodoMACTransporte';
+        form.target = '_blank';
+
+        const inputToken = document.createElement('input');
+
+        inputToken.type = 'hidden';
+        inputToken.name = '_token';
+        inputToken.value = metaToken.content;
+
+        form.appendChild(inputToken);
+
+        const inputFreId = document.createElement('input');
+
+        inputFreId.type = 'hidden';
+        inputFreId.name = 'fre_id';
+        inputFreId.value = window.fre_id;
+
+        form.appendChild(inputFreId);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+        Swal.close();
+
+    } catch (error) {
+
+        console.error(
+            'Error al descargar el PDF OWAS:',
+            error
+        );
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al generar el PDF',
+            text: error.message || 'Ocurrió un problema al preparar el documento.'
+        });
+
+    } finally {
+
+        if (form) {
+            setTimeout(function () {
+                form.remove();
+            }, 5000);
+        }
+    }
+
+
+    
+}
+
+
+
+
+
+$(document).on('click', '#boton_reporte_metodos', function () {
+
+    // recsensorial contiene el RECO_ID del reconocimiento.
+    var recoId = recsensorial;
+
+    if (!recoId || parseInt(recoId, 10) <= 0) {
+        alert('No se encontró el ID del reconocimiento.');
+        return;
+    }
+
+    var boton = $(this);
+    var textoOriginal = boton.html();
+
+    boton.prop('disabled', true);
+    boton.html('<i class="fa fa-spinner fa-spin"></i> Generando ZIP...');
+
+    fetch('/reporteMetodosFreZip/' + encodeURIComponent(recoId), {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(function (respuesta) {
+
+        if (!respuesta.ok) {
+            return respuesta.text().then(function (texto) {
+                var mensaje = 'No se pudo generar el ZIP.';
+
+                try {
+                    var json = JSON.parse(texto);
+                    mensaje = json.message || mensaje;
+
+                    if (json.errores && json.errores.length) {
+                        mensaje += '\n' + json.errores.join('\n');
+                    }
+                } catch (e) {
+                    if (texto) {
+                        mensaje = texto;
+                    }
+                }
+
+                throw new Error(mensaje);
+            });
+        }
+
+        return respuesta.blob();
+    })
+    .then(function (blob) {
+
+        var url = window.URL.createObjectURL(blob);
+        var enlace = document.createElement('a');
+
+        enlace.href = url;
+        enlace.download = 'Metodos_FRE_' + recoId + '.zip';
+
+        document.body.appendChild(enlace);
+        enlace.click();
+        enlace.remove();
+
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(function (error) {
+        alert(error.message || 'Ocurrió un error al generar el ZIP.');
+    })
+    .finally(function () {
+        boton.prop('disabled', false);
+        boton.html(textoOriginal);
+    });
+});
