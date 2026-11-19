@@ -2809,8 +2809,6 @@ DESCRIPCIONACTIVIDAD
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1_fre" role="tabpanel">
                             <div class="card-body">
-
-
                                 <form enctype="multipart/form-data" method="post" name="form_evalfre" id="form_evalfre">
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="ID_EVALUACION_FRE" id="ID_EVALUACION_FRE">
@@ -13263,7 +13261,7 @@ DESCRIPCIONACTIVIDAD
 
                                                                     <select id="RAPP_SIN_RUEDAS_B1_RODADO"
                                                                         name="RAPP_SIN_RUEDAS_B1_RODADO"
-                                                                        class="form-control rapp-select rapp-sin-ruedas-calculo" required>
+                                                                        class="form-control rapp-select rapp-sin-ruedas-calculo" >
 
                                                                         <option value="">Seleccionar...</option>
                                                                         <option value="0|V">Menos de 400 kg - Bajo V/0</option>

@@ -202,10 +202,7 @@ $('.link_menuprincipal').click(function () {
 			$("#tab_2").css('display', 'none');
 
 			$("#steps_menu_tab1").click();
-
-
-           
-            
+   
          
             var funcionesCargaFreErgo = [
                 cargarDatosInformesFreErgo,
@@ -293,9 +290,7 @@ $('.link_menuprincipal').click(function () {
 
             $('#INFORME_RESPONSABLE2DOCUMENTO').val('');
 	        $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').resetPreview();
-            $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').clearElement();
-
-			
+            $('#INFORME_RESPONSABLE2DOCUMENTO').dropify().data('dropify').clearElement();	
 
 			break;
 		
@@ -367,7 +362,6 @@ function cargarDatosPlantilla()
 
                 $('#INFORME_RECONOCIMIENTO').summernote('code', reco);
             }
-
         
 
             // PROCESO
@@ -646,8 +640,6 @@ $("#boton_descargarfotoinstalacion").click(function () {
 $("#boton_descargarmapaderiesgo").click(function () {
 	window.open('/mostrarmapariesgoergo/1/' + recsensorial);
 });
-
-
 
 
 $("#boton_guardar_recsensorial").click(function () {
@@ -1107,8 +1099,6 @@ $('#tabla_reconocimiento_sensorial tbody').on('click', 'td.mostrar', function ()
 	$("#steps_menu_tab1").click();
 	$("#tab_menu2").click();
 });
-
-
 
 //-----------------------------------------------------FUNCIONES------------------------------------------------------------//
 
@@ -1594,17 +1584,12 @@ $("#boton_nueva_ficha").click(function (e) {
     $("#contenedorActividades").empty(); 
     $('#contenido2, #contenido3, #contenido4, #contenido5, #contenido6, #contenido7').hide();
 
-   $('#TEXTO_MANIPULACION, #LEVANTAMIENTO_CARGA, #TRANSPORTE_CARGAS, #EMPUJE_TRACCION')
-    .attr('style', 'display:block !important;');
+   $('#TEXTO_MANIPULACION, #LEVANTAMIENTO_CARGA, #TRANSPORTE_CARGAS, #EMPUJE_TRACCION').attr('style', 'display:block !important;');
 
     $("#modal_fichas").modal("show");
-
 	$('#modal_fichas .modal-title').html('Nueva ficha');
-	
     $('#JSON_ACTIVIDADES').val('')
 
-
-    
     var selectTurno = $('#TURNO_EMPLEADO_FICHA').selectize({
         placeholder: 'Seleccione una o varias opciones',
         allowEmptyOption: true,
@@ -1613,7 +1598,6 @@ $("#boton_nueva_ficha").click(function (e) {
     
     selectAreasFichas.clear();
     selectTurno.clear();
-    
     
     $.ajax({
         url: 'obtenerPEFichas',
@@ -1632,8 +1616,6 @@ $("#boton_nueva_ficha").click(function (e) {
         }
     });
 
-
-
 });
 
 $('#modal_fichas').on('hidden.bs.modal', function (e) {
@@ -1641,17 +1623,12 @@ $('#modal_fichas').on('hidden.bs.modal', function (e) {
      ID_FICHAS_TECNICAS = 0;
 
     $('#form_fichas')[0].reset();
-
     $('[id^="ficha_"]').empty();
 
     $("#contenedorActividades").empty(); 
     $('#contenido2, #contenido3, #contenido4, #contenido5, #contenido6, #contenido7').hide();
-
-   $('#TEXTO_MANIPULACION, #LEVANTAMIENTO_CARGA, #TRANSPORTE_CARGAS, #EMPUJE_TRACCION')
-    .attr('style', 'display:block !important;');
-
+   $('#TEXTO_MANIPULACION, #LEVANTAMIENTO_CARGA, #TRANSPORTE_CARGAS, #EMPUJE_TRACCION').attr('style', 'display:block !important;');
     $('#JSON_ACTIVIDADES').val('')
-
 	selectAreasFichas.clear();
 
 })
@@ -1659,12 +1636,10 @@ $('#modal_fichas').on('hidden.bs.modal', function (e) {
 let selectAreasFichas;
 
 $(document).ready(function () {
-
     selectAreasFichas = $('#CAT_AREAS_FICHA').selectize({
         placeholder: 'Seleccione una o varias opciones',
         maxItems: null,
     })[0].selectize;
-
 });
 
 function calcularEdad(fechaNacimiento) {
@@ -1938,17 +1913,10 @@ function reindexarTareasActividad(contenedor, idActividad) {
             titulo.innerText = `Tarea ${num}`;
         }
 
-        el.querySelector('.tarea-nombre').name =
-            `actividades[${idActividad}][tareas][${num}][nombre]`;
-
-        el.querySelector('.tarea-frecuencia').name =
-            `actividades[${idActividad}][tareas][${num}][frecuencia]`;
-
-        el.querySelector('.tarea-numero-veces').name =
-            `actividades[${idActividad}][tareas][${num}][numero_veces]`;
-
-        el.querySelector('.tarea-duracion').name =
-            `actividades[${idActividad}][tareas][${num}][duracion]`;
+        el.querySelector('.tarea-nombre').name = `actividades[${idActividad}][tareas][${num}][nombre]`;
+        el.querySelector('.tarea-frecuencia').name =`actividades[${idActividad}][tareas][${num}][frecuencia]`;
+        el.querySelector('.tarea-numero-veces').name = `actividades[${idActividad}][tareas][${num}][numero_veces]`;
+        el.querySelector('.tarea-duracion').name = `actividades[${idActividad}][tareas][${num}][duracion]`;
     });
 }
 
@@ -3991,13 +3959,8 @@ $('#Tablafichasevaluacionfre tbody').on('click', 'td>button.iniciarfre', functio
     });
 
     $("#ID_FICHAS_TECNICAS").val(row.data().ID_FICHAS_TECNICAS);
-   
-
-
     
     $("#tab1_fre_info").click();
-
-    
 
 	let areasGuardadas = row.data().CAT_AREAS_FICHA;
 
@@ -4030,9 +3993,6 @@ $('#Tablafichasevaluacionfre tbody').on('click', 'td>button.iniciarfre', functio
 
 	fichas_id = row.data().ID_FICHAS_TECNICAS;
     $('#INSTALACION_FRE').val(instalacionreco);
-
-
-	
 
 	$.ajax({
 
@@ -4196,7 +4156,6 @@ $('input[name="EVALUACION_TRABAJADOR"]').change(function () {
 		$("#TALLA_FRE").val('');
 		$("#TIEMPO_EMPRESA_FRE").val('');
 		$("#ANTIGUEDAD_CATEOGORIA_FRE").val('');
-
 
 	}
 });
@@ -4376,9 +4335,7 @@ function pintarActividadesfre(json, idHidden = 'JSON_ACTIVIDADES') {
 
         let htmlActividad = `
         <div class="actividad-item" id="actividad_${num}">
-
             <div class="actividad-card">
-
                 <div class="d-flex justify-content-between mb-2">
                     <strong>Actividad ${num}</strong>
                     <button type="button" class="btn btn-danger btn-sm" onclick="eliminarActividad(this)"> <i class="fa fa-trash"></i></button>
@@ -4408,7 +4365,6 @@ function pintarActividadesfre(json, idHidden = 'JSON_ACTIVIDADES') {
 
                 let htmlTarea = `
                 <div class="tarea-item">
-
                     <div class="d-flex justify-content-between">
                         <small>Tarea ${numT}</small>
                         <button type="button" class="btn btn-danger btn-sm" onclick="eliminarTarea(this)"><i class="fa fa-trash"></i></button>
@@ -4675,11 +4631,6 @@ function cargarEvaluacionFre(data) {
     $('#APLICA_LEY_SILLA').trigger('change');
     $('#APLICA_METODOS_ERGONOMICOS').trigger('change');
     
-
-    
-    
-
-
 
    let metodoGuardadas = data.CAT_METODOS_FRE;
 
@@ -4980,7 +4931,6 @@ function cargarEvaluacionFre(data) {
     const valorMediano = data.RAPP_RUEDAS_A1_MEDIANO || "";
     const valorGrande = data.RAPP_RUEDAS_A1_GRANDE || "";
 
-    // Restaurar los tres valores sin disparar eventos change
     $("#RAPP_RUEDAS_A1_PEQUENO").val(valorPequeno);
     $("#RAPP_RUEDAS_A1_MEDIANO").val(valorMediano);
     $("#RAPP_RUEDAS_A1_GRANDE").val(valorGrande);
@@ -5032,29 +4982,7 @@ function cargarEvaluacionFre(data) {
 
     $("#RAPP_SIN_RUEDAS_RESULTADO_GENERAL").text(data.RAPP_SIN_RUEDAS_RESULTADO_GENERAL);
 
-
-    // setTimeout(function () {
-
-    //     const contenedorRAPP = document.getElementById("contenedorMetodoRAPP");
-
-    //     if (!contenedorRAPP) {
-    //         return;
-    //     }
-
-    //     contenedorRAPP.querySelectorAll("select").forEach(function (elemento) {
-
-    //         elemento.dispatchEvent(
-    //             new Event("change", {
-    //                 bubbles: true
-    //             })
-    //         );
-
-    //     });
-
-    // }, 150);
     
-
-
     setTimeout(function () {
         const contenedorRAPP = document.getElementById("contenedorMetodoRAPP");
 
@@ -5149,16 +5077,10 @@ function pintarFuentesTermicas(json) {
             <tr>
 
                 <td>
-                    <textarea class="form-control"
-                              name="fuentes_termicas[]"
-                              rows="2">${item.fuente ?? ''}</textarea>
+                    <textarea class="form-control" name="fuentes_termicas[]" rows="2">${item.fuente ?? ''}</textarea>
                 </td>
-
                 <td class="text-center">
-                    <button type="button"
-                            class="btn btn-danger eliminarFuenteTermica">
-                        <i class="fa fa-trash"></i>
-                    </button>
+                    <button type="button" class="btn btn-danger eliminarFuenteTermica"><i class="fa fa-trash"></i></button>
                 </td>
 
             </tr>
@@ -5184,16 +5106,10 @@ function pintarFuentesRuido(json) {
             <tr>
 
                 <td>
-                    <textarea class="form-control"
-                              name="fuentes_ruido[]"
-                              rows="2">${item.fuente ?? ''}</textarea>
+                    <textarea class="form-control" name="fuentes_ruido[]" rows="2">${item.fuente ?? ''}</textarea>
                 </td>
-
                 <td class="text-center">
-                    <button type="button"
-                            class="btn btn-danger eliminarFuenteRuido">
-                        <i class="fa fa-trash"></i>
-                    </button>
+                    <button type="button" class="btn btn-danger eliminarFuenteRuido"><i class="fa fa-trash"></i></button>
                 </td>
 
             </tr>
@@ -5219,16 +5135,10 @@ function pintarFuentesVibracion(json) {
             <tr>
 
                 <td>
-                    <textarea class="form-control"
-                              name="fuentes_vibracion[]"
-                              rows="2">${item.fuente ?? ''}</textarea>
+                    <textarea class="form-control" name="fuentes_vibracion[]" rows="2">${item.fuente ?? ''}</textarea>
                 </td>
-
                 <td class="text-center">
-                    <button type="button"
-                            class="btn btn-danger eliminarFuenteVibracion">
-                        <i class="fa fa-trash"></i>
-                    </button>
+                    <button type="button" class="btn btn-danger eliminarFuenteVibracion"><i class="fa fa-trash"></i></button>
                 </td>
 
             </tr>
@@ -5257,15 +5167,11 @@ function pintarEPP(jsonEPP) {
 
         let fila = $('#tablaEPP tbody tr').eq(index);
 
-        fila.find('.region_anatomica_epp')
-            .val(item.region)
-            .trigger('change');
+        fila.find('.region_anatomica_epp').val(item.region).trigger('change');
 
         setTimeout(function () {
 
-            fila.find('.clave_epp')
-                .val(item.clave)
-                .trigger('change');
+            fila.find('.clave_epp').val(item.clave).trigger('change');
 
         }, 100);
 
@@ -5377,9 +5283,6 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
         
     $('#ROSA_DATOS_JSON').val('')
     $('#RULA_DATOS_JSON').val('')
-
-
-
 
     // MAC
     $('#fichaMACTareasEquipo .mac-eq-seleccionado').removeClass('mac-eq-seleccionado');
@@ -5509,8 +5412,6 @@ $('#modal_evalfre').on('hidden.bs.modal', function (e) {
         'border-color': ''
     });
 
-
-    // ==================== SELECTORES PRINCIPALES MAC Y RAPP ====================
 
     $('#MAC_TAREAS_EQUIPO, #MAC_LEVANTAMIENTO_INDIVIDUAL, #MAC_TRANSPORTE_CARGA').val('');
     $('#RAPP_CON_RUEDAS, #RAPP_SIN_RUEDAS').val('');
@@ -5644,40 +5545,19 @@ $(document).on('click', '#agregarFilaEquipo', function () {
             </td>
 
             <td>
-                <textarea
-                    class="form-control"
-                    name="nombre_equipo[]"
-                    rows="2"></textarea>
+                <textarea class="form-control" name="nombre_equipo[]" rows="2"></textarea>
             </td>
-
             <td>
-                <textarea
-                    class="form-control"
-                    name="caracteristicas_equipo[]"
-                    rows="2"></textarea>
+                <textarea class="form-control" name="caracteristicas_equipo[]" rows="2"></textarea>
             </td>
-
             <td>
-                <textarea
-                    class="form-control"
-                    name="peso_equipo[]"
-                    rows="2"></textarea>
+                <textarea class="form-control" name="peso_equipo[]" rows="2"></textarea>
             </td>
-
             <td>
-                <textarea
-                    class="form-control"
-                    name="metodo_equipo[]"
-                    rows="2"></textarea>
+                <textarea class="form-control" name="metodo_equipo[]" rows="2"></textarea>
             </td>
-
             <td class="text-center">
-                <button
-                    type="button"
-                    class="btn btn-danger btn-sm eliminarFilaEquipo">
-                    <i class="fa fa-trash"></i>
-                    
-                </button>
+                <button type="button" class="btn btn-danger btn-sm eliminarFilaEquipo"> <i class="fa fa-trash"></i></button>
             </td>
         </tr>
     `;
@@ -5751,10 +5631,7 @@ $(document).on('click', '.btnMicrofono', function () {
         grabando = false;
         recognition.stop();
 
-        $('.btnMicrofono')
-            .removeClass('btn-danger')
-            .addClass('btn-primary')
-            .html('<i class="fa fa-microphone"></i>');
+        $('.btnMicrofono').removeClass('btn-danger').addClass('btn-primary').html('<i class="fa fa-microphone"></i>');
 
         return;
     }
@@ -5764,16 +5641,8 @@ $(document).on('click', '.btnMicrofono', function () {
 
     grabando = true;
 
-    $('.btnMicrofono')
-        .removeClass('btn-danger')
-        .addClass('btn-primary')
-        .html('<i class="fa fa-microphone"></i>');
-
-    botonActivo
-        .removeClass('btn-primary')
-        .addClass('btn-danger')
-        .html('⏹');
-
+    $('.btnMicrofono').removeClass('btn-danger').addClass('btn-primary').html('<i class="fa fa-microphone"></i>');
+    botonActivo.removeClass('btn-primary').addClass('btn-danger').html('⏹');
     recognition.start();
 });
 
@@ -5784,16 +5653,10 @@ $(document).on('click', '#agregarFuenteTermica', function () {
     let fila = `
         <tr>
             <td>
-                <textarea class="form-control"
-                          name="fuentes_termicas[]"
-                          rows="2"></textarea>
+                <textarea class="form-control" name="fuentes_termicas[]" rows="2"></textarea>
             </td>
-
             <td class="text-center">
-                <button type="button"
-                        class="btn btn-danger eliminarFuenteTermica">
-                    <i class="fa fa-trash"></i>
-                </button>
+                <button type="button" class="btn btn-danger eliminarFuenteTermica"> <i class="fa fa-trash"></i></button>
             </td>
         </tr>
     `;
@@ -5813,16 +5676,10 @@ $(document).on('click', '#agregarFuenteRuido', function () {
     let fila = `
         <tr>
             <td>
-                <textarea class="form-control"
-                          name="fuentes_ruido[]"
-                          rows="2"></textarea>
+                <textarea class="form-control" name="fuentes_ruido[]" rows="2"></textarea>
             </td>
-
             <td class="text-center">
-                <button type="button"
-                        class="btn btn-danger eliminarFuenteRuido">
-                    <i class="fa fa-trash"></i>
-                </button>
+                <button type="button" class="btn btn-danger eliminarFuenteRuido"><i class="fa fa-trash"></i></button>
             </td>
         </tr>
     `;
@@ -5842,16 +5699,11 @@ $(document).on('click', '#agregarFuenteVibracion', function () {
     let fila = `
         <tr>
             <td>
-                <textarea class="form-control"
-                          name="fuentes_vibracion[]"
-                          rows="2"></textarea>
+                <textarea class="form-control" name="fuentes_vibracion[]" rows="2"></textarea>
             </td>
 
             <td class="text-center">
-                <button type="button"
-                        class="btn btn-danger eliminarFuenteVibracion">
-                   <i class="fa fa-trash"></i>
-                </button>
+                <button type="button" class="btn btn-danger eliminarFuenteVibracion"><i class="fa fa-trash"></i></button>
             </td>
         </tr>
     `;
@@ -6006,18 +5858,13 @@ $('input[name="COLUMNA_LUMBAR_P4"]').change(function () {
 
 function habilitarBloqueCuello(selector, habilitar) {
 
-    $(selector)
-        .find('input')
-        .prop('disabled', !habilitar);
+    $(selector).find('input').prop('disabled', !habilitar);
 
     if (!habilitar) {
 
-        $(selector)
-            .find('input')
-            .prop('checked', false);
+        $(selector).find('input').prop('checked', false);
 
     }
-
 }
 
 //-------------------------------------
@@ -6075,15 +5922,11 @@ $('input[name="CUELLO_P4"]').change(function () {
 
 function habilitarBloqueHombro(selector, habilitar) {
 
-    $(selector)
-        .find('input')
-        .prop('disabled', !habilitar);
+    $(selector).find('input').prop('disabled', !habilitar);
 
     if (!habilitar) {
 
-        $(selector)
-            .find('input')
-            .prop('checked', false);
+        $(selector).find('input').prop('checked', false);
 
     }
 
@@ -6195,8 +6038,7 @@ $(document).on('click', '#agregarEPP', function () {
                 <textarea class="form-control tipo_riesgo_epp" rows="2" readonly></textarea>
             </td>
             <td class="text-center">
-                <button type="button" class="btn btn-danger eliminarFilaEPP"> <i class="fa fa-trash"></i>
-                </button>
+                <button type="button" class="btn btn-danger eliminarFilaEPP"> <i class="fa fa-trash"></i></button>
             </td>
         </tr>
         `;
@@ -6263,19 +6105,14 @@ function generarJSONEPP() {
     $('#tablaEPP tbody tr').each(function () {
 
         let region = $(this).find('.region_anatomica_epp').val();
-
         let clave = $(this).find('.clave_epp').val();
-
         let tipo = $(this).find('.tipo_riesgo_epp').val();
-
         if (region != "" || clave != "") {
 
             datos.push({
-
                 region: region,
                 clave: clave,
                 tipo: tipo
-
             });
 
         }
@@ -6424,15 +6261,15 @@ $("#boton_guardar_fre").click(function (e) {
     extras: []
 };
 
-$('#contenedorMetodoRULA .rula-extra:checked').each(function () {
+        $('#contenedorMetodoRULA .rula-extra:checked').each(function () {
 
-    datosRULA.extras.push({
-        apartado: $(this).data('apartado'),
-        valor: parseInt($(this).val(), 10),
-        texto: $(this).data('texto')
-    });
+            datosRULA.extras.push({
+                apartado: $(this).data('apartado'),
+                valor: parseInt($(this).val(), 10),
+                texto: $(this).data('texto')
+            });
 
-});
+        });
 
         $('#RULA_DATOS_JSON').val(JSON.stringify(datosRULA));
         
@@ -7432,8 +7269,7 @@ function cargarDatosInformesFreErgo()
                 }
                 else {
 
-                    $('#RUTA_IMAGEN_PORTADA')
-                        .attr('data-default-file', imagenUrl);
+                    $('#RUTA_IMAGEN_PORTADA').attr('data-default-file', imagenUrl);
 
                     $('#RUTA_IMAGEN_PORTADA').dropify({
 
@@ -7492,9 +7328,7 @@ $("#form_informe_portada").on("submit", function(e)
 
             $("#botonguardar_reporte_portada").prop('disabled', true);
 
-            $("#botonguardar_reporte_portada").html(
-                'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-            );
+            $("#botonguardar_reporte_portada").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
 
         },
 
@@ -7659,7 +7493,6 @@ function cargarDatosGeneralesInformeFre()
         function(response)
         {
 
-        
 
             if(response.msj){
 
@@ -7698,9 +7531,6 @@ function cargarDatosGeneralesInformeFre()
 
             }
 
-
-
-
             
           if (response.INFORME_OBJETIVOGENERALES &&
                 response.INFORME_OBJETIVOGENERALES.trim() != '') {
@@ -7709,8 +7539,6 @@ function cargarDatosGeneralesInformeFre()
                 $('#INFORME_OBJETIVOGENERALES')
                     .val(`Evaluar los factores de riesgo ergonómico de las actividades o tareas laborales que impliquen postura, movimientos repetitivos, manipulación manual de cargas y fuerza manual, mediante el análisis biomecánico y la aplicación de métodos ergonómicos para la evaluación de la carga física, con el fin de prevenir los trastornos músculo esqueléticos de origen laboral.Evaluar los factores de riesgo ergonómicos de las actividades laborales que impliquen postura, movimientos repetitivos, manipulación manual de cargas y fuerza manual, mediante el análisis biomecánico y aplicación de métodos de carga física para la prevención de trastornos músculo esqueléticos de origen laboral.`);
             }
-
-
 
             if (response.INFORME_OBJETIVOSESPECIFICOS &&
                 response.INFORME_OBJETIVOSESPECIFICOS.trim() != '') {
@@ -7726,10 +7554,6 @@ function cargarDatosGeneralesInformeFre()
 •	Generar recomendaciones o medidas de intervención derivadas de la cuantificación del riesgo ergonómico para mitigar la probabilidad de ocurrencia de los Trastornos Músculo Esqueléticos (TME) de origen laboral.`);
 
             }
-            
-            
-
-
 
             if (response.INFORME_RECONOCIMIENTO &&
                 response.INFORME_RECONOCIMIENTO.trim() != '') {
@@ -7749,11 +7573,6 @@ function cargarDatosGeneralesInformeFre()
 
             }
 
-
-
-
-
-
             
             $('#INFORME_ANALISISRECONOCIMIENTO').val(response.INFORME_ANALISISRECONOCIMIENTO);
 
@@ -7771,8 +7590,6 @@ function cargarDatosGeneralesInformeFre()
                 $('#INFORME_ACTIVIDADPRINCIPAL').val(`DESCRIPCIONACTIVIDAD`);
             }
 		
-
-
 	        $('#INFORME_ANTROPOMETRICAS').val(response.INFORME_ANTROPOMETRICAS);
 
             $('#OBSERVACIONES_ESQUELETICAS1').val(response.OBSERVACIONES_ESQUELETICAS1);
@@ -9222,9 +9039,7 @@ $('#SELECT_CONCLUSION').on('change', function () {
 });
 
 
-$("#form_informe_conclusiones").on(
-    "submit",
-    function(e)
+$("#form_informe_conclusiones").on("submit",function(e)
 {
     e.preventDefault();
 
@@ -9273,12 +9088,7 @@ $("#form_informe_conclusiones").on(
     });
 
 
-    ///// RECOMENDACIONES
-
-
-
-
-///// RECOMENDACIONES /////
+///// RECOMENDACIONES
 
 // ACTIVAR O DESACTIVAR RECOMENDACION DEL CATALOGO
 
@@ -9312,22 +9122,14 @@ $('#agregar_recomendacion_manual').off('click').on('click', function () {
             </td>
 
             <td>
-                <textarea
-                    class="form-control descripcion-recomendacion"
-                    rows="3"
-                    placeholder="Escribe la recomendación..."
-                    required></textarea>
+                <textarea class="form-control descripcion-recomendacion" rows="3" placeholder="Escribe la recomendación..."required></textarea>
             </td>
-
             <td class="text-center">
                 <span class="badge badge-success">Nueva</span>
             </td>
 
             <td class="text-center">
-                <button type="button"
-                        class="btn btn-danger btn-sm eliminar-recomendacion">
-                    <i class="fa fa-trash"></i>
-                </button>
+                <button type="button" class="btn btn-danger btn-sm eliminar-recomendacion"><i class="fa fa-trash"></i></button>
             </td>
 
         </tr>
@@ -9452,9 +9254,7 @@ $("#form_informe_listarecomendaciones").off("submit").on("submit", function(e) {
 
             $("#botonguardar_reporte_recomendaciones").prop('disabled', true);
 
-            $("#botonguardar_reporte_recomendaciones").html(
-                'Guardando... <i class="fa fa-spinner fa-spin"></i>'
-            );
+            $("#botonguardar_reporte_recomendaciones").html('Guardando... <i class="fa fa-spinner fa-spin"></i>');
 
         },
 
@@ -9546,9 +9346,7 @@ function cargarRecomendacionesInformeFreErgo() {
 
                         fila.find('.recomendacion_checkbox').prop('checked', true);
 
-                        fila.find('.descripcion-recomendacion')
-                            .val(descripcion)
-                            .prop('disabled', false);
+                        fila.find('.descripcion-recomendacion').val(descripcion).prop('disabled', false);
 
                     }
 
@@ -9574,22 +9372,13 @@ function cargarRecomendacionesInformeFreErgo() {
                             </td>
 
                             <td>
-                                <textarea
-                                    class="form-control descripcion-recomendacion"
-                                    rows="3"
-                                    placeholder="Escribe la recomendación..."
-                                    required>${descripcionSegura}</textarea>
+                                <textarea class="form-control descripcion-recomendacion" rows="3" placeholder="Escribe la recomendación..." required>${descripcionSegura}</textarea>
                             </td>
-
                             <td class="text-center">
                                 <span class="badge badge-success">Nueva</span>
                             </td>
-
                             <td class="text-center">
-                                <button type="button"
-                                        class="btn btn-danger btn-sm eliminar-recomendacion">
-                                    <i class="fa fa-trash"></i>
-                                </button>
+                                <button type="button" class="btn btn-danger btn-sm eliminar-recomendacion"><i class="fa fa-trash"></i></button>
                             </td>
 
                         </tr>
@@ -9988,9 +9777,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /// ROSA
 
-
-
-
 (function () {
     const contenedor = document.getElementById('contenedorMetodoROSA');
 
@@ -10282,11 +10068,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        /*
-         * A. SILLA
-         * Se suman los valores requeridos de los selectores
-         * y únicamente los adicionales seleccionados.
-         */
         const asiento = Math.max(
             2,
             Math.min(
@@ -10328,9 +10109,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         marcarCelda('ROSA_MATRIZ_A', asiento, respaldo);
 
-        /*
-         * B. TELÉFONO Y PANTALLA
-         */
         const telefono = Math.max(
             0,
             Math.min(
@@ -10365,9 +10143,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         marcarCelda('ROSA_MATRIZ_B', telefono, pantalla);
 
-        /*
-         * C. RATÓN Y TECLADO
-         */
         const raton = Math.max(
             0,
             Math.min(
@@ -10402,9 +10177,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         marcarCelda('ROSA_MATRIZ_C', raton, teclado);
 
-        /*
-         * D. COMBINACIÓN DE B Y C
-         */
         const resultadoD = buscarMatriz(
             matrices.D,
             resultadoB,
@@ -10419,9 +10191,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         marcarCelda('ROSA_MATRIZ_D', resultadoB, resultadoC);
 
-        /*
-         * E. RESULTADO FINAL
-         */
         const resultadoFinal = buscarMatriz(
             matrices.E,
             resultadoA,
@@ -11017,8 +10786,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     contenedor.dataset.rebaInicializado = "1";
 
-   
-
     const matrizA = [
         [
             [1, 2, 3, 4],
@@ -11047,8 +10814,6 @@ document.addEventListener('DOMContentLoaded', function () {
         ]
     ];
 
-
-
     const matrizB = [
         [[1, 2, 2], [1, 2, 3]],
         [[1, 2, 3], [2, 3, 4]],
@@ -11057,8 +10822,6 @@ document.addEventListener('DOMContentLoaded', function () {
         [[6, 7, 8], [7, 8, 8]],
         [[7, 8, 8], [8, 9, 9]]
     ];
-
-    
 
     const matrizC = [
         [1, 1, 1, 2, 3, 3, 4, 5, 6, 7, 7, 7],
@@ -11074,8 +10837,6 @@ document.addEventListener('DOMContentLoaded', function () {
         [11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12],
         [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
     ];
-
-
 
     function generarTablaA() {
 
@@ -11134,7 +10895,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         tabla.innerHTML = html + "</tbody>";
     }
-
 
 
     function generarTablaB() {
@@ -11287,8 +11047,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return 0;
     }
 
-
-
     function calcularActividadREBA() {
 
         const seleccion = document.getElementById("REBA_ACTIVIDAD_MUSCULAR").value;
@@ -11304,7 +11062,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return 0;
     }
 
-
     function mostrar(id, resultado) {
 
         const elemento = document.getElementById(id);
@@ -11314,7 +11071,6 @@ document.addEventListener('DOMContentLoaded', function () {
         elemento.textContent =
             resultado === null ? "—" : resultado;
     }
-
 
 
     function limpiarResultados() {
@@ -13776,9 +13532,6 @@ $('#modal_angulos').on('hidden.bs.modal', function (e) {
 })
 
 
-
-
-
 var actividadesFreAngulos = [];
 
 function cargarActividadesFreAngulos(callback = null) {
@@ -13924,8 +13677,6 @@ $("#boton_nuevo_angulos").click(function (e) {
     $("#modal_angulos").modal("show");
 
 });
-
-
 
 
 $("#boton_guardar_angulo").click(function (e) {
@@ -14117,11 +13868,6 @@ function seleccionarActividadTareaGuardada(actividadGuardada, tareaGuardada) {
     $('#TAREA_ANGULO').val(String(indiceTarea));
 
 }
-
-
-
-
-
 
 $('#tabla_angulos_fre tbody').on('click', 'td.Editar', function () {
     var tr = $(this).closest('tr');
@@ -14905,10 +14651,6 @@ async function descargarMetodoOWAS() {
     }
 }
 
-
-
-
-
 async function descargarMetodoROSA() {
 
     Swal.fire({
@@ -14995,9 +14737,6 @@ async function descargarMetodoROSA() {
 
 
 }
-
-
-
 
 async function descargarMetodoRULA() {
 
@@ -15086,9 +14825,6 @@ async function descargarMetodoRULA() {
     
 }
 
-
-
-
 async function descargarMetodoREBA() {
 
     Swal.fire({
@@ -15175,9 +14911,6 @@ async function descargarMetodoREBA() {
 
     
 }
-
-
-
 
 async function descargarMetodoMACEQUIPOS() {
 
@@ -15269,7 +15002,7 @@ async function descargarMetodoMACEQUIPOS() {
 async function descargarMetodoMACIndividual() {
 
     Swal.fire({
-        title: 'Generando ficha REBA...',
+        title: 'Generando ficha ...',
         html: 'Preparando el documento PDF.',
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -15353,13 +15086,10 @@ async function descargarMetodoMACIndividual() {
     
 }
 
-
-
-
 async function descargarMetodoMACTransporte() {
 
     Swal.fire({
-        title: 'Generando ficha REBA...',
+        title: 'Generando ficha ...',
         html: 'Preparando el documento PDF.',
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -15443,13 +15173,8 @@ async function descargarMetodoMACTransporte() {
     
 }
 
-
-
-
-
 $(document).on('click', '#boton_reporte_metodos', function () {
 
-    // recsensorial contiene el RECO_ID del reconocimiento.
     var recoId = recsensorial;
 
     if (!recoId || parseInt(recoId, 10) <= 0) {
@@ -15516,3 +15241,177 @@ $(document).on('click', '#boton_reporte_metodos', function () {
         boton.html(textoOriginal);
     });
 });
+
+async function descargarMetodoRAPPConRuedas() {
+
+    Swal.fire({
+        title: 'Generando ficha ...',
+        html: 'Preparando el documento PDF.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
+        }
+    });
+
+    let form = null;
+
+    try {
+
+        if (!window.fre_id) {
+            throw new Error(
+                'No se encontró el identificador de la evaluación FRE.'
+            );
+        }
+
+        const metaToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
+
+        if (!metaToken) {
+            throw new Error(
+                'No se encontró el token CSRF de Laravel.'
+            );
+        }
+
+        form = document.createElement('form');
+
+        form.method = 'POST';
+        form.action = '/descargarMetodoRAPPConRuedas';
+        form.target = '_blank';
+
+        const inputToken = document.createElement('input');
+
+        inputToken.type = 'hidden';
+        inputToken.name = '_token';
+        inputToken.value = metaToken.content;
+
+        form.appendChild(inputToken);
+
+        const inputFreId = document.createElement('input');
+
+        inputFreId.type = 'hidden';
+        inputFreId.name = 'fre_id';
+        inputFreId.value = window.fre_id;
+
+        form.appendChild(inputFreId);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+        Swal.close();
+
+    } catch (error) {
+
+        console.error(
+            'Error al descargar el PDF OWAS:',
+            error
+        );
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al generar el PDF',
+            text: error.message || 'Ocurrió un problema al preparar el documento.'
+        });
+
+    } finally {
+
+        if (form) {
+            setTimeout(function () {
+                form.remove();
+            }, 5000);
+        }
+    }
+
+
+    
+}
+
+async function descargarMetodoRAPPSinRuedas() {
+
+    Swal.fire({
+        title: 'Generando ficha ...',
+        html: 'Preparando el documento PDF.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: function () {
+            Swal.showLoading();
+        }
+    });
+
+    let form = null;
+
+    try {
+
+        if (!window.fre_id) {
+            throw new Error(
+                'No se encontró el identificador de la evaluación FRE.'
+            );
+        }
+
+        const metaToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        );
+
+        if (!metaToken) {
+            throw new Error(
+                'No se encontró el token CSRF de Laravel.'
+            );
+        }
+
+        form = document.createElement('form');
+
+        form.method = 'POST';
+        form.action = '/descargarMetodoRAPPSinRuedas';
+        form.target = '_blank';
+
+        const inputToken = document.createElement('input');
+
+        inputToken.type = 'hidden';
+        inputToken.name = '_token';
+        inputToken.value = metaToken.content;
+
+        form.appendChild(inputToken);
+
+        const inputFreId = document.createElement('input');
+
+        inputFreId.type = 'hidden';
+        inputFreId.name = 'fre_id';
+        inputFreId.value = window.fre_id;
+
+        form.appendChild(inputFreId);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+        Swal.close();
+
+    } catch (error) {
+
+        console.error(
+            'Error al descargar el PDF OWAS:',
+            error
+        );
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al generar el PDF',
+            text: error.message || 'Ocurrió un problema al preparar el documento.'
+        });
+
+    } finally {
+
+        if (form) {
+            setTimeout(function () {
+                form.remove();
+            }, 5000);
+        }
+    }
+
+
+    
+}

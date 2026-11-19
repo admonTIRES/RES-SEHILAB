@@ -2531,6 +2531,9 @@ Route::post('descargarMetodoREBA', 'ERGO\evaluacionfreController@descargarMetodo
 Route::post('descargarMetodoMACEQUIPOS', 'ERGO\evaluacionfreController@descargarMetodoMACEQUIPOS');
 Route::post('descargarMetodoMACIndividual', 'ERGO\evaluacionfreController@descargarMetodoMACIndividual');
 Route::post('descargarMetodoMACTransporte', 'ERGO\evaluacionfreController@descargarMetodoMACTransporte');
+Route::post('descargarMetodoRAPPConRuedas', 'ERGO\evaluacionfreController@descargarMetodoRAPPConRuedas');
+Route::post('descargarMetodoRAPPSinRuedas', 'ERGO\evaluacionfreController@descargarMetodoRAPPSinRuedas');
+
 
 
 

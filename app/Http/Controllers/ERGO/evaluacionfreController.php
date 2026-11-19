@@ -12579,6 +12579,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
 
 
 
+
     public function reporteMetodosFreZip($RECO_ID)
     {
         $carpetaTemp = storage_path('app/temp/metodos_fre_' . uniqid());
@@ -17107,6 +17108,15 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                 }
             };
 
+            // Fichas RAPP: se generan de forma independiente según el selector de cada ficha.
+            $generadores['8'] = function (Request $request) {
+                return $this->descargarMetodoRAPPConRuedas($request);
+            };
+
+            $generadores['9'] = function (Request $request) {
+                return $this->descargarMetodoRAPPSinRuedas($request);
+            };
+
             foreach ($evaluaciones as $evaluacion) {
                 $metodosOriginal = $evaluacion->CAT_METODOS_FRE ?? [];
 
@@ -17134,7 +17144,7 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                 $metodos = array_values(array_unique(array_filter(array_map(function ($valor) {
                     return (int) trim((string) $valor);
                 }, $metodosOriginal), function ($valor) {
-                    return in_array($valor, [1, 2, 3, 4, 5], true);
+                    return in_array($valor, [1, 2, 3, 4, 5, 6], true);
                 })));
                 $freId = (int) $evaluacion->ID_EVALUACION_FRE;
                 $nombreEmpleado = trim((string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? 'SIN NOMBRE REGISTRADO'));
@@ -17157,6 +17167,15 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                     }
                     if (strtoupper(trim((string) ($evaluacion->MAC_TRANSPORTE_CARGA ?? ''))) === 'SI') {
                         $pendientes[] = ['7', 'MAC - Transporte de carga'];
+                    }
+                }
+
+                if (in_array(6, $metodos, true)) {
+                    if (strtoupper(trim((string) ($evaluacion->RAPP_CON_RUEDAS ?? ''))) === 'SI') {
+                        $pendientes[] = ['8', 'RAPP - Empujar o traccionar cargas con ruedas'];
+                    }
+                    if (strtoupper(trim((string) ($evaluacion->RAPP_SIN_RUEDAS ?? ''))) === 'SI') {
+                        $pendientes[] = ['9', 'RAPP - Empujar o traccionar cargas sin ruedas'];
                     }
                 }
 
@@ -17243,6 +17262,585 @@ Los resultados permiten determinar las condiciones de riesgo, comparar tareas y 
                 'linea' => $e->getLine()
             ]);
             return response()->json(['message' => 'Ocurrió un error al generar el ZIP.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+
+    public function descargarMetodoRAPPConRuedas(Request $request)
+    {
+        try {
+            $request->validate([
+                'fre_id' => 'required|integer'
+            ]);
+
+            $freId = (int) $request->fre_id;
+
+            $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                ->leftJoin(
+                    'recoergo_fichastecnicas as ficha',
+                    'ficha.ID_FICHAS_TECNICAS',
+                    '=',
+                    'evaluacion.FICHA_ID'
+                )
+                ->leftJoin(
+                    'recoergocategorias as categoria',
+                    'categoria.ID_CATEGORIA_ERGO',
+                    '=',
+                    'ficha.CATEGORIA_ID_FICHA'
+                )
+                ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                ->select('evaluacion.*', 'categoria.NOMBRE_CATEGORIA_ERGO')
+                ->first();
+
+            if (!$evaluacion) {
+                return response()->json([
+                    'message' => 'No se encontró la evaluación FRE.'
+                ], 404);
+            }
+
+            $metodos = $evaluacion->CAT_METODOS_FRE ?? [];
+            if (is_string($metodos)) {
+                $decodificado = json_decode($metodos, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decodificado)) {
+                    $metodos = $decodificado;
+                } else {
+                    preg_match_all('/(?<![0-9])[1-6](?![0-9])/', $metodos, $coincidencias);
+                    $metodos = $coincidencias[0] ?? [];
+                }
+            }
+            $metodos = array_map('strval', (array) $metodos);
+
+            if (!in_array('6', $metodos, true)) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene seleccionado el método RAPP.'
+                ], 422);
+            }
+
+            if (strtoupper(trim((string) ($evaluacion->RAPP_CON_RUEDAS ?? ''))) !== 'SI') {
+                return response()->json([
+                    'message' => 'La ficha RAPP con ruedas no está seleccionada.'
+                ], 422);
+            }
+
+            $camposRAPP = [
+                'RAPP_RUEDAS_A2_POSTURA',
+                'RAPP_RUEDAS_A3_AGARRE',
+                'RAPP_RUEDAS_A4_SISTEMA_TRABAJO',
+                'RAPP_RUEDAS_A5_DISTANCIA',
+                'RAPP_RUEDAS_A6_CONDICIONES_EQUIPO',
+                'RAPP_RUEDAS_A7_SUPERFICIE_PISO',
+                'RAPP_RUEDAS_A8_OBSTACULOS',
+                'RAPP_RUEDAS_A9_OTROS_FACTORES',
+                'RAPP_RUEDAS_ANALISIS_RESULTADOS'
+            ];
+
+            foreach ($camposRAPP as $campo) {
+                if (trim((string) ($evaluacion->$campo ?? '')) === '') {
+                    return response()->json([
+                        'message' => 'Falta completar el campo ' . $campo . ' del método RAPP con ruedas.'
+                    ], 422);
+                }
+            }
+
+            $equiposA1 = [
+                'PEQUENO' => trim((string) $evaluacion->RAPP_RUEDAS_A1_PEQUENO),
+                'MEDIANO' => trim((string) $evaluacion->RAPP_RUEDAS_A1_MEDIANO),
+                'GRANDE' => trim((string) $evaluacion->RAPP_RUEDAS_A1_GRANDE)
+            ];
+
+            $equiposSeleccionados = array_filter($equiposA1, function ($valor) {
+                return $valor !== '';
+            });
+
+            if (count($equiposSeleccionados) !== 1) {
+                return response()->json([
+                    'message' => 'Debe seleccionar solamente un tipo de equipo en A-1 (pequeño, mediano o grande).'
+                ], 422);
+            }
+
+            $equipo = array_key_first($equiposSeleccionados);
+            $selecciones = [
+                'A1' => $equiposSeleccionados[$equipo],
+                'A2' => trim((string) $evaluacion->RAPP_RUEDAS_A2_POSTURA),
+                'A3' => trim((string) $evaluacion->RAPP_RUEDAS_A3_AGARRE),
+                'A4' => trim((string) $evaluacion->RAPP_RUEDAS_A4_SISTEMA_TRABAJO),
+                'A5' => trim((string) $evaluacion->RAPP_RUEDAS_A5_DISTANCIA),
+                'A6' => trim((string) $evaluacion->RAPP_RUEDAS_A6_CONDICIONES_EQUIPO),
+                'A7' => trim((string) $evaluacion->RAPP_RUEDAS_A7_SUPERFICIE_PISO),
+                'A8' => trim((string) $evaluacion->RAPP_RUEDAS_A8_OBSTACULOS),
+                'A9' => trim((string) $evaluacion->RAPP_RUEDAS_A9_OTROS_FACTORES)
+            ];
+
+            $resultadoSeleccion = [];
+            $total = 0;
+            $inaceptable = false;
+
+            foreach ($selecciones as $apartado => $valorGuardado) {
+                $partes = explode('|', $valorGuardado);
+                if (count($partes) !== 2) {
+                    return response()->json([
+                        'message' => 'El valor guardado en ' . $apartado . ' no tiene el formato esperado.'
+                    ], 422);
+                }
+
+                $banda = strtoupper(trim($partes[1]));
+                if (strtoupper(trim($partes[0])) === 'M' || $banda === 'M') {
+                    $resultadoSeleccion[$apartado] = [
+                        'puntaje' => null,
+                        'banda' => 'M',
+                        'inaceptable' => true
+                    ];
+                    $inaceptable = true;
+                    continue;
+                }
+
+                if (!is_numeric($partes[0])) {
+                    return response()->json([
+                        'message' => 'El puntaje guardado en ' . $apartado . ' no es válido.'
+                    ], 422);
+                }
+
+                $puntaje = (int) $partes[0];
+                $resultadoSeleccion[$apartado] = [
+                    'puntaje' => $puntaje,
+                    'banda' => $banda,
+                    'inaceptable' => false
+                ];
+                $total += $puntaje;
+            }
+
+            if ($inaceptable) {
+                $nivelRiesgo = 'Inaceptable M';
+                $prioridad = 'No continuar la evaluación hasta corregir la capacidad de carga del equipo.';
+                $rangoRiesgo = null;
+            } elseif ($total >= 0 && $total <= 4) {
+                $nivelRiesgo = 'Bajo – Aceptable';
+                $prioridad = 'No se requieren acciones correctivas';
+                $rangoRiesgo = 'BAJO';
+            } elseif ($total >= 5 && $total <= 12) {
+                $nivelRiesgo = 'Medio – Posible';
+                $prioridad = 'Se requieren acciones correctivas a corto plazo';
+                $rangoRiesgo = 'MEDIO';
+            } elseif ($total >= 13 && $total <= 20) {
+                $nivelRiesgo = 'Alto – Significativo';
+                $prioridad = 'Se requieren acciones correctivas pronto';
+                $rangoRiesgo = 'ALTO';
+            } else {
+                $nivelRiesgo = 'Muy Alto – Inaceptable';
+                $prioridad = 'Se requieren acciones correctivas inmediatamente';
+                $rangoRiesgo = 'MUY_ALTO';
+            }
+
+            $rutaPlantilla = storage_path(
+                'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_RAPP_Conruedas.pdf'
+            );
+
+            if (!file_exists($rutaPlantilla)) {
+                return response()->json([
+                    'message' => 'No se encontró la plantilla PDF del método RAPP con ruedas.'
+                ], 404);
+            }
+
+            $nombreEmpleado = trim((string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? 'SIN NOMBRE'));
+            $nombreCategoria = trim((string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? 'SIN CATEGORÍA'));
+
+            $convertirTexto = function ($texto) {
+                $convertido = @iconv('UTF-8', 'windows-1252//TRANSLIT', (string) $texto);
+                return $convertido !== false ? $convertido : utf8_decode((string) $texto);
+            };
+
+            $pdf = new \setasign\Fpdi\Fpdi();
+            $pdf->SetAutoPageBreak(false);
+
+            $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+            $escalaX = 1;
+            $escalaY = 1;
+
+            $texto = function ($x, $y, $ancho, $alto, $contenido, $tamano = 9, $estilo = 'B', $alineacion = 'L') use ($pdf, $convertirTexto, &$escalaX, &$escalaY) {
+                $pdf->SetFont('Arial', $estilo, $tamano);
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->SetXY($x * $escalaX, $y * $escalaY);
+                $pdf->Cell(
+                    $ancho * $escalaX,
+                    $alto * $escalaY,
+                    $convertirTexto($contenido),
+                    0,
+                    0,
+                    $alineacion
+                );
+            };
+
+            $mapa = [
+                'A1' => [
+                    'PEQUENO' => ['0|V' => [1, 558, 555, 149, 27], '2|A' => [1, 558, 582, 149, 27], '4|R' => [1, 558, 609, 149, 27], '8|R' => [1, 558, 636, 149, 27], 'M|M' => [1, 558, 663, 149, 91]],
+                    'MEDIANO' => ['0|V' => [1, 558, 797, 149, 27], '2|A' => [1, 558, 824, 149, 27], '4|R' => [1, 558, 851, 149, 27], '8|R' => [1, 558, 878, 149, 27], 'M|M' => [1, 558, 905, 149, 90]],
+                    'GRANDE' => ['0|V' => [2, 558, 153, 149, 27], '2|A' => [2, 558, 180, 149, 27], '4|R' => [2, 558, 207, 149, 27], '8|R' => [2, 558, 234, 149, 27], 'M|M' => [2, 558, 261, 149, 90]]
+                ],
+                'A2' => ['0|V' => [2, 49, 520, 223, 28], '3|A' => [2, 272, 520, 222, 28], '6|R' => [2, 494, 520, 222, 28]],
+                'A3' => ['0|V' => [3, 49, 193, 223, 28], '1|A' => [3, 272, 193, 222, 28], '2|R' => [3, 494, 193, 222, 28]],
+                'A4' => ['0|V' => [3, 49, 453, 223, 28], '1|A' => [3, 272, 453, 222, 28], '3|R' => [3, 494, 453, 222, 28]],
+                'A5' => ['0|V' => [3, 49, 713, 223, 28], '1|A' => [3, 272, 713, 222, 28], '3|R' => [3, 494, 713, 222, 28]],
+                'A6' => ['0|V' => [3, 49, 870, 223, 28], '2|A' => [3, 272, 870, 222, 28], '4|R' => [3, 494, 870, 222, 28]],
+                'A7' => ['0|V' => [4, 49, 195, 223, 28], '1|A' => [4, 272, 195, 222, 28], '4|R' => [4, 494, 195, 222, 28]],
+                'A8' => ['0|V' => [4, 49, 550, 223, 28], '2|A' => [4, 272, 550, 222, 28], '3|R' => [4, 494, 550, 222, 28]],
+                'A9' => ['0|V' => [4, 49, 870, 223, 28], '1|A' => [4, 272, 870, 222, 28], '2|R' => [4, 494, 870, 222, 28]]
+            ];
+
+            for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+                $plantilla = $pdf->importPage($pagina);
+                $tamano = $pdf->getTemplateSize($plantilla);
+                $pdf->AddPage($tamano['orientation'], [$tamano['width'], $tamano['height']]);
+                $pdf->useTemplate($plantilla);
+
+                $escalaX = $tamano['width'] / 768;
+                $escalaY = $tamano['height'] / 1024;
+
+
+                if ($pagina === 1) {
+                    $texto(185, 150, 470, 22, $nombreEmpleado, 10, 'B', 'L');
+                    $texto(140, 205, 470, 22, $nombreCategoria, 10, 'B', 'L');
+                }
+
+                // Dibuja rectángulos negros únicamente en las opciones seleccionadas en la BD.
+                foreach ($selecciones as $apartado => $valorSeleccionado) {
+                    if ($apartado === 'A1') {
+                        $coordenada = $mapa['A1'][$equipo][$valorSeleccionado] ?? null;
+                    } else {
+                        $coordenada = $mapa[$apartado][$valorSeleccionado] ?? null;
+                    }
+
+                    if ($coordenada && (int) $coordenada[0] === $pagina) {
+                        $pdf->SetDrawColor(0, 0, 0);
+                        $pdf->SetLineWidth(1.2);
+                        $pdf->Rect(
+                            $coordenada[1] * $escalaX,
+                            $coordenada[2] * $escalaY,
+                            $coordenada[3] * $escalaX,
+                            $coordenada[4] * $escalaY
+                        );
+                    }
+                }
+
+                // Dibuja el rectángulo negro del nivel de riesgo calculado con los datos de la BD.
+                if ($pagina === 5 && $rangoRiesgo !== null) {
+                    $filas = [
+                        'BAJO' => [60, 227, 638, 43],
+                        'MEDIO' => [60, 275, 638, 43],
+                        'ALTO' => [60, 320, 638, 43],
+                        'MUY_ALTO' => [60, 367, 638, 43]
+                    ];
+
+                    if (isset($filas[$rangoRiesgo])) {
+                        [$x, $y, $ancho, $alto] = $filas[$rangoRiesgo];
+                        $pdf->SetDrawColor(0, 0, 0);
+                        $pdf->SetLineWidth(1.2);
+                        $pdf->Rect(
+                            $x * $escalaX,
+                            $y * $escalaY,
+                            $ancho * $escalaX,
+                            $alto * $escalaY
+                        );
+                    }
+                }
+
+                if ($pagina === 5 && $inaceptable) {
+                    $texto(75, 170, 600, 30, 'Resultado A-1: M - Inaceptable. No continuar la evaluación.', 11, 'B', 'C');
+                }
+            }
+
+            $nombreArchivo = preg_replace('/[^A-Za-z0-9_-]+/', '_', $nombreEmpleado);
+            $pdf->SetTitle($convertirTexto('Método RAPP con ruedas'));
+            $pdf->SetAuthor($convertirTexto('Evaluación ergonómica'));
+
+            return response($pdf->Output('S'), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="' . $nombreArchivo . '_RAPP_Con_Ruedas.pdf"'
+            ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error(
+                'Error al generar PDF RAPP con ruedas: ' . $e->getMessage(),
+                [
+                    'fre_id' => $request->fre_id ?? null,
+                    'linea' => $e->getLine(),
+                    'archivo' => $e->getFile()
+                ]
+            );
+
+            return response()->json([
+                'message' => 'Ocurrió un error al generar el PDF del método RAPP con ruedas.'
+            ], 500);
+        }
+    }
+    public function descargarMetodoRAPPSinRuedas(Request $request)
+    {
+        try {
+            $request->validate([
+                'fre_id' => 'required|integer'
+            ]);
+
+            $freId = (int) $request->fre_id;
+
+            $evaluacion = DB::table('evaluacion_fre_ergo as evaluacion')
+                ->leftJoin(
+                    'recoergo_fichastecnicas as ficha',
+                    'ficha.ID_FICHAS_TECNICAS',
+                    '=',
+                    'evaluacion.FICHA_ID'
+                )
+                ->leftJoin(
+                    'recoergocategorias as categoria',
+                    'categoria.ID_CATEGORIA_ERGO',
+                    '=',
+                    'ficha.CATEGORIA_ID_FICHA'
+                )
+                ->where('evaluacion.ID_EVALUACION_FRE', $freId)
+                ->select('evaluacion.*', 'categoria.NOMBRE_CATEGORIA_ERGO')
+                ->first();
+
+            if (!$evaluacion) {
+                return response()->json([
+                    'message' => 'No se encontró la evaluación FRE.'
+                ], 404);
+            }
+
+            $metodos = $evaluacion->CAT_METODOS_FRE ?? [];
+            if (is_string($metodos)) {
+                $decodificado = json_decode($metodos, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decodificado)) {
+                    $metodos = $decodificado;
+                } else {
+                    preg_match_all('/(?<![0-9])[1-6](?![0-9])/', $metodos, $coincidencias);
+                    $metodos = $coincidencias[0] ?? [];
+                }
+            }
+            $metodos = array_map('strval', (array) $metodos);
+
+            if (!in_array('6', $metodos, true)) {
+                return response()->json([
+                    'message' => 'La evaluación no tiene seleccionado el método RAPP.'
+                ], 422);
+            }
+
+            if (strtoupper(trim((string) ($evaluacion->RAPP_SIN_RUEDAS ?? ''))) !== 'SI') {
+                return response()->json([
+                    'message' => 'La ficha RAPP sin ruedas no está seleccionada.'
+                ], 422);
+            }
+
+            $camposRAPP = [
+                'RAPP_SIN_RUEDAS_B2_POSTURA',
+                'RAPP_SIN_RUEDAS_B3_AGARRE',
+                'RAPP_SIN_RUEDAS_B4_SISTEMA_TRABAJO',
+                'RAPP_SIN_RUEDAS_B5_DISTANCIA',
+                'RAPP_SIN_RUEDAS_B6_SUPERFICIE_PISO',
+                'RAPP_SIN_RUEDAS_B7_OBSTACULOS',
+                'RAPP_SIN_RUEDAS_B8_OTROS_FACTORES',
+                'RAPP_SIN_RUEDAS_ANALISIS_RESULTADOS'
+            ];
+
+            foreach ($camposRAPP as $campo) {
+                if (trim((string) ($evaluacion->$campo ?? '')) === '') {
+                    return response()->json([
+                        'message' => 'Falta completar el campo ' . $campo . ' del método RAPP sin ruedas.'
+                    ], 422);
+                }
+            }
+
+            $actividadesB1 = [
+                'RODADO' => trim((string) ($evaluacion->RAPP_SIN_RUEDAS_B1_RODADO ?? '')),
+                'PIVOTEO' => trim((string) ($evaluacion->RAPP_SIN_RUEDAS_B1_PIVOTEO ?? '')),
+                'ARRASTRAR' => trim((string) ($evaluacion->RAPP_SIN_RUEDAS_B1_ARRASTRAR ?? ''))
+            ];
+            $actividadesSeleccionadas = array_filter($actividadesB1, function ($v) {
+                return $v !== '';
+            });
+            if (count($actividadesSeleccionadas) < 1) {
+                return response()->json(['message' => 'Seleccione al menos una actividad en B-1.'], 422);
+            }
+
+            $selecciones = [
+                'B2' => trim((string) $evaluacion->RAPP_SIN_RUEDAS_B2_POSTURA),
+                'B3' => trim((string) $evaluacion->RAPP_SIN_RUEDAS_B3_AGARRE),
+                'B4' => trim((string) $evaluacion->RAPP_SIN_RUEDAS_B4_SISTEMA_TRABAJO),
+                'B5' => trim((string) $evaluacion->RAPP_SIN_RUEDAS_B5_DISTANCIA),
+                'B6' => trim((string) $evaluacion->RAPP_SIN_RUEDAS_B6_SUPERFICIE_PISO),
+                'B7' => trim((string) $evaluacion->RAPP_SIN_RUEDAS_B7_OBSTACULOS),
+                'B8' => trim((string) $evaluacion->RAPP_SIN_RUEDAS_B8_OTROS_FACTORES)
+            ];
+
+            $resultadoSeleccion = [];
+            $total = 0;
+            foreach ($selecciones as $apartado => $valorGuardado) {
+                $partes = explode('|', $valorGuardado);
+                if (count($partes) !== 2 || !is_numeric($partes[0])) {
+                    return response()->json(['message' => 'El valor guardado en ' . $apartado . ' no es válido.'], 422);
+                }
+                $banda = strtoupper(trim($partes[1]));
+                $puntaje = (int) $partes[0];
+                $resultadoSeleccion[$apartado] = ['puntaje' => $puntaje, 'banda' => $banda];
+                $total += $puntaje;
+            }
+
+            $puntajesB1 = [];
+            foreach ($actividadesSeleccionadas as $actividad => $valor) {
+                $partes = explode('|', $valor);
+                if (count($partes) !== 2 || !is_numeric($partes[0])) {
+                    return response()->json(['message' => 'El valor guardado en B-1 ' . $actividad . ' no es válido.'], 422);
+                }
+                $puntajesB1[$actividad] = (int) $partes[0];
+            }
+            $puntajeB1 = max($puntajesB1);
+            $total += $puntajeB1;
+
+            if ($total <= 4) {
+                $nivelRiesgo = 'Bajo – Aceptable';
+                $prioridad = 'No se requieren acciones correctivas';
+                $rangoRiesgo = 'BAJO';
+            } elseif ($total <= 12) {
+                $nivelRiesgo = 'Medio – Posible';
+                $prioridad = 'Se requieren acciones correctivas a corto plazo';
+                $rangoRiesgo = 'MEDIO';
+            } elseif ($total <= 20) {
+                $nivelRiesgo = 'Alto – Significativo';
+                $prioridad = 'Se requieren acciones correctivas pronto';
+                $rangoRiesgo = 'ALTO';
+            } else {
+                $nivelRiesgo = 'Muy Alto – Inaceptable';
+                $prioridad = 'Se requieren acciones correctivas inmediatamente';
+                $rangoRiesgo = 'MUY_ALTO';
+            }
+
+            $rutaPlantilla = storage_path(
+                'app/plantillas_reportes/plantilla_ergo/metodos_ergonomia/Metodo_RAPP_Sinruedas.pdf'
+            );
+
+            if (!file_exists($rutaPlantilla)) {
+                return response()->json([
+                    'message' => 'No se encontró la plantilla PDF del método RAPP sin ruedas.'
+                ], 404);
+            }
+
+            $nombreEmpleado = trim((string) ($evaluacion->NOMBRE_EMPLEADO_FRE ?? 'SIN NOMBRE'));
+            $nombreCategoria = trim((string) ($evaluacion->NOMBRE_CATEGORIA_ERGO ?? 'SIN CATEGORÍA'));
+
+            $convertirTexto = function ($texto) {
+                $convertido = @iconv('UTF-8', 'windows-1252//TRANSLIT', (string) $texto);
+                return $convertido !== false ? $convertido : utf8_decode((string) $texto);
+            };
+
+            $pdf = new \setasign\Fpdi\Fpdi();
+            $pdf->SetAutoPageBreak(false);
+
+            $totalPaginas = $pdf->setSourceFile($rutaPlantilla);
+            $escalaX = 1;
+            $escalaY = 1;
+
+            $texto = function ($x, $y, $ancho, $alto, $contenido, $tamano = 9, $estilo = 'B', $alineacion = 'L') use ($pdf, $convertirTexto, &$escalaX, &$escalaY) {
+                $pdf->SetFont('Arial', $estilo, $tamano);
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->SetXY($x * $escalaX, $y * $escalaY);
+                $pdf->Cell(
+                    $ancho * $escalaX,
+                    $alto * $escalaY,
+                    $convertirTexto($contenido),
+                    0,
+                    0,
+                    $alineacion
+                );
+            };
+
+            $mapa = [
+                'B1' => [
+                    'RODADO' => ['0|V' => [1, 558, 555, 149, 27], '2|A' => [1, 558, 582, 149, 27], '4|R' => [1, 558, 609, 149, 27], '8|R' => [1, 558, 636, 149, 27]],
+                    'PIVOTEO' => ['0|V' => [1, 558, 721, 149, 27], '2|A' => [1, 558, 748, 149, 27], '4|R' => [1, 558, 775, 149, 27], '8|R' => [1, 558, 802, 149, 27]],
+                    'ARRASTRAR' => ['0|V' => [1, 558, 886, 149, 27], '2|A' => [1, 558, 913, 149, 27], '4|R' => [1, 558, 940, 149, 27], '8|R' => [1, 558, 967, 149, 27]]
+                ],
+                'B2' => ['0|V' => [2, 49, 173, 222, 289], '3|A' => [2, 271, 173, 222, 289], '6|R' => [2, 493, 173, 223, 289]],
+                'B3' => ['0|V' => [2, 49, 729, 222, 114], '1|A' => [2, 271, 729, 222, 114], '2|R' => [2, 493, 729, 223, 114]],
+                'B4' => ['0|V' => [3, 49, 214, 222, 202], '1|A' => [3, 271, 214, 222, 202], '3|R' => [3, 493, 214, 223, 202]],
+                'B5' => ['0|V' => [3, 49, 556, 222, 66], '1|A' => [3, 271, 556, 222, 66], '3|R' => [3, 493, 556, 223, 66]],
+                'B6' => ['0|V' => [3, 49, 742, 222, 188], '1|A' => [3, 271, 742, 222, 188], '4|R' => [3, 493, 742, 223, 188]],
+                'B7' => ['0|V' => [4, 49, 228, 222, 116], '2|A' => [4, 271, 228, 222, 116], '3|R' => [4, 493, 228, 223, 116]],
+                'B8' => ['0|V' => [4, 49, 584, 222, 70], '1|A' => [4, 271, 584, 222, 70], '2|R' => [4, 493, 584, 223, 70]]
+            ];
+
+            for ($pagina = 1; $pagina <= $totalPaginas; $pagina++) {
+                $plantilla = $pdf->importPage($pagina);
+                $tamano = $pdf->getTemplateSize($plantilla);
+                $pdf->AddPage($tamano['orientation'], [$tamano['width'], $tamano['height']]);
+                $pdf->useTemplate($plantilla);
+
+                $escalaX = $tamano['width'] / 768;
+                $escalaY = $tamano['height'] / 1024;
+
+
+                if ($pagina === 1) {
+                    $texto(185, 150, 470, 22, $nombreEmpleado, 10, 'B', 'L');
+                    $texto(140, 205, 470, 22, $nombreCategoria, 10, 'B', 'L');
+                }
+
+                // Rectángulos negros en las opciones seleccionadas en la BD.
+                foreach ($actividadesSeleccionadas as $actividad => $valorSeleccionado) {
+                    $coordenada = $mapa['B1'][$actividad][$valorSeleccionado] ?? null;
+                    if ($coordenada && (int) $coordenada[0] === $pagina) {
+                        $pdf->SetDrawColor(0, 0, 0);
+                        $pdf->SetLineWidth(1.2);
+                        $pdf->Rect($coordenada[1] * $escalaX, $coordenada[2] * $escalaY, $coordenada[3] * $escalaX, $coordenada[4] * $escalaY);
+                    }
+                }
+                foreach ($selecciones as $apartado => $valorSeleccionado) {
+                    $coordenada = $mapa[$apartado][$valorSeleccionado] ?? null;
+                    if ($coordenada && (int) $coordenada[0] === $pagina) {
+                        $pdf->SetDrawColor(0, 0, 0);
+                        $pdf->SetLineWidth(1.2);
+                        $pdf->Rect($coordenada[1] * $escalaX, $coordenada[2] * $escalaY, $coordenada[3] * $escalaX, $coordenada[4] * $escalaY);
+                    }
+                }
+
+                // Dibuja el rectángulo negro del nivel de riesgo calculado con los datos de la BD.
+                if ($pagina === 5 && $rangoRiesgo !== null) {
+                    $filas = [
+                        'BAJO' => [60, 227, 638, 43],
+                        'MEDIO' => [60, 275, 638, 43],
+                        'ALTO' => [60, 320, 638, 43],
+                        'MUY_ALTO' => [60, 367, 638, 43]
+                    ];
+
+                    if (isset($filas[$rangoRiesgo])) {
+                        [$x, $y, $ancho, $alto] = $filas[$rangoRiesgo];
+                        $pdf->SetDrawColor(0, 0, 0);
+                        $pdf->SetLineWidth(1.2);
+                        $pdf->Rect(
+                            $x * $escalaX,
+                            $y * $escalaY,
+                            $ancho * $escalaX,
+                            $alto * $escalaY
+                        );
+                    }
+                }
+            }
+
+            $nombreArchivo = preg_replace('/[^A-Za-z0-9_-]+/', '_', $nombreEmpleado);
+            $pdf->SetTitle($convertirTexto('Método RAPP sin ruedas'));
+            $pdf->SetAuthor($convertirTexto('Evaluación ergonómica'));
+
+            return response($pdf->Output('S'), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="' . $nombreArchivo . '_RAPP_Sin_Ruedas.pdf"'
+            ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error(
+                'Error al generar PDF RAPP sin ruedas: ' . $e->getMessage(),
+                [
+                    'fre_id' => $request->fre_id ?? null,
+                    'linea' => $e->getLine(),
+                    'archivo' => $e->getFile()
+                ]
+            );
+
+            return response()->json([
+                'message' => 'Ocurrió un error al generar el PDF del método RAPP sin ruedas.'
+            ], 500);
         }
     }
 }
